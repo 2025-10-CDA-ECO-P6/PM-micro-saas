@@ -65,19 +65,22 @@ de requête légèrement plus élevée pour les champs structurés.
 
 ---
 
-### ADR-04 — NPC et PlayerCharacter comme entités avec repository
+### ADR-04 — NPC et PlayerCharacter comme profils spécialisés de Document
 
-**Contexte** : `NPC` et `PlayerCharacter` ont un cycle de vie important
-mais pas d'entités enfants à protéger transactionnellement.
+**Contexte** : un PNJ ou un personnage joueur peut aller d'une simple description
+à une fiche complète selon le système de jeu. Le contenu doit rester flexible,
+mais certaines métadonnées doivent être requêtables efficacement.
 
-**Décision** : entités de premier niveau avec repository, pas d'agrégats racines.
+**Décision** : `NPC` et `PlayerCharacter` sont des profils spécialisés d'un `Document`
+typé. Leur contenu vit dans `Document`; leurs tables dédiées portent les métadonnées
+transverses comme statut, nom dénormalisé et associations narratives.
 
 **Alternatives écartées** :
-- Agrégats racines : justification insuffisante — pas d'entités enfants,
-  pas d'invariants transactionnels complexes.
 - Entités enfants de `Campaign` : l'agrégat `Campaign` deviendrait ingérable,
   chargé de centaines d'entités à chaque accès.
-- Sous-types de `Document` : mélange du contenu et de la logique métier.
+- Fiches rigides par système de jeu : migrations et combinatoire trop coûteuses.
+- Tout mettre dans `Document` sans profil : listes, statuts et associations deviendraient
+  coûteux et trop implicites.
 
 ---
 
@@ -100,15 +103,19 @@ Option A : un `User` avec `role = GUEST`. Option B : une entité `GuestAccess` d
 ### ADR-06 — AccessPolicy comme service domaine
 
 **Contexte** : la visibilité des contenus est transverse à plusieurs contextes.
+Elle concerne les documents, mais aussi les LiveNotes et les résumés de session.
 
 **Décision** : service domaine `AccessPolicy` dans Campaign Management,
-persistant des entités légères `ContentAccessRule` immuables.
+persistant des entités légères `ContentAccessRule` immuables. Une règle cible
+une `ShareableResourceRef` (`DOCUMENT`, `LIVE_NOTE`, `SESSION_SUMMARY`) plutôt
+qu'un `DocumentId` seul.
 
 **Alternatives écartées** :
 - Agrégat `ShareGrant` : pas d'entités enfants, pas d'invariants transactionnels.
   Un agrégat racine serait surdimensionné.
 - Champ `visibility` uniquement sur `Document` : insuffisant pour cibler
   un membre ou un personnage spécifique.
+- Policies séparées par type de ressource : duplication et risque de divergence.
 - Contexte autonome `AccessControl` : surcomplexité pour le MVP,
   extractible plus tard si la complexité le justifie.
 
@@ -251,7 +258,9 @@ Options : microservices, monolithe classique, monolithe modulaire.
 
 **Contexte** : question ouverte sur la visibilité des notes personnelles des joueurs. Est-ce que le MJ peut voir les notes marquées comme privées par un joueur ?
 
-**Décision** : `Visibility.PLAYER_PRIVATE` — une note créée avec cette visibilité n'est accessible qu'au joueur `createdById`. Le MJ est explicitement exclu, même s'il est propriétaire de la campagne.
+**Décision** : `Visibility.PLAYER_PRIVATE` — une note créée avec cette visibilité
+n'est accessible qu'au demandeur associé au `ownerCharacterId` de la ressource.
+Le MJ est explicitement exclu, même s'il est propriétaire de la campagne.
 
 **Rationale** : respecte l'intention du joueur. Un joueur doit pouvoir noter des théories, mémos ou informations personnelles sans risquer que le MJ les lise accidentellement. Cela renforce la confiance dans l'outil côté joueurs.
 
@@ -259,7 +268,13 @@ Options : microservices, monolithe classique, monolithe modulaire.
 - MJ voit tout par défaut : casse la promesse de confidentialité pour les joueurs, frein à l'adoption.
 - Option de configuration par campagne : surcharge inutile — la règle est invariante.
 
-**Implémentation** : la règle est appliquée dans `ContentAccessPolicy` (domaine), pas seulement dans les handlers Application. Un MJ qui charge les documents d'une campagne ne voit jamais les `PLAYER_PRIVATE` d'un autre joueur.
+**Implémentation** : la règle est appliquée dans `AccessPolicy` (domaine), pas seulement
+dans les handlers Application. Un MJ qui charge les ressources d'une campagne ne voit
+jamais les `PLAYER_PRIVATE` d'un personnage joueur.
+
+**Conséquence GuestAccess** : un joueur sans compte peut récupérer ses notes privées
+lors d'une séance suivante si le MJ lui redonne un `GuestAccess` actif associé au même
+`CharacterId`. La persistance est portée par le personnage, pas par le guest temporaire.
 
 ---
 
@@ -297,24 +312,24 @@ Options : microservices, monolithe classique, monolithe modulaire.
 
 ### ADR-19 — RequesterId comme union type pour l'autorisation unifiée
 
-**Contexte** : `AccessPolicy.CanAccess` doit évaluer les droits d'accès pour deux types de demandeurs radicalement différents : un `User` authentifié (avec `UserId`) et un joueur invité via `GuestAccess` (sans `UserId`). L'ancienne signature `CanAccess(documentId, userId: UserId)` exclut les invités.
+**Contexte** : `AccessPolicy.CanAccess` doit évaluer les droits d'accès pour deux types de demandeurs radicalement différents : un `User` authentifié (avec `UserId`) et un joueur invité via `GuestAccess` (sans `UserId`). Une signature limitée à un `DocumentId` et un `UserId` exclurait les invités et ne permettrait pas de lier les droits privés au personnage.
 
 **Décision** : introduction de `RequesterId` comme union type scellée dans le Shared Kernel :
 
 ```csharp
 abstract record RequesterId;
-record AuthenticatedRequesterId(UserId UserId) : RequesterId;
-record GuestRequesterId(GuestAccessId GuestAccessId) : RequesterId;
+record AuthenticatedRequesterId(UserId UserId, CharacterId? CharacterId) : RequesterId;
+record GuestRequesterId(GuestAccessId GuestAccessId, CharacterId? CharacterId) : RequesterId;
 ```
 
-La signature devient `CanAccess(documentId: DocumentId, requester: RequesterId) → bool`. L'algorithme résout le type de demandeur par pattern matching avant d'évaluer les règles.
+La signature devient `CanAccess(resource: ShareableResourceRef, requester: RequesterId) → bool`. L'algorithme résout le type de demandeur par pattern matching avant d'évaluer les règles.
 
 **Alternatives écartées** :
 - `CanAccess` avec deux surcharges séparées : duplication de la logique d'évaluation, risque d'incohérence entre les deux chemins.
 - `UserId?` nullable : un `null` n'est pas un invité — c'est une absence de valeur. Crée des états ambigus.
 - Traiter les invités comme des `User` avec un rôle `GUEST` : contredit ADR-05. Un `User` est une identité persistante avec email et authentification.
 
-**Conséquences** : le Shared Kernel gagne deux nouveaux types record. Tous les call sites de `CanAccess` doivent être mis à jour. L'avantage est que le compilateur force la gestion des deux cas sans possibilité de silently ignorer les invités.
+**Conséquences** : le Shared Kernel gagne deux nouveaux types record et une référence de ressource partageable. Tous les call sites de `CanAccess` doivent être mis à jour. L'avantage est que le compilateur force la gestion des deux cas sans possibilité d'ignorer silencieusement les invités.
 
 ---
 
@@ -322,7 +337,7 @@ La signature devient `CanAccess(documentId: DocumentId, requester: RequesterId) 
 
 **Contexte** : les documents peuvent être taggés. Deux modèles possibles : tags comme value objects embarqués dans `Document` (liste de strings) ou tags comme entités avec leur propre cycle de vie au niveau campagne.
 
-**Décision** : `Tag` est une entité de premier niveau dans Content Library, avec `TagId`, `campaignId`, `label` (unique par campagne, case-insensitive), `color?`. Les documents référencent des `TagId[]`. Une table de liaison `DOCUMENT_TAG` gère l'association.
+**Décision** : `Tag` est une entité de premier niveau dans Content Library, avec `TagId`, `campaignId`, `label` (unique par campagne, case-insensitive), `color?` et `SoftDelete`. Les documents référencent des `TagId[]`. Une table de liaison `DOCUMENT_TAG` gère l'association.
 
 **Alternatives écartées** :
 - Tags comme strings embarqués dans `Document` : impossible de renommer un tag sur tous les documents, impossible de changer sa couleur, pas de liste canonique de tags. Évolutivité bloquée dès la première itération.
@@ -330,7 +345,7 @@ La signature devient `CanAccess(documentId: DocumentId, requester: RequesterId) 
 
 **Conséquences** :
 - UC-19 `GererTagsCampagne` est nécessaire pour le cycle de vie des tags.
-- La suppression d'un tag émet `TagDeleted` — un handler purge `DOCUMENT_TAG` pour ce `TagId`.
+- Le soft delete d'un tag émet `TagDeleted` — un handler purge `DOCUMENT_TAG` pour ce `TagId`.
 - Les tags sont chargés une fois par contexte de campagne et mis en cache côté client pour les suggestions.
 
 ---

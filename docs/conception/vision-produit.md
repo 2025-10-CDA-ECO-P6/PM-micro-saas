@@ -115,7 +115,7 @@ Ces éléments sont explicitement exclus — leur absence est un choix, pas un o
 | Marketplace / plugins | Écosystème à construire après validation du core |
 | Support complet de plusieurs systèmes de jeu | Templates configurables — post-MVP |
 | Collaboration temps réel complexe (CRDT) | Complexité technique disproportionnée pour le MVP |
-| SessionSummary multi-versions | Modélisé, non activé en MVP |
+| SessionSummary multi-versions | Non modélisé en MVP — un seul résumé par session |
 | Verrouillage de champs (`isLocked`) | Modélisé, non activé en MVP |
 | Factions comme entité dédiée | Couvert par Document CUSTOM en MVP |
 | UserProjection locale dans Campaign Management | Nécessaire uniquement lors de l'extraction en service |
@@ -183,9 +183,9 @@ pour convertir son accès en CampaignMembership persistant.
 - Accéder aux informations partagées pour la session.
 
 **Contraintes** :
-- Pas de compte persistant — ses données `PLAYER_PRIVATE` restent inaccessibles après expiration.
-- Accès limité au périmètre défini par le MJ.
-- Peut upgrader en compte joueur à tout moment (UC-00 A3).
+- Pas de compte persistant — l'accès expire, mais les données `PLAYER_PRIVATE` restent liées au personnage joueur.
+- Accès limité au périmètre défini par le MJ et au `CharacterId` associé.
+- Peut upgrader en compte joueur à tout moment (UC-00 A3), en récupérant les données liées au même personnage.
 
 ---
 

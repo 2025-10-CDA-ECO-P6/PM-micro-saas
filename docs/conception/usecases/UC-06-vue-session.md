@@ -54,7 +54,7 @@ La vue session MJ est composée de plusieurs panneaux :
 
 **Panneau PNJ** *(colonne latérale)*
 - Affiche les PNJ présents dans `Session.selectedNpcIds`.
-- Cette liste est auto-déduite depuis les scènes du scénario actif (union des `Scene.npcIds`) lors de la préparation (UC-05), puis modifiable manuellement par le MJ en cours de session.
+- Cette liste est auto-déduite depuis les scènes du scénario actif (union des `Scene.linkedNpcIds`) lors de la préparation (UC-05), puis modifiable manuellement par le MJ en cours de session.
 - Le MJ peut ajouter un PNJ non prévu ou en retirer un.
 - Chaque PNJ affiche : nom, traits résumés, statut (actif/neutralisé/fui).
 
@@ -65,12 +65,12 @@ La vue session MJ est composée de plusieurs panneaux :
 
 **Panneau LiveNotes MJ** *(zone de notes rapides)*
 - Zone de saisie libre pour créer des `LiveNote` liés à la session en cours.
-- Chaque note est créée avec : `sessionId`, `authorId = MJ.userId`, `authorRole = GM`, `visibility = PRIVATE` (par défaut).
+- Chaque note est créée avec : `sessionId`, `authorUserId = MJ.userId`, `authorRole = GM`, `visibility = PRIVATE` (par défaut).
 - Le MJ peut changer la visibilité d'une note vers `SHARED` pour la rendre visible aux joueurs.
 - Les notes s'affichent en ordre inverse chronologique.
 
 **Panneau Documents épinglés** *(favoris de session)*
-- Affiche les documents explicitement épinglés pour cette session (via `Session.pinnedDocumentIds`).
+- Affiche les documents explicitement épinglés pour cette session (via `Session.pinnedItems`).
 - Le MJ peut ajouter un document épinglé depuis les résultats de recherche ou la navigation.
 - Clic sur un document ouvre un panneau de consultation en lecture rapide.
 
@@ -101,12 +101,12 @@ La vue session MJ est composée de plusieurs panneaux :
 1. Le joueur accède à la campagne pendant une session `LIVE`.
 2. Le système lui présente une vue joueur simplifiée.
 3. Cette vue affiche :
-   - les informations partagées par le MJ (`visibility = SHARED` ou `ALL_MEMBERS` ou `PUBLIC`) ;
-   - les `LiveNote` du joueur avec `visibility = PLAYER_PRIVATE` et `createdById = joueur.userId` ;
+   - les informations partagées par le MJ (`visibility = SHARED` ou `PUBLIC`) ;
+   - les `LiveNote` du joueur avec `visibility = PLAYER_PRIVATE` et `ownerCharacterId = personnage associé au requester` ;
    - une zone de création de LiveNotes personnelles.
 4. Le joueur peut créer une `LiveNote` personnelle :
-   - `authorRole = PLAYER`, `visibility = PLAYER_PRIVATE` (par défaut, non modifiable).
-   - La note n'est accessible qu'au joueur créateur.
+   - `authorRole = PLAYER`, `visibility = PLAYER_PRIVATE`, `ownerCharacterId = characterId` (par défaut, non modifiable).
+   - La note n'est accessible qu'au requester associé au même personnage.
 5. Le joueur ne voit pas les LiveNotes `PRIVATE` du MJ.
 6. Le joueur ne voit pas les LiveNotes `PLAYER_PRIVATE` des autres joueurs.
 
@@ -119,7 +119,7 @@ La vue session MJ est composée de plusieurs panneaux :
 Le MJ souhaite démarrer une session improvisée sans session préparée.
 
 1. Depuis la vue campagne, le MJ clique sur "Lancer une session rapide".
-2. Le système crée une session avec : `status = LIVE`, `scenarioId = null`, `selectedNpcIds = []`, `pinnedDocumentIds = []`.
+2. Le système crée une session avec : `status = LIVE`, `scenarioId = null`, `selectedNpcIds = []`, `pinnedItems = []`.
 3. La vue session s'ouvre avec les panneaux Scénario et PNJ vides.
 4. Le MJ peut ajouter manuellement des PNJ et des documents épinglés.
 
@@ -146,8 +146,9 @@ Le MJ décide de rendre visible un document ou une LiveNote aux joueurs.
 
 1. Le MJ clique sur "Partager" sur un document ou une LiveNote.
 2. Le flux de partage s'exécute → **voir UC-09**.
-3. La visibilité du document est mise à jour (`SHARED` ou `ALL_MEMBERS`).
-4. Les joueurs voient immédiatement l'information dans leur vue.
+3. La visibilité de la ressource est mise à jour (`SHARED` ou `PUBLIC`).
+4. Si la ressource devient `SHARED`, des `ContentAccessRule` ciblent les membres ou personnages concernés.
+5. Les joueurs voient immédiatement l'information dans leur vue.
 
 ### A5 — Reprise d'une session LIVE interrompue
 
@@ -206,7 +207,7 @@ La session est liée à un scénario existant mais sans scènes définies.
 
 - Toutes les `LiveNote` créées pendant la session sont sauvegardées avec leur `sessionId`.
 - Les scènes marquées comme jouées conservent leur statut.
-- Les modifications de `Session.selectedNpcIds` et `Session.pinnedDocumentIds` sont persistées.
+- Les modifications de `Session.selectedNpcIds` et `Session.pinnedItems` sont persistées.
 - Les documents partagés aux joueurs ont leur visibilité mise à jour.
 - La session reste au statut `LIVE` jusqu'à clôture explicite par le MJ.
 
@@ -221,7 +222,7 @@ La session est liée à un scénario existant mais sans scènes définies.
 - `scenarioId: ScenarioId?` (nullable)
 - `status: SessionStatus` — `PLANNED | LIVE | CLOSED | ARCHIVED`
 - `selectedNpcIds: NpcId[]`
-- `pinnedDocumentIds: DocumentId[]`
+- `pinnedItems: PinnedItem[]`
 - `startedAt: DateTime?`
 
 ### LiveNote (créées pendant la session)
@@ -229,7 +230,9 @@ La session est liée à un scénario existant mais sans scènes définies.
 - `id: LiveNoteId`
 - `sessionId: SessionId`
 - `content: String`
-- `authorId: UserId`
+- `authorUserId: UserId?`
+- `authorGuestAccessId: GuestAccessId?`
+- `ownerCharacterId: CharacterId?` — obligatoire pour `PLAYER_PRIVATE`
 - `authorRole: LiveNoteAuthorRole` — `GM | PLAYER`
 - `visibility: Visibility` — `PRIVATE` (GM) | `PLAYER_PRIVATE` (joueur)
 - `createdAt: DateTime`
@@ -237,7 +240,7 @@ La session est liée à un scénario existant mais sans scènes définies.
 ### Documents consultés / épinglés
 
 - Documents de la campagne avec leur `AccessPolicy` appliqué
-- `Session.pinnedDocumentIds` mis à jour
+- `Session.pinnedItems` mis à jour
 
 ### PNJ
 
@@ -252,11 +255,13 @@ La session est liée à un scénario existant mais sans scènes définies.
 - Les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées et leurs propres notes `PLAYER_PRIVATE`.
 - **LiveNotes en session LIVE** :
   - MJ : peut créer des LiveNotes à tout moment pendant `LIVE`. Visibilité par défaut : `PRIVATE`. Peut basculer en `SHARED`.
-  - Joueur : peut créer des LiveNotes uniquement pendant une session `LIVE`. Visibilité fixe : `PLAYER_PRIVATE` (non modifiable par le joueur).
+  - Joueur : peut créer des LiveNotes uniquement pendant une session `LIVE`. Visibilité fixe : `PLAYER_PRIVATE` (non modifiable par le joueur) et liée au `CharacterId`.
 - **LiveNotes après session** :
   - MJ : peut créer et modifier des LiveNotes rétroactives sur une session `CLOSED` (pour compléter ses notes après la partie).
   - Joueur : ne peut créer des LiveNotes que pendant `LIVE`.
 - Une `LiveNote` avec `visibility = PLAYER_PRIVATE` est inaccessible au MJ, quelles que soient ses permissions de campagne.
+- Un joueur invité sans compte peut créer une LiveNote personnelle si son `GuestAccess` est associé à un `CharacterId`. La note reste récupérable lors d'une séance suivante via un nouveau lien sécurisé associé au même personnage.
+- Les partages de `Document`, `LiveNote` et `SessionSummary` utilisent tous `AccessPolicy` et `ContentAccessRule`.
 - `Session.selectedNpcIds` est une liste modifiable manuellement. La valeur initiale est déduite des scènes du scénario actif lors de la préparation (UC-05).
 - Marquer une scène comme jouée ne supprime pas le scénario et ne déclenche aucune transition d'état automatique sur la session.
 - La machine d'états `Session` est unidirectionnelle : `PLANNED → LIVE → CLOSED → ARCHIVED`.
@@ -285,7 +290,7 @@ La session est liée à un scénario existant mais sans scènes définies.
 
 ### Vue Joueur
 
-- Le joueur voit les informations partagées (`SHARED`, `ALL_MEMBERS`, `PUBLIC`).
+- Le joueur voit les informations partagées (`SHARED`, `PUBLIC`).
 - Le joueur peut créer une LiveNote `PLAYER_PRIVATE` pendant une session `LIVE`.
 - Le joueur ne voit pas les LiveNotes `PRIVATE` du MJ.
 - Le joueur ne voit pas les LiveNotes `PLAYER_PRIVATE` des autres joueurs.
@@ -293,7 +298,7 @@ La session est liée à un scénario existant mais sans scènes définies.
 ### Persistance
 
 - Les LiveNotes sont sauvegardées avec leur `sessionId`.
-- `Session.selectedNpcIds` et `Session.pinnedDocumentIds` sont persistés.
+- `Session.selectedNpcIds` et `Session.pinnedItems` sont persistés.
 - Les scènes marquées comme jouées conservent leur statut entre les accès.
 
 ---

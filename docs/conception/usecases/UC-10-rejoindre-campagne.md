@@ -36,7 +36,7 @@ Le MJ invite un joueur à rejoindre une campagne ou une session.
 3. Le système affiche une page de rejoindre.
 4. Le joueur saisit un pseudo.
 5. Le joueur rejoint la campagne ou la session comme invité.
-6. Le MJ peut associer le joueur à un personnage existant.
+6. Le MJ associe l'accès invité à un personnage existant ou en crée un.
 7. Le joueur accède à sa fiche et aux informations partagées.
 
 ## Scénario nominal avec compte
@@ -98,7 +98,9 @@ Le MJ refuse ou retire l'accès du joueur.
 ## Règles métier
 
 - Le MJ contrôle les invitations.
-- Un joueur invité sans compte a un accès limité ou temporaire.
+- Un joueur invité sans compte a un accès limité ou temporaire, sécurisé par token.
+- Pour agir comme un joueur complet, l'accès invité doit être associé à un `CharacterId`.
+- Les données personnelles joueur sont liées au personnage, pas au GuestAccess temporaire.
 - Un compte joueur permet un accès persistant.
 - Le joueur ne voit que les informations partagées avec lui.
 

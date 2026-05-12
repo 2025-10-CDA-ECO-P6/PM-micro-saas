@@ -87,7 +87,7 @@ métier entre contextes.
 **Ce qui est dans le Shared Kernel** :
 
 - Les Id typés (`UserId`, `CampaignId`, `DocumentId`...)
-- Les value objects fondations (`AuditInfo`, `SoftDelete`, `Email`, `Slug`, `Tag`, `Visibility`, `PinnedItem`)
+- Les value objects fondations (`AuditInfo`, `SoftDelete`, `Email`, `Slug`, `Visibility`, `PinnedItem`)
 - Les abstractions d'infrastructure (`IAggregateRoot`, `IEntity`, `IDomainEvent`, `IRepository`, `IUnitOfWork`)
 
 **Ce qui n'est jamais dans le Shared Kernel** :

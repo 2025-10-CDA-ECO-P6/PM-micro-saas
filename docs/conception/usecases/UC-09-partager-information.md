@@ -32,7 +32,7 @@ Le MJ souhaite transmettre une information au groupe ou à certains joueurs.
 
 ## Scénario nominal
 
-1. Le MJ ouvre une note, un document ou une information de campagne.
+1. Le MJ ouvre une ressource partageable : document, LiveNote ou résumé de session.
 2. Il choisit l'action "Partager".
 3. Le système affiche les options de visibilité.
 4. Le MJ choisit la cible :
@@ -42,7 +42,7 @@ Le MJ souhaite transmettre une information au groupe ou à certains joueurs.
    - session actuelle.
 
 5. Le MJ valide le partage.
-6. Le système rend l'information accessible aux utilisateurs concernés.
+6. Le système met la ressource en visibilité `SHARED` et crée les `ContentAccessRule` correspondant aux cibles.
 7. Les joueurs voient l'information dans leur espace.
 
 ## Scénarios alternatifs
@@ -96,6 +96,8 @@ Si un joueur n'est plus associé à la campagne, il n'apparaît plus comme cible
 - Seul le MJ peut partager une information de campagne.
 - Un joueur ne peut consulter que les informations explicitement partagées avec lui.
 - Le MJ peut retirer un partage.
+- Les règles de partage sont unifiées par `AccessPolicy` et `ContentAccessRule`.
+- Les cibles possibles sont : tous les membres, un membre authentifié, ou un personnage joueur.
 
 ## Critères d'acceptation
 

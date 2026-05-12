@@ -187,7 +187,8 @@ erDiagram
     CONTENT_ACCESS_RULE {
         uuid id PK
         uuid campaignId FK "-> CAMPAIGN"
-        uuid documentId "ref Content Library"
+        enum resourceType "DOCUMENT | LIVE_NOTE | SESSION_SUMMARY"
+        uuid resourceId "ref ressource partageable"
         uuid grantedById FK "-> USER"
         enum targetType "ALL | MEMBER | CHARACTER"
         uuid targetId "nullable si targetType = ALL"
@@ -210,8 +211,8 @@ erDiagram
   ou quand `expiresAt` est dépassé — logique applicative.
 - `CONTENT_ACCESS_RULE` est immuable : pas de `updatedAt`, pas de soft delete.
   La révocation est une suppression physique.
-- `CONTENT_ACCESS_RULE.documentId` est une référence cross-context sans FK en base.
-- `CONTENT_ACCESS_RULE` : index unique sur `(documentId, targetType, targetId)` avec
+- `CONTENT_ACCESS_RULE.resourceId` est une référence cross-context sans FK en base.
+- `CONTENT_ACCESS_RULE` : index unique sur `(resourceType, resourceId, targetType, targetId)` avec
   `NULLS NOT DISTINCT` pour gérer le cas `targetType = ALL` (targetId = NULL).
 - `GAME_SYSTEM.ownerId` : null pour les systèmes BUILTIN, non-null pour les systèmes custom (scope privé MVP).
 - Index recommandés : `CAMPAIGN(ownerId)`, `CAMPAIGN_MEMBERSHIP(campaignId, userId)`,
@@ -237,6 +238,7 @@ erDiagram
         string title
         string slug "unique par (campaignId, type) — affichage uniquement, jamais dans les URLs"
         enum visibility "PRIVATE | PLAYER_PRIVATE | SHARED | PUBLIC"
+        uuid ownerCharacterId "ref PLAYER_CHARACTER, nullable — requis si PLAYER_PRIVATE"
         uuid templateId FK "-> DOCUMENT_TEMPLATE, nullable"
         uuid folderId FK "-> FOLDER, nullable — null = non classe"
         int appliedTemplateVersion "nullable — version template appliquee, compare a DOCUMENT_TEMPLATE.version"
@@ -532,7 +534,9 @@ erDiagram
         uuid id PK
         uuid sessionId FK "-> SESSION"
         string content
-        uuid authorId "ref Identity (MJ ou joueur authentifie)"
+        uuid authorUserId "ref Identity, nullable"
+        uuid authorGuestAccessId "ref GuestAccess, nullable"
+        uuid ownerCharacterId "ref PlayerCharacter, nullable — requis si PLAYER_PRIVATE"
         enum authorRole "GM | PLAYER"
         enum visibility "PRIVATE | PLAYER_PRIVATE | SHARED | PUBLIC"
         uuid linkedDocumentId "ref Content Library, nullable"
@@ -546,6 +550,7 @@ erDiagram
         uuid sessionId FK "-> SESSION, unique"
         string content
         enum visibility "PRIVATE | SHARED | PUBLIC"
+        uuid ownerCharacterId "ref PlayerCharacter, nullable"
         datetime createdAt
         datetime updatedAt
         uuid createdById "ref Identity"
@@ -573,6 +578,8 @@ erDiagram
     Contrainte `CHECK` : `authorRole = 'GM' → visibility != 'PLAYER_PRIVATE'`.
   - `authorRole = PLAYER` → visibilité parmi `{PLAYER_PRIVATE, SHARED, PUBLIC}`, défaut `PLAYER_PRIVATE`.
     Contrainte `CHECK` : `authorRole = 'PLAYER' → visibility != 'PRIVATE'`.
+  - `visibility = PLAYER_PRIVATE` → `ownerCharacterId IS NOT NULL`.
+  - Une note joueur invitée renseigne `authorGuestAccessId`; l'accès futur reste résolu par `ownerCharacterId`.
   - Les joueurs ne peuvent créer des LiveNotes que sur une session LIVE (enforce applicatif).
   - Le MJ peut créer des LiveNotes sur une session LIVE ou CLOSED.
 - `SESSION_NPC.isManual` : les lignes `isManual = false` sont recalculées par `SessionNpcSelector`
@@ -631,7 +638,7 @@ Ces colonnes contiennent des UUID vers des entités d'un autre bounded context.
 |---|---|---|
 | `CAMPAIGN` | `ownerId` | `USER.id` (FK réelle — exception documentée ADR-12) |
 | `GUEST_ACCESS` | `characterId` | `PLAYER_CHARACTER.id` (Content Library) |
-| `CONTENT_ACCESS_RULE` | `documentId` | `DOCUMENT.id` (Content Library) |
+| `CONTENT_ACCESS_RULE` | `resourceId` | `DOCUMENT.id`, `LIVE_NOTE.id` ou `SESSION_SUMMARY.id` selon `resourceType` |
 | `CONTENT_ACCESS_RULE` | `targetId` | `USER.id` ou `PLAYER_CHARACTER.id` selon `targetType` |
 | `DOCUMENT` | `campaignId` | `CAMPAIGN.id` (Campaign Management) |
 | `FOLDER` | `campaignId` | `CAMPAIGN.id` (Campaign Management) |
@@ -648,5 +655,8 @@ Ces colonnes contiennent des UUID vers des entités d'un autre bounded context.
 | `SESSION_PARTICIPANT` | `characterId` | `PLAYER_CHARACTER.id` (Content Library) |
 | `SESSION_NPC` | `npcId` | `NPC.id` (Content Library) |
 | `PINNED_ITEM` | `documentId` | `DOCUMENT.id` (Content Library) |
-| `LIVE_NOTE` | `authorId` | `USER.id` (Identity) |
+| `LIVE_NOTE` | `authorUserId` | `USER.id` (Identity) |
+| `LIVE_NOTE` | `authorGuestAccessId` | `GUEST_ACCESS.id` (Campaign Management) |
+| `LIVE_NOTE` | `ownerCharacterId` | `PLAYER_CHARACTER.id` (Content Library) |
 | `LIVE_NOTE` | `linkedDocumentId` | `DOCUMENT.id` (Content Library) |
+| `SESSION_SUMMARY` | `ownerCharacterId` | `PLAYER_CHARACTER.id` (Content Library) |

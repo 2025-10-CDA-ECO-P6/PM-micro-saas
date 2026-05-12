@@ -23,7 +23,7 @@
 | [UC-10](UC-10-rejoindre-campagne.md) | Rejoindre une campagne ou une session | Joueur | Should Have |
 | [UC-11](UC-11-recherche.md) | Rechercher rapidement une information | MJ | Should Have |
 | [UC-12](UC-12-cloturer-session.md) | Clôturer une session et préparer la suite | MJ | Could Have |
-| [UC-13](UC-13-notes-personnelles-joueur.md) | Gérer ses notes personnelles (joueur) | Joueur | Could Have |
+| [UC-13](UC-13-notes-personnelles-joueur.md) | Gérer ses notes personnelles (joueur) | Joueur | Should Have |
 | [UC-14](UC-14-creation-volee-session.md) | Créer un élément à la volée en session | MJ | Should Have |
 | [UC-15](UC-15-gerer-membres-campagne.md) | Gérer les membres d'une campagne | MJ | Should Have |
 | [UC-16](UC-16-gerer-documents-lore.md) | Gérer les documents de lore | MJ | Could Have |

@@ -38,7 +38,6 @@ Le MJ souhaite commencer une nouvelle campagne ou migrer une campagne existante 
    - nom de la campagne ;
    - description courte ;
    - système de jeu utilisé ;
-   - ambiance ou genre ;
    - statut initial de la campagne.
 
 5. Le MJ valide la création.

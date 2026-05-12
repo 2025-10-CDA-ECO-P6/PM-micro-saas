@@ -27,22 +27,22 @@ Si la réponse est non aux deux, c'est une **entité avec repository**, pas un a
 | `NPC` | Aucune | Statut uniquement | Entité avec repository |
 | `PlayerCharacter` | Aucune | Ownership uniquement | Entité avec repository |
 
-### Pourquoi NPC et PlayerCharacter ne sont pas des agrégats racines
+### Pourquoi NPC et PlayerCharacter sont des profils spécialisés de Document
 
-On pourrait penser que `NPC` et `PlayerCharacter` méritent le statut d'agrégat
-racine parce qu'ils ont un rôle important dans le domaine. Mais la question
-n'est pas "est-ce que cette entité est importante" — c'est "est-ce qu'elle protège
-des invariants transactionnels sur ses enfants".
+On pourrait penser que `NPC` et `PlayerCharacter` doivent être modélisés comme
+des fiches rigides. Le problème est qu'en jeu de rôle, leur structure dépend très
+fortement du système et du style de MJ : un PNJ peut être une simple description,
+une fiche courte ou presque une fiche personnage complète.
 
-`NPC` n'a pas d'entités enfants. Son contenu vit dans `Document`.
-Son seul invariant propre est son statut (`ALIVE`, `DEAD`...) et son lien
-optionnel vers un `PlayerCharacter`. Ces invariants sont locaux à l'entité
-elle-même — ils ne nécessitent pas de frontière transactionnelle étendue.
+Le contenu flexible vit donc dans `Document`. `NPC` et `PlayerCharacter` sont des
+profils spécialisés qui portent uniquement les métadonnées transverses utiles :
+nom dénormalisé, statut, propriétaire de personnage, liens narratifs. Ils peuvent
+être chargés via repository pour les commandes et les listes, mais ne doivent pas
+devenir des modèles de fiche exhaustifs.
 
-En pratique, les deux ont un `Id` propre et un `IRepository`.
-La différence est dans la sémantique : un agrégat racine garantit la cohérence
-d'un groupe d'entités dans une transaction, une entité avec repository est
-sauvegardée et chargée indépendamment.
+La règle d'implémentation est simple : toute information variable de fiche reste
+un bloc de `Document`; toute information nécessaire aux règles transverses peut
+être portée par le profil spécialisé.
 
 ---
 
@@ -261,7 +261,7 @@ sans rien réécrire.
 Core
 ├── Primitives (niveau 1)
 │   ├── Id typés, AuditInfo, SoftDelete
-│   ├── Email, Slug, Tag, Visibility, PinnedItem
+│   ├── Email, Slug, Visibility, PinnedItem
 │   └── IAggregateRoot, IRepository...
 │
 └── Moteurs métier stables (niveau 2)
@@ -435,9 +435,9 @@ public class SessionViewDto {
 ```
 
 **Règles de filtrage appliquées dans le handler Query** :
-- `LiveNote` avec `visibility = PLAYER_PRIVATE` : retournées uniquement si `requester.UserId == note.authorId`.
-- `LiveNote` avec `visibility = PRIVATE` : retournées uniquement si `requester` est le MJ de la campagne.
-- `PinnedDocument` : vérification d'accès via `AccessPolicy.CanAccess` pour chaque document.
+- `LiveNote`, `SessionSummary` et documents épinglés sont filtrés via `AccessPolicy.CanAccess`.
+- `PLAYER_PRIVATE` est résolu par `ownerCharacterId`, pas par `UserId`.
+- `SHARED` utilise des `ContentAccessRule` ciblant une `ShareableResourceRef`.
 
 Ce read model est recalculé à chaque requête — pas de matérialisation en base pour le MVP. Si les performances le requièrent, il devient un candidat à la mise en cache applicatif (Redis ou mémoire in-process).
 

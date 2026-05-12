@@ -27,7 +27,8 @@ Le joueur souhaite noter une information personnelle pendant ou en dehors d'une 
 ## Préconditions
 
 - Le joueur est associé à une campagne.
-- Le joueur dispose d'un compte ou d'un accès GuestAccess.
+- Le joueur dispose d'un compte ou d'un accès GuestAccess sécurisé.
+- Le requester est associé à un `CharacterId`.
 
 ## Scénario nominal
 
@@ -36,7 +37,8 @@ Le joueur souhaite noter une information personnelle pendant ou en dehors d'une 
 3. Il choisit la visibilité "Personnel" (`PLAYER_PRIVATE`).
 4. Il saisit le contenu de la note.
 5. Il sauvegarde.
-6. La note est stockée avec `visibility = PLAYER_PRIVATE` et `createdById = userId`.
+6. La note est stockée avec `visibility = PLAYER_PRIVATE` et `ownerCharacterId = characterId`.
+   Si le joueur est invité, `authorGuestAccessId` trace l'accès utilisé ; si le joueur est authentifié, `authorUserId` est renseigné.
 7. La note n'apparaît pas dans les vues MJ ni dans les vues des autres joueurs.
 
 ## Scénarios alternatifs
@@ -57,11 +59,11 @@ Le joueur supprime une note personnelle. Le MJ n'est pas notifié.
 
 ### E1 — Tentative d'accès par le MJ
 
-Le système refuse l'accès : une note `PLAYER_PRIVATE` n'est accessible qu'au joueur `createdById`, quelle que soit la requête.
+Le système refuse l'accès : une note `PLAYER_PRIVATE` n'est accessible qu'à un requester associé à son `ownerCharacterId`, quelle que soit la requête.
 
 ### E2 — Joueur sans accès actif
 
-Si l'accès du joueur a expiré (GuestAccess), ses notes `PLAYER_PRIVATE` restent en base mais inaccessibles jusqu'à réactivation.
+Si l'accès du joueur a expiré (GuestAccess), ses notes `PLAYER_PRIVATE` restent liées au personnage. Elles redeviennent accessibles si le MJ génère un nouveau lien sécurisé associé au même `CharacterId`, ou si le joueur crée un compte et est associé à ce personnage.
 
 ## Postconditions
 
@@ -72,16 +74,19 @@ Si l'accès du joueur a expiré (GuestAccess), ses notes `PLAYER_PRIVATE` resten
 ## Données manipulées
 
 - Document / Note avec `visibility = PLAYER_PRIVATE`
-- `createdById: UserId` (discriminant d'accès)
+- `ownerCharacterId: CharacterId` (discriminant d'accès)
+- `authorUserId: UserId?`
+- `authorGuestAccessId: GuestAccessId?`
 - Campagne associée
 - Session associée (optionnel)
 
 ## Règles métier
 
-- Une note `PLAYER_PRIVATE` est visible uniquement par son créateur (`createdById`).
+- Une note `PLAYER_PRIVATE` est visible uniquement par un requester associé à son `ownerCharacterId`.
 - Le MJ n'a pas accès aux notes `PLAYER_PRIVATE`, même s'il est propriétaire de la campagne.
-- La règle d'accès est appliquée par le domaine (`ContentAccessPolicy`) et non par la couche applicative seule.
+- La règle d'accès est appliquée par le domaine (`AccessPolicy`) et non par la couche applicative seule.
 - Les notes `PLAYER_PRIVATE` n'apparaissent pas dans les résultats de recherche du MJ.
+- Un GuestAccess est un moyen d'accès temporaire ; la persistance métier des notes joueur est portée par le personnage.
 
 ## Critères d'acceptation
 

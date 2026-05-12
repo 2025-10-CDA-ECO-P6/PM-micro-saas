@@ -104,7 +104,7 @@ Si le type est `CUSTOM`, le champ `customType` est obligatoire.
 - Le slug est unique par `(campaignId, type)`.
 - Un document `CUSTOM` doit avoir un `customType` non vide.
 - La visibilité par défaut est `PRIVATE`.
-- Un document partagé (`SHARED`) nécessite au moins une `ContentAccessRule` pour définir les destinataires.
+- Une ressource partagée (`SHARED`) nécessite au moins une `ContentAccessRule` pour définir les destinataires.
 - Le lien avec d'autres entités est non destructeur : supprimer un lien ne supprime ni le document ni l'entité liée.
 - La protection de `GameSystem.isBuiltIn` s'applique aussi aux templates : un template `BUILTIN` ne peut pas être modifié.
 

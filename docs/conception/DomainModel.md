@@ -47,12 +47,12 @@ la documentation et les conversations.
 | **Campagne** | Espace organisationnel regroupant scénarios, PNJ, personnages, sessions et notes d'une aventure JDR. |
 | **MJ** | Maître du Jeu. Propriétaire de la campagne, seul à pouvoir modifier le contenu et gérer les accès. |
 | **Joueur** | Membre authentifié d'une campagne, associé à un ou plusieurs personnages joueurs. |
-| **Joueur invité** | Accès temporaire sans compte persistant. Représenté par un GuestAccess, pas un User. Traité comme un joueur ordinaire pour l'accès au contenu. |
+| **Joueur invité** | Accès temporaire sans compte persistant. Représenté par un GuestAccess, pas un User. Traité comme un joueur ordinaire pour l'accès au contenu dès lors qu'il est associé au bon Personnage joueur. |
 | **Membre** | Toute personne ayant accès à une campagne : joueur authentifié (CampaignMembership) ou joueur invité actif (GuestAccess). Un contenu PUBLIC est accessible à tous les membres, y compris les invités. |
 | **Scénario** | Structure narrative préparée par le MJ, composée de scènes ordonnées. |
 | **Scène** | Unité narrative d'un scénario. Peut être liée à des PNJ. |
 | **PNJ** | Personnage Non-Joueur. Entité narrative créée et gérée par le MJ. |
-| **Personnage joueur** | Fiche d'un personnage appartenant à un joueur. Créée par le MJ ou le joueur. Peut exister sans joueur associé (en attente d'association ou personnage joué par le MJ). |
+| **Personnage joueur** | Fiche d'un personnage. Porte l'identité fonctionnelle côté joueur dans la campagne : un compte joueur ou un GuestAccess peut être autorisé à accéder à ce personnage. Peut exister sans accès associé. |
 | **Document** | Unité de contenu modulaire. Tout contenu éditorial est un Document typé composé de blocs. |
 | **Bloc** | Unité atomique de contenu dans un Document. Chaque bloc a un type et une valeur fortement typée. |
 | **Template** | Schéma de blocs définissant la structure attendue d'un Document. Snapshot à la création — non lié après. |
@@ -62,10 +62,10 @@ la documentation et les conversations.
 | **Session** | Instance d'une partie jouée. Liée optionnellement à un scénario. |
 | **Note live** | Note prise pendant une session. Peut être créée par le MJ ou par un joueur. Liée automatiquement à la session en cours. |
 | **Résumé** | Compte-rendu d'une session clôturée. Peut être partagé aux joueurs. |
-| **Visibilité** | Niveau d'accès d'un contenu : PRIVATE (MJ uniquement), PLAYER_PRIVATE (joueur créateur uniquement — MJ exclu), SHARED (membres ciblés via AccessPolicy), PUBLIC (tous les membres, y compris les invités actifs). |
-| **RequesterId** | Identité du demandeur d'accès à un contenu. Type union scellé : soit un UserId (utilisateur authentifié) soit un GuestRequesterId (invité avec GuestAccessId et CharacterId optionnel). Utilisé par AccessPolicy. |
-| **AccessPolicy** | Service domaine gérant les autorisations d'accès aux contenus d'une campagne. |
-| **GuestAccess** | Accès temporaire dans une campagne. N'est pas un User — pas d'identité persistante. |
+| **Visibilité** | Niveau d'accès d'une ressource partageable : PRIVATE (MJ uniquement), PLAYER_PRIVATE (personnage joueur propriétaire uniquement — MJ exclu), SHARED (membres ou personnages ciblés via AccessPolicy), PUBLIC (tous les membres, y compris les invités actifs). |
+| **RequesterId** | Identité du demandeur d'accès à un contenu. Type union scellé : soit un utilisateur authentifié (`UserId` + `CharacterId?`) soit un invité (`GuestAccessId` + `CharacterId?`). Utilisé par AccessPolicy. |
+| **AccessPolicy** | Service domaine gérant les autorisations d'accès aux ressources partageables d'une campagne : Document, LiveNote, SessionSummary. |
+| **GuestAccess** | Accès temporaire sécurisé dans une campagne. N'est pas un User — pas d'identité persistante. Il donne accès au périmètre du personnage auquel il est associé. |
 | **Invitation** | Token généré par le MJ permettant à un joueur de rejoindre une campagne. |
 | **Système de jeu** | Référentiel de règles d'un JDR (D&D 5e, Call of Cthulhu, etc.). Point d'extension futur. |
 | **Slug** | Identifiant lisible généré depuis un titre. Utilisé pour l'affichage. Les URLs utilisent l'Id UUID — le slug n'est jamais dans les routes. |
@@ -78,11 +78,11 @@ la documentation et les conversations.
 
 ### Découpage en Bounded Contexts
 
-| Contexte | Responsabilité | Agrégats racines | Entités avec repository |
+| Contexte | Responsabilité | Agrégats racines | Profils / entités avec repository |
 |---|---|---|---|
 | **Core** (Shared Kernel) | Primitives, Id typés, abstractions | — | — |
 | **Identity & Access** | Utilisateurs authentifiés, rôles globaux | `User` | — |
-| **Campaign Management** | Campagnes, membres, invitations, systèmes de jeu, accès aux contenus | `Campaign`, `GameSystem` | `GuestAccess` |
+| **Campaign Management** | Campagnes, membres, invitations, systèmes de jeu, accès aux ressources partageables | `Campaign`, `GameSystem` | `GuestAccess` |
 | **Content Library** | Tout le contenu éditorial | `Document`, `Scenario`, `DocumentTemplate`, `Folder`, `Tag` | `NPC`, `PlayerCharacter` |
 | **Session Conduct** | Préparation, conduite et clôture des sessions | `Session` | — |
 
@@ -99,7 +99,7 @@ Identity & Access  [Upstream]
 Campaign Management
   ├── consomme Identity (UserId)
   ├── fournit CampaignId à Content Library et Session Conduct
-  └── héberge AccessPolicy — service domaine de visibilité des contenus
+  └── héberge AccessPolicy — service domaine de visibilité des ressources partageables
 
 Content Library
   ├── consomme Campaign Management (CampaignId)
@@ -138,6 +138,7 @@ MembershipId    — Campaign Management
 InvitationId    — Campaign Management
 GuestAccessId   — Campaign Management
 AccessRuleId    — Campaign Management (ContentAccessRule)
+ShareableResourceId — Campaign Management (ContentAccessRule, wrapper logique)
 DocumentId      — Content Library
 BlockId         — Content Library
 NpcId           — Content Library
@@ -228,16 +229,34 @@ RequesterId  (abstract, sealed)
     └── characterId   : CharacterId?    — personnage associé par le MJ, peut être null
 ```
 
-**Usage** : `AccessPolicy.CanAccess(documentId, requester: RequesterId) → bool`.
+**Usage** : `AccessPolicy.CanAccess(resource: ShareableResourceRef, requester: RequesterId) → bool`.
 Voir la section Campaign Management pour les règles de résolution.
+
+### ShareableResourceRef — référence de ressource partageable
+
+`AccessPolicy` ne cible pas uniquement les documents. Une même règle d'accès peut
+s'appliquer à tout contenu exposable aux joueurs : document, note live, résumé de session.
+
+```
+ShareableResourceRef
+├── resourceType : ShareableResourceType
+└── resourceId   : UUID typé selon resourceType
+
+ShareableResourceType
+├── DOCUMENT
+├── LIVE_NOTE
+└── SESSION_SUMMARY
+```
+
+La couche Application résout cette référence vers le contexte propriétaire de la ressource
+pour lire sa campagne, sa visibilité et son éventuel `ownerCharacterId`.
 
 ### Enumerations partagées
 
 ```
 Visibility
 ├── PRIVATE        — visible uniquement par le MJ propriétaire de la campagne
-├── PLAYER_PRIVATE — visible uniquement par le joueur créateur (createdById) — MJ exclu
-│                    jamais accessible à un GuestRequesterId
+├── PLAYER_PRIVATE — visible uniquement via le Personnage joueur propriétaire — MJ exclu
 ├── SHARED         — visible par les membres ciblés via AccessPolicy
 └── PUBLIC         — visible par tous les membres de la campagne (joueurs authentifiés ET invités actifs)
 ```
@@ -245,15 +264,15 @@ Visibility
 **Règle de résolution d'accès** (appliquée par `AccessPolicy.CanAccess`) :
 
 1. `PRIVATE` → accès accordé au MJ (`AuthenticatedRequesterId` avec `userId = campaign.ownerId`) uniquement.
-2. `PLAYER_PRIVATE` → accès accordé uniquement au `AuthenticatedRequesterId` dont `userId = document.createdById`.
-   Jamais accordé à un `GuestRequesterId`. Le MJ n'a **pas** accès non plus.
+2. `PLAYER_PRIVATE` → accès accordé uniquement si `requester.characterId = resource.ownerCharacterId`.
+   Fonctionne pour un joueur authentifié et pour un GuestAccess actif. Le MJ n'a **pas** accès non plus.
 3. `PUBLIC` → accès accordé à tout `RequesterId` valide (authentifié ou invité actif).
 4. `SHARED` → accès accordé si `AccessPolicy` contient une `ContentAccessRule` correspondant au demandeur :
    - `AllMembersTarget` → accordé à tout `AuthenticatedRequesterId` membre de la campagne, ET à tout `GuestRequesterId` avec un `GuestAccess.status = ACTIVE`.
    - `SpecificMemberTarget(userId)` → accordé uniquement si `requester` est `AuthenticatedRequesterId` avec `userId` correspondant.
    - `SpecificCharacterTarget(characterId)` → accordé si `requester.characterId = characterId` (fonctionne pour les deux types de RequesterId).
 
-**Invariant** : une `ContentAccessRule` ne peut être créée que pour un document `SHARED`.
+**Invariant** : une `ContentAccessRule` ne peut être créée que pour une ressource `SHARED`.
 
 ### Abstractions d'infrastructure
 
@@ -441,9 +460,13 @@ InvitationRevoked         { invitationId, campaignId, occurredAt }
 ### Entité : `GuestAccess`
 
 Représente un accès temporaire à une campagne sans compte utilisateur persistant.
-Ce n'est **pas** un `User` — c'est une session d'accès limitée dans le temps.
-Du point de vue de la visibilité du contenu, un GuestAccess actif est traité
-comme un joueur ordinaire (accès aux documents PUBLIC et aux documents SHARED qui lui sont ciblés).
+Ce n'est **pas** un `User` — c'est un droit d'accès sécurisé, limité dans le temps,
+vers une campagne et, idéalement, vers un `PlayerCharacter`.
+
+Du point de vue fonctionnel, un invité peut faire ce qu'un joueur avec compte peut faire
+sur le périmètre de son personnage : consulter sa fiche, prendre des notes personnelles,
+voir les contenus PUBLIC ou SHARED qui le ciblent. La persistance des données joueur
+est portée par le `CharacterId`, pas par le `GuestAccessId`.
 
 ```
 GuestAccess
@@ -451,7 +474,7 @@ GuestAccess
 ├── campaignId   : CampaignId
 ├── displayName  : String              — pseudo choisi par l'invité
 ├── accessToken  : String              — token d'accès, validé en infrastructure
-├── characterId  : CharacterId?        — personnage associé par le MJ
+├── characterId  : CharacterId?        — personnage associé par le MJ ; recommandé pour l'accès joueur
 ├── expiresAt    : DateTime?
 ├── status       : GuestAccessStatus
 └── createdAt    : DateTime
@@ -470,6 +493,8 @@ GuestAccessStatus
 - Un `GuestAccess` expiré ne donne aucun accès.
 - Un `GuestAccess` n'a pas de `SoftDelete` — suppression physique à expiration.
 - Pour `AccessPolicy`, un `GuestAccess` actif est représenté par un `GuestRequesterId(guestAccessId, characterId?)`.
+- Un `GuestAccess` sans `characterId` peut accéder aux ressources `PUBLIC` et `SHARED` via `AllMembersTarget`, mais ne peut pas accéder aux ressources `PLAYER_PRIVATE`.
+- Les notes personnelles créées par un invité sont liées au `CharacterId`; elles restent récupérables lors d'une session suivante si le MJ recrée ou prolonge un accès invité vers le même personnage.
 
 #### Domain Events
 
@@ -508,15 +533,15 @@ GameSystem
 
 ### Service domaine : `AccessPolicy`
 
-Gère les autorisations d'accès aux contenus de Content Library pour les membres
-d'une campagne. Ce n'est pas un agrégat — c'est un service domaine avec persistance
-légère via des entités `ContentAccessRule`.
+Gère les autorisations d'accès aux ressources partageables d'une campagne
+(`Document`, `LiveNote`, `SessionSummary`). Ce n'est pas un agrégat — c'est un service
+domaine avec persistance légère via des entités `ContentAccessRule`.
 
 ```
 ContentAccessRule               — entité persistée par AccessPolicy
 ├── id            : AccessRuleId
 ├── campaignId    : CampaignId
-├── documentId    : DocumentId  — ref cross-context par Id uniquement
+├── resource      : ShareableResourceRef  — ref cross-context par Id uniquement
 ├── grantedById   : UserId
 ├── target        : AccessTarget
 └── createdAt     : DateTime    — règle immuable, pas de AuditInfo complet
@@ -541,19 +566,19 @@ AccessTarget  (hiérarchie de value objects scellés)
 #### Méthode exposée
 
 ```
-AccessPolicy.CanAccess(documentId: DocumentId, requester: RequesterId) → bool
+AccessPolicy.CanAccess(resource: ShareableResourceRef, requester: RequesterId) → bool
 ```
 
 **Algorithme de résolution** :
 
 ```
-1. Charger Document.visibility
+1. Charger la ressource ciblée (Document, LiveNote ou SessionSummary)
+   pour connaître campaignId, visibility et ownerCharacterId éventuel.
 2. Si PRIVATE    → vrai ssi requester est AuthenticatedRequesterId
                    ET userId == campaign.ownerId
-3. Si PLAYER_PRIVATE → vrai ssi requester est AuthenticatedRequesterId
-                       ET userId == document.createdById
+3. Si PLAYER_PRIVATE → vrai ssi requester.characterId == resource.ownerCharacterId
 4. Si PUBLIC     → vrai pour tout RequesterId valide (y compris GuestRequesterId)
-5. Si SHARED     → charger les ContentAccessRule pour ce documentId, puis :
+5. Si SHARED     → charger les ContentAccessRule pour cette resource, puis :
    - AllMembersTarget       : vrai si requester est authentifié membre actif
                               OU GuestRequesterId avec GuestAccess.status = ACTIVE
    - SpecificMemberTarget   : vrai si requester est AuthenticatedRequesterId
@@ -565,15 +590,15 @@ AccessPolicy.CanAccess(documentId: DocumentId, requester: RequesterId) → bool
 #### Invariants et règles métier
 
 - Seul l'`OWNER` de la campagne peut créer ou révoquer une `ContentAccessRule`.
-- Une `ContentAccessRule` ne peut être créée que pour un document `SHARED`.
-- Une règle est unique par `(documentId, target)` — index unique sur `(documentId, targetType, targetId)` en base, avec `NULLS NOT DISTINCT` pour `targetId = NULL` (cas `AllMembersTarget`).
+- Une `ContentAccessRule` ne peut être créée que pour une ressource `SHARED`.
+- Une règle est unique par `(resource, target)` — index unique sur `(resourceType, resourceId, targetType, targetId)` en base, avec `NULLS NOT DISTINCT` pour `targetId = NULL` (cas `AllMembersTarget`).
 - La révocation est une suppression physique — une règle révoquée n'existe plus.
 
 #### Domain Events
 
 ```
-ContentAccessGranted  { ruleId, campaignId, documentId, target, occurredAt }
-ContentAccessRevoked  { ruleId, campaignId, documentId, occurredAt }
+ContentAccessGranted  { ruleId, campaignId, resource, target, occurredAt }
+ContentAccessRevoked  { ruleId, campaignId, resource, occurredAt }
 ```
 
 ---
@@ -585,9 +610,11 @@ ContentAccessRevoked  { ruleId, campaignId, documentId, occurredAt }
 Tout le contenu éditorial de la campagne. Le modèle central est `Document` —
 une unité de contenu modulaire composée de `DocumentBlock` fortement typés.
 
-`NPC` et `PlayerCharacter` sont des **entités avec repository** (pas des agrégats racines)
-— elles ont leur propre Id et leur propre cycle de vie, mais pas d'entités enfants
-à protéger transactionnellement.
+`NPC` et `PlayerCharacter` sont des **profils spécialisés de Document**.
+Leur contenu flexible vit dans le `Document`; leur table dédiée porte uniquement
+les métadonnées métier nécessaires aux listes, recherches et règles simples
+(statut, propriétaire, lien narratif). Ils sont chargés via repository pour des raisons
+pratiques, mais le modèle source de contenu reste le `Document`.
 
 ---
 
@@ -602,6 +629,7 @@ Document
 ├── title       : String
 ├── slug        : Slug              — unique par (campaignId, type) — usage affichage uniquement
 ├── visibility  : Visibility
+├── ownerCharacterId : CharacterId?   — renseigné si visibility = PLAYER_PRIVATE
 ├── templateId  : TemplateId?
 ├── folderId    : FolderId?         — null = document non classé
 ├── appliedTemplateVersion : Int?   — null = pas de template ou sync jamais effectuée
@@ -701,7 +729,8 @@ BlockKind
 - Un `Document` créé depuis un template est un snapshot indépendant — le template peut changer sans affecter le document.
 - `customType` est obligatoire si `type = CUSTOM`, null sinon — invariant garanti par le constructeur.
 - Le `slug` est unique par `(campaignId, type)`.
-- La visibilité par défaut d'un `Document` associé à un `PlayerCharacter` sans `ownerId` est `PRIVATE`. Le MJ la change explicitement pour la partager.
+- `ownerCharacterId` est obligatoire si `visibility = PLAYER_PRIVATE`, null sinon.
+- La visibilité par défaut d'un `Document` associé à un `PlayerCharacter` sans accès joueur est `PRIVATE`. Le MJ la change explicitement pour la partager.
 
 **Co-création obligatoire** : un `Document` avec `type ∈ {NPC, CHARACTER, SCENARIO, SCENE}`
 **ne doit être créé que via la factory de l'entité correspondante** (voir AD-21).
@@ -744,7 +773,7 @@ Tag
 #### Invariants et règles métier
 
 - Le `label` est unique par campagne (insensible à la casse).
-- Supprimer un Tag retire automatiquement sa référence de tous les Documents de la campagne (via event `TagDeleted`).
+- Supprimer un Tag est un soft delete et retire automatiquement sa référence de tous les Documents de la campagne (via event `TagDeleted`).
 - Un Tag n'appartient qu'à une campagne — non partageable entre campagnes.
 
 #### Domain Events
@@ -757,10 +786,12 @@ TagDeleted  { tagId, campaignId, occurredAt }
 
 ---
 
-### Entité : `NPC`
+### Profil spécialisé : `NPC`
 
-Entité de premier niveau avec repository. Pas d'entités enfants — pas d'agrégat racine.
-Porte les règles métier propres au PNJ. Le contenu est dans son `Document` associé.
+Vue spécialisée d'un `Document(type = NPC)`. Selon le système de jeu, un PNJ peut être
+une simple description ou une fiche complète ; le modèle ne fige donc pas sa structure
+dans l'entité `NPC`. Cette table porte seulement les métadonnées transverses utiles
+au domaine et aux requêtes.
 
 ```
 NPC
@@ -802,10 +833,12 @@ NpcUnlinkedFromCharacter  { npcId, occurredAt }
 
 ---
 
-### Entité : `PlayerCharacter`
+### Profil spécialisé : `PlayerCharacter`
 
-Entité de premier niveau avec repository. Pas d'entités enfants — pas d'agrégat racine.
-Porte les règles d'appartenance et de permissions. Le contenu est dans son `Document` associé.
+Vue spécialisée d'un `Document(type = CHARACTER)`. Le personnage est le point d'ancrage
+des droits joueur dans la campagne : un compte authentifié ou un `GuestAccess` peut être
+associé à son `CharacterId`. Les données privées joueur sont liées au personnage,
+pas au compte ni au guest temporaire.
 
 ```
 PlayerCharacter
@@ -813,8 +846,7 @@ PlayerCharacter
 ├── campaignId      : CampaignId
 ├── documentId      : DocumentId
 ├── name            : String           — dénormalisé, synchronisé via DocumentTitleUpdated
-├── ownerId         : UserId?          — null = créé par le MJ, en attente d'association
-│                                        ou personnage joué par le MJ (joueur absent)
+├── ownerId         : UserId?          — compte joueur associé, null si invité seul ou en attente
 ├── linkedNpcId     : NpcId?           — association narrative optionnelle
 ├── status          : CharacterStatus
 ├── audit           : AuditInfo
@@ -830,12 +862,14 @@ CharacterStatus
 
 #### Invariants et règles métier
 
-- Seul le `ownerId` ou le MJ peut modifier les blocs du Document associé.
+- Seul le `ownerId`, un `GuestAccess` actif associé au `CharacterId`, ou le MJ peut modifier les blocs autorisés du Document associé.
 - Les blocs `isPrivate = true` sont visibles uniquement par le MJ.
 - `ownerId = null` → Document avec visibilité `PRIVATE` par défaut.
   Le MJ peut la modifier explicitement (SHARED ou PUBLIC) pour partager la fiche avec le groupe
-  avant qu'un joueur soit associé (ex. : session avec un PJ temporaire ou joueur absent).
+  avant qu'un compte joueur soit associé (ex. : session avec invité sans compte ou joueur absent).
   L'association d'un `ownerId` ne change **pas automatiquement** la visibilité — c'est une action explicite du MJ.
+- Les contenus `PLAYER_PRIVATE` liés à ce personnage utilisent `ownerCharacterId = characterId`.
+  Ils restent donc récupérables par un futur `GuestAccess` ou compte authentifié associé au même personnage.
 - `linkedNpcId` est une association narrative — la suppression du NPC ne supprime pas le personnage.
 - Soft delete PlayerCharacter → soft delete de son Document associé (même transaction).
 
@@ -1099,7 +1133,9 @@ LiveNote
 ├── id                : LiveNoteId
 ├── sessionId         : SessionId
 ├── content           : String
-├── authorId          : UserId          — MJ ou joueur authentifié
+├── authorUserId      : UserId?         — renseigné si auteur authentifié
+├── authorGuestAccessId : GuestAccessId? — renseigné si auteur invité
+├── ownerCharacterId  : CharacterId?    — obligatoire pour PLAYER_PRIVATE
 ├── authorRole        : LiveNoteAuthorRole  — MJ ou PLAYER (détermine les règles de visibilité par défaut)
 ├── visibility        : Visibility      — PRIVATE (MJ), PLAYER_PRIVATE (joueur), ou SHARED/PUBLIC
 │                                         jamais null — défaut selon authorRole
@@ -1120,6 +1156,9 @@ LiveNoteAuthorRole
 **Contraintes de visibilité par authorRole** :
 - Une `LiveNote` avec `authorRole = GM` ne peut pas avoir `visibility = PLAYER_PRIVATE`.
 - Une `LiveNote` avec `authorRole = PLAYER` ne peut pas avoir `visibility = PRIVATE`.
+- Une `LiveNote` `PLAYER_PRIVATE` a toujours un `ownerCharacterId`.
+- Si la note est créée par un invité, `authorGuestAccessId` trace l'accès utilisé,
+  mais le droit de récupération futur repose sur `ownerCharacterId`.
 
 #### Entité enfant : `SessionSummary`
 
@@ -1129,6 +1168,7 @@ SessionSummary
 ├── sessionId   : SessionId
 ├── content     : String
 ├── visibility  : Visibility
+├── ownerCharacterId : CharacterId? — null sauf extension future de résumé privé joueur
 ├── audit       : AuditInfo
 └── softDelete  : SoftDelete
 ```
@@ -1139,10 +1179,13 @@ SessionSummary
 - Transitions autorisées uniquement : `PLANNED → LIVE → CLOSED → ARCHIVED`.
 - Aucun retour en arrière sur les transitions de statut.
 - Les `LiveNote` de type MJ sont créées avec `visibility = PRIVATE` par défaut.
-- Les `LiveNote` de type joueur sont créées avec `visibility = PLAYER_PRIVATE` par défaut.
+- Les `LiveNote` de type joueur sont créées avec `visibility = PLAYER_PRIVATE` par défaut
+  et `ownerCharacterId = requester.characterId`.
 - Un joueur ne peut créer des LiveNotes que pendant une session LIVE (pas PLANNED, pas a posteriori sur CLOSED).
   Le MJ peut créer des LiveNotes sur une session LIVE ou CLOSED (ajout rétroactif).
 - Un `SessionSummary` `PRIVATE` est visible uniquement par le MJ.
+- Les changements de visibilité de `Document`, `LiveNote` et `SessionSummary` s'appuient
+  sur `AccessPolicy` et `ContentAccessRule`; il n'existe pas de mécanisme de partage parallèle.
 - `participantIds`, `selectedNpcIds` et `pinnedItems` sont des références légères —
   si une entité référencée est supprimée, la référence est retirée.
 - Soft delete `Session` → suppression physique des `LiveNote`, soft delete du `SessionSummary`.
@@ -1174,8 +1217,8 @@ SessionClosed                   { sessionId, campaignId, endedAt, occurredAt }
 SessionArchived                 { sessionId, campaignId, occurredAt }
 SessionNpcSelected              { sessionId, npcId, occurredAt }
 SessionNpcDeselected            { sessionId, npcId, occurredAt }
-LiveNoteAdded                   { sessionId, liveNoteId, authorId, authorRole, occurredAt }
-LiveNoteAddedPostSession        { sessionId, liveNoteId, authorId, occurredAt }
+LiveNoteAdded                   { sessionId, liveNoteId, authorUserId?, authorGuestAccessId?, ownerCharacterId?, authorRole, occurredAt }
+LiveNoteAddedPostSession        { sessionId, liveNoteId, authorUserId?, occurredAt }
 LiveNoteRemoved                 { sessionId, liveNoteId, occurredAt }
 LiveNoteVisibilityChanged       { sessionId, liveNoteId, oldVisibility, newVisibility, occurredAt }
 DocumentPinnedToSession         { sessionId, documentId, occurredAt }
@@ -1254,11 +1297,12 @@ et abstractions vivent dans `Core`.
 **Décision** : `BlockValue` est une hiérarchie de sous-types, un par `BlockKind`.
 **Raison** : Cohérence interne des value objects. Pas de champs optionnels sans sens selon le type.
 
-### AD-06 — NPC et PlayerCharacter — entités avec repository, pas agrégats racines
-**Décision** : `NPC` et `PlayerCharacter` ont leur propre Id et leur propre repository
-mais ne sont pas des racines d'agrégat au sens DDD strict.
-**Raison** : Ils n'ont pas d'entités enfants à protéger transactionnellement. Leurs invariants
-sont locaux à l'entité elle-même.
+### AD-06 — NPC et PlayerCharacter comme profils spécialisés de Document
+**Décision** : `NPC` et `PlayerCharacter` sont des vues métier spécialisées d'un `Document`
+typé (`NPC` ou `CHARACTER`). Ils ont leur propre Id et un repository pratique pour les listes,
+les recherches et les règles locales, mais le contenu flexible reste dans le `Document`.
+**Raison** : selon le système de jeu, un PNJ ou un personnage peut aller d'une simple description
+à une fiche complète. Figer toute la structure dans une entité métier créerait un modèle rigide.
 
 ### AD-07 — Lien NPC ↔ PlayerCharacter optionnel et non structurant
 **Décision** : Association narrative optionnelle dans les deux sens.
@@ -1271,7 +1315,7 @@ dans Campaign Management. `UserRole` ne contient que `GM` et `PLAYER`.
 Les unifier créerait des champs conditionnellement valides.
 
 ### AD-09 — AccessPolicy comme service domaine
-**Décision** : La visibilité des contenus est gérée par un service domaine `AccessPolicy`
+**Décision** : La visibilité des ressources partageables est gérée par un service domaine `AccessPolicy`
 qui persiste des entités légères `ContentAccessRule`.
 **Raison** : `ContentAccessRule` est immuable — créée ou révoquée, jamais modifiée.
 
@@ -1293,6 +1337,8 @@ par `ScenarioOrderService`.
 La visibilité par défaut dépend du rôle : `PRIVATE` pour le MJ, `PLAYER_PRIVATE` pour le joueur.
 **Raison** : Le MJ et les joueurs ont des intentions différentes pour leurs notes de session.
 La valeur par défaut garantit qu'aucune note n'est accidentellement exposée.
+Les notes joueur sont liées à `ownerCharacterId`, ce qui permet à un joueur invité sans compte
+de retrouver ses notes lors d'une séance suivante via un nouveau GuestAccess associé au même personnage.
 
 ### AD-14 — Références légères entre contextes — Id uniquement
 **Décision** : Un contexte ne référence jamais une entité d'un autre contexte,
@@ -1319,12 +1365,12 @@ aux documents existants. `ApplyTemplateToDocument` est une action explicite du M
 `Document.appliedTemplateVersion` comparé à `DocumentTemplate.version` détecte la disponibilité d'une sync.
 
 ### AD-18 — RequesterId — type union pour l'autorisation GuestAccess
-**Décision** : `AccessPolicy.CanAccess` accepte un `RequesterId` (type union scellé : `AuthenticatedRequesterId` ou `GuestRequesterId`) au lieu d'un `UserId` seul.
-**Raison** : Un GuestAccess n'a pas de UserId. La signature précédente rendait l'autorisation des invités impossible sans contournement. Le type union permet à AccessPolicy de traiter les deux cas dans une seule méthode avec des règles explicites pour chaque type de demandeur.
+**Décision** : `AccessPolicy.CanAccess` accepte un `RequesterId` (type union scellé : `AuthenticatedRequesterId` ou `GuestRequesterId`) au lieu d'un `UserId` seul. Les deux variantes peuvent porter ou résoudre un `CharacterId` pour les accès liés à un personnage.
+**Raison** : Un GuestAccess n'a pas de UserId. La signature précédente rendait l'autorisation des invités impossible sans contournement. Le type union permet à AccessPolicy de traiter les deux cas dans une seule méthode avec des règles explicites pour chaque type de demandeur. L'identité fonctionnelle joueur est le `CharacterId`, pas le compte.
 **Alternatives écartées** : surcharge de méthode — fragmente la logique d'autorisation et crée un risque d'oubli. Conversion invité → UserId fictif — crée une identité fantôme non traçable.
 
 ### AD-19 — Tags comme entités de campagne dans Content Library
-**Décision** : `Tag` est une entité légère avec `TagId`, appartenant à une campagne, gérée dans Content Library. `Document.tagIds: TagId[]` référence ces entités. La suppression d'un Tag déclenche le retrait de sa référence de tous les Documents via `TagDeleted` event.
+**Décision** : `Tag` est une entité légère avec `TagId`, appartenant à une campagne, gérée dans Content Library. `Document.tagIds: TagId[]` référence ces entités. La suppression d'un Tag est un soft delete et déclenche le retrait de sa référence de tous les Documents via `TagDeleted` event.
 **Raison** : Des tags réutilisables au niveau campagne nécessitent une identité propre pour pouvoir être renommés ou supprimés globalement. Un value object embarqué dans chaque Document rendrait le renommage bulk impossible.
 **Alternatives écartées** : Tag comme value object dans le Shared Kernel — trop couplé, pas de cycle de vie propre. Tag comme entité dans Campaign Management — les tags sont une préoccupation du contenu, pas de l'organisation de campagne.
 
@@ -1355,6 +1401,15 @@ La couche Application persiste les deux entités dans la même `IUnitOfWork`. Cr
 ### AD-24 — Visibilité par défaut des personnages sans association joueur
 **Décision** : Un `PlayerCharacter` créé avec `ownerId = null` a un Document avec `visibility = PRIVATE` par défaut. Le MJ peut explicitement changer la visibilité pour partager la fiche avec le groupe avant l'association d'un joueur. L'association d'un `ownerId` ne change pas automatiquement la visibilité.
 **Raison** : La visibilité est une décision du MJ, pas une conséquence automatique de l'association. Un MJ peut jouer un personnage temporairement sans vouloir l'exposer, ou au contraire partager la fiche à l'avance. L'automatisme créerait des expositions accidentelles.
+
+### AD-25 — AccessPolicy unifiée pour Document, LiveNote et SessionSummary
+**Décision** : `ContentAccessRule` cible une `ShareableResourceRef` plutôt qu'un simple `DocumentId`.
+Les ressources partageables du MVP sont `Document`, `LiveNote` et `SessionSummary`.
+**Raison** : le partage d'information est une règle métier unique. Créer une logique séparée
+pour les notes live ou les résumés multiplierait les chemins d'autorisation et augmenterait
+le risque de régression ou de fuite de données.
+**Alternatives écartées** : règles de visibilité propres à chaque type — duplication et divergence.
+Tout transformer en Document — simplifie l'accès mais appauvrit le modèle de session.
 
 ---
 

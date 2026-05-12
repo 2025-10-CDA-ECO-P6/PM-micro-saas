@@ -63,9 +63,9 @@ Le MJ accède à la gestion des tags depuis les paramètres de campagne ou tente
 1. Le MJ sélectionne un tag et clique sur "Supprimer".
 2. Le système affiche une confirmation : "Ce tag est appliqué à N documents. La suppression le retirera de tous ces documents."
 3. Le MJ confirme.
-4. Le système émet l'événement `TagDeleted`.
-5. Un handler purge toutes les entrées de `DOCUMENT_TAG` pour ce `TagId`.
-6. Le tag est supprimé physiquement.
+4. Le système marque le tag comme supprimé (`SoftDelete`).
+5. Le système émet l'événement `TagDeleted`.
+6. Un handler purge toutes les entrées de `DOCUMENT_TAG` pour ce `TagId`.
 
 ---
 
@@ -131,7 +131,7 @@ Avant la suppression, le système affiche le nombre de documents affectés. Si l
 - Tous les documents portant ce tag reflètent le changement sans action supplémentaire.
 
 ### Suppression
-- Le tag est supprimé de la liste de la campagne.
+- Le tag est marqué supprimé et disparaît de la liste de la campagne.
 - Toutes les associations `DOCUMENT_TAG` pour ce tag sont supprimées.
 - Les documents précédemment taggés ne sont pas affectés autrement.
 
@@ -159,7 +159,7 @@ Avant la suppression, le système affiche le nombre de documents affectés. Si l
 
 - Un tag appartient à une campagne — il n'est pas partagé entre campagnes.
 - Le libellé est unique par campagne (unicité case-insensitive).
-- La suppression d'un tag est une suppression physique (pas de soft-delete — le concept de tag supprimé n'a pas de sens métier).
+- La suppression d'un tag est un soft delete pour conserver l'audit.
 - La suppression d'un tag retire le tag de tous les documents sans modifier le contenu des documents.
 - Un tag sans couleur est valide — la couleur est un attribut d'affichage optionnel.
 - Les tags ne sont pas hiérarchiques — pas de tag parent/enfant dans le MVP.

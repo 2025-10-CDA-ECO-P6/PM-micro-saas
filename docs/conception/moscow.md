@@ -12,8 +12,8 @@
 | Catégorie | Nb UCs | UCs |
 |---|---|---|
 | Must Have | 5 | UC-00, UC-01, UC-02, UC-04, UC-06 |
-| Should Have | 9 | UC-03, UC-05, UC-07, UC-09, UC-10, UC-11, UC-14, UC-15, UC-17 |
-| Could Have | 5 | UC-08, UC-12, UC-13, UC-16, UC-18 |
+| Should Have | 10 | UC-03, UC-05, UC-07, UC-09, UC-10, UC-11, UC-13, UC-14, UC-15, UC-17 |
+| Could Have | 4 | UC-08, UC-12, UC-16, UC-18 |
 | Won't Have | 4 | UC-F01, UC-F02, UC-F03, UC-F04 |
 
 ---
@@ -134,6 +134,14 @@ Fortement liée à la valeur de UC-06.
 
 ---
 
+### UC-13 — Gérer ses notes personnelles (joueur)
+
+**Pourquoi Should Have** : les joueurs invités sans compte doivent pouvoir agir comme des joueurs
+complets sur le périmètre de leur personnage. Les notes `PLAYER_PRIVATE` liées au `CharacterId`
+sont donc importantes pour tenir la promesse de continuité entre deux séances, même sans compte.
+
+---
+
 ### UC-14 — Créer un élément à la volée pendant la session
 
 **Pourquoi Should Have** : la réactivité aux imprévus est une douleur directement
@@ -179,14 +187,6 @@ Sa présence augmente l'adoption joueur, mais son absence ne bloque pas le MJ.
 **Pourquoi Could Have** : la clôture avec résumé est une bonne pratique mais pas
 un use case d'urgence. Le MJ peut clôturer sans résumé dans un premier temps.
 La valeur se révèle sur le long terme (historique de campagne).
-
----
-
-### UC-13 — Gérer ses notes personnelles (joueur)
-
-**Pourquoi Could Have** : les notes `PLAYER_PRIVATE` sont une feature de confiance
-et de confort pour les joueurs. Importante pour la fidélisation joueur, mais
-secondaire par rapport au besoin principal du MJ.
 
 ---
 
@@ -274,10 +274,19 @@ UC-05 (Prép. session) dépend de UC-01, UC-02, UC-03
 UC-09 (Partage)       dépend de UC-04
 UC-10 (Rejoindre)     dépend de UC-01, UC-15
 UC-11 (Recherche)     dépend de UC-01
+UC-13 (Notes joueur)  dépend de UC-07, UC-10
 UC-14 (Volée)         dépend de UC-06
 UC-15 (Membres)       dépend de UC-01
 UC-17 (Dossiers)      dépend de UC-01 — dossiers système créés avec la campagne
 ```
+
+### Slice minimale UC-06
+
+UC-06 reste Must Have, mais sa première livraison doit être une slice minimale :
+session rapide ou préparée, affichage scénario/scènes si présents, LiveNotes MJ,
+`pinnedItems` et consultation rapide. Les fonctions avancées appelées depuis UC-06
+(partage détaillé, recherche pondérée, création à la volée, vue joueur enrichie)
+peuvent arriver via les Should Have sans bloquer le démarrage du développement.
 
 ### Dépendances Could Have
 

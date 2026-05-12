@@ -66,11 +66,13 @@ Un joueur invité sans compte clique sur un lien d'invitation, crée un compte e
 1. L'utilisateur accède à la page profil et demande la suppression de son compte.
 2. Le système affiche les conséquences :
    - les campagnes dont l'utilisateur est propriétaire (`ownerId`) seront orphelines — il doit d'abord transférer leur propriété ou accepter leur suppression en cascade ;
-   - les notes personnelles (`PLAYER_PRIVATE`) seront définitivement supprimées ;
+   - ses accès aux notes personnelles (`PLAYER_PRIVATE`) seront retirés ;
    - les autres données liées (participations, memberships) seront anonymisées.
 3. L'utilisateur confirme la suppression.
 4. Le système exécute la séquence :
-   a. Suppression physique des `LiveNote` avec `visibility = PLAYER_PRIVATE` et `authorId = userId`.
+   a. Conservation des `LiveNote` avec `visibility = PLAYER_PRIVATE` liées à un `ownerCharacterId`.
+      Le compte supprimé perd l'accès, mais les notes restent attachées au personnage pour préserver
+      la continuité de campagne.
    b. Anonymisation des données nominatives dans les autres tables (nom d'affichage remplacé par `[Compte supprimé]`).
    c. Suppression ou transfert des campagnes dont l'utilisateur est propriétaire.
    d. Désactivation du compte (`status = DELETED`).
@@ -106,7 +108,8 @@ L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes 
 ### Suppression de compte
 - Le compte est marqué `status = DELETED`.
 - Les données nominatives sont anonymisées.
-- Les notes `PLAYER_PRIVATE` sont définitivement supprimées.
+- Le compte supprimé ne peut plus accéder aux notes `PLAYER_PRIVATE`.
+- Les notes `PLAYER_PRIVATE` restent attachées à leur `ownerCharacterId`.
 - L'utilisateur est déconnecté.
 
 ## Données manipulées
@@ -128,7 +131,9 @@ L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes 
 - Un compte suspendu ou supprimé ne peut pas se connecter.
 - **RGPD — droit à l'effacement** :
   - La suppression d'un compte déclenche l'anonymisation des données nominatives dans toutes les tables.
-  - Les `LiveNote` avec `visibility = PLAYER_PRIVATE` créées par l'utilisateur sont supprimées physiquement (données personnelles non accessibles à des tiers, suppression sans ambiguïté).
+  - Les `LiveNote` avec `visibility = PLAYER_PRIVATE` sont liées au `CharacterId`, pas au compte.
+    La suppression du compte retire l'accès de l'utilisateur mais ne supprime pas automatiquement
+    ces notes de personnage.
   - Les autres contenus créés (documents, notes MJ, PNJ) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu.
   - La suppression est irréversible.
   - Un utilisateur propriétaire de campagnes avec des membres actifs ne peut pas supprimer son compte tant qu'il n'a pas géré ces campagnes (MVP : exclusion des membres ; post-MVP : transfert de propriété).
@@ -143,7 +148,7 @@ L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes 
 - Un joueur invité peut créer un compte et rejoindre la campagne en une action.
 - Un utilisateur peut demander la suppression de son compte depuis sa page profil.
 - La suppression est bloquée si l'utilisateur est propriétaire de campagnes avec des membres actifs.
-- Après suppression : le compte est désactivé, les données nominatives sont anonymisées, les notes `PLAYER_PRIVATE` sont supprimées physiquement.
+- Après suppression : le compte est désactivé, les données nominatives sont anonymisées, l'accès aux notes `PLAYER_PRIVATE` est retiré.
 
 ## Questions à valider en interview
 
