@@ -37,7 +37,7 @@ L'utilisateur découvre l'application et souhaite l'utiliser, ou tente d'accéde
    - nom d'affichage ;
    - mot de passe.
 3. Il valide l'inscription.
-4. Le système crée le compte avec `role = GM` par défaut.
+4. Le système crée le compte.
 5. L'utilisateur est redirigé vers son tableau de bord.
 
 ## Scénario nominal — Connexion
@@ -119,15 +119,13 @@ L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes 
 - Email (unique)
 - Nom d'affichage
 - Mot de passe (hashé, géré par ASP.NET Identity en infrastructure)
-- Rôle (`GM` par défaut)
 - Statut du compte
 
 ## Règles métier
 
 - L'email est unique dans le système.
 - Le mot de passe est hashé en infrastructure — l'entité domaine `User` ne le connaît pas.
-- Un utilisateur nouvellement inscrit a le rôle `GM` par défaut.
-- Le rôle dans une campagne précise est distinct du rôle global (`MemberRole` dans Campaign Management).
+- `User` ne porte aucun rôle global. Le rôle MJ ou Joueur est défini par `CampaignMembership.role` dans chaque campagne. Tout utilisateur authentifié peut créer une campagne et en devenir le MJ.
 - Un compte suspendu ou supprimé ne peut pas se connecter.
 - **RGPD — droit à l'effacement** :
   - La suppression d'un compte déclenche l'anonymisation des données nominatives dans toutes les tables.
@@ -146,6 +144,7 @@ L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes 
 - Un email déjà utilisé est refusé à l'inscription.
 - Un utilisateur peut mettre à jour son nom d'affichage.
 - Un joueur invité peut créer un compte et rejoindre la campagne en une action.
+- Un utilisateur nouvellement inscrit peut immédiatement créer une campagne ou rejoindre une campagne existante via invitation.
 - Un utilisateur peut demander la suppression de son compte depuis sa page profil.
 - La suppression est bloquée si l'utilisateur est propriétaire de campagnes avec des membres actifs.
 - Après suppression : le compte est désactivé, les données nominatives sont anonymisées, l'accès aux notes `PLAYER_PRIVATE` est retiré.

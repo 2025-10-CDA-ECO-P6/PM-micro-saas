@@ -2,6 +2,11 @@
 
 > Ces diagrammes couvrent le périmètre fonctionnel MVP défini dans les Use Cases.
 > Organisés du plus synthétique au plus détaillé.
+>
+> **Note sur les acteurs** : `MJ` et `Joueur` sont des **rôles contextuels au sein d'une campagne**,
+> pas des types d'utilisateurs globaux. Un même utilisateur peut être MJ d'une campagne et joueur
+> dans une autre. Tout utilisateur authentifié peut créer une campagne et endosser le rôle MJ.
+> `Joueur invité` est un cas technique distinct : accès temporaire sans compte (`GuestAccess`).
 
 ---
 

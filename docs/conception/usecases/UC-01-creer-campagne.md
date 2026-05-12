@@ -2,7 +2,7 @@
 
 ## Acteur principal
 
-MJ
+Utilisateur authentifié (futur MJ de la campagne)
 
 ## Acteurs secondaires
 
@@ -10,39 +10,41 @@ Aucun dans le scénario principal.
 
 ## Objectif
 
-Créer un espace centralisé permettant au MJ d'organiser une campagne de jeu de rôle.
+Créer un espace centralisé pour organiser une campagne de jeu de rôle.
 
 ## Contexte
 
-Une campagne de jeu de rôle regroupe de nombreuses informations : scénarios, sessions, PNJ, personnages joueurs, notes, documents et éléments de lore. Sans espace centralisé, le MJ risque de disperser ses informations sur plusieurs supports.
+Une campagne de jeu de rôle regroupe de nombreuses informations : scénarios, sessions, PNJ, personnages joueurs, notes, documents et éléments de lore. Sans espace centralisé, les informations sont dispersées sur plusieurs supports.
+
+Tout utilisateur authentifié peut créer une campagne. En la créant, il en devient le MJ (`MemberRole.OWNER`) — ce rôle est contextuel à cette campagne. Le même utilisateur peut être joueur dans d'autres campagnes.
 
 ## Besoin utilisateur
 
-Le MJ veut disposer d'un espace unique pour organiser une campagne sans mélanger ses informations avec d'autres campagnes ou d'autres projets.
+L'utilisateur veut disposer d'un espace unique pour organiser une campagne sans mélanger ses informations avec d'autres campagnes ou d'autres projets.
 
 ## Déclencheur
 
-Le MJ souhaite commencer une nouvelle campagne ou migrer une campagne existante dans l'outil.
+L'utilisateur souhaite commencer une nouvelle campagne ou migrer une campagne existante dans l'outil.
 
 ## Préconditions
 
-- Le MJ dispose d'un compte utilisateur.
-- Le MJ est authentifié.
+- L'utilisateur dispose d'un compte.
+- L'utilisateur est authentifié.
 
 ## Scénario nominal
 
-1. Le MJ accède à son tableau de bord.
+1. L'utilisateur accède à son tableau de bord.
 2. Il clique sur l'action "Créer une campagne".
 3. Le système affiche un formulaire de création.
-4. Le MJ renseigne les informations principales :
+4. L'utilisateur renseigne les informations principales :
    - nom de la campagne ;
    - description courte ;
    - système de jeu utilisé ;
    - statut initial de la campagne.
 
-5. Le MJ valide la création.
-6. Le système crée la campagne.
-7. Le système redirige le MJ vers le tableau de bord de la campagne.
+5. L'utilisateur valide la création.
+6. Le système crée la campagne et enregistre l'utilisateur comme MJ (`MemberRole.OWNER`) via une `CampaignMembership`.
+7. Le système redirige l'utilisateur vers le tableau de bord de la campagne.
 8. Le tableau de bord affiche les sections principales : scénarios, sessions, PNJ, joueurs, notes et informations partagées.
 
 ## Scénarios alternatifs
@@ -72,7 +74,7 @@ Si une erreur survient lors de la sauvegarde, le système affiche un message d'e
 ## Postconditions
 
 - Une campagne est créée.
-- La campagne est associée au MJ propriétaire.
+- L'utilisateur est enregistré comme MJ (`MemberRole.OWNER`) de cette campagne via une `CampaignMembership`.
 - Quatre dossiers système sont créés automatiquement : **PNJ**, **Personnages joueurs**, **Scénarios**, **Notes**.
 - Le MJ peut commencer à ajouter des scénarios, PNJ, notes et personnages.
 
@@ -90,8 +92,10 @@ Si une erreur survient lors de la sauvegarde, le système affiche un message d'e
 
 ## Règles métier
 
-- Une campagne appartient à un MJ propriétaire.
-- Un MJ peut posséder plusieurs campagnes.
+- Tout utilisateur authentifié peut créer une campagne — aucune restriction de rôle global.
+- En créant une campagne, l'utilisateur obtient le rôle `MemberRole.OWNER` dans cette campagne.
+- Une campagne a exactement un `OWNER` — invariant garanti par l'agrégat `Campaign`.
+- Un utilisateur peut être `OWNER` de plusieurs campagnes simultanément.
 - Le nom de campagne est obligatoire.
 - Le système de jeu est facultatif dans le MVP.
 - Une campagne peut être archivée sans être supprimée définitivement.
@@ -99,9 +103,9 @@ Si une erreur survient lors de la sauvegarde, le système affiche un message d'e
 
 ## Critères d'acceptation
 
-- Le MJ peut créer une campagne depuis son tableau de bord.
-- Une campagne créée apparaît dans la liste des campagnes du MJ.
-- Le MJ accède à un tableau de bord dédié à la campagne après création.
+- Tout utilisateur authentifié peut créer une campagne depuis son tableau de bord.
+- Une campagne créée apparaît dans la liste des campagnes dont l'utilisateur est MJ.
+- L'utilisateur accède à un tableau de bord dédié à la campagne après création.
 - Une campagne ne peut pas être créée sans nom.
 
 ## Questions à valider en interview
