@@ -52,11 +52,41 @@ classDiagram
     User --> UserRole
     User --> UserStatus
     note for UserRole "Deux valeurs uniquement\nGM = peut créer des campagnes\nPLAYER = accède via invitation\nLes invités sans compte sont\nreprésentés par GuestAccess\ndans Campaign Management"
+    note for User "Suppression RGPD : status → DELETED\ndisplayName et email anonymisés\nContenu de campagne non supprimé"
 ```
 
 ---
 
-## 2. Campaign Management
+## 2. Shared Kernel — RequesterId
+
+`RequesterId` est un type union scellé du Shared Kernel permettant à `AccessPolicy`
+de traiter uniformément les utilisateurs authentifiés et les invités sans compte.
+Ce type résout le problème d'autorisation des GuestAccess qui n'ont pas de UserId.
+
+```mermaid
+classDiagram
+    direction TB
+    class RequesterId {
+        <<value object sealed>>
+    }
+    class AuthenticatedRequesterId {
+        <<value object>>
+        +userId: UserId
+    }
+    class GuestRequesterId {
+        <<value object>>
+        +guestAccessId: GuestAccessId
+        +characterId: CharacterId?
+    }
+    RequesterId <|-- AuthenticatedRequesterId
+    RequesterId <|-- GuestRequesterId
+    note for RequesterId "Utilisé par AccessPolicy.CanAccess\nSeul type passé à l'autorisation\nJamais de UserId nu dans AccessPolicy"
+    note for GuestRequesterId "characterId permet la résolution\nde SpecificCharacterTarget\nMême sans UserId"
+```
+
+---
+
+## 3. Campaign Management
 
 Contexte organisationnel. `Campaign` est l'agrégat racine central — il encapsule
 ses membres (`CampaignMembership`) et ses invitations (`Invitation`) dont le cycle
@@ -65,11 +95,12 @@ de vie lui est entièrement lié.
 `GuestAccess` est une entité avec repository distincte de `CampaignMembership` :
 un invité sans compte n'est pas un membre au sens plein — c'est un accès temporaire
 créé depuis une invitation, sans identité persistante dans le système.
+Du point de vue de la visibilité du contenu, un GuestAccess actif est traité
+comme un joueur ordinaire pour les documents PUBLIC et SHARED (AllMembersTarget).
 
 `AccessPolicy` est un service domaine, pas un agrégat. Il persiste des `ContentAccessRule`
-immuables qui définissent qui peut voir quel contenu. Une règle est créée ou révoquée
-(suppression physique) — jamais modifiée. `ContentAccessRule.documentId` est une référence
-cross-context vers Content Library par Id uniquement, conformément à la règle AD-14.
+immuables. Sa méthode `CanAccess` accepte un `RequesterId` (Shared Kernel) pour gérer
+uniformément authentifiés et invités.
 
 `GameSystem` est un agrégat léger indépendant — point d'extension futur pour les règles
 de jeu. Référencé optionnellement par une campagne.
@@ -129,6 +160,7 @@ classDiagram
         +slug: Slug
         +description: String?
         +isBuiltIn: Boolean
+        +ownerId: UserId?
         +audit: AuditInfo
         +softDelete: SoftDelete
     }
@@ -140,6 +172,10 @@ classDiagram
         +grantedById: UserId
         +target: AccessTarget
         +createdAt: DateTime
+    }
+    class AccessPolicy {
+        <<domain service>>
+        +CanAccess(documentId, requester: RequesterId) bool
     }
     class AccessTarget {
         <<value object sealed>>
@@ -200,20 +236,22 @@ classDiagram
     Invitation ..> GuestAccess : crée un GuestAccess à l'usage
     GuestAccess --> GuestAccessStatus
     GuestAccess ..> Campaign : campaignId
+    AccessPolicy --> ContentAccessRule : persiste
     ContentAccessRule *-- AccessTarget
     ContentAccessRule --> Campaign
     AccessTarget <|-- AllMembersTarget
     AccessTarget <|-- SpecificMemberTarget
     AccessTarget <|-- SpecificCharacterTarget
     note for CampaignMembership "userId toujours renseigné\nLes invités sans compte\nutilisent GuestAccess"
-    note for ContentAccessRule "Géré par AccessPolicy\nservice domaine\nRévocation = suppression physique"
+    note for ContentAccessRule "Géré par AccessPolicy\nservice domaine\nRévocation = suppression physique\nid: AccessRuleId (dans Shared Kernel)"
     note for ContentAccessRule "documentId = ref cross-context\nvers Content Library par Id"
-    note for AccessTarget "Hiérarchie scellée — le sous-type EST le discriminant\nPas d'AccessTargetType enum\nIndex unique : (documentId, sous-type, targetId?)"
+    note for AccessTarget "Hiérarchie scellée — même principe que BlockValue\nAllMembersTarget : authentifiés membres + GuestAccess actifs\nIndex unique : (documentId, sous-type, targetId?) NULLS NOT DISTINCT"
+    note for AccessPolicy "CanAccess accepte un RequesterId\n(AuthenticatedRequesterId ou GuestRequesterId)\njamais un UserId nu"
 ```
 
 ---
 
-## 3. Content Library — Document et blocs
+## 4. Content Library — Document, blocs et tags
 
 `Document` est l'agrégat racine du contenu modulaire. Tout contenu éditorial dans
 Haversack est un `Document` typé composé de `DocumentBlock`.
@@ -223,9 +261,10 @@ de value objects scellés, un sous-type concret par `BlockKind`. Ce design évit
 les champs optionnels sans sens : un `StatBarBlockValue` n'a que `current` et `max`,
 un `TextBlockValue` n'a que `content`. Aucune ambiguïté sur ce qui est valide.
 
-Le champ `customType: String?` sur `Document` permet d'étendre les types de document
-sans modifier l'énumération — `DocumentType.CUSTOM` avec un libellé libre couvre
-les besoins non prévus et les futurs types système de jeu.
+`Tag` est une entité légère appartenant à une campagne, créée par le MJ et réutilisable
+sur n'importe quel `Document` de la même campagne. `Document.tagIds[]` référence ces Tags.
+La suppression d'un `Tag` déclenche `TagDeleted` — un handler synchrone purge les `tagIds`
+de tous les documents concernés.
 
 ```mermaid
 classDiagram
@@ -242,7 +281,7 @@ classDiagram
         +templateId: TemplateId?
         +folderId: FolderId?
         +appliedTemplateVersion: Int?
-        +tags: Tag[]
+        +tagIds: TagId[]
         +audit: AuditInfo
         +softDelete: SoftDelete
     }
@@ -298,6 +337,15 @@ classDiagram
         +url: String
         +caption: String?
     }
+    class Tag {
+        <<entity — repository>>
+        +id: TagId
+        +campaignId: CampaignId
+        +label: String
+        +color: String?
+        +audit: AuditInfo
+        +softDelete: SoftDelete
+    }
     class Visibility {
         <<enumeration — Shared Kernel>>
         PRIVATE
@@ -329,6 +377,7 @@ classDiagram
     Document "1" *-- "0..*" DocumentBlock
     Document --> DocumentType
     Document --> Visibility
+    Document "0..*" ..> "0..*" Tag : tagIds
     DocumentBlock *-- BlockValue
     DocumentBlock --> BlockKind
     BlockValue <|-- TextBlockValue
@@ -339,34 +388,36 @@ classDiagram
     BlockValue <|-- ItemBlockValue
     BlockValue <|-- ChecklistBlockValue
     BlockValue <|-- ImageBlockValue
-    note for Document "customType obligatoire\nsi type = CUSTOM\nnull sinon"
-    note for DocumentBlock "isPrivate = true → jamais exposé aux joueurs\nmême si Document est SHARED\nisLocked = true → non modifiable par joueur\n(modélisé, inactif en MVP)"
-    note for Visibility "PRIVATE = MJ uniquement\nPLAYER_PRIVATE = joueur créateur uniquement (MJ exclu)\nSHARED = membres ciblés via ContentAccessRule\nPUBLIC = tous les membres"
-    note for BlockValue "Un sous-type par BlockKind\nAucun champ optionnel superflu"
+    note for Document "customType obligatoire si type = CUSTOM\nCo-création obligatoire pour NPC/CHARACTER/SCENARIO/SCENE\nVoir ADR-22\nfolderId FK nullable (intra-contexte)\nappliedTemplateVersion comparé à DocumentTemplate.version → UC-18"
+    note for DocumentBlock "isPrivate = true → jamais exposé aux joueurs\nMême si Document est SHARED\nisLocked = true → non modifiable joueur\n(modélisé, inactif en MVP)\nZéro ou plusieurs blocs par Document"
+    note for Visibility "PRIVATE = MJ uniquement\nPLAYER_PRIVATE = joueur créateur (MJ exclu)\nSHARED = membres ciblés via ContentAccessRule\nPUBLIC = tous les membres (joueurs + invités actifs)"
+    note for RelationBlockValue "Backlinks orphelins : si targetId pointe vers\nun document soft-deleted, le backlink n'est pas affiché\nFiltré à la requête (isDeleted = false) — ADR-23"
+    note for Tag "label unique par campagne (insensible casse)\nSupprimer un Tag → TagDeleted event\nHandler synchrone nettoie Document.tagIds\nNon partageable entre campagnes\nGéré via UC-19"
 ```
 
 ---
 
-## 4. Content Library — Enveloppes métier
+## 5. Content Library — Enveloppes métier et dossiers
 
 Le pattern structurant de Content Library : chaque concept métier (`NPC`, `PlayerCharacter`,
 `Scenario`, `Scene`) possède un `Document` pour son contenu variable, et porte
 ses propres règles métier dans une enveloppe séparée.
 
 `NPC` et `PlayerCharacter` sont des **entités avec repository**, pas des agrégats racines.
-Ils ont leur propre Id et leur propre cycle de vie, mais pas d'entités enfants à protéger
-transactionnellement. Leurs seuls invariants propres sont leur statut et leurs liens narratifs.
+Leurs seuls invariants propres sont leur statut et leurs liens narratifs — pas d'entités enfants.
 
 `Scenario` est un agrégat racine car il protège l'ordre et la cohérence de sa collection
 de `Scene`. Une scène ne peut pas exister sans son scénario parent.
 
 Le lien `NPC ↔ PlayerCharacter` est une **association narrative bidirectionnelle optionnelle**.
-Les deux entités ont des cycles de vie indépendants — la suppression de l'un ne supprime
-pas l'autre. Ce lien prépare la future promotion NPC → Personnage joueur sans migration.
+Les deux entités ont des cycles de vie indépendants.
 
-`DocumentTemplate` définit un schéma de blocs attendus pour un type de document.
-Un document créé depuis un template est un snapshot indépendant — modifier le template
-ne modifie pas les documents déjà créés.
+`DocumentTemplate` définit un schéma de blocs attendus. Le champ `version` est incrémenté
+à chaque modification du schéma. `Document.appliedTemplateVersion` est comparé à `template.version`
+pour détecter qu'une synchronisation est disponible (UC-18).
+
+`Folder` est un agrégat racine léger — il protège l'invariant "un dossier système ne peut pas
+être supprimé" et gère son ordre. Les `Document` le référencent par FK (`folderId` nullable).
 
 ```mermaid
 classDiagram
@@ -426,6 +477,7 @@ classDiagram
         +scope: TemplateScope
         +ownerId: UserId?
         +campaignId: CampaignId?
+        +version: Int
         +audit: AuditInfo
         +softDelete: SoftDelete
     }
@@ -435,6 +487,18 @@ classDiagram
         +label: String
         +required: Boolean
         +defaultValue: BlockValue?
+    }
+    class Folder {
+        <<aggregate root>>
+        +id: FolderId
+        +campaignId: CampaignId
+        +name: String
+        +slug: Slug
+        +defaultTemplateId: TemplateId?
+        +isSystem: Boolean
+        +order: Int
+        +audit: AuditInfo
+        +softDelete: SoftDelete
     }
     class NpcStatus {
         <<enumeration>>
@@ -483,70 +547,30 @@ classDiagram
     DocumentTemplate "1" *-- "0..*" BlockSchema
     DocumentTemplate --> TemplateScope
     Document ..> DocumentTemplate : snapshot à la création
-    Document ..> Folder : folderId (optionnel)
-    note for NPC "Entité avec repository\nPas d'agrégat racine\nPas d'entités enfants"
-    note for PlayerCharacter "ownerId null = en attente\nd'association joueur"
-    note for DocumentTemplate "Combinaisons valides :\nBUILTIN → ownerId null, campaignId null\nCAMPAIGN → ownerId non-null, campaignId non-null\nUSER → ownerId non-null, campaignId null"
-    note for Scenario "order : Int géré par ScenarioOrderService\nservice domaine — persiste l'ordre dans Scenario\nCardinality 0..* : scénario sans scènes autorisé"
-    note for Scene "Cycle de vie lié à Scenario\nSuppression en cascade\nL'ordre est une responsabilité\nde l'agrégat Scenario\npas de la Scene elle-même"
-```
-
----
-
-## 4.5 Content Library — Dossiers
-
-`Folder` est un agrégat racine léger — il protège l'invariant "un dossier système
-ne peut pas être supprimé" et gère son ordre via `FolderOrderService`.
-Il ne possède pas d'entités enfants propres : les `Document` le référencent par Id.
-
-```mermaid
-classDiagram
-    direction TB
-    class Folder {
-        <<aggregate root>>
-        +id: FolderId
-        +campaignId: CampaignId
-        +name: String
-        +slug: Slug
-        +defaultTemplateId: TemplateId?
-        +isSystem: Boolean
-        +order: Int
-        +audit: AuditInfo
-        +softDelete: SoftDelete
-    }
-    class Document {
-        +folderId: FolderId?
-        +appliedTemplateVersion: Int?
-    }
-    Folder ..> Document : contient (ref par folderId)
+    Document ..> Folder : folderId (FK nullable)
     Folder ..> DocumentTemplate : defaultTemplateId
-    note for Folder "isSystem = true → non supprimable\n4 dossiers créés à l'init campagne :\n PNJ, Personnages joueurs, Scénarios, Notes\nTous renommables\nOrdre géré par FolderOrderService"
-    note for Document "folderId null = non classé\nappliedTemplateVersion = version du template\nsynchro manuelle via UC-18"
+    note for NPC "Entité avec repository\nPas d'agrégat racine\nname synchronisé via DocumentTitleUpdated (synchrone)"
+    note for PlayerCharacter "ownerId null = en attente d'association\nou personnage joué par le MJ\nVisibilité Document par défaut : PRIVATE\nMJ change explicitement — jamais auto"
+    note for DocumentTemplate "version : Int incrémenté à chaque modif schéma\nDocument.appliedTemplateVersion vs template.version\n→ détecte sync disponible (UC-18)\nCombinations valides :\nBUILTIN → ownerId null, campaignId null\nCAMPAIGN → ownerId non-null, campaignId non-null\nUSER → ownerId non-null, campaignId null"
+    note for Scenario "order : Int géré par ScenarioOrderService\nSync avec ordre dossier Scénarios par défaut\nCardinality 0..* : scénario sans scènes autorisé"
+    note for Scene "Cycle de vie lié à Scenario\nSuppression en cascade\nL'ordre est une responsabilité\nde l'agrégat Scenario"
+    note for BlockSchema "required = true : indicateur UI\nN'invalide pas un document incomplet\nAjouté lors de la sync UC-18 si absent"
+    note for Folder "isSystem = true → non supprimable\n4 dossiers créés à l'init campagne :\n PNJ, Personnages joueurs, Scénarios, Notes\nTous renommables\nOrdre géré par FolderOrderService\nfolderId null dans Document = non classé"
 ```
 
 ---
 
-## 5. Session Conduct
+## 6. Session Conduct
 
 Contexte opérationnel. `Session` est le seul agrégat racine — il encapsule les notes
-prises en temps réel (`LiveNote`) et le compte-rendu final (`SessionSummary`).
+prises en temps réel ou a posteriori (`LiveNote`) et le compte-rendu final (`SessionSummary`).
 
-Tous les liens vers les autres contextes sont des **références légères par Id** :
-`campaignId`, `scenarioId`, `participantIds`, `pinnedItems.documentId`. Session Conduct
-ne possède aucune entité des autres contextes — il les consomme par Id conformément
-à la règle d'isolation des bounded contexts.
+Tous les liens vers les autres contextes (sections 1 à 5) sont des **références légères par Id** :
+`campaignId`, `scenarioId`, `participantIds`, `selectedNpcIds`, `pinnedItems.documentId`.
+Session Conduct ne possède aucune entité des autres contextes — il les consomme par Id.
 
-`PinnedItem` est un value object qui enrichit la simple liste d'Ids : il capture
-l'ordre d'affichage et la date d'épinglage, ce qui permet au MJ de réordonner
-ses éléments de référence pendant la session.
-
-`LiveNote.visibility` permet au MJ de partager une note en direct aux joueurs
-pendant la session. La valeur par défaut `PRIVATE` garantit qu'aucune note
-n'est exposée accidentellement.
-
-L'invariant le plus fort de ce contexte : **une seule session `LIVE` par campagne
-à la fois**. Les transitions de statut sont unidirectionnelles :
-`PLANNED → LIVE → CLOSED → ARCHIVED`.
+`LiveNote` peut être créée par le MJ ou par un joueur. Le `authorRole` détermine
+les règles de visibilité par défaut et les contraintes applicables (voir UC-06).
 
 ```mermaid
 classDiagram
@@ -580,6 +604,7 @@ classDiagram
         +sessionId: SessionId
         +content: String
         +authorId: UserId
+        +authorRole: LiveNoteAuthorRole
         +visibility: Visibility
         +linkedDocumentId: DocumentId?
         +audit: AuditInfo
@@ -600,41 +625,47 @@ classDiagram
         CLOSED
         ARCHIVED
     }
+    class LiveNoteAuthorRole {
+        <<enumeration>>
+        GM
+        PLAYER
+    }
     Session "1" *-- "0..*" PinnedItem
     Session "1" *-- "0..*" LiveNote
     Session "1" *-- "0..1" SessionSummary
     Session --> SessionStatus
-    note for Session "Références cross-context par Id uniquement\n─────────────────────────────────────\ncampaignId → Campaign Management\nscenarioId → Content Library\nparticipantIds → Content Library\nselectedNpcIds → Content Library (NpcId[])\npinnedItems.documentId → Content Library\n─────────────────────────────────────\nselectedNpcIds : auto-déduit depuis scènes du scénario\npar SessionNpcSelector (domain service)\nSurcharge manuelle possible par le MJ\n─────────────────────────────────────\nInvariant : une seule session LIVE\npar campagne à la fois\nTransitions : PLANNED→LIVE→CLOSED→ARCHIVED\nCLOSED = contenu éditable, ARCHIVED = lecture seule"
-    note for LiveNote "visibility = PRIVATE par défaut\nPeut être partagée aux joueurs\npendant la session (UC-06)"
-    note for SessionSummary "PRIVATE = MJ uniquement\nSHARED = joueurs ciblés"
+    LiveNote --> LiveNoteAuthorRole
+    note for Session "Références cross-context par Id uniquement\n─────────────────────────────────────\ncampaignId → Campaign Management\nscenarioId → Content Library\nparticipantIds → Content Library\nselectedNpcIds → Content Library (NpcId[])\npinnedItems.documentId → Content Library\n─────────────────────────────────────\nselectedNpcIds : auto-déduit depuis scènes du scénario\npar SessionNpcSelector (application service)\nSurcharge manuelle possible par le MJ\n─────────────────────────────────────\nInvariant : une seule session LIVE par campagne\nTransitions : PLANNED→LIVE→CLOSED→ARCHIVED\nCLOSED = contenu éditable MJ, ARCHIVED = lecture seule"
+    note for LiveNote "authorRole = GM : défaut PRIVATE\nPeut partager (SHARED ou PUBLIC)\nJamais PLAYER_PRIVATE\n─────────────────────────────────────\nauthorRole = PLAYER : défaut PLAYER_PRIVATE\nPeut partager (SHARED ou PUBLIC)\nJamais PRIVATE\n─────────────────────────────────────\nJoueurs : créent LiveNotes uniquement sur session LIVE\nMJ : créé sur LIVE et CLOSED (rétroactif)"
+    note for SessionSummary "PRIVATE = MJ uniquement\nSHARED ou PUBLIC = joueurs ciblés\nvisibility jamais PLAYER_PRIVATE"
     note for PinnedItem "Remplace pinnedDocumentIds[]\nCapture ordre et date d'épinglage"
 ```
 
 ---
 
-## 6. Context Map
+## 7. Context Map
 
 Vue globale des dépendances entre bounded contexts. Les flèches indiquent
 la direction de consommation — il n'y a pas de dépendance circulaire.
 
 Le **Shared Kernel** est la fondation commune consommée par tous les contextes.
-Il contient uniquement des primitives stables sans règle métier.
+Il contient uniquement des primitives stables sans règle métier, ainsi que
+`RequesterId` (type union pour l'autorisation des GuestAccess).
 
 **Identity & Access** est le contexte upstream — il fournit `UserId` à tous les autres.
-Aucun contexte ne remonte d'informations vers Identity.
 
 **Campaign Management** fournit `CampaignId` aux deux contextes en aval. Il héberge
-aussi `AccessPolicy` dont la `ContentAccessRule` référence des `DocumentId` de Content Library
-par Id uniquement — la seule dépendance cross-context dans les données persistées.
+`AccessPolicy` dont la `ContentAccessRule` référence des `DocumentId` de Content Library
+par Id uniquement.
 
-**Content Library** fournit ses Id (`DocumentId`, `CharacterId`, `ScenarioId`) à Session Conduct
-qui les consomme comme références légères.
+**Content Library** fournit ses Id (`DocumentId`, `CharacterId`, `ScenarioId`, `TagId`) à Session Conduct.
 
 ```mermaid
 graph TB
     subgraph CORE[Shared Kernel]
-        IDS[Id types]
-        PRIM[AuditInfo SoftDelete Email Slug Tag Visibility PinnedItem]
+        IDS[Id types incl. AccessRuleId TagId]
+        PRIM[AuditInfo SoftDelete Email Slug Visibility PinnedItem]
+        REQ[RequesterId AuthenticatedRequesterId GuestRequesterId]
         ABS[IAggregateRoot IEntity IDomainEvent IRepository IUnitOfWork]
     end
     subgraph IA[Identity and Access]
@@ -657,6 +688,7 @@ graph TB
         SCE[Scenario et Scene]
         TPL[DocumentTemplate]
         FLD[Folder]
+        TAG[Tag]
     end
     subgraph SE[Session Conduct]
         SS[Session]
@@ -664,18 +696,18 @@ graph TB
         SUM[SessionSummary]
         PI[PinnedItem]
     end
-    CORE -.->|primitives et Id types| IA
-    CORE -.->|primitives et Id types| CM
-    CORE -.->|primitives et Id types| CL
-    CORE -.->|primitives et Id types| SE
+    CORE -.->|primitives Id types RequesterId| IA
+    CORE -.->|primitives Id types RequesterId| CM
+    CORE -.->|primitives Id types RequesterId| CL
+    CORE -.->|primitives Id types RequesterId| SE
     IA -->|UserId et UserRole| CM
     IA -->|UserId| CL
     IA -->|UserId| SE
     CM -->|CampaignId| CL
     CM -->|CampaignId| SE
     CR -.->|DocumentId ref cross-context| DOC
-    CL -->|DocumentId CharacterId ScenarioId| SE
-    FLD -.->|contient par folderId| DOC
+    CL -->|DocumentId CharacterId ScenarioId TagId| SE
+    FLD -.->|contient par folderId FK| DOC
     CA --- MB
     CA --- INV
     INV -.->|cree| GA

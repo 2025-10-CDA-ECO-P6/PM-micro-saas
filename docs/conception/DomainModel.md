@@ -33,7 +33,7 @@ Haversack centralise ces informations dans un modèle structuré, modulaire et e
 |---|---|
 | **MJ (Maître du Jeu)** | Utilisateur principal. Crée et administre les campagnes, prépare et conduit les sessions. |
 | **Joueur** | Utilisateur secondaire. Accède à sa fiche personnage et aux informations partagées par le MJ. |
-| **Joueur invité** | Accès temporaire sans compte. Rejoint via token d'invitation, sans identité persistante. |
+| **Joueur invité** | Accès temporaire sans compte. Rejoint via token d'invitation. Traité comme un joueur à part entière du point de vue de la visibilité du contenu — la distinction est uniquement technique (pas d'identité persistante). |
 
 ---
 
@@ -47,25 +47,28 @@ la documentation et les conversations.
 | **Campagne** | Espace organisationnel regroupant scénarios, PNJ, personnages, sessions et notes d'une aventure JDR. |
 | **MJ** | Maître du Jeu. Propriétaire de la campagne, seul à pouvoir modifier le contenu et gérer les accès. |
 | **Joueur** | Membre authentifié d'une campagne, associé à un ou plusieurs personnages joueurs. |
-| **Joueur invité** | Accès temporaire sans compte persistant. Représenté par un GuestAccess, pas un User. |
+| **Joueur invité** | Accès temporaire sans compte persistant. Représenté par un GuestAccess, pas un User. Traité comme un joueur ordinaire pour l'accès au contenu. |
+| **Membre** | Toute personne ayant accès à une campagne : joueur authentifié (CampaignMembership) ou joueur invité actif (GuestAccess). Un contenu PUBLIC est accessible à tous les membres, y compris les invités. |
 | **Scénario** | Structure narrative préparée par le MJ, composée de scènes ordonnées. |
 | **Scène** | Unité narrative d'un scénario. Peut être liée à des PNJ. |
 | **PNJ** | Personnage Non-Joueur. Entité narrative créée et gérée par le MJ. |
-| **Personnage joueur** | Fiche d'un personnage appartenant à un joueur. Créée par le MJ ou le joueur. |
+| **Personnage joueur** | Fiche d'un personnage appartenant à un joueur. Créée par le MJ ou le joueur. Peut exister sans joueur associé (en attente d'association ou personnage joué par le MJ). |
 | **Document** | Unité de contenu modulaire. Tout contenu éditorial est un Document typé composé de blocs. |
 | **Bloc** | Unité atomique de contenu dans un Document. Chaque bloc a un type et une valeur fortement typée. |
 | **Template** | Schéma de blocs définissant la structure attendue d'un Document. Snapshot à la création — non lié après. |
+| **Tag** | Étiquette créée au niveau de la campagne. Réutilisable sur n'importe quel Document de la campagne. Permet le filtrage et la navigation transversale. |
 | **Dossier** | Conteneur organisationnel créé par le MJ pour regrouper ses documents librement. Quatre dossiers système existent dans chaque campagne (PNJ, Personnages joueurs, Scénarios, Notes). Le MJ peut créer des dossiers personnalisés. |
-| **Backlink** | Référence inverse — liste des documents qui pointent vers un document donné via un bloc RELATION. Calculé à la lecture, sans table de liaison dédiée. |
+| **Backlink** | Référence inverse — liste des documents qui pointent vers un document donné via un bloc RELATION. Calculé à la lecture depuis l'index, sans table de liaison dédiée. Un backlink pointant vers un document supprimé n'est pas affiché. |
 | **Session** | Instance d'une partie jouée. Liée optionnellement à un scénario. |
-| **Note live** | Note prise par le MJ pendant une session. Liée automatiquement à la session en cours. |
+| **Note live** | Note prise pendant une session. Peut être créée par le MJ ou par un joueur. Liée automatiquement à la session en cours. |
 | **Résumé** | Compte-rendu d'une session clôturée. Peut être partagé aux joueurs. |
-| **Visibilité** | Niveau d'accès d'un contenu : PRIVATE (MJ uniquement), PLAYER_PRIVATE (joueur créateur uniquement — MJ exclu), SHARED (membres ciblés via AccessPolicy), PUBLIC (tous les membres). |
+| **Visibilité** | Niveau d'accès d'un contenu : PRIVATE (MJ uniquement), PLAYER_PRIVATE (joueur créateur uniquement — MJ exclu), SHARED (membres ciblés via AccessPolicy), PUBLIC (tous les membres, y compris les invités actifs). |
+| **RequesterId** | Identité du demandeur d'accès à un contenu. Type union scellé : soit un UserId (utilisateur authentifié) soit un GuestRequesterId (invité avec GuestAccessId et CharacterId optionnel). Utilisé par AccessPolicy. |
 | **AccessPolicy** | Service domaine gérant les autorisations d'accès aux contenus d'une campagne. |
 | **GuestAccess** | Accès temporaire dans une campagne. N'est pas un User — pas d'identité persistante. |
 | **Invitation** | Token généré par le MJ permettant à un joueur de rejoindre une campagne. |
 | **Système de jeu** | Référentiel de règles d'un JDR (D&D 5e, Call of Cthulhu, etc.). Point d'extension futur. |
-| **Slug** | Identifiant lisible généré depuis un titre. Utilisé dans les URLs. Unique dans son contexte. |
+| **Slug** | Identifiant lisible généré depuis un titre. Utilisé pour l'affichage. Les URLs utilisent l'Id UUID — le slug n'est jamais dans les routes. |
 | **Audit** | Traçabilité des créations et modifications : qui, quand. |
 | **Soft delete** | Suppression logique — l'entité est marquée supprimée mais reste en base pour l'intégrité référentielle. |
 
@@ -80,7 +83,7 @@ la documentation et les conversations.
 | **Core** (Shared Kernel) | Primitives, Id typés, abstractions | — | — |
 | **Identity & Access** | Utilisateurs authentifiés, rôles globaux | `User` | — |
 | **Campaign Management** | Campagnes, membres, invitations, systèmes de jeu, accès aux contenus | `Campaign`, `GameSystem` | `GuestAccess` |
-| **Content Library** | Tout le contenu éditorial | `Document`, `Scenario`, `DocumentTemplate` | `NPC`, `PlayerCharacter` |
+| **Content Library** | Tout le contenu éditorial | `Document`, `Scenario`, `DocumentTemplate`, `Folder`, `Tag` | `NPC`, `PlayerCharacter` |
 | **Session Conduct** | Préparation, conduite et clôture des sessions | `Session` | — |
 
 ### Context Map
@@ -88,7 +91,7 @@ la documentation et les conversations.
 ```
 Core (Shared Kernel)
   └── consommé par tous les contextes
-      └── fournit : Id typés, AuditInfo, SoftDelete, abstractions
+      └── fournit : Id typés, AuditInfo, SoftDelete, abstractions, RequesterId
 
 Identity & Access  [Upstream]
   └── fournit UserId à tous les autres contextes
@@ -101,7 +104,7 @@ Campaign Management
 Content Library
   ├── consomme Campaign Management (CampaignId)
   ├── consomme Identity (UserId)
-  └── fournit DocumentId, NpcId, CharacterId, ScenarioId à Session Conduct
+  └── fournit DocumentId, NpcId, CharacterId, ScenarioId, TagId à Session Conduct
 
 Session Conduct
   ├── consomme Campaign Management (CampaignId)
@@ -134,6 +137,7 @@ GameSystemId    — Campaign Management
 MembershipId    — Campaign Management
 InvitationId    — Campaign Management
 GuestAccessId   — Campaign Management
+AccessRuleId    — Campaign Management (ContentAccessRule)
 DocumentId      — Content Library
 BlockId         — Content Library
 NpcId           — Content Library
@@ -142,6 +146,7 @@ ScenarioId      — Content Library
 SceneId         — Content Library
 TemplateId      — Content Library
 FolderId        — Content Library
+TagId           — Content Library
 SessionId       — Session Conduct
 LiveNoteId      — Session Conduct
 SummaryId       — Session Conduct
@@ -195,14 +200,7 @@ Slug
 ```
 
 **Comportement** : généré depuis un titre. Unicité vérifiée dans le contexte applicatif.
-
-#### Tag
-
-```
-Tag
-├── label : String
-└── color : String?    — hex ou nom de couleur
-```
+Les Slugs sont utilisés pour l'affichage et la recherche — les URLs utilisent les Id UUID.
 
 #### PinnedItem
 
@@ -215,28 +213,47 @@ PinnedItem
 └── pinnedAt   : DateTime
 ```
 
+### RequesterId — type union pour l'autorisation
+
+`RequesterId` est une hiérarchie de types scellés permettant à `AccessPolicy`
+de traiter uniformément les utilisateurs authentifiés et les invités.
+
+```
+RequesterId  (abstract, sealed)
+├── AuthenticatedRequesterId
+│   └── userId : UserId
+│
+└── GuestRequesterId
+    ├── guestAccessId : GuestAccessId
+    └── characterId   : CharacterId?    — personnage associé par le MJ, peut être null
+```
+
+**Usage** : `AccessPolicy.CanAccess(documentId, requester: RequesterId) → bool`.
+Voir la section Campaign Management pour les règles de résolution.
+
 ### Enumerations partagées
 
 ```
 Visibility
 ├── PRIVATE        — visible uniquement par le MJ propriétaire de la campagne
 ├── PLAYER_PRIVATE — visible uniquement par le joueur créateur (createdById) — MJ exclu
+│                    jamais accessible à un GuestRequesterId
 ├── SHARED         — visible par les membres ciblés via AccessPolicy
-└── PUBLIC         — visible par tous les membres de la campagne
+└── PUBLIC         — visible par tous les membres de la campagne (joueurs authentifiés ET invités actifs)
 ```
 
 **Règle de résolution d'accès** (appliquée par `AccessPolicy.CanAccess`) :
 
-1. `PRIVATE` → accès accordé au MJ uniquement.
-2. `PLAYER_PRIVATE` → accès accordé au `createdById` du document uniquement.
-   Le MJ n'a **pas** accès, même en tant que propriétaire de la campagne.
-3. `PUBLIC` → accès accordé à tous les membres sans consulter les règles.
-4. `SHARED` → accès accordé si et seulement si `AccessPolicy` contient une
-   `ContentAccessRule` correspondant au demandeur.
+1. `PRIVATE` → accès accordé au MJ (`AuthenticatedRequesterId` avec `userId = campaign.ownerId`) uniquement.
+2. `PLAYER_PRIVATE` → accès accordé uniquement au `AuthenticatedRequesterId` dont `userId = document.createdById`.
+   Jamais accordé à un `GuestRequesterId`. Le MJ n'a **pas** accès non plus.
+3. `PUBLIC` → accès accordé à tout `RequesterId` valide (authentifié ou invité actif).
+4. `SHARED` → accès accordé si `AccessPolicy` contient une `ContentAccessRule` correspondant au demandeur :
+   - `AllMembersTarget` → accordé à tout `AuthenticatedRequesterId` membre de la campagne, ET à tout `GuestRequesterId` avec un `GuestAccess.status = ACTIVE`.
+   - `SpecificMemberTarget(userId)` → accordé uniquement si `requester` est `AuthenticatedRequesterId` avec `userId` correspondant.
+   - `SpecificCharacterTarget(characterId)` → accordé si `requester.characterId = characterId` (fonctionne pour les deux types de RequesterId).
 
 **Invariant** : une `ContentAccessRule` ne peut être créée que pour un document `SHARED`.
-Toute tentative de créer une règle sur un document `PRIVATE`, `PLAYER_PRIVATE` ou `PUBLIC`
-est rejetée par `AccessPolicy`.
 
 ### Abstractions d'infrastructure
 
@@ -301,6 +318,7 @@ UserStatus
 - Un utilisateur `DELETED` n'est jamais supprimé physiquement.
 - Un `GM` peut créer et administrer plusieurs campagnes.
 - Un `PLAYER` ne peut pas créer de campagne.
+- Un utilisateur peut demander la suppression de son compte (RGPD) : statut → `DELETED`, données personnelles anonymisées. Les contenus de campagne (notes, personnages) ne sont pas supprimés — leur `createdById` est conservé pour l'intégrité.
 
 #### Domain Events
 
@@ -424,6 +442,8 @@ InvitationRevoked         { invitationId, campaignId, occurredAt }
 
 Représente un accès temporaire à une campagne sans compte utilisateur persistant.
 Ce n'est **pas** un `User` — c'est une session d'accès limitée dans le temps.
+Du point de vue de la visibilité du contenu, un GuestAccess actif est traité
+comme un joueur ordinaire (accès aux documents PUBLIC et aux documents SHARED qui lui sont ciblés).
 
 ```
 GuestAccess
@@ -449,6 +469,7 @@ GuestAccessStatus
 - La validation du token est une responsabilité de la couche Infrastructure — le domaine ne connaît que le statut.
 - Un `GuestAccess` expiré ne donne aucun accès.
 - Un `GuestAccess` n'a pas de `SoftDelete` — suppression physique à expiration.
+- Pour `AccessPolicy`, un `GuestAccess` actif est représenté par un `GuestRequesterId(guestAccessId, characterId?)`.
 
 #### Domain Events
 
@@ -471,6 +492,7 @@ GameSystem
 ├── slug        : Slug
 ├── description : String?
 ├── isBuiltIn   : Boolean
+├── ownerId     : UserId?      — null si BUILTIN, sinon créateur du système custom
 ├── audit       : AuditInfo
 └── softDelete  : SoftDelete
 ```
@@ -480,7 +502,7 @@ GameSystem
 - `isBuiltIn = true` → non modifiable, non supprimable.
   **Cet invariant est protégé dans l'entité domaine `GameSystem`**, pas dans un service applicatif.
   `GameSystem.Update()` et `GameSystem.Delete()` lèvent une `DomainException` si `isBuiltIn = true`.
-- Un système custom appartient à l'utilisateur identifié par `audit.createdById`.
+- Un système custom (`ownerId` non null) est visible uniquement par son créateur — non partageable entre GM dans le MVP.
 
 ---
 
@@ -497,39 +519,55 @@ ContentAccessRule               — entité persistée par AccessPolicy
 ├── documentId    : DocumentId  — ref cross-context par Id uniquement
 ├── grantedById   : UserId
 ├── target        : AccessTarget
-└── createdAt     : DateTime    — pas de AuditInfo complet, règle immuable
+└── createdAt     : DateTime    — règle immuable, pas de AuditInfo complet
 ```
 
 ```
 AccessTarget  (hiérarchie de value objects scellés)
 ├── AllMembersTarget
-│   — cible tous les membres de la campagne
+│   — cible tous les membres authentifiés ET tous les GuestAccess actifs de la campagne
 │
 ├── SpecificMemberTarget
 │   └── userId : UserId        — cible un membre authentifié précis
 │
 └── SpecificCharacterTarget
-    └── characterId : CharacterId  — cible le joueur associé à ce personnage
+    └── characterId : CharacterId  — cible le joueur (ou invité) associé à ce personnage
 ```
 
 > **Note de typage** : `AccessTarget` est une hiérarchie de types scellés,
 > pas un objet avec un discriminant enum et un champ `targetId` optionnel.
-> Chaque sous-type ne contient que les données pertinentes — aucun champ
-> conditionnellement invalide. Même principe que `BlockValue`.
+> Même principe que `BlockValue` et `RequesterId`.
+
+#### Méthode exposée
+
+```
+AccessPolicy.CanAccess(documentId: DocumentId, requester: RequesterId) → bool
+```
+
+**Algorithme de résolution** :
+
+```
+1. Charger Document.visibility
+2. Si PRIVATE    → vrai ssi requester est AuthenticatedRequesterId
+                   ET userId == campaign.ownerId
+3. Si PLAYER_PRIVATE → vrai ssi requester est AuthenticatedRequesterId
+                       ET userId == document.createdById
+4. Si PUBLIC     → vrai pour tout RequesterId valide (y compris GuestRequesterId)
+5. Si SHARED     → charger les ContentAccessRule pour ce documentId, puis :
+   - AllMembersTarget       : vrai si requester est authentifié membre actif
+                              OU GuestRequesterId avec GuestAccess.status = ACTIVE
+   - SpecificMemberTarget   : vrai si requester est AuthenticatedRequesterId
+                              ET userId correspond
+   - SpecificCharacterTarget: vrai si requester.characterId correspond
+                              (AuthenticatedRequesterId ou GuestRequesterId)
+```
 
 #### Invariants et règles métier
 
 - Seul l'`OWNER` de la campagne peut créer ou révoquer une `ContentAccessRule`.
 - Une `ContentAccessRule` ne peut être créée que pour un document `SHARED`.
-  Créer une règle sur un document `PRIVATE`, `PLAYER_PRIVATE` ou `PUBLIC` est rejeté.
-- Une règle est unique par `(documentId, target)` — pas de doublons.
-  Unicité sur `(documentId, targetType, targetId)` en base.
+- Une règle est unique par `(documentId, target)` — index unique sur `(documentId, targetType, targetId)` en base, avec `NULLS NOT DISTINCT` pour `targetId = NULL` (cas `AllMembersTarget`).
 - La révocation est une suppression physique — une règle révoquée n'existe plus.
-
-**Méthode exposée** :
-```
-AccessPolicy.CanAccess(documentId: DocumentId, requesterId: UserId, characterId: CharacterId?) → bool
-```
 
 #### Domain Events
 
@@ -562,13 +600,13 @@ Document
 ├── type        : DocumentType
 ├── customType  : String?           — renseigné si type = CUSTOM
 ├── title       : String
-├── slug                   : Slug              — unique par (campaignId, type)
-├── visibility             : Visibility
-├── templateId             : TemplateId?
-├── folderId               : FolderId?         — null = document non classé
-├── appliedTemplateVersion : Int?              — null = pas de template ou sync jamais effectuée
-├── tags                   : Tag[]
-├── blocks                 : DocumentBlock[]   — entités enfants, cycle de vie lié
+├── slug        : Slug              — unique par (campaignId, type) — usage affichage uniquement
+├── visibility  : Visibility
+├── templateId  : TemplateId?
+├── folderId    : FolderId?         — null = document non classé
+├── appliedTemplateVersion : Int?   — null = pas de template ou sync jamais effectuée
+├── tagIds      : TagId[]           — références aux Tags de la campagne
+├── blocks      : DocumentBlock[]   — entités enfants, cycle de vie lié (zéro ou plusieurs)
 ├── audit       : AuditInfo
 └── softDelete  : SoftDelete
 ```
@@ -653,6 +691,7 @@ BlockKind
 
 #### Invariants et règles métier
 
+- Un `Document` peut avoir zéro ou plusieurs blocs.
 - L'ordre des blocs est géré par l'agrégat `Document`.
 - Un bloc `RELATION` valide que le `targetId` appartient à la même campagne.
 - Un bloc `isPrivate = true` n'est jamais exposé aux joueurs, même si le Document est `SHARED`.
@@ -661,11 +700,15 @@ BlockKind
 - Soft delete `Document` → suppression physique de tous ses blocs.
 - Un `Document` créé depuis un template est un snapshot indépendant — le template peut changer sans affecter le document.
 - `customType` est obligatoire si `type = CUSTOM`, null sinon — invariant garanti par le constructeur.
-- Le `slug` est unique par `(campaignId, type)` — deux documents de types différents peuvent avoir le même slug.
+- Le `slug` est unique par `(campaignId, type)`.
+- La visibilité par défaut d'un `Document` associé à un `PlayerCharacter` sans `ownerId` est `PRIVATE`. Le MJ la change explicitement pour la partager.
 
-**Relations narratives** : toute relation entre entités sans règle métier propre (NPC→NPC,
-NPC→lieu, NPC→faction) est exprimée via un `DocumentBlock` de type `RELATION` dans le
-`Document` source. Pas d'entité dédiée pour ces liens dans le MVP.
+**Co-création obligatoire** : un `Document` avec `type ∈ {NPC, CHARACTER, SCENARIO, SCENE}`
+**ne doit être créé que via la factory de l'entité correspondante** (voir AD-21).
+La création directe d'un Document de ces types sans son enveloppe métier est interdite.
+
+**Backlinks** : un bloc `RELATION` dont le `targetId` pointe vers un document soft-deleted
+n'est pas affiché dans les backlinks. La requête de backlinks filtre `DOCUMENT.isDeleted = false`.
 
 #### Domain Events
 
@@ -673,11 +716,43 @@ NPC→lieu, NPC→faction) est exprimée via un `DocumentBlock` de type `RELATIO
 DocumentCreated           { documentId, campaignId, type, createdById, occurredAt }
 DocumentTitleUpdated      { documentId, oldTitle, newTitle, occurredAt }
 DocumentVisibilityChanged { documentId, oldVisibility, newVisibility, occurredAt }
+DocumentMovedToFolder     { documentId, oldFolderId, newFolderId, occurredAt }
 DocumentDeleted           { documentId, campaignId, occurredAt }
 BlockAdded                { documentId, blockId, kind, occurredAt }
 BlockUpdated              { documentId, blockId, occurredAt }
 BlockRemoved              { documentId, blockId, occurredAt }
 BlockReordered            { documentId, occurredAt }
+```
+
+---
+
+### Entité : `Tag`
+
+Tag de campagne réutilisable. Créé par le MJ au niveau de la campagne.
+Assigné à n'importe quel Document de la même campagne.
+
+```
+Tag
+├── id         : TagId
+├── campaignId : CampaignId
+├── label      : String           — unique par campaignId (insensible à la casse)
+├── color      : String?          — hex ou nom de couleur
+├── audit      : AuditInfo
+└── softDelete : SoftDelete
+```
+
+#### Invariants et règles métier
+
+- Le `label` est unique par campagne (insensible à la casse).
+- Supprimer un Tag retire automatiquement sa référence de tous les Documents de la campagne (via event `TagDeleted`).
+- Un Tag n'appartient qu'à une campagne — non partageable entre campagnes.
+
+#### Domain Events
+
+```
+TagCreated  { tagId, campaignId, label, occurredAt }
+TagUpdated  { tagId, campaignId, occurredAt }
+TagDeleted  { tagId, campaignId, occurredAt }
 ```
 
 ---
@@ -710,9 +785,10 @@ NpcStatus
 #### Invariants et règles métier
 
 - `name` est synchronisé avec `Document.title` via le handler de `DocumentTitleUpdated`.
+  Ce dispatch est **synchrone in-process** dans le monolithe MVP — cohérence garantie dans la même transaction.
 - Un NPC `DEAD` reste consultable.
 - `linkedCharacterId` est une association narrative — la suppression du `PlayerCharacter` ne supprime pas le NPC.
-- Soft delete NPC → soft delete de son Document associé.
+- Soft delete NPC → soft delete de son Document associé (même transaction).
 - Les blocs `isPrivate = true` du Document ne sont jamais exposés aux joueurs.
 
 #### Domain Events
@@ -738,6 +814,7 @@ PlayerCharacter
 ├── documentId      : DocumentId
 ├── name            : String           — dénormalisé, synchronisé via DocumentTitleUpdated
 ├── ownerId         : UserId?          — null = créé par le MJ, en attente d'association
+│                                        ou personnage joué par le MJ (joueur absent)
 ├── linkedNpcId     : NpcId?           — association narrative optionnelle
 ├── status          : CharacterStatus
 ├── audit           : AuditInfo
@@ -755,9 +832,12 @@ CharacterStatus
 
 - Seul le `ownerId` ou le MJ peut modifier les blocs du Document associé.
 - Les blocs `isPrivate = true` sont visibles uniquement par le MJ.
-- `ownerId = null` → personnage en attente d'association joueur.
+- `ownerId = null` → Document avec visibilité `PRIVATE` par défaut.
+  Le MJ peut la modifier explicitement (SHARED ou PUBLIC) pour partager la fiche avec le groupe
+  avant qu'un joueur soit associé (ex. : session avec un PJ temporaire ou joueur absent).
+  L'association d'un `ownerId` ne change **pas automatiquement** la visibilité — c'est une action explicite du MJ.
 - `linkedNpcId` est une association narrative — la suppression du NPC ne supprime pas le personnage.
-- Soft delete PlayerCharacter → soft delete de son Document associé.
+- Soft delete PlayerCharacter → soft delete de son Document associé (même transaction).
 
 #### Domain Events
 
@@ -784,6 +864,7 @@ Scenario
 ├── title       : String           — dénormalisé, synchronisé via DocumentTitleUpdated
 ├── slug        : Slug             — unique par campagne
 ├── order       : Int              — position du scénario dans la campagne, géré par ScenarioOrderService
+│                                    synchronisé par défaut avec l'ordre d'affichage dans le dossier "Scénarios"
 ├── status      : ScenarioStatus
 ├── scenes      : Scene[]          — entités enfants, cycle de vie lié (zéro ou plusieurs)
 ├── audit       : AuditInfo
@@ -824,7 +905,9 @@ SceneStatus
 - Un `Scenario` peut contenir **zéro, une ou plusieurs** scènes.
 - Une `Scene` ne peut pas exister sans son `Scenario` parent.
 - L'ordre des scènes est une responsabilité de l'agrégat `Scenario`.
-- L'ordre des scénarios dans une campagne est géré par `ScenarioOrderService` (domain service).
+- `Scenario.order` représente la position narrative dans la campagne. Par défaut synchronisé
+  avec l'ordre d'affichage dans le dossier système "Scénarios". Le MJ peut les dissocier
+  (point d'extension post-MVP : `Scenario.followsFolderOrder: Boolean = true`).
 - Un `Scenario` `ARCHIVED` est en lecture seule.
 - Soft delete `Scenario` → suppression physique des `Scene` et soft delete de leurs Documents.
 - `linkedNpcIds` : si un NPC est soft-deleted, sa référence est retirée sans supprimer la scène.
@@ -858,6 +941,8 @@ DocumentTemplate
 ├── scope           : TemplateScope
 ├── ownerId         : UserId?          — null si BUILTIN
 ├── campaignId      : CampaignId?      — null si scope USER ou BUILTIN
+├── version         : Int              — incrémenté à chaque modification du schéma de blocs
+│                                        commence à 1, jamais décrémenté
 ├── schema          : BlockSchema[]
 ├── audit           : AuditInfo
 └── softDelete      : SoftDelete
@@ -880,6 +965,12 @@ TemplateScope
 
 **Invariant** : toute autre combinaison est rejetée par le constructeur.
 
+#### Incrément de version
+
+`DocumentTemplate.version` est incrémenté à chaque appel à `AddBlock()`, `RemoveBlock()`,
+`ReorderBlocks()` ou `UpdateBlockSchema()`. `Document.appliedTemplateVersion` est comparé
+à `template.version` pour détecter qu'une synchronisation est disponible (UC-18).
+
 #### Value Object : `BlockSchema`
 
 ```
@@ -890,12 +981,24 @@ BlockSchema
 └── defaultValue : BlockValue?    — instance concrète du sous-type correspondant
 ```
 
+**Note sur `required`** : un bloc `required = true` dans le schéma est un indicateur
+pour l'UI (champ mis en avant). La validation applicative lors de UC-18 ajoute ces blocs
+s'ils sont absents — elle ne bloque pas la sauvegarde d'un document incomplet.
+
 #### Invariants et règles métier
 
 - `BUILTIN` non modifiable, non supprimable.
 - `CAMPAIGN` visible uniquement par les membres de la campagne.
 - `USER` portable entre les campagnes de son propriétaire.
 - Un Document créé depuis un template est un snapshot indépendant.
+
+#### Domain Events
+
+```
+TemplateCreated          { templateId, scope, occurredAt }
+TemplateSchemaUpdated    { templateId, newVersion, occurredAt }
+TemplateAppliedToDocument { templateId, documentId, occurredAt }
+```
 
 ---
 
@@ -933,12 +1036,7 @@ Folder
 - Le `slug` est régénéré depuis le `name` à la création, jamais modifié après.
 - Supprimer un dossier non-système nécessite de traiter ses documents (déplacer ou déclasser).
 - Changer le `defaultTemplateId` n'affecte jamais les documents existants dans le dossier.
-- L'ordre des dossiers est géré par `FolderOrderService` (domain service).
-
-#### Service domaine : `FolderOrderService`
-
-Gère la persistance de l'ordre des dossiers dans une campagne.
-Même pattern que `ScenarioOrderService`.
+- L'ordre des dossiers est géré par `FolderOrderService` (application service — voir AD-20).
 
 #### Références entre documents — backlinks
 
@@ -946,8 +1044,8 @@ Les références entre documents existent via `RelationBlockValue { targetId: Do
 Un document peut pointer vers n'importe quel autre document de la campagne via un bloc `RELATION`.
 
 Les **backlinks** (documents qui pointent *vers* un document donné) sont résolus
-via une requête sur `DOCUMENT_BLOCK` filtrée par `kind = RELATION` et `value->>'targetId' = ?`.
-Un index GIN sur ce champ rend la requête efficace sans table de liaison dédiée.
+via une requête sur `DOCUMENT_BLOCK` filtrée par `kind = RELATION`, `value->>'targetId' = ?`
+**et `DOCUMENT.isDeleted = false`**. Un backlink pointant vers un document supprimé n'est pas affiché.
 
 ---
 
@@ -994,16 +1092,34 @@ SessionStatus
 
 #### Entité enfant : `LiveNote`
 
+Note prise pendant ou après une session. Peut être créée par le MJ ou par un joueur.
+
 ```
 LiveNote
 ├── id                : LiveNoteId
 ├── sessionId         : SessionId
 ├── content           : String
-├── authorId          : UserId
-├── visibility        : Visibility      — PRIVATE par défaut
+├── authorId          : UserId          — MJ ou joueur authentifié
+├── authorRole        : LiveNoteAuthorRole  — MJ ou PLAYER (détermine les règles de visibilité par défaut)
+├── visibility        : Visibility      — PRIVATE (MJ), PLAYER_PRIVATE (joueur), ou SHARED/PUBLIC
+│                                         jamais null — défaut selon authorRole
 ├── linkedDocumentId  : DocumentId?
 └── audit             : AuditInfo       — pas de SoftDelete
 ```
+
+```
+LiveNoteAuthorRole
+├── GM      — note créée par le MJ
+└── PLAYER  — note créée par un joueur
+```
+
+**Visibilité par défaut selon authorRole** :
+- `GM` → `PRIVATE` (note privée MJ par défaut, peut être partagée)
+- `PLAYER` → `PLAYER_PRIVATE` (note personnelle joueur par défaut, invisible au MJ)
+
+**Contraintes de visibilité par authorRole** :
+- Une `LiveNote` avec `authorRole = GM` ne peut pas avoir `visibility = PLAYER_PRIVATE`.
+- Une `LiveNote` avec `authorRole = PLAYER` ne peut pas avoir `visibility = PRIVATE`.
 
 #### Entité enfant : `SessionSummary`
 
@@ -1022,7 +1138,10 @@ SessionSummary
 - **Une seule session `LIVE` par campagne** à un instant donné — invariant fort.
 - Transitions autorisées uniquement : `PLANNED → LIVE → CLOSED → ARCHIVED`.
 - Aucun retour en arrière sur les transitions de statut.
-- Les `LiveNote` sont créées avec `visibility = PRIVATE` par défaut.
+- Les `LiveNote` de type MJ sont créées avec `visibility = PRIVATE` par défaut.
+- Les `LiveNote` de type joueur sont créées avec `visibility = PLAYER_PRIVATE` par défaut.
+- Un joueur ne peut créer des LiveNotes que pendant une session LIVE (pas PLANNED, pas a posteriori sur CLOSED).
+  Le MJ peut créer des LiveNotes sur une session LIVE ou CLOSED (ajout rétroactif).
 - Un `SessionSummary` `PRIVATE` est visible uniquement par le MJ.
 - `participantIds`, `selectedNpcIds` et `pinnedItems` sont des références légères —
   si une entité référencée est supprimée, la référence est retirée.
@@ -1030,19 +1149,19 @@ SessionSummary
 
 **Permissions d'édition par statut** :
 
-| Statut     | Métadonnées | Ajout LiveNote | Édition SessionSummary | Épinglage |
-|------------|-------------|----------------|------------------------|-----------|
-| `PLANNED`  | Oui         | Non            | Non                    | Oui       |
-| `LIVE`     | Oui         | Oui            | Non                    | Oui       |
-| `CLOSED`   | Non         | Oui (rétro)    | Oui                    | Non       |
-| `ARCHIVED` | Non         | Non            | Non — lecture seule    | Non       |
+| Statut     | Métadonnées | Ajout LiveNote MJ | Ajout LiveNote Joueur | Édition SessionSummary | Épinglage |
+|------------|-------------|-------------------|-----------------------|------------------------|-----------|
+| `PLANNED`  | Oui         | Non               | Non                   | Non                    | Oui       |
+| `LIVE`     | Oui         | Oui               | Oui                   | Non                    | Oui       |
+| `CLOSED`   | Non         | Oui (rétro)       | Non                   | Oui                    | Non       |
+| `ARCHIVED` | Non         | Non               | Non                   | Non — lecture seule    | Non       |
 
-> Une session `CLOSED` reste éditable pour les notes et le résumé.
-> "Rouvrir" une session signifie modifier son contenu textuel — pas changer son statut.
+> Une session `CLOSED` reste éditable pour les notes MJ rétroactives et le résumé.
+> Les joueurs ne peuvent plus créer de LiveNotes sur une session CLOSED.
 > L'état `ARCHIVED` est le seul état véritablement immuable.
 
 **Déduction automatique des `selectedNpcIds`** :
-Quand un `scenarioId` est associé à une session, `SessionNpcSelector` (domain service)
+Quand un `scenarioId` est associé à une session, `SessionNpcSelector` (application service)
 calcule la liste initiale depuis l'union des `linkedNpcIds` de toutes les scènes du scénario.
 Le MJ peut ensuite ajouter ou retirer des NpcId manuellement.
 
@@ -1055,7 +1174,7 @@ SessionClosed                   { sessionId, campaignId, endedAt, occurredAt }
 SessionArchived                 { sessionId, campaignId, occurredAt }
 SessionNpcSelected              { sessionId, npcId, occurredAt }
 SessionNpcDeselected            { sessionId, npcId, occurredAt }
-LiveNoteAdded                   { sessionId, liveNoteId, authorId, occurredAt }
+LiveNoteAdded                   { sessionId, liveNoteId, authorId, authorRole, occurredAt }
 LiveNoteAddedPostSession        { sessionId, liveNoteId, authorId, occurredAt }
 LiveNoteRemoved                 { sessionId, liveNoteId, occurredAt }
 LiveNoteVisibilityChanged       { sessionId, liveNoteId, oldVisibility, newVisibility, occurredAt }
@@ -1086,10 +1205,11 @@ ContentAccessGranted, ContentAccessRevoked
 
 ### Content Library
 ```
-DocumentCreated, DocumentTitleUpdated, DocumentVisibilityChanged, DocumentDeleted
-DocumentMovedToFolder
+DocumentCreated, DocumentTitleUpdated, DocumentVisibilityChanged
+DocumentMovedToFolder, DocumentDeleted
 BlockAdded, BlockUpdated, BlockRemoved, BlockReordered
-TemplateAppliedToDocument
+TagCreated, TagUpdated, TagDeleted
+TemplateCreated, TemplateSchemaUpdated, TemplateAppliedToDocument
 FolderCreated, FolderRenamed, FolderDeleted
 NpcCreated, NpcStatusChanged, NpcLinkedToCharacter, NpcUnlinkedFromCharacter
 CharacterCreated, CharacterOwnerAssigned, CharacterStatusChanged
@@ -1118,7 +1238,7 @@ Un mapper dédié assure la conversion en couche Infrastructure.
 **Raison** : Domaine agnostique, tests unitaires facilités, évolution de stack sans impact domaine.
 
 ### AD-02 — Shared Kernel pour les primitives partagées
-**Décision** : Id typés, AuditInfo, SoftDelete, Email, Slug, Tag, Visibility, PinnedItem
+**Décision** : Id typés, AuditInfo, SoftDelete, Email, Slug, Visibility, PinnedItem, RequesterId
 et abstractions vivent dans `Core`.
 **Raison** : Éviter la duplication sans créer de couplage entre contextes.
 
@@ -1137,10 +1257,8 @@ et abstractions vivent dans `Core`.
 ### AD-06 — NPC et PlayerCharacter — entités avec repository, pas agrégats racines
 **Décision** : `NPC` et `PlayerCharacter` ont leur propre Id et leur propre repository
 mais ne sont pas des racines d'agrégat au sens DDD strict.
-**Raison** : Un agrégat racine se justifie quand il protège des invariants sur une collection
-d'entités enfants. NPC et PlayerCharacter n'ont pas d'entités enfants — leur contenu vit
-dans leur Document associé. Ils ont uniquement des métadonnées légères (statut, liens narratifs)
-qui ne nécessitent pas de frontière transactionnelle propre.
+**Raison** : Ils n'ont pas d'entités enfants à protéger transactionnellement. Leurs invariants
+sont locaux à l'entité elle-même.
 
 ### AD-07 — Lien NPC ↔ PlayerCharacter optionnel et non structurant
 **Décision** : Association narrative optionnelle dans les deux sens.
@@ -1149,85 +1267,94 @@ qui ne nécessitent pas de frontière transactionnelle propre.
 ### AD-08 — Séparation User authentifié et accès invité
 **Décision** : Les joueurs invités sans compte sont représentés par `GuestAccess`
 dans Campaign Management. `UserRole` ne contient que `GM` et `PLAYER`.
-**Raison** : Un `User` dans Identity & Access représente une identité persistante
-avec email et authentification. Un joueur invité n'a ni l'un ni l'autre — c'est
-un accès temporaire à une campagne, pas une identité système. Les deux concepts
-ont des cycles de vie, des règles et des responsabilités radicalement différents.
-Les unifier créerait des champs conditionnellement valides et des règles métier ambiguës.
+**Raison** : Un `User` représente une identité persistante. Un invité est un accès temporaire.
+Les unifier créerait des champs conditionnellement valides.
 
 ### AD-09 — AccessPolicy comme service domaine
 **Décision** : La visibilité des contenus est gérée par un service domaine `AccessPolicy`
 qui persiste des entités légères `ContentAccessRule`.
-**Raison** : Une règle d'accès n'a pas d'entités enfants et pas d'invariants transactionnels
-complexes — un agrégat racine serait surdimensionné. `ContentAccessRule` est une entité
-simple immuable : elle est créée ou révoquée (suppression physique), jamais modifiée.
-Ce pattern reflète la nature binaire d'une autorisation d'accès.
+**Raison** : `ContentAccessRule` est immuable — créée ou révoquée, jamais modifiée.
 
 ### AD-10 — DocumentTemplate — combinaisons scope/ownerId/campaignId protégées
 **Décision** : Le constructeur de `DocumentTemplate` rejette toute combinaison invalide.
 **Raison** : Éviter les états incohérents non détectables à l'exécution.
 
 ### AD-11 — Ordre des scénarios persisté via `Scenario.order`
-**Décision** : `Scenario` porte un champ `order: Int` représentant sa position dans la campagne.
-Le réordonnancement est orchestré par `ScenarioOrderService` (domain service dans Content Library)
-qui garantit l'unicité des positions sur une campagne donnée.
-**Raison** : Sans champ de persistance, l'ordre ne peut pas être sauvegardé. Confier l'ordre
-à la couche Application sans support de persistance était une décision incomplète.
-`ScenarioOrderService` reçoit la liste ordonnée d'Ids depuis la couche Application et met
-à jour les champs `order` de chaque `Scenario` concerné.
-**Changement** : remplace l'ancienne décision "ordre géré par la couche Application sans champ dédié".
+**Décision** : `Scenario` porte un champ `order: Int`. Le réordonnancement est orchestré
+par `ScenarioOrderService`.
+**Raison** : Sans champ de persistance, l'ordre ne peut pas être sauvegardé.
 
 ### AD-12 — PinnedItem value object pour les documents épinglés
-**Décision** : Les documents épinglés à une session sont représentés par `pinnedItems: PinnedItem[]`,
-un value object portant `documentId`, `order` et `pinnedAt`.
-**Raison** : Un simple tableau d'Id ne capture pas l'intention complète. Le MJ épingle
-un document dans un certain ordre et à un instant précis — ces informations sont
-pertinentes pour l'affichage de la vue session. Le value object `PinnedItem` rend
-cette sémantique explicite dans le domaine.
+**Décision** : Les documents épinglés à une session sont représentés par `pinnedItems: PinnedItem[]`.
+**Raison** : Capture l'ordre et la date d'épinglage — sémantique explicite dans le domaine.
 
-### AD-13 — LiveNote avec visibilité contrôlée
-**Décision** : `LiveNote` porte un champ `visibility` avec `PRIVATE` comme valeur par défaut.
-**Raison** : Pendant une session, le MJ peut décider de partager une note live aux joueurs
-en temps réel — par exemple révéler un indice ou une information narrative. Sans visibilité
-sur la note elle-même, ce cas d'usage ne peut pas être exprimé dans le domaine.
-La valeur par défaut `PRIVATE` garantit qu'aucune note n'est accidentellement exposée.
+### AD-13 — LiveNote avec visibilité contrôlée et auteur typé
+**Décision** : `LiveNote` porte un champ `visibility` et un `authorRole` (GM ou PLAYER).
+La visibilité par défaut dépend du rôle : `PRIVATE` pour le MJ, `PLAYER_PRIVATE` pour le joueur.
+**Raison** : Le MJ et les joueurs ont des intentions différentes pour leurs notes de session.
+La valeur par défaut garantit qu'aucune note n'est accidentellement exposée.
 
 ### AD-14 — Références légères entre contextes — Id uniquement
 **Décision** : Un contexte ne référence jamais une entité d'un autre contexte,
 uniquement son Id typé.
 **Raison** : Découplage strict. Chaque contexte évolue indépendamment.
 
-### AD-15 — Synchronisation des champs dénormalisés via domain event
+### AD-15 — Synchronisation des champs dénormalisés via domain event synchrone
 **Décision** : `NPC.name`, `PlayerCharacter.name`, `Scenario.title` et `Scene.title`
-sont des champs dénormalisés depuis `Document.title`. Leur synchronisation est assurée
-par un handler qui réagit à l'event `DocumentTitleUpdated` émis par `Document`.
-**Raison** : Ces champs existent pour permettre des requêtes de liste efficaces
-(afficher les NPC d'une campagne sans charger tous leurs Documents).
-La dénormalisation est un choix explicite de performance — le mécanisme de synchronisation
-doit être tout aussi explicite pour éviter les incohérences silencieuses.
+sont dénormalisés depuis `Document.title`. Leur synchronisation est assurée
+par un handler synchrone in-process qui réagit à `DocumentTitleUpdated` **dans la même transaction**.
+**Raison** : Le dispatch synchrone dans le monolithe MVP élimine la fenêtre d'incohérence.
+Les handlers sont enregistrés via un médiateur in-process (ex. MediatR). Si l'architecture
+évolue vers un bus asynchrone, ce comportement doit être explicitement documenté dans un ADR de migration.
 
 ### AD-16 — Dossiers utilisateur — structure libre, non imposée
-**Décision** : La structure du contenu d'une campagne est définie par le MJ via des `Folder`
-qu'il crée librement. Le système fournit 4 dossiers système non suppressibles à l'initialisation
-(PNJ, Personnages joueurs, Scénarios, Notes). Le `DocumentType` reste utilisé en interne
-pour les entités à logique domaine propre (NPC, CHARACTER), mais n'est pas visible comme
-catégorie imposée côté utilisateur.
-**Raison** : Chaque MJ a une organisation différente selon son système de jeu et son style
-de narration. Imposer une structure rigide bride l'outil et force les utilisateurs à contourner
-les catégories.
-**Alternatives écartées** : Types documentaires fixes côté UX — trop rigide. Aucune structure
-par défaut — trop vide au démarrage, friction initiale élevée.
+**Décision** : La structure du contenu d'une campagne est définie par le MJ via des `Folder`.
+Le système fournit 4 dossiers système non suppressibles à l'initialisation.
+**Raison** : Chaque MJ a une organisation différente selon son système de jeu et son style.
 
 ### AD-17 — Synchronisation template — action manuelle, jamais automatique
 **Décision** : Modifier un template ne propage jamais automatiquement les changements
-aux documents existants. La commande `ApplyTemplateToDocument` est une action explicite
-déclenchée par le MJ. Elle ajoute uniquement les blocs manquants, n'écrase jamais le contenu.
+aux documents existants. `ApplyTemplateToDocument` est une action explicite du MJ.
 **Raison** : Un MJ qui a rempli ses fiches ne doit pas voir son travail écrasé.
-La synchronisation automatique crée des conflits impossibles à résoudre proprement
-(blocs supprimés, contenu réorganisé). L'action manuelle + prévisualisation donne
-le contrôle à l'utilisateur.
-**`Document.appliedTemplateVersion`** : permet de détecter si une sync est disponible
-sans charger le template.
+`Document.appliedTemplateVersion` comparé à `DocumentTemplate.version` détecte la disponibilité d'une sync.
+
+### AD-18 — RequesterId — type union pour l'autorisation GuestAccess
+**Décision** : `AccessPolicy.CanAccess` accepte un `RequesterId` (type union scellé : `AuthenticatedRequesterId` ou `GuestRequesterId`) au lieu d'un `UserId` seul.
+**Raison** : Un GuestAccess n'a pas de UserId. La signature précédente rendait l'autorisation des invités impossible sans contournement. Le type union permet à AccessPolicy de traiter les deux cas dans une seule méthode avec des règles explicites pour chaque type de demandeur.
+**Alternatives écartées** : surcharge de méthode — fragmente la logique d'autorisation et crée un risque d'oubli. Conversion invité → UserId fictif — crée une identité fantôme non traçable.
+
+### AD-19 — Tags comme entités de campagne dans Content Library
+**Décision** : `Tag` est une entité légère avec `TagId`, appartenant à une campagne, gérée dans Content Library. `Document.tagIds: TagId[]` référence ces entités. La suppression d'un Tag déclenche le retrait de sa référence de tous les Documents via `TagDeleted` event.
+**Raison** : Des tags réutilisables au niveau campagne nécessitent une identité propre pour pouvoir être renommés ou supprimés globalement. Un value object embarqué dans chaque Document rendrait le renommage bulk impossible.
+**Alternatives écartées** : Tag comme value object dans le Shared Kernel — trop couplé, pas de cycle de vie propre. Tag comme entité dans Campaign Management — les tags sont une préoccupation du contenu, pas de l'organisation de campagne.
+
+### AD-20 — Dispatch synchrone des domain events dans le monolithe MVP
+**Décision** : Les domain events (notamment `DocumentTitleUpdated`, `TagDeleted`) sont dispatchés synchrones in-process dans la même transaction, via un médiateur in-process (MediatR ou équivalent). Aucun bus de messages externe dans le MVP.
+**Raison** : Dans un monolithe modulaire, le dispatch synchrone élimine la fenêtre d'incohérence entre l'émission de l'event et son traitement. La complexité d'un bus asynchrone n'est pas justifiée pour le MVP.
+**Conséquences** : si un handler échoue, la transaction entière est annulée — comportement correct pour les invariants de cohérence. Si l'architecture évolue vers des services distribués, les handlers asynchrones doivent être documentés dans un ADR de migration dédié.
+
+### AD-21 — Pattern factory pour la co-création Document + entité métier
+**Décision** : Créer un NPC, PlayerCharacter, Scenario ou Scene implique toujours la co-création atomique d'un Document et de son enveloppe métier. Cette co-création est encapsulée dans une méthode factory statique sur chaque entité.
+```
+NPC.Create(campaignId, name, folderId?, templateId?) → (NPC, Document)
+Scenario.Create(campaignId, title, folderId?) → (Scenario, Document)
+```
+La couche Application persiste les deux entités dans la même `IUnitOfWork`. Créer un `Document` avec `type = NPC|CHARACTER|SCENARIO|SCENE` directement (sans l'enveloppe) est interdit et doit lever une `DomainException`.
+**Raison** : Sans factory, un Document de type NPC sans entité NPC correspondante est un état incohérent non détectable à la compilation. La factory est le seul chemin de création valide.
+
+### AD-22 — Backlinks orphelins — non affichés, jamais d'erreur
+**Décision** : La requête de backlinks filtre `DOCUMENT.isDeleted = false`. Un bloc RELATION pointant vers un document supprimé ne génère ni erreur ni backlink dans la liste. Il reste en base (suppression physique du bloc non implémentée pour les RELATION orphelins dans le MVP).
+**Raison** : Afficher un backlink cassé génère une mauvaise UX sans valeur. Supprimer automatiquement les blocs RELATION à la suppression d'un document cible nécessite une cascade cross-agrégats coûteuse. Le filtrage à la lecture est la solution la plus simple et la plus sûre.
+**Alternatives écartées** : cascade de suppression sur les blocs RELATION orphelins — couplage cross-contextes excessif, performance dégradée pour les documents très référencés. Marquage "lien cassé" visible — UX dégradée pour un cas rare.
+
+### AD-23 — Stratégie URL — Id UUID, slug pour l'affichage uniquement
+**Décision** : Les URLs de l'application utilisent les Id UUID comme identifiants primaires. Les slugs ne sont jamais dans les routes. Pattern : `/campaigns/{campaignId}/documents/{documentId}`.
+**Raison** : Le slug est unique par `(campaignId, type)` — l'inclure dans l'URL nécessiterait d'y inclure aussi le type, ou d'accepter des collisions cross-type. Les Id UUID sont non-ambigus, stables et ne nécessitent aucune logique de déduplication dans le routage. Les slugs restent utiles pour la recherche et l'affichage textuel.
+**Alternatives écartées** : URLs basées sur le slug avec type dans le chemin (`/campaigns/{slug}/npcs/{npcSlug}`) — fragmente les URLs par type, complique les liens directs et les bookmarks.
+
+### AD-24 — Visibilité par défaut des personnages sans association joueur
+**Décision** : Un `PlayerCharacter` créé avec `ownerId = null` a un Document avec `visibility = PRIVATE` par défaut. Le MJ peut explicitement changer la visibilité pour partager la fiche avec le groupe avant l'association d'un joueur. L'association d'un `ownerId` ne change pas automatiquement la visibilité.
+**Raison** : La visibilité est une décision du MJ, pas une conséquence automatique de l'association. Un MJ peut jouer un personnage temporairement sans vouloir l'exposer, ou au contraire partager la fiche à l'avance. L'automatisme créerait des expositions accidentelles.
 
 ---
 
@@ -1246,7 +1373,9 @@ sans charger le template.
 | SessionSummary deux versions | Modèle actuel : un seul résumé par session. Multi-version = post-MVP | Session Conduct |
 | Types de document extensibles | `DocumentType.CUSTOM` + `customType: String` déjà modélisé | Content Library |
 | Verrouillage de champs | `DocumentBlock.isLocked` modélisé, non activé dans le MVP | Content Library |
-| Factions | Représentées via `Document(CUSTOM, "FACTION")` si nécessaire — pas d'entité dédiée | Content Library |
+| Factions | Représentées via `Document(CUSTOM, "FACTION")` si nécessaire | Content Library |
 | UserProjection locale | Si extraction de Campaign Management en service : ajouter projection via events | Campaign Management |
 | Dossiers imbriqués (sous-dossiers) | `Folder.parentFolderId?` — non activé MVP, un seul niveau de dossiers | Content Library |
 | Synchronisation template automatique | `Document.appliedTemplateVersion` modélisé — propagation auto non activée | Content Library |
+| Dissociation ordre scénario / ordre dossier | `Scenario.followsFolderOrder: Boolean = true` — non activé MVP | Content Library |
+| GameSystem custom partagé entre GM | `GameSystem.ownerId` = null pour les built-in, scope private en MVP | Campaign Management |

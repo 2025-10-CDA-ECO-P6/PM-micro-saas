@@ -359,3 +359,97 @@ Future feature WorldBuilding
 
 Ce pattern garantit que les moteurs métier restent dans leur contexte d'origine
 jusqu'à ce que la promotion dans Core soit justifiée.
+
+---
+
+## CQRS-lite — séparation Command / Query
+
+### Le principe
+
+Haversack applique une séparation stricte Command / Query via MediatR, sans aller jusqu'au CQRS full (bases séparées, projections matérialisées indépendantes). On parle de **CQRS-lite**.
+
+**Commandes** : modifient l'état du système. Retournent uniquement un identifiant ou un void. Jamais de données de lecture.
+
+```csharp
+public record CreateNpcCommand(CampaignId CampaignId, string Name, NpcTemplateId? TemplateId)
+    : IRequest<NpcId>;
+
+public class CreateNpcHandler : IRequestHandler<CreateNpcCommand, NpcId> {
+    public async Task<NpcId> Handle(CreateNpcCommand cmd, CancellationToken ct) {
+        var (npc, document) = NPC.Create(cmd.CampaignId, cmd.Name, cmd.TemplateId);
+        await _npcRepository.AddAsync(npc, ct);
+        await _documentRepository.AddAsync(document, ct);
+        return npc.Id;
+    }
+}
+```
+
+**Queries** : lisent l'état sans le modifier. Retournent des DTOs, jamais des entités domaine.
+
+```csharp
+public record GetNpcListQuery(CampaignId CampaignId) : IRequest<IReadOnlyList<NpcSummaryDto>>;
+
+public class GetNpcListHandler : IRequestHandler<GetNpcListQuery, IReadOnlyList<NpcSummaryDto>> {
+    public async Task<IReadOnlyList<NpcSummaryDto>> Handle(GetNpcListQuery q, CancellationToken ct) {
+        // Requête directe via DbContext — pas de passage par l'agrégat
+        return await _db.Npcs
+            .Where(n => n.CampaignId == q.CampaignId && !n.IsDeleted)
+            .Select(n => new NpcSummaryDto(n.Id, n.Name, n.Status))
+            .ToListAsync(ct);
+    }
+}
+```
+
+### Pourquoi ne pas passer par les agrégats pour les lectures
+
+Les handlers Query ont le droit d'interroger directement le `DbContext` (EF Core) sans passer par les repositories d'agrégats. Raisons :
+
+1. **Performance** : charger un agrégat complet (avec ses entités enfants) pour afficher une liste de noms est un anti-pattern. Les queries projettent uniquement les colonnes nécessaires.
+2. **Simplicité** : les repositories sont optimisés pour l'écriture (chargement complet de l'agrégat pour protéger ses invariants). Les lectures ont des besoins différents — filtres, tri, pagination, projections.
+3. **Cohérence** : un handler Query ne déclenche jamais de domain events, ne modifie jamais d'état — il n'y a pas d'invariants à protéger.
+
+```
+Application Layer
+├── Commands → Repository → Aggregate (invariants protégés) → Domain Events
+└── Queries  → DbContext direct → DTO (pas d'entité domaine exposée)
+```
+
+### Read model de la vue session
+
+La vue session (UC-06) est la page la plus chargée de l'application : elle agrège des données de plusieurs contextes (Session Conduct, Content Library, Campaign Management). Un handler Query dédié construit ce read model en une passe.
+
+```csharp
+public record GetSessionViewQuery(SessionId SessionId, RequesterId Requester)
+    : IRequest<SessionViewDto>;
+
+public class SessionViewDto {
+    public SessionId Id { get; init; }
+    public SessionStatus Status { get; init; }
+    public ScenarioSummaryDto? ActiveScenario { get; init; }
+    public IReadOnlyList<SceneSummaryDto> Scenes { get; init; }
+    public IReadOnlyList<NpcPanelDto> SelectedNpcs { get; init; }
+    public IReadOnlyList<CharacterPanelDto> PlayerCharacters { get; init; }
+    public IReadOnlyList<LiveNoteDto> LiveNotes { get; init; }      // filtrées selon visibilité et requester
+    public IReadOnlyList<PinnedDocumentDto> PinnedDocuments { get; init; }
+}
+```
+
+**Règles de filtrage appliquées dans le handler Query** :
+- `LiveNote` avec `visibility = PLAYER_PRIVATE` : retournées uniquement si `requester.UserId == note.authorId`.
+- `LiveNote` avec `visibility = PRIVATE` : retournées uniquement si `requester` est le MJ de la campagne.
+- `PinnedDocument` : vérification d'accès via `AccessPolicy.CanAccess` pour chaque document.
+
+Ce read model est recalculé à chaque requête — pas de matérialisation en base pour le MVP. Si les performances le requièrent, il devient un candidat à la mise en cache applicatif (Redis ou mémoire in-process).
+
+### Anti-pattern à éviter : command qui retourne des données
+
+```csharp
+// Mauvais — la commande retourne les données complètes du NPC créé
+public record CreateNpcCommand(...) : IRequest<NpcDetailDto>;
+
+// Bon — retourne uniquement l'Id, la lecture est une query séparée
+public record CreateNpcCommand(...) : IRequest<NpcId>;
+// Puis si l'UI a besoin des données : new GetNpcQuery(npcId)
+```
+
+Retourner des données complètes depuis une commande crée un couplage entre l'écriture et la lecture. Si le format du DTO change, la commande doit changer aussi — alors que son seul rôle est de modifier l'état.

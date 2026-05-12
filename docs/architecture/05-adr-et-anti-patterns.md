@@ -291,6 +291,116 @@ Options : microservices, monolithe classique, monolithe modulaire.
 
 **Conséquences** : les backlinks sont calculés à la lecture, pas stockés. Cohérence garantie sans double maintenance. L'index GIN est posé sur la colonne `value` existante — pas de nouvelle colonne.
 
+**Règle d'affichage** : les backlinks orphelins (document source soft-deleted) sont filtrés à la requête via `AND d.isDeleted = false` jointure sur `DOCUMENT`. Ils restent en base mais ne sont jamais affichés. Voir ADR-23.
+
+---
+
+### ADR-19 — RequesterId comme union type pour l'autorisation unifiée
+
+**Contexte** : `AccessPolicy.CanAccess` doit évaluer les droits d'accès pour deux types de demandeurs radicalement différents : un `User` authentifié (avec `UserId`) et un joueur invité via `GuestAccess` (sans `UserId`). L'ancienne signature `CanAccess(documentId, userId: UserId)` exclut les invités.
+
+**Décision** : introduction de `RequesterId` comme union type scellée dans le Shared Kernel :
+
+```csharp
+abstract record RequesterId;
+record AuthenticatedRequesterId(UserId UserId) : RequesterId;
+record GuestRequesterId(GuestAccessId GuestAccessId) : RequesterId;
+```
+
+La signature devient `CanAccess(documentId: DocumentId, requester: RequesterId) → bool`. L'algorithme résout le type de demandeur par pattern matching avant d'évaluer les règles.
+
+**Alternatives écartées** :
+- `CanAccess` avec deux surcharges séparées : duplication de la logique d'évaluation, risque d'incohérence entre les deux chemins.
+- `UserId?` nullable : un `null` n'est pas un invité — c'est une absence de valeur. Crée des états ambigus.
+- Traiter les invités comme des `User` avec un rôle `GUEST` : contredit ADR-05. Un `User` est une identité persistante avec email et authentification.
+
+**Conséquences** : le Shared Kernel gagne deux nouveaux types record. Tous les call sites de `CanAccess` doivent être mis à jour. L'avantage est que le compilateur force la gestion des deux cas sans possibilité de silently ignorer les invités.
+
+---
+
+### ADR-20 — Tags comme entités de campagne, pas comme value objects
+
+**Contexte** : les documents peuvent être taggés. Deux modèles possibles : tags comme value objects embarqués dans `Document` (liste de strings) ou tags comme entités avec leur propre cycle de vie au niveau campagne.
+
+**Décision** : `Tag` est une entité de premier niveau dans Content Library, avec `TagId`, `campaignId`, `label` (unique par campagne, case-insensitive), `color?`. Les documents référencent des `TagId[]`. Une table de liaison `DOCUMENT_TAG` gère l'association.
+
+**Alternatives écartées** :
+- Tags comme strings embarqués dans `Document` : impossible de renommer un tag sur tous les documents, impossible de changer sa couleur, pas de liste canonique de tags. Évolutivité bloquée dès la première itération.
+- Tags dans le Shared Kernel : les tags sont spécifiques à une campagne et ont des règles métier (unicité, couleur). Ce n'est pas une primitive — c'est un concept de Content Library.
+
+**Conséquences** :
+- UC-19 `GererTagsCampagne` est nécessaire pour le cycle de vie des tags.
+- La suppression d'un tag émet `TagDeleted` — un handler purge `DOCUMENT_TAG` pour ce `TagId`.
+- Les tags sont chargés une fois par contexte de campagne et mis en cache côté client pour les suggestions.
+
+---
+
+### ADR-21 — Dispatch des domain events synchrone en-process pour le MVP
+
+**Contexte** : les domain events sont émis par les agrégats. Question de l'architecture de dispatch : synchrone (in-process, MediatR) ou asynchrone (message broker, outbox pattern).
+
+**Décision** : dispatch synchrone en-process via MediatR pour le MVP. Les handlers sont appelés dans la même transaction applicative que la commande qui a émis l'événement.
+
+**Alternatives écartées** :
+- Message broker (RabbitMQ, Azure Service Bus) : complexité opérationnelle injustifiée pour un monolithe MVP. Introduit la latence, la gestion des dead letters, la supervision d'un service supplémentaire.
+- Outbox pattern : pertinent pour la cohérence éventuelle cross-service. Inutile dans un monolithe où tous les handlers s'exécutent dans le même processus.
+
+**Conséquences** :
+- Les handlers `DocumentTitleUpdated`, `NpcDeleted`, `TagDeleted`, etc. s'exécutent dans la même transaction que la commande source.
+- Risque : un handler défaillant fait échouer la commande entière — acceptable pour le MVP, préférable à des incohérences silencieuses.
+- **Point d'extension** : si le monolithe est extrait en services, les domain events deviennent des messages inter-services. L'interface `IDomainEventHandler<T>` est préservée — seule l'implémentation de dispatch change.
+
+---
+
+### ADR-22 — Co-création par factory method pour Document + enveloppe métier
+
+**Contexte** : `NPC`, `PlayerCharacter`, `Scenario` et `Scene` sont des enveloppes métier qui possèdent chacune un `Document` associé. Ces deux entités doivent être créées atomiquement — un `NPC` sans `Document` est un état invalide, et vice-versa.
+
+**Décision** : chaque enveloppe expose une factory method statique pour la création. La factory crée l'enveloppe et son `Document` ensemble, les associe, et retourne les deux en une seule opération. La création directe d'un `Document` de type `NPC/CHARACTER/SCENARIO/SCENE` sans passer par la factory est interdite.
+
+```csharp
+// Factory — seul point d'entrée autorisé
+var (npc, document) = NPC.Create(campaignId, name, templateId);
+
+// Interdit — crée un Document orphelin sans enveloppe
+var doc = Document.Create(campaignId, DocumentType.NPC, ...);
+```
+
+**Alternatives écartées** :
+- Création séparée dans le handler Application : risque de transaction partielle si la deuxième création échoue. L'application porterait la responsabilité d'un invariant domaine.
+- Un seul agrégat racine `NPC` contenant `Document` : trop couplé — `Document` a son propre agrégat racine avec des règles d'accès et de blocs indépendantes.
+
+**Conséquences** : les handlers Application pour la création d'un NPC/Character/Scenario/Scene appellent uniquement les factories, jamais `Document.Create` directement pour ces types.
+
+---
+
+### ADR-23 — Backlinks orphelins filtrés à la requête
+
+**Contexte** : un document peut avoir des blocs `RELATION` pointant vers d'autres documents. Si le document cible est soft-deleted, le backlink devient orphelin. Question : que faire des backlinks orphelins ?
+
+**Décision** : les backlinks orphelins ne sont pas affichés. La requête de backlinks filtre systématiquement les documents sources avec `isDeleted = false`. Aucun nettoyage des blocs RELATION en base — le filtrage est applicatif, à la requête.
+
+**Alternatives écartées** :
+- Afficher les backlinks orphelins avec un état "document supprimé" : complexité UX pour un cas marginal. Le MJ ne veut pas voir des liens vers des documents qui n'existent plus.
+- Purger les blocs RELATION lors du soft-delete du document cible : double propagation complexe — il faudrait retrouver tous les documents qui référencent la cible et modifier leurs blocs. Coûteux, fragile.
+- Hard delete des blocs RELATION : suppression irréversible d'une information structurelle. Incompatible avec la stratégie soft-delete.
+
+**Conséquences** : si un document est restauré (soft-delete annulé), ses backlinks réapparaissent automatiquement sans aucune migration. La stratégie est cohérente avec le reste du système.
+
+---
+
+### ADR-24 — UUID dans les URL, slugs pour l'affichage uniquement
+
+**Contexte** : les URL des campagnes, documents, PNJ, etc. doivent identifier les ressources de façon stable. Deux approches courantes : slugs lisibles (`/campaigns/ma-campagne/documents/mon-pnj`) ou UUID (`/campaigns/550e8400-.../documents/6ba7b810-...`).
+
+**Décision** : UUID dans les URL. Pattern : `/campaigns/{campaignId}/documents/{documentId}`. Les slugs (`Slug`) sont stockés comme champ de recherche et d'affichage, mais ne servent jamais à l'identification en URL.
+
+**Alternatives écartées** :
+- Slugs dans les URL : fragiles — un renommage change l'URL et casse les bookmarks. Nécessite une gestion de redirections. La contrainte d'unicité des slugs par campagne est plus complexe à maintenir qu'un UUID.
+- Slugs avec redirection (canonical URL) : complexité inutile pour un SaaS B2C à ce stade.
+
+**Conséquences** : les URL sont stables et opaques. Le `Slug` du `Shared Kernel` reste utile pour la recherche, les filtres et l'affichage dans les fils d'Ariane, mais n'a aucun impact sur le routage.
+
 ---
 
 ## Anti-patterns à éviter

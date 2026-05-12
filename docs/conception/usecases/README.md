@@ -29,6 +29,7 @@
 | [UC-16](UC-16-gerer-documents-lore.md) | Gérer les documents de lore | MJ | Could Have |
 | [UC-17](UC-17-organiser-dossiers.md) | Organiser le contenu en dossiers | MJ | Should Have |
 | [UC-18](UC-18-synchroniser-template.md) | Synchroniser un document avec son template | MJ | Could Have |
+| [UC-19](UC-19-gerer-tags-campagne.md) | Gérer les tags d'une campagne | MJ | Should Have |
 
 ---
 
