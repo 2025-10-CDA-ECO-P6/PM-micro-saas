@@ -240,6 +240,8 @@ classDiagram
         +slug: Slug
         +visibility: Visibility
         +templateId: TemplateId?
+        +folderId: FolderId?
+        +appliedTemplateVersion: Int?
         +tags: Tag[]
         +audit: AuditInfo
         +softDelete: SoftDelete
@@ -481,11 +483,45 @@ classDiagram
     DocumentTemplate "1" *-- "0..*" BlockSchema
     DocumentTemplate --> TemplateScope
     Document ..> DocumentTemplate : snapshot à la création
+    Document ..> Folder : folderId (optionnel)
     note for NPC "Entité avec repository\nPas d'agrégat racine\nPas d'entités enfants"
     note for PlayerCharacter "ownerId null = en attente\nd'association joueur"
     note for DocumentTemplate "Combinaisons valides :\nBUILTIN → ownerId null, campaignId null\nCAMPAIGN → ownerId non-null, campaignId non-null\nUSER → ownerId non-null, campaignId null"
     note for Scenario "order : Int géré par ScenarioOrderService\nservice domaine — persiste l'ordre dans Scenario\nCardinality 0..* : scénario sans scènes autorisé"
     note for Scene "Cycle de vie lié à Scenario\nSuppression en cascade\nL'ordre est une responsabilité\nde l'agrégat Scenario\npas de la Scene elle-même"
+```
+
+---
+
+## 4.5 Content Library — Dossiers
+
+`Folder` est un agrégat racine léger — il protège l'invariant "un dossier système
+ne peut pas être supprimé" et gère son ordre via `FolderOrderService`.
+Il ne possède pas d'entités enfants propres : les `Document` le référencent par Id.
+
+```mermaid
+classDiagram
+    direction TB
+    class Folder {
+        <<aggregate root>>
+        +id: FolderId
+        +campaignId: CampaignId
+        +name: String
+        +slug: Slug
+        +defaultTemplateId: TemplateId?
+        +isSystem: Boolean
+        +order: Int
+        +audit: AuditInfo
+        +softDelete: SoftDelete
+    }
+    class Document {
+        +folderId: FolderId?
+        +appliedTemplateVersion: Int?
+    }
+    Folder ..> Document : contient (ref par folderId)
+    Folder ..> DocumentTemplate : defaultTemplateId
+    note for Folder "isSystem = true → non supprimable\n4 dossiers créés à l'init campagne :\n PNJ, Personnages joueurs, Scénarios, Notes\nTous renommables\nOrdre géré par FolderOrderService"
+    note for Document "folderId null = non classé\nappliedTemplateVersion = version du template\nsynchro manuelle via UC-18"
 ```
 
 ---
@@ -620,6 +656,7 @@ graph TB
         PC[PlayerCharacter]
         SCE[Scenario et Scene]
         TPL[DocumentTemplate]
+        FLD[Folder]
     end
     subgraph SE[Session Conduct]
         SS[Session]
@@ -638,6 +675,7 @@ graph TB
     CM -->|CampaignId| SE
     CR -.->|DocumentId ref cross-context| DOC
     CL -->|DocumentId CharacterId ScenarioId| SE
+    FLD -.->|contient par folderId| DOC
     CA --- MB
     CA --- INV
     INV -.->|cree| GA

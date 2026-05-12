@@ -32,6 +32,7 @@ flowchart LR
     subgraph SYS["Assistant MJ"]
         UC01(["Creer une campagne"])
         UC_PREP_CONTENT(["Preparer le contenu MJ"])
+        UC17(["Organiser le contenu"])
         UC05(["Preparer une session"])
         UC06(["Utiliser la vue session"])
         UC09(["Partager des informations"])
@@ -41,6 +42,7 @@ flowchart LR
     end
     MJ --> UC01
     MJ --> UC_PREP_CONTENT
+    MJ --> UC17
     MJ --> UC05
     MJ --> UC06
     MJ --> UC09
@@ -80,6 +82,8 @@ flowchart LR
         UC_NPC(["Gerer les PNJ"])
         UC_NOTES(["Gerer les notes MJ"])
         UC_LINK(["Lier des elements de campagne"])
+        UC_FOLDERS(["Organiser en dossiers"])
+        UC_TPL_SYNC(["Synchroniser avec le template"])
     end
     subgraph SESSION["Session"]
         UC_PREP_SESSION(["Preparer une session"])
@@ -104,6 +108,8 @@ flowchart LR
     MJ --> UC_SCENARIO
     MJ --> UC_NPC
     MJ --> UC_NOTES
+    MJ --> UC_FOLDERS
+    MJ --> UC_TPL_SYNC
     MJ --> UC_PREP_SESSION
     MJ --> UC_RUN_SESSION
     MJ --> UC_SEARCH
@@ -156,6 +162,8 @@ flowchart LR
         UC_NPC(["Gerer les PNJ"])
         UC_NOTES(["Gerer les notes MJ"])
         UC_LINK(["Lier les elements de campagne"])
+        UC_FOLDERS(["Organiser le contenu en dossiers"])
+        UC_TPL_SYNC(["Synchroniser avec le template"])
     end
     subgraph CONDUIRE["Conduire la session"]
         UC_PREP(["Preparer une session"])
@@ -177,6 +185,8 @@ flowchart LR
     MJ --> UC_SCENARIO
     MJ --> UC_NPC
     MJ --> UC_NOTES
+    MJ --> UC_FOLDERS
+    MJ --> UC_TPL_SYNC
     MJ --> UC_PREP
     MJ --> UC_START
     MJ --> UC_SEARCH

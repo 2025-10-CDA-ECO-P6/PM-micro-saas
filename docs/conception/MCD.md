@@ -43,6 +43,8 @@ erDiagram
     CAMPAIGN ||--o{ GUEST_ACCESS : "accueille"
     CAMPAIGN ||--o{ CONTENT_ACCESS_RULE : "definit"
     CAMPAIGN ||--o{ DOCUMENT : "contient"
+    CAMPAIGN ||--o{ FOLDER : "contient"
+    FOLDER ||--o{ DOCUMENT : "contient"
     CAMPAIGN ||--o{ NPC : "contient"
     CAMPAIGN ||--o{ PLAYER_CHARACTER : "contient"
     CAMPAIGN ||--o{ SCENARIO : "contient"
@@ -225,6 +227,8 @@ erDiagram
         string slug "unique par (campaignId, type)"
         enum visibility "PRIVATE | PLAYER_PRIVATE | SHARED | PUBLIC"
         uuid templateId FK "-> DOCUMENT_TEMPLATE, nullable"
+        uuid folderId "ref FOLDER, nullable — null = non classe"
+        int appliedTemplateVersion "nullable — version du template appliquee au document"
         datetime createdAt
         datetime updatedAt
         uuid createdById "ref Identity"
@@ -282,7 +286,45 @@ erDiagram
     DOCUMENT ||--o{ DOCUMENT_TAG : "tague par"
     DOCUMENT }o--o| DOCUMENT_TEMPLATE : "cree depuis (snapshot)"
     DOCUMENT_TEMPLATE ||--o{ BLOCK_SCHEMA : "definit"
+    FOLDER ||--o{ DOCUMENT : "contient"
+    FOLDER }o--o| DOCUMENT_TEMPLATE : "template par defaut"
 ```
+
+### 4.1b Table FOLDER
+
+```mermaid
+erDiagram
+    FOLDER {
+        uuid id PK
+        uuid campaignId FK "-> CAMPAIGN"
+        string name
+        string slug "unique par campaignId"
+        uuid defaultTemplateId "ref DOCUMENT_TEMPLATE, nullable"
+        boolean isSystem "true = PNJ, Personnages joueurs, Scenarios, Notes"
+        int order "position dans la navigation de campagne"
+        datetime createdAt
+        datetime updatedAt
+        uuid createdById FK
+        uuid updatedById FK
+        boolean isDeleted
+        datetime deletedAt
+        uuid deletedById FK
+    }
+```
+
+**Dossiers système créés à l'initialisation de chaque campagne :**
+
+| name | isSystem | defaultTemplateId |
+|---|---|---|
+| PNJ | true | → template "Fiche PNJ générique" |
+| Personnages joueurs | true | → template "Fiche personnage générique" |
+| Scénarios | true | null |
+| Notes | true | null |
+
+- Dossiers système : `isSystem = true`, non supprimables, renommables.
+- `slug` : unique par `campaignId`, généré à la création, non modifiable après.
+- `order` : géré par `FolderOrderService` (domain service).
+- Index recommandés : `FOLDER(campaignId)`, `FOLDER(campaignId, slug)` unique, `FOLDER(campaignId, isSystem)`.
 
 ### Structure de DOCUMENT_BLOCK.value selon kind
 
@@ -397,6 +439,7 @@ erDiagram
   `PLAYER_CHARACTER(ownerId)`, `SCENARIO(campaignId)`, `SCENARIO(campaignId, order)`,
   `SCENE(scenarioId, order)`.
 - Index GIN recommande sur `DOCUMENT_BLOCK.value` pour les requetes dans le JSON.
+- Index GIN recommande sur `DOCUMENT_BLOCK.value->>'targetId'` pour les requetes de backlinks (blocs `RELATION` pointant vers un document cible).
 - Index GIN recommande sur `DOCUMENT.title` et `DOCUMENT_BLOCK.value` pour la recherche FTS (PostgreSQL tsvector).
 - `CONTENT_ACCESS_RULE` : index unique sur `(documentId, targetType, targetId)` pour eviter les doublons.
 
@@ -515,6 +558,7 @@ erDiagram
 | `DOCUMENT_TAG` | Content Library | Entite enfant | Non — suppression physique |
 | `DOCUMENT_TEMPLATE` | Content Library | Aggregate root | Oui |
 | `BLOCK_SCHEMA` | Content Library | Entite enfant | Non — suppression physique |
+| `FOLDER` | Content Library | Aggregate root | Oui |
 | `NPC` | Content Library | Entite (repository) | Oui |
 | `PLAYER_CHARACTER` | Content Library | Entite (repository) | Oui |
 | `SCENARIO` | Content Library | Aggregate root | Oui |
@@ -541,6 +585,7 @@ Ces colonnes contiennent des UUID vers des entites d'un autre bounded context.
 | `CONTENT_ACCESS_RULE` | `documentId` | `DOCUMENT.id` (Content Library) |
 | `CONTENT_ACCESS_RULE` | `targetId` | `USER.id` ou `PLAYER_CHARACTER.id` selon `targetType` |
 | `DOCUMENT` | `campaignId` | `CAMPAIGN.id` (Campaign Management) |
+| `FOLDER` | `campaignId` | `CAMPAIGN.id` (Campaign Management) |
 | `NPC` | `campaignId` | `CAMPAIGN.id` (Campaign Management) |
 | `NPC` | `linkedCharacterId` | `PLAYER_CHARACTER.id` (meme contexte, ref narrative) |
 | `PLAYER_CHARACTER` | `campaignId` | `CAMPAIGN.id` (Campaign Management) |

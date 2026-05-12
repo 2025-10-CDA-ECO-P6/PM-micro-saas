@@ -263,6 +263,36 @@ Options : microservices, monolithe classique, monolithe modulaire.
 
 ---
 
+### ADR-17 — Dossiers comme structure libre gérée par l'utilisateur
+
+**Contexte** : le contenu d'une campagne (PNJ, scénarios, notes, etc.) doit être organisé. Deux approches : des catégories fixes imposées par l'application (DocumentType seul), ou une structure de dossiers gérée par le MJ.
+
+**Décision** : agrégat `Folder` dans Content Library. Le MJ crée, renomme et réordonne ses dossiers librement. Quatre dossiers système (`PNJ`, `Personnages joueurs`, `Scénarios`, `Notes`) sont créés automatiquement à l'initialisation de la campagne — ils sont renommables mais non supprimables (`isSystem = true`).
+
+**Alternatives écartées** :
+- Catégories fixes uniquement (DocumentType) : ferme la porte à la personnalisation. Un MJ qui veut un dossier "Lieux", "Factions" ou "Secrets" ne peut pas le créer.
+- Dossiers imbriqués (arborescence) : complexité de navigation et d'implémentation disproportionnée pour le MVP. Reporté à une itération post-MVP.
+
+**Relation avec DocumentType** : les deux coexistent. `DocumentType` qualifie la nature métier d'un document (NPC, CHARACTER, SCENARIO…). Le `Folder` est la couche d'organisation UX. Un NPC peut être dans n'importe quel dossier — le type reste NPC.
+
+**Conséquences** : `Document.folderId` est nullable — un document sans dossier est simplement "non classé". `FolderOrderService` gère l'ordre des dossiers dans la navigation, sur le même modèle que `ScenarioOrderService`.
+
+---
+
+### ADR-18 — Backlinks via index GIN sur DOCUMENT_BLOCK.value
+
+**Contexte** : les blocs `RELATION` (kind = RELATION) permettent de lier un document à un autre via `{ "targetId": "uuid", "targetType": "..." }`. Pour afficher les backlinks (tous les documents qui pointent vers X), il faut requêter cette structure JSONB efficacement.
+
+**Décision** : index GIN sur `DOCUMENT_BLOCK.value->>'targetId'`. La requête de backlinks est `SELECT documentId FROM DOCUMENT_BLOCK WHERE kind = 'RELATION' AND value->>'targetId' = :targetId`. Pas de table de liaison dédiée — l'index rend la requête performante.
+
+**Alternatives écartées** :
+- Table `DOCUMENT_LINK (sourceId, targetId)` dénormalisée : double source de vérité. À chaque modification d'un bloc RELATION, il faudrait maintenir la table. Risque d'incohérence en cas d'échec partiel.
+- Requête séquentielle sans index : O(n) sur tous les blocs de la campagne — inacceptable à l'échelle.
+
+**Conséquences** : les backlinks sont calculés à la lecture, pas stockés. Cohérence garantie sans double maintenance. L'index GIN est posé sur la colonne `value` existante — pas de nouvelle colonne.
+
+---
+
 ## Anti-patterns à éviter
 
 ### Ne pas mettre de règles métier dans les repositories

@@ -55,10 +55,12 @@ la documentation et les conversations.
 | **Document** | Unité de contenu modulaire. Tout contenu éditorial est un Document typé composé de blocs. |
 | **Bloc** | Unité atomique de contenu dans un Document. Chaque bloc a un type et une valeur fortement typée. |
 | **Template** | Schéma de blocs définissant la structure attendue d'un Document. Snapshot à la création — non lié après. |
+| **Dossier** | Conteneur organisationnel créé par le MJ pour regrouper ses documents librement. Quatre dossiers système existent dans chaque campagne (PNJ, Personnages joueurs, Scénarios, Notes). Le MJ peut créer des dossiers personnalisés. |
+| **Backlink** | Référence inverse — liste des documents qui pointent vers un document donné via un bloc RELATION. Calculé à la lecture, sans table de liaison dédiée. |
 | **Session** | Instance d'une partie jouée. Liée optionnellement à un scénario. |
 | **Note live** | Note prise par le MJ pendant une session. Liée automatiquement à la session en cours. |
 | **Résumé** | Compte-rendu d'une session clôturée. Peut être partagé aux joueurs. |
-| **Visibilité** | Niveau d'accès d'un contenu : PRIVATE (MJ uniquement), SHARED (membres ciblés), PUBLIC (tous). |
+| **Visibilité** | Niveau d'accès d'un contenu : PRIVATE (MJ uniquement), PLAYER_PRIVATE (joueur créateur uniquement — MJ exclu), SHARED (membres ciblés via AccessPolicy), PUBLIC (tous les membres). |
 | **AccessPolicy** | Service domaine gérant les autorisations d'accès aux contenus d'une campagne. |
 | **GuestAccess** | Accès temporaire dans une campagne. N'est pas un User — pas d'identité persistante. |
 | **Invitation** | Token généré par le MJ permettant à un joueur de rejoindre une campagne. |
@@ -139,6 +141,7 @@ CharacterId     — Content Library
 ScenarioId      — Content Library
 SceneId         — Content Library
 TemplateId      — Content Library
+FolderId        — Content Library
 SessionId       — Session Conduct
 LiveNoteId      — Session Conduct
 SummaryId       — Session Conduct
@@ -559,11 +562,13 @@ Document
 ├── type        : DocumentType
 ├── customType  : String?           — renseigné si type = CUSTOM
 ├── title       : String
-├── slug        : Slug              — unique par (campaignId, type)
-├── visibility  : Visibility
-├── templateId  : TemplateId?
-├── tags        : Tag[]
-├── blocks      : DocumentBlock[]   — entités enfants, cycle de vie lié
+├── slug                   : Slug              — unique par (campaignId, type)
+├── visibility             : Visibility
+├── templateId             : TemplateId?
+├── folderId               : FolderId?         — null = document non classé
+├── appliedTemplateVersion : Int?              — null = pas de template ou sync jamais effectuée
+├── tags                   : Tag[]
+├── blocks                 : DocumentBlock[]   — entités enfants, cycle de vie lié
 ├── audit       : AuditInfo
 └── softDelete  : SoftDelete
 ```
@@ -894,6 +899,58 @@ BlockSchema
 
 ---
 
+### Agrégat : `Folder`
+
+Conteneur organisationnel créé par le MJ pour regrouper ses documents librement.
+Chaque campagne démarre avec 4 dossiers système créés automatiquement.
+
+```
+Folder
+├── id                : FolderId
+├── campaignId        : CampaignId
+├── name              : String
+├── slug              : Slug              — unique par campaignId
+├── defaultTemplateId : TemplateId?       — template appliqué à la création d'un doc dans ce dossier
+├── isSystem          : Boolean           — true = dossier créé par le système, non supprimable
+├── order             : Int               — position dans la navigation
+├── audit             : AuditInfo
+└── softDelete        : SoftDelete
+```
+
+**Dossiers système créés à l'initialisation de la campagne :**
+
+| Nom | isSystem | Template par défaut |
+|---|---|---|
+| PNJ | true | "Fiche PNJ générique" |
+| Personnages joueurs | true | "Fiche personnage générique" |
+| Scénarios | true | — |
+| Notes | true | — |
+
+#### Invariants et règles métier
+
+- Un dossier système (`isSystem = true`) ne peut pas être supprimé.
+- Tous les dossiers (y compris système) peuvent être renommés.
+- Le `slug` est régénéré depuis le `name` à la création, jamais modifié après.
+- Supprimer un dossier non-système nécessite de traiter ses documents (déplacer ou déclasser).
+- Changer le `defaultTemplateId` n'affecte jamais les documents existants dans le dossier.
+- L'ordre des dossiers est géré par `FolderOrderService` (domain service).
+
+#### Service domaine : `FolderOrderService`
+
+Gère la persistance de l'ordre des dossiers dans une campagne.
+Même pattern que `ScenarioOrderService`.
+
+#### Références entre documents — backlinks
+
+Les références entre documents existent via `RelationBlockValue { targetId: DocumentId, targetType: DocumentType }`.
+Un document peut pointer vers n'importe quel autre document de la campagne via un bloc `RELATION`.
+
+Les **backlinks** (documents qui pointent *vers* un document donné) sont résolus
+via une requête sur `DOCUMENT_BLOCK` filtrée par `kind = RELATION` et `value->>'targetId' = ?`.
+Un index GIN sur ce champ rend la requête efficace sans table de liaison dédiée.
+
+---
+
 ## 8. Bounded Context — Session Conduct
 
 ### Responsabilité
@@ -1030,7 +1087,10 @@ ContentAccessGranted, ContentAccessRevoked
 ### Content Library
 ```
 DocumentCreated, DocumentTitleUpdated, DocumentVisibilityChanged, DocumentDeleted
+DocumentMovedToFolder
 BlockAdded, BlockUpdated, BlockRemoved, BlockReordered
+TemplateAppliedToDocument
+FolderCreated, FolderRenamed, FolderDeleted
 NpcCreated, NpcStatusChanged, NpcLinkedToCharacter, NpcUnlinkedFromCharacter
 CharacterCreated, CharacterOwnerAssigned, CharacterStatusChanged
 CharacterLinkedToNpc, CharacterUnlinkedFromNpc
@@ -1146,6 +1206,29 @@ par un handler qui réagit à l'event `DocumentTitleUpdated` émis par `Document
 La dénormalisation est un choix explicite de performance — le mécanisme de synchronisation
 doit être tout aussi explicite pour éviter les incohérences silencieuses.
 
+### AD-16 — Dossiers utilisateur — structure libre, non imposée
+**Décision** : La structure du contenu d'une campagne est définie par le MJ via des `Folder`
+qu'il crée librement. Le système fournit 4 dossiers système non suppressibles à l'initialisation
+(PNJ, Personnages joueurs, Scénarios, Notes). Le `DocumentType` reste utilisé en interne
+pour les entités à logique domaine propre (NPC, CHARACTER), mais n'est pas visible comme
+catégorie imposée côté utilisateur.
+**Raison** : Chaque MJ a une organisation différente selon son système de jeu et son style
+de narration. Imposer une structure rigide bride l'outil et force les utilisateurs à contourner
+les catégories.
+**Alternatives écartées** : Types documentaires fixes côté UX — trop rigide. Aucune structure
+par défaut — trop vide au démarrage, friction initiale élevée.
+
+### AD-17 — Synchronisation template — action manuelle, jamais automatique
+**Décision** : Modifier un template ne propage jamais automatiquement les changements
+aux documents existants. La commande `ApplyTemplateToDocument` est une action explicite
+déclenchée par le MJ. Elle ajoute uniquement les blocs manquants, n'écrase jamais le contenu.
+**Raison** : Un MJ qui a rempli ses fiches ne doit pas voir son travail écrasé.
+La synchronisation automatique crée des conflits impossibles à résoudre proprement
+(blocs supprimés, contenu réorganisé). L'action manuelle + prévisualisation donne
+le contrôle à l'utilisateur.
+**`Document.appliedTemplateVersion`** : permet de détecter si une sync est disponible
+sans charger le template.
+
 ---
 
 ## 11. Hors périmètre MVP — points d'extension documentés
@@ -1165,3 +1248,5 @@ doit être tout aussi explicite pour éviter les incohérences silencieuses.
 | Verrouillage de champs | `DocumentBlock.isLocked` modélisé, non activé dans le MVP | Content Library |
 | Factions | Représentées via `Document(CUSTOM, "FACTION")` si nécessaire — pas d'entité dédiée | Content Library |
 | UserProjection locale | Si extraction de Campaign Management en service : ajouter projection via events | Campaign Management |
+| Dossiers imbriqués (sous-dossiers) | `Folder.parentFolderId?` — non activé MVP, un seul niveau de dossiers | Content Library |
+| Synchronisation template automatique | `Document.appliedTemplateVersion` modélisé — propagation auto non activée | Content Library |
