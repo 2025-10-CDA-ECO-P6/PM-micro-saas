@@ -1,8 +1,8 @@
 # Use Cases — Index
 
-> Contexte produit, positionnement MVP et acteurs → [vision-produit.md](../vision-produit.md)
+> Contexte produit, positionnement MVP et acteurs → [vision-produit.md](../vision/vision-produit.md)
 >
-> Priorisation MoSCoW → [moscow.md](../moscow.md)
+> Priorisation MoSCoW → [moscow.md](../vision/moscow.md)
 
 ---
 

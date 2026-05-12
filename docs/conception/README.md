@@ -62,6 +62,18 @@ Modèle conceptuel de données (MCD / ERD) par bounded context.
 
 ---
 
+## Stack technique
+
+- [stack.md](stack.md) — Choix technologiques, justifications, points forts/faibles et évolutions futures
+
+---
+
+## Pages de l'application
+
+- [pages.md](pages.md) — Référence complète de toutes les pages (URL, acteurs, éléments clés, priorité wireframes)
+
+---
+
 ## Autres fichiers à la racine
 
 - [Interview.md](Interview.md) — Notes d'entretien utilisateur

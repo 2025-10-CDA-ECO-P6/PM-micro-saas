@@ -149,6 +149,30 @@ uniquement sur les entités qui portent ce value object.
 
 ---
 
+## Domain et Application sont agnostiques du client
+
+`Domain` et `Application` ne savent pas s'ils sont appelés depuis une requête HTTP, une commande MAUI, un job en arrière-plan ou un test unitaire. C'est une propriété structurelle de la Clean Architecture, pas une bonne pratique optionnelle.
+
+```
+[Angular SPA]  [Next.js]  [MAUI]  [Tauri]  [Capacitor]  [CLI]  [Tests]
+      ↓             ↓        ↓        ↓           ↓         ↓       ↓
+  [Haversack.Api]       [Presentation.Maui]  [Presentation.Desktop]
+          ↓                      ↓                     ↓
+              ───────── Haversack.Application ──────────
+                               ↓
+                        Haversack.Domain
+```
+
+Chaque client est un projet de présentation séparé. Il peut :
+- consommer `Haversack.Api` via HTTP (Angular, Tauri, Capacitor, Next.js)
+- ou référencer directement `Haversack.Application` dans la même solution (MAUI, CLI, tests)
+
+Dans les deux cas, `Domain` et `Application` ne changent pas. Les handlers, règles métier, invariants et domain events sont identiques quel que soit le client qui les invoque.
+
+**Conséquence pratique** : ajouter un client mobile (Capacitor) ou desktop (Tauri) après le MVP est un travail de présentation pur — pas de régression possible dans le domaine. Voir [06-structure-projets.md](06-structure-projets.md) pour le détail par technologie.
+
+---
+
 ## Flux d'une modification typique
 
 Voici le flux complet d'un use case, de l'API au domaine et retour :

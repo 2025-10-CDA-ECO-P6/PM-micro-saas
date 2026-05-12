@@ -15,6 +15,7 @@ pour une première découverte, ou aller directement au fichier pertinent.
 | [03-patterns-de-modelisation.md](03-patterns-de-modelisation.md) | Agrégats, modèle Document modulaire, références cross-context | Développeur qui modifie ou étend le domaine |
 | [04-domaine-et-infrastructure.md](04-domaine-et-infrastructure.md) | Séparation des couches, EF Core, ASP.NET Identity, AuditInfo | Développeur qui implémente la persistance |
 | [05-adr-et-anti-patterns.md](05-adr-et-anti-patterns.md) | Décisions d'architecture et pièges à éviter | Toute personne qui se demande "pourquoi" |
+| [06-structure-projets.md](06-structure-projets.md) | Structure de la solution .NET, projets, namespaces, règles de dépendances | Développeur qui initialise ou structure la solution |
 
 ---
 

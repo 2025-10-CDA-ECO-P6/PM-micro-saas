@@ -195,6 +195,11 @@ Options : microservices, monolithe classique, monolithe modulaire.
 
 **Conséquences** : les bounded contexts peuvent être extraits en services indépendants si la charge ou les équipes le justifient. L'isolation au niveau code est une précondition à cette extraction.
 
+**Évolutions permises par cette architecture** :
+- Extraction progressive de contextes en microservices (SessionConduct en premier candidat si la charge live le justifie)
+- Ajout de clients de présentation supplémentaires (PWA, Tauri desktop, Capacitor mobile, MAUI natif) sans modifier Domain ni Application — voir [06-structure-projets.md](06-structure-projets.md)
+- Remplacement de l'implémentation d'Infrastructure (ex : changer le provider email, migrer vers Elasticsearch) sans toucher au domaine
+
 ---
 
 ### ADR-12 — FK réelle CAMPAIGN.ownerId → USER (exception documentée)
