@@ -670,12 +670,14 @@ Une partie est prévue à une date donnée.
 
 5. Il sélectionne les éléments utiles :
    - scènes prévues ;
-   - PNJ importants ;
-   - notes nécessaires ;
-   - personnages participants.
+   - personnages participants ;
+   - notes nécessaires.
 
-6. Le système prépare une vue session à partir de ces éléments.
-7. Le MJ sauvegarde la session.
+6. Si un scénario est associé, le système déduit automatiquement les PNJ importants
+   depuis les `linkedNpcIds` de toutes les scènes du scénario et les propose au MJ.
+7. Le MJ peut ajouter ou retirer des PNJ de la sélection.
+8. Le système prépare une vue session à partir de ces éléments.
+9. Le MJ sauvegarde la session.
 
 ## Scénarios alternatifs
 
@@ -731,12 +733,17 @@ Si le scénario lié est supprimé ou archivé, le système informe le MJ et con
 - Une session peut être liée à zéro ou un scénario principal.
 - Une session peut avoir plusieurs participants.
 - Une session peut passer par les statuts : prévue, en cours, terminée, archivée.
+- Si un scénario est associé, les PNJ importants (`selectedNpcIds`) sont initialisés
+  automatiquement depuis l’union des `linkedNpcIds` de toutes les scènes du scénario.
+- Le MJ peut modifier manuellement la liste des PNJ sélectionnés à tout moment.
 
 ## Critères d’acceptation
 
 - Le MJ peut créer une session depuis une campagne.
 - Le MJ peut associer un scénario à une session.
-- Le MJ peut sélectionner des PNJ et notes utiles.
+- Si un scénario est associé, les PNJ des scènes sont proposés automatiquement.
+- Le MJ peut ajouter ou retirer des PNJ de la sélection.
+- Le MJ peut sélectionner des notes utiles.
 - Une session créée peut être lancée en vue session.
 
 ## Questions à valider en interview
@@ -852,16 +859,19 @@ Un utilisateur non MJ tente d’accéder à la vue session MJ. Le système refus
 - Les notes rapides créées depuis la vue session sont automatiquement liées à la session en cours.
 - Les éléments privés restent invisibles pour les joueurs.
 - La vue session doit prioriser la rapidité d’accès à l’information plutôt que l’édition avancée.
+- Les PNJ affichés dans la vue session correspondent à `Session.selectedNpcIds` : liste auto-déduite depuis les scènes du scénario actif, modifiable manuellement par le MJ (voir UC-05 A3).
+- Les notes PLAYER_PRIVATE d’un joueur sont invisibles au MJ ; seul le joueur créateur peut les consulter.
 
 ## Critères d’acceptation
 
 - Le MJ peut lancer une vue session.
 - Le MJ peut consulter le scénario actif.
-- Le MJ peut consulter les PNJ liés.
+- Le MJ peut consulter les PNJ de `selectedNpcIds`.
 - Le MJ peut consulter les fiches personnages.
-- Le MJ peut créer une note rapide.
+- Le MJ peut créer une note rapide liée automatiquement à la session.
 - Le MJ peut rechercher une information.
 - Les notes créées en session sont sauvegardées.
+- Les notes PLAYER_PRIVATE ne sont pas visibles dans la vue MJ.
 
 ## Questions à valider en interview
 
@@ -944,9 +954,9 @@ Le joueur accède à sa fiche via un lien temporaire ou une session.
 
 Le personnage est créé avec une structure générique non dépendante d’un système de jeu précis.
 
-### A4 — Verrouillage de certains champs
+### A4 — Verrouillage de certains champs *(hors MVP — modélisé)*
 
-Le MJ verrouille des champs que le joueur ne peut pas modifier.
+Le MJ verrouille des champs que le joueur ne peut pas modifier. Le champ `DocumentBlock.isLocked: Boolean` est modélisé dans le domaine (valeur par défaut `false`) mais cette fonctionnalité n'est pas activée dans le MVP.
 
 ## Exceptions
 
@@ -1525,9 +1535,9 @@ Le MJ termine la session sans rédiger de résumé.
 
 Le MJ revient sur une session terminée pour compléter le résumé.
 
-### A3 — Version privée et version partagée
+### A3 — Version privée et version partagée *(hors MVP)*
 
-Le MJ garde une version privée détaillée et partage une version simplifiée aux joueurs.
+Le MJ garde une version privée détaillée et partage une version simplifiée aux joueurs. Dans le MVP, un seul résumé existe avec une visibilité paramétrable (privée ou partagée).
 
 ### A4 — Création automatique de notes de suivi
 
@@ -1537,7 +1547,7 @@ Certaines informations du résumé peuvent être transformées en notes ou tâch
 
 ### E1 — Clôture accidentelle
 
-Le MJ peut rouvrir une session terminée ou modifier son résumé.
+Le MJ peut modifier le contenu d'une session CLOSED (résumé, LiveNotes rétroactives) sans changer son statut. La machine d'états est unidirectionnelle : PLANNED → LIVE → CLOSED → ARCHIVED. Une session CLOSED reste éditable ; une session ARCHIVED est en lecture seule complète.
 
 ### E2 — Erreur de sauvegarde
 
@@ -1563,18 +1573,22 @@ Le système avertit le MJ et conserve le contenu saisi si possible.
 
 ## Règles métier
 
-- Une session terminée reste consultable.
-- Le MJ peut modifier un résumé après clôture.
+- La machine d’états Session est unidirectionnelle : PLANNED → LIVE → CLOSED → ARCHIVED.
+- Une session CLOSED est consultable et son contenu reste éditable (résumé, LiveNotes rétroactives).
+- Une session ARCHIVED est en lecture seule complète.
 - Le résumé est privé par défaut.
 - Le MJ choisit explicitement ce qui est partagé.
+- "Rouvrir" une session CLOSED signifie modifier son contenu, pas revenir au statut LIVE.
 
 ## Critères d’acceptation
 
-- Le MJ peut clôturer une session.
-- Le MJ peut rédiger un résumé.
+- Le MJ peut clôturer une session (LIVE → CLOSED).
+- Le MJ peut rédiger ou modifier le résumé d’une session CLOSED.
+- Le MJ peut ajouter des LiveNotes rétroactives sur une session CLOSED.
 - Le résumé est sauvegardé.
 - Le MJ peut choisir de partager ou non le résumé.
 - Une session terminée apparaît dans l’historique.
+- Une session ARCHIVED ne peut plus être éditée.
 
 ## Questions à valider en interview
 
@@ -1582,6 +1596,217 @@ Le système avertit le MJ et conserve le contenu saisi si possible.
 - Les résumés sont-ils destinés au MJ, aux joueurs ou aux deux ?
 - Quelles informations sont importantes à conserver ?
 - Les MJ veulent-ils préparer la prochaine session à partir du résumé ?
+
+---
+
+# UC-13 — Gérer ses notes personnelles (joueur)
+
+## Acteur principal
+
+Joueur
+
+## Acteurs secondaires
+
+Aucun.
+
+## Objectif
+
+Permettre au joueur de consigner des notes personnelles sur la campagne, visibles uniquement par lui-même.
+
+## Contexte
+
+Un joueur peut avoir besoin de noter des informations qu'il ne souhaite pas partager avec le MJ : théories, mémos personnels, objectifs secrets, rappels. Ces notes doivent être strictement privées, invisibles au MJ et aux autres joueurs.
+
+## Besoin utilisateur
+
+Le joueur veut pouvoir prendre des notes personnelles sans qu'elles soient accessibles au MJ ou aux autres participants.
+
+## Déclencheur
+
+Le joueur souhaite noter une information personnelle pendant ou en dehors d'une session.
+
+## Préconditions
+
+- Le joueur est associé à une campagne.
+- Le joueur dispose d'un compte ou d'un accès GuestAccess.
+
+## Scénario nominal
+
+1. Le joueur accède à son espace dans la campagne.
+2. Il crée une nouvelle note.
+3. Il choisit la visibilité "Personnel" (`PLAYER_PRIVATE`).
+4. Il saisit le contenu de la note.
+5. Il sauvegarde.
+6. La note est stockée avec `visibility = PLAYER_PRIVATE` et `createdById = userId`.
+7. La note n'apparaît pas dans les vues MJ ni dans les vues des autres joueurs.
+
+## Scénarios alternatifs
+
+### A1 — Note créée pendant la session
+
+Le joueur prend une note personnelle directement depuis la vue de session active.
+
+### A2 — Modification d'une note existante
+
+Le joueur revient sur une note personnelle pour la compléter ou la corriger.
+
+### A3 — Suppression
+
+Le joueur supprime une note personnelle. Le MJ n'est pas notifié.
+
+## Exceptions
+
+### E1 — Tentative d'accès par le MJ
+
+Le système refuse l'accès : une note `PLAYER_PRIVATE` n'est accessible qu'au joueur `createdById`, quelle que soit la requête.
+
+### E2 — Joueur sans accès actif
+
+Si l'accès du joueur a expiré (GuestAccess), ses notes `PLAYER_PRIVATE` restent en base mais inaccessibles jusqu'à réactivation.
+
+## Postconditions
+
+- La note est sauvegardée avec `visibility = PLAYER_PRIVATE`.
+- Aucun autre utilisateur (MJ inclus) ne peut consulter cette note.
+- La note est accessible au joueur dans les sessions suivantes.
+
+## Données manipulées
+
+- Document / Note avec `visibility = PLAYER_PRIVATE`
+- `createdById: UserId` (discriminant d'accès)
+- Campagne associée
+- Session associée (optionnel)
+
+## Règles métier
+
+- Une note `PLAYER_PRIVATE` est visible uniquement par son créateur (`createdById`).
+- Le MJ n'a pas accès aux notes `PLAYER_PRIVATE`, même s'il est propriétaire de la campagne.
+- La règle d'accès est appliquée par le domaine (`ContentAccessPolicy`) et non par la couche applicative seule.
+- Les notes `PLAYER_PRIVATE` n'apparaissent pas dans les résultats de recherche du MJ.
+
+## Critères d'acceptation
+
+- Le joueur peut créer une note avec visibilité `PLAYER_PRIVATE`.
+- La note n'est pas visible dans la vue MJ de la campagne.
+- La note n'est pas retournée par la recherche du MJ.
+- Le joueur peut modifier et supprimer ses propres notes personnelles.
+- La note est accessible au joueur lors des sessions suivantes.
+
+---
+
+# UC-14 — Créer un élément à la volée pendant la session
+
+## Acteur principal
+
+MJ
+
+## Acteurs secondaires
+
+Aucun.
+
+## Objectif
+
+Permettre au MJ de créer instantanément n'importe quel type d'élément (note, PNJ, personnage joueur, document) depuis la vue session, pour s'adapter en temps réel aux imprévus des joueurs.
+
+## Contexte
+
+Pendant une session, les joueurs prennent des décisions imprévues : ils interagissent avec un PNJ non préparé, créent un nouveau personnage spontanément, ou le MJ veut noter immédiatement une information. Le MJ doit pouvoir réagir sans quitter le contexte de session ni bloquer le rythme de jeu.
+
+## Besoin utilisateur
+
+Le MJ veut créer n'importe quel type d'élément de jeu en quelques secondes depuis la vue session, avec un minimum d'informations requises, pour maintenir la fluidité de la partie.
+
+## Déclencheur
+
+Le MJ clique sur "Créer" ou utilise un raccourci depuis la vue session.
+
+## Préconditions
+
+- Une session est en statut LIVE ou CLOSED.
+- Le MJ est authentifié et propriétaire de la campagne.
+
+## Scénario nominal
+
+1. Le MJ ouvre le panneau de création rapide depuis la vue session.
+2. Il sélectionne le type d'élément à créer :
+   - Note (LiveNote ou Document NOTE) ;
+   - PNJ ;
+   - Personnage joueur ;
+   - Document (lore, lieu, objet, etc.).
+
+3. Il saisit un titre minimal (seul champ obligatoire).
+4. Il valide.
+5. Le système crée l'élément avec :
+   - `campaignId` de la session en cours ;
+   - `sessionId` de la session en cours (lien auto) ;
+   - champs requis à leurs valeurs par défaut.
+
+6. L'élément est immédiatement disponible dans la vue session.
+7. Le MJ peut l'enrichir plus tard en dehors de la session.
+
+## Scénarios alternatifs
+
+### A1 — Création d'un PNJ à la volée
+
+Le MJ renseigne uniquement le nom. Le PNJ est créé avec des champs vides et ajouté à `Session.selectedNpcIds`.
+
+### A2 — Création d'un personnage joueur à la volée
+
+Le MJ crée un `PlayerCharacter` minimal (nom seul). Il pourra l'associer à un joueur et le compléter plus tard.
+
+### A3 — Création d'une note LiveNote
+
+La note est automatiquement liée à la session (`sessionId`) et horodatée.
+
+### A4 — Création d'un document générique
+
+Le MJ crée un Document (lieu, faction, objet, lore) avec un titre. Le document est lié à la campagne et optionnellement à la session.
+
+### A5 — Session CLOSED (ajout rétroactif)
+
+Le MJ peut créer des éléments à la volée depuis une session CLOSED (ajout rétroactif d'informations oubliées pendant la partie).
+
+## Exceptions
+
+### E1 — Titre vide
+
+Le système refuse la création si le titre est vide ou uniquement composé d'espaces.
+
+### E2 — Session ARCHIVED
+
+La création à la volée est impossible depuis une session ARCHIVED (lecture seule complète).
+
+## Postconditions
+
+- L'élément créé est lié à la campagne et à la session.
+- Il est immédiatement consultable dans la vue session.
+- Il peut être enrichi ultérieurement.
+- Pour un PNJ : il est ajouté à `Session.selectedNpcIds`.
+
+## Données manipulées
+
+- Note / LiveNote
+- NPC (avec lien dans `Session.selectedNpcIds`)
+- PlayerCharacter
+- Document (tout type)
+- Session (`selectedNpcIds` mis à jour si PNJ)
+
+## Règles métier
+
+- Le titre est le seul champ obligatoire pour toute création à la volée.
+- L'élément créé est automatiquement lié à la `campaignId` et au `sessionId` de la session en cours.
+- Un PNJ créé à la volée est automatiquement ajouté à `Session.selectedNpcIds`.
+- La création à la volée est possible sur une session LIVE ou CLOSED, mais pas ARCHIVED.
+- Les éléments créés à la volée sont privés par défaut (`visibility = PRIVATE`).
+
+## Critères d'acceptation
+
+- Le MJ peut créer une note, un PNJ, un personnage joueur et un document depuis la vue session.
+- Le titre seul suffit à valider la création.
+- L'élément est immédiatement lié à la session et à la campagne.
+- Un PNJ créé à la volée apparaît dans la liste des PNJ de la session.
+- La création est impossible depuis une session ARCHIVED.
+- Le MJ peut compléter l'élément créé à la volée ultérieurement.
 
 ---
 
