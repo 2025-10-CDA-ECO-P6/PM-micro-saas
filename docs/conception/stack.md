@@ -93,7 +93,7 @@ Haversack est une application avec beaucoup d'état, de vues imbriquées, de for
 
 ### Pourquoi
 
-Le développeur maîtrise .NET et C#. ASP.NET Core est un choix naturel pour une architecture DDD + Clean Architecture : typage fort, support natif des value objects, records, sealed classes, bonne intégration EF Core. La plateforme est mature et performante.
+ASP.NET Core est un choix naturel pour une architecture DDD + Clean Architecture : typage fort, support natif des value objects, records, sealed classes, bonne intégration EF Core. La plateforme est mature et performante.
 
 ### Points forts
 
@@ -124,14 +124,13 @@ Le développeur maîtrise .NET et C#. ASP.NET Core est un choix naturel pour une
 
 ### Pourquoi
 
-PostgreSQL supporte nativement la recherche plein texte (FTS), le JSONB pour les blocs de contenu (`DOCUMENT_BLOCK.value`), et les UUID. C'est la base relationnelle la plus complète pour un projet DDD avec des besoins de recherche intégrée.
+PostgreSQL supporte nativement la recherche plein texte (FTS), le JSONB pour les blocs de contenu (`DOCUMENT_BLOCK.value`), et les UUID. 
 
 ### Points forts
 
 - FTS intégré — pas besoin d'Elasticsearch pour le MVP
 - JSONB — stockage flexible des structures de blocs sans multiplier les tables
 - Fiable, open source, hébergeable partout (Railway, Supabase, Render, auto-hébergé)
-- Performances correctes jusqu'à plusieurs millions de lignes sans configuration avancée
 
 ### Points faibles
 

@@ -28,10 +28,10 @@ erDiagram
         uuid sessionId FK "-> SESSION — PK composite (sessionId, characterId)"
         uuid characterId "ref Content Library — PK composite (sessionId, characterId)"
     }
-    SESSION_NPC {
-        uuid sessionId FK "-> SESSION — PK composite (sessionId, npcId)"
-        uuid npcId "ref Content Library — PK composite (sessionId, npcId)"
-        boolean isManual "true = ajoute manuellement par le MJ, false = auto-deduit"
+    SESSION_DOCUMENT {
+        uuid sessionId FK "-> SESSION — PK composite (sessionId, documentId)"
+        uuid documentId "ref Content Library — PK composite (sessionId, documentId)"
+        boolean isManual "true = ajouté manuellement par le MJ, false = auto-déduit depuis les scènes"
     }
     PINNED_ITEM {
         uuid id PK
@@ -55,25 +55,10 @@ erDiagram
         uuid createdById "ref Identity"
         uuid updatedById "ref Identity"
     }
-    SESSION_SUMMARY {
-        uuid id PK
-        uuid sessionId FK "-> SESSION, unique"
-        string content
-        enum visibility "PRIVATE | SHARED | PUBLIC"
-        uuid ownerCharacterId "ref PlayerCharacter, nullable"
-        datetime createdAt
-        datetime updatedAt
-        uuid createdById "ref Identity"
-        uuid updatedById "ref Identity"
-        boolean isDeleted
-        datetime deletedAt
-        uuid deletedById "ref Identity"
-    }
     SESSION ||--o{ SESSION_PARTICIPANT : "reunit"
-    SESSION ||--o{ SESSION_NPC : "selectionne"
+    SESSION ||--o{ SESSION_DOCUMENT : "selectionne"
     SESSION ||--o{ PINNED_ITEM : "epingle"
     SESSION ||--o{ LIVE_NOTE : "genere"
-    SESSION ||--o| SESSION_SUMMARY : "cloture en"
 ```
 
 ### Notes Session Conduct
@@ -81,26 +66,28 @@ erDiagram
 - Invariant fort : une seule session avec `status = LIVE` par `campaignId` à un instant donné.
   Index partiel : `CREATE UNIQUE INDEX ON SESSION (campaignId) WHERE status = 'LIVE'`.
 - Transitions autorisées : `PLANNED → LIVE → CLOSED → ARCHIVED`. Aucun retour — enforce applicativement.
-- `CLOSED` = contenu éditable (résumé, LiveNotes rétroactives MJ). `ARCHIVED` = lecture seule complète.
-- `SESSION_SUMMARY.sessionId` est unique — une session a au plus un résumé.
+- `CLOSED` = contenu éditable pour LiveNotes rétroactives MJ. `ARCHIVED` = lecture seule complète.
+- Les récapitulatifs post-session sont des `DOCUMENT` standards de campagne ; il n'existe pas
+  de table dédiée de résumé dans le MVP.
 - **LiveNote — règles de visibilité** :
   - `authorRole = GM` → visibilité parmi `{PRIVATE, SHARED, PUBLIC}`, défaut `PRIVATE`.
     Contrainte `CHECK` : `authorRole = 'GM' → visibility != 'PLAYER_PRIVATE'`.
   - `authorRole = PLAYER` → visibilité parmi `{PLAYER_PRIVATE, SHARED, PUBLIC}`, défaut `PLAYER_PRIVATE`.
+    Le joueur peut ensuite partager sa note personnelle.
     Contrainte `CHECK` : `authorRole = 'PLAYER' → visibility != 'PRIVATE'`.
   - `visibility = PLAYER_PRIVATE` → `ownerCharacterId IS NOT NULL`.
   - Une note joueur invitée renseigne `authorGuestAccessId`; l'accès futur reste résolu par `ownerCharacterId`.
   - Les joueurs ne peuvent créer des LiveNotes que sur une session LIVE (enforce applicatif).
   - Le MJ peut créer des LiveNotes sur une session LIVE ou CLOSED.
-- `SESSION_NPC.isManual` : les lignes `isManual = false` sont recalculées par `SessionNpcSelector`
-  à chaque changement de scénario. Les lignes `isManual = true` sont conservées.
-- Soft delete `SESSION` : supprimer physiquement `LIVE_NOTE`, `SESSION_PARTICIPANT`, `SESSION_NPC`,
-  soft delete le `SESSION_SUMMARY` associé.
+- `SESSION_DOCUMENT.isManual` : les lignes `isManual = false` sont recalculées par `SessionDocumentSelector`
+  à chaque changement de scénario (depuis l'union des `linkedDocumentIds` des scènes). Les lignes `isManual = true` sont conservées.
+- `SESSION.scenarioId` doit référencer un `SCENARIO(isTemplate = false)` — un scénario source de bibliothèque ne peut pas être attaché à une session.
+- Soft delete `SESSION` : supprimer physiquement `LIVE_NOTE`, `SESSION_PARTICIPANT`, `SESSION_DOCUMENT`.
 - `PINNED_ITEM` et `SESSION_PARTICIPANT` : si une entité référencée est soft-deleted
   dans son contexte, supprimer physiquement la ligne ici.
 - `LIVE_NOTE` : pas de soft delete, suppression physique.
 - `SESSION_PARTICIPANT` : PK composite `(sessionId, characterId)`.
-- `SESSION_NPC` : PK composite `(sessionId, npcId)`.
+- `SESSION_DOCUMENT` : PK composite `(sessionId, documentId)`.
 - Index recommandés : `SESSION(campaignId, status)`, `SESSION_PARTICIPANT(sessionId)`,
-  `SESSION_NPC(sessionId)`, `PINNED_ITEM(sessionId, order)`, `LIVE_NOTE(sessionId)`,
+  `SESSION_DOCUMENT(sessionId)`, `PINNED_ITEM(sessionId, order)`, `LIVE_NOTE(sessionId)`,
   `LIVE_NOTE(sessionId, authorRole)`.

@@ -1,19 +1,19 @@
 # Diagramme de classes — Content Library
 
-## 4. Content Library — Document, blocs et tags
+## 4. Content Library — Document, blocs, tags et types
 
 `Document` est l'agrégat racine du contenu modulaire. Tout contenu éditorial dans
-Haversack est un `Document` typé composé de `DocumentBlock`.
+Haversack est un `Document` composé de `DocumentBlock`.
 
-Chaque `DocumentBlock` porte une `BlockValue` fortement typée — une hiérarchie
-de value objects scellés, un sous-type concret par `BlockKind`. Ce design évite
-les champs optionnels sans sens : un `StatBarBlockValue` n'a que `current` et `max`,
-un `TextBlockValue` n'a que `content`. Aucune ambiguïté sur ce qui est valide.
+Chaque `DocumentBlock` porte une `BlockValue` fortement typée — une hiérarchie de value objects
+scellés, un sous-type concret par `BlockKind`. Ce design évite les champs optionnels sans sens.
 
-`Tag` est une entité légère appartenant à une campagne, créée par le MJ et réutilisable
-sur n'importe quel `Document` de la même campagne. `Document.tagIds[]` référence ces Tags.
-Le soft delete d'un `Tag` déclenche `TagDeleted` — un handler synchrone purge les `tagIds`
-de tous les documents concernés.
+`DocumentType` est le nouvel agrégat qui définit un schéma de propriétés structurées
+optionnellement associé à un `Document`. Indépendant du `DocumentTemplate` (qui initialise
+les blocs). Types BUILTIN : PNJ, Personnage joueur, Lieu, Objet, Faction.
+
+`Tag` est une entité légère par campagne. Le soft delete d'un `Tag` déclenche `TagDeleted`
+— un handler synchrone purge les `tagIds` de tous les documents concernés.
 
 ```mermaid
 classDiagram
@@ -21,16 +21,16 @@ classDiagram
     class Document {
         <<aggregate root>>
         +id: DocumentId
-        +campaignId: CampaignId
-        +type: DocumentType
-        +customType: String?
+        +campaignId: CampaignId?
+        +role: DocumentRole
         +title: String
         +slug: Slug
         +visibility: Visibility
         +ownerCharacterId: CharacterId?
         +templateId: TemplateId?
+        +documentTypeId: DocumentTypeId?
+        +properties: JSONB?
         +folderId: FolderId?
-        +appliedTemplateVersion: Int?
         +tagIds: TagId[]
         +audit: AuditInfo
         +softDelete: SoftDelete
@@ -44,7 +44,6 @@ classDiagram
         +order: Int
         +value: BlockValue
         +isPrivate: Boolean
-        +isLocked: Boolean
         +audit: AuditInfo
     }
     class BlockValue {
@@ -66,7 +65,6 @@ classDiagram
     class RelationBlockValue {
         <<value object>>
         +targetId: DocumentId
-        +targetType: DocumentType
     }
     class ListBlockValue {
         <<value object>>
@@ -87,6 +85,25 @@ classDiagram
         +url: String
         +caption: String?
     }
+    class DocumentType {
+        <<aggregate root>>
+        +id: DocumentTypeId
+        +name: String
+        +slug: Slug
+        +scope: DocumentTypeScope
+        +ownerId: UserId?
+        +campaignId: CampaignId?
+        +properties: PropertySchema[]
+        +audit: AuditInfo
+        +softDelete: SoftDelete
+    }
+    class PropertySchema {
+        <<value object>>
+        +key: String
+        +label: String
+        +valueType: PropertyValueType
+        +required: Boolean
+    }
     class Tag {
         <<entity — repository>>
         +id: TagId
@@ -96,22 +113,23 @@ classDiagram
         +audit: AuditInfo
         +softDelete: SoftDelete
     }
-    class Visibility {
-        <<enumeration — Shared Kernel>>
-        PRIVATE
-        PLAYER_PRIVATE
-        SHARED
-        PUBLIC
-    }
-    class DocumentType {
+    class DocumentRole {
         <<enumeration>>
-        NOTE
-        NPC
-        CHARACTER
+        STANDARD
         SCENARIO
         SCENE
-        LOCATION
-        CUSTOM
+    }
+    class DocumentTypeScope {
+        <<enumeration>>
+        BUILTIN
+        CAMPAIGN
+        USER
+    }
+    class PropertyValueType {
+        <<enumeration>>
+        TEXT
+        NUMBER
+        BOOLEAN
     }
     class BlockKind {
         <<enumeration>>
@@ -125,9 +143,10 @@ classDiagram
         IMAGE
     }
     Document "1" *-- "0..*" DocumentBlock
-    Document --> DocumentType
+    Document --> DocumentRole
     Document --> Visibility
     Document "0..*" ..> "0..*" Tag : tagIds
+    Document ..> DocumentType : documentTypeId (optionnel)
     DocumentBlock *-- BlockValue
     DocumentBlock --> BlockKind
     BlockValue <|-- TextBlockValue
@@ -138,52 +157,38 @@ classDiagram
     BlockValue <|-- ItemBlockValue
     BlockValue <|-- ChecklistBlockValue
     BlockValue <|-- ImageBlockValue
-    note for Document "customType obligatoire si type = CUSTOM\nCo-création obligatoire pour NPC/CHARACTER/SCENARIO/SCENE\nVoir ADR-22\nfolderId FK nullable (intra-contexte)\nappliedTemplateVersion comparé à DocumentTemplate.version → UC-18"
-    note for DocumentBlock "isPrivate = true → jamais exposé aux joueurs\nMême si Document est SHARED\nisLocked = true → non modifiable joueur\n(modélisé, inactif en MVP)\nZéro ou plusieurs blocs par Document"
+    DocumentType "1" *-- "0..*" PropertySchema
+    DocumentType --> DocumentTypeScope
+    PropertySchema --> PropertyValueType
+    note for Document "campaignId null = document en bibliothèque\n(rattaché à un Scenario.isTemplate = true)\nvisibility = PRIVATE immuable si campaignId null\nfolderId et tagIds toujours null/vides si campaignId null\n──────────────────────────────────────────────────────────────\ndocumentTypeId + properties : coeur du système documentaire\nlibre, typé, filtrable et extensible\n──────────────────────────────────────────────────────────────\nCo-création obligatoire :\n  role = SCENARIO → factory Scenario\n  role = SCENE    → factory Scene\n  PC associé      → factory PlayerCharacter"
+    note for DocumentBlock "isPrivate = true → jamais exposé aux joueurs\nMême si Document est SHARED\nZéro ou plusieurs blocs par Document"
     note for Visibility "PRIVATE = MJ uniquement\nPLAYER_PRIVATE = ownerCharacterId (MJ exclu)\nSHARED = membres ciblés via ContentAccessRule\nPUBLIC = tous les membres (joueurs + invités actifs)"
-    note for RelationBlockValue "Backlinks orphelins : si targetId pointe vers\nun document soft-deleted, le backlink n'est pas affiché\nFiltré à la requête (isDeleted = false) — ADR-23"
-    note for Tag "label unique par campagne (insensible casse)\nSoft delete Tag → TagDeleted event\nHandler synchrone nettoie Document.tagIds\nNon partageable entre campagnes\nGéré via UC-19"
+    note for RelationBlockValue "Backlinks orphelins : si targetId pointe vers\nun document soft-deleted, le backlink n'est pas affiché\nFiltré à la requête (isDeleted = false)"
+    note for DocumentType "Scopes :\n  BUILTIN → fourni par l'app, non modifiable\n  CAMPAIGN → visible membres de la campagne\n  USER → portable entre campagnes du propriétaire\nTypes BUILTIN : PNJ, Personnage joueur, Lieu, Objet, Faction\nPropertySchema.key : stable après création\n(clé dans JSONB properties)"
+    note for Tag "label unique par campagne (insensible casse)\nSoft delete Tag → TagDeleted event\nHandler synchrone nettoie Document.tagIds\nNon partageable entre campagnes"
 ```
 
 ---
 
-## 5. Content Library — Enveloppes métier et dossiers
+## 5. Content Library — Entités métier et dossiers
 
-Le pattern structurant de Content Library : chaque concept métier (`NPC`, `PlayerCharacter`,
-`Scenario`, `Scene`) possède un `Document` pour son contenu variable, et porte
-ses propres règles métier dans une enveloppe séparée.
+`PlayerCharacter` est le seul profil spécialisé maintenu en entité distincte :
+`CharacterId` est un pivot d'accès dans `AccessPolicy` et `GuestRequesterId`.
+Les métadonnées de profil passent par le `DocumentType` BUILTIN "Personnage joueur".
 
-`NPC` et `PlayerCharacter` sont des **profils spécialisés de Document**.
-Leur contenu variable reste dans le Document ; leurs tables dédiées portent les métadonnées
-requêtables et les règles transverses.
+`Scenario` peut vivre en bibliothèque personnelle (`isTemplate = true`) ou comme
+instance dans une campagne. La copie profonde à l'instantiation rend l'instance
+indépendante du source.
 
-`Scenario` est un agrégat racine car il protège l'ordre et la cohérence de sa collection
-de `Scene`. Une scène ne peut pas exister sans son scénario parent.
+`DocumentTemplate` définit un schéma de blocs. `documentRole` est optionnel (null = toutes roles).
+Un template initialise un Document à la création ; le Document devient ensuite un snapshot indépendant.
 
-Le lien `NPC ↔ PlayerCharacter` est une **association narrative bidirectionnelle optionnelle**.
-Les deux entités ont des cycles de vie indépendants.
-
-`DocumentTemplate` définit un schéma de blocs attendus. Le champ `version` est incrémenté
-à chaque modification du schéma. `Document.appliedTemplateVersion` est comparé à `template.version`
-pour détecter qu'une synchronisation est disponible (UC-18).
-
-`Folder` est un agrégat racine léger — il protège l'invariant "un dossier système ne peut pas
-être supprimé" et gère son ordre. Les `Document` le référencent par FK (`folderId` nullable).
+`Folder` protège l'invariant système et gère son ordre. `defaultDocumentTypeId` s'applique
+uniquement aux Documents STANDARD créés dans ce dossier.
 
 ```mermaid
 classDiagram
     direction TB
-    class NPC {
-        <<entity — repository>>
-        +id: NpcId
-        +campaignId: CampaignId
-        +documentId: DocumentId
-        +name: String
-        +status: NpcStatus
-        +linkedCharacterId: CharacterId?
-        +audit: AuditInfo
-        +softDelete: SoftDelete
-    }
     class PlayerCharacter {
         <<entity — repository>>
         +id: CharacterId
@@ -191,7 +196,7 @@ classDiagram
         +documentId: DocumentId
         +name: String
         +ownerId: UserId?
-        +linkedNpcId: NpcId?
+        +linkedDocumentId: DocumentId?
         +status: CharacterStatus
         +audit: AuditInfo
         +softDelete: SoftDelete
@@ -199,12 +204,15 @@ classDiagram
     class Scenario {
         <<aggregate root>>
         +id: ScenarioId
-        +campaignId: CampaignId
+        +campaignId: CampaignId?
+        +ownerId: UserId?
         +documentId: DocumentId
         +title: String
         +slug: Slug
         +order: Int
         +status: ScenarioStatus
+        +isTemplate: Boolean
+        +sourceScenarioId: ScenarioId?
         +audit: AuditInfo
         +softDelete: SoftDelete
     }
@@ -216,19 +224,18 @@ classDiagram
         +title: String
         +order: Int
         +status: SceneStatus
-        +linkedNpcIds: NpcId[]
+        +linkedDocumentIds: DocumentId[]
         +audit: AuditInfo
     }
     class DocumentTemplate {
         <<aggregate root>>
         +id: TemplateId
         +name: String
-        +documentType: DocumentType
+        +documentRole: DocumentRole?
         +gameSystemId: GameSystemId?
         +scope: TemplateScope
         +ownerId: UserId?
         +campaignId: CampaignId?
-        +version: Int
         +audit: AuditInfo
         +softDelete: SoftDelete
     }
@@ -246,17 +253,14 @@ classDiagram
         +name: String
         +slug: Slug
         +defaultTemplateId: TemplateId?
+        +defaultDocumentTypeId: DocumentTypeId?
         +isSystem: Boolean
         +order: Int
         +audit: AuditInfo
         +softDelete: SoftDelete
     }
-    class NpcStatus {
-        <<enumeration>>
-        ALIVE
-        DEAD
-        MISSING
-        UNKNOWN
+    class DocumentType {
+        <<aggregate root>>
     }
     class CharacterStatus {
         <<enumeration>>
@@ -283,28 +287,26 @@ classDiagram
         CAMPAIGN
         USER
     }
-    NPC --> NpcStatus
-    NPC --> Document : documentId
-    NPC ..> PlayerCharacter : linkedCharacterId
     PlayerCharacter --> CharacterStatus
     PlayerCharacter --> Document : documentId
-    PlayerCharacter ..> NPC : linkedNpcId
+    PlayerCharacter ..> Document : linkedDocumentId (narratif)
     Scenario "1" *-- "0..*" Scene
     Scenario --> ScenarioStatus
     Scenario --> Document : documentId
+    Scenario ..> Scenario : sourceScenarioId
     Scene --> SceneStatus
     Scene --> Document : documentId
-    Scene ..> NPC : linkedNpcIds
+    Scene ..> Document : linkedDocumentIds
     DocumentTemplate "1" *-- "0..*" BlockSchema
     DocumentTemplate --> TemplateScope
     Document ..> DocumentTemplate : snapshot à la création
     Document ..> Folder : folderId (FK nullable)
     Folder ..> DocumentTemplate : defaultTemplateId
-    note for NPC "Entité avec repository\nPas d'agrégat racine\nname synchronisé via DocumentTitleUpdated (synchrone)"
-    note for PlayerCharacter "ownerId null = en attente d'association\nou personnage joué par le MJ\nVisibilité Document par défaut : PRIVATE\nMJ change explicitement — jamais auto"
-    note for DocumentTemplate "version : Int incrémenté à chaque modif schéma\nDocument.appliedTemplateVersion vs template.version\n→ détecte sync disponible (UC-18)\nCombinations valides :\nBUILTIN → ownerId null, campaignId null\nCAMPAIGN → ownerId non-null, campaignId non-null\nUSER → ownerId non-null, campaignId null"
-    note for Scenario "order : Int géré par ScenarioOrderService\nSync avec ordre dossier Scénarios par défaut\nCardinality 0..* : scénario sans scènes autorisé"
-    note for Scene "Cycle de vie lié à Scenario\nSuppression en cascade\nL'ordre est une responsabilité\nde l'agrégat Scenario"
-    note for BlockSchema "required = true : indicateur UI\nN'invalide pas un document incomplet\nAjouté lors de la sync UC-18 si absent"
-    note for Folder "isSystem = true → non supprimable\n4 dossiers créés à l'init campagne :\n PNJ, Personnages joueurs, Scénarios, Notes\nTous renommables\nOrdre géré par FolderOrderService\nfolderId null dans Document = non classé"
+    Folder ..> DocumentType : defaultDocumentTypeId
+    note for PlayerCharacter "Toujours dans une campagne (jamais en bibliothèque)\nownerId null = en attente d'association\nou personnage joué par le MJ\nUn même utilisateur peut posséder plusieurs personnages\nLe MJ peut toujours consulter la fiche\nVisibilité Document par défaut : PRIVATE\nlinkedDocumentId : association narrative\nsuppression du lié ne supprime pas le PC"
+    note for Scenario "isTemplate = true → campaignId null, ownerId non null\nisTemplate = false → campaignId non null\nsourceScenarioId non null → isTemplate = false\nHistorique des runs reconstruit via les instances\nSeul le ownerId peut modifier un scénario source\nUn Scenario(isTemplate = true) ne peut pas être\nattaché à une Session"
+    note for Scene "Cycle de vie lié à Scenario — suppression en cascade\nL'ordre est une responsabilité de l'agrégat Scenario\nlinkedDocumentIds : références légères (PNJ, lieux…)\nsuppression d'un lié → retire la référence"
+    note for DocumentTemplate "documentRole null = aucune restriction de rôle\nSnapshot à la création : modifier le template\nne modifie jamais les documents existants\nCombinations valides :\n  BUILTIN → ownerId null, campaignId null\n  CAMPAIGN → ownerId non-null, campaignId non-null\n  USER → ownerId non-null, campaignId null"
+    note for BlockSchema "required = true : indicateur UI\net création initiale depuis template\nN'invalide pas un document incomplet"
+    note for Folder "isSystem = true → non supprimable\n4 dossiers créés à l'init campagne :\n  Personnages, Joueurs, Scénarios, Notes\nTous renommables\ndefaultDocumentTypeId : s'applique\naux Documents STANDARD uniquement\nOrdre géré par FolderOrderService\nfolderId null dans Document = non classé"
 ```

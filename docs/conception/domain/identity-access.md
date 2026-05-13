@@ -16,6 +16,20 @@ En .NET, ce contexte utilise ASP.NET Core Identity en infrastructure.
 L'entité domaine `User` est totalement indépendante de `IdentityUser`.
 Le mapping est géré par un `UserMapper` dans la couche Infrastructure.
 
+### Mode local sans compte (UC-01)
+
+Le mode local (sans compte) est intégralement géré par la couche infrastructure frontend — **le domaine serveur n'est pas sollicité**.
+
+En mode local, les données (campagnes, documents, dossiers) sont stockées dans IndexedDB par un adapter Angular. Aucune entité domaine n'est créée côté serveur. Il n'existe donc pas de `LocalRequesterId` dans le Shared Kernel : le domaine reste pur, sans connaissance du mode local.
+
+Conséquences directes sur le modèle domaine :
+
+- `Campaign.ownerId : UserId` reste **non nullable** — une campagne serveur a toujours un propriétaire authentifié.
+- `CampaignMembership.userId : UserId` reste **non nullable** — les membres serveur sont toujours authentifiés.
+- `AuditInfo.createdById : UserId` reste **non nullable** — les entités serveur ont toujours un auteur identifié.
+
+Lors de la migration locale → cloud (UC-10), les données IndexedDB sont transformées en entités domaine avec le `UserId` nouvellement créé, puis persistées normalement.
+
 ---
 
 ### Agrégat : `User`

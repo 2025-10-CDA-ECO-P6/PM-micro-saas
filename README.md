@@ -24,7 +24,7 @@
 
 ### Problème
 
-Un Maître du Jeu (MJ) actif gère simultanément une quantité considérable d'informations : scénarios, PNJ, notes secrètes, fiches personnages, informations à partager aux joueurs, suivi narratif, lore. Ces informations sont aujourd'hui dispersées sur plusieurs outils non spécialisés :
+Un Maître du Jeu (MJ) actif gère simultanément une quantité considérable d'informations : scénarios, PNJ, notes secrètes, informations à partager aux joueurs, suivi narratif, lore. Ces informations sont aujourd'hui dispersées sur plusieurs outils non spécialisés :
 
 | Support | Problème principal |
 |---|---|
@@ -40,32 +40,33 @@ Cette fragmentation casse le rythme de jeu, génère une charge mentale élevée
 
 **Utilisateur principal :** le Maître du Jeu — c'est lui qui prépare la campagne, choisit les outils et porte la charge organisationnelle.
 
-**Utilisateurs secondaires :** les joueurs, qui accèdent à leur fiche personnage, inventaire, notes et informations partagées par le MJ.
+**Utilisateurs secondaires :** les joueurs, qui accèdent aux informations partagées par le MJ pendant la session.
 
 ### Fonctionnalité principale
 
-**La vue session** — un tableau de bord de conduite qui regroupe en un seul endroit tout ce dont le MJ a besoin pendant la partie : scénario actif, PNJ, notes, accès aux fiches joueurs, prise de notes rapide. Objectif : ne plus quitter l'application pour retrouver une information.
+**La vue session** — un tableau de bord de conduite qui regroupe en un seul endroit tout ce dont le MJ a besoin pendant la partie : scénario actif, notes, accès au contenu préparé, prise de notes rapide, partage en temps réel. Objectif : ne plus quitter l'application pour retrouver une information.
 
-### Fonctionnalités secondaires (MVP)
+### Fonctionnalités MVP
 
-- Création et organisation de campagnes
-- Structuration de scénarios (découpage en scènes)
-- Gestion des PNJ
-- Gestion des notes (privées / partagées)
-- Fiches personnages simples
-- Gestion d'inventaire
+- Démarrage sans compte — données stockées localement dans le navigateur
+- Création de campagnes et de one-shots (parcours distincts)
+- Structuration de scénarios et organisation libre par dossiers
+- Gestion des notes MJ (privées / partagées)
+- Vue session dédiée avec création à la volée
 - Partage d'informations aux joueurs (visibilité configurable)
-- Recherche plein texte dans la campagne
-- Invitation des joueurs (lien ou email)
+- Recherche dans la campagne depuis la vue session
 - Accès joueur sans compte (lien temporaire)
+- Compte cloud optionnel : sync multi-device, partage joueurs, membres permanents
 
 ### Hors périmètre MVP
 
-Table virtuelle visuelle, cartes interactives, système de combat automatisé, IA, marketplace, plugins, audio/vidéo.
+Table virtuelle visuelle, moteur de règles, gestion de combat, IA générative, desktop natif, templates communautaires.
+
+> Détail des choix → [vision produit](docs/conception/vision/vision-produit.md) · [MoSCoW complet](docs/conception/vision/moscow.md)
 
 ### Zoning / wireframes
 
-> _À créer : esquisses des vues principales (tableau de bord MJ, vue session, fiche campagne, fiche PNJ)._
+> _À créer : esquisses des vues principales (tableau de bord MJ, vue session, fiche campagne)._
 
 ---
 
@@ -109,42 +110,38 @@ Haversack.Api
 
 ## Diagramme de cas d'utilisation
 
-> Vue simplifiée — [voir le détail complet](docs/conception/diagrams/use-cases.md)
+> Vue simplifiée — [voir le détail complet](docs/conception/usecases/use-cases.md)
 
 ```mermaid
 flowchart LR
     MJ["MJ"]
-    Player["Joueur"]
-    Guest["Joueur invite"]
-    Guest -- herite --> Player
-    subgraph SYS["Haversack"]
-        UC01(["Creer une campagne"])
-        UC_PREP_CONTENT(["Preparer le contenu MJ"])
-        UC17(["Organiser le contenu"])
-        UC05(["Preparer une session"])
-        UC06(["Utiliser la vue session"])
-        UC09(["Partager des informations"])
-        UC10(["Rejoindre une session"])
-        UC07(["Consulter et modifier sa fiche"])
-        UC08(["Gerer son inventaire"])
+    Joueur["Joueur"]
+    JInvite["Joueur invite"]
+    JInvite -- herite --> Joueur
+
+    subgraph SYS["Haversack — perimetre MVP"]
+        UC01(["Demarrer sans compte\nmode local"])
+        UC02(["Creer un espace\ncampagne ou one-shot"])
+        UC_PREP(["Preparer le contenu\nscenarios · notes · dossiers"])
+        UC06(["Vue session"])
+        UC07(["Creer a la volee"])
+        UC08(["Partager une information"])
+        UC09(["Acceder a la session\nsans compte"])
+        UC12(["Rejoindre\nune campagne"])
     end
+
     MJ --> UC01
-    MJ --> UC_PREP_CONTENT
-    MJ --> UC17
-    MJ --> UC05
+    MJ --> UC02
+    MJ --> UC_PREP
     MJ --> UC06
-    MJ --> UC09
     MJ --> UC07
     MJ --> UC08
-    Player --> UC10
-    Player --> UC07
-    Player --> UC08
-    Player --> UC09
-    Guest --> UC10
-    Guest --> UC07
-    UC05 -.->|"include"| UC_PREP_CONTENT
-    UC06 -.->|"include"| UC05
-    UC08 -.->|"extend"| UC07
+    Joueur --> UC09
+    Joueur --> UC12
+    JInvite --> UC09
+
+    UC07 -.->|"extend"| UC06
+    UC08 -.->|"extend"| UC06
 ```
 
 ---
@@ -157,23 +154,16 @@ flowchart LR
 erDiagram
     USER ||--o{ CAMPAIGN : "possede (GM)"
     USER ||--o{ CAMPAIGN_MEMBERSHIP : "membre de"
-    USER ||--o{ PLAYER_CHARACTER : "proprietaire de"
     CAMPAIGN ||--|{ CAMPAIGN_MEMBERSHIP : "contient"
     CAMPAIGN ||--o{ INVITATION : "genere"
-    CAMPAIGN ||--o{ DOCUMENT : "contient"
-    CAMPAIGN ||--o{ NPC : "contient"
-    CAMPAIGN ||--o{ PLAYER_CHARACTER : "contient"
-    CAMPAIGN ||--o{ SCENARIO : "contient"
-    CAMPAIGN ||--o{ SESSION : "contient"
+    CAMPAIGN ||--o{ FOLDER : "contient"
+    FOLDER ||--o{ DOCUMENT : "contient"
     DOCUMENT ||--o{ DOCUMENT_BLOCK : "compose de"
-    NPC ||--|| DOCUMENT : "possede"
-    PLAYER_CHARACTER ||--|| DOCUMENT : "possede"
-    SCENARIO ||--|| DOCUMENT : "possede"
-    SCENARIO ||--o{ SCENE : "ordonne"
+    DOCUMENT }o--|| DOCUMENT_TYPE : "type optionnel"
+    CAMPAIGN ||--o{ SESSION : "contient"
     SESSION ||--o{ LIVE_NOTE : "genere"
-    SESSION ||--o| SESSION_SUMMARY : "cloture en"
-    SESSION ||--o{ SESSION_NPC : "selectionne"
     SESSION ||--o{ SESSION_PARTICIPANT : "reunit"
+    CAMPAIGN ||--o{ GUEST_ACCESS : "genere"
 ```
 
 ---
@@ -183,4 +173,3 @@ erDiagram
 - [Conception complète](docs/conception/README.md)
 - [Architecture](docs/architecture/ArchitectureIndex.md)
 - [Use cases détaillés](docs/conception/usecases/README.md)
-- [Décisions d'architecture (ADR)](docs/conception/domain/adr/README.md)

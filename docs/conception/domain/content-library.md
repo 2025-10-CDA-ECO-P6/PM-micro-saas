@@ -2,14 +2,17 @@
 
 ### Responsabilité
 
-Tout le contenu éditorial de la campagne. Le modèle central est `Document` —
-une unité de contenu modulaire composée de `DocumentBlock` fortement typés.
+Tout le contenu éditorial de la campagne et de la bibliothèque personnelle du MJ.
+Le modèle central est `Document` — une unité de contenu modulaire composée de `DocumentBlock`
+fortement typés.
 
-`NPC` et `PlayerCharacter` sont des **profils spécialisés de Document**.
-Leur contenu flexible vit dans le `Document`; leur table dédiée porte uniquement
-les métadonnées métier nécessaires aux listes, recherches et règles simples
-(statut, propriétaire, lien narratif). Ils sont chargés via repository pour des raisons
-pratiques, mais le modèle source de contenu reste le `Document`.
+`PlayerCharacter` est le seul profil spécialisé maintenu en tant qu'entité distincte :
+`CharacterId` est un pivot d'accès dans `AccessPolicy` et `GuestRequesterId`. Les métadonnées
+de profil (Nom, Joueur, Description) transitent par le `DocumentType` BUILTIN "Personnage joueur"
+via les `properties` du Document associé.
+
+Les fiches PNJ, lieux, objets et factions sont des `Document(role = STANDARD)` ordinaires,
+enrichis optionnellement d'un `DocumentType`.
 
 ---
 
@@ -17,32 +20,28 @@ pratiques, mais le modèle source de contenu reste le `Document`.
 
 ```
 Document
-├── id          : DocumentId
-├── campaignId  : CampaignId
-├── type        : DocumentType
-├── customType  : String?           — renseigné si type = CUSTOM
-├── title       : String
-├── slug        : Slug              — unique par (campaignId, type) — usage affichage uniquement
-├── visibility  : Visibility
-├── ownerCharacterId : CharacterId?   — renseigné si visibility = PLAYER_PRIVATE
-├── templateId  : TemplateId?
-├── folderId    : FolderId?         — null = document non classé
-├── appliedTemplateVersion : Int?   — null = pas de template ou sync jamais effectuée
-├── tagIds      : TagId[]           — références aux Tags de la campagne
-├── blocks      : DocumentBlock[]   — entités enfants, cycle de vie lié (zéro ou plusieurs)
-├── audit       : AuditInfo
-└── softDelete  : SoftDelete
+├── id                     : DocumentId
+├── campaignId             : CampaignId?          — null si document en bibliothèque (scénario source)
+├── role                   : DocumentRole          — rôle structurel dans le domaine
+├── title                  : String
+├── slug                   : Slug                  — unique par (campaignId, role) ; non contraint si campaignId = null
+├── visibility             : Visibility            — toujours PRIVATE si campaignId = null
+├── ownerCharacterId       : CharacterId?           — renseigné si visibility = PLAYER_PRIVATE
+├── templateId             : TemplateId?
+├── documentTypeId         : DocumentTypeId?        — type optionnel (PNJ, Lieu, Objet…) ; null = document libre
+├── properties             : JSONB?               — valeurs des propriétés du DocumentType ; null si pas de type
+├── folderId               : FolderId?            — null = non classé ; toujours null si campaignId = null
+├── tagIds                 : TagId[]              — toujours vide si campaignId = null
+├── blocks                 : DocumentBlock[]
+├── audit                  : AuditInfo
+└── softDelete             : SoftDelete
 ```
 
 ```
-DocumentType
-├── NOTE        — note libre du MJ
-├── NPC         — fiche PNJ
-├── CHARACTER   — fiche personnage joueur
-├── SCENARIO    — document narratif d'un scénario
-├── SCENE       — document d'une scène
-├── LOCATION    — fiche de lieu
-└── CUSTOM      — type défini librement, précisé dans customType
+DocumentRole
+├── STANDARD    — document libre, note ou contenu éditorial sans rôle structurant (défaut)
+├── SCENARIO    — document associé à un agrégat Scenario
+└── SCENE       — document associé à une entité Scene
 ```
 
 #### Entité enfant : `DocumentBlock`
@@ -54,11 +53,9 @@ DocumentBlock
 ├── kind        : BlockKind
 ├── label       : String?
 ├── order       : Int
-├── value       : BlockValue        — value object fortement typé selon kind
+├── value       : BlockValue
 ├── isPrivate   : Boolean
-├── isLocked    : Boolean           — champ verrouillé par le MJ (joueur ne peut pas modifier)
-│                                     défaut : false — modélisé, non activé dans le MVP
-└── audit       : AuditInfo         — pas de SoftDelete, suppression physique
+└── audit       : AuditInfo        — pas de SoftDelete, suppression physique
 ```
 
 #### Hiérarchie `BlockValue`
@@ -79,8 +76,7 @@ BlockValue  (abstract)
 │   └── max     : Int
 │
 ├── RelationBlockValue
-│   ├── targetId   : DocumentId
-│   └── targetType : DocumentType
+│   └── targetId : DocumentId
 │
 ├── ListBlockValue
 │   └── items : String[]
@@ -88,7 +84,7 @@ BlockValue  (abstract)
 ├── ItemBlockValue
 │   ├── name       : String
 │   ├── quantity   : Int
-│   └── properties : Map<String, String>    — clé/valeur libre
+│   └── properties : Map<String, String>
 │
 ├── ChecklistBlockValue
 │   └── items : ChecklistItem[]
@@ -116,20 +112,30 @@ BlockKind
 
 - Un `Document` peut avoir zéro ou plusieurs blocs.
 - L'ordre des blocs est géré par l'agrégat `Document`.
-- Un bloc `RELATION` valide que le `targetId` appartient à la même campagne.
+- Un bloc `RELATION` valide que le `targetId` appartient à la même campagne si `campaignId` non null.
+  Pour les documents en bibliothèque (`campaignId = null`), cette validation est déléguée à la couche applicative.
 - Un bloc `isPrivate = true` n'est jamais exposé aux joueurs, même si le Document est `SHARED`.
-- Un bloc `isLocked = true` ne peut pas être modifié par le joueur `ownerId` du personnage associé.
-  Seul le MJ peut modifier un bloc verrouillé. Non activé dans le MVP — valeur par défaut `false`.
 - Soft delete `Document` → suppression physique de tous ses blocs.
-- Un `Document` créé depuis un template est un snapshot indépendant — le template peut changer sans affecter le document.
-- `customType` est obligatoire si `type = CUSTOM`, null sinon — invariant garanti par le constructeur.
-- Le `slug` est unique par `(campaignId, type)`.
+- Un `Document` créé depuis un template est un snapshot indépendant.
 - `ownerCharacterId` est obligatoire si `visibility = PLAYER_PRIVATE`, null sinon.
-- La visibilité par défaut d'un `Document` associé à un `PlayerCharacter` sans accès joueur est `PRIVATE`. Le MJ la change explicitement pour la partager.
+- La visibilité par défaut d'un `Document` associé à un `PlayerCharacter` sans accès joueur est `PRIVATE`.
+  La fiche personnage elle-même suit les règles de `PlayerCharacter` : le MJ y a toujours accès,
+  et le joueur associé y accède via son `CharacterId`.
+- `documentTypeId` non null implique `properties` non null (peut être `{}`).
+- Les champs `documentTypeId` et `properties` sont au coeur du système documentaire MVP :
+  ils permettent des documents libres, typés, filtrables et extensibles sans créer une entité
+  spécialisée pour chaque catégorie métier.
 
-**Co-création obligatoire** : un `Document` avec `type ∈ {NPC, CHARACTER, SCENARIO, SCENE}`
-**ne doit être créé que via la factory de l'entité correspondante** (voir AD-21).
-La création directe d'un Document de ces types sans son enveloppe métier est interdite.
+**Documents en bibliothèque** (`campaignId = null`) :
+- Un document en bibliothèque est toujours rattaché à un agrégat `Scenario(isTemplate = true)` — jamais créé de façon indépendante.
+- `visibility = PRIVATE` immuable — `AccessPolicy` ne s'applique pas à ces documents.
+- `folderId = null` et `tagIds = []` — les dossiers et tags sont des concepts de campagne.
+- Le scope d'accès est déduit depuis le `Scenario.ownerId` parent.
+
+**Co-création obligatoire** :
+- `Document(role = SCENARIO)` uniquement via la factory de l'agrégat `Scenario`.
+- `Document(role = SCENE)` uniquement via la factory de l'entité `Scene`.
+- `Document` associé à un `PlayerCharacter` uniquement via la factory de `PlayerCharacter`, qui assigne simultanément `documentTypeId = [Personnage joueur BUILTIN]`. Un document typé "Personnage joueur" sans `CharacterId` associé n'est pas un `PlayerCharacter` du point de vue du domaine.
 
 **Backlinks** : un bloc `RELATION` dont le `targetId` pointe vers un document soft-deleted
 n'est pas affiché dans les backlinks. La requête de backlinks filtre `DOCUMENT.isDeleted = false`.
@@ -137,11 +143,11 @@ n'est pas affiché dans les backlinks. La requête de backlinks filtre `DOCUMENT
 #### Domain Events
 
 ```
-DocumentCreated           { documentId, campaignId, type, createdById, occurredAt }
+DocumentCreated           { documentId, campaignId?, role, createdById, occurredAt }
 DocumentTitleUpdated      { documentId, oldTitle, newTitle, occurredAt }
 DocumentVisibilityChanged { documentId, oldVisibility, newVisibility, occurredAt }
 DocumentMovedToFolder     { documentId, oldFolderId, newFolderId, occurredAt }
-DocumentDeleted           { documentId, campaignId, occurredAt }
+DocumentDeleted           { documentId, campaignId?, occurredAt }
 BlockAdded                { documentId, blockId, kind, occurredAt }
 BlockUpdated              { documentId, blockId, occurredAt }
 BlockRemoved              { documentId, blockId, occurredAt }
@@ -160,7 +166,7 @@ Tag
 ├── id         : TagId
 ├── campaignId : CampaignId
 ├── label      : String           — unique par campaignId (insensible à la casse)
-├── color      : String?          — hex ou nom de couleur
+├── color      : String?
 ├── audit      : AuditInfo
 └── softDelete : SoftDelete
 ```
@@ -168,7 +174,8 @@ Tag
 #### Invariants et règles métier
 
 - Le `label` est unique par campagne (insensible à la casse).
-- Supprimer un Tag est un soft delete et retire automatiquement sa référence de tous les Documents de la campagne (via event `TagDeleted`).
+- Supprimer un Tag est un soft delete et retire automatiquement sa référence de tous les Documents
+  de la campagne (via event `TagDeleted`).
 - Un Tag n'appartient qu'à une campagne — non partageable entre campagnes.
 
 #### Domain Events
@@ -181,71 +188,27 @@ TagDeleted  { tagId, campaignId, occurredAt }
 
 ---
 
-### Profil spécialisé : `NPC`
-
-Vue spécialisée d'un `Document(type = NPC)`. Selon le système de jeu, un PNJ peut être
-une simple description ou une fiche complète ; le modèle ne fige donc pas sa structure
-dans l'entité `NPC`. Cette table porte seulement les métadonnées transverses utiles
-au domaine et aux requêtes.
-
-```
-NPC
-├── id                  : NpcId
-├── campaignId          : CampaignId
-├── documentId          : DocumentId
-├── name                : String           — dénormalisé, synchronisé via DocumentTitleUpdated
-├── status              : NpcStatus
-├── linkedCharacterId   : CharacterId?     — association narrative optionnelle
-├── audit               : AuditInfo
-└── softDelete          : SoftDelete
-```
-
-```
-NpcStatus
-├── ALIVE
-├── DEAD
-├── MISSING
-└── UNKNOWN
-```
-
-#### Invariants et règles métier
-
-- `name` est synchronisé avec `Document.title` via le handler de `DocumentTitleUpdated`.
-  Ce dispatch est **synchrone in-process** dans le monolithe MVP — cohérence garantie dans la même transaction.
-- Un NPC `DEAD` reste consultable.
-- `linkedCharacterId` est une association narrative — la suppression du `PlayerCharacter` ne supprime pas le NPC.
-- Soft delete NPC → soft delete de son Document associé (même transaction).
-- Les blocs `isPrivate = true` du Document ne sont jamais exposés aux joueurs.
-
-#### Domain Events
-
-```
-NpcCreated                { npcId, campaignId, documentId, occurredAt }
-NpcStatusChanged          { npcId, oldStatus, newStatus, occurredAt }
-NpcLinkedToCharacter      { npcId, characterId, occurredAt }
-NpcUnlinkedFromCharacter  { npcId, occurredAt }
-```
-
----
-
 ### Profil spécialisé : `PlayerCharacter`
 
-Vue spécialisée d'un `Document(type = CHARACTER)`. Le personnage est le point d'ancrage
-des droits joueur dans la campagne : un compte authentifié ou un `GuestAccess` peut être
-associé à son `CharacterId`. Les données privées joueur sont liées au personnage,
-pas au compte ni au guest temporaire.
+Vue spécialisée d'un `Document(role = STANDARD, documentTypeId = [Personnage joueur BUILTIN])`.
+Le personnage est le point d'ancrage des droits joueur dans la campagne : un compte authentifié
+ou un `GuestAccess` peut être associé à son `CharacterId`. Les données privées joueur sont liées
+au personnage, pas au compte ni au guest temporaire.
+
+`PlayerCharacter` est le seul profil spécialisé maintenu en entité distincte parce que
+`CharacterId` est consommé par `AccessPolicy` et `GuestRequesterId` dans le Shared Kernel.
 
 ```
 PlayerCharacter
-├── id              : CharacterId
-├── campaignId      : CampaignId
-├── documentId      : DocumentId
-├── name            : String           — dénormalisé, synchronisé via DocumentTitleUpdated
-├── ownerId         : UserId?          — compte joueur associé, null si invité seul ou en attente
-├── linkedNpcId     : NpcId?           — association narrative optionnelle
-├── status          : CharacterStatus
-├── audit           : AuditInfo
-└── softDelete      : SoftDelete
+├── id               : CharacterId
+├── campaignId       : CampaignId
+├── documentId       : DocumentId
+├── name             : String           — dénormalisé, synchronisé via DocumentTitleUpdated
+├── ownerId          : UserId?          — compte joueur associé, null si invité seul ou en attente
+├── linkedDocumentId : DocumentId?      — association narrative optionnelle (typiquement un document PNJ)
+├── status           : CharacterStatus
+├── audit            : AuditInfo
+└── softDelete       : SoftDelete
 ```
 
 ```
@@ -257,25 +220,29 @@ CharacterStatus
 
 #### Invariants et règles métier
 
-- Seul le `ownerId`, un `GuestAccess` actif associé au `CharacterId`, ou le MJ peut modifier les blocs autorisés du Document associé.
+- `PlayerCharacter` appartient toujours à une campagne — pas de PlayerCharacter en bibliothèque.
+- Le MJ peut toujours consulter la fiche personnage, car elle fait partie du matériel de campagne.
+- Le `ownerId` ou un `GuestAccess` actif associé au `CharacterId` peut consulter et modifier
+  les zones autorisées de sa fiche. Les permissions fines d'édition sont gérées par l'application
+  sur les blocs et propriétés exposés au joueur.
 - Les blocs `isPrivate = true` sont visibles uniquement par le MJ.
-- `ownerId = null` → Document avec visibilité `PRIVATE` par défaut.
-  Le MJ peut la modifier explicitement (SHARED ou PUBLIC) pour partager la fiche avec le groupe
-  avant qu'un compte joueur soit associé (ex. : session avec invité sans compte ou joueur absent).
-  L'association d'un `ownerId` ne change **pas automatiquement** la visibilité — c'est une action explicite du MJ.
+- `ownerId = null` → Document avec visibilité `PRIVATE` par défaut. Le MJ peut la modifier
+  explicitement. L'association d'un `ownerId` ne change **pas automatiquement** la visibilité.
+- Un même utilisateur peut posséder plusieurs `PlayerCharacter` dans une campagne.
+  Le personnage courant est porté par `RequesterId.characterId` pendant l'accès.
 - Les contenus `PLAYER_PRIVATE` liés à ce personnage utilisent `ownerCharacterId = characterId`.
-  Ils restent donc récupérables par un futur `GuestAccess` ou compte authentifié associé au même personnage.
-- `linkedNpcId` est une association narrative — la suppression du NPC ne supprime pas le personnage.
+  Ils restent récupérables par un futur `GuestAccess` ou compte associé au même personnage.
+- `linkedDocumentId` est une association narrative — la suppression du document lié ne supprime pas le personnage.
 - Soft delete PlayerCharacter → soft delete de son Document associé (même transaction).
 
 #### Domain Events
 
 ```
-CharacterCreated          { characterId, campaignId, documentId, occurredAt }
-CharacterOwnerAssigned    { characterId, ownerId, occurredAt }
-CharacterStatusChanged    { characterId, oldStatus, newStatus, occurredAt }
-CharacterLinkedToNpc      { characterId, npcId, occurredAt }
-CharacterUnlinkedFromNpc  { characterId, occurredAt }
+CharacterCreated              { characterId, campaignId, documentId, occurredAt }
+CharacterOwnerAssigned        { characterId, ownerId, occurredAt }
+CharacterStatusChanged        { characterId, oldStatus, newStatus, occurredAt }
+CharacterLinkedToDocument     { characterId, documentId, occurredAt }
+CharacterUnlinkedFromDocument { characterId, occurredAt }
 ```
 
 ---
@@ -285,20 +252,31 @@ CharacterUnlinkedFromNpc  { characterId, occurredAt }
 Gère la structure ordonnée des scènes et le statut de progression.
 Le contenu narratif global est dans son Document associé.
 
+Un scénario peut vivre en **bibliothèque personnelle** du MJ (scénario source réutilisable,
+`isTemplate = true`) ou en tant qu'**instance** dans une campagne ou un one-shot.
+
 ```
 Scenario
-├── id          : ScenarioId
-├── campaignId  : CampaignId
-├── documentId  : DocumentId
-├── title       : String           — dénormalisé, synchronisé via DocumentTitleUpdated
-├── slug        : Slug             — unique par campagne
-├── order       : Int              — position du scénario dans la campagne, géré par ScenarioOrderService
-│                                    synchronisé par défaut avec l'ordre d'affichage dans le dossier "Scénarios"
-├── status      : ScenarioStatus
-├── scenes      : Scene[]          — entités enfants, cycle de vie lié (zéro ou plusieurs)
-├── audit       : AuditInfo
-└── softDelete  : SoftDelete
+├── id               : ScenarioId
+├── campaignId       : CampaignId?     — null si scénario en bibliothèque
+├── ownerId          : UserId?         — renseigné si scénario en bibliothèque, null si dans campagne
+├── documentId       : DocumentId
+├── title            : String          — dénormalisé, synchronisé via DocumentTitleUpdated
+├── slug             : Slug            — unique par campagne ; unique par propriétaire en bibliothèque
+├── order            : Int             — position dans la campagne (ignoré si isTemplate = true)
+├── status           : ScenarioStatus
+├── isTemplate       : Boolean         — true = source réutilisable en bibliothèque
+├── sourceScenarioId : ScenarioId?     — null si source ou indépendant, renseigné si instance copiée
+├── scenes           : Scene[]
+├── audit            : AuditInfo
+└── softDelete       : SoftDelete
 ```
+
+**Invariants de cohérence bibliothèque / campagne :**
+- `isTemplate = true` → `campaignId = null` ET `ownerId` non null.
+- `isTemplate = false` ET `campaignId = null` → impossible (une instance appartient toujours à une campagne).
+- `sourceScenarioId` non null → `isTemplate = false` (une instance ne peut pas devenir source).
+- Un scénario source ne peut être modifié que par son `ownerId` — jamais depuis une instance.
 
 ```
 ScenarioStatus
@@ -312,14 +290,14 @@ ScenarioStatus
 
 ```
 Scene
-├── id              : SceneId
-├── scenarioId      : ScenarioId
-├── documentId      : DocumentId
-├── title           : String       — dénormalisé, synchronisé via DocumentTitleUpdated
-├── order           : Int          — position dans le scénario, géré par Scenario
-├── status          : SceneStatus
-├── linkedNpcIds    : NpcId[]      — références légères
-└── audit           : AuditInfo    — pas de SoftDelete, suppression en cascade
+├── id                : SceneId
+├── scenarioId        : ScenarioId
+├── documentId        : DocumentId
+├── title             : String         — dénormalisé, synchronisé via DocumentTitleUpdated
+├── order             : Int            — position dans le scénario, géré par Scenario
+├── status            : SceneStatus
+├── linkedDocumentIds : DocumentId[]   — références légères (PNJ, lieux, objets liés à la scène)
+└── audit             : AuditInfo     — pas de SoftDelete, suppression en cascade
 ```
 
 ```
@@ -339,42 +317,133 @@ SceneStatus
   (point d'extension post-MVP : `Scenario.followsFolderOrder: Boolean = true`).
 - Un `Scenario` `ARCHIVED` est en lecture seule.
 - Soft delete `Scenario` → suppression physique des `Scene` et soft delete de leurs Documents.
-- `linkedNpcIds` : si un NPC est soft-deleted, sa référence est retirée sans supprimer la scène.
+- `linkedDocumentIds` : si un document lié est soft-deleted, sa référence est retirée sans supprimer la scène.
+- La création d'une instance est une **copie profonde** : Document de scénario, scènes,
+  documents de scène, blocs et documents liés nécessaires au scénario (PNJ, lieux, objets,
+  notes de préparation) sont dupliqués dans la campagne cible.
+  L'instance est indépendante du source après la copie — toute modification va dans l'instance.
+- Un `Scenario(isTemplate = true)` ne peut être rattaché à aucune `Session` — seules les instances
+  de campagne (`isTemplate = false`) peuvent l'être.
+- L'historique des runs est reconstruit depuis les instances (`sourceScenarioId`), les campagnes
+  one-shot et les sessions associées. Il n'existe pas d'entité `ScenarioRun` dédiée dans le MVP.
 
 #### Domain Events
 
 ```
-ScenarioCreated       { scenarioId, campaignId, documentId, occurredAt }
-ScenarioStatusChanged { scenarioId, oldStatus, newStatus, occurredAt }
-ScenarioReordered     { campaignId, occurredAt }
-SceneAdded            { scenarioId, sceneId, documentId, occurredAt }
-SceneRemoved          { scenarioId, sceneId, occurredAt }
-SceneStatusChanged    { sceneId, scenarioId, oldStatus, newStatus, occurredAt }
-SceneReordered        { scenarioId, occurredAt }
-SceneNpcLinked        { sceneId, npcId, occurredAt }
-SceneNpcUnlinked      { sceneId, npcId, occurredAt }
+ScenarioCreated          { scenarioId, campaignId?, documentId, occurredAt }
+ScenarioStatusChanged    { scenarioId, oldStatus, newStatus, occurredAt }
+ScenarioReordered        { campaignId, occurredAt }
+ScenarioMarkedAsTemplate { scenarioId, ownerId, occurredAt }
+ScenarioInstanceCreated  { instanceId, sourceScenarioId, campaignId, occurredAt }
+SceneAdded               { scenarioId, sceneId, documentId, occurredAt }
+SceneRemoved             { scenarioId, sceneId, occurredAt }
+SceneStatusChanged       { sceneId, scenarioId, oldStatus, newStatus, occurredAt }
+SceneReordered           { scenarioId, occurredAt }
+SceneDocumentLinked      { sceneId, documentId, occurredAt }
+SceneDocumentUnlinked    { sceneId, documentId, occurredAt }
+```
+
+---
+
+### Agrégat : `DocumentType`
+
+Définit un schéma de propriétés structurées associé optionnellement à un `Document`.
+Indépendant du `DocumentTemplate` (qui initialise les blocs) : un document peut avoir
+un template sans type, un type sans template, les deux, ou aucun.
+
+Types BUILTIN fournis par l'application, utilisables sans configuration :
+
+| Nom | Propriétés |
+|---|---|
+| PNJ | Nom, Rôle, Affiliation, Description, Secret |
+| Personnage joueur | Nom, Joueur, Description |
+| Lieu | Nom, Type, Description |
+| Objet | Nom, Rareté, Propriétaire |
+| Faction | Nom, Alignement, Chef, Description |
+
+```
+DocumentType
+├── id         : DocumentTypeId
+├── name       : String
+├── slug       : Slug               — unique par (scope, ownerId?, campaignId?)
+├── scope      : DocumentTypeScope
+├── ownerId    : UserId?            — null si BUILTIN
+├── campaignId : CampaignId?        — null si scope USER ou BUILTIN
+├── properties : PropertySchema[]
+├── audit      : AuditInfo
+└── softDelete : SoftDelete
+```
+
+```
+DocumentTypeScope
+├── BUILTIN    — fourni par l'application, non modifiable
+├── CAMPAIGN   — défini pour une campagne spécifique
+└── USER       — défini par un utilisateur, portable entre ses campagnes
+```
+
+```
+PropertySchema
+├── key       : String              — identifiant technique (stable, utilisé dans JSONB)
+├── label     : String              — libellé affiché à l'utilisateur
+├── valueType : PropertyValueType
+└── required  : Boolean
+```
+
+```
+PropertyValueType
+├── TEXT
+├── NUMBER
+└── BOOLEAN
+```
+
+#### Combinaisons valides scope / ownerId / campaignId
+
+| scope    | ownerId  | campaignId |
+|---|---|---|
+| BUILTIN  | null     | null       |
+| CAMPAIGN | non-null | non-null   |
+| USER     | non-null | null       |
+
+**Invariant** : toute autre combinaison est rejetée par le constructeur.
+
+#### Invariants et règles métier
+
+- `BUILTIN` non modifiable, non supprimable.
+- `CAMPAIGN` visible uniquement par les membres de la campagne.
+- `USER` portable entre les campagnes de son propriétaire.
+- Le `slug` est unique dans son scope : parmi les BUILTIN globaux, parmi les types d'une même campagne, parmi les types d'un même propriétaire USER.
+- Supprimer un `DocumentType` custom ne supprime pas les Documents qui l'utilisent :
+  leur `documentTypeId` passe à null et leurs `properties` sont conservées en lecture seule.
+- La validation des `properties` d'un Document contre le schéma de son `DocumentType` est
+  assurée par la couche application — le domaine n'invalide pas un document dont les propriétés
+  ne correspondent plus au schéma (le type a pu évoluer après coup).
+
+#### Domain Events
+
+```
+DocumentTypeCreated  { documentTypeId, scope, occurredAt }
+DocumentTypeUpdated  { documentTypeId, occurredAt }
+DocumentTypeDeleted  { documentTypeId, occurredAt }
 ```
 
 ---
 
 ### Agrégat : `DocumentTemplate`
 
-Schéma de blocs définissant la structure attendue pour un type de Document.
+Schéma de blocs définissant la structure initiale d'un `Document` à sa création.
 
 ```
 DocumentTemplate
-├── id              : TemplateId
-├── name            : String
-├── documentType    : DocumentType
-├── gameSystemId    : GameSystemId?
-├── scope           : TemplateScope
-├── ownerId         : UserId?          — null si BUILTIN
-├── campaignId      : CampaignId?      — null si scope USER ou BUILTIN
-├── version         : Int              — incrémenté à chaque modification du schéma de blocs
-│                                        commence à 1, jamais décrémenté
-├── schema          : BlockSchema[]
-├── audit           : AuditInfo
-└── softDelete      : SoftDelete
+├── id           : TemplateId
+├── name         : String
+├── documentRole : DocumentRole?       — null = aucune restriction de rôle
+├── gameSystemId : GameSystemId?
+├── scope        : TemplateScope
+├── ownerId      : UserId?             — null si BUILTIN
+├── campaignId   : CampaignId?         — null si scope USER ou BUILTIN
+├── schema       : BlockSchema[]
+├── audit        : AuditInfo
+└── softDelete   : SoftDelete
 ```
 
 ```
@@ -394,12 +463,6 @@ TemplateScope
 
 **Invariant** : toute autre combinaison est rejetée par le constructeur.
 
-#### Incrément de version
-
-`DocumentTemplate.version` est incrémenté à chaque appel à `AddBlock()`, `RemoveBlock()`,
-`ReorderBlocks()` ou `UpdateBlockSchema()`. `Document.appliedTemplateVersion` est comparé
-à `template.version` pour détecter qu'une synchronisation est disponible (UC-18).
-
 #### Value Object : `BlockSchema`
 
 ```
@@ -407,12 +470,11 @@ BlockSchema
 ├── kind         : BlockKind
 ├── label        : String
 ├── required     : Boolean
-└── defaultValue : BlockValue?    — instance concrète du sous-type correspondant
+└── defaultValue : BlockValue?
 ```
 
-**Note sur `required`** : un bloc `required = true` dans le schéma est un indicateur
-pour l'UI (champ mis en avant). La validation applicative lors de UC-18 ajoute ces blocs
-s'ils sont absents — elle ne bloque pas la sauvegarde d'un document incomplet.
+**Note sur `required`** : indicateur pour l'UI et pour la création initiale depuis template.
+Il ne bloque pas la sauvegarde d'un document incomplet.
 
 #### Invariants et règles métier
 
@@ -420,13 +482,14 @@ s'ils sont absents — elle ne bloque pas la sauvegarde d'un document incomplet.
 - `CAMPAIGN` visible uniquement par les membres de la campagne.
 - `USER` portable entre les campagnes de son propriétaire.
 - Un Document créé depuis un template est un snapshot indépendant.
+- Modifier un template n'a aucun effet automatique sur les Documents déjà créés.
+  La synchronisation de template est hors MVP.
 
 #### Domain Events
 
 ```
-TemplateCreated          { templateId, scope, occurredAt }
-TemplateSchemaUpdated    { templateId, newVersion, occurredAt }
-TemplateAppliedToDocument { templateId, documentId, occurredAt }
+TemplateCreated           { templateId, scope, occurredAt }
+TemplateUpdated           { templateId, occurredAt }
 ```
 
 ---
@@ -438,23 +501,25 @@ Chaque campagne démarre avec 4 dossiers système créés automatiquement.
 
 ```
 Folder
-├── id                : FolderId
-├── campaignId        : CampaignId
-├── name              : String
-├── slug              : Slug              — unique par campaignId
-├── defaultTemplateId : TemplateId?       — template appliqué à la création d'un doc dans ce dossier
-├── isSystem          : Boolean           — true = dossier créé par le système, non supprimable
-├── order             : Int               — position dans la navigation
-├── audit             : AuditInfo
-└── softDelete        : SoftDelete
+├── id                    : FolderId
+├── campaignId            : CampaignId
+├── name                  : String
+├── slug                  : Slug                  — unique par campaignId
+├── defaultTemplateId     : TemplateId?           — template appliqué à la création d'un doc dans ce dossier
+├── defaultDocumentTypeId : DocumentTypeId?        — DocumentType appliqué par défaut à la création
+│                                                    applicable aux documents STANDARD uniquement
+├── isSystem              : Boolean               — true = créé par le système, non supprimable
+├── order                 : Int                   — position dans la navigation
+├── audit                 : AuditInfo
+└── softDelete            : SoftDelete
 ```
 
 **Dossiers système créés à l'initialisation de la campagne :**
 
-| Nom | isSystem | Template par défaut |
+| Nom | isSystem | Type par défaut |
 |---|---|---|
-| PNJ | true | "Fiche PNJ générique" |
-| Personnages joueurs | true | "Fiche personnage générique" |
+| Personnages | true | PNJ (BUILTIN) |
+| Joueurs | true | Personnage joueur (BUILTIN) |
 | Scénarios | true | — |
 | Notes | true | — |
 
@@ -464,14 +529,23 @@ Folder
 - Tous les dossiers (y compris système) peuvent être renommés.
 - Le `slug` est régénéré depuis le `name` à la création, jamais modifié après.
 - Supprimer un dossier non-système nécessite de traiter ses documents (déplacer ou déclasser).
-- Changer le `defaultTemplateId` n'affecte jamais les documents existants dans le dossier.
-- L'ordre des dossiers est géré par `FolderOrderService` (application service — voir AD-20).
+- Changer `defaultTemplateId` ou `defaultDocumentTypeId` n'affecte jamais les documents existants.
+- `defaultDocumentTypeId` s'applique uniquement aux Documents `STANDARD` — le dossier "Scénarios"
+  ne peut pas imposer un type de document : ses documents sont créés via l'agrégat `Scenario`.
+- L'ordre des dossiers est géré par `FolderOrderService` (application service).
+
+#### Domain Events
+
+```
+FolderCreated  { folderId, campaignId, name, isSystem, occurredAt }
+FolderRenamed  { folderId, campaignId, oldName, newName, occurredAt }
+FolderDeleted  { folderId, campaignId, occurredAt }
+```
 
 #### Références entre documents — backlinks
 
-Les références entre documents existent via `RelationBlockValue { targetId: DocumentId, targetType: DocumentType }`.
-Un document peut pointer vers n'importe quel autre document de la campagne via un bloc `RELATION`.
+Les références entre documents existent via `RelationBlockValue { targetId: DocumentId }`.
+Un document peut pointer vers n'importe quel autre document de la même campagne via un bloc `RELATION`.
 
-Les **backlinks** (documents qui pointent *vers* un document donné) sont résolus
-via une requête sur `DOCUMENT_BLOCK` filtrée par `kind = RELATION`, `value->>'targetId' = ?`
-**et `DOCUMENT.isDeleted = false`**. Un backlink pointant vers un document supprimé n'est pas affiché.
+Les **backlinks** sont résolus via une requête sur `DOCUMENT_BLOCK` filtrée par
+`kind = RELATION`, `value->>'targetId' = ?` **et `DOCUMENT.isDeleted = false`**.

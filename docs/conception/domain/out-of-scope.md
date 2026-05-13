@@ -4,18 +4,17 @@
 |---|---|---|
 | Règles système de jeu | `GameSystem` prêt à recevoir un `RuleSet` | Campaign Management |
 | Templates par système | `DocumentTemplate.gameSystemId` déjà modélisé | Content Library |
-| Promotion NPC → PJ | Liens `linkedCharacterId` / `linkedNpcId` déjà présents | Content Library |
+| Promotion de document PNJ en Personnage joueur | `PlayerCharacter.linkedDocumentId` déjà présent ; factory à invoquer explicitement | Content Library |
 | Versioning des documents | Architecture compatible avec un historique de blocs | Content Library |
 | OAuth / SSO | Contexte Identity isolé, remplacement sans impact | Identity & Access |
 | Templates communautaires | `TemplateScope.USER` déjà modélisé | Content Library |
 | AccessPolicy en contexte autonome | `ContentAccessRule` extractible si la complexité l'exige | Campaign Management |
 | Temps réel (WebSocket) | `SessionStatus.LIVE` + domain events — base pour un bus événementiel | Session Conduct |
-| SessionSummary deux versions | Modèle actuel : un seul résumé par session. Multi-version = post-MVP | Session Conduct |
-| Types de document extensibles | `DocumentType.CUSTOM` + `customType: String` déjà modélisé | Content Library |
-| Verrouillage de champs | `DocumentBlock.isLocked` modélisé, non activé dans le MVP | Content Library |
-| Factions | Représentées via `Document(CUSTOM, "FACTION")` si nécessaire | Content Library |
-| UserProjection locale | Si extraction de Campaign Management en service : ajouter projection via events | Campaign Management |
+| Résumé de session dédié | MVP couvert par un Document standard de campagne ; une entité spécialisée pourra être ajoutée si le workflow devient central | Session Conduct / Content Library |
+| Relations typées entre documents | Fondation via `DocumentType.properties` et `RelationBlockValue`; ajout d'un type de propriété référence si le besoin est validé | Content Library |
+| Verrouillage de champs | Non modélisé en MVP ; à ajouter quand l'édition joueur de fiches devient réellement fine | Content Library |
 | Dossiers imbriqués (sous-dossiers) | `Folder.parentFolderId?` — non activé MVP, un seul niveau de dossiers | Content Library |
-| Synchronisation template automatique | `Document.appliedTemplateVersion` modélisé — propagation auto non activée | Content Library |
+| Synchronisation template automatique | Les templates MVP sont des snapshots à la création ; pas de version/sync persistée | Content Library |
 | Dissociation ordre scénario / ordre dossier | `Scenario.followsFolderOrder: Boolean = true` — non activé MVP | Content Library |
-| GameSystem custom partagé entre GM | `GameSystem.ownerId` = null pour les built-in, scope private en MVP | Campaign Management |
+| GameSystem custom partagé entre MJ | `GameSystem.ownerId` = null pour les built-in, scope privé en MVP | Campaign Management |
+| Moteur de règles léger | Fondation dans `DocumentType` et relations typées — voir UC-HORS-MVP | Content Library |

@@ -1,107 +1,138 @@
 # Use Cases hors MVP — Vision produit long terme
 
-Les use cases suivants ne sont pas prévus dans le MVP, mais peuvent guider l'architecture et la vision long terme.
+Les use cases suivants ne sont pas prévus dans le MVP. Ils sont exclus par choix stratégique, pas par oubli.
 
-## UC-F01 — Utiliser des templates de système de jeu
+---
+
+## Fonctionnalités déprioritisées (anciennement envisagées dans le MVP)
+
+### Inventaire personnage
+
+Le joueur gère ses ressources, équipements et monnaie depuis sa fiche personnage.
+
+**Pourquoi Won't Have** : compète avec D&D Beyond sans pouvoir l'égaler. Émilie joue des systèmes sans inventaire. Antoine a trois systèmes aux logiques incompatibles. Une fiche générique serait trop pauvre pour être utile.
+
+**Condition de retour** : si les entretiens révèlent que les joueurs gèrent activement leurs ressources dans l'outil et que D&D Beyond n'est pas utilisé dans le groupe.
+
+---
+
+### Clôture formelle de session
+
+Le MJ clôture une session, écrit un résumé structuré et prépare les éléments pour la suite.
+
+**Pourquoi Won't Have** : absorbé par UC-04 (notes post-session) et UC-07 (capture à la volée). La clôture formelle est un workflow, pas un use case atomique. Sonia invalide le concept (pas de continuité entre one-shots).
+
+**Condition de retour** : si l'historique de campagne devient un différenciant après les premières validations.
+
+---
+
+### Documents de lore (use case distinct)
+
+Le MJ crée et organise des fiches de lieux, factions, organisations et objets importants comme catégorie dédiée.
+
+**Pourquoi Won't Have** : un document de lore est un document dans un dossier "Lore". Le pilier 1 (document générique + dossiers libres + types optionnels) couvre entièrement ce besoin. Créer un use case distinct n'apporterait aucune valeur différenciante.
+
+**Condition de retour** : jamais en tant que use case distinct.
+
+---
+
+## Vision long terme
+
+### UC-F01 — Utiliser des templates de système de jeu
 
 Le MJ choisit un système de jeu ou un template. Le produit adapte certains champs : fiche personnage, fiche PNJ, ressources, structure de scénario.
 
-### Intérêt
+**Intérêt** : améliore l'adoption, réduit la configuration manuelle.
 
-- Améliore l'adoption.
-- Réduit la configuration manuelle.
-- Rend l'outil plus adapté aux usages réels.
+**Risque** : forte complexité de contenu. Risque de transformer le projet en moteur de règles.
 
-### Risque
-
-- Forte complexité car chaque système de jeu a ses propres règles.
-- Risque de transformer le projet en moteur de règles.
-
-### Position recommandée
-
-Prévoir une fiche générique dans le MVP, puis ajouter des templates configurables plus tard.
+**Position recommandée** : document générique dans le MVP, templates configurables après validation de l'adoption.
 
 ---
 
-## UC-F02 — Assistant IA pour le MJ
+### UC-F02 — Assistant IA pour le MJ
 
 Le MJ utilise une aide IA pour générer des idées, structurer un scénario, créer un PNJ, résumer une session ou proposer des pistes d'improvisation.
 
-### Intérêt
+**Intérêt** : forte valeur perçue. Cohérent avec le besoin d'aide à la préparation.
 
-- Forte valeur perçue.
-- Cohérent avec le besoin d'aide à la préparation.
-- Peut différencier le produit à moyen terme.
+**Risque** : peut brouiller le positionnement MVP. Risque de construire un produit "IA" au lieu d'un outil d'organisation.
 
-### Risque
-
-- Peut brouiller le positionnement du MVP.
-- Risque de construire un produit "IA" au lieu d'un outil d'organisation.
-
-### Position recommandée
-
-L'IA doit rester une extension de l'assistant MJ, pas le cœur du MVP.
+**Position recommandée** : extension de l'assistant MJ après validation du socle organisationnel.
 
 ---
 
-## UC-F03 — Table visuelle légère
+### UC-F03 — Table visuelle légère
 
 Le produit propose une table visuelle pour représenter des cartes, positions ou scènes.
 
-### Intérêt
+**Intérêt** : utile pour les sessions en ligne.
 
-- Utile pour les sessions en ligne.
-- Peut compléter l'expérience de session.
+**Risque** : concurrence directe avec Roll20 et Foundry. Complexité technique élevée. Détourne le produit de son cœur.
 
-### Risque
-
-- Concurrence directe avec Roll20 et Foundry.
-- Complexité technique élevée.
-- Peut détourner le produit de son cœur : l'aide au MJ.
-
-### Position recommandée
-
-À considérer uniquement après validation du socle MJ.
+**Position recommandée** : à considérer uniquement après validation du socle MJ.
 
 ---
 
-## UC-F04 — Version desktop ou local-first
+### UC-F04 — Application desktop avec synchronisation CRDT
 
-Le MJ utilise l'application en local, potentiellement via une version desktop, avec synchronisation optionnelle.
+Le MJ utilise une application desktop avec synchronisation offline-first complète (résolution de conflits multi-device, usage sans connexion prolongé).
 
-### Intérêt
+**Intérêt** : répond au besoin d'usage hors ligne. Peut rassurer sur la possession des données.
 
-- Répond au besoin d'usage hors ligne.
-- Pertinent pour les sessions physiques.
-- Peut rassurer les utilisateurs sur la possession de leurs données.
+**Risque** : architecture CRDT ou équivalent — complexité élevée. Nécessite une stratégie de synchronisation de conflits.
 
-### Risque
+**Distinction avec UC-01** : le mode local (UC-01) utilise le stockage navigateur (IndexedDB) pour différer l'obligation de compte sur la même session de navigation. UC-F04 est une architecture offline-first complète, multi-device, avec résolution de conflits — un projet à part entière.
 
-- Complexifie l'architecture.
-- Nécessite une stratégie de synchronisation.
-
-### Position recommandée
-
-Ne pas développer dans le MVP, mais éviter une architecture trop dépendante du cloud si cette piste est importante à long terme.
+**Position recommandée** : ne pas développer dans le MVP. UC-01 couvre le besoin de "démarrer sans compte". UC-F04 est réservé à une version post-validation avec une base utilisateur active.
 
 ---
 
-## UC-F05 — Templates communautaires
+### UC-F05 — Templates communautaires
 
 Les utilisateurs peuvent créer, partager ou installer des templates de campagne, fiches ou aides de jeu.
 
-### Intérêt
+**Intérêt** : effet communautaire. Peut enrichir le produit sans tout développer en interne. Soutient une stratégie freemium.
 
-- Crée un effet communautaire.
-- Peut enrichir le produit sans tout développer en interne.
-- Peut soutenir une stratégie freemium ou premium.
+**Risque** : modération, qualité variable, complexité de gestion d'un catalogue.
 
-### Risque
+**Position recommandée** : vision long terme uniquement.
 
-- Modération.
-- Qualité variable.
-- Complexité de gestion d'un catalogue.
+---
 
-### Position recommandée
+### UC-F06 — Relations et règles entre documents typés
 
-Vision long terme uniquement.
+#### Contexte
+
+Les types de document (PNJ, Personnage joueur, Objet, Faction — voir [UC-05](UC-05-organiser-dossiers.md))
+sont la fondation de cette évolution. Une fois que les documents ont des propriétés structurées,
+deux couches peuvent s'y ajouter progressivement.
+
+#### Couche 1 — Relations typées entre documents
+
+Un document typé peut déclarer des relations vers d'autres documents typés :
+- Ce PNJ appartient à cette Faction.
+- Cet Objet est porté par ce Personnage joueur.
+- Cette Scène se déroule dans ce Lieu.
+
+Les relations sont bidirectionnelles et naviguables : depuis la fiche d'une faction, on voit ses membres. Depuis la fiche d'un personnage, on voit ses objets. Les backlinks que Thomas utilise dans Obsidian deviennent ici des relations structurées et interrogeables.
+
+**Intérêt** : navigation contextuelle en vue session, requêtes croisées ("quels PNJ sont membres de cette faction ?"), cohérence narrative.
+
+**Risque** : complexité de modélisation UX. Les relations doivent rester optionnelles pour ne pas décourager les MJ qui n'en ont pas besoin.
+
+#### Couche 2 — Règles sur les propriétés et relations
+
+Une règle est une logique appliquée aux propriétés de documents liés :
+- Si un personnage porte un objet avec la propriété "dégâts: 1d6", une règle peut afficher le total de dégâts.
+- Si un personnage a la propriété "armure: 3", une règle peut calculer la réduction de dégâts.
+
+C'est une émulation légère de système de jeu — pas un moteur de règles complet, mais un calculateur contextuel sur des propriétés déclarées.
+
+**Intérêt** : un MJ peut modéliser son système de jeu dans l'outil sans en être prisonnier. Le système reste agnostique — les règles sont définies par l'utilisateur, pas par l'application.
+
+**Risque** : frontière floue avec un vrai moteur de règles. Risque de dérive vers la simulation. Doit rester un outil d'aide, pas de substitution au système de jeu.
+
+**Prérequis techniques** : les types de document (UC-05) doivent être implémentés et stables. Le schéma de `Document` doit prévoir `documentTypeId` et `properties` (JSON structuré) dès le MVP pour ne pas nécessiter de migration majeure.
+
+**Position recommandée** : Couche 1 (relations) post-MVP, après validation de l'adoption des types de document. Couche 2 (règles) vision long terme uniquement.

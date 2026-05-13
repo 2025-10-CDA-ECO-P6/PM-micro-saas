@@ -52,11 +52,11 @@ La vue session MJ est composée de plusieurs panneaux :
 - Chaque scène indique son statut (non jouée / en cours / jouée).
 - Le MJ peut marquer une scène comme jouée d'un clic.
 
-**Panneau PNJ** *(colonne latérale)*
-- Affiche les PNJ présents dans `Session.selectedNpcIds`.
-- Cette liste est auto-déduite depuis les scènes du scénario actif (union des `Scene.linkedNpcIds`) lors de la préparation (UC-05), puis modifiable manuellement par le MJ en cours de session.
+**Panneau Documents de session** *(colonne latérale)*
+- Affiche les documents utiles à la session, notamment les PNJ, lieux, objets et notes préparées présents dans `Session.selectedDocumentIds`.
+- Cette liste est auto-déduite depuis les scènes du scénario actif (union des `Scene.linkedDocumentIds`) lors de la préparation, puis modifiable manuellement par le MJ en cours de session.
 - Le MJ peut ajouter un PNJ non prévu ou en retirer un.
-- Chaque PNJ affiche : nom, traits résumés, statut (actif/neutralisé/fui).
+- Chaque document typé PNJ affiche les propriétés utiles disponibles : nom, rôle, traits résumés, statut si renseigné.
 
 **Panneau Personnages Joueurs** *(colonne latérale)*
 - Affiche les fiches `PlayerCharacter` associées à la campagne.
@@ -86,13 +86,13 @@ La vue session MJ est composée de plusieurs panneaux :
 7. Le MJ crée des LiveNotes au fil de la partie (interactions, décisions narratives, informations révélées).
 8. Le MJ marque des scènes comme jouées.
 9. Le MJ utilise la recherche pour retrouver un élément non prévu.
-10. Le MJ peut créer un PNJ ou une note à la volée → **voir UC-14**.
-11. Le MJ peut partager une information aux joueurs → **voir UC-09**.
+10. Le MJ peut créer un PNJ ou une note à la volée → **voir UC-07**.
+11. Le MJ peut partager une information aux joueurs → **voir UC-08**.
 
 ### Phase 4 — Fermeture de la session
 
 12. Le MJ clique sur "Terminer la session".
-13. Le système affiche l'étape de clôture → **voir UC-12**.
+13. Le système passe la session en `CLOSED`. Le MJ peut ajouter des notes rétroactives ou créer un document de récapitulatif s'il le souhaite.
 
 ---
 
@@ -105,8 +105,9 @@ La vue session MJ est composée de plusieurs panneaux :
    - les `LiveNote` du joueur avec `visibility = PLAYER_PRIVATE` et `ownerCharacterId = personnage associé au requester` ;
    - une zone de création de LiveNotes personnelles.
 4. Le joueur peut créer une `LiveNote` personnelle :
-   - `authorRole = PLAYER`, `visibility = PLAYER_PRIVATE`, `ownerCharacterId = characterId` (par défaut, non modifiable).
-   - La note n'est accessible qu'au requester associé au même personnage.
+   - `authorRole = PLAYER`, `visibility = PLAYER_PRIVATE`, `ownerCharacterId = characterId` par défaut.
+   - La note n'est accessible qu'au requester associé au même personnage tant qu'elle n'est pas partagée.
+   - Le joueur peut choisir de partager une note personnelle avec d'autres joueurs, comme il montrerait une note papier à la table.
 5. Le joueur ne voit pas les LiveNotes `PRIVATE` du MJ.
 6. Le joueur ne voit pas les LiveNotes `PLAYER_PRIVATE` des autres joueurs.
 
@@ -119,25 +120,25 @@ La vue session MJ est composée de plusieurs panneaux :
 Le MJ souhaite démarrer une session improvisée sans session préparée.
 
 1. Depuis la vue campagne, le MJ clique sur "Lancer une session rapide".
-2. Le système crée une session avec : `status = LIVE`, `scenarioId = null`, `selectedNpcIds = []`, `pinnedItems = []`.
-3. La vue session s'ouvre avec les panneaux Scénario et PNJ vides.
-4. Le MJ peut ajouter manuellement des PNJ et des documents épinglés.
+2. Le système crée une session avec : `status = LIVE`, `scenarioId = null`, `selectedDocumentIds = []`, `pinnedItems = []`.
+3. La vue session s'ouvre avec les panneaux Scénario et Documents de session vides.
+4. Le MJ peut ajouter manuellement des PNJ, lieux, notes et documents épinglés.
 
 ### A2 — Création d'un élément à la volée
 
 Le MJ a besoin d'un PNJ ou d'une note qui n'a pas été préparée.
 
-1. Le MJ clique sur "Créer" dans le panneau PNJ ou LiveNotes.
-2. Le flux de création rapide s'ouvre → **voir UC-14**.
+1. Le MJ clique sur "Créer" dans le panneau Documents de session ou LiveNotes.
+2. Le flux de création rapide s'ouvre → **voir UC-07**.
 3. L'élément créé est automatiquement lié à la session active.
-4. Un PNJ créé est ajouté à `Session.selectedNpcIds`.
+4. Un PNJ créé est ajouté à `Session.selectedDocumentIds`.
 
 ### A3 — Recherche d'un élément non prévu
 
 Le MJ cherche un document de lore, une note ancienne ou un PNJ absent des panneaux.
 
 1. Le MJ utilise la barre de recherche.
-2. Le flux de recherche s'exécute → **voir UC-11**.
+2. Le flux de recherche s'exécute → **voir UC-14**.
 3. Le MJ peut épingler le résultat dans le panneau Documents épinglés pour y revenir facilement.
 
 ### A4 — Partage en direct d'une information
@@ -145,7 +146,7 @@ Le MJ cherche un document de lore, une note ancienne ou un PNJ absent des pannea
 Le MJ décide de rendre visible un document ou une LiveNote aux joueurs.
 
 1. Le MJ clique sur "Partager" sur un document ou une LiveNote.
-2. Le flux de partage s'exécute → **voir UC-09**.
+2. Le flux de partage s'exécute → **voir UC-08**.
 3. La visibilité de la ressource est mise à jour (`SHARED` ou `PUBLIC`).
 4. Si la ressource devient `SHARED`, des `ContentAccessRule` ciblent les membres ou personnages concernés.
 5. Les joueurs voient immédiatement l'information dans leur vue.
@@ -156,16 +157,16 @@ La session a été interrompue (perte de connexion, pause) et le MJ la reprend.
 
 1. Le MJ accède à la session depuis la vue campagne.
 2. La session est déjà au statut `LIVE`.
-3. La vue session s'ouvre avec l'état précédent intégralement restauré : scènes marquées, LiveNotes, PNJ sélectionnés.
+3. La vue session s'ouvre avec l'état précédent intégralement restauré : scènes marquées, LiveNotes, documents sélectionnés.
 
-### A6 — Ajout ou retrait de PNJ en cours de session
+### A6 — Ajout ou retrait de documents en cours de session
 
-1. Le MJ clique sur "Ajouter un PNJ" dans le panneau PNJ.
-2. Une recherche s'ouvre dans les PNJ de la campagne.
-3. Le MJ sélectionne un PNJ.
-4. Le système l'ajoute à `Session.selectedNpcIds`.
-5. Le PNJ apparaît dans le panneau.
-6. Pour retirer un PNJ : le MJ clique sur "Retirer" — l'entrée est supprimée de `selectedNpcIds`. Le document PNJ reste intact dans la campagne.
+1. Le MJ clique sur "Ajouter" dans le panneau Documents de session.
+2. Une recherche s'ouvre dans les documents de la campagne, filtrable par type (PNJ, lieu, objet, note...).
+3. Le MJ sélectionne un document.
+4. Le système l'ajoute à `Session.selectedDocumentIds`.
+5. Le document apparaît dans le panneau.
+6. Pour retirer un document : le MJ clique sur "Retirer" — l'entrée est supprimée de `selectedDocumentIds`. Le document reste intact dans la campagne.
 
 ---
 
@@ -191,7 +192,7 @@ Un joueur tente d'accéder à l'URL de la vue session MJ.
 Le MJ tente d'accéder à la vue session d'une session `PLANNED`, `CLOSED` ou `ARCHIVED`.
 
 - `PLANNED` : le bouton "Lancer" est proposé, la vue session n'est pas accessible directement.
-- `CLOSED` : le système affiche la vue lecture seule de la session clôturée (consultation des LiveNotes et résumé uniquement).
+- `CLOSED` : le système affiche la vue lecture seule de la session clôturée côté joueurs ; le MJ peut encore ajouter des LiveNotes rétroactives.
 - `ARCHIVED` : lecture seule intégrale, aucune modification possible.
 
 ### E4 — Scénario sans scènes
@@ -199,7 +200,7 @@ Le MJ tente d'accéder à la vue session d'une session `PLANNED`, `CLOSED` ou `A
 La session est liée à un scénario existant mais sans scènes définies.
 
 - Le panneau Scénario affiche le scénario avec un message "Aucune scène définie".
-- Le MJ peut créer une scène à la volée → **voir UC-14**.
+- Le MJ peut créer une scène à la volée → **voir UC-07**.
 
 ---
 
@@ -207,7 +208,7 @@ La session est liée à un scénario existant mais sans scènes définies.
 
 - Toutes les `LiveNote` créées pendant la session sont sauvegardées avec leur `sessionId`.
 - Les scènes marquées comme jouées conservent leur statut.
-- Les modifications de `Session.selectedNpcIds` et `Session.pinnedItems` sont persistées.
+- Les modifications de `Session.selectedDocumentIds` et `Session.pinnedItems` sont persistées.
 - Les documents partagés aux joueurs ont leur visibilité mise à jour.
 - La session reste au statut `LIVE` jusqu'à clôture explicite par le MJ.
 
@@ -221,7 +222,7 @@ La session est liée à un scénario existant mais sans scènes définies.
 - `campaignId: CampaignId`
 - `scenarioId: ScenarioId?` (nullable)
 - `status: SessionStatus` — `PLANNED | LIVE | CLOSED | ARCHIVED`
-- `selectedNpcIds: NpcId[]`
+- `selectedDocumentIds: DocumentId[]`
 - `pinnedItems: PinnedItem[]`
 - `startedAt: DateTime?`
 
@@ -242,10 +243,10 @@ La session est liée à un scénario existant mais sans scènes définies.
 - Documents de la campagne avec leur `AccessPolicy` appliqué
 - `Session.pinnedItems` mis à jour
 
-### PNJ
+### Documents de session
 
-- `Session.selectedNpcIds` mis à jour
-- Données affichées : nom, traits résumés, statut
+- `Session.selectedDocumentIds` mis à jour
+- Données affichées selon le `DocumentType` : PNJ, lieu, objet, note, faction, document libre
 
 ---
 
@@ -255,14 +256,14 @@ La session est liée à un scénario existant mais sans scènes définies.
 - Les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées et leurs propres notes `PLAYER_PRIVATE`.
 - **LiveNotes en session LIVE** :
   - MJ : peut créer des LiveNotes à tout moment pendant `LIVE`. Visibilité par défaut : `PRIVATE`. Peut basculer en `SHARED`.
-  - Joueur : peut créer des LiveNotes uniquement pendant une session `LIVE`. Visibilité fixe : `PLAYER_PRIVATE` (non modifiable par le joueur) et liée au `CharacterId`.
+  - Joueur : peut créer des LiveNotes uniquement pendant une session `LIVE`. Visibilité par défaut : `PLAYER_PRIVATE` et liée au `CharacterId`. Il peut ensuite partager la note avec le groupe ou des personnages ciblés.
 - **LiveNotes après session** :
   - MJ : peut créer et modifier des LiveNotes rétroactives sur une session `CLOSED` (pour compléter ses notes après la partie).
   - Joueur : ne peut créer des LiveNotes que pendant `LIVE`.
 - Une `LiveNote` avec `visibility = PLAYER_PRIVATE` est inaccessible au MJ, quelles que soient ses permissions de campagne.
 - Un joueur invité sans compte peut créer une LiveNote personnelle si son `GuestAccess` est associé à un `CharacterId`. La note reste récupérable lors d'une séance suivante via un nouveau lien sécurisé associé au même personnage.
-- Les partages de `Document`, `LiveNote` et `SessionSummary` utilisent tous `AccessPolicy` et `ContentAccessRule`.
-- `Session.selectedNpcIds` est une liste modifiable manuellement. La valeur initiale est déduite des scènes du scénario actif lors de la préparation (UC-05).
+- Les partages de `Document` et `LiveNote` utilisent tous `AccessPolicy` et `ContentAccessRule`.
+- `Session.selectedDocumentIds` est une liste modifiable manuellement. La valeur initiale est déduite des scènes du scénario actif.
 - Marquer une scène comme jouée ne supprime pas le scénario et ne déclenche aucune transition d'état automatique sur la session.
 - La machine d'états `Session` est unidirectionnelle : `PLANNED → LIVE → CLOSED → ARCHIVED`.
 - Un document sans accès explicite pour un joueur n'est pas visible dans la vue joueur, même s'il est épinglé dans la session.
@@ -277,15 +278,15 @@ La session est liée à un scénario existant mais sans scènes définies.
 - Le MJ peut lancer une session rapide sans session préparée.
 - Le MJ peut consulter le scénario actif et ses scènes dans leur ordre.
 - Le MJ peut marquer une scène comme jouée.
-- Le MJ peut consulter les PNJ de `selectedNpcIds` avec leurs informations résumées.
-- Le MJ peut ajouter et retirer des PNJ de `selectedNpcIds` en cours de session.
+- Le MJ peut consulter les documents de `selectedDocumentIds` avec leurs informations résumées.
+- Le MJ peut ajouter et retirer des documents de `selectedDocumentIds` en cours de session.
 - Le MJ peut consulter les fiches personnages joueurs.
 - Le MJ peut créer une LiveNote (visibilité `PRIVATE` par défaut).
 - Le MJ peut changer la visibilité d'une LiveNote vers `SHARED`.
 - Le MJ peut épingler un document dans le panneau Documents épinglés.
 - Le MJ peut rechercher dans tous les documents de la campagne sans quitter la vue session.
-- Le MJ peut créer un élément à la volée → UC-14.
-- Le MJ peut partager une information → UC-09.
+- Le MJ peut créer un élément à la volée → UC-07.
+- Le MJ peut partager une information → UC-08.
 - Le MJ peut terminer la session → UC-12.
 
 ### Vue Joueur
@@ -298,7 +299,7 @@ La session est liée à un scénario existant mais sans scènes définies.
 ### Persistance
 
 - Les LiveNotes sont sauvegardées avec leur `sessionId`.
-- `Session.selectedNpcIds` et `Session.pinnedItems` sont persistés.
+- `Session.selectedDocumentIds` et `Session.pinnedItems` sont persistés.
 - Les scènes marquées comme jouées conservent leur statut entre les accès.
 
 ---
@@ -307,12 +308,11 @@ La session est liée à un scénario existant mais sans scènes définies.
 
 | Use Case | Relation |
 |---|---|
-| [UC-05](UC-05-preparer-session.md) — Préparer une session | Précède UC-06 : prépare `selectedNpcIds`, scénario, scènes |
-| [UC-09](UC-09-partager-information.md) — Partager une information | Appelé depuis UC-06 A4 |
-| [UC-11](UC-11-recherche.md) — Rechercher une information | Appelé depuis UC-06 A3 |
-| [UC-12](UC-12-cloturer-session.md) — Clôturer une session | Appelé depuis UC-06 Phase 4 |
-| [UC-13](UC-13-notes-personnelles-joueur.md) — Notes personnelles joueur | Sous-cas de la vue joueur (A5) |
-| [UC-14](UC-14-creation-volee-session.md) — Créer à la volée | Appelé depuis UC-06 A2 |
+| [UC-05](UC-05-organiser-dossiers.md) — Organiser le contenu | Fournit documents, types, dossiers et tags utilisés en session |
+| [UC-08](UC-08-partager-information.md) — Partager une information | Appelé depuis UC-06 A4 |
+| [UC-14](UC-14-recherche.md) — Rechercher une information | Appelé depuis UC-06 A3 |
+| [UC-12](UC-12-rejoindre-campagne.md) — Rejoindre une campagne ou session | Alimente la vue joueur et les accès invités |
+| [UC-07](UC-07-creation-volee-session.md) — Créer à la volée | Appelé depuis UC-06 A2 |
 
 ---
 

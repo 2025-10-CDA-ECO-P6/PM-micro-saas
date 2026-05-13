@@ -1,7 +1,8 @@
 # Diagramme de classes — Context Map
 
 Vue globale des dépendances entre bounded contexts. Les flèches indiquent
-la direction de consommation — il n'y a pas de dépendance circulaire.
+la direction de consommation d'Id typés ou de primitives. Une référence légère par Id
+ne donne jamais accès à l'entité du contexte cible.
 
 Le **Shared Kernel** est la fondation commune consommée par tous les contextes.
 Il contient uniquement des primitives stables sans règle métier, ainsi que
@@ -11,9 +12,10 @@ Il contient uniquement des primitives stables sans règle métier, ainsi que
 
 **Campaign Management** fournit `CampaignId` aux deux contextes en aval. Il héberge
 `AccessPolicy` dont la `ContentAccessRule` référence une `ShareableResourceRef`
-(`Document`, `LiveNote` ou `SessionSummary`) par Id uniquement.
+(`Document` ou `LiveNote`) par Id uniquement. Les invitations de session portent
+un `SessionId` comme référence légère pour limiter un `GuestAccess` à une session précise.
 
-**Content Library** fournit ses Id (`DocumentId`, `CharacterId`, `ScenarioId`, `TagId`) à Session Conduct.
+**Content Library** fournit ses Id (`DocumentId`, `CharacterId`, `ScenarioId`) à Session Conduct.
 
 ```mermaid
 graph TB
@@ -37,7 +39,7 @@ graph TB
     end
     subgraph CL[Content Library]
         DOC[Document et DocumentBlock]
-        NPC[NPC]
+        DT[DocumentType]
         PC[PlayerCharacter]
         SCE[Scenario et Scene]
         TPL[DocumentTemplate]
@@ -47,7 +49,6 @@ graph TB
     subgraph SE[Session Conduct]
         SS[Session]
         LN[LiveNote]
-        SUM[SessionSummary]
         PI[PinnedItem]
     end
     CORE -.->|primitives Id types RequesterId| IA
@@ -60,7 +61,9 @@ graph TB
     CM -->|CampaignId| CL
     CM -->|CampaignId| SE
     CR -.->|DocumentId ref cross-context| DOC
-    CL -->|DocumentId CharacterId ScenarioId TagId| SE
+    INV -.->|SessionId ref de scope SESSION| SS
+    GA -.->|SessionId ref de scope SESSION| SS
+    CL -->|DocumentId CharacterId ScenarioId| SE
     FLD -.->|contient par folderId FK| DOC
     CA --- MB
     CA --- INV

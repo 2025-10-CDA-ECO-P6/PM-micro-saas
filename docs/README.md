@@ -1,94 +1,50 @@
-# Haversack : Outil d’aide à la préparation et à la conduite de parties de jeu de rôle
+# Haversack — Documentation
 
-## Objectif du projet
+Outil d'assistance au Maître du Jeu pour la préparation et la conduite de parties de jeu de rôle.
 
-Le projet consiste à concevoir une application SaaS d’assistance au maître du jeu (MJ) pour l’aider à préparer, organiser et conduire ses campagnes de jeu de rôle.
+---
 
-L’objectif principal est de réduire la friction liée à l’utilisation de plusieurs outils dispersés : notes personnelles, documents, Discord, feuilles papier, fichiers PDF, fiches personnages, etc.
+## Conception
 
-Le produit ne cherche pas à remplacer une table virtuelle comme Roll20 ou Foundry VTT dans son MVP. Il se concentre sur l’aide au MJ, la centralisation des informations et l’accès rapide aux éléments importants pendant une session.
+Documentation produit et fonctionnelle.
 
-## Problème utilisateur
+- [conception/README.md](conception/README.md) — Index de toute la documentation de conception
 
-Un MJ doit souvent gérer beaucoup d’informations en parallèle :
+### Vision & Produit
 
-- scénarios ;
-- PNJ ;
-- notes privées ;
-- informations à partager aux joueurs ;
-- fiches personnages ;
-- inventaires ;
-- événements de session ;
-- documents de campagne.
+- [conception/vision/vision-produit.md](conception/vision/vision-produit.md) — Positionnement produit, acteurs, choix assumés, modèle de monétisation
+- [conception/vision/moscow.md](conception/vision/moscow.md) — Matrice MoSCoW complète (Must / Should / Could / Won't Have)
+- [conception/vision/ubiquitous-language.md](conception/vision/ubiquitous-language.md) — Vocabulaire partagé du domaine
 
-Ces informations sont souvent stockées dans plusieurs outils non spécialisés, ce qui peut provoquer :
+### Use Cases
 
-- une perte de temps pendant la préparation ;
-- une difficulté à retrouver rapidement une information ;
-- une charge mentale importante ;
-- une perte de fluidité pendant la session ;
-- un risque d’oubli ou de duplication d’informations.
+- [conception/usecases/README.md](conception/usecases/README.md) — Index des 14 use cases MVP avec résumés
+- [conception/usecases/use-cases.md](conception/usecases/use-cases.md) — Diagrammes de cas d'utilisation (5 vues)
+- [conception/usecases/UC-HORS-MVP.md](conception/usecases/UC-HORS-MVP.md) — Fonctionnalités exclues et vision long terme
 
-## Utilisateur principal
+### Personas
 
-L’utilisateur principal est le maître du jeu.
+- [conception/persona/README.md](conception/persona/README.md) — 7 personas : Thomas, Émilie, Lucas, Nadia, Antoine, Rémi, Sonia
 
-Le choix est volontaire : le MJ est la personne qui prépare la campagne, choisit les outils utilisés par le groupe et porte la majorité de la charge organisationnelle.
+### Domaine
 
-Les joueurs sont des utilisateurs secondaires. Ils peuvent accéder à leur fiche personnage, leur inventaire, leurs notes et aux informations partagées par le MJ, mais le cœur du produit reste centré sur les besoins du MJ.
+- [conception/domain/overview.md](conception/domain/overview.md) — Vision du domaine et Context Map
+- [conception/domain/](conception/domain/) — Bounded contexts, agrégats, domain events, décisions d'architecture
 
-## Proposition de valeur
+### Modèles
 
-L’application permet au MJ de :
+- [conception/classes/](conception/classes/) — Diagrammes de classes UML par bounded context
+- [conception/data/](conception/data/) — Modèle conceptuel de données (ERD) par bounded context
 
-- créer et organiser une campagne ;
-- structurer des scénarios ;
-- gérer des PNJ ;
-- centraliser ses notes ;
-- distinguer les informations privées des informations partagées ;
-- consulter rapidement les éléments utiles pendant une session ;
-- donner un accès simple aux joueurs pour leurs fiches et informations partagées.
+### Référence technique
 
-## Périmètre du MVP
+- [conception/stack.md](conception/stack.md) — Choix technologiques et justifications
+- [conception/pages.md](conception/pages.md) — Référence des pages (URL, acteurs, priorité wireframes)
 
-Le MVP se concentre sur les fonctionnalités essentielles :
+---
 
-- création et gestion de campagnes ;
-- création et structuration de scénarios ;
-- gestion des PNJ ;
-- gestion des notes privées et partagées ;
-- fiches personnages simples ;
-- inventaire simple ;
-- vue session pour le MJ ;
-- recherche rapide dans les informations de campagne ;
-- invitation simple des joueurs.
+## Architecture
 
-## Hors périmètre MVP
+Documentation technique DDD — patterns, bounded contexts, ADR.
 
-Les éléments suivants sont envisagés comme évolutions futures, mais ne font pas partie du MVP :
-
-- table virtuelle visuelle ;
-- cartes interactives ;
-- système de combat automatisé ;
-- moteur de règles avancé ;
-- intelligence artificielle générative ;
-- marketplace ;
-- système de plugins ;
-- audio ou vidéo ;
-- version desktop ;
-- templates communautaires avancés.
-
-## Vision long terme
-
-À terme, le produit pourrait évoluer vers une plateforme plus complète d’accompagnement du MJ, avec :
-
-- templates par système de jeu ;
-- aide à l’improvisation ;
-- assistant IA ;
-- résumé de session assisté ;
-- table visuelle légère ;
-- mode online plus avancé ;
-- version desktop ou local-first ;
-- partage communautaire de templates.
-
-Ces évolutions ne doivent cependant pas détourner le projet de son objectif initial : aider le MJ à préparer et conduire ses sessions plus simplement.
+- [architecture/ArchitectureIndex.md](architecture/ArchitectureIndex.md) — Index des documents d'architecture

@@ -23,5 +23,6 @@ classDiagram
     RequesterId <|-- AuthenticatedRequesterId
     RequesterId <|-- GuestRequesterId
     note for RequesterId "Utilisé par AccessPolicy.CanAccess\nSeul type passé à l'autorisation\nJamais de UserId nu dans AccessPolicy"
+    note for AuthenticatedRequesterId "characterId = personnage courant dans la campagne\nUn même user peut avoir plusieurs personnages"
     note for GuestRequesterId "characterId permet la résolution\nde SpecificCharacterTarget et PLAYER_PRIVATE\nMême sans UserId"
 ```

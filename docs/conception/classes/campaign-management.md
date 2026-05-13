@@ -13,7 +13,7 @@ correspond.
 
 `AccessPolicy` est un service domaine, pas un agrégat. Il persiste des `ContentAccessRule`
 immuables. Sa méthode `CanAccess` accepte un `RequesterId` (Shared Kernel) pour gérer
-uniformément authentifiés et invités.
+uniformément authentifiés et invités, y compris les invités limités à une session.
 
 `GameSystem` est un agrégat léger indépendant — point d'extension futur pour les règles
 de jeu. Référencé optionnellement par une campagne.
@@ -29,7 +29,9 @@ classDiagram
         +slug: Slug
         +description: String?
         +gameSystemId: GameSystemId?
+        +type: CampaignType
         +status: CampaignStatus
+        +autoArchiveEnabled: Boolean
         +audit: AuditInfo
         +softDelete: SoftDelete
     }
@@ -47,6 +49,8 @@ classDiagram
         <<entity>>
         +id: InvitationId
         +campaignId: CampaignId
+        +scope: InvitationScope
+        +sessionId: SessionId?
         +token: String
         +type: InvitationType
         +expiresAt: DateTime?
@@ -59,6 +63,9 @@ classDiagram
         <<entity — repository>>
         +id: GuestAccessId
         +campaignId: CampaignId
+        +invitationId: InvitationId
+        +scope: InvitationScope
+        +sessionId: SessionId?
         +displayName: String
         +accessToken: String
         +characterId: CharacterId?
@@ -82,7 +89,7 @@ classDiagram
         +id: AccessRuleId
         +campaignId: CampaignId
         +resource: ShareableResourceRef
-        +grantedById: UserId
+        +grantedBy: RequesterId
         +target: AccessTarget
         +createdAt: DateTime
     }
@@ -103,6 +110,15 @@ classDiagram
     class SpecificCharacterTarget {
         <<value object>>
         +characterId: CharacterId
+    }
+    class SessionParticipantsTarget {
+        <<value object>>
+        +sessionId: SessionId
+    }
+    class CampaignType {
+        <<enumeration>>
+        CAMPAIGN
+        ONE_SHOT
     }
     class CampaignStatus {
         <<enumeration>>
@@ -127,6 +143,11 @@ classDiagram
         LINK
         EMAIL
     }
+    class InvitationScope {
+        <<enumeration>>
+        CAMPAIGN
+        SESSION
+    }
     class InvitationStatus {
         <<enumeration>>
         ACTIVE
@@ -140,10 +161,12 @@ classDiagram
     }
     Campaign "1" *-- "0..*" CampaignMembership
     Campaign "1" *-- "0..*" Invitation
+    Campaign --> CampaignType
     Campaign --> CampaignStatus
     Campaign ..> GameSystem : gameSystemId
     CampaignMembership --> MemberRole
     CampaignMembership --> MembershipStatus
+    Invitation --> InvitationScope
     Invitation --> InvitationType
     Invitation --> InvitationStatus
     Invitation ..> GuestAccess : crée un GuestAccess à l'usage
@@ -155,9 +178,11 @@ classDiagram
     AccessTarget <|-- AllMembersTarget
     AccessTarget <|-- SpecificMemberTarget
     AccessTarget <|-- SpecificCharacterTarget
+    AccessTarget <|-- SessionParticipantsTarget
+    note for Campaign "type = ONE_SHOT → auto-archivage 48h après clôture\nde la dernière session si autoArchiveEnabled = true\nDéclenché par Campaign.AutoArchive() (scheduler applicatif)\nUn seul membre OWNER — invariant applicatif"
     note for CampaignMembership "userId toujours renseigné\nLes invités sans compte\nutilisent GuestAccess"
     note for ContentAccessRule "Géré par AccessPolicy\nservice domaine\nRévocation = suppression physique\nid: AccessRuleId (dans Shared Kernel)"
-    note for ContentAccessRule "resource = Document, LiveNote ou SessionSummary\nref cross-context par Id"
-    note for AccessTarget "Hiérarchie scellée — même principe que BlockValue\nAllMembersTarget : authentifiés membres + GuestAccess actifs\nIndex unique : (resource, sous-type, targetId?) NULLS NOT DISTINCT"
+    note for ContentAccessRule "resource = Document ou LiveNote\nref cross-context par Id"
+    note for AccessTarget "Hiérarchie scellée — même principe que BlockValue\nAllMembersTarget : authentifiés membres + GuestAccess(scope = CAMPAIGN)\nSessionParticipantsTarget : participants de la session courante,\ny compris GuestAccess(scope = SESSION)\nIndex unique : (resource, sous-type, targetId?) NULLS NOT DISTINCT"
     note for AccessPolicy "CanAccess accepte un RequesterId\n(AuthenticatedRequesterId ou GuestRequesterId)\njamais un UserId nu"
 ```

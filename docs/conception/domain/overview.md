@@ -19,6 +19,7 @@ Tout utilisateur authentifié peut créer une campagne — il en devient automat
 | Rôle | Description |
 |---|---|
 | **MJ (Maître du Jeu)** | Rôle dans une campagne. Propriétaire de la campagne, droits complets : création de contenu, gestion des membres, conduite des sessions. Tout utilisateur authentifié peut endosser ce rôle en créant une campagne. |
+| **MJ local** | MJ sans compte, en mode local (UC-01). Utilise l'application sans UserId. Hors périmètre du domaine serveur — géré par l'infrastructure frontend (IndexedDB). |
 | **Joueur** | Rôle dans une campagne. Accède à sa fiche personnage et aux informations partagées par le MJ dans les campagnes dont il est membre. |
 | **Joueur invité** | Accès temporaire sans compte. Rejoint via token d'invitation. Traité comme un joueur à part entière du point de vue de la visibilité du contenu — la distinction est uniquement technique (pas d'identité persistante). |
 
@@ -33,8 +34,8 @@ Tout utilisateur authentifié peut créer une campagne — il en devient automat
 | **Core** (Shared Kernel) | Primitives, Id typés, abstractions | — | — |
 | **Identity & Access** | Utilisateurs authentifiés, rôles globaux | `User` | — |
 | **Campaign Management** | Campagnes, membres, invitations, systèmes de jeu, accès aux ressources partageables | `Campaign`, `GameSystem` | `GuestAccess` |
-| **Content Library** | Tout le contenu éditorial | `Document`, `Scenario`, `DocumentTemplate`, `Folder`, `Tag` | `NPC`, `PlayerCharacter` |
-| **Session Conduct** | Préparation, conduite et clôture des sessions | `Session` | — |
+| **Content Library** | Tout le contenu éditorial | `Document`, `Scenario`, `DocumentTemplate`, `DocumentType`, `Folder`, `Tag` | `PlayerCharacter` |
+| **Session Conduct** | Préparation et conduite en temps réel des sessions | `Session` | — |
 
 ### Context Map
 
@@ -47,14 +48,15 @@ Identity & Access  [Upstream]
   └── fournit UserId à tous les autres contextes
 
 Campaign Management
-  ├── consomme Identity (UserId)
-  ├── fournit CampaignId à Content Library et Session Conduct
-  └── héberge AccessPolicy — service domaine de visibilité des ressources partageables
+├── consomme Identity (UserId)
+├── fournit CampaignId à Content Library et Session Conduct
+├── référence SessionId pour les invitations et accès invités limités à une session
+└── héberge AccessPolicy — service domaine de visibilité des ressources partageables
 
 Content Library
   ├── consomme Campaign Management (CampaignId)
   ├── consomme Identity (UserId)
-  └── fournit DocumentId, NpcId, CharacterId, ScenarioId, TagId à Session Conduct
+  └── fournit DocumentId, CharacterId, ScenarioId à Session Conduct
 
 Session Conduct
   ├── consomme Campaign Management (CampaignId)

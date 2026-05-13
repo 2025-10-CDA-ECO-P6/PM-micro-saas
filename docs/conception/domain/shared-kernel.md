@@ -18,7 +18,7 @@ AccessRuleId    — Campaign Management
 ShareableResourceId — Campaign Management (ContentAccessRule, wrapper logique)
 DocumentId      — Content Library
 BlockId         — Content Library
-NpcId           — Content Library
+DocumentTypeId  — Content Library
 CharacterId     — Content Library
 ScenarioId      — Content Library
 SceneId         — Content Library
@@ -27,7 +27,6 @@ FolderId        — Content Library
 TagId           — Content Library
 SessionId       — Session Conduct
 LiveNoteId      — Session Conduct
-SummaryId       — Session Conduct
 ```
 
 ### Value Objects fondations
@@ -99,7 +98,8 @@ de traiter uniformément les utilisateurs authentifiés et les invités.
 ```
 RequesterId  (abstract, sealed)
 ├── AuthenticatedRequesterId
-│   └── userId : UserId
+│   ├── userId      : UserId
+│   └── characterId : CharacterId?    — personnage courant dans cette campagne, peut être null
 │
 └── GuestRequesterId
     ├── guestAccessId : GuestAccessId
@@ -109,10 +109,19 @@ RequesterId  (abstract, sealed)
 **Usage** : `AccessPolicy.CanAccess(resource: ShareableResourceRef, requester: RequesterId) → bool`.
 Voir la section Campaign Management pour les règles de résolution.
 
+Un utilisateur authentifié peut posséder plusieurs personnages dans une même campagne.
+`AuthenticatedRequesterId.characterId` représente donc le personnage **actif pour la requête**
+et non une propriété globale du compte. La couche Application construit le `RequesterId`
+depuis le contexte d'accès : campagne, session, personnage sélectionné ou personnage associé
+au contenu consulté.
+
 ### ShareableResourceRef — référence de ressource partageable
 
 `AccessPolicy` ne cible pas uniquement les documents. Une même règle d'accès peut
-s'appliquer à tout contenu exposable aux joueurs : document, note live, résumé de session.
+s'appliquer à tout contenu exposable aux joueurs dans le MVP : document ou note live.
+
+Les récapitulatifs post-session sont modélisés comme des Documents de campagne si le MJ
+en crée un. Il n'existe pas d'entité dédiée de résumé dans le domaine MVP.
 
 ```
 ShareableResourceRef
@@ -121,8 +130,7 @@ ShareableResourceRef
 
 ShareableResourceType
 ├── DOCUMENT
-├── LIVE_NOTE
-└── SESSION_SUMMARY
+└── LIVE_NOTE
 ```
 
 La couche Application résout cette référence vers le contexte propriétaire de la ressource
@@ -143,11 +151,16 @@ Visibility
 1. `PRIVATE` → accès accordé au MJ (`AuthenticatedRequesterId` avec `userId = campaign.ownerId`) uniquement.
 2. `PLAYER_PRIVATE` → accès accordé uniquement si `requester.characterId = resource.ownerCharacterId`.
    Fonctionne pour un joueur authentifié et pour un GuestAccess actif. Le MJ n'a **pas** accès non plus.
-3. `PUBLIC` → accès accordé à tout `RequesterId` valide (authentifié ou invité actif).
+   Les fiches `PlayerCharacter` sont une exception métier explicite : elles restent consultables par le MJ
+   même si le joueur associé y accède via son `CharacterId`.
+3. `PUBLIC` → accès accordé à tout `RequesterId` valide dans le scope de la campagne ou de la session
+   (membre authentifié ou invité actif).
 4. `SHARED` → accès accordé si `AccessPolicy` contient une `ContentAccessRule` correspondant au demandeur :
-   - `AllMembersTarget` → accordé à tout `AuthenticatedRequesterId` membre de la campagne, ET à tout `GuestRequesterId` avec un `GuestAccess.status = ACTIVE`.
+   - `AllMembersTarget` → accordé à tout `AuthenticatedRequesterId` membre de la campagne,
+     ET à tout `GuestRequesterId` actif dont le scope couvre toute la campagne.
    - `SpecificMemberTarget(userId)` → accordé uniquement si `requester` est `AuthenticatedRequesterId` avec `userId` correspondant.
    - `SpecificCharacterTarget(characterId)` → accordé si `requester.characterId = characterId` (fonctionne pour les deux types de RequesterId).
+   - `SessionParticipantsTarget(sessionId)` → accordé aux participants de la session ciblée, y compris les invités actifs créés depuis un lien de session.
 
 **Invariant** : une `ContentAccessRule` ne peut être créée que pour une ressource `SHARED`.
 

@@ -20,21 +20,21 @@ DocumentCreated, DocumentTitleUpdated, DocumentVisibilityChanged
 DocumentMovedToFolder, DocumentDeleted
 BlockAdded, BlockUpdated, BlockRemoved, BlockReordered
 TagCreated, TagUpdated, TagDeleted
-TemplateCreated, TemplateSchemaUpdated, TemplateAppliedToDocument
+DocumentTypeCreated, DocumentTypeUpdated, DocumentTypeDeleted
+TemplateCreated, TemplateUpdated
 FolderCreated, FolderRenamed, FolderDeleted
-NpcCreated, NpcStatusChanged, NpcLinkedToCharacter, NpcUnlinkedFromCharacter
 CharacterCreated, CharacterOwnerAssigned, CharacterStatusChanged
-CharacterLinkedToNpc, CharacterUnlinkedFromNpc
+CharacterLinkedToDocument, CharacterUnlinkedFromDocument
 ScenarioCreated, ScenarioStatusChanged, ScenarioReordered
+ScenarioMarkedAsTemplate, ScenarioInstanceCreated
 SceneAdded, SceneRemoved, SceneStatusChanged, SceneReordered
-SceneNpcLinked, SceneNpcUnlinked
+SceneDocumentLinked, SceneDocumentUnlinked
 ```
 
 ### Session Conduct
 ```
 SessionPlanned, SessionStarted, SessionClosed, SessionArchived
-SessionNpcSelected, SessionNpcDeselected
+SessionDocumentSelected, SessionDocumentDeselected
 LiveNoteAdded, LiveNoteAddedPostSession, LiveNoteRemoved, LiveNoteVisibilityChanged
 DocumentPinnedToSession, DocumentUnpinnedFromSession
-SessionSummaryCreated, SessionSummaryUpdated, SessionSummaryVisibilityChanged
 ```
