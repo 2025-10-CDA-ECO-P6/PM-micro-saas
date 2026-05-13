@@ -16,7 +16,7 @@
 
 ## Charte graphique
 
-> _À définir : palette de couleurs (3-5), typographies, style d'illustrations, ambiance visuelle._
+> _À définir_
 
 ---
 
@@ -86,7 +86,7 @@ Table virtuelle visuelle, moteur de règles, gestion de combat, IA générative,
 **Structure de la solution :**
 
 ```
-Haversack.SharedKernel
+Haversack.Domain.Kernel
 Haversack.Domain
 Haversack.Application
 Haversack.Infrastructure.Persistence
@@ -112,59 +112,12 @@ Haversack.Api
 
 > Vue simplifiée — [voir le détail complet](docs/conception/usecases/use-cases.md)
 
-```mermaid
-flowchart LR
-    MJ["MJ"]
-    Joueur["Joueur"]
-    JInvite["Joueur invite"]
-    JInvite -- herite --> Joueur
-
-    subgraph SYS["Haversack — perimetre MVP"]
-        UC01(["Demarrer sans compte\nmode local"])
-        UC02(["Creer un espace\ncampagne ou one-shot"])
-        UC_PREP(["Preparer le contenu\nscenarios · notes · dossiers"])
-        UC06(["Vue session"])
-        UC07(["Creer a la volee"])
-        UC08(["Partager une information"])
-        UC09(["Acceder a la session\nsans compte"])
-        UC12(["Rejoindre\nune campagne"])
-    end
-
-    MJ --> UC01
-    MJ --> UC02
-    MJ --> UC_PREP
-    MJ --> UC06
-    MJ --> UC07
-    MJ --> UC08
-    Joueur --> UC09
-    Joueur --> UC12
-    JInvite --> UC09
-
-    UC07 -.->|"extend"| UC06
-    UC08 -.->|"extend"| UC06
-```
 
 ---
 
 ## MCD — Modèle Conceptuel de Données
 
 > Vue globale — [voir le détail par bounded context](docs/conception/data/README.md)
-
-```mermaid
-erDiagram
-    USER ||--o{ CAMPAIGN : "possede (GM)"
-    USER ||--o{ CAMPAIGN_MEMBERSHIP : "membre de"
-    CAMPAIGN ||--|{ CAMPAIGN_MEMBERSHIP : "contient"
-    CAMPAIGN ||--o{ INVITATION : "genere"
-    CAMPAIGN ||--o{ FOLDER : "contient"
-    FOLDER ||--o{ DOCUMENT : "contient"
-    DOCUMENT ||--o{ DOCUMENT_BLOCK : "compose de"
-    DOCUMENT }o--|| DOCUMENT_TYPE : "type optionnel"
-    CAMPAIGN ||--o{ SESSION : "contient"
-    SESSION ||--o{ LIVE_NOTE : "genere"
-    SESSION ||--o{ SESSION_PARTICIPANT : "reunit"
-    CAMPAIGN ||--o{ GUEST_ACCESS : "genere"
-```
 
 ---
 
