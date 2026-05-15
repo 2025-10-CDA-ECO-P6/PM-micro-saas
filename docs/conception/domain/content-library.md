@@ -44,7 +44,7 @@ Le système n'impose aucune structure — il la rend possible.
 | Responsabilité | Contexte propriétaire |
 |---|---|
 | Droits d'accès à la campagne, membres | Campaign Management |
-| Déroulement de session, LiveNotes, partage en temps réel | Session Conduct |
+| Déroulement de session, notes de session, partage en temps réel | Session Conduct |
 | Comptes utilisateurs | Identity & Access |
 | Moteur de recherche (infrastructure FTS) | Application / Infrastructure |
 
@@ -71,7 +71,6 @@ le document sans contraindre sa structure libre.
 | `visibility` | `Visibility` | `PUBLIC` \| `GM_ONLY` \| `PLAYER_PRIVATE` |
 | `tags` | `Tag[]` | |
 | `slug` | `Slug` | Unique par `(campaignId, documentTypeId)` |
-| `isPinned` | `bool` | |
 | `isReusable` | `bool` | Ce document peut servir de template |
 | `sourceDocumentId` | `DocumentId?` | Renseigné si instancié depuis un template |
 | `AuditInfo` | | `createdAt`, `updatedAt`, `createdById: UserId` |
@@ -83,13 +82,12 @@ le document sans contraindre sa structure libre.
 |---|---|---|
 | `Create(campaignId, folderId, title, typeId?)` | `DocumentCreated` | |
 | `UpdateContent(blocks)` | — | Met à jour les blocs |
-| `LinkDocument(targetId, order)` | — | Ajoute une référence vers un autre document |
-| `UnlinkDocument(targetId)` | — | Retire une référence |
+| `LinkDocument(targetId, order)` | `DocumentLinked` | Ajoute une référence vers un autre document |
+| `UnlinkDocument(targetId)` | `DocumentUnlinked` | Retire une référence |
 | `Share()` | `DocumentVisibilityChanged` | Passe `visibility` à `PUBLIC` — permanent |
 | `Unshare()` | `DocumentVisibilityChanged` | Repasse `visibility` à `GM_ONLY` |
 | `Delete()` | `DocumentDeleted` | Soft-delete |
 | `Instantiate(campaignId, folderId)` | `DocumentInstantiated` | Crée une copie indépendante depuis un template |
-| `Pin()` / `Unpin()` | — | |
 
 ---
 
@@ -244,7 +242,7 @@ Document (SCENE) "Entrée de la crypte"
 4. Un `Folder` avec `isVirtual = true` n'est pas supprimable et n'est pas affiché dans la navigation. Il en existe exactement un par campagne. Il reçoit tout document dont le dossier explicite a été supprimé.
 5. Le `slug` d'un Document est unique par `(campaignId, documentTypeId)`.
 6. Un Document `PLAYER_PRIVATE` n'est lisible que par son `createdById` et par les membres `OWNER` et `GM`.
-7. La suppression d'un `Folder` soft-delete en cascade tous ses Documents.
+7. La suppression d'un `Folder` déplace ses Documents vers le dossier virtuel "Non classés" de la campagne, ou vers un autre dossier choisi par le MJ au moment de la suppression. Aucun Document n'est supprimé implicitement par la suppression de son dossier.
 8. Un Document avec `isReusable = false` ne peut pas être instancié.
 9. Une instance (`sourceDocumentId` renseigné) est totalement indépendante de son source après création.
 10. La visibilité `PUBLIC` est permanente jusqu'à `Unshare()` explicite — un document partagé reste accessible aux joueurs entre les sessions.
@@ -255,7 +253,7 @@ Document (SCENE) "Entrée de la crypte"
 
 1. `visibility = PUBLIC` : le document est visible par tous les membres de la campagne et les GuestAccess actifs.
 2. `visibility = GM_ONLY` : visible uniquement par les membres `OWNER` et `GM`.
-3. `visibility = PLAYER_PRIVATE` : visible uniquement par le `createdById` et les membres `OWNER` et `GM`.
+3. `visibility = PLAYER_PRIVATE` : visible uniquement par le `createdById` et les membres `OWNER` et `GM`. **Exception** : pour les Documents de type `LIVE_NOTE` avec `visibility = PLAYER_PRIVATE`, le document n'est lisible que par son auteur (`createdById` ou `properties.guestAccessId`) — les membres `OWNER` et `GM` n'y ont pas accès (RB-06-25). Cette règle est encodée dans `Document.CanBeReadBy(userId, memberRole, documentType)` et non dans un service applicatif.
 4. Partager un document (`Share()`) change sa visibilité de façon permanente. Ce n'est pas un partage temporaire de session — le joueur peut y accéder entre les séances.
 5. L'instanciation d'un document réutilisable crée une copie profonde (blocs + liens + propriétés). Les modifications ultérieures du source n'affectent pas les instances.
 6. Les backlinks ne sont pas stockés — ils sont calculés en lecture par une requête sur `document_links.target_document_id`.
@@ -271,9 +269,12 @@ Document (SCENE) "Entrée de la crypte"
 |---|---|---|
 | `DocumentCreated` | `Document.Create()` | Session Conduct (si créé à la volée en session) |
 | `DocumentVisibilityChanged` | `Document.Share()` / `Unshare()` | Session Conduct (mise à jour de la vue joueur en temps réel) |
-| `DocumentDeleted` | `Document.Delete()` | Session Conduct (retirer des documents sélectionnés si actif en session) |
+| `DocumentDeleted` | `Document.Delete()` | Session Conduct (retirer des documents épinglés si actif en session) |
+| `DocumentLinked` | `Document.LinkDocument()` | — (backlinks calculés en lecture) |
+| `DocumentUnlinked` | `Document.UnlinkDocument()` | — |
 | `DocumentInstantiated` | `Document.Instantiate()` | Campaign Management si besoin |
 | `FolderCreated` | `Folder.Create()` | — |
+| `FolderDeleted` | `Folder.Delete()` | Session Conduct (retirer les documents du dossier supprimé si actifs en session) |
 
 ---
 
@@ -297,6 +298,25 @@ Document (SCENE) "Entrée de la crypte"
 |---|---|
 | Session Conduct | `DocumentId` pour les documents sélectionnés, `DocumentLink` pour construire la vue session, `visibility` pour filtrer ce que les joueurs voient |
 | Campaign Management | `DocumentId` comme `characterId` dans `CampaignMembership` (référence logique sans FK physique) |
+
+---
+
+## Concepts en attente d'arbitrage
+
+### ScenarioLibrary (UC-13)
+
+UC-13 et US-13 introduisent une `ScenarioLibrary` appartenant au compte MJ, cross-campagne.
+Ce concept n'est pas encore modélisé dans ce contexte.
+
+**Deux options :**
+
+**Option A — Agrégat `ScenarioLibrary` dans Content Library**
+La `ScenarioLibrary` est un agrégat léger avec une liste de références de scénarios marqués comme réutilisables (`isReusable = true`). L'instanciation reste dans `Document.Instantiate()`. Avantage : minimal, ne crée pas un nouveau contexte.
+
+**Option B — Extension de Campaign Management** *(recommandé)*
+La `ScenarioLibrary` vit au niveau du compte, pas de la campagne — elle dépasse les responsabilités de Content Library qui est toujours campagne-scoped. Un micro-agrégat `ScenarioLibraryEntry(userId, documentId, promotedAt)` dans Campaign Management est plus cohérent : Campaign Management gère déjà les ressources au niveau du compte MJ (quotas, ownerId).
+
+> Décision : **Option B retenue**. Implémentation dans Campaign Management avant UC-13.
 
 ---
 

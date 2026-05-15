@@ -14,21 +14,18 @@ classDiagram
         +Visibility visibility
         +List~Tag~ tags
         +Slug slug
-        +bool isPinned
         +bool isReusable
         +DocumentId sourceDocumentId
         +AuditInfo auditInfo
         +SoftDelete softDelete
         +Create(campaignId, folderId, title, typeId)$ Document
         +UpdateContent(blocks) void
-        +LinkDocument(targetId, order) void
-        +UnlinkDocument(targetId) void
+        +LinkDocument(targetId, order) DocumentLinked
+        +UnlinkDocument(targetId) DocumentUnlinked
         +Share() DocumentVisibilityChanged
         +Unshare() DocumentVisibilityChanged
         +Delete() DocumentDeleted
         +Instantiate(campaignId, folderId) DocumentInstantiated
-        +Pin() void
-        +Unpin() void
     }
 
     class DocumentBlock {
@@ -50,7 +47,9 @@ classDiagram
         +FolderId parentFolderId
         +string name
         +bool isSystem
+        +bool isVirtual
         +DocumentTypeId defaultDocumentTypeId
+        +DocumentId defaultTemplateDocumentId
         +AuditInfo auditInfo
         +Create(campaignId, name, parentId?)$ Folder
         +Rename(name) void
@@ -100,6 +99,25 @@ classDiagram
         +DateTime occurredAt
     }
 
+    class DocumentLinked {
+        +DocumentId sourceDocumentId
+        +DocumentId targetDocumentId
+        +int order
+        +DateTime occurredAt
+    }
+
+    class DocumentUnlinked {
+        +DocumentId sourceDocumentId
+        +DocumentId targetDocumentId
+        +DateTime occurredAt
+    }
+
+    class FolderDeleted {
+        +FolderId folderId
+        +CampaignId campaignId
+        +DateTime occurredAt
+    }
+
     Document "1" *-- "0..*" DocumentBlock : blocks
     Document "1" *-- "0..*" DocumentLink : linkedDocuments
     Document --> DocumentType : typed by
@@ -107,6 +125,9 @@ classDiagram
     Document ..> DocumentVisibilityChanged : produces
     Document ..> DocumentDeleted : produces
     Document ..> DocumentInstantiated : produces
+    Document ..> DocumentLinked : produces
+    Document ..> DocumentUnlinked : produces
+    Folder ..> FolderDeleted : produces
     DocumentBlock --> BlockType
     Folder "1" o-- "0..*" Document : contains
     Folder "0..1" o-- "0..*" Folder : parent

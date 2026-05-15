@@ -14,7 +14,7 @@
 - Créer et piloter le cycle de vie d'une session (LIVE → CLOSED → ARCHIVED).
 - Gérer la configuration du tableau de bord session par campagne (SessionViewConfig).
 - Gérer les documents épinglés pendant une session.
-- Gérer les LiveNotes prises pendant et après la session.
+- Gérer les notes de session (Documents LIVE_NOTE) prises pendant et après la session.
 - Autoriser l'accès des joueurs (authentifiés ou invités) à la vue session.
 
 ## Ce que ce contexte ne fait PAS
@@ -38,7 +38,7 @@ LIVE ──► CLOSED ──► ARCHIVED
 | Statut | Description |
 |---|---|
 | `LIVE` | Session en cours — tableau de bord actif, partage temps réel |
-| `CLOSED` | Session terminée — contenu éditable (résumé, LiveNotes rétroactives) |
+| `CLOSED` | Session terminée — contenu éditable (résumé, notes de session rétroactives) |
 | `ARCHIVED` | Lecture seule complète — aucune modification possible |
 
 > Une session est créée directement en état `LIVE`. Il n'y a pas d'état `PLANNED` dans le MVP.
@@ -58,7 +58,7 @@ LIVE ──► CLOSED ──► ARCHIVED
 | `status` | `SessionStatus` | `LIVE` \| `CLOSED` \| `ARCHIVED` |
 | `scenarioId` | `DocumentId?` | Scénario joué — nullable (session improvisée possible) |
 | `pinnedDocumentIds` | `DocumentId[]` | Documents épinglés pendant la séance |
-| `liveNoteIds` | `DocumentId[]` | Références vers les Documents LIVE_NOTE de cette session |
+| `sessionNoteIds` | `DocumentId[]` | Références vers les Documents LIVE_NOTE (notes de session) rattachés à cette session |
 | `summary` | `string?` | Résumé — éditable en état CLOSED |
 | `startedAt` | `DateTime` | |
 | `closedAt` | `DateTime?` | |
@@ -71,9 +71,9 @@ LIVE ──► CLOSED ──► ARCHIVED
 | `Start(campaignId, title, scenarioId?)` | `SessionStarted` | — |
 | `Close()` | `SessionClosed` | status = LIVE |
 | `Archive()` | `SessionArchived` | status = CLOSED |
-| `PinDocument(docId)` | — | status = LIVE |
-| `UnpinDocument(docId)` | — | status = LIVE |
-| `AddLiveNote(documentId)` | — | Lie un Document LIVE_NOTE existant à la session. status = LIVE ou CLOSED |
+| `PinDocument(docId)` | `DocumentPinned` | status = LIVE ou CLOSED |
+| `UnpinDocument(docId)` | `DocumentUnpinned` | status = LIVE ou CLOSED |
+| `AttachNote(documentId)` | — | Rattache un Document LIVE_NOTE (note de session) à la session. status = LIVE ou CLOSED |
 | `UpdateSummary(text)` | — | status = CLOSED |
 
 ---
@@ -103,7 +103,7 @@ Créé automatiquement à `CampaignCreated` avec les dossiers système de la cam
 
 ---
 
-### SessionViewFolder (entité dans SessionViewConfig)
+### SessionViewFolder (value object dans SessionViewConfig)
 
 | Champ | Type | Description |
 |---|---|---|
@@ -115,23 +115,23 @@ Créé automatiquement à `CampaignCreated` avec les dossiers système de la cam
 
 ---
 
-### LiveNote — Document de type LIVE_NOTE
+### Notes de session — Documents de type LIVE_NOTE
 
 Les notes de session sont des **Documents** de Content Library avec `documentTypeId = LIVE_NOTE`.
-La session référence leurs IDs dans `liveNoteIds`.
+La session référence leurs IDs dans `sessionNoteIds`.
 
-Créer une LiveNote = deux opérations applicatives :
+Créer une note de session = deux opérations applicatives :
 1. `Document.Create()` dans Content Library (type LIVE_NOTE, folder = "Notes" de la campagne)
-2. `Session.AddLiveNote(documentId)`
+2. `Session.AttachNote(documentId)`
 
-Les métadonnées spécifiques aux LiveNotes sont stockées dans `Document.properties` :
+Les métadonnées spécifiques aux notes de session sont stockées dans `Document.properties` :
 
 | Propriété | Type | Description |
 |---|---|---|
 | `characterId` | `string?` | Personnage associé — pour les notes PLAYER_PRIVATE joueur |
 | `guestAccessId` | `string?` | Auteur invité sans compte — quand `AuditInfo.createdById` est null |
 
-> Ce modèle permet à une LiveNote de référencer d'autres documents via `linkedDocuments`
+> Ce modèle permet à une note de session de référencer d'autres documents via `linkedDocuments`
 > (lier un PNJ, une scène, un lieu à la note) sans aucune modélisation supplémentaire.
 > La règle RGPD reste valide : les notes PLAYER_PRIVATE restent attachées au `characterId`
 > après suppression de compte.
@@ -155,10 +155,11 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 
 1. La machine d'états est unidirectionnelle : LIVE → CLOSED → ARCHIVED.
 2. Une session ARCHIVED refuse toute modification.
-3. `AddLiveNote` et `UpdateSummary` sont autorisés en état CLOSED.
+3. `AttachNote` et `UpdateSummary` sont autorisés en état CLOSED.
 4. Un Document LIVE_NOTE avec `visibility = PLAYER_PRIVATE` n'est lisible que par son auteur (`createdById` ou `properties.guestAccessId`).
 5. Il existe exactement un `SessionViewConfig` par campagne.
 6. Un `SessionViewFolder` référence un dossier qui appartient à la même campagne.
+7. `Session.summary` n'est modifiable que si `status = CLOSED`. Il peut être null. Il représente un résumé narratif libre rédigé par le MJ après la séance — distinct des notes de session (`sessionNoteIds`) qui sont des Documents LIVE_NOTE.
 
 ---
 
@@ -181,6 +182,8 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 | `SessionStarted` | `Session.Start()` | Application (notification membres) |
 | `SessionClosed` | `Session.Close()` | Campaign Management (expiration GuestAccess SESSION) |
 | `SessionArchived` | `Session.Archive()` | — |
+| `DocumentPinned` | `Session.PinDocument()` | Application (épinglage automatique UC-07, UC-08) |
+| `DocumentUnpinned` | `Session.UnpinDocument()` | — |
 
 ---
 
@@ -192,8 +195,15 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 |---|---|---|
 | `CampaignCreated` | Campaign Management | Créer le `SessionViewConfig` avec les dossiers système |
 | `GuestAccessCreated` | Campaign Management | Autoriser l'entrée du joueur invité |
+| `GuestAccessRevoked` | Campaign Management | Couper l'accès de l'invité si une session est en cours |
+| `GuestAccessExpired` | Campaign Management | Couper l'accès de l'invité si une session est en cours |
+| `MemberJoined` | Campaign Management | — |
+| `MemberActivated` | Campaign Management | Autoriser l'accès du membre en session |
 | `MemberRemoved` | Campaign Management | Invalider l'accès si session en cours |
+| `DisplayNameUpdated` | Identity & Access | Mettre à jour l'affichage du nom dans la vue joueur |
 | `DocumentDeleted` | Content Library | Retirer de `pinnedDocumentIds` si présent |
+| `FolderDeleted` | Content Library | Retirer les documents du dossier supprimé de `pinnedDocumentIds` |
+| `DocumentVisibilityChanged` | Content Library | Mettre à jour la vue joueur en temps réel |
 
 ### Ce que Session Conduct publie
 

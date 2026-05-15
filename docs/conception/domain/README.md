@@ -34,7 +34,7 @@ Les échanges inter-contextes passent par des IDs, des événements domaine ou d
 | [Identity & Access](identity-access.md) | Comptes authentifiés, tiers, suppression RGPD |
 | [Campaign Management](campaign-management.md) | Espaces de jeu (campagnes et one-shots), membres, invitations, accès invités |
 | [Content Library](content-library.md) | Documents, dossiers, types de documents, références entre documents |
-| [Session Conduct](session-conduct.md) | Session LIVE, tableau de bord configurable, LiveNotes, accès joueurs |
+| [Session Conduct](session-conduct.md) | Session LIVE, tableau de bord configurable, notes de session, accès joueurs |
 
 ---
 

@@ -116,7 +116,7 @@ sequenceDiagram
     App->>CM: ConvertGuestAccessToMembership(userId, guestToken)
     CM->>CM: GuestAccess.Convert(userId)
     CM->>CM: Campaign.AddMember(userId, PLAYER)
-    CM-->>App: GuestAccessConverted + MemberJoined
+    CM-->>App: GuestAccessConvertedToMember + MemberJoined
     App-->>Joueur: Compte créé — membre permanent de la campagne
 ```
 
@@ -131,6 +131,6 @@ sequenceDiagram
     MJ->>App: Associer personnage (userId, characterId)
     App->>CM: Campaign.AssociateCharacter(userId, characterId)
     CM->>CM: Ajouter characterId dans CampaignMembership.characterIds
-    CM-->>App: OK
+    CM-->>App: CharacterAssociated event
     App-->>MJ: Personnage associé
 ```

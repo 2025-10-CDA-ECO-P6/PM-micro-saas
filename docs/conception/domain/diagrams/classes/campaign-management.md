@@ -13,12 +13,12 @@ classDiagram
         +List~Invitation~ invitations
         +DateTime createdAt
         +DateTime updatedAt
-        +Create(ownerId, name, type)$ Campaign
+        +Create(ownerId, name, type)$ CampaignCreated
         +AddMember(userId, role) MemberJoined
         +RemoveMember(userId) MemberRemoved
-        +CreateInvitation(type, scope, options) Invitation
-        +RevokeInvitation(invitationId) void
-        +AssociateCharacter(userId, characterId) void
+        +CreateInvitation(type, scope, options) InvitationCreated
+        +RevokeInvitation(invitationId) InvitationRevoked
+        +AssociateCharacter(userId, characterId) CharacterAssociated
         +Archive() CampaignArchived
         +Freeze() CampaignFrozen
         +Unfreeze() CampaignUnfrozen
@@ -30,6 +30,7 @@ classDiagram
         +MembershipStatus status
         +List~CharacterId~ characterIds
         +DateTime joinedAt
+        +Activate() MemberActivated
     }
 
     class Invitation {
@@ -58,12 +59,97 @@ classDiagram
         +GuestAccessStatus status
         +DateTime expiresAt
         +DateTime createdAt
-        +Create(campaignId, scope, sessionId)$ GuestAccess
+        +Create(campaignId, scope, sessionId)$ GuestAccessCreated
         +SetDisplayName(name) void
         +AssociateCharacter(characterId) void
         +Expire() GuestAccessExpired
         +Revoke() GuestAccessRevoked
-        +Convert(userId) GuestAccessConverted
+        +Convert(userId) GuestAccessConvertedToMember
+    }
+
+    class CampaignCreated {
+        <<domainEvent>>
+        +CampaignId campaignId
+        +UserId ownerId
+        +CampaignType type
+    }
+
+    class MemberJoined {
+        <<domainEvent>>
+        +CampaignId campaignId
+        +UserId userId
+        +MemberRole role
+    }
+
+    class MemberActivated {
+        <<domainEvent>>
+        +CampaignId campaignId
+        +UserId userId
+    }
+
+    class MemberRemoved {
+        <<domainEvent>>
+        +CampaignId campaignId
+        +UserId userId
+    }
+
+    class InvitationCreated {
+        <<domainEvent>>
+        +CampaignId campaignId
+        +InvitationId invitationId
+        +string token
+    }
+
+    class InvitationRevoked {
+        <<domainEvent>>
+        +CampaignId campaignId
+        +InvitationId invitationId
+    }
+
+    class CharacterAssociated {
+        <<domainEvent>>
+        +CampaignId campaignId
+        +UserId userId
+        +CharacterId characterId
+    }
+
+    class CampaignArchived {
+        <<domainEvent>>
+        +CampaignId campaignId
+    }
+
+    class CampaignFrozen {
+        <<domainEvent>>
+        +CampaignId campaignId
+    }
+
+    class CampaignUnfrozen {
+        <<domainEvent>>
+        +CampaignId campaignId
+    }
+
+    class GuestAccessCreated {
+        <<domainEvent>>
+        +GuestAccessId guestAccessId
+        +CampaignId campaignId
+        +string token
+    }
+
+    class GuestAccessExpired {
+        <<domainEvent>>
+        +GuestAccessId guestAccessId
+    }
+
+    class GuestAccessRevoked {
+        <<domainEvent>>
+        +GuestAccessId guestAccessId
+    }
+
+    class GuestAccessConvertedToMember {
+        <<domainEvent>>
+        +GuestAccessId guestAccessId
+        +UserId userId
+        +CampaignId campaignId
     }
 
     class CampaignType {
@@ -116,4 +202,19 @@ classDiagram
     Invitation --> InvitationScope
     GuestAccess --> GuestAccessStatus
     GuestAccess --> CampaignId
+
+    Campaign ..> CampaignCreated : produces
+    Campaign ..> MemberJoined : produces
+    Campaign ..> MemberRemoved : produces
+    Campaign ..> InvitationCreated : produces
+    Campaign ..> InvitationRevoked : produces
+    Campaign ..> CharacterAssociated : produces
+    Campaign ..> CampaignArchived : produces
+    Campaign ..> CampaignFrozen : produces
+    Campaign ..> CampaignUnfrozen : produces
+    CampaignMembership ..> MemberActivated : produces
+    GuestAccess ..> GuestAccessCreated : produces
+    GuestAccess ..> GuestAccessExpired : produces
+    GuestAccess ..> GuestAccessRevoked : produces
+    GuestAccess ..> GuestAccessConvertedToMember : produces
 ```

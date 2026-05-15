@@ -11,11 +11,11 @@ classDiagram
         +DateTime createdAt
         +DateTime updatedAt
         +Register(email, displayName)$ User
-        +UpdateDisplayName(name) void
+        +UpdateDisplayName(name) DisplayNameUpdated
         +ChangeTier(tier) AccountTierChanged
         +Delete() UserDeleted
         +Anonymize() UserAnonymized
-        +Suspend() void
+        +Suspend() AccountSuspended
     }
 
     class AccountStatus {
@@ -54,10 +54,23 @@ classDiagram
         +occurredAt: DateTime
     }
 
+    class DisplayNameUpdated {
+        +userId: UserId
+        +newDisplayName: string
+        +occurredAt: DateTime
+    }
+
+    class AccountSuspended {
+        +userId: UserId
+        +occurredAt: DateTime
+    }
+
     User --> AccountStatus
     User --> AccountTier
     User ..> UserRegistered : produces
+    User ..> DisplayNameUpdated : produces
     User ..> AccountTierChanged : produces
+    User ..> AccountSuspended : produces
     User ..> UserDeleted : produces
     User ..> UserAnonymized : produces
 

@@ -49,11 +49,11 @@
 | Méthode | Événement produit | Description |
 |---|---|---|
 | `Register(email, displayName)` | `UserRegistered` | Crée un nouveau compte. Tier initial = FREE. |
-| `UpdateDisplayName(name)` | — | Met à jour le nom d'affichage. |
+| `UpdateDisplayName(name)` | `DisplayNameUpdated` | Met à jour le nom d'affichage. |
 | `ChangeTier(tier)` | `AccountTierChanged` | Change le tier (FREE → PRO ou PRO → FREE). |
 | `Delete()` | `UserDeleted` | Marque le compte pour suppression. Déclenche l'anonymisation. |
 | `Anonymize()` | `UserAnonymized` | Remplace les données nominatives par `[Compte supprimé]`. |
-| `Suspend()` | — | Désactive temporairement le compte. |
+| `Suspend()` | `AccountSuspended` | Désactive temporairement le compte. |
 
 ### Enums
 
@@ -88,12 +88,11 @@
 
 ## Règles métier
 
-1. L'email est unique dans le système.
-2. Le mot de passe est géré par ASP.NET Identity — `User` ne le connaît pas.
-3. `User` ne porte aucun rôle métier global. Tout utilisateur authentifié peut créer une campagne.
-4. La transition `PRO → FREE` (résiliation) est déclenchée par un webhook de facturation (infrastructure) via une commande applicative. `User.ChangeTier(FREE)` publie `AccountTierChanged`. Campaign Management écoute cet événement et applique ses propres règles (gel des campagnes excédentaires).
-5. Après suppression RGPD, les `LiveNote` avec `visibility = PLAYER_PRIVATE` restent attachées au `CharacterId` dans Session Conduct — l'utilisateur supprimé perd l'accès, mais les notes restent pour préserver la continuité de campagne.
-6. Les contenus créés (documents, notes) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu.
+1. Le mot de passe est géré par ASP.NET Identity — `User` ne le connaît pas.
+2. `User` ne porte aucun rôle métier global. Tout utilisateur authentifié peut créer une campagne.
+3. La transition `PRO → FREE` (résiliation) est déclenchée par un webhook de facturation (infrastructure) via une commande applicative. `User.ChangeTier(FREE)` publie `AccountTierChanged`. Campaign Management écoute cet événement et applique ses propres règles (gel des campagnes excédentaires).
+4. Après suppression RGPD, les notes personnelles des joueurs avec `visibility = PLAYER_PRIVATE` restent attachées au personnage concerné dans Session Conduct — l'utilisateur supprimé perd l'accès, mais les notes restent pour préserver la continuité de campagne.
+5. Les contenus créés (documents, notes) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu.
 
 ---
 
@@ -102,7 +101,9 @@
 | Événement | Producteur | Consommateurs |
 |---|---|---|
 | `UserRegistered` | `User.Register()` | Application (email de bienvenue), Campaign Management (si conversion depuis GuestAccess) |
+| `DisplayNameUpdated` | `User.UpdateDisplayName()` | Campaign Management, Session Conduct (affichage du nom dans les vues joueur et membre) |
 | `AccountTierChanged` | `User.ChangeTier()` | Campaign Management (quotas campagnes/joueurs), Application (notification) |
+| `AccountSuspended` | `User.Suspend()` | Application (déconnexion des sessions actives) |
 | `UserDeleted` | `User.Delete()` | Campaign Management (anonymisation des member data), Content Library si nécessaire |
 | `UserAnonymized` | `User.Anonymize()` | Interne I&A — déclenché après confirmation de `UserDeleted` |
 
@@ -121,7 +122,7 @@
 |---|---|
 | Campaign Management | `Campaign.ownerId: UserId` (FK réelle acceptée — ADR-12), `CampaignMembership.userId: UserId` |
 | Content Library | `AuditInfo.createdById: UserId` |
-| Session Conduct | `LiveNote.createdById: UserId` |
+| Session Conduct | `Document (type LIVE_NOTE).AuditInfo.createdById: UserId` |
 
 ### Ce que I&A ne consomme pas
 

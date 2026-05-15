@@ -10,8 +10,8 @@ sequenceDiagram
     participant SC as Session Conduct
 
     CM-->>App: CampaignCreated(campaignId)
-    App->>CL: Créer les 4 dossiers système
-    CL-->>App: [folderId1, folderId2, folderId3, folderId4]
+    App->>CL: Créer les 5 dossiers système
+    CL-->>App: [folderId1, folderId2, folderId3, folderId4, folderId5]
     App->>SC: SessionViewConfig.Create(campaignId, folderIds)
     SC-->>App: SessionViewConfig initialisé avec les dossiers système
 ```
@@ -61,7 +61,7 @@ sequenceDiagram
 
     MJ->>App: Épingler ce document (documentId)
     App->>SC: Session.PinDocument(documentId)
-    SC-->>App: OK
+    SC-->>App: DocumentPinned event
     App-->>MJ: Document accessible depuis la vue session
     Note over App: Épingler ne change pas la visibility du document.<br/>Partager (rendre visible aux joueurs) est une opération séparée<br/>déclenchée sur Content Library.
 ```
@@ -79,12 +79,12 @@ sequenceDiagram
     App->>CL: Document.Share()
     CL-->>App: DocumentVisibilityChanged (→ PUBLIC)
     App->>SC: Session.PinDocument(documentId)
-    SC-->>App: OK
+    SC-->>App: DocumentPinned event
     App-->>MJ: Document partagé et épinglé
     Note over App: Le partage est permanent (Content Library).<br/>L'épingle est locale à la session.
 ```
 
-## 6. Créer une LiveNote
+## 6. Créer une note de session
 
 ```mermaid
 sequenceDiagram
@@ -97,7 +97,7 @@ sequenceDiagram
     App->>CL: Document.Create(campaignId, folderId="Notes", typeId=LIVE_NOTE)
     CL-->>App: DocumentCreated (docId)
     App->>CL: Document.UpdateContent([TextBlock(content)])
-    App->>SC: Session.AddLiveNote(docId)
+    App->>SC: Session.AttachNote(docId)
     SC-->>App: OK
     App-->>MJ: Note enregistrée
     Note over App: La note est un Document — elle peut être liée<br/>à d'autres documents via linkedDocuments.
@@ -116,7 +116,7 @@ sequenceDiagram
     App->>CL: Document.Create(campaignId, folderId, title, typeId=NPC)
     CL-->>App: DocumentCreated (docId)
     App->>SC: Session.PinDocument(docId)
-    SC-->>App: OK
+    SC-->>App: DocumentPinned event
     App-->>MJ: PNJ créé et épinglé dans la vue session
 ```
 
@@ -153,7 +153,7 @@ sequenceDiagram
         App-->>Joueur: "Ce lien n'est plus actif"
     else GuestAccess valide
         CM-->>App: GuestAccessId + campaignId + characterId?
-        App->>SC: Charger vue session (documents PUBLIC, LiveNotes PUBLIC)
+        App->>SC: Charger vue session (documents PUBLIC, notes de session PUBLIC)
         SC-->>App: Contenu autorisé
         App-->>Joueur: Vue joueur — documents partagés en temps réel
     end

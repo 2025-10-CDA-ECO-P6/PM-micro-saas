@@ -35,10 +35,7 @@ Tous les identifiants sont des types forts (wrappers sur `Guid`) pour éviter le
 | `CampaignId` | Campaign Management, Content Library, Session Conduct |
 | `SessionId` | Session Conduct, Campaign Management |
 | `DocumentId` | Content Library, Session Conduct |
-| `ScenarioId` | Content Library, Session Conduct |
-| `SceneId` | Content Library, Session Conduct |
 | `FolderId` | Content Library |
-| `CharacterId` | Campaign Management, Session Conduct, Content Library |
 
 ### Value objects primitifs
 
@@ -59,7 +56,7 @@ Tous les identifiants sont des types forts (wrappers sur `Guid`) pour éviter le
 
 | Enum | Valeurs | Utilisé dans |
 |---|---|---|
-| `Visibility` | `PUBLIC`, `GM_ONLY`, `PLAYER_PRIVATE` | Content Library (documents), Session Conduct (LiveNotes) |
+| `Visibility` | `PUBLIC`, `GM_ONLY`, `PLAYER_PRIVATE` | Content Library (documents), Session Conduct (notes de session) |
 
 ---
 
@@ -70,8 +67,8 @@ Tous les identifiants sont des types forts (wrappers sur `Guid`) pour éviter le
 | `AccessPolicy`, `GuestAccess` | Campaign Management | Spécifique à l'accès campagne |
 | `MemberRole`, `CampaignMembership` | Campaign Management | Rôle contextuel par campagne |
 | `DocumentType`, `DocumentBlock` | Content Library | Structure de contenu spécifique |
-| Machine d'états de Session | Session Conduct | Logique PLANNED→LIVE→CLOSED→ARCHIVED |
-| `LiveNote`, `SelectedDocument` | Session Conduct | Concepts de session uniquement |
+| Machine d'états de Session | Session Conduct | Logique LIVE→CLOSED→ARCHIVED |
+| Documents de type `LIVE_NOTE`, documents épinglés de session | Session Conduct | Concepts de session uniquement |
 | `Invitation` | Campaign Management | Spécifique à l'accès campagne |
 | Moteur de recherche (FTS) | Application / Infrastructure | PostgreSQL FTS — pas du domaine |
 | Toute entité avec un ID propre | Son bounded context propriétaire | Le Core ne contient jamais d'entités |

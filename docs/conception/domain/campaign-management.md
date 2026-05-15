@@ -25,7 +25,7 @@
 | Responsabilité | Contexte propriétaire |
 |---|---|
 | Contenu de la campagne (documents, scénarios, scènes) | Content Library |
-| Déroulement de session (LIVE, LiveNotes, partage) | Session Conduct |
+| Déroulement de session (LIVE, notes de session, partage) | Session Conduct |
 | Comptes utilisateurs, authentification | Identity & Access |
 | Gestion des personnages joueurs (fiche complète) | Content Library |
 
@@ -57,9 +57,9 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `Create(ownerId, name, type)` | `CampaignCreated` | Crée la campagne. L'owner est automatiquement ajouté comme membre OWNER. |
 | `AddMember(userId, role)` | `MemberJoined` | Ajoute un membre (GM ou PLAYER). |
 | `RemoveMember(userId)` | `MemberRemoved` | Retire un membre. Bloqué si userId == ownerId. |
-| `CreateInvitation(type, scope, options)` | — | Crée une invitation enfant. |
-| `RevokeInvitation(invitationId)` | — | Passe l'invitation en REVOKED. |
-| `AssociateCharacter(userId, characterId)` | — | Associe un personnage (référence Content Library) à un membre. |
+| `CreateInvitation(type, scope, options)` | `InvitationCreated` | Crée une invitation enfant. |
+| `RevokeInvitation(invitationId)` | `InvitationRevoked` | Passe l'invitation en REVOKED. |
+| `AssociateCharacter(userId, characterId)` | `CharacterAssociated` | Associe un personnage (référence Content Library) à un membre. |
 | `Archive()` | `CampaignArchived` | Archivage manuel par le MJ. Irréversible (MVP). |
 | `Freeze()` | `CampaignFrozen` | Gel automatique lors d'un downgrade de tier. Passe en lecture seule. |
 | `Unfreeze()` | `CampaignUnfrozen` | Dégel lors d'un upgrade de tier. |
@@ -67,6 +67,9 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 ---
 
 ### CampaignMembership (entité dans Campaign)
+
+> Dans l'Ubiquitous Language, un `CampaignMembership` avec `status = ACTIVE` est appelé **membre**
+> dans tous les UC/US. `CampaignMembership` est le terme technique interne.
 
 | Champ | Type | Description |
 |---|---|---|
@@ -76,6 +79,12 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `characterIds` | `CharacterId[]` | Références vers les personnages (Content Library) |
 | `joinedAt` | `DateTime` | |
 
+**Méthodes**
+
+| Méthode | Événement produit | Description |
+|---|---|---|
+| `Activate()` | `MemberActivated` | Passe le statut de `PENDING` à `ACTIVE` lors de l'utilisation du lien d'invitation. Déclenché par la couche application après vérification du token d'invitation. |
+
 **Rôles**
 
 | Rôle | Cardinalité | Droits |
@@ -84,7 +93,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `GM` | 0..* | Gérer le contenu, lancer/piloter des sessions, inviter des joueurs — ne peut pas supprimer la campagne ni gérer d'autres GMs |
 | `PLAYER` | 0..* | Accès aux contenus partagés, consultation de sa fiche personnage |
 
-> L'OWNER est aussi en membership avec `role = OWNER` pour la cohérence des requêtes.
+> Le MJ propriétaire est aussi en membership avec `role = OWNER` pour la cohérence des requêtes.
 > `ownerId` sur `Campaign` reste le champ de responsabilité technique (billing, RGPD).
 
 ---
@@ -94,7 +103,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | Champ | Type | Description |
 |---|---|---|
 | `id` | `InvitationId` | |
-| `token` | `string` | UUID unique, utilisé dans l'URL d'invitation |
+| `token` | `InvitationToken` | UUID unique, utilisé dans l'URL d'invitation |
 | `type` | `InvitationType` | `LINK` \| `EMAIL` |
 | `scope` | `InvitationScope` | `CAMPAIGN` \| `SESSION` |
 | `sessionId` | `SessionId?` | Renseigné si scope = SESSION |
@@ -122,7 +131,7 @@ depuis Session Conduct par son token.
 | `campaignId` | `CampaignId` | |
 | `scope` | `GuestAccessScope` | `SESSION` \| `CAMPAIGN` |
 | `sessionId` | `SessionId?` | Renseigné si scope = SESSION |
-| `token` | `string` | UUID unique, utilisé dans l'URL |
+| `token` | `GuestAccessToken` | UUID unique, utilisé dans l'URL |
 | `displayName` | `string` | Saisi par le joueur à l'arrivée |
 | `characterId` | `CharacterId?` | Associé par le MJ (référence Content Library) |
 | `status` | `GuestAccessStatus` | `ACTIVE` \| `EXPIRED` \| `REVOKED` \| `CONVERTED` |
@@ -138,7 +147,16 @@ depuis Session Conduct par son token.
 | `AssociateCharacter(characterId)` | — | Effectué par le MJ |
 | `Expire()` | `GuestAccessExpired` | Déclenché automatiquement après session + 24h |
 | `Revoke()` | `GuestAccessRevoked` | Révocation manuelle par le MJ |
-| `Convert(userId)` | `GuestAccessConverted` | Quand l'invité crée un compte |
+| `Convert(userId)` | `GuestAccessConvertedToMember` | Quand l'invité crée un compte |
+
+---
+
+## Value Objects
+
+| VO | Validation | Description |
+|---|---|---|
+| `InvitationToken` | UUID v4, globalement unique | Token utilisé dans l'URL d'invitation. Généré à la création. Non modifiable. |
+| `GuestAccessToken` | UUID v4, globalement unique | Token utilisé dans l'URL d'accès invité. Généré à la création. Non modifiable. |
 
 ---
 
@@ -150,7 +168,7 @@ depuis Session Conduct par son token.
 | `CampaignStatus` | `ACTIVE` \| `ARCHIVED` \| `FROZEN` |
 | `MemberRole` | `OWNER` \| `GM` \| `PLAYER` |
 | `MembershipStatus` | `PENDING` \| `ACTIVE` \| `REMOVED` |
-| `InvitationType` | `LINK` \| `EMAIL` |
+| `InvitationType` | `LINK` \| `EMAIL` — `EMAIL` est hors périmètre MVP (US-UC-11 stories exclues) ; la valeur est conservée pour éviter une migration ultérieure. |
 | `InvitationScope` | `CAMPAIGN` \| `SESSION` |
 | `InvitationStatus` | `ACTIVE` \| `REVOKED` \| `EXPIRED` |
 | `GuestAccessScope` | `SESSION` \| `CAMPAIGN` |
@@ -182,6 +200,7 @@ depuis Session Conduct par son token.
 7. Une `Campaign` avec `status = FROZEN` refuse toute écriture (lecture seule). Seule `Unfreeze()` est autorisée.
 8. Un `GuestAccess` avec `status = CONVERTED` ne peut plus être utilisé pour accéder à la campagne.
 9. Un `GuestAccess` avec `status = EXPIRED` ou `REVOKED` ne donne plus accès.
+10. Un `CharacterId` ne peut être associé qu'à un seul `CampaignMembership` actif à la fois dans une campagne (RB-11-18).
 
 ---
 
@@ -192,7 +211,7 @@ depuis Session Conduct par son token.
 3. Retirer un membre ne supprime pas ses données dans la campagne (personnages, notes partagées restent).
 4. Un membre retiré peut être réinvité.
 5. Un `GuestAccess SESSION` expire à la fermeture de la session + 24h de grâce.
-6. Quand `AccountTierChanged` (PRO → FREE) et que l'owner a > 3 campagnes ACTIVE : les campagnes excédentaires sont gelées dans l'ordre de création (les plus récentes en premier).
+6. Quand `AccountTierChanged` (PRO → FREE) et que le MJ propriétaire a > 3 campagnes ACTIVE : les campagnes excédentaires sont gelées dans l'ordre de création (les plus récentes en premier).
 7. L'archivage est manuel et définitif (MVP). Une campagne archivée est en lecture seule.
 8. Un one-shot peut avoir simultanément des `CampaignMembership` (joueurs avec compte) et des `GuestAccess` (joueurs sans compte).
 
@@ -204,13 +223,18 @@ depuis Session Conduct par son token.
 |---|---|---|
 | `CampaignCreated` | `Campaign.Create()` | Content Library (créer les dossiers système), Application |
 | `MemberJoined` | `Campaign.AddMember()` | Application (notification) |
+| `MemberActivated` | `CampaignMembership.Activate()` | Session Conduct (autoriser l'accès en session), Application |
 | `MemberRemoved` | `Campaign.RemoveMember()` | Session Conduct (retirer l'accès actif si session en cours) |
+| `InvitationCreated` | `Campaign.CreateInvitation()` | Application (fourniture du lien au MJ) |
+| `InvitationRevoked` | `Campaign.RevokeInvitation()` | Identity & Access (invalider le token immédiatement) |
+| `CharacterAssociated` | `Campaign.AssociateCharacter()` | Session Conduct (accès aux notes PLAYER_PRIVATE du personnage) |
 | `CampaignFrozen` | `Campaign.Freeze()` | Application (notification au MJ) |
 | `CampaignUnfrozen` | `Campaign.Unfreeze()` | Application (notification au MJ) |
 | `CampaignArchived` | `Campaign.Archive()` | Content Library, Session Conduct |
 | `GuestAccessCreated` | `GuestAccess.Create()` | Session Conduct (accès aux informations partagées) |
 | `GuestAccessExpired` | `GuestAccess.Expire()` | Session Conduct |
-| `GuestAccessConverted` | `GuestAccess.Convert(userId)` | Application (finalise la création de compte), Session Conduct |
+| `GuestAccessRevoked` | `GuestAccess.Revoke()` | Session Conduct (couper l'accès actif en session si présent) |
+| `GuestAccessConvertedToMember` | `GuestAccess.Convert(userId)` | Application (finalise la création de compte), Session Conduct |
 
 ---
 
@@ -222,6 +246,7 @@ depuis Session Conduct par son token.
 |---|---|---|
 | `AccountTierChanged` | Identity & Access | Geler les campagnes excédentaires si downgrade |
 | `UserDeleted` | Identity & Access | Anonymiser les données nominatives des memberships |
+| `DisplayNameUpdated` | Identity & Access | Mettre à jour le nom d'affichage dans les vues membres |
 
 ### Ce que Campaign Management publie
 

@@ -8,7 +8,9 @@ erDiagram
         uuid parent_folder_id FK "nullable — self-ref"
         string name
         bool is_system
+        bool is_virtual
         uuid default_document_type_id FK "nullable"
+        uuid default_template_document_id FK "nullable — ref documents.id"
         datetime created_at
         datetime updated_at
         uuid created_by_id "ref users.id"
@@ -33,7 +35,6 @@ erDiagram
         json properties "nullable"
         string visibility "PUBLIC | GM_ONLY | PLAYER_PRIVATE"
         string slug
-        bool is_pinned
         bool is_reusable
         uuid source_document_id FK "nullable — self-ref"
         bool is_deleted

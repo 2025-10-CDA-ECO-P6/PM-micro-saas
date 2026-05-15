@@ -13,7 +13,9 @@ sequenceDiagram
     App->>CL: Folder.Create(campaignId, "Joueurs", isSystem=true)
     App->>CL: Folder.Create(campaignId, "Scénarios", isSystem=true)
     App->>CL: Folder.Create(campaignId, "Notes", isSystem=true)
-    CL-->>App: 4 dossiers créés
+    App->>CL: Folder.Create(campaignId, "Non classés", isSystem=true, isVirtual=true)
+    Note over CL: Dossier virtuel invisible — garantit folderId non-nullable sur Document
+    CL-->>App: 5 dossiers créés
 ```
 
 ## 2. Créer un document simple (PNJ, note…)

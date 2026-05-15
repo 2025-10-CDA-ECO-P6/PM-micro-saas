@@ -9,7 +9,7 @@ classDiagram
         +SessionStatus status
         +DocumentId scenarioId
         +List~DocumentId~ pinnedDocumentIds
-        +List~DocumentId~ liveNoteIds
+        +List~DocumentId~ sessionNoteIds
         +string summary
         +DateTime startedAt
         +DateTime closedAt
@@ -17,9 +17,9 @@ classDiagram
         +Start(campaignId, title, scenarioId?)$ Session
         +Close() SessionClosed
         +Archive() SessionArchived
-        +PinDocument(docId) void
-        +UnpinDocument(docId) void
-        +AddLiveNote(documentId) void
+        +PinDocument(docId) DocumentPinned
+        +UnpinDocument(docId) DocumentUnpinned
+        +AttachNote(documentId) void
         +UpdateSummary(text) void
     }
 
@@ -34,6 +34,7 @@ classDiagram
     }
 
     class SessionViewFolder {
+        <<valueObject>>
         +FolderId folderId
         +int order
     }
@@ -62,9 +63,23 @@ classDiagram
         +DateTime occurredAt
     }
 
+    class DocumentPinned {
+        +SessionId sessionId
+        +DocumentId documentId
+        +DateTime occurredAt
+    }
+
+    class DocumentUnpinned {
+        +SessionId sessionId
+        +DocumentId documentId
+        +DateTime occurredAt
+    }
+
     Session --> SessionStatus
     Session ..> SessionStarted : produces
     Session ..> SessionClosed : produces
     Session ..> SessionArchived : produces
+    Session ..> DocumentPinned : produces
+    Session ..> DocumentUnpinned : produces
     SessionViewConfig "1" *-- "0..*" SessionViewFolder : focusedFolders
 ```

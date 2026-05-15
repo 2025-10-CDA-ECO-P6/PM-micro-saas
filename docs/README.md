@@ -14,7 +14,6 @@ Documentation produit et fonctionnelle.
 
 - [conception/vision/vision-produit.md](conception/vision/vision-produit.md) — Positionnement produit, acteurs, choix assumés, modèle de monétisation
 - [conception/vision/moscow.md](conception/vision/moscow.md) — Matrice MoSCoW complète (Must / Should / Could / Won't Have)
-- [conception/vision/ubiquitous-language.md](conception/vision/ubiquitous-language.md) — Vocabulaire partagé du domaine
 
 ### Use Cases
 
@@ -25,4 +24,13 @@ Documentation produit et fonctionnelle.
 ### Personas
 
 - [conception/persona/README.md](conception/persona/README.md) — 7 personas : Thomas, Émilie, Lucas, Nadia, Antoine, Rémi, Sonia
+
+### Domaine DDD
+
+- [conception/domain/README.md](conception/domain/README.md) — Index des 4 bounded contexts
+- [conception/domain/core.md](conception/domain/core.md) — Shared Kernel : abstractions, IDs typés, value objects transverses
+- [conception/domain/identity-access.md](conception/domain/identity-access.md) — Comptes, authentification, tiers, RGPD
+- [conception/domain/campaign-management.md](conception/domain/campaign-management.md) — Campagnes, membres, invitations, accès invités
+- [conception/domain/content-library.md](conception/domain/content-library.md) — Documents, dossiers, types, références entre documents
+- [conception/domain/session-conduct.md](conception/domain/session-conduct.md) — Cycle de vie de session, tableau de bord, notes de session
 

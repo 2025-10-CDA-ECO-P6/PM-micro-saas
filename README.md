@@ -104,7 +104,6 @@ Haversack.Api
 | .NET natif multi-plateforme | MAUI (projet séparé, UI propre) | Élevé |
 
 > [Détail des choix techniques, justifications, points forts/faibles et évolutions](docs/conception/stack.md)
-> [Structure complète de la solution et clients futurs](docs/architecture/06-structure-projets.md)
 
 ---
 
@@ -115,14 +114,9 @@ Haversack.Api
 
 ---
 
-## MCD — Modèle Conceptuel de Données
-
-> Vue globale — [voir le détail par bounded context](docs/conception/data/README.md)
-
----
-
 ## Documentation
 
-- [Conception complète](docs/conception/README.md)
-- [Architecture](docs/architecture/ArchitectureIndex.md)
-- [Use cases détaillés](docs/conception/usecases/README.md)
+| Dossier | Contenu |
+|---|---|
+| [docs/conception/](docs/conception/README.md) | Vision produit, personas, use cases, user stories, user journeys, domaine DDD |
+| [docs/architecture/](docs/architecture/ArchitectureIndex.md) | Décisions d'architecture (ADR), structure des projets |

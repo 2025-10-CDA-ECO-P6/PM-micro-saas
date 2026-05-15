@@ -8,8 +8,10 @@
 | `campaign_id` | `uuid` | NOT NULL | Référence logique Campaign Management (pas de FK physique inter-module) |
 | `parent_folder_id` | `uuid` | FK → `folders.id`, nullable | Self-référence pour l'arborescence |
 | `name` | `varchar(200)` | NOT NULL | |
-| `is_system` | `bool` | NOT NULL, DEFAULT `false` | Dossiers créés automatiquement, non supprimables |
+| `is_system` | `bool` | NOT NULL, DEFAULT `false` | Créé automatiquement à `CampaignCreated` — informatif uniquement, non restrictif |
+| `is_virtual` | `bool` | NOT NULL, DEFAULT `false` | Dossier "Non classés" — invisible dans la navigation, non supprimable, un seul par campagne |
 | `default_document_type_id` | `uuid` | FK → `document_types.id`, nullable | |
+| `default_template_document_id` | `uuid` | FK → `documents.id`, nullable | Template utilisé pour initialiser les nouveaux documents créés dans ce dossier |
 | `created_at` | `timestamptz` | NOT NULL | |
 | `updated_at` | `timestamptz` | NOT NULL | |
 | `created_by_id` | `uuid` | NOT NULL | Référence logique vers `users.id` |
@@ -28,7 +30,7 @@
 | `campaign_id` | `uuid` | nullable | `null` pour types système, `campaign_id` pour types custom |
 | `created_at` | `timestamptz` | NOT NULL | |
 
-**Types seedés** : `scenario`, `scene`, `npc`, `location`, `note`, `player_character`
+**Types seedés** : `scenario`, `scene`, `npc`, `location`, `note`, `player_character`, `live_note`, `reveal`
 
 ---
 
@@ -44,7 +46,6 @@
 | `properties` | `jsonb` | nullable | Propriétés structurées selon le type |
 | `visibility` | `varchar(20)` | NOT NULL, DEFAULT `'GM_ONLY'` | `PUBLIC` / `GM_ONLY` / `PLAYER_PRIVATE` |
 | `slug` | `varchar(300)` | NOT NULL | |
-| `is_pinned` | `bool` | NOT NULL, DEFAULT `false` | |
 | `is_reusable` | `bool` | NOT NULL, DEFAULT `false` | |
 | `source_document_id` | `uuid` | FK → `documents.id`, nullable | Si instancié depuis un template |
 | `is_deleted` | `bool` | NOT NULL, DEFAULT `false` | Soft-delete |
