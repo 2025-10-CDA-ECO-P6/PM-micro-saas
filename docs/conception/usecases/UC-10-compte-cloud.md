@@ -66,6 +66,15 @@ Le MJ veut activer la sauvegarde cloud ou le partage joueurs. Le joueur veut acc
 3. Le système valide les identifiants.
 4. L'utilisateur est redirigé vers son tableau de bord.
 
+## Scénario nominal — Connexion via Google OAuth
+
+1. L'utilisateur clique sur "Continuer avec Google" depuis la page d'inscription ou de connexion.
+2. Il s'authentifie via le flux OAuth Google.
+3. Si c'est un premier accès : le système crée automatiquement un compte (tier gratuit) avec l'email et le nom d'affichage Google. Aucun mot de passe n'est défini.
+4. Si un compte existe déjà avec cet email : le système connecte l'utilisateur à ce compte existant.
+5. Les données locales éventuelles sont migrées vers le compte.
+6. L'utilisateur est redirigé vers son tableau de bord.
+
 ## Scénarios alternatifs
 
 ### A1 — Réinitialisation du mot de passe
@@ -78,18 +87,18 @@ L'utilisateur modifie son nom d'affichage ou son mot de passe depuis la page pro
 
 ### A3 — Joueur créant un compte depuis un lien d'invitation
 
-Un joueur invité sans compte clique sur un lien d'invitation, crée un compte et rejoint la campagne en une seule action. Son accès GuestAccess est migré en CampaignMembership.
+Un joueur invité sans compte clique sur un lien d'invitation, crée un compte et rejoint la campagne en une seule action. Son accès invité est transformé en accès membre.
 
 ### A4 — Suppression du compte (droit à l'effacement RGPD)
 
 1. L'utilisateur accède à la page profil et demande la suppression de son compte.
 2. Le système affiche les conséquences :
    - les campagnes dont l'utilisateur est propriétaire (`ownerId`) seront orphelines — il doit d'abord transférer leur propriété ou accepter leur suppression en cascade ;
-   - ses accès aux notes personnelles (`PLAYER_PRIVATE`) seront retirés ;
+   - ses accès aux notes personnelles (personnelle joueur) seront retirés ;
    - les autres données liées (participations, memberships) seront anonymisées.
 3. L'utilisateur confirme la suppression.
 4. Le système exécute la séquence :
-   a. Conservation des `LiveNote` avec `visibility = PLAYER_PRIVATE` liées à un `ownerCharacterId`.
+   a. Conservation des `note de session` avec `visibility = personnelle joueur` liées à un `ownerpersonnage associé`.
       Le compte supprimé perd l'accès, mais les notes restent attachées au personnage pour préserver
       la continuité de campagne.
    b. Anonymisation des données nominatives dans les autres tables (nom d'affichage remplacé par `[Compte supprimé]`).
@@ -127,8 +136,8 @@ L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes 
 ### Suppression de compte
 - Le compte est marqué `status = DELETED`.
 - Les données nominatives sont anonymisées.
-- Le compte supprimé ne peut plus accéder aux notes `PLAYER_PRIVATE`.
-- Les notes `PLAYER_PRIVATE` restent attachées à leur `ownerCharacterId`.
+- Le compte supprimé ne peut plus accéder aux notes personnelle joueur.
+- Les notes personnelle joueur restent attachées à leur `ownerpersonnage associé`.
 - L'utilisateur est déconnecté.
 
 ## Données manipulées
@@ -143,15 +152,15 @@ L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes 
 ## Règles métier
 
 - L'email est unique dans le système.
-- Le mot de passe est hashé en infrastructure — l'entité domaine `User` ne le connaît pas.
-- `User` ne porte aucun rôle global. Le rôle MJ ou Joueur est défini par `CampaignMembership.role` dans chaque campagne. Tout utilisateur authentifié peut créer une campagne et en devenir le MJ.
+- Le mot de passe est hashé en infrastructure — le compte utilisateur ne le connaît pas.
+- Un utilisateur ne porte aucun rôle global. Le rôle MJ ou Joueur est défini dans chaque campagne. Tout utilisateur authentifié peut créer une campagne et en devenir le MJ.
 - Un compte suspendu ou supprimé ne peut pas se connecter.
 - **RGPD — droit à l'effacement** :
   - La suppression d'un compte déclenche l'anonymisation des données nominatives dans toutes les tables.
-  - Les `LiveNote` avec `visibility = PLAYER_PRIVATE` sont liées au `CharacterId`, pas au compte.
+  - Les `note de session` avec `visibility = personnelle joueur` sont liées au personnage associé, pas au compte.
     La suppression du compte retire l'accès de l'utilisateur mais ne supprime pas automatiquement
     ces notes de personnage.
-  - Les autres contenus créés (documents, notes MJ, PNJ) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu.
+  - Les autres contenus créés (documents, notes MJ, PNJ) restent attachés à la campagne sous idanonymisée — ils appartiennent à la campagne, pas à l'individu.
   - La suppression est irréversible.
   - Un utilisateur propriétaire de campagnes avec des membres actifs ne peut pas supprimer son compte tant qu'il n'a pas géré ces campagnes (MVP : exclusion des membres ; post-MVP : transfert de propriété).
 
@@ -166,7 +175,7 @@ L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes 
 - Un utilisateur nouvellement inscrit peut immédiatement créer une campagne ou rejoindre une campagne existante via invitation.
 - Un utilisateur peut demander la suppression de son compte depuis sa page profil.
 - La suppression est bloquée si l'utilisateur est propriétaire de campagnes avec des membres actifs.
-- Après suppression : le compte est désactivé, les données nominatives sont anonymisées, l'accès aux notes `PLAYER_PRIVATE` est retiré.
+- Après suppression : le compte est désactivé, les données nominatives sont anonymisées, l'accès aux notes personnelle joueur est retiré.
 
 ## Questions à valider en interview
 

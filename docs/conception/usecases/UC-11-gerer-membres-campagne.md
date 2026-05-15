@@ -62,7 +62,7 @@ Le MJ retire un joueur de la campagne. Le joueur perd l'accès mais ses données
 
 ### A4 — Accès invité sans compte
 
-Le MJ génère un lien pour un joueur qui rejoindra sans créer de compte (GuestAccess).
+Le MJ génère un lien pour un joueur qui rejoindra sans créer de compte (accès invité).
 Le lien est associé à un personnage ou permet au MJ de faire cette association au moment
 de l'arrivée du joueur. Voir UC-12.
 
@@ -108,7 +108,7 @@ Le système ne permet pas de réactiver une invitation expirée — il faut en c
 - La révocation d'une invitation passe son statut à `REVOKED`. Elle ne peut plus créer de nouvel accès.
 - Retirer un membre ne supprime pas ses données dans la campagne.
 - Un membre retiré peut être réinvité.
-- Un GuestAccess est temporaire, mais les données joueur privées sont liées au `CharacterId`.
+- Un accès invité est temporaire, mais les données joueur privées sont liées au personnage associé.
 - Un nouveau lien invité vers le même personnage permet de récupérer la fiche et les notes privées de ce personnage.
 
 ## Critères d'acceptation

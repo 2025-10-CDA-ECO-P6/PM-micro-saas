@@ -6,54 +6,55 @@ MJ
 
 ## Acteurs secondaires
 
-Joueurs, notamment quand ils partagent leurs propres LiveNotes personnelles.
+Joueurs, en consultation des documents rendus publics.
 
 ## Objectif
 
-Permettre au MJ de partager certaines informations avec les joueurs tout en conservant ses notes privées.
+Permettre au MJ de partager certains documents avec les joueurs tout en conservant ses documents
+privés.
 
 ## Contexte
 
-Dans une campagne, certaines informations doivent être transmises aux joueurs : indices, documents, lore, rappels ou notes communes. D'autres informations doivent rester secrètes.
+Dans une campagne, certaines informations doivent être transmises aux joueurs : indices, aides
+de jeu, lore, rappels, révélations ou résumés. D'autres informations doivent rester secrètes.
+Dans le MVP, le partage durable d'un document passe par sa visibilité : privé pour le MJ
+ou visible par les joueurs.
 
 ## Besoin utilisateur
 
-Le MJ veut contrôler précisément ce qui est visible ou non par les joueurs.
+Le MJ veut contrôler clairement ce qui est visible ou non par les joueurs, sans exposer
+accidentellement sa préparation privée.
 
 ## Déclencheur
 
-Le MJ souhaite transmettre une information au groupe ou à certains joueurs.
+Le MJ souhaite transmettre une information au groupe.
 
 ## Préconditions
 
 - Une campagne existe.
-- Des joueurs ou personnages sont associés à la campagne.
+- Des joueurs ou des accès invités peuvent accéder à la campagne ou à la session.
 - Le contenu à partager existe ou est créé par le MJ.
 
 ## Scénario nominal
 
-1. Le MJ ouvre une ressource partageable : document ou LiveNote.
+1. Le MJ ouvre un document partageable.
 2. Il choisit l'action "Partager".
-3. Le système affiche les options de visibilité.
-4. Le MJ choisit la cible :
-   - tous les joueurs ;
-   - certains joueurs ;
-   - certains personnages ;
-   - participants de la session actuelle.
-
-5. Le MJ valide le partage.
-6. Le système met la ressource en visibilité `SHARED` et crée les `ContentAccessRule` correspondant aux cibles.
-7. Les joueurs voient l'information dans leur espace.
+3. Le système indique que le document deviendra visible pour tous les membres de la campagne
+   et les accès invités actifs.
+4. Le MJ valide le partage.
+5. Le système rend le document visible par les joueurs.
+6. Les joueurs voient l'information dans leur espace ou leur vue session.
 
 ## Scénarios alternatifs
 
 ### A1 — Retirer le partage
 
-Le MJ rend à nouveau une information privée.
+Le MJ rend à nouveau une information privée via l'action de retrait du partage.
 
-### A2 — Partage à un seul joueur
+### A2 — Partage d'une note de session
 
-Le MJ partage une information uniquement à un joueur précis.
+Le MJ rend publique une note créée pendant une session. Elle devient visible par les joueurs
+comme les autres documents partagés.
 
 ### A3 — Partage depuis la vue session
 
@@ -65,17 +66,18 @@ Le MJ crée ou ouvre un document de récapitulatif post-session, puis le partage
 
 ## Exceptions
 
-### E1 — Aucun destinataire sélectionné
+### E1 — Document déjà public
 
-Le système empêche la validation si aucune cible n'est sélectionnée.
+Le MJ partage un document déjà visible par les joueurs. Le système n'applique aucun changement destructeur
+et indique que le document est déjà visible par les joueurs.
 
-### E2 — Joueur supprimé ou non disponible
+### E2 — Accès joueur expiré ou révoqué
 
-Si un joueur n'est plus associé à la campagne, il n'apparaît plus comme cible de partage.
+Un joueur dont l'accès invité a expiré ou été révoqué ne peut plus consulter les documents partagés.
 
 ## Postconditions
 
-- L'information est visible par les joueurs ciblés.
+- L'information est visible par les joueurs autorisés à accéder aux documents partagés.
 - Les notes privées restent protégées.
 - Le MJ peut modifier la visibilité ultérieurement.
 
@@ -86,33 +88,28 @@ Si un joueur n'est plus associé à la campagne, il n'apparaît plus comme cible
 - Identifiant du contenu
 - Type de contenu
 - Visibilité
-- Cibles
 - Date de partage
 - Auteur du partage
 
 ## Règles métier
 
-- Tout contenu est privé par défaut.
+- Tout document créé par le MJ est privé par défaut.
 - Seul le MJ peut partager une information de campagne durable.
-- Un joueur peut partager une LiveNote personnelle qu'il a créée pendant une session,
-  sans obtenir de droits sur les documents de campagne.
-- Un joueur ne peut consulter que les informations explicitement partagées avec lui.
-- Le MJ peut retirer un partage.
-- Les règles de partage sont unifiées par `AccessPolicy` et `ContentAccessRule`.
-- Les cibles possibles sont : tous les membres, un membre authentifié, un personnage joueur,
-  ou les participants de la session actuelle.
+- Un joueur ne peut consulter que les documents partagés et ses propres notes personnelles.
+- Le MJ peut retirer un partage via l’action de retrait du partage.
+- Le partage est durable : le document reste accessible entre les sessions jusqu'à retrait explicite.
+- Le partage sélectif par joueur ou personnage n'est pas dans le MVP.
 
 ## Critères d'acceptation
 
-- Le MJ peut partager une note avec tous les joueurs.
-- Le MJ peut partager une note avec un joueur spécifique.
+- Le MJ peut partager un document avec tous les joueurs autorisés.
 - Le MJ peut retirer un partage.
-- Un joueur ne voit pas les notes privées.
+- Un joueur ne voit pas les documents privés.
 - Les joueurs voient les informations partagées dans leur espace.
 
 ## Questions à valider en interview
 
 - Les MJ partagent-ils souvent des documents ou notes aux joueurs ?
-- Ont-ils besoin d'un partage par joueur ou seulement par groupe ?
+- Le partage par groupe suffit-il pour le MVP ?
 - Ont-ils déjà eu des problèmes de spoilers ou d'informations révélées trop tôt ?
 - Quels types d'informations sont généralement partagés ?

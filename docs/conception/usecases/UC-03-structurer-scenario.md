@@ -10,11 +10,17 @@ Aucun dans le scénario principal.
 
 ## Objectif
 
-Permettre au MJ de préparer et structurer un scénario exploitable pendant une session.
+Permettre au MJ de préparer et structurer un scénario exploitable pendant une session,
+en s'appuyant sur le modèle documentaire modulaire.
 
 ## Contexte
 
-Le scénario est un élément central de la préparation du MJ. Il peut contenir des scènes, des objectifs narratifs, des PNJ, des lieux, des indices, des objets et des notes privées. Si ces informations sont mal organisées, le MJ peut perdre du temps ou oublier des éléments importants pendant la partie.
+Le scénario est un élément central de la préparation du MJ. Dans Haversack, un scénario est
+un document de campagne : il peut être rédigé librement en blocs ou structuré en scènes
+liées. Il peut référencer des PNJ, lieux, indices, objets, révélations ou notes.
+
+UC-03 décrit l'organisation narrative d'un scénario. Le modèle général des documents,
+blocs, types, dossiers, templates, recherche et visibilité est décrit par UC-04.
 
 ## Besoin utilisateur
 
@@ -34,7 +40,7 @@ Le MJ prépare une future session ou un arc narratif.
 1. Le MJ ouvre une campagne.
 2. Il accède à la section "Scénarios".
 3. Il clique sur "Créer un scénario".
-4. Le système affiche un éditeur de scénario.
+4. Le système affiche un éditeur de document scénario.
 5. Le MJ renseigne les informations générales :
    - titre ;
    - résumé ;
@@ -42,7 +48,7 @@ Le MJ prépare une future session ou un arc narratif.
    - objectif narratif ;
    - statut du scénario.
 
-6. Le MJ ajoute une ou plusieurs scènes.
+6. Le MJ ajoute une ou plusieurs scènes, représentées par des documents `SCENE` liés.
 7. Pour chaque scène, le MJ peut renseigner :
    - titre ;
    - description ;
@@ -59,19 +65,22 @@ Le MJ prépare une future session ou un arc narratif.
 
 ### A1 — Scénario libre sans découpage en scènes
 
-Le MJ peut créer un scénario sous forme de note structurée sans utiliser le découpage en scènes.
+Le MJ peut créer un scénario sous forme de document monobloc sans utiliser le découpage en scènes.
 
 ### A2 — Ajout d'éléments liés existants
 
-Le MJ lie au scénario des PNJ, notes ou personnages déjà existants dans la campagne.
+Le MJ lie au scénario des documents déjà existants dans la campagne : PNJ, lieux, notes,
+révélations, personnages joueurs, aides de jeu ou autres contenus.
 
 ### A3 — Création d'un élément depuis le scénario
 
-Le MJ crée un nouveau PNJ ou une nouvelle note directement depuis l'éditeur de scénario.
+Le MJ crée un nouveau document directement depuis l'éditeur de scénario. Il est automatiquement
+lié au scénario ou à la scène courante.
 
 ### A4 — Scénario improvisé
 
-Le MJ crée un scénario minimal pendant ou juste avant une session, avec uniquement un titre et quelques notes.
+Le MJ crée un scénario minimal pendant ou juste avant une session, avec uniquement un titre
+et quelques blocs libres.
 
 ## Exceptions
 
@@ -85,7 +94,7 @@ Le système conserve les données saisies localement si possible et affiche un m
 
 ## Postconditions
 
-- Le scénario est sauvegardé dans la campagne.
+- Le scénario est sauvegardé comme document de la campagne.
 - Le scénario est placé dans le dossier système **Scénarios** de la campagne.
 - Le scénario peut être consulté, modifié ou lié à une session.
 - Les éléments liés au scénario sont accessibles depuis celui-ci.
@@ -95,6 +104,7 @@ Le système conserve les données saisies localement si possible et affiche un m
 ### Scénario
 
 - Identifiant unique
+- Type de document `SCENARIO`
 - Titre
 - Résumé
 - Contexte
@@ -102,28 +112,28 @@ Le système conserve les données saisies localement si possible et affiche un m
 - Statut
 - Campagne associée
 - Scènes
-- Éléments liés
+- Documents liés
 
 ### Scène
 
 - Identifiant unique
+- Type de document `SCENE`
 - Titre
 - Description
 - Objectif
 - Ordre d'affichage
 - Notes
 - Informations partageables
-- PNJ liés
-- Lieux liés
-- Objets liés
+- Documents liés : PNJ, lieux, objets, révélations ou autres contenus
 
 ## Règles métier
 
-- Un scénario appartient à une campagne.
-- Un scénario peut contenir zéro, une ou plusieurs scènes.
-- Une scène peut être liée à plusieurs PNJ.
-- Les notes privées d'un scénario ne sont visibles que par le MJ.
-- Un scénario peut être dans l'un des statuts suivants : brouillon, prêt, joué, archivé.
+- Un scénario est un document de campagne spécialisé pour la préparation narrative.
+- Une scène est un document de campagne lié au scénario.
+- Un scénario peut référencer zéro, une ou plusieurs scènes.
+- Une scène peut référencer plusieurs documents : PNJ, lieux, objets, révélations, notes ou aides de jeu.
+- Les notes privées d'un scénario restent dans des documents privés pour le MJ.
+- Un scénario peut porter un statut de préparation dans ses propriétés structurées.
 
 ## Critères d'acceptation
 

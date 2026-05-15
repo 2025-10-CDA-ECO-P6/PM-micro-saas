@@ -10,15 +10,21 @@ Aucun.
 
 ## Objectif
 
-Permettre au MJ de créer instantanément n'importe quel type d'élément (note, PNJ, personnage joueur, document) depuis la vue session, pour s'adapter en temps réel aux imprévus des joueurs.
+Permettre au MJ de créer instantanément un document de campagne depuis la vue session
+(note, PNJ, personnage joueur, lieu, faction, objet, lore ou autre contenu), pour s'adapter
+en temps réel aux imprévus des joueurs.
 
 ## Contexte
 
-Pendant une session, les joueurs prennent des décisions imprévues : ils interagissent avec un PNJ non préparé, créent un nouveau personnage spontanément, ou le MJ veut noter immédiatement une information. Le MJ doit pouvoir réagir sans quitter le contexte de session ni bloquer le rythme de jeu.
+Pendant une session, les joueurs prennent des décisions imprévues : ils interagissent avec un PNJ
+non préparé, découvrent un lieu inattendu, font émerger une faction ou obligent le MJ à noter
+immédiatement une information. Le MJ doit pouvoir créer un document durable ou une note de session
+sans quitter le contexte de session ni bloquer le rythme de jeu.
 
 ## Besoin utilisateur
 
-Le MJ veut créer n'importe quel type d'élément de jeu en quelques secondes depuis la vue session, avec un minimum d'informations requises, pour maintenir la fluidité de la partie.
+Le MJ veut créer un document en quelques secondes depuis la vue session, avec un minimum
+d'informations requises, pour maintenir la fluidité de la partie et enrichir la campagne après coup.
 
 ## Déclencheur
 
@@ -32,40 +38,43 @@ Le MJ clique sur "Créer" ou utilise un raccourci depuis la vue session.
 ## Scénario nominal
 
 1. Le MJ ouvre le panneau de création rapide depuis la vue session.
-2. Il sélectionne le type d'élément à créer :
-   - Note (LiveNote ou Document NOTE) ;
-   - PNJ ;
-   - Personnage joueur ;
-   - Document (lore, lieu, objet, etc.).
+2. Il sélectionne le mode de création :
+   - note de session ;
+   - document libre ;
+   - document typé optionnel (note, PNJ, lieu, personnage joueur ou autre type disponible).
 
 3. Il saisit un titre minimal (seul champ obligatoire).
 4. Il valide.
-5. Le système crée l'élément avec :
-   - `campaignId` de la session en cours ;
-   - `sessionId` de la session en cours (lien auto) ;
+5. Le système crée le document avec :
+   - la campagne de la session en cours ;
+   - le type choisi, le cas échéant ;
+   - une visibilité privée par défaut ;
+   - dossier d'accueil selon le point d'entrée ou le type ;
    - champs requis à leurs valeurs par défaut.
 
-6. L'élément est immédiatement disponible dans la vue session.
+6. Si le document est utile pendant la séance, le système l'épingle dans la session.
 7. Le MJ peut l'enrichir plus tard en dehors de la session.
 
 ## Scénarios alternatifs
 
 ### A1 — Création d'un PNJ à la volée
 
-Le MJ renseigne uniquement le nom. Le PNJ est créé comme un `Document` standard typé PNJ
-avec des propriétés vides, puis ajouté à `Session.selectedDocumentIds`.
+Le MJ renseigne uniquement le nom. Le PNJ est créé comme un document typé PNJ
+avec des propriétés vides, puis épinglé dans la session.
 
 ### A2 — Création d'un personnage joueur à la volée
 
-Le MJ crée un `PlayerCharacter` minimal (nom seul). Il pourra l'associer à un joueur et le compléter plus tard.
+Le MJ crée une fiche de personnage joueur minimale (nom seul). Il pourra l'associer
+à un joueur et le compléter plus tard.
 
-### A3 — Création d'une note LiveNote
+### A3 — Création d'une note de session
 
-La note est automatiquement liée à la session (`sessionId`) et horodatée.
+La note est créée comme note de session, puis rattachée à la session en cours.
 
 ### A4 — Création d'un document générique
 
-Le MJ crée un Document (lieu, faction, objet, lore) avec un titre. Le document est lié à la campagne et optionnellement à la session.
+Le MJ crée un document (lieu, faction, objet, lore) avec un titre. Le document est lié à la campagne
+et peut être épinglé dans la session s'il doit rester sous la main.
 
 ### A5 — Session CLOSED (ajout rétroactif)
 
@@ -83,32 +92,33 @@ La création à la volée est impossible depuis une session ARCHIVED (lecture se
 
 ## Postconditions
 
-- L'élément créé est lié à la campagne et à la session.
+- Le document créé est lié à la campagne.
 - Il est immédiatement consultable dans la vue session.
 - Il peut être enrichi ultérieurement.
-- Pour un PNJ : il est ajouté à `Session.selectedDocumentIds`.
+- Pour un document utile en séance : il est ajouté à documents épinglés de la session.
 
 ## Données manipulées
 
-- Note / LiveNote
-- Document typé PNJ (avec lien dans `Session.selectedDocumentIds`)
-- PlayerCharacter
-- Document (tout type)
-- Session (`selectedDocumentIds` mis à jour si PNJ, lieu, objet ou document utile à la session)
+- Document libre ou typé
+- Document typé PNJ
+- Document typé personnage joueur
+- Note de session
+- Session (documents épinglés ou notes de session mis à jour selon le cas)
 
 ## Règles métier
 
 - Le titre est le seul champ obligatoire pour toute création à la volée.
-- L'élément créé est automatiquement lié à la `campaignId` et au `sessionId` de la session en cours.
-- Un PNJ créé à la volée est automatiquement ajouté à `Session.selectedDocumentIds`.
+- Le document créé est automatiquement lié à la campagne de la session en cours.
+- Une note de session est rattachée à la session.
+- Un document durable utile à la séance peut être automatiquement ajouté aux documents épinglés.
 - La création à la volée est possible sur une session LIVE ou CLOSED, mais pas ARCHIVED.
-- Les éléments créés à la volée sont privés par défaut (`visibility = PRIVATE`).
+- Les documents créés à la volée sont privés par défaut.
 
 ## Critères d'acceptation
 
 - Le MJ peut créer une note, un PNJ, un personnage joueur et un document depuis la vue session.
 - Le titre seul suffit à valider la création.
-- L'élément est immédiatement lié à la session et à la campagne.
-- Un PNJ créé à la volée apparaît dans les documents de session, filtrable comme PNJ.
+- Le document est immédiatement lié à la campagne et, si nécessaire, référencé par la session.
+- Un PNJ créé à la volée apparaît dans les documents épinglés ou dans son dossier, filtrable comme PNJ.
 - La création est impossible depuis une session ARCHIVED.
-- Le MJ peut compléter l'élément créé à la volée ultérieurement.
+- Le MJ peut compléter le document créé à la volée ultérieurement.

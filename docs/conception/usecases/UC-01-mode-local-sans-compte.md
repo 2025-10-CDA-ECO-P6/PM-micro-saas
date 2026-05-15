@@ -29,7 +29,7 @@ Le mode local est aussi la base du modèle de monétisation non-agressif : la va
 - Fonctionnalités disponibles : création de campagne, documents, dossiers, vue session, création à la volée, recherche locale.
 - Fonctionnalités indisponibles : partage avec les joueurs, synchronisation cloud, accès multi-device.
 - Limite de stockage : capacité du navigateur (~50–100 Mo en pratique).
-- **Risque communiqué clairement** : les données sont liées au navigateur. Vider le cache ou changer de navigateur les efface. L'application doit afficher un bandeau de rappel non intrusif.
+- **Risque communiqué clairement** : les données sont liées au navigateur. Vider le cache ou changer de navigateur les efface. L'application affiche un message au premier démarrage.
 
 ### Compte gratuit (après inscription)
 
@@ -83,7 +83,6 @@ Aucune.
 1. Le MJ ferme le navigateur puis revient sur l'application.
 2. L'application récupère les données depuis IndexedDB.
 3. Le MJ retrouve ses campagnes et documents intacts.
-4. Le bandeau de rappel "données locales" est affiché si le MJ n'a pas de compte.
 
 ### A3 — Données introuvables (cache vidé)
 
@@ -113,14 +112,12 @@ Le navigateur refuse l'écriture dans IndexedDB. L'application affiche un messag
 
 - En mode local, aucune donnée n'est envoyée au serveur.
 - La création de compte depuis le mode local déclenche obligatoirement une migration des données locales.
-- Le bandeau "données locales" est affiché à chaque visite tant que le MJ n'a pas de compte, sans bloquer l'usage.
 - Les fonctionnalités de partage (UC-08) et d'accès joueur (UC-09) nécessitent au minimum un compte gratuit.
 
 ## Critères d'acceptation
 
 - Un MJ peut créer une campagne et préparer du contenu sans créer de compte.
 - Les données persistent après fermeture et réouverture du navigateur.
-- L'application affiche un rappel non bloquant sur la nature locale des données.
 - Le MJ peut créer un compte depuis n'importe quelle page de l'app, avec migration automatique.
 - L'export JSON des données locales fonctionne et produit un fichier réimportable.
 - Les fonctionnalités de partage sont visibles mais désactivées avec une invite claire en mode local.

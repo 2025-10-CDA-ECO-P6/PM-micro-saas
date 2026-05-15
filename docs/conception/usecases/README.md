@@ -17,9 +17,9 @@
 | ID | Use Case | Acteur | Pilier | Résumé |
 |---|---|---|---|---|
 | [UC-01](UC-01-mode-local-sans-compte.md) | Mode local sans compte | MJ | — | Le MJ ouvre l'app et commence à préparer sans s'inscrire. Les données sont stockées localement dans le navigateur, avec un chemin naturel vers le cloud. |
-| [UC-02](UC-02-creer-campagne.md) | Créer et configurer une campagne | MJ | 1 | Le MJ crée un espace de travail nommé — conteneur de tout le contenu, configuré en moins de deux minutes, qu'il s'agisse d'une campagne longue ou d'un one-shot. |
+| [UC-02](UC-02-creer-espace-jeu.md) | Créer un espace de jeu (campagne ou one-shot) | MJ | 1 | Le MJ crée un espace de travail nommé — conteneur de tout le contenu, configuré en moins de deux minutes, qu'il s'agisse d'une campagne longue ou d'un one-shot. |
 | [UC-03](UC-03-structurer-scenario.md) | Structurer un scénario | MJ | 1 | Le MJ prépare son scénario en blocs libres ou en scènes structurées, de cinq bullet points (Émilie) à une architecture détaillée (Antoine), sans forme imposée. |
-| [UC-04](UC-04-gerer-notes-mj.md) | Gérer les documents et notes MJ | MJ | 1 + 2 | Le MJ capture rapidement des informations à tout moment — documents libres, notes rapides, lore ou éléments typés — sans contrainte de structure ni délai. |
+| [UC-04](UC-04-gerer-documents-campagne.md) | Gérer les documents de campagne | MJ | 1 + 2 | Le MJ capture rapidement des informations à tout moment — documents libres, notes rapides, lore ou éléments typés — sans contrainte de structure ni délai. |
 | [UC-05](UC-05-organiser-dossiers.md) | Organiser le contenu en dossiers | MJ | 1 | Le MJ structure sa campagne en dossiers librement nommés et associe un type de document optionnel (PNJ, Lieu, Objet…) à chaque dossier pour enrichir les entrées sans les contraindre. |
 | [UC-06](UC-06-vue-session.md) | Utiliser la vue session | MJ | 2 | Interface de pilotage en temps réel : le MJ accède aux scènes, PNJ et notes préparés, épingle le contenu clé et prend des notes rapides sans jamais quitter le contexte de la partie. |
 | [UC-07](UC-07-creation-volee-session.md) | Créer un élément à la volée | MJ | 2 | En quelques secondes, le MJ crée un PNJ, un lieu ou une note depuis la vue session pour répondre aux imprévus des joueurs sans casser le rythme. |

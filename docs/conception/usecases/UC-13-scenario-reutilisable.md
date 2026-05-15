@@ -67,11 +67,61 @@ Le MJ veut lancer un scénario existant avec un nouveau groupe, ou veut marquer 
 3. L'instance du scénario est liée à cette campagne one-shot.
 4. Après la session, la campagne one-shot est archivée automatiquement.
 
+## Exceptions
+
+### E1 — Copie profonde échouée
+
+Si la duplication du scénario source vers une instance échoue (erreur système, timeout), l'opération est annulée dans sa totalité. Aucune instance partielle n'est créée. Le MJ reçoit un message d'erreur et peut réessayer.
+
+### E2 — Scénario source supprimé après création d'instances
+
+Les instances existantes restent valides et complètes — elles sont indépendantes du source depuis leur création. La suppression du source n'affecte pas les instances.
+
+### E3 — Campagne cible archivée
+
+Si le MJ tente d'instancier un scénario dans une campagne archivée, l'opération est refusée. Le système propose de choisir une campagne active ou de créer un one-shot.
+
 ## Postconditions
 
 - Une instance du scénario existe et porte ses propres notes et modifications.
 - Le scénario source reste intact.
 - L'historique des runs est accessible depuis le catalogue.
+
+## Données manipulées
+
+### Scénario source (ScenarioLibrary)
+
+- Identifiant unique
+- Titre
+- Propriétaire (compte MJ)
+- Statut : actif, archivé
+- Scènes et documents associés (structure narrative)
+
+### Instance
+
+- Identifiant unique
+- Référence au scénario source (lecture seule)
+- Contexte d'exécution : campagne ou one-shot
+- Copie complète du contenu source au moment de l'instanciation
+- Notes et modifications propres à ce run
+
+### Entrée d'historique (run)
+
+- Date de la session
+- Identifiant de l'instance
+- Notes MJ du run
+
+---
+
+## Décision d'architecture — Statut source vs instance
+
+**Décision** : une instance est une **copie indépendante** du scénario source au moment de son instanciation. Le scénario source et l'instance n'ont aucun lien vivant après la création de l'instance.
+
+**Justification** : aligne avec le principe de zéro friction et de prévisibilité pour Sonia. Elle modifie son run sans risquer d'altérer le source. Le source reste sa "version propre" du scénario, intacte pour les prochains groupes. La cohérence entre le source et les instances n'est pas gérée automatiquement — c'est le MJ qui décide de promouvoir à nouveau s'il améliore le source.
+
+**Conséquence** : pas de mécanisme de diff ou de synchronisation source → instance dans le MVP. Cette feature (UC-13 stories exclues) est Could Have post-MVP.
+
+---
 
 ## Règles métier
 

@@ -112,10 +112,13 @@ comme il le souhaite. Les types de document (PNJ, Lieu, Objet…) sont une couch
 qui ajoute des propriétés structurées sans retirer la liberté d'édition.
 
 **Organisation libre par dossiers.** Le MJ organise son contenu dans des dossiers qu'il
-crée et nomme lui-même. Quatre dossiers système sont générés automatiquement à la création
+crée et nomme lui-même. Quatre dossiers sont générés automatiquement à la création
 de la campagne ("Personnages", "Joueurs", "Scénarios", "Notes") — point de départ neutre,
-pas une cage. Les noms sont système-agnostiques : un MJ de Blades in the Dark peut renommer
-"Personnages" en "Factions" et changer le type de document par défaut du dossier.
+pas une cage. Le MJ peut renommer, réorganiser ou supprimer ces dossiers librement.
+Un MJ de Blades in the Dark peut renommer "Personnages" en "Factions", changer le type
+de document par défaut, ou repartir d'une ardoise vide.
+
+**Vue session configurable.** Le tableau de bord de session n'impose aucune structure fixe. Le MJ choisit quels dossiers il met en avant dans sa vue — certains veulent leurs PNJ au premier plan, d'autres leurs lieux ou leurs scènes. Cette configuration est mémorisée par campagne. La cohérence avec le système de dossiers libres est totale : ce que le MJ organise dans sa bibliothèque, il peut l'exposer directement dans sa vue session.
 
 **Relations entre documents.** N'importe quel document peut référencer un autre.
 Les backlinks (documents pointant vers un document donné) sont consultables depuis la fiche cible.

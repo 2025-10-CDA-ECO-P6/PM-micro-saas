@@ -99,8 +99,8 @@ Le MJ refuse ou retire l'accès du joueur.
 
 - Le MJ contrôle les invitations.
 - Un joueur invité sans compte a un accès limité ou temporaire, sécurisé par token.
-- Pour agir comme un joueur complet, l'accès invité doit être associé à un `CharacterId`.
-- Les données personnelles joueur sont liées au personnage, pas au GuestAccess temporaire.
+- Pour agir comme un joueur complet, l'accès invité doit être associé à un personnage associé.
+- Les données personnelles joueur sont liées au personnage, pas à l'accès invité temporaire.
 - Un compte joueur permet un accès persistant.
 - Un joueur peut être associé à plusieurs personnages dans une même campagne ; il choisit le personnage actif
   quand l'action ou la consultation dépend d'une fiche précise.

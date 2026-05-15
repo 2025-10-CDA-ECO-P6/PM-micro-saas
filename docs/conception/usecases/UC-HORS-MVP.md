@@ -36,6 +36,18 @@ Le MJ crée et organise des fiches de lieux, factions, organisations et objets i
 
 ---
 
+### UC-F07 — Créer un scénario directement dans la bibliothèque (sans campagne)
+
+Le MJ crée un nouveau scénario template directement depuis la ScenarioLibrary, sans passer par une campagne existante.
+
+**Persona concerné** : Sonia, qui veut préparer un nouveau one-shot pour son catalogue sans avoir à créer une campagne intermédiaire.
+
+**Pourquoi Could Have (non MVP)** : le MVP exige qu'un scénario soit d'abord créé dans une campagne puis promu en template (UC-13 A1). Ce flux couvre les cas courants. La création directe en bibliothèque est une ergonomie supplémentaire — Sonia peut utiliser une campagne "Atelier scénarios" comme conteneur de travail en attendant.
+
+**Condition de retour** : si les interviews révèlent que Sonia résiste au flux "campagne intermédiaire", ou si l'adoption de UC-13 est inférieure aux attentes.
+
+---
+
 ## Vision long terme
 
 ### UC-F01 — Utiliser des templates de système de jeu
@@ -133,6 +145,6 @@ C'est une émulation légère de système de jeu — pas un moteur de règles co
 
 **Risque** : frontière floue avec un vrai moteur de règles. Risque de dérive vers la simulation. Doit rester un outil d'aide, pas de substitution au système de jeu.
 
-**Prérequis techniques** : les types de document (UC-05) doivent être implémentés et stables. Le schéma de `Document` doit prévoir `documentTypeId` et `properties` (JSON structuré) dès le MVP pour ne pas nécessiter de migration majeure.
+**Prérequis techniques** : les types de document (UC-05) doivent être implémentés et stables. Le schéma de document doit prévoir type optionnel et propriétés structurées (JSON structuré) dès le MVP pour ne pas nécessiter de migration majeure.
 
 **Position recommandée** : Couche 1 (relations) post-MVP, après validation de l'adoption des types de document. Couche 2 (règles) vision long terme uniquement.

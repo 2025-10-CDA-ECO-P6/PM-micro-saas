@@ -1,135 +1,213 @@
-# Bounded Context — Session Conduct
+# Session Conduct
 
-### Responsabilité
-
-Préparation et conduite en temps réel des sessions de jeu.
-Consomme les autres contextes par Id uniquement.
+> **Responsabilité** : gérer le déroulement d'une session de jeu.
+> Cycle de vie de la session, tableau de bord MJ configurable, documents épinglés,
+> notes de session, accès joueurs en temps réel.
+>
+> Ce contexte **consomme** ce que Content Library prépare.
+> Il ne possède aucun contenu — il l'expose et l'orchestre pendant la séance.
 
 ---
 
-### Agrégat : `Session`
+## Ce que ce contexte fait
+
+- Créer et piloter le cycle de vie d'une session (LIVE → CLOSED → ARCHIVED).
+- Gérer la configuration du tableau de bord session par campagne (SessionViewConfig).
+- Gérer les documents épinglés pendant une session.
+- Gérer les LiveNotes prises pendant et après la session.
+- Autoriser l'accès des joueurs (authentifiés ou invités) à la vue session.
+
+## Ce que ce contexte ne fait PAS
+
+| Responsabilité | Contexte propriétaire |
+|---|---|
+| Contenu des documents, blocs, scénarios | Content Library |
+| Droits d'accès campagne, memberships, GuestAccess | Campaign Management |
+| Comptes utilisateurs | Identity & Access |
+| Partage permanent d'un document (visibility) | Content Library (`Document.Share()`) |
+| Layout visuel des colonnes de la vue session | UI — pas une préoccupation du domaine |
+
+---
+
+## Machine d'états de Session
 
 ```
-Session
-├── id                : SessionId
-├── campaignId        : CampaignId
-├── scenarioId        : ScenarioId?      — null = session libre
-├── title             : String
-├── slug              : Slug
-├── scheduledAt       : DateTime?
-├── startedAt         : DateTime?
-├── endedAt           : DateTime?
-├── status            : SessionStatus
-├── participantIds    : CharacterId[]    — références légères
-├── selectedDocumentIds : DocumentId[]   — documents sélectionnés pour la session (PNJ, lieux…)
-│                                          déduits automatiquement des linkedDocumentIds des scènes
-│                                          modifiables manuellement par le MJ
-├── pinnedItems       : PinnedItem[]     — value object avec ordre et date
-├── liveNotes         : LiveNote[]       — entités enfants
-├── audit             : AuditInfo
-└── softDelete        : SoftDelete
+LIVE ──► CLOSED ──► ARCHIVED
 ```
 
-```
-SessionStatus
-├── PLANNED
-├── LIVE
-├── CLOSED
-└── ARCHIVED
-```
+| Statut | Description |
+|---|---|
+| `LIVE` | Session en cours — tableau de bord actif, partage temps réel |
+| `CLOSED` | Session terminée — contenu éditable (résumé, LiveNotes rétroactives) |
+| `ARCHIVED` | Lecture seule complète — aucune modification possible |
 
-#### Entité enfant : `LiveNote`
+> Une session est créée directement en état `LIVE`. Il n'y a pas d'état `PLANNED` dans le MVP.
+> Rouvrir une session CLOSED signifie éditer son contenu, pas changer son statut.
 
-Note prise pendant ou après une session. Peut être créée par le MJ ou par un joueur.
+---
 
-```
-LiveNote
-├── id                  : LiveNoteId
-├── sessionId           : SessionId
-├── content             : String
-├── authorUserId        : UserId?          — renseigné si auteur authentifié
-├── authorGuestAccessId : GuestAccessId?   — renseigné si auteur invité
-├── ownerCharacterId    : CharacterId?     — obligatoire pour PLAYER_PRIVATE
-├── authorRole          : LiveNoteAuthorRole  — MJ ou PLAYER (détermine les règles de visibilité par défaut)
-├── visibility          : Visibility       — PRIVATE (MJ), PLAYER_PRIVATE (joueur), ou SHARED/PUBLIC
-│                                           jamais null — défaut selon authorRole
-├── linkedDocumentId    : DocumentId?
-└── audit               : AuditInfo        — pas de SoftDelete
-```
+## Agrégats
 
-```
-LiveNoteAuthorRole
-├── GM      — note créée par le MJ
-└── PLAYER  — note créée par un joueur
-```
+### Session
 
-**Visibilité par défaut selon authorRole** :
-- `GM` → `PRIVATE` (note privée MJ par défaut, peut être partagée)
-- `PLAYER` → `PLAYER_PRIVATE` (note personnelle joueur par défaut, invisible au MJ,
-  partageable ensuite si le joueur décide de la montrer)
+| Champ | Type | Description |
+|---|---|---|
+| `id` | `SessionId` | |
+| `campaignId` | `CampaignId` | |
+| `title` | `string` | |
+| `status` | `SessionStatus` | `LIVE` \| `CLOSED` \| `ARCHIVED` |
+| `scenarioId` | `DocumentId?` | Scénario joué — nullable (session improvisée possible) |
+| `pinnedDocumentIds` | `DocumentId[]` | Documents épinglés pendant la séance |
+| `liveNoteIds` | `DocumentId[]` | Références vers les Documents LIVE_NOTE de cette session |
+| `summary` | `string?` | Résumé — éditable en état CLOSED |
+| `startedAt` | `DateTime` | |
+| `closedAt` | `DateTime?` | |
+| `AuditInfo` | | `createdAt`, `updatedAt`, `createdById: UserId` |
 
-**Contraintes de visibilité par authorRole** :
-- Une `LiveNote` avec `authorRole = GM` ne peut pas avoir `visibility = PLAYER_PRIVATE`.
-- Une `LiveNote` avec `authorRole = PLAYER` ne peut pas avoir `visibility = PRIVATE`.
-- Une `LiveNote` `PLAYER_PRIVATE` a toujours un `ownerCharacterId`.
-- Si la note est créée par un invité, `authorGuestAccessId` trace l'accès utilisé,
-  mais le droit de récupération futur repose sur `ownerCharacterId`.
-- Pour une note invitée, `AuditInfo.createdById` est renseigné avec un auteur technique
-  système/MJ ; `authorGuestAccessId` reste la vérité métier de l'auteur réel.
+**Méthodes**
 
-#### Invariants et règles métier
+| Méthode | Événement produit | Condition |
+|---|---|---|
+| `Start(campaignId, title, scenarioId?)` | `SessionStarted` | — |
+| `Close()` | `SessionClosed` | status = LIVE |
+| `Archive()` | `SessionArchived` | status = CLOSED |
+| `PinDocument(docId)` | — | status = LIVE |
+| `UnpinDocument(docId)` | — | status = LIVE |
+| `AddLiveNote(documentId)` | — | Lie un Document LIVE_NOTE existant à la session. status = LIVE ou CLOSED |
+| `UpdateSummary(text)` | — | status = CLOSED |
 
-- **Une seule session `LIVE` par campagne** à un instant donné — invariant fort.
-- Transitions autorisées uniquement : `PLANNED → LIVE → CLOSED → ARCHIVED`.
-- Aucun retour en arrière sur les transitions de statut.
-- Les `LiveNote` de type MJ sont créées avec `visibility = PRIVATE` par défaut.
-- Les `LiveNote` de type joueur sont créées avec `visibility = PLAYER_PRIVATE` par défaut
-  et `ownerCharacterId = requester.characterId`.
-- Un joueur peut partager une LiveNote personnelle, comme il montrerait une note papier
-  à la table. Le partage passe par `AccessPolicy` et `ContentAccessRule`.
-- Un joueur ne peut créer des LiveNotes que pendant une session LIVE (pas PLANNED, pas a posteriori sur CLOSED).
-  Le MJ peut créer des LiveNotes sur une session LIVE ou CLOSED (ajout rétroactif).
-- Les récapitulatifs post-session sont des `Document(role = STANDARD)` de campagne,
-  typés ou rangés selon l'organisation du MJ. Il n'existe pas d'entité dédiée de résumé dans le MVP.
-- Les changements de visibilité de `Document` et `LiveNote` s'appuient
-  sur `AccessPolicy` et `ContentAccessRule`; il n'existe pas de mécanisme de partage parallèle.
-- `participantIds`, `selectedDocumentIds` et `pinnedItems` sont des références légères —
-  si une entité référencée est supprimée, la référence est retirée.
-- `scenarioId` doit référencer un `Scenario(isTemplate = false)` — un scénario source de bibliothèque
-  ne peut pas être directement attaché à une session ; seule une instance de campagne le peut.
-- Soft delete `Session` → suppression physique des `LiveNote`.
+---
 
-**Permissions d'édition par statut** :
+### SessionViewConfig (agrégat)
 
-| Statut     | Métadonnées | Ajout LiveNote MJ | Ajout LiveNote Joueur | Épinglage |
-|------------|-------------|-------------------|-----------------------|-----------|
-| `PLANNED`  | Oui         | Non               | Non                   | Oui       |
-| `LIVE`     | Oui         | Oui               | Oui                   | Oui       |
-| `CLOSED`   | Non         | Oui (rétro)       | Non                   | Non       |
-| `ARCHIVED` | Non         | Non               | Non                   | Non       |
+Configuration du tableau de bord session au niveau de la campagne.
+Définit quels dossiers le MJ met en avant dans sa vue session.
+Un seul `SessionViewConfig` par campagne.
 
-> Une session `CLOSED` reste éditable pour les notes MJ rétroactives.
-> Les joueurs ne peuvent plus créer de LiveNotes sur une session CLOSED.
-> L'état `ARCHIVED` est le seul état véritablement immuable.
+Créé automatiquement à `CampaignCreated` avec les dossiers système de la campagne comme point de départ. Le MJ peut ensuite ajouter, retirer ou réordonner librement.
 
-**Déduction automatique des `selectedDocumentIds`** :
-Quand un `scenarioId` est associé à une session, `SessionDocumentSelector` (application service)
-calcule la liste initiale depuis l'union des `linkedDocumentIds` de toutes les scènes du scénario.
-Le MJ peut ensuite ajouter ou retirer des DocumentId manuellement.
+| Champ | Type | Description |
+|---|---|---|
+| `id` | `SessionViewConfigId` | |
+| `campaignId` | `CampaignId` | Unique — un seul config par campagne |
+| `focusedFolders` | `SessionViewFolder[]` | Dossiers mis en avant dans la vue session |
+| `updatedAt` | `DateTime` | |
 
-#### Domain Events
+**Méthodes**
 
-```
-SessionPlanned                  { sessionId, campaignId, scheduledAt, occurredAt }
-SessionStarted                  { sessionId, campaignId, startedAt, occurredAt }
-SessionClosed                   { sessionId, campaignId, endedAt, occurredAt }
-SessionArchived                 { sessionId, campaignId, occurredAt }
-SessionDocumentSelected         { sessionId, documentId, occurredAt }
-SessionDocumentDeselected       { sessionId, documentId, occurredAt }
-LiveNoteAdded                   { sessionId, liveNoteId, authorUserId?, authorGuestAccessId?, ownerCharacterId?, authorRole, occurredAt }
-LiveNoteAddedPostSession        { sessionId, liveNoteId, authorUserId?, occurredAt }
-LiveNoteRemoved                 { sessionId, liveNoteId, occurredAt }
-LiveNoteVisibilityChanged       { sessionId, liveNoteId, oldVisibility, newVisibility, occurredAt }
-DocumentPinnedToSession         { sessionId, documentId, occurredAt }
-DocumentUnpinnedFromSession     { sessionId, documentId, occurredAt }
-```
+| Méthode | Description |
+|---|---|
+| `AddFolder(folderId, order)` | Ajoute un dossier aux panneaux de la vue session |
+| `RemoveFolder(folderId)` | Retire un dossier des panneaux |
+| `ReorderFolders(orderedFolderIds)` | Réordonne les dossiers |
+
+---
+
+### SessionViewFolder (entité dans SessionViewConfig)
+
+| Champ | Type | Description |
+|---|---|---|
+| `folderId` | `FolderId` | Référence vers Content Library |
+| `order` | `int` | Priorité d'affichage |
+
+> Le rendu visuel (colonnes, onglets, accordéon…) est une décision UI.
+> Le domaine expose uniquement une liste ordonnée de dossiers.
+
+---
+
+### LiveNote — Document de type LIVE_NOTE
+
+Les notes de session sont des **Documents** de Content Library avec `documentTypeId = LIVE_NOTE`.
+La session référence leurs IDs dans `liveNoteIds`.
+
+Créer une LiveNote = deux opérations applicatives :
+1. `Document.Create()` dans Content Library (type LIVE_NOTE, folder = "Notes" de la campagne)
+2. `Session.AddLiveNote(documentId)`
+
+Les métadonnées spécifiques aux LiveNotes sont stockées dans `Document.properties` :
+
+| Propriété | Type | Description |
+|---|---|---|
+| `characterId` | `string?` | Personnage associé — pour les notes PLAYER_PRIVATE joueur |
+| `guestAccessId` | `string?` | Auteur invité sans compte — quand `AuditInfo.createdById` est null |
+
+> Ce modèle permet à une LiveNote de référencer d'autres documents via `linkedDocuments`
+> (lier un PNJ, une scène, un lieu à la note) sans aucune modélisation supplémentaire.
+> La règle RGPD reste valide : les notes PLAYER_PRIVATE restent attachées au `characterId`
+> après suppression de compte.
+
+---
+
+## Vue session — philosophie
+
+La vue session est un **tableau de bord configurable**. Le MJ choisit quels dossiers il met en avant selon ses besoins : certains veulent leurs PNJ, d'autres leurs lieux, d'autres les deux. Le système ne présuppose aucune organisation.
+
+Ce modèle est cohérent avec les principes de Content Library :
+- Les dossiers sont libres et renommables.
+- Les types de documents sont optionnels.
+- La structure d'une campagne appartient au MJ, pas à l'application.
+
+La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mémorise les préférences du MJ sans imposer de structure.
+
+---
+
+## Invariants métier
+
+1. La machine d'états est unidirectionnelle : LIVE → CLOSED → ARCHIVED.
+2. Une session ARCHIVED refuse toute modification.
+3. `AddLiveNote` et `UpdateSummary` sont autorisés en état CLOSED.
+4. Un Document LIVE_NOTE avec `visibility = PLAYER_PRIVATE` n'est lisible que par son auteur (`createdById` ou `properties.guestAccessId`).
+5. Il existe exactement un `SessionViewConfig` par campagne.
+6. Un `SessionViewFolder` référence un dossier qui appartient à la même campagne.
+
+---
+
+## Règles métier
+
+1. Démarrer une session (`Start()`) est réservé aux membres `OWNER` ou `GM`.
+2. Un joueur accède à la session via son `CampaignMembership` ou un `GuestAccess` actif — la validation est faite en couche application.
+3. Un joueur ne voit que les documents `visibility = PUBLIC` et ses propres Documents LIVE_NOTE avec `visibility = PLAYER_PRIVATE`.
+4. Épingler un document (`PinDocument`) n'en change pas la visibilité — c'est une organisation locale à la session.
+5. Partager un document avec les joueurs (`Document.Share()`) est une opération Content Library déclenchée depuis la couche application — Session Conduct ne possède pas cette opération.
+6. À la clôture de session (`Close()`), la couche application notifie Campaign Management pour déclencher le countdown d'expiration des `GuestAccess SESSION`.
+7. La création à la volée (UC-07) crée un Document dans Content Library via la couche application, puis le résultat est épinglé dans la session.
+
+---
+
+## Événements domaine
+
+| Événement | Producteur | Consommateurs |
+|---|---|---|
+| `SessionStarted` | `Session.Start()` | Application (notification membres) |
+| `SessionClosed` | `Session.Close()` | Campaign Management (expiration GuestAccess SESSION) |
+| `SessionArchived` | `Session.Archive()` | — |
+
+---
+
+## Intégration avec les autres contextes
+
+### Ce que Session Conduct reçoit
+
+| Événement / Requête | Source | Action |
+|---|---|---|
+| `CampaignCreated` | Campaign Management | Créer le `SessionViewConfig` avec les dossiers système |
+| `GuestAccessCreated` | Campaign Management | Autoriser l'entrée du joueur invité |
+| `MemberRemoved` | Campaign Management | Invalider l'accès si session en cours |
+| `DocumentDeleted` | Content Library | Retirer de `pinnedDocumentIds` si présent |
+
+### Ce que Session Conduct publie
+
+- `SessionClosed` → Campaign Management
+
+### Utilisation par les autres contextes
+
+Session Conduct ne publie pas d'identifiants consommés par d'autres contextes. Il est le contexte terminal de la chaîne.
+
+---
+
+## Diagrammes
+
+→ [Classes](diagrams/classes/session-conduct.md)
+→ [MCD](diagrams/mcd/session-conduct.md)
+→ [MLD](diagrams/mld/session-conduct.md)
+→ [Flux](diagrams/flows/session-conduct.md)

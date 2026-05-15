@@ -117,7 +117,9 @@ flowchart LR
     UC13 -.->|"extend"| UC02
     UC07 -.->|"extend"| UC06
     UC08 -.->|"extend"| UC06
+    UC09 -.->|"extend"| UC06
     UC14 -.->|"extend"| UC06
+    UC14 -.->|"include"| UC05
     UC11 -.->|"include"| UC10
     UC12 -.->|"include"| UC10
 ```
@@ -173,6 +175,7 @@ flowchart LR
     UC07 -.->|"extend"| UC06
     UC08 -.->|"extend"| UC06
     UC14 -.->|"extend"| UC06
+    UC14 -.->|"include"| UC05
 ```
 
 ---
@@ -223,7 +226,7 @@ flowchart LR
     JInvite -- herite --> Joueur
 
     subgraph CAMP["Campagne continue"]
-        C1(["Creer une campagne"])
+        C1(["Creer une campagne\nou one-shot"])
         C2(["Preparer le contenu\nscenarios · notes · dossiers"])
         C3(["Inviter des membres\npermanents"])
     end
@@ -256,6 +259,7 @@ flowchart LR
     O2 --> S1
     S3 --> UC09
     C3 --> UC12
+    Joueur --> UC09
     Joueur --> UC12
     JInvite --> UC09
 ```

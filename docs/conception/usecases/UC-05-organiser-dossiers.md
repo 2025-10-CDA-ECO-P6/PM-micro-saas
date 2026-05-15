@@ -20,9 +20,10 @@ Chaque campagne a une organisation qui lui est propre. Un MJ de D&D va vouloir d
 "Lieux du crime". Imposer une structure fixe bride la créativité et force le MJ à contourner
 l'outil. Le système de dossiers donne la structure à l'utilisateur, pas à l'application.
 
-Des **dossiers système** sont créés automatiquement à la création de la campagne pour les types
-de contenu qui ont une logique domaine propre (PNJ, Personnages joueurs, Scénarios, Notes).
-Ils ne peuvent pas être supprimés mais peuvent être renommés.
+Des **dossiers système** sont créés automatiquement à la création de la campagne pour donner
+un point de départ neutre (Personnages, Joueurs, Scénarios, Notes).
+Ils peuvent être renommés ou supprimés comme n'importe quel autre dossier — `isSystem = true` indique
+l'origine automatique, pas une contrainte de non-suppression.
 
 ### Deux niveaux de structure documentaire
 
@@ -48,14 +49,19 @@ libre dans n'importe quel dossier, y compris les dossiers système :
 
 | Type | Propriétés principales |
 |---|---|
-| PNJ | Nom, Rôle, Affiliation, Description publique, Secret MJ |
-| Personnage joueur | Nom, Joueur, Description |
-| Lieu | Nom, Ambiance, Connexions |
-| Objet | Nom, Description, Effet |
-| Faction | Nom, Objectif, Membres clés |
+| Scénario | Résumé, contexte, statut de préparation |
+| Scène | Objectif, ordre via les liens, informations de préparation |
+| PNJ | Nom, rôle, affiliation, description publique, secret MJ |
+| Personnage joueur | Nom, joueur, description |
+| Lieu | Nom, ambiance, connexions |
+| Note | Contenu libre, rappel, idée |
+| note de session | Métadonnées de session, auteur ou personnage associé |
+| Révélation | Contenu préparé pour partage explicite aux joueurs |
 
-Ces types sont un point de départ. Le MJ qui ne les utilise pas n'en voit pas la complexité.
-Celui qui les utilise bénéficie d'un affichage condensé en vue session et d'un filtrage par propriété.
+Ces types sont un point de départ. Un objet, une faction, une aide de jeu ou tout autre contenu
+peut rester un document libre, partir d'un template, ou devenir un type personnalisé dans une
+évolution ultérieure. Le MJ qui n'utilise pas les types n'en voit pas la complexité. Celui qui
+les utilise bénéficie d'un affichage condensé en vue session et d'un filtrage par propriété.
 
 ### Vision long terme — Relations et règles entre types
 
@@ -125,8 +131,9 @@ placé dans ce dossier et initialisé avec son template par défaut s'il en a un
 
 ### A4 — Document sans dossier
 
-Un document peut ne pas être associé à un dossier ("non classé"). Il reste accessible
-via la recherche et la navigation globale.
+Un document "non classé" est automatiquement placé dans le dossier virtuel "Non classés" de la campagne.
+Ce dossier est invisible dans la navigation MJ mais les documents qu'il contient sont accessibles
+via la recherche et une vue "Non classés" dédiée. dossier associé n'est jamais null.
 
 ### A5 — Dossier sans template
 
@@ -138,10 +145,10 @@ avec un contenu vide.
 À la création d'une campagne, les dossiers système suivants sont créés automatiquement :
 - **Personnages** — type par défaut "PNJ", renommable (ex. : "Suspects", "Contacts", "Factions")
 - **Joueurs** — type par défaut "Personnage joueur", renommable
-- **Scénarios** — sans type par défaut, structure via UC-03
+- **Scénarios** — type par défaut "Scénario", structure narrative via UC-03
 - **Notes** — sans type par défaut, document libre
 
-Ces dossiers sont non supprimables mais renommables. Les noms proposés sont neutres et
+Ces dossiers sont renommables et supprimables. Les noms proposés sont neutres et
 système-agnostiques — "Personnages" couvre PNJ, suspects, contacts, factions selon le système.
 Le MJ de Blades in the Dark peut renommer "Personnages" en "Factions" et changer le type par défaut.
 
@@ -162,8 +169,9 @@ La suppression est impossible si aucune option n'est choisie.
 
 ### E3 — Suppression d'un dossier système
 
-Le système refuse la suppression des dossiers système (PNJ, Personnages joueurs, Scénarios, Notes)
-et indique à l'utilisateur qu'ils peuvent uniquement être renommés.
+Les dossiers système peuvent être supprimés comme n'importe quel autre dossier. Si le dossier
+contient des documents, le système applique la même logique qu'en E2 (déplacer ou laisser non classé).
+`isSystem = true` indique l'origine automatique du dossier, pas une contrainte de non-suppression.
 
 ### E4 — Template supprimé après association
 
@@ -191,26 +199,26 @@ sans erreur. Les documents déjà créés conservent leur contenu (ils sont des 
 
 ### Document (mise à jour)
 
-- Dossier associé (`folderId`, optionnel)
+- Dossier associé (dossier associé, non-nullable — pointe vers le dossier virtuel "Non classés" si aucun dossier explicite)
 
 ## Règles métier
 
 - Un dossier appartient à une campagne.
 - Un dossier peut avoir zéro ou un template par défaut.
-- Les dossiers système (`isSystem = true`) ne peuvent pas être supprimés.
+- Les dossiers système peuvent être supprimés. `isSystem = true` est informatif.
 - Tous les dossiers (y compris système) peuvent être renommés.
-- Un document peut appartenir à zéro ou un dossier.
+- Un document appartient toujours à exactement un dossier (dossier associé non-nullable). Si son dossier est supprimé, il est automatiquement déplacé vers le dossier virtuel "Non classés".
 - Changer le template par défaut d'un dossier n'affecte pas les documents existants.
 - La suppression d'un dossier nécessite de traiter les documents qu'il contient.
-- L'ordre des dossiers est persisté et géré par un service domaine (`FolderOrderService`).
+- L'ordre des dossiers est persisté et géré par un service (mécanisme de classement des dossiers).
 
 ## Critères d'acceptation
 
 - Le MJ peut créer un dossier avec un nom.
 - Le MJ peut associer un template par défaut à un dossier.
 - Le MJ peut renommer n'importe quel dossier, y compris les dossiers système.
-- Le MJ ne peut pas supprimer un dossier système.
-- Le MJ peut supprimer un dossier non système en traitant son contenu.
+- Le MJ peut supprimer un dossier système comme n'importe quel autre dossier.
+- Le MJ peut supprimer un dossier en traitant son contenu (déplacer ou laisser non classé).
 - Le MJ peut déplacer un document d'un dossier à un autre.
 - À la création d'une campagne, les 4 dossiers système existent avec leurs templates.
 - Un document créé depuis un dossier avec template est initialisé avec ce template.

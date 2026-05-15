@@ -16,9 +16,11 @@ Permettre au MJ de retrouver rapidement une information dans sa campagne.
 
 Même avec une bonne organisation, certaines informations peuvent être difficiles à retrouver pendant une session. La recherche est une fonctionnalité importante pour éviter les interruptions et maintenir le rythme de jeu.
 
+**Persona central : Nadia** (MJ casual, sessions espacées). Après plusieurs semaines d'absence, elle ne se souvient plus où est rangée une information. La recherche est son point d'entrée principal dans le contenu. Émilie en bénéficie aussi pendant la session (retrouver un PNJ en 2 secondes), Thomas moins (son organisation lui suffit).
+
 ## Besoin utilisateur
 
-Le MJ veut trouver rapidement un PNJ, une note, une scène, un personnage ou un élément de campagne.
+Nadia veut retrouver une information après une longue absence sans se souvenir de son emplacement dans les dossiers. Émilie veut retrouver un PNJ ou une note en quelques secondes pendant la session. La recherche couvre les deux cas : retrouvabilité post-absence et accès rapide en session.
 
 ## Déclencheur
 
@@ -32,15 +34,13 @@ Le MJ cherche une information pendant la préparation ou pendant une session.
 ## Scénario nominal
 
 1. Le MJ utilise la barre de recherche.
-2. Il saisit un mot-clé.
-3. Le système affiche les résultats correspondants.
-4. Les résultats sont regroupés par type :
-   - PNJ ;
+2. Il saisit un mot-clé. La recherche MVP porte sur le **titre des documents uniquement** — aucune indexation du contenu des blocs.
+3. Le système affiche les résultats correspondants, filtrés à la campagne active.
+4. Les résultats sont regroupés par type de document :
+   - documents sans type (libres) ;
+   - PNJ, Lieux, Objets, Factions (documents typés) ;
    - scénarios ;
-   - scènes ;
-   - notes ;
-   - personnages ;
-   - objets.
+   - notes de session.
 
 5. Le MJ sélectionne un résultat.
 6. Le système ouvre l'élément correspondant.
@@ -54,9 +54,9 @@ Le système affiche un état vide avec une suggestion de création ou de modific
 
 ### A2 — Résultats nombreux
 
-Le système permet de filtrer par type d'entité.
+Le système permet de filtrer par type de contenu.
 
-### A3 — Recherche par tag
+### A3 — Recherche par tag *(hors MVP — Could Have)*
 
 Le MJ filtre les résultats par tag ou catégorie.
 
@@ -84,9 +84,9 @@ Si la recherche échoue, le système affiche un message d'erreur et propose une 
 ### Résultat de recherche
 
 - Identifiant
-- Type d'entité
+- Type de contenu
 - Titre
-- Extrait
+- Extrait *(post-MVP — non indexé pour la recherche MVP, affiché uniquement pour aider l'identification)*
 - Campagne associée
 - Visibilité
 
