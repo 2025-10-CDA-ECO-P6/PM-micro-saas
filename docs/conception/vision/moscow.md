@@ -9,18 +9,18 @@
 
 ## Vue d'ensemble
 
-| Catégorie | Nb | Use cases |
+| Catégorie | Nb | Éléments |
 |---|---|---|
-| **Must Have** | 9 | UC-01 à UC-09 |
-| **Should Have** | 5 | UC-10 à UC-14 |
-| **Could Have** | 4 | Export, types personnalisés, import, notes joueur |
+| **Must Have** | 10 UC + instrumentation | UC-01 à UC-10 (dont UC-05 base — dossiers libres) + instrumentation de validation du MVP |
+| **Should Have** | 6 | UC-05 riche (dossiers et types élaborés), UC-11 à UC-14, export de campagne |
+| **Could Have** | 3 | Types personnalisés, import, notes joueur |
 | **Won't Have** | — | Voir détail ci-dessous |
 
 ---
 
 ## Must Have — Le produit ne peut pas être validé sans eux
 
-Ces neuf use cases forment le périmètre minimal cohérent : sans l'un d'eux, soit le produit
+Ces dix use cases forment le périmètre minimal cohérent : sans l'un d'eux, soit le produit
 ne peut pas être utilisé, soit l'hypothèse centrale ne peut pas être testée.
 
 ### UC-01 — Mode local sans compte
@@ -67,20 +67,22 @@ Fonctionne en mode local.
 
 ---
 
-### UC-04 — Gérer les notes MJ
+### UC-04 — Gérer les documents de campagne
 
-**Pourquoi Must Have** : les notes sont le filet de sécurité du MJ — préparation légère,
-capture d'urgence en session, consolidation post-session. Un MJ sans possibilité de noter
-n'utilisera pas l'outil. La capture en session doit être quasi-immédiate.
+**Pourquoi Must Have** : les documents sont le filet de sécurité du MJ — préparation légère,
+capture d'urgence en session, consolidation post-session. Un MJ sans possibilité de capturer
+et retrouver ses informations n'utilisera pas l'outil. La capture en session doit être
+quasi-immédiate. UC-04 couvre l'ensemble des documents libres, des entrées rapides et du
+lore, sans restreindre le concept à la prise de notes.
 
-**Critère de sortie** : un MJ crée une note, la retrouve et la modifie.
+**Critère de sortie** : un MJ crée un document, le retrouve et le modifie.
 Fonctionne en mode local.
 
 **Risque si absent** : l'outil ne remplace aucun des supports actuels du MJ.
 
 ---
 
-### UC-05 — Organiser le contenu en dossiers
+### UC-05 base — Organiser le contenu en dossiers (Must Have)
 
 **Pourquoi Must Have** : colonne vertébrale du pilier 1 (document générique).
 Sans dossiers libres, tout le contenu est à plat et l'agnosticisme système n'existe pas.
@@ -89,12 +91,8 @@ La structure par défaut doit être neutre — des labels comme "Personnages", "
 "Sessions" plutôt que "PNJ", "Monstres", "Sorts". Antoine (Blades in the Dark) et Émilie
 (systèmes narratifs) doivent pouvoir renommer ou ignorer la structure.
 
-Les types de document optionnels (PNJ, Lieu, Objet…) préparent l'architecture pour les
-relations entre documents et, à terme, l'émulation partielle de systèmes de jeu — sans que
-cela soit visible ou contraignant pour l'utilisateur de base.
-
 **Critère de sortie** : un MJ crée des dossiers nommés librement. La structure par défaut
-est système-agnostique. Les types de document built-in sont proposés sans être imposés.
+est système-agnostique.
 
 **Risque si absent** : le pilier 1 n'existe pas.
 
@@ -163,20 +161,73 @@ principale d'utiliser UC-08.
 
 ---
 
+### UC-10 — Créer un compte et synchroniser dans le cloud
+
+**Pourquoi Must Have** : UC-08 (partage joueurs) et UC-09 (accès joueur) exigent un compte
+et une synchronisation cloud pour fonctionner. Sans UC-10, le second pilier produit (partage
+et collaboration joueur) est inatteignable, alors qu'il est Must Have. Inversement, une
+capacité Must Have (partage) ne peut pas dépendre d'une capacité Should Have — cette incohérence
+de priorisation rendrait le périmètre MVP non fiable.
+
+Le MVP est livré en un seul bloc (pas de découpage en deux vagues produit) : le cloud n'est
+pas différable. Le compte est l'upgrade naturel déclenché par l'intention de partager ou la
+peur de perdre ses données locales. La migration des données locales vers le cloud doit être
+automatique et transparente.
+
+**Critère de sortie** : un MJ en mode local crée un compte, ses données migrent vers le cloud,
+le partage joueurs s'active.
+
+Le raisonnement d'origine et les alternatives écartées (MVP en deux vagues, statu quo du
+reclassement) sont conservés à titre de trace historique (ADR-006).
+
+---
+
+### Instrumentation de validation du MVP
+
+**Pourquoi Must Have** : le MVP unique teste simultanément trois piliers (préparation, vue session, partage). Sans mesure granulaire par pilier, un échec d'adoption serait indiagnosticable — impossible de savoir quel pilier n'a pas résonné avec les utilisateurs. L'instrumentation doit permettre une analyse rétrospective claire de chaque pilier.
+
+L'application permet de constater, de façon anonyme et sans capter le contenu narratif :
+
+1. **Activation préparation** : le MJ a créé une campagne ET y a créé ses premiers documents. Ce constat mesure si le pilier 1 (organisation et préparation) a engagé l'utilisateur au-delà de la création d'un conteneur.
+
+2. **Activation vue session** : une session a été ouverte ET réellement utilisée pendant une partie — interaction avec du contenu, création de notes, navigation dans les panneaux. Ce constat mesure si le pilier 2 (pilotage en direct) crée une valeur immédiate.
+
+3. **Activation partage** : un document a été partagé aux joueurs ET au moins un joueur l'a consulté. Ce constat mesure si le pilier 3 (collaboration joueur) fonctionne comme canal d'engagement collectif.
+
+**Mesure anonyme dès le mode local** : la capture fonctionne sans compte utilisateur, ne porte aucun contenu narratif ni donnée nominative (aucune lecture de titre, notes ou propriété structurée), et respecte les obligations de protection des données personnelles — elle se limite à l'existence d'une action et à sa date.
+
+**Capture de contact non bloquante en mode local** : l'application peut proposer au MJ en mode local de laisser une adresse de contact (pour un suivi de validation produit ultérieur). Cette proposition est toujours refusable sans conséquence — elle ne bloque ni l'accès ni le fonctionnement.
+
+Le raisonnement d'origine et les alternatives écartées de cet arbitrage sont conservés à titre de trace historique (ADR-006).
+
+---
+
 ## Should Have — MVP significativement plus faible sans eux
 
 Ces use cases apportent une valeur forte mais le concept central peut être validé sans eux
 lors d'une première version fermée ou d'un test utilisateur.
 
-### UC-10 — Créer un compte et synchroniser dans le cloud
+### UC-05 riche — Dossiers et types de document élaborés (Should Have)
 
-**Pourquoi Should Have** : le compte n'est plus le prérequis universel — UC-01 couvre
-le mode local. Il devient l'upgrade naturel déclenché par l'intention de partager (UC-08)
-ou la peur de perdre ses données locales. La migration des données locales vers le cloud
-doit être automatique et transparente à la création du compte.
+**Pourquoi Should Have** : la base UC-05 (dossiers libres, structure agnostique) est Must Have.
+La couche « riche » — types de document built-in (PNJ, Lieu, Objet…) et leur configuration
+optionnelle — apporte une valeur forte mais le pilier 1 peut être validé avec des dossiers
+libres sans types élaborés.
 
-**Critère de sortie** : un MJ en mode local crée un compte, ses données migrent vers le cloud,
-le partage joueurs s'active.
+Contrepoids du reclassement de UC-10 en Must Have : pour ne pas gonfler le périmètre Must
+au-delà du minimum cohérent, la couche riche est différée. Le pilier 1 se valide avec les dossiers
+libres ; les types de document enrichissent l'expérience mais ne la conditionnent pas.
+
+Les types de document optionnels préparent l'architecture pour les relations entre documents
+et, à terme, l'émulation partielle de systèmes de jeu — sans que cela soit visible ou
+contraignant pour l'utilisateur de base. Antoine (Blades in the Dark) et Émilie (systèmes
+narratifs) bénéficient de cette couche, mais peuvent travailler sans elle.
+
+**Critère de sortie** : les types de document built-in sont proposés sans être imposés.
+Le MJ peut associer un type (PNJ, Lieu, Objet…) à un dossier ou un document pour enrichir
+ses entrées sans contraindre la structure.
+
+**Risque si absent** : le pilier 1 reste fonctionnel mais moins différenciant.
 
 ---
 
@@ -213,6 +264,16 @@ cross-campagnes. Sans UC-13, le produit ignore tout un profil de MJ actif.
 **Critère de sortie** : le MJ marque un scénario comme réutilisable, crée une instance
 pour un nouveau groupe, l'instance est indépendante du source.
 
+**Arbitrage du 2026-06-10 — hors première livraison** : UC-13 est explicitement hors de la première
+livraison. La validation du cœur du produit (préparation, vue session, partage) passe par le contexte
+campagne, qui porte les personas principaux et l'hypothèse de monétisation ; le one-shot complet dépend
+du catalogue de scénarios réutilisables, une capacité entière qui ne conditionne pas cette validation.
+Sonia (one-shots exclusivement, 15 scénarios en catalogue) reste structurellement non servie par la
+première livraison — c'est précisément ce que surveille la condition de retour : si les entretiens ou
+l'usage révèlent que le profil one-shot est une part significative des utilisateurs réels ou un levier
+d'adoption, UC-13 est réexaminé en priorité de la vague suivante. Trace complète dans la vision produit,
+section « Traces d'arbitrage vision ↔ périmètre MVP ».
+
 ---
 
 ### UC-14 — Rechercher et filtrer l'information
@@ -227,23 +288,23 @@ depuis la vue session en moins de cinq secondes.
 
 ---
 
+### Export de campagne
+
+**Pourquoi Should Have** (rehaussé de Could Have par arbitrage du 2026-06-10) :
+l'export matérialise le différenciant n°1 de la vision — la possession des données, qui doit être
+actionnable et non simplement affirmée. Sans export accessible, la promesse de possession des données
+reste une déclaration sans preuve. L'export répond aussi à la douleur de confiance de Thomas (crainte
+de l'enfermement propriétaire) et de Rémi (réassurance face au numérique), et constitue un filet de
+sécurité critique pour le mode local.
+
+**Critère de sortie** : un MJ exporte l'ensemble de sa campagne — documents, notes, structure — dans un format ouvert, lisible et réutilisable hors de l'application. Disponible en mode local comme avec un compte.
+
+---
+
 ## Could Have — Valeur réelle, non prioritaire pour la validation initiale
 
 Ces fonctionnalités répondent à des besoins identifiés mais ne conditionnent pas la validation
 du concept. Elles peuvent arriver dans une deuxième vague sans compromettre l'adoption initiale.
-
-### Export de campagne
-
-Le MJ exporte l'ensemble de sa campagne (documents, notes, structure) en Markdown ou PDF.
-
-**Valeur** : portabilité des données pour Thomas (qui veut pouvoir récupérer son travail),
-réassurance sur la possession des données pour Rémi, filet de sécurité pour le mode local.
-Cohérent avec le positionnement "vos données vous appartiennent".
-
-**Déclencheur de montée** : si les entretiens révèlent une peur forte de l'enfermement
-propriétaire (vendor lock-in).
-
----
 
 ### Types de document personnalisés
 
@@ -369,19 +430,21 @@ Vision long terme uniquement.
 UC-01 (Mode local)
   └── UC-02 (Campagne)
         ├── UC-03 (Scénario)
-        ├── UC-04 (Notes)
-        ├── UC-05 (Dossiers + types)
+        ├── UC-04 (Documents)
+        ├── UC-05 base (Dossiers libres — Must)
+        │     └── UC-05 riche (Types élaborés — Should)
         └── UC-06 (Vue session)
               ├── UC-07 (Création à la volée)
               └── UC-08 (Partage) ──── nécessite UC-10 (compte)
                     └── UC-09 (Accès joueur)
 
-UC-10 (Compte)
-  ├── UC-11 (Membres)
+UC-10 (Compte — Must)  ← Must car UC-08/09 (Must) en dépendent
+  ├── UC-11 (Membres — Should)
   │     └── UC-09 (liens de session)
-  ├── UC-12 (Rejoindre)
-  └── UC-13 (One-shot) ── dépend aussi de UC-02, UC-03
+  ├── UC-12 (Rejoindre — Should)
+  └── UC-13 (One-shot — Should) ── dépend aussi de UC-02, UC-03
 ```
 
-**Point clé** : UC-01 est le nouveau point d'entrée. L'inscription (UC-10) est le premier
-upgrade naturel, déclenché par l'intention de partager — pas par le démarrage.
+**Point clé** : UC-01 est le nouveau point d'entrée. L'inscription (UC-10) est Must Have
+car elle conditionne le partage joueurs (UC-08) — déclenchée par l'intention de partager,
+pas par le démarrage. UC-11 à UC-14 restent Should Have.

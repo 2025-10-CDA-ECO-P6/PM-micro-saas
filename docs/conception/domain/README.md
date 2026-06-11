@@ -51,6 +51,16 @@ Avant d'ajouter un concept dans le Core, toutes les réponses doivent être **ou
 
 ---
 
+## Sens de dépendance besoin ↔ décision — pureté du domaine
+
+Les invariants de domaine et la prose des contextes sont la couche la plus stable du modèle. Deux garde-fous la protègent :
+
+1. **Aucun nom de technologie ou d'infrastructure** n'y figure directement — API navigateur, format de stockage, protocole, bibliothèque. Exemple interdit : citer le nom d'une interface logicielle dans la table des événements de domaine ; correct : « la suppression de compte déclenche la révocation des sessions actives ». Pour plus de détail et le test d'autoportance, voir la section « Sens de dépendance besoin ↔ décision » dans le [README parent](../README.md#sens-de-dépendance-besoin--décision).
+
+2. **Aucun renvoi à une ADR comme source d'autorité d'une règle de domaine** — un ADR peut motiver un invariant, jamais le définir. Si masquer le renvoi ADR rend l'invariant vide, l'inversion est consommée : la substance doit vivre dans le domaine, pas dans la décision d'architecture.
+
+---
+
 ## Diagrammes
 
 Les diagrammes sont dans le dossier [diagrams/](diagrams/) et utilisent la syntaxe Mermaid.

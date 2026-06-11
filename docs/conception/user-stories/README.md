@@ -25,12 +25,12 @@ Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmè
 | UC-02 | Créer un espace de jeu (campagne) | Must Have | [US-UC-02](US-UC-02-creer-espace-jeu.md) | [UJ-UC-02](../user-journeys/UJ-UC-02-creer-espace-jeu.md) |
 | UC-03 | Structurer un scénario | Must Have | [US-UC-03](US-UC-03-structurer-scenario.md) | [UJ-UC-03](../user-journeys/UJ-UC-03-structurer-scenario.md) |
 | UC-04 | Gérer les documents de campagne | Must Have | [US-UC-04](US-UC-04-gerer-documents-campagne.md) | [UJ-UC-04](../user-journeys/UJ-UC-04-gerer-documents-campagne.md) |
-| UC-05 | Organiser le contenu en dossiers | Must Have | [US-UC-05](US-UC-05-organiser-contenu-dossiers.md) | [UJ-UC-05](../user-journeys/UJ-UC-05-organiser-contenu-dossiers.md) |
+| UC-05 | Organiser le contenu en dossiers *(base — dossiers libres)* | Must Have | [US-UC-05](US-UC-05-organiser-contenu-dossiers.md) | [UJ-UC-05](../user-journeys/UJ-UC-05-organiser-contenu-dossiers.md) |
 | UC-06 | Utiliser la vue session | Must Have | [US-UC-06](US-UC-06-vue-session.md) | [UJ-UC-06](../user-journeys/UJ-UC-06-vue-session.md) |
 | UC-07 | Créer un élément à la volée | Must Have | [US-UC-07](US-UC-07-creation-volee-session.md) | [UJ-UC-07](../user-journeys/UJ-UC-07-creation-volee-session.md) |
 | UC-08 | Partager une information | Must Have | [US-UC-08](US-UC-08-partager-information.md) | [UJ-UC-08](../user-journeys/UJ-UC-08-partager-information.md) |
 | UC-09 | Accès session joueur | Must Have | [US-UC-09](US-UC-09-acces-session-joueur.md) | [UJ-UC-09](../user-journeys/UJ-UC-09-acces-session-joueur.md) |
-| UC-10 | Créer un compte cloud | Should Have | [US-UC-10](US-UC-10-compte-cloud.md) | [UJ-UC-10](../user-journeys/UJ-UC-10-compte-cloud.md) |
+| UC-10 | Créer un compte et synchroniser dans le cloud | Must Have | [US-UC-10](US-UC-10-compte-cloud.md) | [UJ-UC-10](../user-journeys/UJ-UC-10-compte-cloud.md) |
 | UC-11 | Gérer les membres d'une campagne | Should Have | [US-UC-11](US-UC-11-gerer-membres-campagne.md) | [UJ-UC-11](../user-journeys/UJ-UC-11-gerer-membres-campagne.md) |
 | UC-12 | Rejoindre une campagne | Should Have | [US-UC-12](US-UC-12-rejoindre-campagne.md) | [UJ-UC-12](../user-journeys/UJ-UC-12-rejoindre-campagne.md) |
 | UC-13 | Scénario réutilisable | Should Have | [US-UC-13](US-UC-13-scenario-reutilisable.md) | [UJ-UC-13](../user-journeys/UJ-UC-13-scenario-reutilisable.md) |
@@ -40,9 +40,9 @@ Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmè
 
 ## Vue MoSCoW globale
 
-**Must Have (UC-01 à UC-09)** : toutes les fonctionnalités nécessaires pour qu'un MJ seul puisse utiliser l'application localement, structurer une campagne, animer une session et partager des informations avec ses joueurs.
+**Must Have (UC-01 à UC-10)** : toutes les fonctionnalités nécessaires pour qu'un MJ seul puisse utiliser l'application localement, structurer une campagne, animer une session et partager des informations avec ses joueurs. UC-10 (compte cloud) est Must Have car le partage joueurs (UC-08/09) l'exige et le MVP est livré en un seul bloc — raisonnement de priorisation détaillé dans la section MoSCoW (`../vision/moscow.md`). UC-05 base (dossiers libres) est Must Have ; la couche riche (types élaborés) est Should Have.
 
-**Should Have (UC-10 à UC-14)** : fonctionnalités activant le cloud, la gestion de groupe, la réutilisabilité et la recherche.
+**Should Have (UC-05 riche + UC-11 à UC-14)** : couche riche des dossiers (types de document élaborés), gestion de groupe, réutilisabilité des scénarios et recherche.
 
 **Could Have / Won't Have** : référencés dans `../usecases/UC-HORS-MVP.md` et dans les sections "Stories exclues" de chaque epic.
 
@@ -62,10 +62,10 @@ flowchart LR
         UC07["UC-07\nCréation volée"]
         UC08["UC-08\nPartage info"]
         UC09["UC-09\nAccès joueur"]
+        UC10["UC-10\nCompte cloud"]
     end
 
     subgraph Should["Should Have"]
-        UC10["UC-10\nCompte cloud"]
         UC11["UC-11\nMembres"]
         UC12["UC-12\nRejoindre"]
         UC13["UC-13\nScénario réutilisable"]
@@ -94,8 +94,8 @@ flowchart LR
 
 | Décision | Impact |
 |---|---|
-| Mode local = point d'entrée (pas d'inscription obligatoire) | UC-01 Must Have, UC-10 Should Have |
-| Migration locale vers cloud silencieuse | US-01-05, US-10-01 |
+| Mode local = point d'entrée (pas d'inscription obligatoire) | UC-01 Must Have, UC-10 Must Have (le partage joueurs exige un compte — voir MoSCoW) |
+| Migration locale vers cloud avec gate de reconnaissance | US-01-05, US-10-01 |
 | Cap 3 campagnes en mode local | US-01-04 |
 | Archivage uniquement manuel (pas d'auto-archivage) | UC-02, UC-13 A3 |
 | Tout est Document (bibliothèque de contenu) | Architecture transversale |
@@ -110,6 +110,14 @@ flowchart LR
 | Recherche titre + type uniquement (full-text post-MVP) | US-14-XX |
 | Catalogue scénarios au niveau compte (cross-campagne) | US-13-XX, extension domaine ScenarioLibrary |
 | SessionViewConfig : auto-save, mode édition sans session active | US-06-02 |
+
+---
+
+## Statut des scénarios Gherkin
+
+Les scénarios Gherkin répartis dans les user stories constituent une **couche de conception pérenne** (arbitrage T-07, audit conception pure 2026-06). Ils expriment les critères d'acceptation produit en langage métier (Given/When/Then), indépendant de tout code applicatif.
+
+**Règle anti double-maintenance** : les scénarios vivent dans les fichiers user stories ; ils restent la source unique. Si un outillage de test les consomme à l'avenir, cet outillage se synchronise sur les US, jamais l'inverse. Un scénario modifié côté test sans répercussion dans l'US constitue une dérive à corriger immédiatement.
 
 ---
 

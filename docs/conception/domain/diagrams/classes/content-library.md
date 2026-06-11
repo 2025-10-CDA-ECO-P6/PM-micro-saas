@@ -3,66 +3,69 @@
 ```mermaid
 classDiagram
     class Document {
-        +DocumentId id
-        +CampaignId campaignId
-        +FolderId folderId
-        +string title
-        +DocumentTypeId documentTypeId
-        +JSON properties
-        +List~DocumentBlock~ blocks
-        +List~DocumentLink~ linkedDocuments
+        +identifiant id
+        +identifiant campaignId
+        +identifiant folderId
+        +texte title
+        +identifiant documentTypeId
+        +structure properties
+        +liste de DocumentBlock blocks
+        +liste de DocumentLink linkedDocuments
         +Visibility visibility
-        +List~Tag~ tags
+        +liste de Tag tags
         +Slug slug
-        +bool isReusable
-        +DocumentId sourceDocumentId
+        +booléen isReusable
+        +identifiant sourceDocumentId
+        +identifiant characterId
+        +identifiant guestAccessId
         +AuditInfo auditInfo
         +SoftDelete softDelete
-        +Create(campaignId, folderId, title, typeId)$ Document
-        +UpdateContent(blocks) void
-        +LinkDocument(targetId, order) DocumentLinked
-        +UnlinkDocument(targetId) DocumentUnlinked
-        +Share() DocumentVisibilityChanged
-        +Unshare() DocumentVisibilityChanged
-        +Delete() DocumentDeleted
-        +Instantiate(campaignId, folderId) DocumentInstantiated
+        +Create(campaignId, folderId, title, typeId)$
+        +UpdateContent(blocks)
+        +LinkDocument(targetId, order)
+        +UnlinkDocument(targetId)
+        +Share()
+        +Unshare()
+        +Delete()
+        +Instantiate(campaignId, folderId)
     }
 
     class DocumentBlock {
-        +DocumentBlockId id
-        +int order
+        +identifiant id
+        +entier order
         +BlockType type
-        +JSON content
-        +bool isLocked
+        +structure content
+        +booléen isLocked
     }
 
     class DocumentLink {
-        +DocumentId targetDocumentId
-        +int order
+        +identifiant targetDocumentId
+        +entier order
     }
 
     class Folder {
-        +FolderId id
-        +CampaignId campaignId
-        +FolderId parentFolderId
-        +string name
-        +bool isSystem
-        +bool isVirtual
-        +DocumentTypeId defaultDocumentTypeId
-        +DocumentId defaultTemplateDocumentId
+        +identifiant id
+        +identifiant campaignId
+        +identifiant parentFolderId
+        +texte name
+        +booléen isSystem
+        +booléen isVirtual
+        +identifiant defaultDocumentTypeId
+        +identifiant defaultTemplateDocumentId
+        +entier order
         +AuditInfo auditInfo
-        +Create(campaignId, name, parentId?)$ Folder
-        +Rename(name) void
-        +Delete() FolderDeleted
+        +Create(campaignId, name, parentId?)$
+        +Rename(name)
+        +Delete()
     }
 
     class DocumentType {
-        +DocumentTypeId id
-        +string slug
-        +string name
-        +JSON propertiesSchema
-        +bool isSystem
-        +CampaignId campaignId
+        +identifiant id
+        +texte slug
+        +texte name
+        +structure propertiesSchema
+        +booléen isSystem
+        +identifiant campaignId
     }
 
     class BlockType {
@@ -74,48 +77,48 @@ classDiagram
     }
 
     class DocumentCreated {
-        +DocumentId documentId
-        +CampaignId campaignId
-        +DateTime occurredAt
+        +identifiant documentId
+        +identifiant campaignId
+        +horodatage occurredAt
     }
 
     class DocumentVisibilityChanged {
-        +DocumentId documentId
+        +identifiant documentId
         +Visibility previousVisibility
         +Visibility newVisibility
-        +DateTime occurredAt
+        +horodatage occurredAt
     }
 
     class DocumentDeleted {
-        +DocumentId documentId
-        +CampaignId campaignId
-        +DateTime occurredAt
+        +identifiant documentId
+        +identifiant campaignId
+        +horodatage occurredAt
     }
 
     class DocumentInstantiated {
-        +DocumentId sourceDocumentId
-        +DocumentId newDocumentId
-        +CampaignId campaignId
-        +DateTime occurredAt
+        +identifiant sourceDocumentId
+        +identifiant newDocumentId
+        +identifiant campaignId
+        +horodatage occurredAt
     }
 
     class DocumentLinked {
-        +DocumentId sourceDocumentId
-        +DocumentId targetDocumentId
-        +int order
-        +DateTime occurredAt
+        +identifiant sourceDocumentId
+        +identifiant targetDocumentId
+        +entier order
+        +horodatage occurredAt
     }
 
     class DocumentUnlinked {
-        +DocumentId sourceDocumentId
-        +DocumentId targetDocumentId
-        +DateTime occurredAt
+        +identifiant sourceDocumentId
+        +identifiant targetDocumentId
+        +horodatage occurredAt
     }
 
     class FolderDeleted {
-        +FolderId folderId
-        +CampaignId campaignId
-        +DateTime occurredAt
+        +identifiant folderId
+        +identifiant campaignId
+        +horodatage occurredAt
     }
 
     Document "1" *-- "0..*" DocumentBlock : blocks

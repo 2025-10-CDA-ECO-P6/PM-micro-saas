@@ -44,7 +44,7 @@ journey
       Décider de rester en mode local: 4: Thomas
     section Conversion
       Créer un compte: 4: Nadia
-      Migration silencieuse: 5: Nadia
+      Gate de reconnaissance et migration: 5: Nadia
       Accéder au partage joueurs: 5: Nadia
       Quitter sans créer de compte: 3: Rémi
 ```
@@ -64,7 +64,8 @@ flowchart TD
     I --> J[Tente de partager\nune info avec les joueurs]
     J --> K[Bouton visible\nmais désactivé — CTA compte]
     K --> L{Décision}
-    L -->|Crée un compte| M[Migration silencieuse\nContinue à travailler]
+    L -->|Crée un compte| M[Gate de reconnaissance\n+ migration confirmée\nHistorique de session retrouvé\nContinue à travailler]
+    M --> O[Invite joueurs\npartage et sessions futures\nUC-08, UC-09, UC-11]
     L -->|Continue sans compte| N[Reste en mode local]
 ```
 
@@ -81,7 +82,7 @@ flowchart TD
 | Ajouter du contenu | Nadia, Thomas | Navigation confuse, actions introuvables | Actions essentielles accessibles sans formation |
 | Retour après fermeture | Nadia | Crainte de perte de données | Atterrit directement sur la dernière campagne ouverte |
 | Tenter de partager | Nadia, Rémi | Bouton absent ou message de blocage agressif | Bouton visible mais désactivé, CTA discret et optionnel |
-| Créer un compte + migration | Nadia | Migration longue ou signalée en erreur | Migration silencieuse, confirmation discrète |
+| Créer un compte + migration | Nadia | Migration longue ou signalée en erreur | Gate de reconnaissance pré-import (campagnes détectées avec historique de session, confirmation explicite — ADR-016 §4) ; indicateur de progression pour gros volumes ; après migration, l'historique de session (sessions passées, notes, épingles) est retrouvé intact pour enchaîner vers le partage joueurs |
 
 ---
 
@@ -114,6 +115,6 @@ flowchart TD
 
 ## Liens
 
-- Use case associé : `docs/conception/usecases/UC-06-vue-session.md`
+- Use case associé : `docs/conception/usecases/UC-01-mode-local-sans-compte.md`
 - Vision produit : `docs/conception/vision/vision-produit.md`
 - Conception source : identity-access : `docs/conception/domain/identity-access.md`

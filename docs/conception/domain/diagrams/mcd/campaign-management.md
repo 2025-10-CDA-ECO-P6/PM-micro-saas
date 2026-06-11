@@ -3,55 +3,55 @@
 ```mermaid
 erDiagram
     CAMPAIGN {
-        uuid id PK
-        uuid owner_id FK "ref users.id"
-        string name
-        string slug "unique par owner"
-        string type "CAMPAIGN | ONE_SHOT"
-        string status "ACTIVE | ARCHIVED | FROZEN"
-        datetime created_at
-        datetime updated_at
+        identifiant id PK
+        identifiant owner_id FK "ref users.id"
+        texte name
+        texte slug "unique par owner"
+        texte type "CAMPAIGN | ONE_SHOT"
+        texte status "ACTIVE | ARCHIVED | FROZEN"
+        horodatage created_at
+        horodatage updated_at
     }
 
     CAMPAIGN_MEMBERSHIP {
-        uuid campaign_id PK,FK
-        uuid user_id PK,FK "ref users.id"
-        string role "OWNER | GM | PLAYER"
-        string status "PENDING | ACTIVE | REMOVED"
-        datetime joined_at
+        identifiant campaign_id PK,FK
+        identifiant user_id PK,FK "ref users.id"
+        texte role "OWNER | GM | PLAYER"
+        texte status "PENDING | ACTIVE | REMOVED"
+        horodatage joined_at
     }
 
     MEMBERSHIP_CHARACTER {
-        uuid campaign_id PK,FK
-        uuid user_id PK,FK
-        uuid character_id PK "ref Content Library"
+        identifiant campaign_id PK,FK
+        identifiant user_id PK,FK
+        identifiant character_id PK "ref Content Library"
     }
 
     INVITATION {
-        uuid id PK
-        uuid campaign_id FK
-        string token "UUID unique"
-        string type "LINK | EMAIL"
-        string scope "CAMPAIGN | SESSION"
-        uuid session_id "nullable, ref Session Conduct"
-        datetime expires_at "nullable"
-        int max_uses "nullable"
-        int used_count
-        string status "ACTIVE | REVOKED | EXPIRED"
-        datetime created_at
+        identifiant id PK
+        identifiant campaign_id FK
+        texte token "UUID unique"
+        texte type "LINK | EMAIL"
+        texte scope "CAMPAIGN | SESSION"
+        identifiant session_id "nullable, ref Session Conduct"
+        horodatage expires_at "nullable"
+        entier max_uses "nullable"
+        entier used_count
+        texte status "ACTIVE | REVOKED | EXPIRED"
+        horodatage created_at
     }
 
     GUEST_ACCESS {
-        uuid id PK
-        uuid campaign_id FK
-        string scope "SESSION | CAMPAIGN"
-        uuid session_id "nullable, ref Session Conduct"
-        string token "UUID unique"
-        string display_name
-        uuid character_id "nullable, ref Content Library"
-        string status "ACTIVE | EXPIRED | REVOKED | CONVERTED"
-        datetime expires_at "nullable"
-        datetime created_at
+        identifiant id PK
+        identifiant campaign_id FK
+        texte scope "SESSION | CAMPAIGN"
+        identifiant session_id "nullable, ref Session Conduct"
+        texte token "UUID unique"
+        texte display_name
+        identifiant character_id "nullable, ref Content Library"
+        texte status "ACTIVE | EXPIRED | REVOKED | CONVERTED"
+        horodatage expires_at "nullable"
+        horodatage created_at
     }
 
     CAMPAIGN ||--o{ CAMPAIGN_MEMBERSHIP : "a des membres"

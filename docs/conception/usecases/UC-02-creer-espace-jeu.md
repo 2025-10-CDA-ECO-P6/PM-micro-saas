@@ -1,4 +1,4 @@
-# UC-02 — Créer un espace de jeu (campagne ou one-shot)
+# UC-02 — Créer un espace de jeu
 
 ## Acteur principal
 
@@ -26,8 +26,7 @@ Un espace de jeu peut prendre deux formes selon le MJ et la situation :
   en un week-end.
 
 Ces deux contextes n'ont pas les mêmes besoins : une campagne se configure, un one-shot
-se lance. L'application doit présenter deux points d'entrée distincts, même si le modèle
-de données sous-jacent est identique.
+se lance. La cible produit complète prévoit deux points d'entrée distincts. En première livraison (MVP), le one-shot se crée via le parcours campagne nominal avec `type = ONE_SHOT` — voir scénario alternatif A1 et arbitrage UC-13.
 
 Le MJ peut créer un espace de jeu en mode local (sans compte) ou depuis un compte cloud.
 Les préconditions sont identiques dans les deux cas.
@@ -55,6 +54,8 @@ Les préconditions sont identiques dans les deux cas.
    **Personnages**, **Joueurs**, **Scénarios**, **Notes**.
 
 ## Scénario alternatif A1 — Lancer un one-shot (parcours express)
+
+> **Périmètre post-MVP** : ce scénario décrit la cible produit complète. En première livraison, le one-shot se crée via le parcours campagne nominal (scénario nominal, UC-02, étapes 1-5) avec `type = ONE_SHOT`. Le parcours express ci-dessous et les deux points d'entrée distincts sont couverts par l'arbitrage UC-13 et reportés post-MVP.
 
 Le one-shot est un parcours distinct et plus court que la création de campagne.
 
@@ -105,6 +106,7 @@ et conserve les données saisies.
 - L'espace de campagne est créé.
 - Quatre dossiers système existent : **Personnages**, **Joueurs**, **Scénarios**, **Notes**.
 - Le MJ peut commencer à préparer son contenu.
+- Après la création, depuis le point d'entrée de l'application (tableau de bord), le MJ retrouve l'ensemble des espaces de jeu dont il est propriétaire ou membre, jusqu'à la limite de son `AccountTier`. Il peut passer de l'un à l'autre sans rupture.
 
 ### One-shot
 - L'espace one-shot est créé, avec le scénario choisi ou un scénario vide.
@@ -129,7 +131,7 @@ et conserve les données saisies.
 - Le même utilisateur peut être MJ de plusieurs espaces et joueur dans d'autres.
 - Le nom est obligatoire pour les campagnes. Pour les one-shots avec scénario existant,
   il est pré-rempli.
-- Les dossiers système sont créés automatiquement et sont non-supprimables mais renommables.
+- Les dossiers système sont créés automatiquement et sont renommables et supprimables (`isSystem` est informatif, non restrictif). Seul le dossier virtuel « Non classés » (`isVirtual = true`) est non-renommable et non-supprimable.
 - Un espace one-shot peut être archivé manuellement par le MJ, comme une campagne.
 - Un espace peut être archivé sans être supprimé définitivement.
 

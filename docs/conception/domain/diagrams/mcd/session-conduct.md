@@ -3,39 +3,39 @@
 ```mermaid
 erDiagram
     SESSION {
-        uuid id PK
-        uuid campaign_id "ref Campaign Management"
-        string title
-        string status "LIVE | CLOSED | ARCHIVED"
-        uuid scenario_id "nullable — ref Content Library"
-        string summary "nullable"
-        datetime started_at
-        datetime closed_at "nullable"
-        datetime created_at
-        datetime updated_at
-        uuid created_by_id "ref users.id"
+        identifiant id PK
+        identifiant campaign_id "ref Campaign Management"
+        texte title
+        texte status "LIVE | CLOSED | ARCHIVED"
+        identifiant scenario_id "nullable — ref Content Library"
+        texte summary "nullable"
+        horodatage started_at
+        horodatage closed_at "nullable"
+        horodatage created_at
+        horodatage updated_at
+        identifiant created_by_id "ref users.id"
     }
 
     SESSION_PINNED_DOCUMENT {
-        uuid session_id PK,FK
-        uuid document_id PK "ref Content Library"
+        identifiant session_id PK,FK
+        identifiant document_id PK "ref Content Library"
     }
 
     SESSION_LIVE_NOTE {
-        uuid session_id PK,FK
-        uuid document_id PK "ref Content Library — type LIVE_NOTE"
+        identifiant session_id PK,FK
+        identifiant document_id PK "ref Content Library — type LIVE_NOTE"
     }
 
     SESSION_VIEW_CONFIG {
-        uuid id PK
-        uuid campaign_id "UNIQUE — ref Campaign Management"
-        datetime updated_at
+        identifiant id PK
+        identifiant campaign_id "UNIQUE — ref Campaign Management"
+        horodatage updated_at
     }
 
     SESSION_VIEW_FOLDER {
-        uuid session_view_config_id PK,FK
-        uuid folder_id PK "ref Content Library"
-        int order
+        identifiant session_view_config_id PK,FK
+        identifiant folder_id PK "ref Content Library"
+        entier order
     }
 
     SESSION ||--o{ SESSION_PINNED_DOCUMENT : "épingle"

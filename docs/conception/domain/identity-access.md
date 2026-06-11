@@ -11,7 +11,7 @@
 ## Ce que ce contexte fait
 
 - Créer un compte utilisateur.
-- Authentifier un utilisateur (en délégant à ASP.NET Identity pour la gestion du mot de passe).
+- Authentifier un utilisateur (en délégant à l'infrastructure d'identité pour la gestion du mot de passe).
 - Maintenir le profil : nom d'affichage.
 - Gérer le tier de compte (FREE, PRO).
 - Supprimer un compte et anonymiser les données nominatives (RGPD).
@@ -25,7 +25,7 @@
 | GuestAccess (joueurs sans compte) | Campaign Management |
 | Migration des données locales → cloud | Couche application (orchestration cross-contextes) |
 | Gestion des membres de campagne | Campaign Management |
-| Hashs de mots de passe, tokens JWT, refresh tokens | ASP.NET Identity (infrastructure) |
+| Secrets et jetons d'authentification | Infrastructure d'identité |
 | Permissions sur les documents ou les sessions | Content Library / Session Conduct |
 
 ---
@@ -36,7 +36,7 @@
 
 | Champ | Type | Description |
 |---|---|---|
-| `id` | `UserId` | Identifiant unique, partagé avec `AspNetUsers.Id` (infrastructure) |
+| `id` | `UserId` | Identifiant unique, partagé avec le référentiel d'identité de l'infrastructure |
 | `email` | `Email` | Adresse email unique dans le système |
 | `displayName` | `string` | Nom d'affichage choisi par l'utilisateur |
 | `status` | `AccountStatus` | État du compte (ACTIVE, SUSPENDED, DELETED) |
@@ -88,10 +88,10 @@
 
 ## Règles métier
 
-1. Le mot de passe est géré par ASP.NET Identity — `User` ne le connaît pas.
+1. Le mot de passe est délégué à l'infrastructure d'identité — `User` ne le connaît pas.
 2. `User` ne porte aucun rôle métier global. Tout utilisateur authentifié peut créer une campagne.
-3. La transition `PRO → FREE` (résiliation) est déclenchée par un webhook de facturation (infrastructure) via une commande applicative. `User.ChangeTier(FREE)` publie `AccountTierChanged`. Campaign Management écoute cet événement et applique ses propres règles (gel des campagnes excédentaires).
-4. Après suppression RGPD, les notes personnelles des joueurs avec `visibility = PLAYER_PRIVATE` restent attachées au personnage concerné dans Session Conduct — l'utilisateur supprimé perd l'accès, mais les notes restent pour préserver la continuité de campagne.
+3. La transition `PRO → FREE` (résiliation) est déclenchée par une notification du système de facturation (infrastructure) via une commande applicative. `User.ChangeTier(FREE)` publie `AccountTierChanged`. Campaign Management écoute cet événement et applique ses propres règles (gel des campagnes excédentaires).
+4. **Règle F-08 — Suppression physique des documents privés à la suppression de compte** (RGPD, article 17 — droit à l'effacement) : après suppression d'un compte, deux populations de documents privés sont supprimées physiquement : (a) les documents avec `visibility = PLAYER_PRIVATE` créés par cet utilisateur, et (b) les documents avec `visibility = PLAYER_PRIVATE` créés par cet utilisateur et rattachés aux personnages incarnés par l'utilisateur dans l'ensemble des campagnes vivantes où il était membre. Cette extension couvre le risque de résidu : un personnage pouvant être réassocié ultérieurement à un autre joueur, une note privée résiduelle rattachée à ce personnage serait exposée au nouveau propriétaire. Les contenus partagés (`PUBLIC`, `GM_ONLY`) sont conservés sous intérêt légitime pour assurer la continuité de campagne. La mise en œuvre de cette obligation est arbitrée par ADR-012.
 5. Les contenus créés (documents, notes) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu.
 
 ---
@@ -103,9 +103,9 @@
 | `UserRegistered` | `User.Register()` | Application (email de bienvenue), Campaign Management (si conversion depuis GuestAccess) |
 | `DisplayNameUpdated` | `User.UpdateDisplayName()` | Campaign Management, Session Conduct (affichage du nom dans les vues joueur et membre) |
 | `AccountTierChanged` | `User.ChangeTier()` | Campaign Management (quotas campagnes/joueurs), Application (notification) |
-| `AccountSuspended` | `User.Suspend()` | Application (déconnexion des sessions actives) |
+| `AccountSuspended` | `User.Suspend()` | Application (toutes les sessions actives de l'utilisateur sont immédiatement révoquées — ADR-015) |
 | `UserDeleted` | `User.Delete()` | Campaign Management (anonymisation des member data), Content Library si nécessaire |
-| `UserAnonymized` | `User.Anonymize()` | Interne I&A — déclenché après confirmation de `UserDeleted` |
+| `UserAnonymized` | `User.Anonymize()` | Interne I&A — déclenché après confirmation de `UserDeleted` ; déclenche la révocation de toutes les sessions actives de l'utilisateur (ADR-015) |
 
 ---
 
@@ -114,13 +114,13 @@
 ### Ce que I&A publie
 
 - `UserId` comme identifiant de référence — les autres contextes l'utilisent sans importer l'entité `User`.
-- Les événements listés ci-dessus via le bus d'événements (synchrone dans la même transaction pour le MVP).
+- Les événements listés ci-dessus, publiés et consommés de manière synchrone dans la même transaction pour le MVP.
 
 ### Ce que les autres contextes font avec `UserId`
 
 | Contexte | Usage |
 |---|---|
-| Campaign Management | `Campaign.ownerId: UserId` (FK réelle acceptée — ADR-12), `CampaignMembership.userId: UserId` |
+| Campaign Management | `Campaign.ownerId: UserId` (référence directe acceptée — [ADR-009](../../architecture/decisions/ADR-009-fk-campaign-owner.md)), `CampaignMembership.userId: UserId` |
 | Content Library | `AuditInfo.createdById: UserId` |
 | Session Conduct | `Document (type LIVE_NOTE).AuditInfo.createdById: UserId` |
 
@@ -142,16 +142,16 @@ Ce flow est **applicatif**, pas domaine. I&A ne connaît pas `GuestAccess`. Camp
 
 ---
 
-## Note sur ASP.NET Identity
+## Note sur la délégation d'identité
 
-ASP.NET Identity gère une table `AspNetUsers` en infrastructure. L'entité domaine `User` dans I&A est une **shadow entity** : les deux partagent le même `id` (UUID), mais ont des responsabilités séparées.
+L'infrastructure d'identité gère son propre référentiel de secrets et de jetons. L'entité domaine `User` dans I&A est une **shadow entity** : l'entité domaine et le référentiel d'infrastructure partagent le même identifiant, mais ont des responsabilités séparées.
 
 | Responsabilité | Géré par |
 |---|---|
-| Hash du mot de passe | `AspNetUsers` (Identity) |
-| Génération / validation JWT | Identity infrastructure |
-| Refresh tokens | Identity infrastructure |
-| Claims techniques | Identity infrastructure |
+| Secrets d'authentification (mots de passe) | Infrastructure d'identité |
+| Génération et validation des jetons | Infrastructure d'identité |
+| Jetons de renouvellement | Infrastructure d'identité |
+| Métadonnées techniques d'authentification | Infrastructure d'identité |
 | Email, displayName, status, tier | `User` (domaine I&A) |
 
 ---

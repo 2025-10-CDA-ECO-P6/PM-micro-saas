@@ -291,7 +291,7 @@ Scenario : Ancien lien d un membre retire
 **Règles métier** :
 - RB-11-16 : Seul le MJ propriétaire (`OWNER`) peut associer ou dissocier un joueur et un personnage.
 - RB-11-17 : Un `Member` peut être associé à zéro ou plusieurs personnages (`PlayerCharacter`).
-- RB-11-18 : Un personnage ne peut être associé qu'à un seul `Member` à la fois.
+- RB-11-18 : Un personnage ne peut être associé qu'à un seul `CampaignMembership` actif à la fois.
 - RB-11-19 : Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE`.
 - RB-11-20 : Un nouveau lien vers le même personnage permet à un `GuestAccess` de récupérer la fiche et les notes `PLAYER_PRIVATE` associées.
 - RB-11-21 : Dissocier un joueur de son personnage ne supprime pas le personnage ni ses notes.

@@ -3,19 +3,19 @@
 ```mermaid
 classDiagram
     class User {
-        +UserId id
+        +identifiant id
         +Email email
-        +string displayName
+        +texte displayName
         +AccountStatus status
         +AccountTier tier
-        +DateTime createdAt
-        +DateTime updatedAt
-        +Register(email, displayName)$ User
-        +UpdateDisplayName(name) DisplayNameUpdated
-        +ChangeTier(tier) AccountTierChanged
-        +Delete() UserDeleted
-        +Anonymize() UserAnonymized
-        +Suspend() AccountSuspended
+        +date createdAt
+        +date updatedAt
+        +Register(email, displayName)$
+        +UpdateDisplayName(name)
+        +ChangeTier(tier)
+        +Delete()
+        +Anonymize()
+        +Suspend()
     }
 
     class AccountStatus {
@@ -32,37 +32,37 @@ classDiagram
     }
 
     class UserRegistered {
-        +userId: UserId
-        +email: Email
-        +occurredAt: DateTime
+        +identifiant userId
+        +Email email
+        +horodatage occurredAt
     }
 
     class AccountTierChanged {
-        +userId: UserId
-        +previousTier: AccountTier
-        +newTier: AccountTier
-        +occurredAt: DateTime
+        +identifiant userId
+        +AccountTier previousTier
+        +AccountTier newTier
+        +horodatage occurredAt
     }
 
     class UserDeleted {
-        +userId: UserId
-        +occurredAt: DateTime
+        +identifiant userId
+        +horodatage occurredAt
     }
 
     class UserAnonymized {
-        +userId: UserId
-        +occurredAt: DateTime
+        +identifiant userId
+        +horodatage occurredAt
     }
 
     class DisplayNameUpdated {
-        +userId: UserId
-        +newDisplayName: string
-        +occurredAt: DateTime
+        +identifiant userId
+        +texte newDisplayName
+        +horodatage occurredAt
     }
 
     class AccountSuspended {
-        +userId: UserId
-        +occurredAt: DateTime
+        +identifiant userId
+        +horodatage occurredAt
     }
 
     User --> AccountStatus
@@ -73,6 +73,4 @@ classDiagram
     User ..> AccountSuspended : produces
     User ..> UserDeleted : produces
     User ..> UserAnonymized : produces
-
-    note for User "Shadow entity — partage son id\navec AspNetUsers (ASP.NET Identity)"
 ```

@@ -131,7 +131,7 @@ flowchart LR
 - [ ] Le document est ajouté à `Session.pinnedDocumentIds` automatiquement (session LIVE).
 - [ ] La création est refusée si le titre est vide (E1).
 - [ ] La création est impossible depuis une session ARCHIVED (E2).
-- [ ] En mode local, le document est persisté en IndexedDB.
+- [ ] En mode local, le document reste accessible après fermeture et réouverture du navigateur.
 
 ```gherkin
 Scénario : Le MJ crée un PNJ à la volée (A1)

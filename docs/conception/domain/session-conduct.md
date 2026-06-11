@@ -124,17 +124,16 @@ Créer une note de session = deux opérations applicatives :
 1. `Document.Create()` dans Content Library (type LIVE_NOTE, folder = "Notes" de la campagne)
 2. `Session.AttachNote(documentId)`
 
-Les métadonnées spécifiques aux notes de session sont stockées dans `Document.properties` :
+Les métadonnées spécifiques aux notes de session sont portées par deux **champs de premier niveau** du Document, promus depuis les propriétés structurées (ADR-002) :
 
-| Propriété | Type | Description |
+| Champ | Type | Description |
 |---|---|---|
-| `characterId` | `string?` | Personnage associé — pour les notes PLAYER_PRIVATE joueur |
-| `guestAccessId` | `string?` | Auteur invité sans compte — quand `AuditInfo.createdById` est null |
+| `characterId` | `DocumentId?` | Personnage associé — pour les notes PLAYER_PRIVATE joueur |
+| `guestAccessId` | `GuestAccessId?` | Auteur invité sans compte — quand l'auteur n'est pas un utilisateur enregistré |
 
 > Ce modèle permet à une note de session de référencer d'autres documents via `linkedDocuments`
 > (lier un PNJ, une scène, un lieu à la note) sans aucune modélisation supplémentaire.
-> La règle RGPD reste valide : les notes PLAYER_PRIVATE restent attachées au `characterId`
-> après suppression de compte.
+> Voir Règles métier n°8 (suppression physique des notes privées à la suppression de compte).
 
 ---
 
@@ -156,10 +155,11 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 1. La machine d'états est unidirectionnelle : LIVE → CLOSED → ARCHIVED.
 2. Une session ARCHIVED refuse toute modification.
 3. `AttachNote` et `UpdateSummary` sont autorisés en état CLOSED.
-4. Un Document LIVE_NOTE avec `visibility = PLAYER_PRIVATE` n'est lisible que par son auteur (`createdById` ou `properties.guestAccessId`).
+4. Tout Document avec `visibility = PLAYER_PRIVATE` n'est lisible que par son auteur (`createdById` ou `guestAccessId`). Les membres `OWNER` et `GM` n'y ont aucun accès, quel que soit le type de document — y compris les Documents de type `LIVE_NOTE`.
 5. Il existe exactement un `SessionViewConfig` par campagne.
 6. Un `SessionViewFolder` référence un dossier qui appartient à la même campagne.
 7. `Session.summary` n'est modifiable que si `status = CLOSED`. Il peut être null. Il représente un résumé narratif libre rédigé par le MJ après la séance — distinct des notes de session (`sessionNoteIds`) qui sont des Documents LIVE_NOTE.
+8. Il ne peut y avoir qu'une seule session au statut `LIVE` par campagne. La création d'une nouvelle session en `LIVE` est bloquée si une session `LIVE` existe déjà pour la campagne. *(C-14)*
 
 ---
 
@@ -167,11 +167,12 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 
 1. Démarrer une session (`Start()`) est réservé aux membres `OWNER` ou `GM`.
 2. Un joueur accède à la session via son `CampaignMembership` ou un `GuestAccess` actif — la validation est faite en couche application.
-3. Un joueur ne voit que les documents `visibility = PUBLIC` et ses propres Documents LIVE_NOTE avec `visibility = PLAYER_PRIVATE`.
+3. Un joueur ne voit que les documents avec `visibility = PUBLIC` et ses propres documents avec `visibility = PLAYER_PRIVATE` (dont les Documents de type `LIVE_NOTE`). Le MJ ne voit pas les documents `PLAYER_PRIVATE` dont il n'est pas l'auteur.
 4. Épingler un document (`PinDocument`) n'en change pas la visibilité — c'est une organisation locale à la session.
 5. Partager un document avec les joueurs (`Document.Share()`) est une opération Content Library déclenchée depuis la couche application — Session Conduct ne possède pas cette opération.
 6. À la clôture de session (`Close()`), la couche application notifie Campaign Management pour déclencher le countdown d'expiration des `GuestAccess SESSION`.
 7. La création à la volée (UC-07) crée un Document dans Content Library via la couche application, puis le résultat est épinglé dans la session.
+8. **Règle F-08 — Suppression physique des notes privées à la suppression de compte** (RGPD, article 17 — droit à l'effacement) : à la suppression d'un compte utilisateur, deux populations de Documents de type `LIVE_NOTE` avec `visibility = PLAYER_PRIVATE` sont supprimées physiquement : (a) ceux créés par cet utilisateur, et (b) ceux créés par cet utilisateur et rattachés aux personnages incarnés par l'utilisateur dans l'ensemble des campagnes vivantes où il était membre. Cette extension couvre le risque de résidu : un personnage pouvant être réassocié ultérieurement à un autre joueur, une note de session privée résiduelle rattachée à ce personnage serait exposée au nouveau propriétaire. Les contenus partagés (`PUBLIC`, `GM_ONLY`) sont conservés sous intérêt légitime pour assurer la continuité de campagne. La mise en œuvre de cette obligation est arbitrée par ADR-012.
 
 ---
 

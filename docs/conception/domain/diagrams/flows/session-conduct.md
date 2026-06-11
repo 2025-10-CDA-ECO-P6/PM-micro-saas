@@ -10,8 +10,8 @@ sequenceDiagram
     participant SC as Session Conduct
 
     CM-->>App: CampaignCreated(campaignId)
-    App->>CL: Créer les 5 dossiers système
-    CL-->>App: [folderId1, folderId2, folderId3, folderId4, folderId5]
+    App->>CL: Créer les 4 dossiers système visibles + 1 dossier virtuel technique
+    CL-->>App: [folderId1, folderId2, folderId3, folderId4, folderIdVirtual]
     App->>SC: SessionViewConfig.Create(campaignId, folderIds)
     SC-->>App: SessionViewConfig initialisé avec les dossiers système
 ```

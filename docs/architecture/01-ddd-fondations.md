@@ -21,8 +21,8 @@ fidèlement les règles et concepts du domaine métier.
 DDD impose trois disciplines concrètes :
 
 **Un langage ubiquitaire** — les mêmes termes dans le code, la documentation
-et les conversations. `Campaign`, `Session`, `NPC` dans le code, pas `Project`,
-`Event`, `Character`. Quand le code parle le même langage que le métier,
+et les conversations. `Campaign`, `Session`, `Document` dans le code, pas `Project`,
+`Event`, `Record`. Quand le code parle le même langage que le métier,
 les malentendus disparaissent et le code se documente lui-même.
 
 **Des frontières explicites** — le domaine est découpé en Bounded Contexts
@@ -37,7 +37,7 @@ pas dans les services applicatifs ou les contrôleurs.
 
 DDD n'est pas un dogme. Sur ce projet, l'objectif est de créer un domaine mature
 et maintenable, pas de cocher des cases. Certains compromis sont assumés et documentés
-dans les ADR. Voir [05-adr-et-anti-patterns.md](05-adr-et-anti-patterns.md).
+dans les ADR. Voir le [registre des décisions](decisions/README.md).
 
 ---
 
@@ -52,7 +52,7 @@ ont des identifiants différents.
 Sur ce projet, toutes les entités ont un **Id typé** (jamais un UUID nu) et embarquent
 un `AuditInfo` (qui a créé, qui a modifié, quand).
 
-Exemples : `Campaign`, `Session`, `NPC`, `Document`.
+Exemples : `Campaign`, `Session`, `Document`, `DocumentBlock`.
 
 ### Value Object
 
@@ -65,7 +65,7 @@ Un `Email` invalide ne peut pas être instancié. Un `Slug` est toujours lowerca
 avec des tirets. Cette logique n'est pas dans un service ou un validateur externe —
 elle est dans le type, une fois, testée une fois.
 
-Exemples : `Email`, `Slug`, `AuditInfo`, `SoftDelete`, `PinnedItem`, `BlockValue`.
+Exemples : `Email`, `Slug`, `AuditInfo`, `SoftDelete`.
 
 ### Agrégat
 
@@ -74,11 +74,11 @@ Il a une racine (l'agrégat racine) qui garantit les invariants de tout le group
 On ne modifie jamais une entité enfant directement — on passe toujours par la racine.
 
 Exemples : `Campaign` garantit qu'il y a exactement un OWNER parmi ses membres.
-`Scenario` garantit la cohérence de l'ordre de ses scènes.
-`Document` garantit l'ordre de ses blocs et la cohérence de leur visibilité.
+`Document` garantit l'ordre de ses `DocumentBlock` et la cohérence de leur visibilité.
 
 La règle de décision pour savoir si une entité mérite d'être agrégat racine
-est détaillée dans [03-patterns-de-modelisation.md](03-patterns-de-modelisation.md).
+s'appuie sur la cohérence transactionnelle : toutes les modifications doivent pouvoir
+être traitées comme une unité logique et persistées atomiquement.
 
 ### Domain Event
 
@@ -87,9 +87,9 @@ Un domain event est un fait métier passé, immuable.
 
 Les domain events servent à deux choses sur ce projet :
 
-**Découpler les effets de bord** — quand `Document.title` change, le domain event
-`DocumentTitleUpdated` est émis. Un handler met à jour les champs dénormalisés
-(`NPC.name`, `Scenario.title`...). Le Document ne sait pas qui écoute.
+**Découpler les effets de bord** — quand la visibilité d'un `Document` change, le domain event
+`DocumentVisibilityChanged` est émis. Un handler dans Session Conduct met à jour la vue
+joueur en temps réel. Le Document ne sait pas qui écoute.
 
 **Tracer l'historique** — les events peuvent alimenter un log d'audit ou,
 plus tard, un bus d'événements pour le temps réel.
@@ -97,7 +97,7 @@ plus tard, un bus d'événements pour le temps réel.
 ### Repository
 
 Un repository est l'interface entre le domaine et la persistance.
-Le domaine définit l'interface (`INpcRepository`), l'infrastructure l'implémente.
+Le domaine définit l'interface (`IDocumentRepository`), l'infrastructure l'implémente.
 Le domaine ne sait pas comment ses entités sont persistées.
 
 ### Les Id typés — pourquoi c'est important

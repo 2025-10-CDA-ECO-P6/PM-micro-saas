@@ -11,8 +11,9 @@ pour une première découverte, ou aller directement au fichier pertinent.
 | Fichier | Contenu | Pour qui |
 |---|---|---|
 | [01-ddd-fondations.md](01-ddd-fondations.md) | Pourquoi DDD, vocabulaire et concepts appliqués au projet | Toute personne qui rejoint le projet |
-| [02-bounded-contexts.md](02-bounded-contexts.md) | Découpage en contextes, Shared Kernel, règles d'isolation | Développeur qui touche à plusieurs contextes |
-| [03-patterns-de-modelisation.md](03-patterns-de-modelisation.md) | Agrégats, modèle Document modulaire, références cross-context | Développeur qui modifie ou étend le domaine |
+| [stack.md](stack.md) | Choix technologiques, justifications, points forts/faibles, roadmap clients | Développeur qui veut comprendre la stack retenue |
+| [06-structure-projets.md](06-structure-projets.md) | Structure des projets .NET + périmètre du mode local TypeScript | Développeur qui échafaude ou navigue la solution |
+| [decisions/README.md](decisions/README.md) | Registre des décisions d'architecture (ADR) | Toute personne qui veut comprendre les arbitrages structurels |
 
 ---
 

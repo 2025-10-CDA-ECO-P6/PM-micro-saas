@@ -119,7 +119,7 @@ flowchart LR
 - La saisie du nom d'affichage est le seul prérequis à l'accès — pas d'email, pas de mot de passe.
 - Si le joueur est déjà connecté à un compte Haversack (A1), l'étape de saisie du nom est sautée : il accède directement avec son identité de compte et son historique de session.
 - Le `GuestAccess` est valide pendant la durée de la session + une fenêtre de grâce de 24 heures.
-- Le joueur invité voit les documents `PUBLIC`, les `documents épinglés` de la session et peut prendre des notes personnelles (`PLAYER_PRIVATE`). Il a accès à sa fiche de personnage si un personnage lui est associé.
+- Le joueur invité voit les documents `PUBLIC`, les `documents épinglés` de la session (uniquement ceux `PUBLIC`) et peut prendre des notes personnelles (`PLAYER_PRIVATE`) accessibles à lui seul. Il a accès à sa fiche de personnage si un personnage lui est associé. Les documents `PLAYER_PRIVATE` d'autres joueurs, et ceux d'un éventuel compte MJ, ne lui sont jamais visibles — la visibilité est respectée indépendamment de l'épinglage.
 - Le nom d'affichage du joueur est visible par le MJ dans la vue session.
 
 **Règles métier** :
@@ -128,6 +128,11 @@ flowchart LR
 - RB-09-03 : Un joueur déjà connecté à son compte Haversack saute l'étape de saisie du nom et accède directement.
 - RB-09-04 : Le joueur invité dispose des mêmes droits fonctionnels qu'un joueur avec compte dans le périmètre de son `GuestAccess` : documents `PUBLIC`, `documents épinglés`, notes personnelles, fiche personnage si associée.
 - RB-09-05 : Le MJ a besoin d'un compte pour générer le lien de session (le backend gère l'accès).
+- RB-09-18 : À la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) cessent immédiatement d'être utilisées et affichées — plus aucune finalité produit. Leur effacement effectif intervient au plus tard 90 jours après la fin d'accès ; cette fenêtre bornée a pour seule finalité de permettre à l'invité d'exercer ses droits et de traiter une contestation, jamais un usage produit (RGPD Art. 5(1)(e) — limitation de la conservation). Si l'invité a été converti en compte, ses données suivent les règles du compte.
+- RB-09-19 : À la fin définitive d'un `GuestAccess` non converti, les notes `PLAYER_PRIVATE` créées par cet invité sont supprimées physiquement. Seules les notes créées par cet invité sont concernées, jamais celles d'autres participants.
+- RB-09-20 : Au moment où l'invité saisit son nom d'affichage (avant ou à l'entrée en session), il est informé de manière simple de ce qui est conservé (son nom d'affichage, ses notes privées éventuelles), pour combien de temps (durée de l'accès + grâce, puis effacement du nom d'affichage au plus tard 90 jours après la fin d'accès), et du sort de ses données à la fin de l'accès : ses notes privées sont supprimées s'il n'a pas créé de compte, son nom d'affichage n'est plus utilisé et est effacé dans le délai borné.
+- RB-09-21 : Sur un compte `FREE`, une session est limitée à **4 joueurs distincts disposant d'un accès à la séance**, quel que soit le type d'accès (accès invité ponctuel, membre de campagne, ou autre type d'accès futur). Le MJ n'est jamais compté. La limite porte sur le nombre d'accès accordés au moment de leur octroi — c'est le refus du **5e accès** qui bloque, pas une mesure de présence en temps réel. La limite porte sur la taille de la table, pas sur le moyen d'y accéder — compter un seul type d'accès la rendrait contournable et viderait le levier de l'offre supérieure. Le joueur dont l'accès est refusé voit un message sobre d'erreur, sans révélation sur la campagne (même registre que le message de lien expiré) ; le MJ reçoit le signalement de la limite atteinte avec une invitation à passer `PRO` pour la lever. Cette limite transpose, pour les joueurs d'une session, le précédent de blocage du compte `FREE` déjà établi pour les campagnes.
+- RB-09-22 : Au-delà de l'information donnée à la saisie du nom (RB-09-20), l'invité est averti en temps utile — à un moment qui lui laisse la possibilité d'agir avant la fin de son accès — que ses notes personnelles ne seront conservées que s'il crée un compte avant cette fin. Cet avertissement traite le risque que l'information initiale ne soit plus présente à l'esprit lorsque l'accès prend fin, et laisse à l'invité le temps de décider de créer un compte pour conserver ses notes (US-09-04, RB-09-14).
 
 **Critères d'acceptation** :
 - [ ] Le joueur accède à la session en cliquant sur le lien et en saisissant uniquement un nom d'affichage.
@@ -137,6 +142,7 @@ flowchart LR
 - [ ] Le nom d'affichage du joueur est visible par le MJ dans la vue session.
 - [ ] Un joueur déjà connecté accède directement sans saisir de nom (A1).
 - [ ] L'accès expire après la session + 24 heures (le token `GuestAccess` est invalidé).
+- [ ] Avant ou au moment de saisir son nom d'affichage, le joueur reçoit une information simple sur les données conservées (nom d'affichage, notes privées), la durée de conservation (durée de l'accès + 24 h de grâce) et leur suppression à la fin de l'accès.
 
 ```gherkin
 Scénario : Joueur rejoint via lien ponctuel sans compte (nominal)

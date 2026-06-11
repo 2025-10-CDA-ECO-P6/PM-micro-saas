@@ -28,6 +28,7 @@ Le MJ souhaite intégrer un nouveau joueur, ou gérer les accès existants.
 
 - Une campagne existe.
 - Le MJ est propriétaire de la campagne.
+- L'adhésion d'un membre permanent présuppose que le joueur dispose d'un compte ou en crée un au fil du parcours d'invitation (UC-10, UC-12). L'accès invité sans compte (A4) reste couvert par UC-09.
 
 ## Scénario nominal — Inviter un joueur
 
@@ -108,8 +109,8 @@ Le système ne permet pas de réactiver une invitation expirée — il faut en c
 - La révocation d'une invitation passe son statut à `REVOKED`. Elle ne peut plus créer de nouvel accès.
 - Retirer un membre ne supprime pas ses données dans la campagne.
 - Un membre retiré peut être réinvité.
-- Un accès invité est temporaire, mais les données joueur privées sont liées au personnage associé.
-- Un nouveau lien invité vers le même personnage permet de récupérer la fiche et les notes privées de ce personnage.
+- Un accès invité est temporaire. La fiche du personnage associé (`PLAYER_CHARACTER`) est gérée par la campagne et persiste entre les accès — un nouveau lien invité vers le même personnage permet de retrouver cette fiche.
+- Les notes personnelles (`PLAYER_PRIVATE`) d'un invité non converti en compte sont supprimées à la fin définitive de son accès (RB-09-19) et ne sont pas récupérables via un nouveau lien. Elles ne survivent à la fin de l'accès que si l'invité crée un compte avant cette fin (US-09-04, RB-09-14). L'invité est averti de ce sort en temps utile pour agir avant la fin de son accès (RB-09-22).
 
 ## Critères d'acceptation
 

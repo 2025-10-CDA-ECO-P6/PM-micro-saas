@@ -83,7 +83,7 @@ flowchart LR
     end
     subgraph PILIER1["Pilier 1 — Preparation documentaire"]
         UC03(["UC-03\nStructurer scenario"])
-        UC04(["UC-04\nDocuments et notes"])
+        UC04(["UC-04\nDocuments"])
         UC05(["UC-05\nDossiers et types"])
         UC14(["UC-14\nRechercher"])
     end
@@ -144,7 +144,7 @@ flowchart LR
     end
     subgraph PILIER1["Pilier 1 — Preparation documentaire"]
         UC03(["UC-03\nStructurer scenario"])
-        UC04(["UC-04\nDocuments et notes"])
+        UC04(["UC-04\nDocuments"])
         UC05(["UC-05\nDossiers et types"])
     end
     subgraph PILIER2["Pilier 2 — Vue session"]

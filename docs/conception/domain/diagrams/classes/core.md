@@ -4,9 +4,9 @@
 classDiagram
     class AggregateRoot {
         <<abstract>>
-        +List~DomainEvent~ domainEvents
-        +AddDomainEvent(event) void
-        +ClearDomainEvents() void
+        +liste de DomainEvent domainEvents
+        +AddDomainEvent(event)
+        +ClearDomainEvents()
     }
 
     class Entity {
@@ -15,64 +15,55 @@ classDiagram
 
     class ValueObject {
         <<abstract>>
-        +Equals(other) bool
+        +Equals(other)
     }
 
     class DomainEvent {
         <<abstract>>
-        +occurredAt: DateTime
+        +occurredAt: horodatage
     }
 
     class UserId {
-        +value: Guid
+        +value: identifiant
     }
     class CampaignId {
-        +value: Guid
+        +value: identifiant
     }
     class SessionId {
-        +value: Guid
+        +value: identifiant
     }
     class DocumentId {
-        +value: Guid
-    }
-    class ScenarioId {
-        +value: Guid
-    }
-    class SceneId {
-        +value: Guid
+        +value: identifiant
     }
     class FolderId {
-        +value: Guid
-    }
-    class CharacterId {
-        +value: Guid
+        +value: identifiant
     }
 
     class Email {
-        +value: string
-        +Email(raw) Email
+        +value: texte
+        +Email(raw)
     }
 
     class Slug {
-        +value: string
-        +Slug(raw) Slug
+        +value: texte
+        +Slug(raw)
     }
 
     class Tag {
-        +value: string
-        +Tag(raw) Tag
+        +value: texte
+        +Tag(raw)
     }
 
     class AuditInfo {
-        +createdAt: DateTime
-        +updatedAt: DateTime
-        +createdById: UserId
+        +createdAt: date
+        +updatedAt: date
+        +createdById: identifiant
     }
 
     class SoftDelete {
-        +isDeleted: bool
-        +deletedAt: DateTime?
-        +Delete() void
+        +isDeleted: booléen
+        +deletedAt: date?
+        +Delete()
     }
 
     class Visibility {
@@ -87,10 +78,7 @@ classDiagram
     ValueObject <|-- CampaignId
     ValueObject <|-- SessionId
     ValueObject <|-- DocumentId
-    ValueObject <|-- ScenarioId
-    ValueObject <|-- SceneId
     ValueObject <|-- FolderId
-    ValueObject <|-- CharacterId
     ValueObject <|-- Email
     ValueObject <|-- Slug
     ValueObject <|-- Tag

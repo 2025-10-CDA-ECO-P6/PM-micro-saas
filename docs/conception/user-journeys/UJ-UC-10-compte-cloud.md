@@ -2,7 +2,7 @@
 
 ## Périmètre
 
-Parcours couvrant trois flux d'entrée : l'inscription par un MJ venant du mode local (Émilie), la création directe de compte pour usage multi-device (Thomas), et la création de compte depuis un lien d'invitation par un joueur (Lucas). La migration silencieuse des données locales est intégrée dans le flux d'Émilie. La suppression de compte est hors MVP et exclue de ce périmètre.
+Parcours couvrant trois flux d'entrée : l'inscription par un MJ venant du mode local (Émilie), la création directe de compte pour usage multi-device (Thomas), et la création de compte depuis un lien d'invitation par un joueur (Lucas). La migration avec gate de reconnaissance des données locales est intégrée dans le flux d'Émilie. La suppression de compte est hors MVP et exclue de ce périmètre.
 
 ---
 
@@ -19,8 +19,8 @@ journey
         Ouvrir le formulaire d inscription: 5: Émilie, 5: Thomas, 4: Lucas
         Saisir email, nom d affichage, mot de passe: 4: Émilie, 4: Thomas, 4: Lucas
         Soumettre et obtenir acces immediat: 5: Émilie, 5: Thomas, 5: Lucas
-    section Migration silencieuse des donnees locales
-        Voir ses campagnes migrees automatiquement: 5: Émilie
+    section Migration avec gate de reconnaissance des donnees locales
+        Confirmer les donnees locales detectees avant import: 5: Émilie
         Retrouver son espace intact dans le cloud: 5: Émilie
     section Connexion ulterieure
         Saisir email et mot de passe: 4: Émilie, 4: Thomas
@@ -58,7 +58,7 @@ flowchart TD
     L -->|Non| K
 
     K --> N{Donnees locales\nexistantes ?}
-    N -->|Oui| O[Migration silencieuse\nvers le cloud\nRB-10-04]
+    N -->|Oui| O[Gate de reconnaissance\nCampagnes + historique de session\nsessions, notes, epingles\nConfirmation requise\nRB-10-04 / ADR-016 §4]
     N -->|Non| P[Evenement publie\nCampaign Management\ninitialise tableau de bord]
     O --> P
 
@@ -93,7 +93,9 @@ flowchart TD
 
 - **Friction à la saisie du mot de passe pour Lucas** : Lucas arrive depuis un lien d'invitation — il vient d'utiliser l'application sans mot de passe (mode invité). Lui demander de choisir un mot de passe sécurisé à ce moment peut créer un abandon. Google OAuth réduit ce frein mais ne couvre pas tous les cas.
 
-- **Migration silencieuse opaque** : Émilie ne voit pas ce qui se passe pendant la migration. Si elle a un volume important de données, l'absence de retour visuel (progress, confirmation) peut créer de l'inquiétude sur la perte éventuelle de ses campagnes.
+- **Sessions en cours à clôturer avant migration** : Émilie peut avoir une session ouverte (LIVE) au moment où elle souhaite créer son compte et migrer. Le gate de reconnaissance signale cette session et indique qu'elle doit être clôturée — si ce message n'est pas clair, Émilie peut être frustrée de ne pas pouvoir procéder immédiatement.
+
+- **Progression de la migration pour gros volumes** : le gate de reconnaissance (ADR-016 §4) répond à l'opacité pré-import — Émilie voit les campagnes détectées (y compris leur historique de session) avant de confirmer. Pour les volumes importants, l'absence de retour visuel pendant la migration elle-même (barre de progression, indicateur "synchronisation en cours") reste une friction résiduelle à adresser.
 
 - **Réinitialisation de mot de passe avec délai d'expiration court** : si le token expire rapidement (exemple : 1 heure) et que l'utilisateur ne voit pas l'email immédiatement, il devra recommencer le processus. La durée d'expiration est à calibrer.
 
@@ -105,7 +107,7 @@ flowchart TD
 
 - **Invite contextuelle au bon moment** : déclencher la proposition de création de compte précisément lorsque le MJ tente une action qui nécessite un compte (clic sur "Partager avec les joueurs", "Accéder depuis un autre appareil"). L'invite est ainsi justifiée par le besoin et non perçue comme une interruption.
 
-- **Migration silencieuse avec confirmation post-inscription** : après la migration, afficher une confirmation discrète "Vos X campagnes et Y documents ont été synchronisés" rassure Émilie sans interrompre son flux. Un toast suffit.
+- **Toast de confirmation post-migration** : après la migration, afficher une confirmation discrète "Vos X campagnes et Y documents ont été synchronisés" rassure Émilie sans interrompre son flux. Ce toast est une amélioration UX facultative, distincte du gate de reconnaissance pré-import (ADR-016 §4) qui, lui, est décidé et obligatoire.
 
 - **Google OAuth en premier plan** : sur les pages d'inscription et de connexion, Google OAuth peut être présenté en priorité (bouton principal) pour réduire la friction, notamment pour Lucas qui arrive depuis un lien et veut un accès rapide.
 
@@ -114,6 +116,12 @@ flowchart TD
 - **Retour visuel sur la progression de la migration** : pour les MJ avec beaucoup de données locales, une barre de progression discrète ou un indicateur "Synchronisation en cours..." évite l'inquiétude pendant la migration.
 
 - **Lien direct vers réinitialisation depuis E2** : le message d'erreur générique peut contenir un lien discret "Mot de passe oublié ?" — sans révéler si l'email existe, mais en proposant la sortie naturelle pour l'utilisateur légitime bloqué.
+
+---
+
+## Après la migration — Continuité vers le partage
+
+Une fois la migration réussie, Émilie retrouve ses campagnes avec tout leur historique de session : ses sessions passées sont consultables, ses notes et documents épinglés sont en place. Elle peut alors enchaîner naturellement vers l'invitation de ses joueurs dans ces mêmes campagnes pour des sessions futures (UC-08, UC-09, UC-11), en garantissant la continuité entre ses sessions solo passées et ses sessions futures avec joueurs. Le parcours solo→joueurs est ainsi fluide et sans rupture.
 
 ---
 

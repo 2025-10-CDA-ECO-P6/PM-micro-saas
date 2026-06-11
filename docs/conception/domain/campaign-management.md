@@ -40,7 +40,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | Champ | Type | Description |
 |---|---|---|
 | `id` | `CampaignId` | |
-| `ownerId` | `UserId` | Propriétaire technique unique — responsabilité billing et RGPD. FK réelle vers `users` (ADR-12). |
+| `ownerId` | `UserId` | Propriétaire technique unique — responsabilité billing et RGPD. FK réelle vers `users` ([ADR-009](../../architecture/decisions/ADR-009-fk-campaign-owner.md)). |
 | `name` | `string` | Nom de la campagne |
 | `slug` | `Slug` | Unique par propriétaire |
 | `type` | `CampaignType` | `CAMPAIGN` \| `ONE_SHOT` |
@@ -59,7 +59,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `RemoveMember(userId)` | `MemberRemoved` | Retire un membre. Bloqué si userId == ownerId. |
 | `CreateInvitation(type, scope, options)` | `InvitationCreated` | Crée une invitation enfant. |
 | `RevokeInvitation(invitationId)` | `InvitationRevoked` | Passe l'invitation en REVOKED. |
-| `AssociateCharacter(userId, characterId)` | `CharacterAssociated` | Associe un personnage (référence Content Library) à un membre. |
+| `AssociateCharacter(userId, characterId)` | `CharacterAssociated` | Associe un personnage (référence Content Library) à un membre. Le paramètre `characterId` est un `DocumentId` pointant vers un `Document` de type `player_character`. |
 | `Archive()` | `CampaignArchived` | Archivage manuel par le MJ. Irréversible (MVP). |
 | `Freeze()` | `CampaignFrozen` | Gel automatique lors d'un downgrade de tier. Passe en lecture seule. |
 | `Unfreeze()` | `CampaignUnfrozen` | Dégel lors d'un upgrade de tier. |
@@ -76,14 +76,14 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `userId` | `UserId` | |
 | `role` | `MemberRole` | `OWNER` \| `GM` \| `PLAYER` |
 | `status` | `MembershipStatus` | `PENDING` \| `ACTIVE` \| `REMOVED` |
-| `characterIds` | `CharacterId[]` | Références vers les personnages (Content Library) |
+| `characterIds` | `DocumentId[]` | Références vers les personnages (Content Library) — alias sémantique vers des `Document` de type `player_character` ; la cohérence de type est garantie par validation runtime. |
 | `joinedAt` | `DateTime` | |
 
 **Méthodes**
 
 | Méthode | Événement produit | Description |
 |---|---|---|
-| `Activate()` | `MemberActivated` | Passe le statut de `PENDING` à `ACTIVE` lors de l'utilisation du lien d'invitation. Déclenché par la couche application après vérification du token d'invitation. |
+| `Activate()` | `MemberActivated` | Passe le statut de `PENDING` à `ACTIVE` lors de l'utilisation du lien d'invitation, une fois sa validité vérifiée. |
 
 **Rôles**
 
@@ -103,7 +103,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | Champ | Type | Description |
 |---|---|---|
 | `id` | `InvitationId` | |
-| `token` | `InvitationToken` | UUID unique, utilisé dans l'URL d'invitation |
+| `token` | `InvitationToken` | Identifiant du lien d'invitation, globalement unique, non prédictible. |
 | `type` | `InvitationType` | `LINK` \| `EMAIL` |
 | `scope` | `InvitationScope` | `CAMPAIGN` \| `SESSION` |
 | `sessionId` | `SessionId?` | Renseigné si scope = SESSION |
@@ -123,7 +123,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 
 Représente l'accès d'un joueur sans compte. Agrégat indépendant car son cycle de vie
 (expiration, conversion) est orthogonal à celui de la campagne, et il est référencé
-depuis Session Conduct par son token.
+depuis Session Conduct par son lien d'accès.
 
 | Champ | Type | Description |
 |---|---|---|
@@ -131,9 +131,9 @@ depuis Session Conduct par son token.
 | `campaignId` | `CampaignId` | |
 | `scope` | `GuestAccessScope` | `SESSION` \| `CAMPAIGN` |
 | `sessionId` | `SessionId?` | Renseigné si scope = SESSION |
-| `token` | `GuestAccessToken` | UUID unique, utilisé dans l'URL |
+| `token` | `GuestAccessToken` | Identifiant du lien d'accès invité, globalement unique, non prédictible. |
 | `displayName` | `string` | Saisi par le joueur à l'arrivée |
-| `characterId` | `CharacterId?` | Associé par le MJ (référence Content Library) |
+| `characterId` | `DocumentId?` | Associé par le MJ (référence Content Library) — alias sémantique vers un `Document` de type `player_character` ; la cohérence de type est garantie par validation runtime. |
 | `status` | `GuestAccessStatus` | `ACTIVE` \| `EXPIRED` \| `REVOKED` \| `CONVERTED` |
 | `expiresAt` | `DateTime?` | Calculé depuis la fermeture de session + 24h pour scope SESSION |
 | `createdAt` | `DateTime` | |
@@ -155,8 +155,8 @@ depuis Session Conduct par son token.
 
 | VO | Validation | Description |
 |---|---|---|
-| `InvitationToken` | UUID v4, globalement unique | Token utilisé dans l'URL d'invitation. Généré à la création. Non modifiable. |
-| `GuestAccessToken` | UUID v4, globalement unique | Token utilisé dans l'URL d'accès invité. Généré à la création. Non modifiable. |
+| `InvitationToken` | Globalement unique, non prédictible | Identifiant porté par le lien d'invitation. Généré à la création. Non modifiable. |
+| `GuestAccessToken` | Globalement unique, non prédictible | Identifiant porté par le lien d'accès invité. Généré à la création. Non modifiable. |
 
 ---
 
@@ -182,10 +182,12 @@ depuis Session Conduct par son token.
 
 | Comportement | `CAMPAIGN` | `ONE_SHOT` |
 |---|---|---|
-| Parcours de création | Configuration complète | Express — nom + scénario, aucun membre requis |
+| Parcours de création | Configuration complète | Express — nom + scénario, aucun membre requis *(post-MVP)* |
 | Membres permanents | Attendus | Optionnels — GuestAccess typique, mais CampaignMembership possible |
 | Sessions | Multiples | Une seule attendue (non forcée techniquement) |
 | Archivage | Manuel par le MJ | Manuel par le MJ |
+
+**MVP** : Au MVP, aucune différence comportementale n'existe — création, structure des dossiers, cycle de session et vue session sont identiques pour les deux types. Le parcours de création express est une caractéristique cible post-MVP (arbitrage UC-13, vision-produit §5bis).
 
 ---
 
@@ -194,13 +196,13 @@ depuis Session Conduct par son token.
 1. Une `Campaign` a toujours exactement un membre avec `role = OWNER`.
 2. L'OWNER ne peut pas être retiré de sa campagne (MVP : blocage).
 3. Un `UserId` ne peut avoir qu'un seul `CampaignMembership` actif par campagne.
-4. Un token d'`Invitation` est globalement unique.
-5. Un token de `GuestAccess` est globalement unique.
+4. L'identifiant porté par le lien d'invitation est globalement unique.
+5. L'identifiant porté par le lien d'accès invité est globalement unique.
 6. Un utilisateur FREE ne peut pas créer une 4e campagne active — la création est bloquée avec invitation à upgrader.
 7. Une `Campaign` avec `status = FROZEN` refuse toute écriture (lecture seule). Seule `Unfreeze()` est autorisée.
 8. Un `GuestAccess` avec `status = CONVERTED` ne peut plus être utilisé pour accéder à la campagne.
 9. Un `GuestAccess` avec `status = EXPIRED` ou `REVOKED` ne donne plus accès.
-10. Un `CharacterId` ne peut être associé qu'à un seul `CampaignMembership` actif à la fois dans une campagne (RB-11-18).
+10. Un `DocumentId` référençant un personnage ne peut être associé qu'à un seul `CampaignMembership` actif à la fois dans une campagne (RB-11-18). Le `DocumentId` associé doit référencer un `Document` de type `player_character` — cette validation est appliquée à l'écriture dans l'invariant de domaine de `CampaignMembership`. La même contrainte s'applique au champ `characterId` de `GuestAccess` : le `DocumentId` fourni doit également référencer un `Document` de type `player_character`.
 
 ---
 
@@ -214,6 +216,8 @@ depuis Session Conduct par son token.
 6. Quand `AccountTierChanged` (PRO → FREE) et que le MJ propriétaire a > 3 campagnes ACTIVE : les campagnes excédentaires sont gelées dans l'ordre de création (les plus récentes en premier).
 7. L'archivage est manuel et définitif (MVP). Une campagne archivée est en lecture seule.
 8. Un one-shot peut avoir simultanément des `CampaignMembership` (joueurs avec compte) et des `GuestAccess` (joueurs sans compte).
+9. Lors de la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) cessent immédiatement d'être utilisées et affichées — plus aucune finalité produit. Leur effacement effectif intervient au plus tard 90 jours après la fin d'accès, fenêtre bornée dont la seule finalité est l'exercice des droits de l'invité et le traitement des contestations (RGPD Art. 5(1)(e) — limitation de la conservation). Si l'invité a été converti en compte, ses données suivent les règles du compte.
+10. À la fin définitive d'un `GuestAccess` non converti, les notes `PLAYER_PRIVATE` créées par cet invité sont supprimées physiquement — uniquement les siennes, jamais celles d'autres participants. Cette suppression répond à la même obligation légale que l'effacement des notes à la suppression d'un compte (RGPD Art. 17 ; cohérence avec le domaine Identity & Access).
 
 ---
 
@@ -226,7 +230,7 @@ depuis Session Conduct par son token.
 | `MemberActivated` | `CampaignMembership.Activate()` | Session Conduct (autoriser l'accès en session), Application |
 | `MemberRemoved` | `Campaign.RemoveMember()` | Session Conduct (retirer l'accès actif si session en cours) |
 | `InvitationCreated` | `Campaign.CreateInvitation()` | Application (fourniture du lien au MJ) |
-| `InvitationRevoked` | `Campaign.RevokeInvitation()` | Identity & Access (invalider le token immédiatement) |
+| `InvitationRevoked` | `Campaign.RevokeInvitation()` | Identity & Access (invalider le lien d'invitation immédiatement) |
 | `CharacterAssociated` | `Campaign.AssociateCharacter()` | Session Conduct (accès aux notes PLAYER_PRIVATE du personnage) |
 | `CampaignFrozen` | `Campaign.Freeze()` | Application (notification au MJ) |
 | `CampaignUnfrozen` | `Campaign.Unfreeze()` | Application (notification au MJ) |

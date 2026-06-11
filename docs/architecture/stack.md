@@ -1,10 +1,12 @@
 # Stack technique — Haversack
 
+> **Note de couches documentaires** : document de sélection technologique (couche décision). Déplacé de `docs/conception/` vers `docs/architecture/` le 2026-06-10 (finding CP-02, décision opérateur). Voir [ADR-003](decisions/ADR-003-stack-front.md) pour la trace de la décision landing + application.
+
 ## Vue d'ensemble
 
 | Couche | Technologie |
 |---|---|
-| Landing page | Next.js (React, SSR/SSG) |
+| Landing page | Angular (SSR/prerender) |
 | Application web | Angular (SPA) |
 | Backend | ASP.NET Core (.NET / C#) |
 | Base de données | PostgreSQL |
@@ -21,38 +23,41 @@ Haversack.Infrastructure.Persistence
 Haversack.Infrastructure.Notifications
 Haversack.Api
 ```
-> [Détail complet de la structure des projets](../architecture/06-structure-projets.md)
+> [Détail complet de la structure des projets](06-structure-projets.md)
 
 ---
 
-## Landing page — Next.js
+## Landing page — Angular (SSR/prerender)
 
 ### Pourquoi
 
-Next.js a été retenu parce que la landing page a des besoins opposés à ceux de l'application : SEO, performance au premier chargement, peu d'interactivité. Un SPA Angular serait inadapté à ce cas.
+La landing page partage un écosystème unique avec l'application : Angular pour les deux surfaces. Cette décision élimine une dette structurelle (deux frontends, deux pipelines, deux styles de composants) disproportionnée pour une équipe solo. L'équipe réutilise la même charte graphique, les mêmes composants, et gère une seule stack JavaScript/TypeScript. Le prerender statique offre les mêmes bénéfices SEO qu'une approche React/Next.js.
 
 ### Points forts
 
-- SSR et SSG natifs — pages indexables, chargement rapide
-- Ecosystem React mature pour les composants marketing (animations, sections, formulaires)
-- Déploiement simple sur Vercel ou autre plateforme edge
-- Peut accueillir un blog, un changelog ou une documentation publique sans changement d'outil
+- Un seul écosystème front à maintenir — réduction de la complexité et des dépendances
+- Réutilisation de la charte graphique et des composants entre landing et application
+- Prerender statique (SSG) : pages indexables, chargement rapide, déploiement sur CDN sans surcharge serveur
+- Pas de double pipeline de build ni de friction liée à deux styles de développement
+- Infrastructure de présentation partagée — évolution cohérente et unifiée
 
 ### Points faibles
 
-- Deux frontends à maintenir (Next.js + Angular) — dette organisationnelle dès le départ
-- Stack React distincte de l'app Angular — pas de partage de composants possible entre les deux
+- Effort de configuration du SSR/prerender : routes statiques, hydratation Angular, garantir la cohérence entre build statique et navigation client
+- Bundle Angular hérité par la landing — budget de performance I-04 s'applique également à la landing
+- Moins flexible qu'une approche multi-écosystème si des besoins radicalement différents émergent (mais scenario non retenu au MVP)
 
 ### Ce qu'elle permet dans le futur
 
-- Ajouter un blog de contenu (SEO JDR) pour l'acquisition organique
-- Pages de documentation publique ou de présentation des fonctionnalités
-- A/B testing de landing avec des outils comme Vercel Analytics
+- Ajouter du contenu dynamique via SSR (pas SSG) si des éléments de la landing doivent être mis à jour sans rebuild statique
+- Blog de contenu ou documentation intégrés partageant composants et styles avec l'app
+- Extensibilité sans changement d'outillage ou d'équipe de compétences
 
 ### Limitations
 
-- Totalement découplé de l'app — toute navigation entre la landing et l'app passe par un lien externe
-- Duplication possible de certains éléments visuels (couleurs, composants) si la charte graphique évolue
+- Landing et application partagent le même runtime — toute régression Angular affecte les deux surfaces
+- SSG MVP limite le contenu dynamique — évolution future nécessiterait passage au SSR avec ses coûts serveur
+- Configuration initiale du prerender plus complexe que Next.js clé en main
 
 ---
 
@@ -124,7 +129,7 @@ ASP.NET Core est un choix naturel pour une architecture DDD + Clean Architecture
 
 ### Pourquoi
 
-PostgreSQL supporte nativement la recherche plein texte (FTS), le JSONB pour les blocs de contenu (`DOCUMENT_BLOCK.value`), et les UUID. 
+PostgreSQL supporte nativement la recherche plein texte (FTS), le JSONB pour les blocs de contenu (`DOCUMENT_BLOCK.content`), et les UUID. 
 
 ### Points forts
 
@@ -171,7 +176,7 @@ Pour un Micro-SaaS avec un seul développeur en phase MVP, un monolithe modulair
 
 **Remplacement d'infrastructure** — changer de provider email, migrer vers Elasticsearch, ajouter un cache Redis : aucune modification du domaine ou de l'application.
 
-> Détail complet : [06-structure-projets.md](../architecture/06-structure-projets.md)
+> Détail complet : [06-structure-projets.md](06-structure-projets.md)
 
 ### Limitations
 

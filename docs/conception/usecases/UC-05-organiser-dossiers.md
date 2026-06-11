@@ -1,4 +1,4 @@
-# UC-05 — Organiser le contenu en dossiers
+# UC-05 — Organiser par dossiers
 
 ## Acteur principal
 

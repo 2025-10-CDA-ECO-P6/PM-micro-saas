@@ -27,7 +27,7 @@ il dépend du Core, qui est une dépendance stable et agnostique.
 
 ### IDs typés
 
-Tous les identifiants sont des types forts (wrappers sur `Guid`) pour éviter les confusions entre IDs de natures différentes.
+Tous les identifiants sont des types forts encapsulant un identifiant unique global pour éviter les confusions entre IDs de natures différentes.
 
 | Type | Utilisé dans |
 |---|---|
@@ -70,7 +70,7 @@ Tous les identifiants sont des types forts (wrappers sur `Guid`) pour éviter le
 | Machine d'états de Session | Session Conduct | Logique LIVE→CLOSED→ARCHIVED |
 | Documents de type `LIVE_NOTE`, documents épinglés de session | Session Conduct | Concepts de session uniquement |
 | `Invitation` | Campaign Management | Spécifique à l'accès campagne |
-| Moteur de recherche (FTS) | Application / Infrastructure | PostgreSQL FTS — pas du domaine |
+| Moteur de recherche | Application / Infrastructure | La recherche plein texte est une préoccupation d'infrastructure, pas du domaine |
 | Toute entité avec un ID propre | Son bounded context propriétaire | Le Core ne contient jamais d'entités |
 
 ---

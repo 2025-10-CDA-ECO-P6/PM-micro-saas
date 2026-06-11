@@ -37,7 +37,7 @@ Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11
 
 - **Campaign Management** — gère les `Member`, les associations joueur-personnage, le personnage actif.
 - **Identity & Access** — valide les tokens `GuestAccess` et `Member`, contrôle le périmètre d'accès.
-- **Bibliothèque de contenu** — fournit les documents `PUBLIC` et les fiches de personnage (`PlayerCharacter`).
+- **Bibliothèque de contenu** — fournit les documents `PUBLIC` et les fiches de personnage (Document de type `player_character`).
 
 ---
 
@@ -118,14 +118,14 @@ flowchart LR
 **Notes de conception** :
 - La vue joueur est rendue disponible dès que le `GuestAccess` ou le `Member` est actif (UC-09).
 - La fiche de personnage n'est visible que si le MJ a associé un personnage à ce joueur (US-11-04). Sans association, le joueur consulte uniquement les documents `PUBLIC`.
-- Les notes `PLAYER_PRIVATE` sont liées au personnage (`PlayerCharacter`), pas au `GuestAccess`. Un `GuestAccess` récupère les notes `PLAYER_PRIVATE` du personnage associé, y compris celles d'une session précédente.
+- Les notes `PLAYER_PRIVATE` sont liées au personnage (Document de type `player_character`), pas au `GuestAccess`. Un `GuestAccess` récupère les notes `PLAYER_PRIVATE` du personnage associé, y compris celles d'une session précédente.
 - Les documents `PUBLIC` sont fournis par la Bibliothèque de contenu et filtrés selon le périmètre d'accès (`SESSION` ou `CAMPAIGN`).
 - Un accès périmètre `SESSION` donne accès aux documents épinglés de la session et aux documents `PUBLIC` de la campagne, mais pas à l'historique complet du lore campagne (couvert par US-09-03).
 - Un accès périmètre `CAMPAIGN` (`Member`) donne accès à l'ensemble des documents `PUBLIC` de la campagne et à l'historique des sessions.
 
 **Règles métier** :
 - RB-12-01 : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` et les documents `PLAYER_PRIVATE` d'autres personnages sont invisibles.
-- RB-12-02 : Les notes `PLAYER_PRIVATE` sont liées au personnage (`PlayerCharacter`), pas à l'accès (`GuestAccess` ou `Member`). Elles persistent entre les sessions pour un même personnage.
+- RB-12-02 : Les notes `PLAYER_PRIVATE` sont liées au personnage (Document de type `player_character`), pas à l'accès (`GuestAccess` ou `Member`). Elles persistent entre les sessions pour un même personnage.
 - RB-12-03 : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
 - RB-12-04 : Un accès périmètre `SESSION` ne donne pas accès à l'historique complet des sessions et du lore de la campagne. Seuls les documents `PUBLIC` et les documents épinglés de la session sont visibles.
 - RB-12-05 : Un accès périmètre `CAMPAIGN` (`Member`) donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions passées.

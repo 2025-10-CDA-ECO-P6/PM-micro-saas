@@ -25,7 +25,7 @@ Le MJ partage un lien d'accès à une session ou à sa campagne avec ses joueurs
 ## Préconditions
 
 - Le MJ a un compte (au minimum gratuit) — le partage nécessite un backend.
-- Le MJ a généré un lien de session depuis UC-11 ou UC-08.
+- Le MJ a généré un lien de session ponctuel depuis la vue session ou le panneau membres (UC-06).
 
 ## Scénario nominal — Accès session ponctuel (sans compte)
 
@@ -71,6 +71,10 @@ Le MJ partage un lien d'accès à une session ou à sa campagne avec ses joueurs
 
 Le lien est mal formé ou ne correspond à aucune session. L'application affiche une page d'erreur sobre, sans révéler si la campagne existe.
 
+### E2 — Limite de joueurs du compte gratuit atteinte
+
+Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant d'un accès. Lorsqu'un 5e joueur tente d'accéder à la séance, son accès est refusé au moment de l'octroi. Le MJ est informé que la limite est atteinte et reçoit une invitation à passer `PRO` pour la lever. Le joueur surnuméraire voit un message sobre, sans information sur la campagne (même registre que le message de lien expiré).
+
 ## Postconditions
 
 - Le joueur accède aux informations partagées sans avoir créé de compte.
@@ -87,6 +91,9 @@ Le lien est mal formé ou ne correspond à aucune session. L'application affiche
   La seule différence est technique : il n'a pas de compte persistant.
 - La création d'un compte depuis l'accès invité migre l'accès sans perdre les notes déjà prises.
 - Le MJ avec un compte gratuit peut inviter jusqu'à 4 joueurs par session. Le compte Pro lève cette limite.
+- RB-09-18 : À la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) ne sont pas conservées au-delà — elles sont supprimées. Si l'invité a été converti en compte, ses données suivent les règles du compte (RGPD Art. 5(1)(e) — limitation de la conservation).
+- RB-09-19 : À la fin définitive d'un `GuestAccess` non converti, les notes `PLAYER_PRIVATE` créées par cet invité sont supprimées physiquement. Seules les notes créées par cet invité sont concernées, jamais celles d'autres participants (RGPD Art. 17 — droit à l'oubli, fondement identique à la suppression des notes à la suppression d'un compte).
+- RB-09-20 : Au moment où l'invité saisit son nom d'affichage (avant ou à l'entrée en session), il est informé de manière simple de ce qui est conservé (son nom d'affichage, ses notes privées éventuelles), pour combien de temps (durée de l'accès + grâce), et de leur suppression à la fin de l'accès (RGPD Art. 13 — information de la personne concernée).
 
 ## Critères d'acceptation
 

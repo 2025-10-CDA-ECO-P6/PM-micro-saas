@@ -91,18 +91,21 @@ demandée. Un compte joueur reste possible pour conserver un accès persistant e
 pas les jets de dés, les combats ou les mécaniques. Cette décision réduit la complexité
 et élargit la cible (D&D, Call of Cthulhu, Fate, Blades in the Dark, systèmes narratifs…).
 
-**Deux contextes de jeu de premier ordre.** Haversack reconnaît deux modes d'utilisation
+**Deux contextes de jeu de premier ordre — horizon produit.** Haversack reconnaît deux modes d'utilisation
 distincts qui ne partagent pas les mêmes besoins :
 
 - **Campagne** : plusieurs sessions, groupe stable, continuité narrative.
   Configuration initiale, gestion des membres, historique des sessions.
+  **Livré en MVP.**
 
 - **One-shot** : une seule session, joueurs potentiellement différents, aucune continuité.
-  Parcours express — un MJ peut lancer un one-shot en moins de 30 secondes depuis sa
-  bibliothèque de scénarios. Aucune configuration de campagne n'est demandée.
+  Parcours express (lancer en moins de 30 secondes depuis une bibliothèque de scénarios réutilisables, sans configuration de campagne)
+  — **hors première livraison**, trace d'arbitrage en section 5bis.
+  Un one-shot reste possible en MVP sous la forme d'une campagne à session unique (sans le parcours express).
+  Le contexte complet (parcours express + UC-13) dépend des scénarios réutilisables et arrive après validation du cœur produit.
 
 Le one-shot n'est pas une campagne dégradée. C'est un contexte de jeu à part entière,
-avec son propre point d'entrée dans l'application. Techniquement, les deux reposent sur
+qui disposera de son propre point d'entrée dans l'application. Techniquement, les deux reposent sur
 le même modèle de données — ce détail est invisible pour l'utilisateur.
 
 **Système de document générique.** Plutôt que des formulaires figés par type de contenu,
@@ -128,17 +131,25 @@ post-MVP qui s'appuie sur les types de document — voir [UC-HORS-MVP](../usecas
 
 ### 2.3 Ce que le MVP doit démontrer
 
-Pour valider le concept et justifier une suite, le MVP doit prouver que :
+Pour valider le concept et justifier une suite, le MVP doit démontrer cinq hypothèses auprès des utilisateurs réels. Chaque hypothèse reçoit un seuil chiffré et un délai d'observation — ces seuils sont calibrés pour une cohorte pilote restreinte (early adopters recrutés), révisables avant le lancement de l'observation, et constituent un gate GO/NO-GO objectif à l'issue de la période.
 
-1. Un MJ peut créer une campagne structurée et y retrouver ses informations sans friction
-   d'onboarding (pas de compte obligatoire au démarrage).
-2. La vue session apporte une valeur réelle pendant une partie — réduction du temps de
-   recherche, accès au contenu préparé, création à la volée.
-3. Le partage d'informations aux joueurs est plus fluide que les solutions actuelles
-   (Discord, Google Docs, papier).
-4. L'accès joueur sans compte n'est pas un frein à l'adoption du groupe entier.
-5. La conversion du mode local vers un compte payant se produit naturellement quand
-   le besoin de partage ou de cloud apparaît.
+**Important** : un seuil non atteint impose un constat explicite (réussite partielle, échec du pilier, ou hypothèse invalidée) — jamais une réinterprétation. Chaque hypothèse reste falsifiable : si le seuil n'est pas atteint dans le délai, l'hypothèse n'est pas démontrée.
+
+**Les instruments de constat** sont exclusivement ceux déjà inscrits au périmètre Must Have (section « Instrumentation de validation du MVP » de `moscow.md`) : activation préparation, activation vue session, activation partage, mesure d'usage anonyme en mode local, et entretiens utilisateurs.
+
+| # | Hypothèse | Seuil chiffré | Délai | Instrument de constat |
+|---|---|---|---|---|
+| **H1** | Un MJ peut créer une campagne structurée et y retrouver ses informations sans friction d'onboarding (pas de compte obligatoire au démarrage). | ≥ 60 % des MJ de la cohorte pilote qui ouvrent l'application atteignent **activation préparation** (campagne + premiers documents créés). | 14 jours après le premier usage. | Activation préparation (mesure d'usage anonyme). |
+| **H2** | La vue session apporte une valeur réelle pendant une partie — réduction du temps de recherche, accès au contenu préparé, création à la volée. | ≥ 50 % des MJ ayant atteint activation préparation atteignent **activation vue session** (session ouverte ET réellement utilisée en partie). Signal de valeur confirmé : ≥ 50 % d'entre eux l'utilisent sur 2 sessions ou plus. | 30 jours pour la première activation vue session. 60 jours pour le signal de répétabilité (2 sessions+). | Activation vue session (mesure d'usage anonyme) + entretiens pour raison de non-adoption. |
+| **H3** | Le partage d'informations aux joueurs est plus fluide que les solutions actuelles (Discord, Google Docs, papier). | ≥ 40 % des MJ ayant animé une session avec joueurs atteignent **activation partage** (document partagé + au moins un joueur l'a consulté). La perception « plus fluide » est confirmée en entretien : ≥ 3 MJ sur 5 interrogés rapportent une fluidité supérieure aux solutions actuelles. | 60 jours pour activation partage. Entretiens parallèles ou récapitulatifs. | Activation partage (mesure d'usage anonyme). Entretiens utilisateurs (guide existant). |
+| **H4** | L'accès joueur sans compte n'est pas un frein à l'adoption du groupe entier. | Sur les sessions où un partage a eu lieu, ≥ 70 % comptent au moins un joueur ayant effectivement consulté le contenu partagé. Les abandons à l'entrée (joueurs ne consultant pas) se vérifient en entretien — moins de 2 joueurs sur 10 rapportent avoir renoncé à l'étape d'entrée. | 60 jours. | Activation partage (mesure d'usage anonyme : taux de consultation côté joueur). Entretiens pour identifier les motifs d'abandon. |
+| **H5** | La conversion du mode local vers un compte cloud se produit naturellement quand le besoin de partage ou de sauvegarde apparaît. | ≥ 10 % des MJ actifs en mode local (activation préparation atteinte) créent un compte. Le déclencheur est constaté : intention de partager ou sauvegarde cloud (pas migration forcée). | 90 jours. | Mesure d'usage anonyme (passage du mode local au compte, constaté à la création du compte). Entretiens pour identifier le déclencheur explicite. |
+
+**Calibrage des seuils** : ces seuils reflètent les attentes pour une cohorte d'early adopters recrutés. Chaque seuil peut être ajusté avant le lancement de l'observation (jamais pendant) en fonction du profil réel de la cohorte ou de changements de périmètre produit.
+
+> **Conception d'interface — Support de démonstration de H2**
+> 
+> La démonstration de l'hypothèse H2 s'appuie sur une conception documentée de l'interface de la vue session. Les wireframes basse-fidélité, dérivés du parcours utilisateur (UJ-UC-06) et des critères d'acceptation des user stories, constituent un livrable au périmètre de la conception. Ils seront produits en session dédiée avec l'opérateur en fin de complétude de la conception, avant le jalon final (décision du 2026-06-10 — arbitrage T-09, audit conception pure 2026-06).
 
 ### 2.4 Fonctionnalités hors périmètre MVP
 
@@ -165,7 +176,7 @@ l'upgrade est une décision rationnelle déclenchée par un besoin concret.
 | Tier | Compte | Fonctionnalités | Limite |
 |---|---|---|---|
 | **Local** | Aucun | Préparation complète, vue session, création à la volée | Stockage navigateur (~50-100 Mo), pas de partage joueurs, 1 device |
-| **Gratuit** | Email + mot de passe | Cloud sync, partage joueurs, accès multi-device | 3 campagnes en cloud, 500 Mo |
+| **Gratuit** | Email + mot de passe | Cloud sync, partage joueurs, accès multi-device | 3 campagnes en cloud, 4 joueurs par session, 500 Mo |
 | **Pro** | Abonnement (~7 €/mois) | Tout le gratuit + illimité | Campagnes illimitées, 5 Go+ |
 
 **Déclencheurs naturels d'upgrade :**
@@ -215,6 +226,7 @@ Mode local (sans compte)
   ├── Campagne → Préparation (scénarios, notes, dossiers) → Vue session
   │                                                        └── Création à la volée
   └── One-shot → Sélection scénario (bibliothèque) → Vue session directe
+                   (post-MVP — voir 5bis)
 
 (optionnel) Création de compte → Cloud sync → Partage joueurs → Membres permanents
 ```
@@ -275,13 +287,47 @@ Typique pour les one-shots, les conventions, les groupes changeants.
 
 **Différenciants de Haversack :**
 
-- **Zéro friction au démarrage** — aucun compte pour commencer, données locales immédiates.
+- **Friction d'entrée nulle** — aucun compte pour commencer, données locales immédiates et toujours possédées par l'utilisateur (pas de compte requis pour conserver ses données en local). La possession est actionnable : le MJ peut exporter l'ensemble de sa campagne dans un format ouvert et la consulter hors de l'application.
 - **Vue session dédiée** — le seul outil centré sur le pilotage de session en temps réel.
 - **Agnostique au système de jeu** — fonctionne pour D&D, Call of Cthulhu, Fate, Blades,
   systèmes maison, systèmes narratifs sans imposer une structure.
-- **Partage sélectif** — le MJ révèle exactement ce qu'il veut, quand il le veut.
+- **Partage fluide** — le MJ contrôle ce qui est visible aux joueurs, document par document, et garde ses notes de préparation privées. L'ambition long terme est la granularité par joueur ou personnage, mais le MVP valide d'abord que le partage au groupe suffit à offrir une expérience plus fluide que les solutions actuelles.
 - **Accès joueur sans compte** — un lien, un nom, c'est tout.
 - **Organisation libre** — le MJ structure sa campagne à sa façon, pas à la façon de l'app.
+
+---
+
+## 5bis. Traces d'arbitrage vision ↔ périmètre MVP
+
+### Granularité du partage — arbitrage du 2026-06-10
+
+**Décision** : le MVP livre un **partage par document** — le MJ contrôle la visibilité document par document (tout-ou-tous), et aucune information de préparation privée n'est jamais exposée aux joueurs.
+
+**Raison d'être produit** : valider d'abord que le partage au groupe (sans secret intra-groupe) est plus fluide que les solutions actuelles et justifie l'adoption avant d'investir dans la granularité fine. La granularité fine ajoute par ailleurs une charge cognitive au MJ en pleine session et complique le contrôle de qui voit quoi — un coût injustifié tant que le flux de partage n'est pas validé.
+
+**Alternatives considérées** : livrer la granularité par joueur ou personnage dès le MVP — écartée, l'ambition est conservée comme horizon produit post-MVP.
+
+**Condition de retour** : si l'usage ou les entretiens avec les MJ révèlent que le partage à tout le groupe bloque des tables réelles (révélations destinées à un seul joueur, gestion des secrets entre joueurs trop rigide), la granularité par joueur ou personnage sera réexaminée.
+
+### Possession des données — arbitrage du 2026-06-10
+
+**Décision** : l'export de campagne est rehaussé en Should Have — le MJ peut exporter l'ensemble de sa campagne dans un format ouvert et la consulter hors de l'application.
+
+**Raison d'être produit** : le différenciant n°1 de la vision est la possession des données. Cette possession ne peut être qu'une affirmation sans une capacité concrète et actionnable. L'export matérialise la promesse de possession et répond aux douleurs de confiance (Thomas, Rémi) et au besoin de filet de sécurité du mode local.
+
+**Alternatives considérées** : reporter l'export en Could Have — rejeté car laisserait le différenciant « possession » sans matérialisation concrète.
+
+**Condition de retour** : aucune. C'est une promotion de priorité, non un report conditionné.
+
+### Contexte one-shot — arbitrage du 2026-06-10
+
+**Décision** : le MVP cible d'abord les campagnes. Le one-shot complet — parcours express, scénarios réutilisables, UC-13 — est explicitement hors première livraison. L'ambition « deux contextes de premier ordre » reste l'horizon produit.
+
+**Raison d'être produit** : la validation du cœur du produit (préparation, vue session, partage, monétisation) passe par le contexte campagne, qui porte les personas principaux (Thomas, Émilie, Lucas, Antoine) et structure l'hypothèse de monétisation (membres stables, partage durable). Le one-shot complet dépend du catalogue de scénarios réutilisables — UC-13, une capacité entière qui est une construction post-MVP et ne conditionne pas la validation initiale. Un one-shot reste possible en MVP sous la forme d'une campagne à session unique, sans parcours express ni catalogue réutilisable.
+
+**Alternatives considérées** : rehausser UC-13 dans la première livraison pour livrer les deux contextes dès le MVP — écartée. L'arbitrage privilégie la solidité du contexte campagne et maintient l'ambition deux-contextes pour la suite, avec trace explicite de la condition de retour.
+
+**Condition de retour** : si les entretiens ou l'usage révèlent que le profil one-shot exclusif (Sonia — conventions, groupes changeants, catalogue de scénarios) est une part significative des utilisateurs réels ou un levier d'adoption, UC-13 est réexaminé en priorité de la vague suivante.
 
 ---
 

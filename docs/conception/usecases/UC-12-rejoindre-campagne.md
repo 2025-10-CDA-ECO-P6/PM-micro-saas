@@ -1,4 +1,4 @@
-# UC-12 — Rejoindre une campagne ou une session
+# UC-12 — Rejoindre une campagne (membre permanent avec compte)
 
 ## Acteur principal
 
@@ -10,39 +10,32 @@ MJ
 
 ## Objectif
 
-Permettre à un joueur de rejoindre facilement une campagne ou une session, avec ou sans compte.
+Permettre à un joueur de rejoindre une campagne de façon durable, en tant que membre permanent, en utilisant son compte.
 
 ## Contexte
 
-Le produit étant choisi par le MJ, l'expérience joueur doit être peu contraignante. Une obligation de création de compte peut devenir un frein à l'adoption.
+UC-12 couvre l'adhésion permanente à une campagne — accès à l'historique des sessions partagées, aux documents de lore visibles entre les parties, et persistance du lien joueur/campagne. Ce cas nécessite un compte joueur.
+
+L'accès ponctuel sans compte (session one-shot, invité temporaire) est couvert par UC-09 — Accès joueur sans compte.
 
 ## Besoin utilisateur
 
-Le joueur veut accéder rapidement à la campagne, à sa fiche et aux informations utiles sans configuration complexe.
+Le joueur régulier veut accéder à l'historique de la campagne entre les sessions et retrouver les informations que le MJ lui a partagées, sans perdre ce contexte d'une partie à l'autre.
 
 ## Déclencheur
 
-Le MJ invite un joueur à rejoindre une campagne ou une session.
+Le MJ invite un joueur à rejoindre la campagne de façon permanente via un lien d'invitation.
 
 ## Préconditions
 
 - Une campagne existe.
-- Le MJ a généré un lien ou un code d'invitation.
+- Le MJ a généré un lien ou un code d'invitation permanent.
+- Le joueur dispose d'un compte (ou le crée lors du parcours d'invitation — voir UC-10 A3).
 
-## Scénario nominal sans compte
-
-1. Le MJ génère un lien d'invitation.
-2. Le joueur ouvre le lien.
-3. Le système affiche une page de rejoindre.
-4. Le joueur saisit un pseudo.
-5. Le joueur rejoint la campagne ou la session comme invité.
-6. Le MJ associe l'accès invité à un personnage existant ou en crée un.
-7. Le joueur accède à sa fiche et aux informations partagées.
-
-## Scénario nominal avec compte
+## Scénario nominal — Rejoindre avec un compte existant
 
 1. Le joueur ouvre le lien d'invitation.
-2. Il se connecte ou crée un compte.
+2. Il se connecte à son compte.
 3. Il rejoint la campagne.
 4. Le MJ l'associe à un personnage.
 5. L'accès est conservé durablement sur son compte.
@@ -51,15 +44,15 @@ Le MJ invite un joueur à rejoindre une campagne ou une session.
 
 ### A1 — Lien expiré
 
-Le joueur ouvre un lien expiré. Le système affiche un message d'erreur et demande un nouveau lien.
+Le joueur ouvre un lien expiré. Le système affiche un message d'erreur et demande au MJ de générer un nouveau lien.
 
 ### A2 — Joueur en attente de validation
 
-Le joueur demande à rejoindre la campagne, mais le MJ doit valider son accès.
+Le joueur demande à rejoindre la campagne, mais le MJ doit valider son accès avant que l'adhésion soit effective.
 
-### A3 — Accès direct à une session
+### A3 — Joueur sans compte créant un compte pendant l'invitation
 
-Le joueur rejoint uniquement la session en cours, sans accès complet à la campagne.
+Un joueur sans compte suit le lien d'invitation et crée son compte dans le même parcours (voir UC-10 A3). À l'issue, il rejoint la campagne comme membre permanent.
 
 ## Exceptions
 
@@ -73,8 +66,8 @@ Le MJ refuse ou retire l'accès du joueur.
 
 ## Postconditions
 
-- Le joueur est associé à la campagne ou à la session.
-- Le joueur peut accéder aux informations autorisées.
+- Le joueur est membre permanent de la campagne.
+- Le joueur peut accéder aux informations autorisées, y compris l'historique des sessions partagées.
 - Le MJ peut gérer son association à un personnage.
 
 ## Données manipulées
@@ -85,38 +78,34 @@ Le MJ refuse ou retire l'accès du joueur.
 - Code ou token
 - Campagne associée
 - Date d'expiration
-- Type d'accès
+- Type d'accès (permanent)
 - Statut
 
-### Participant
+### Membre de campagne
 
-- Pseudo
-- Compte éventuel
+- Compte joueur associé
 - Rôle
 - Personnage associé
 
 ## Règles métier
 
+- UC-12 = adhésion permanente avec compte uniquement. L'accès sans compte relève de UC-09.
 - Le MJ contrôle les invitations.
-- Un joueur invité sans compte a un accès limité ou temporaire, sécurisé par token.
-- Pour agir comme un joueur complet, l'accès invité doit être associé à un personnage associé.
-- Les données personnelles joueur sont liées au personnage, pas à l'accès invité temporaire.
-- Un compte joueur permet un accès persistant.
-- Un joueur peut être associé à plusieurs personnages dans une même campagne ; il choisit le personnage actif
-  quand l'action ou la consultation dépend d'une fiche précise.
-- Le joueur ne voit que les informations partagées avec lui.
+- Un compte joueur est requis pour un accès persistant et l'accès à l'historique de campagne.
+- Les données personnelles joueur sont liées au personnage, pas à un accès invité temporaire.
+- Un joueur peut être associé à plusieurs personnages dans une même campagne ; il choisit le personnage actif quand l'action ou la consultation dépend d'une fiche précise.
+- Le joueur ne voit que les informations partagées avec lui par le MJ.
 
 ## Critères d'acceptation
 
-- Le MJ peut générer un lien d'invitation.
-- Un joueur peut rejoindre avec un pseudo sans compte.
-- Le MJ peut associer un joueur à un personnage.
-- Un joueur invité peut consulter sa fiche et les notes partagées.
+- Le MJ peut générer un lien d'invitation permanent.
+- Un joueur avec un compte peut rejoindre la campagne via le lien d'invitation.
+- Le MJ peut associer un joueur membre à un personnage.
+- Un joueur membre peut consulter sa fiche et les notes partagées, y compris l'historique.
 - Un lien expiré ne permet pas l'accès.
 
 ## Questions à valider en interview
 
-- La création de compte est-elle un frein pour les joueurs ?
 - Les MJ préfèrent-ils inviter par lien, code ou email ?
-- Les joueurs doivent-ils accéder à toute la campagne ou seulement à la session ?
+- Les joueurs doivent-ils accéder à toute la campagne ou seulement aux contenus partagés ?
 - Le MJ veut-il valider les entrées manuellement ?

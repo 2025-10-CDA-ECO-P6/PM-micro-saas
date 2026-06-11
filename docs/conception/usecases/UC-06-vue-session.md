@@ -31,7 +31,7 @@ Le MJ clique sur "Lancer la session" pour démarrer une nouvelle session (qui s'
 
 - Une campagne existe et le MJ y a accès.
 - Le MJ est membre `OWNER` ou `GM` de la campagne.
-- Le MJ est authentifié **ou** en mode local sans compte. La vue session MJ est disponible dans les deux cas. La vue joueur (partage, accès invité) nécessite un compte.
+- Le MJ est authentifié **ou** en mode local sans compte. La vue session MJ est disponible dans les deux cas. La vue joueur (partage, accès invité) nécessite un compte — en conséquence, aucune note de session de joueur ne peut exister en mode local.
 
 ## Scénario nominal — Lancement et navigation MJ
 
@@ -39,7 +39,7 @@ Le MJ clique sur "Lancer la session" pour démarrer une nouvelle session (qui s'
 
 1. Le MJ clique sur "Lancer une session" depuis la vue campagne.
 2. Il saisit un titre (et optionnellement sélectionne un scénario).
-3. Le système crée la session directement en statut `LIVE` (`Session.Start()`).
+3. Le système crée la session directement en statut `LIVE`.
 4. La vue session s'ouvre avec les panneaux configurés dans configuration de la vue session.
 
 ### Phase 2 — Vue session MJ (interface)
@@ -67,7 +67,7 @@ leurs lieux ou leurs scènes. Aucune structure n'est imposée par l'application.
 - Clic sur un document ouvre un panneau de consultation en lecture rapide.
 
 **Barre de recherche globale**
-- Recherche full-text dans tous les documents de la campagne accessibles au MJ.
+- Recherche dans l'ensemble du contenu textuel des documents de la campagne accessibles au MJ.
 - Résultats pondérés : éléments de la session active en premier.
 - Permet d'ouvrir un document dans un panneau latéral sans quitter la vue session.
 
@@ -138,7 +138,7 @@ Le MJ décide de rendre visible un document aux joueurs.
 
 1. Le MJ clique sur "Partager" sur un document.
 2. Le flux de partage s'exécute → **voir UC-08**.
-3. La visibilité du document passe à visible par les joueurs (opération l’action de partage dans la bibliothèque de contenu).
+3. La visibilité du document passe à visible par les joueurs (l'action de partage dans la bibliothèque de contenu).
 4. Le document est automatiquement épinglé dans documents épinglés de la session pour un accès rapide.
 5. Les joueurs voient immédiatement le document dans leur vue.
 
@@ -171,9 +171,9 @@ Le réseau est indisponible lors de la création d'une note.
 
 ### E2 — Accès non autorisé à la vue MJ
 
-Un joueur tente d'accéder à l'URL de la vue session MJ.
+Un joueur tente d'accéder à la vue session du MJ.
 
-- Le système refuse l'accès et retourne une erreur 403.
+- Le système refuse l'accès et le signale.
 - Le joueur est redirigé vers sa propre vue joueur pour la session active.
 
 ### E3 — Session non LIVE
@@ -226,7 +226,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 - blocs
 - Visibilité : visible par les joueurs, privé MJ ou personnelle joueur
 - Personnage associé, pour les notes personnelles joueur
-- `propriétés structurées.guestAccessId: string?` — renseigné si auteur = accès invité
+- `guestAccessId: GuestAccessId?` — renseigné si l'auteur est un accès invité
 - audit : auteur, date de création, date de modification
 - référence depuis la session : notes rattachées à la session
 
@@ -247,6 +247,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 
 - La vue session MJ est accessible uniquement au MJ de la campagne.
 - Les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées et leurs propres notes personnelle joueur.
+- **Mode local et vue joueur** : en mode local sans compte, il n'existe ni vue joueur ni accès invité — la vue session est utilisée par le MJ seul, et seules des notes de session du MJ peuvent exister. Toute participation de joueurs à une session présuppose un compte MJ.
 - **notes de session en session LIVE** :
   - MJ : peut créer des notes de session à tout moment pendant `LIVE`. Visibilité par défaut : privé MJ. Peut basculer en visible par les joueurs.
   - Joueur : peut créer des notes de session uniquement pendant une session `LIVE`. Visibilité par défaut : personnelle joueur, liée au personnage associé si renseigné.
@@ -254,11 +255,13 @@ La session a été créée sans `scenarioId` (session improvisée).
   - MJ : peut créer et modifier des notes de session rétroactives sur une session `CLOSED` (pour compléter ses notes après la partie).
   - Joueur : ne peut créer des notes de session que pendant `LIVE`.
 - Une `note de session` avec `visibility = personnelle joueur` est inaccessible au MJ, quelles que soient ses permissions de campagne.
-- Un joueur invité sans compte peut créer une note de session personnelle si son accès invité est associé à un personnage associé. La note reste récupérable lors d'une séance suivante via un nouveau lien sécurisé associé au même personnage.
+- Un joueur invité sans compte peut créer une note de session personnelle si son accès invité est associé à un personnage associé. La fiche du personnage associé reste ré-associable lors d'une séance suivante via un nouveau lien sécurisé vers le même personnage — ce qui permet à l'invité de retrouver le contexte de son personnage. En revanche, les notes personnelles (`PLAYER_PRIVATE`) prises par un invité non converti en compte ne survivent à la fin de son accès que s'il crée un compte avant cette fin (US-09-04, RB-09-14, RB-09-19) — voir RB-09-22 pour l'avertissement donné en temps utile.
 - Partager un document change sa `visibility` à visible par les joueurs dans la bibliothèque de contenu (opération permanente) — ce n'est pas un partage temporaire de session.
 - documents épinglés de la session est une liste modifiable manuellement à tout moment pendant une session `LIVE`.
 - La machine d'états `Session` est unidirectionnelle : `LIVE → CLOSED → ARCHIVED`.
 - Un document sans `visibility = visible par les joueurs` n'est pas visible dans la vue joueur, même s'il est épinglé dans la session.
+- **Validation d'usage** : il est possible de constater a posteriori qu'une session a été réellement utilisée pendant une partie (session ouverte ET interaction avec du contenu ou création de notes), de façon anonyme et sans accéder au contenu narratif lui-même. Ce constat permet de mesurer l'apport réel de la vue session pendant les parties.
+- **Lien de session ponctuel** : depuis la vue session, le MJ peut générer un lien de session ponctuel pour inviter des joueurs (accès immédiat, couvert par UC-09). La gestion des membres permanents et le lien de campagne permanent relèvent d'UC-11.
 
 ---
 
@@ -289,6 +292,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 
 - Les notes de session sont sauvegardées avec leur session associée.
 - documents épinglés de la session est persisté.
+- Il est possible de constater, pour une session donnée, qu'elle a été réellement utilisée en partie — sans accéder à son contenu narratif.
 
 ---
 
@@ -298,6 +302,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 |---|---|
 | [UC-05](UC-05-organiser-dossiers.md) — Organiser le contenu | Fournit documents, types, dossiers et tags utilisés en session |
 | [UC-08](UC-08-partager-information.md) — Partager une information | Appelé depuis UC-06 A4 |
+| [UC-09](UC-09-acces-session-joueur.md) — Accéder à une session en tant que joueur | Accès ponctuel aux sessions LIVE via lien généré depuis UC-06 |
 | [UC-14](UC-14-recherche.md) — Rechercher une information | Appelé depuis UC-06 A3 |
 | [UC-12](UC-12-rejoindre-campagne.md) — Rejoindre une campagne ou session | Alimente la vue joueur et les accès invités |
 | [UC-07](UC-07-creation-volee-session.md) — Créer à la volée | Appelé depuis UC-06 A2 |

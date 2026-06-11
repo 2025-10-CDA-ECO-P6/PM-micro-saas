@@ -149,7 +149,7 @@ flowchart LR
 - [ ] La session est créée avec le statut `LIVE`.
 - [ ] La vue session s'ouvre immédiatement avec les panneaux configuration de la vue session.
 - [ ] Le MJ peut lancer une session sans scénario associé (A1).
-- [ ] En mode local, la session est persistée en IndexedDB.
+- [ ] En mode local, la session reste accessible après fermeture et réouverture du navigateur.
 - [ ] La création est refusée si le titre est vide.
 
 ```gherkin
@@ -239,14 +239,14 @@ Scénario : La config persiste entre deux sessions
 - Les dossiers affichés correspondent aux dossiers mis en avant de configuration de la vue session. Les autres dossiers restent accessibles via la navigation secondaire ou la barre de recherche (UC-14).
 
 **Règles métier** :
-- RB-06-08 : Le MJ voit tous les documents de la campagne, quelle que soit leur visibilité.
+- RB-06-08 : Le MJ voit tous les documents de la campagne, quelle que soit leur visibilité, **sauf** les documents `PLAYER_PRIVATE` dont il n'est pas l'auteur — ceux-ci lui sont invisibles (ni lecture directe, ni énumération, ni métadonnées).
 - RB-06-09 : Un joueur ne voit que les documents partagés.
 - RB-06-10 : la conduite de session lit la bibliothèque de contenu — il n'en modifie pas le contenu.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut naviguer dans les dossiers configurés dans configuration de la vue session depuis la vue session.
 - [ ] Les documents sont affichés avec leur vue condensée (titre, type, propriétés du type de document si renseigné).
-- [ ] Le MJ voit tous les documents, y compris ceux non publics.
+- [ ] Le MJ voit tous les documents, y compris `GM_ONLY`, sauf les documents `PLAYER_PRIVATE` dont il n'est pas l'auteur.
 - [ ] Un joueur ne voit que les documents avec `visibility = visible par les joueurs`.
 - [ ] La navigation ne quitte pas la vue session.
 
@@ -272,10 +272,16 @@ Scénario : Le joueur ne voit pas les documents non publics
 **je veux** prendre des notes rapides pendant la session et choisir si elles sont visibles par les joueurs,  
 **afin de** tracer les événements importants et partager sélectivement avec ma table.
 
+**Mapping de visibilité (référence implémentation)** :
+- `privé MJ` dans ce document = `GM_ONLY` dans le domaine — lisible par `OWNER` et `GM`, invisible aux joueurs.
+- `personnelle joueur` / `note personnelle joueur` dans ce document = `PLAYER_PRIVATE` dans le domaine — auteur seul (`createdById` / `guest_access_id`), **MJ exclu** (ADR-014 §Frontière fondamentale).
+- `visible par les joueurs` dans ce document = `PUBLIC` dans le domaine.
+- Ces deux valeurs (`GM_ONLY` et `PLAYER_PRIVATE`) sont distinctes et non interchangeables : un document `GM_ONLY` est lisible par le MJ ; un document `PLAYER_PRIVATE` ne l'est pas — y compris pour `OWNER`/`GM`.
+
 **Notes de conception** :
 - Une note de session est un note de session dans la bibliothèque de contenu, référencé par notes rattachées à la session.
 - la conduite de session orchestre le moment de création et le rattachement à la session ; il ne possède pas le contenu des blocs.
-- Visibilité par défaut : privé MJ. Le MJ bascule manuellement en visible par les joueurs.
+- Visibilité par défaut : privé MJ (`GM_ONLY`). Le MJ bascule manuellement en visible par les joueurs (`PUBLIC`).
 - Une `note de session visible par les joueurs` est visible immédiatement par les joueurs connectés.
 - E1 (résilience réseau) : draft local si connexion perdue, synchronisation automatique au retour.
 - Les métadonnées spécifiques (personnage associé, `guestAccessId`) sont stockées dans `Document.propriétés structurées`.
@@ -433,7 +439,7 @@ Scénario : Le MJ archive une session CLOSED
 - RB-06-22 : La vue joueur nécessite un compte ou un accès invité — non disponible en mode local.
 - RB-06-23 : Le joueur voit uniquement les documents partagés et ses propres notes de session personnelle joueur.
 - RB-06-24 : Les notes de session privé MJ sont invisibles pour les joueurs.
-- RB-06-25 : Les notes de session personnelle joueur d'un joueur sont invisibles pour les autres joueurs et pour le MJ.
+- RB-06-25 : Tout document `PLAYER_PRIVATE` est invisible pour les autres joueurs et pour le MJ — quel que soit le type de document. Seul l'auteur du document (`createdById` ou `guest_access_id`) peut y accéder.
 
 **Critères d'acceptation** :
 - [ ] Un joueur avec un compte ou accès invité peut accéder à la vue joueur d'une session LIVE.
@@ -472,12 +478,12 @@ Scénario : Accès refusé sans compte ni accès invité
 
 **Notes de conception** :
 - Note de session personnelle, éventuellement associée au personnage du joueur.
-- Inaccessible au MJ — règle forte, même pour le rôle OWNER/GM.
+- Inaccessible au MJ — règle générale sur tout document `PLAYER_PRIVATE`, sans exception de type de document ni de rôle (y compris OWNER/GM).
 - Un joueur accès invité peut créer une note de session personnelle joueur s'il est associé à un personnage associé.
 - Création possible uniquement pendant une session `LIVE`.
 
 **Règles métier** :
-- RB-06-26 : Une note de session personnelle joueur est inaccessible au MJ, même OWNER/GM. Règle sans exception.
+- RB-06-26 : Tout document `PLAYER_PRIVATE` (y compris les `LIVE_NOTE` personnelle joueur) est inaccessible au MJ, même OWNER/GM. Règle sans exception, encodée dans `Document.CanBeReadBy()`.
 - RB-06-27 : Un joueur ne peut créer des notes de session que pendant une session LIVE.
 - RB-06-28 : Un joueur accès invité peut créer une note de session personnelle joueur s'il a un personnage associé associé.
 
@@ -529,7 +535,7 @@ Scénario : Joueur accès invité avec personnage associé
 - [ ] Une session `LIVE` interrompue reste en statut `LIVE`.
 - [ ] Le MJ peut retrouver la session LIVE depuis la campagne et la rejoindre.
 - [ ] Les notes de session créées avant l'interruption sont présentes.
-- [ ] En mode local, la session est restaurée depuis IndexedDB.
+- [ ] En mode local, une session interrompue est restaurée dans l'état laissé à la fermeture du navigateur.
 
 ```gherkin
 Scénario : Le MJ reprend une session après interruption

@@ -3,40 +3,40 @@
 ```mermaid
 classDiagram
     class Session {
-        +SessionId id
-        +CampaignId campaignId
-        +string title
+        +identifiant id
+        +identifiant campaignId
+        +texte title
         +SessionStatus status
-        +DocumentId scenarioId
-        +List~DocumentId~ pinnedDocumentIds
-        +List~DocumentId~ sessionNoteIds
-        +string summary
-        +DateTime startedAt
-        +DateTime closedAt
+        +identifiant scenarioId
+        +liste de identifiant pinnedDocumentIds
+        +liste de identifiant sessionNoteIds
+        +texte summary
+        +horodatage startedAt
+        +horodatage closedAt
         +AuditInfo auditInfo
-        +Start(campaignId, title, scenarioId?)$ Session
-        +Close() SessionClosed
-        +Archive() SessionArchived
-        +PinDocument(docId) DocumentPinned
-        +UnpinDocument(docId) DocumentUnpinned
-        +AttachNote(documentId) void
-        +UpdateSummary(text) void
+        +Start(campaignId, title, scenarioId?)$
+        +Close()
+        +Archive()
+        +PinDocument(docId)
+        +UnpinDocument(docId)
+        +AttachNote(documentId)
+        +UpdateSummary(text)
     }
 
     class SessionViewConfig {
-        +SessionViewConfigId id
-        +CampaignId campaignId
-        +List~SessionViewFolder~ focusedFolders
-        +DateTime updatedAt
-        +AddFolder(folderId, order) void
-        +RemoveFolder(folderId) void
-        +ReorderFolders(orderedFolderIds) void
+        +identifiant id
+        +identifiant campaignId
+        +liste de SessionViewFolder focusedFolders
+        +horodatage updatedAt
+        +AddFolder(folderId, order)
+        +RemoveFolder(folderId)
+        +ReorderFolders(orderedFolderIds)
     }
 
     class SessionViewFolder {
         <<valueObject>>
-        +FolderId folderId
-        +int order
+        +identifiant folderId
+        +entier order
     }
 
     class SessionStatus {
@@ -47,32 +47,32 @@ classDiagram
     }
 
     class SessionStarted {
-        +SessionId sessionId
-        +CampaignId campaignId
-        +DateTime occurredAt
+        +identifiant sessionId
+        +identifiant campaignId
+        +horodatage occurredAt
     }
 
     class SessionClosed {
-        +SessionId sessionId
-        +CampaignId campaignId
-        +DateTime occurredAt
+        +identifiant sessionId
+        +identifiant campaignId
+        +horodatage occurredAt
     }
 
     class SessionArchived {
-        +SessionId sessionId
-        +DateTime occurredAt
+        +identifiant sessionId
+        +horodatage occurredAt
     }
 
     class DocumentPinned {
-        +SessionId sessionId
-        +DocumentId documentId
-        +DateTime occurredAt
+        +identifiant sessionId
+        +identifiant documentId
+        +horodatage occurredAt
     }
 
     class DocumentUnpinned {
-        +SessionId sessionId
-        +DocumentId documentId
-        +DateTime occurredAt
+        +identifiant sessionId
+        +identifiant documentId
+        +horodatage occurredAt
     }
 
     Session --> SessionStatus

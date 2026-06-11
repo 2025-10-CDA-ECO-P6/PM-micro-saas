@@ -41,7 +41,7 @@ Chaque fichier contient quatre sections :
 | UC-07 | Création à la volée | Must Have | [UJ-UC-07](UJ-UC-07-creation-volee-session.md) | [US-UC-07](../user-stories/US-UC-07-creation-volee-session.md) |
 | UC-08 | Partager une information | Must Have | [UJ-UC-08](UJ-UC-08-partager-information.md) | [US-UC-08](../user-stories/US-UC-08-partager-information.md) |
 | UC-09 | Accès session joueur | Must Have | [UJ-UC-09](UJ-UC-09-acces-session-joueur.md) | [US-UC-09](../user-stories/US-UC-09-acces-session-joueur.md) |
-| UC-10 | Compte cloud | Should Have | [UJ-UC-10](UJ-UC-10-compte-cloud.md) | [US-UC-10](../user-stories/US-UC-10-compte-cloud.md) |
+| UC-10 | Compte cloud | Must Have | [UJ-UC-10](UJ-UC-10-compte-cloud.md) | [US-UC-10](../user-stories/US-UC-10-compte-cloud.md) |
 | UC-11 | Gérer les membres | Should Have | [UJ-UC-11](UJ-UC-11-gerer-membres-campagne.md) | [US-UC-11](../user-stories/US-UC-11-gerer-membres-campagne.md) |
 | UC-12 | Rejoindre une campagne | Should Have | [UJ-UC-12](UJ-UC-12-rejoindre-campagne.md) | [US-UC-12](../user-stories/US-UC-12-rejoindre-campagne.md) |
 | UC-13 | Scénario réutilisable | Should Have | [UJ-UC-13](UJ-UC-13-scenario-reutilisable.md) | [US-UC-13](../user-stories/US-UC-13-scenario-reutilisable.md) |

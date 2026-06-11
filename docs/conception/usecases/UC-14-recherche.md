@@ -30,6 +30,7 @@ Le MJ cherche une information pendant la préparation ou pendant une session.
 
 - Une campagne existe.
 - La campagne contient des données recherchables.
+- La recherche porte sur le contenu de la campagne tel qu'il est créé et organisé (documents, dossiers, types, tags — UC-04, UC-05).
 
 ## Scénario nominal
 

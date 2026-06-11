@@ -97,8 +97,16 @@ Un joueur dont l'accès invité a expiré ou été révoqué ne peut plus consul
 - Seul le MJ peut partager une information de campagne durable.
 - Un joueur ne peut consulter que les documents partagés et ses propres notes personnelles.
 - Le MJ peut retirer un partage via l’action de retrait du partage.
-- Le partage est durable : le document reste accessible entre les sessions jusqu'à retrait explicite.
-- Le partage sélectif par joueur ou personnage n'est pas dans le MVP.
+- Le partage est durable : le document reste accessible entre les sessions jusqu’à retrait explicite.
+- Le partage sélectif par joueur ou personnage n’est pas dans le périmètre MVP — voir l’arbitrage ci-dessous.
+
+### Arbitrage — Granularité du partage (2026-06-10)
+
+Le MVP livre un partage par document (le MJ rend un document visible pour l’ensemble des joueurs autorisés, ou le garde privé). Le partage sélectif par joueur ou personnage est reporté post-MVP.
+
+**Raison d’être** : valider en priorité que le partage au groupe (sans secret intra-groupe) améliore effectivement la fluidité de transmission des informations comparé aux solutions actuelles, avant d’investir dans la complexité d’une granularité fine.
+
+**Condition de retour** : si des tables réelles se heurtent à un blocage — révélations destinées à un seul joueur, gestion des secrets entre joueurs trop rigide — cette granularité sera réexaminée.
 
 ## Critères d'acceptation
 

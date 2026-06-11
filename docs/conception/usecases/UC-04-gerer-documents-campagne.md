@@ -1,4 +1,4 @@
-# UC-04 — Créer et gérer des documents de campagne modulaires
+# UC-04 — Gérer les documents d'une campagne
 
 ## Acteur principal
 

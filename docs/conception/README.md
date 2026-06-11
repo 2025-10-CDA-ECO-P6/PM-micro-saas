@@ -4,12 +4,45 @@ Index de toute la documentation de conception produit et domaine.
 
 ---
 
+## Sens de dépendance besoin ↔ décision
+
+### Filtre de nature : conception vs implémentation
+
+Avant d'ajouter une règle métier, un critère d'acceptation ou un invariant de domaine dans ces artefacts, appliquer le test suivant :
+
+**Cette décision contraint-elle le modèle de domaine ou une règle métier autoportante dès maintenant ?**
+
+- **Oui** → la règle appartient à la conception. L'ADR peut la motiver, jamais la remplacer. Elle est exprimée en langage de besoin, sans référence à un choix technologique ou d'implémentation.
+- **Non** → c'est un choix d'implémentation. Il n'a pas sa place dans cette couche.
+
+### Test d'autoportance : dépistage des inversions
+
+Masquer mentalement la mention d'un ADR ou d'une technologie dans une règle métier.
+
+- **La règle reste complète et compréhensible** → le lien est informatif. C'est l'usage sain : une règle de besoin renvoie vers un ADR pour justifier son arbitrage, pas pour la définir.
+- **La règle devient vide ou orpheline** → l'inversion est consommée. La substance vit dans l'ADR, pas dans le besoin. À corriger : rapatrier la règle en langage besoin, conserver l'ADR comme trace du raisonnement.
+
+### Motifs interdits — détection par balayage
+
+Deux motifs, détectables à la lecture dans les sections de règles métier, critères d'acceptation et invariants de domaine :
+
+1. **ADR cité comme source d'autorité** : formulations du type « voir ADR-XX », « résolu par ADR-XX », « conformément à ADR-XX » à l'intérieur d'une règle métier, quand masquer cette mention rend la règle incomplète. Le lien sain va dans le sens inverse : une règle métier autonome peut renvoyer vers un ADR qui l'a motivée.
+
+2. **Nom de technologie, infrastructure, API ou outil** : références à des noms d'interface applicative, de format de stockage, de protocole, de bibliothèque ou de mécanisme système, dans les sections de règles ou de critères. Exemple interdit : nommer la technologie de persistance du navigateur dans une règle. Exemple correct : « les données sont durables après fermeture du navigateur » (comportement observable).
+
+### Responsable et fréquence d'application
+
+Chaque contributeur applique ce balayage au fichier qu'il vient de modifier, **avant toute intégration**, pour vérifier qu'il n'a pas introduit l'un des deux motifs. Pas d'outillage imposé — la détection est manuelle et rapide (relecture guidée par les motifs).
+
+---
+
 ## Vision & Produit
 
 | Fichier | Contenu |
 |---|---|
 | [vision/vision-produit.md](vision/vision-produit.md) | Positionnement produit, acteurs, choix assumés, modèle de monétisation |
 | [vision/moscow.md](vision/moscow.md) | Matrice MoSCoW complète (Must / Should / Could / Won't Have) |
+| [nfr/](nfr/README.md) | Exigences non fonctionnelles produit, en langage besoin — un fichier détaillé par exigence (performance perçue, hors connexion, confidentialité, accessibilité, internationalisation) |
 
 ---
 
@@ -73,6 +106,14 @@ Parcours utilisateur pas à pas pour chaque use case, du point de vue des person
 
 ---
 
+## Parcours bout-en-bout
+
+Couture transverse des use cases du point de vue de chaque persona (les 7) : fil narratif de bout en bout, coutures inter-UC vérifiées, points de friction. Les UJ restent la source de vérité par use case ; les parcours les tissent.
+
+→ [Index des parcours](parcours/README.md)
+
+---
+
 ## Domaine DDD
 
 Modélisation Domain-Driven Design — 4 bounded contexts + shared kernel.
@@ -91,10 +132,11 @@ Modélisation Domain-Driven Design — 4 bounded contexts + shared kernel.
 
 ## Stack technique
 
-→ [stack.md](stack.md) — Choix technologiques, justifications, points forts/faibles, roadmap clients
+→ [docs/architecture/stack.md](../architecture/stack.md) — Choix technologiques, justifications, points forts/faibles, roadmap clients. Document de couche décision, déplacé vers `docs/architecture/` (CP-02).
 
 ---
 
 ## Autres
 
+- [glossaire.md](glossaire.md) — Glossaire du langage ubiquitaire (4 bounded contexts, termes écartés et équivalents retenus)
 - [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md) — Guide d'entretiens utilisateurs

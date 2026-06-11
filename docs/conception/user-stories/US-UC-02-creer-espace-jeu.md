@@ -163,11 +163,11 @@ Feature: Création d'une campagne
 
 **Règles métier**
 
-- RM-02-01-1 : Le nom est obligatoire pour créer une campagne. Description et système de jeu sont facultatifs.
-- RM-02-01-2 : L'espace créé appartient à un seul propriétaire avec le rôle `MemberRole.OWNER`.
-- RM-02-01-3 : Les 4 dossiers système (Personnages, Joueurs, Scénarios, Notes) sont créés automatiquement. Ils sont non-supprimables mais renommables.
-- RM-02-01-4 : Un espace créé sans système de jeu est en mode générique — comportement recommandé par défaut.
-- RM-02-01-5 : Un espace créé en mode local est pleinement fonctionnel, au même titre qu'un espace cloud.
+- RB-02-01 : Le nom est obligatoire pour créer une campagne. Description et système de jeu sont facultatifs.
+- RB-02-02 : L'espace créé appartient à un seul propriétaire avec le rôle `MemberRole.OWNER`.
+- RB-02-03 : Les 4 dossiers système (Personnages, Joueurs, Scénarios, Notes) sont créés automatiquement. Ils sont non-supprimables mais renommables.
+- RB-02-04 : Un espace créé sans système de jeu est en mode générique — comportement recommandé par défaut.
+- RB-02-05 : Un espace créé en mode local est pleinement fonctionnel, au même titre qu'un espace cloud.
 
 **Notes de conception**
 
@@ -216,10 +216,10 @@ Feature: Lancement d'un one-shot en parcours express
 
 **Règles métier**
 
-- RM-02-02-1 : Un one-shot est techniquement une campagne avec type one-shot. Cette distinction n'est pas exposée à l'utilisateur.
-- RM-02-02-2 : Pour un one-shot avec nouveau scénario, le titre est le seul champ obligatoire.
-- RM-02-02-3 : L'archivage d'un one-shot est manuel, comme pour une campagne.
-- RM-02-02-4 : Un espace archivé n'est pas supprimé définitivement.
+- RB-02-06 : Un one-shot est techniquement une campagne avec type one-shot. Cette distinction n'est pas exposée à l'utilisateur.
+- RB-02-07 : Pour un one-shot avec nouveau scénario, le titre est le seul champ obligatoire.
+- RB-02-08 : L'archivage d'un one-shot est manuel, comme pour une campagne.
+- RB-02-09 : Un espace archivé n'est pas supprimé définitivement.
 
 **Notes de conception**
 
@@ -280,11 +280,11 @@ Feature: Blocage à la limite de campagnes actives
 
 **Règles métier**
 
-- RM-02-03-1 : Un utilisateur gratuit ne peut pas avoir plus de 3 campagnes actives simultanément. Cet règle stable est vérifié côté dans la gestion de campagne.
-- RM-02-03-2 : En mode local, le cap à 3 campagnes est une règle d’interface (pas un règle stable). Le message est distinct de celui du compte gratuit.
-- RM-02-03-3 : Le message de blocage est contextuel : il distingue le mode local (invitation à créer un compte) du compte gratuit (invitation à passer en PRO).
-- RM-02-03-4 : Les campagnes archivées ne comptent pas dans le quota actif.
-- RM-02-03-5 : Un utilisateur PRO ne rencontre jamais ce blocage.
+- RB-02-10 : Un utilisateur gratuit ne peut pas avoir plus de 3 campagnes actives simultanément. Cet règle stable est vérifié côté dans la gestion de campagne.
+- RB-02-11 : En mode local, le cap à 3 campagnes est une règle d’interface (pas un règle stable). Le message est distinct de celui du compte gratuit.
+- RB-02-12 : Le message de blocage est contextuel : il distingue le mode local (invitation à créer un compte) du compte gratuit (invitation à passer en PRO).
+- RB-02-13 : Les campagnes archivées ne comptent pas dans le quota actif.
+- RB-02-14 : Un utilisateur PRO ne rencontre jamais ce blocage.
 
 **Notes de conception**
 
@@ -340,9 +340,9 @@ Feature: One-shot depuis un scénario de bibliothèque
 
 **Règles métier**
 
-- RM-02-04-1 : Lors d'un one-shot depuis scénario existant, le nom de l'espace est pré-rempli avec le titre du scénario.
-- RM-02-04-2 : La redirection est directe vers la vue session (UC-06) — aucune étape intermédiaire.
-- RM-02-04-3 : Le quota de campagnes actives est vérifié de la même façon que pour les autres créations.
+- RB-02-15 : Lors d'un one-shot depuis scénario existant, le nom de l'espace est pré-rempli avec le titre du scénario.
+- RB-02-16 : La redirection est directe vers la vue session (UC-06) — aucune étape intermédiaire.
+- RB-02-17 : Le quota de campagnes actives est vérifié de la même façon que pour les autres créations.
 
 **Notes de conception**
 

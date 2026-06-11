@@ -3,65 +3,65 @@
 ```mermaid
 erDiagram
     FOLDER {
-        uuid id PK
-        uuid campaign_id "ref Campaign Management"
-        uuid parent_folder_id FK "nullable — self-ref"
-        string name
-        bool is_system
-        bool is_virtual
-        uuid default_document_type_id FK "nullable"
-        uuid default_template_document_id FK "nullable — ref documents.id"
-        datetime created_at
-        datetime updated_at
-        uuid created_by_id "ref users.id"
+        identifiant id PK
+        identifiant campaign_id "ref Campaign Management"
+        identifiant parent_folder_id FK "nullable — self-ref"
+        texte name
+        booléen is_system
+        booléen is_virtual
+        identifiant default_document_type_id FK "nullable"
+        identifiant default_template_document_id FK "nullable — ref documents.id"
+        horodatage created_at
+        horodatage updated_at
+        identifiant created_by_id "ref users.id"
     }
 
     DOCUMENT_TYPE {
-        uuid id PK
-        string slug "unique — ex: scenario, scene, npc"
-        string name
-        json properties_schema "nullable"
-        bool is_system
-        uuid campaign_id "nullable — null pour types système"
-        datetime created_at
+        identifiant id PK
+        texte slug "unique — ex: scenario, scene, npc"
+        texte name
+        structure properties_schema "nullable"
+        booléen is_system
+        identifiant campaign_id "nullable — null pour types système"
+        horodatage created_at
     }
 
     DOCUMENT {
-        uuid id PK
-        uuid campaign_id "ref Campaign Management"
-        uuid folder_id FK
-        string title
-        uuid document_type_id FK "nullable"
-        json properties "nullable"
-        string visibility "PUBLIC | GM_ONLY | PLAYER_PRIVATE"
-        string slug
-        bool is_reusable
-        uuid source_document_id FK "nullable — self-ref"
-        bool is_deleted
-        datetime deleted_at "nullable"
-        datetime created_at
-        datetime updated_at
-        uuid created_by_id "ref users.id"
+        identifiant id PK
+        identifiant campaign_id "ref Campaign Management"
+        identifiant folder_id FK
+        texte title
+        identifiant document_type_id FK "nullable"
+        structure properties "nullable"
+        texte visibility "PUBLIC | GM_ONLY | PLAYER_PRIVATE"
+        texte slug
+        booléen is_reusable
+        identifiant source_document_id FK "nullable — self-ref"
+        booléen is_deleted
+        horodatage deleted_at "nullable"
+        horodatage created_at
+        horodatage updated_at
+        identifiant created_by_id "ref users.id"
     }
 
     DOCUMENT_BLOCK {
-        uuid id PK
-        uuid document_id FK
-        int order
-        string type "TEXT | TABLE | IMAGE | DIVIDER"
-        json content
-        bool is_locked
+        identifiant id PK
+        identifiant document_id FK
+        entier order
+        texte type "TEXT | TABLE | IMAGE | DIVIDER"
+        structure content
+        booléen is_locked
     }
 
     DOCUMENT_LINK {
-        uuid source_document_id PK,FK
-        uuid target_document_id PK,FK
-        int order
+        identifiant source_document_id PK,FK
+        identifiant target_document_id PK,FK
+        entier order
     }
 
     DOCUMENT_TAG {
-        uuid document_id PK,FK
-        string tag PK
+        identifiant document_id PK,FK
+        texte tag PK
     }
 
     FOLDER ||--o{ DOCUMENT : "contient"

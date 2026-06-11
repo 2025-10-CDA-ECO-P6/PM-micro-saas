@@ -163,4 +163,19 @@ Thomas commence une campagne Blades in the Dark. Les dossiers système lui sembl
 - User stories associées : [`US-UC-05-organiser-contenu-dossiers.md`](../user-stories/US-UC-05-organiser-contenu-dossiers.md)
 - Conception source : la bibliothèque de contenu : [`docs/conception/domain/content-library.md`](../domain/content-library.md)
 - UC-04 Documents de campagne (déplacement de documents) : [`docs/conception/user-journeys/UJ-UC-04-gerer-documents-campagne.md`](UJ-UC-04-gerer-documents-campagne.md)
-- UC-13 Gérer les templates (création de documents statut de modèle réutilisable) : à venir
+
+---
+
+## Transitions inter-UC
+
+### Depuis UC-02 (création de l'espace de jeu)
+
+À la création d'une campagne (UC-02), les dossiers système — **Personnages**, **Joueurs**, **Scénarios**, **Notes** — et le dossier virtuel « Non classés » (non visible en navigation) sont créés automatiquement. UC-05 peut être déclenché immédiatement après : le MJ renomme, supprime ou crée des dossiers selon son système de jeu, avant même d'avoir créé son premier document. L'ordre entre la configuration des dossiers (UC-05) et la création des documents (UC-04) n'est pas imposé — les deux peuvent s'alterner librement.
+
+### Vers UC-04 (gestion des documents)
+
+L'organisation des dossiers dans UC-05 conditionne l'initialisation des documents créés dans UC-04. Lorsqu'un dossier porte un document réutilisable comme modèle par défaut, tout nouveau document créé depuis ce dossier est initialisé à partir d'une copie indépendante de ce modèle. La disponibilité de ce modèle dépend de UC-13 (Should Have — post-MVP) : en l'absence de UC-13, la liste des modèles disponibles est vide et l'association de modèle à un dossier n'est pas opérante. Les documents déjà créés dans un dossier ne sont jamais affectés par un changement de modèle par défaut du dossier.
+
+### Vers UC-06 (vue session)
+
+La `SessionViewConfig` de la campagne référence des dossiers parmi ceux gérés dans UC-05. Le MJ configure quels dossiers apparaissent dans les panneaux de la vue session depuis les paramètres de la campagne (hors session) ou depuis la vue session elle-même. Les dossiers renommés par Thomas dans UC-05 (par exemple, « Scoundrels » au lieu de « Personnages ») apparaissent avec leur nouveau nom dans les panneaux de la vue session — aucune resynchronisation n'est nécessaire. La suppression d'un dossier présent dans la `SessionViewConfig` retire ce dossier des panneaux configurés ; les documents déplacés vers « Non classés » restent accessibles via la recherche globale de la vue session.

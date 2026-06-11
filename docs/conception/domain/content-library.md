@@ -37,7 +37,7 @@ Le système n'impose aucune structure — il la rend possible.
 - Gérer les références entre documents (DocumentLink).
 - Créer les dossiers système à la création d'une campagne.
 - Gérer la réutilisabilité des documents (templates et instances).
-- Exposer les données pour la recherche full-text (PostgreSQL FTS).
+- Exposer les données nécessaires à la recherche plein texte.
 
 ## Ce que ce contexte ne fait PAS
 
@@ -46,7 +46,7 @@ Le système n'impose aucune structure — il la rend possible.
 | Droits d'accès à la campagne, membres | Campaign Management |
 | Déroulement de session, notes de session, partage en temps réel | Session Conduct |
 | Comptes utilisateurs | Identity & Access |
-| Moteur de recherche (infrastructure FTS) | Application / Infrastructure |
+| Moteur de recherche | Application / Infrastructure |
 
 ---
 
@@ -65,7 +65,7 @@ le document sans contraindre sa structure libre.
 | `folderId` | `FolderId` | Dossier parent |
 | `title` | `string` | |
 | `documentTypeId` | `DocumentTypeId?` | Optionnel — active les propriétés structurées |
-| `properties` | `JSON?` | Propriétés structurées selon le type (prévu dès MVP pour éviter une migration future) |
+| `properties` | `structure?` | Propriétés structurées selon le type (prévu dès MVP pour éviter une migration future) |
 | `blocks` | `DocumentBlock[]` | Contenu libre en blocs ordonnés |
 | `linkedDocuments` | `DocumentLink[]` | Références ordonnées vers d'autres Documents |
 | `visibility` | `Visibility` | `PUBLIC` \| `GM_ONLY` \| `PLAYER_PRIVATE` |
@@ -73,6 +73,8 @@ le document sans contraindre sa structure libre.
 | `slug` | `Slug` | Unique par `(campaignId, documentTypeId)` |
 | `isReusable` | `bool` | Ce document peut servir de template |
 | `sourceDocumentId` | `DocumentId?` | Renseigné si instancié depuis un template |
+| `characterId` | `DocumentId?` | Référence intra-module vers un Document de type `player_character` — personnage associé d'un LIVE_NOTE (promu depuis `properties`, ADR-002) |
+| `guestAccessId` | `GuestAccessId?` | Référence cross-module vers les accès invités (Campaign Management) — auteur invité d'un LIVE_NOTE quand `createdById` est null (promu depuis `properties`, ADR-002) |
 | `AuditInfo` | | `createdAt`, `updatedAt`, `createdById: UserId` |
 | `SoftDelete` | | `isDeleted`, `deletedAt` |
 
@@ -100,7 +102,7 @@ Unité atomique de contenu. L'ensemble des blocs d'un document forme son corps.
 | `id` | `DocumentBlockId` | |
 | `order` | `int` | Position dans le document |
 | `type` | `BlockType` | `TEXT` \| `TABLE` \| `IMAGE` \| `DIVIDER` … |
-| `content` | `JSON` | Contenu sérialisé selon le type de bloc |
+| `content` | `structure` | Contenu structuré selon le type de bloc |
 | `isLocked` | `bool` | Modélisé, valeur `false` par défaut, non activé MVP |
 
 ---
@@ -117,7 +119,7 @@ ou à n'importe quel document de pointer vers n'importe quel autre.
 | `order` | `int` | Position dans la liste des références |
 
 > **Note** : les backlinks (documents qui pointent vers un document donné) ne sont pas
-> stockés — ils sont calculés à la lecture via une requête sur `DocumentLink.targetDocumentId`.
+> stockés — ils sont calculés à la lecture via `DocumentLink.targetDocumentId`.
 
 ---
 
@@ -135,6 +137,7 @@ Conteneur organisationnel. Structure l'arborescence du contenu dans une campagne
 | `isVirtual` | `bool` | `true` pour le dossier "Non classés" — créé automatiquement par campagne, invisible dans la navigation MJ, non supprimable. Garantit que `folderId` reste non-nullable sur `Document`. |
 | `defaultDocumentTypeId` | `DocumentTypeId?` | Type proposé par défaut pour les nouveaux docs dans ce dossier |
 | `defaultTemplateDocumentId` | `DocumentId?` | Document réutilisable (`isReusable = true`) utilisé pour initialiser le contenu des nouveaux documents créés dans ce dossier. Optionnel. |
+| `order` | `int` | Ordre d'affichage dans le dossier parent. `0` par défaut. |
 | `AuditInfo` | | |
 
 **Dossiers système créés à `CampaignCreated`**
@@ -155,29 +158,28 @@ Conteneur organisationnel. Structure l'arborescence du contenu dans une campagne
 
 ### DocumentType (entité de référence)
 
-Types de documents disponibles dans la campagne. Les types système sont seedés en base.
-Les types personnalisés (Could Have) permettront au MJ de définir ses propres structures.
+Types de documents disponibles dans la campagne. Les types système sont fournis avec l'application
+et ne peuvent pas être modifiés. Les types personnalisés (Could Have) permettront au MJ de définir ses propres structures.
 
 | Champ | Type | Description |
 |---|---|---|
 | `id` | `DocumentTypeId` | |
 | `slug` | `string` | Identifiant technique unique (`scenario`, `scene`, `npc`, `location`, `note`, `player_character`, `live_note`, `reveal`) |
 | `name` | `string` | Nom affiché |
-| `propertiesSchema` | `JSON?` | Schéma des propriétés structurées (prévu pour les types custom futurs) |
+| `propertiesSchema` | `structure?` | Schéma des propriétés structurées (prévu pour les types custom futurs) |
 | `isSystem` | `bool` | Type built-in non modifiable |
 | `campaignId` | `CampaignId?` | `null` pour les types système, renseigné pour les types custom |
 
 > **Types système built-in** : `SCENARIO`, `SCENE`, `NPC`, `LOCATION`, `NOTE`, `PLAYER_CHARACTER`, `LIVE_NOTE`, `REVEAL`
 >
-> **Décision de conception** : table de référence plutôt qu'enum — prépare les types
-> personnalisés sans migration future.
+> **Décision de conception** : entité de référence plutôt que liste fermée — permet les types
+> personnalisés sans remettre en cause le modèle.
 
-**Schéma `properties` du type `live_note`**
+**Propriétés structurées du type `live_note`**
 
-| Propriété | Type | Description |
-|---|---|---|
-| `characterId` | `string?` | Personnage associé (notes PLAYER_PRIVATE joueur) |
-| `guestAccessId` | `string?` | Auteur invité sans compte (quand `createdById` est null) |
+> Les champs domaine `characterId` et `guestAccessId` du Document sont promus au niveau des champs de premier niveau (ADR-002) — ils ne font plus partie des propriétés structurées.
+
+*Aucune propriété structurée supplémentaire spécifique au type `live_note` n'est définie pour le MVP.*
 
 ---
 
@@ -241,7 +243,7 @@ Document (SCENE) "Entrée de la crypte"
 3. Les dossiers système (`isSystem = true`) sont le point de départ d'une campagne. Le MJ peut les renommer ou les supprimer librement — `isSystem` est informatif, pas restrictif.
 4. Un `Folder` avec `isVirtual = true` n'est pas supprimable et n'est pas affiché dans la navigation. Il en existe exactement un par campagne. Il reçoit tout document dont le dossier explicite a été supprimé.
 5. Le `slug` d'un Document est unique par `(campaignId, documentTypeId)`.
-6. Un Document `PLAYER_PRIVATE` n'est lisible que par son `createdById` et par les membres `OWNER` et `GM`.
+6. Un Document `PLAYER_PRIVATE` n'est lisible que par son auteur (`createdById` pour un membre, ou `guestAccessId` pour un invité). Les membres `OWNER` et `GM` n'y ont aucun accès — ni lecture directe, ni énumération, ni métadonnées. Cette règle s'applique aussi à la résolution transitive : un Document `PLAYER_PRIVATE` peut être retrouvé via son association à un personnage (`characterId`) ou un accès invité (`guestAccessId`), mais seul son auteur, via ces mêmes chemins de résolution, est autorisé à le lire. Le rôle d'un personnage ou la simple association à une LIVE_NOTE n'ouvre aucune lecture — l'invariant de confidentialité reste absolu, quel que soit le chemin d'accès (direct, via personnage, ou via invité).
 7. La suppression d'un `Folder` déplace ses Documents vers le dossier virtuel "Non classés" de la campagne, ou vers un autre dossier choisi par le MJ au moment de la suppression. Aucun Document n'est supprimé implicitement par la suppression de son dossier.
 8. Un Document avec `isReusable = false` ne peut pas être instancié.
 9. Une instance (`sourceDocumentId` renseigné) est totalement indépendante de son source après création.
@@ -253,10 +255,10 @@ Document (SCENE) "Entrée de la crypte"
 
 1. `visibility = PUBLIC` : le document est visible par tous les membres de la campagne et les GuestAccess actifs.
 2. `visibility = GM_ONLY` : visible uniquement par les membres `OWNER` et `GM`.
-3. `visibility = PLAYER_PRIVATE` : visible uniquement par le `createdById` et les membres `OWNER` et `GM`. **Exception** : pour les Documents de type `LIVE_NOTE` avec `visibility = PLAYER_PRIVATE`, le document n'est lisible que par son auteur (`createdById` ou `properties.guestAccessId`) — les membres `OWNER` et `GM` n'y ont pas accès (RB-06-25). Cette règle est encodée dans `Document.CanBeReadBy(userId, memberRole, documentType)` et non dans un service applicatif.
+3. `visibility = PLAYER_PRIVATE` : lisible uniquement par l'auteur du document — `createdById` pour un membre, `guestAccessId` pour un invité. Les membres `OWNER` et `GM` n'y ont aucun accès, quel que soit le type de document. Cette règle est encodée dans `Document.CanBeReadBy(userId, memberRole, documentType)` et non dans un service applicatif. La suppression en cascade (purge de campagne, ADR-011) n'est pas affectée — la confidentialité porte sur la lecture, pas sur la suppression administrative.
 4. Partager un document (`Share()`) change sa visibilité de façon permanente. Ce n'est pas un partage temporaire de session — le joueur peut y accéder entre les séances.
 5. L'instanciation d'un document réutilisable crée une copie profonde (blocs + liens + propriétés). Les modifications ultérieures du source n'affectent pas les instances.
-6. Les backlinks ne sont pas stockés — ils sont calculés en lecture par une requête sur `document_links.target_document_id`.
+6. Les backlinks ne sont pas stockés — ils sont calculés à la lecture via `DocumentLink.targetDocumentId`.
 7. Les types système (`isSystem = true`) ne peuvent pas être modifiés ni supprimés.
 8. Un document `REVEAL` lié à une scène est créé avec `visibility = GM_ONLY` par défaut. Il passe à `PUBLIC` uniquement via une action explicite du MJ en session (→ UC-08 — partage d'information). Ce passage est permanent jusqu'à `Unshare()`.
 9. Si un `Folder.defaultTemplateDocumentId` est défini, tout nouveau `Document` créé dans ce dossier est initialisé en appelant `Document.Instantiate()` sur le template. Si le template est supprimé, le champ passe à `null` — les documents existants ne sont pas affectés.
@@ -284,7 +286,7 @@ Document (SCENE) "Entrée de la crypte"
 
 | Événement | Source | Action |
 |---|---|---|
-| `CampaignCreated` | Campaign Management | Créer les 5 dossiers système (dont le dossier virtuel "Non classés") |
+| `CampaignCreated` | Campaign Management | Créer les 4 dossiers système visibles (Personnages, Joueurs, Scénarios, Notes) + 1 dossier virtuel technique (Non classés) |
 | `CampaignArchived` | Campaign Management | Passer tous les documents en lecture seule (soft-lock) |
 
 ### Ce que Content Library publie
@@ -297,7 +299,7 @@ Document (SCENE) "Entrée de la crypte"
 | Contexte | Usage |
 |---|---|
 | Session Conduct | `DocumentId` pour les documents sélectionnés, `DocumentLink` pour construire la vue session, `visibility` pour filtrer ce que les joueurs voient |
-| Campaign Management | `DocumentId` comme `characterId` dans `CampaignMembership` (référence logique sans FK physique) |
+| Campaign Management | Le personnage rattaché à un membre de campagne référence un Document de type `player_character` (référence directe inter-contextes — exception assumée, motivée par ADR-009) |
 
 ---
 

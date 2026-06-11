@@ -7,7 +7,7 @@ et ne font pas partie du modèle conceptuel de domaine.
 ```mermaid
 erDiagram
     USER {
-        uuid id PK "Partagé avec AspNetUsers.Id"
+        uuid id PK "Identifiant unique du compte"
         string email "Unique, normalisé en minuscules"
         string display_name "Nom d'affichage public"
         string status "ACTIVE | SUSPENDED | DELETED"
@@ -20,5 +20,3 @@ erDiagram
 > **Note** : Le mode local (sans compte) n'est pas représenté ici —
 > il n'y a pas de `User` en mode local. Les données locales vivent dans IndexedDB côté client.
 
-> **Note** : Les tables ASP.NET Identity (`AspNetUsers`, `AspNetUserTokens`, etc.) sont des
-> tables d'infrastructure. Elles ne font pas partie du modèle de domaine.

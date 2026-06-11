@@ -3,153 +3,151 @@
 ```mermaid
 classDiagram
     class Campaign {
-        +CampaignId id
-        +UserId ownerId
-        +string name
+        +identifiant id
+        +identifiant ownerId
+        +texte name
         +Slug slug
         +CampaignType type
         +CampaignStatus status
-        +List~CampaignMembership~ memberships
-        +List~Invitation~ invitations
-        +DateTime createdAt
-        +DateTime updatedAt
-        +Create(ownerId, name, type)$ CampaignCreated
-        +AddMember(userId, role) MemberJoined
-        +RemoveMember(userId) MemberRemoved
-        +CreateInvitation(type, scope, options) InvitationCreated
-        +RevokeInvitation(invitationId) InvitationRevoked
-        +AssociateCharacter(userId, characterId) CharacterAssociated
-        +Archive() CampaignArchived
-        +Freeze() CampaignFrozen
-        +Unfreeze() CampaignUnfrozen
+        +liste de CampaignMembership memberships
+        +liste de Invitation invitations
+        +horodatage createdAt
+        +horodatage updatedAt
+        +Create(ownerId, name, type)$
+        +AddMember(userId, role)
+        +RemoveMember(userId)
+        +CreateInvitation(type, scope, options)
+        +RevokeInvitation(invitationId)
+        +AssociateCharacter(userId, characterId)
+        +Archive()
+        +Freeze()
+        +Unfreeze()
     }
 
     class CampaignMembership {
-        +UserId userId
+        +identifiant userId
         +MemberRole role
         +MembershipStatus status
-        +List~CharacterId~ characterIds
-        +DateTime joinedAt
-        +Activate() MemberActivated
+        +liste de identifiant characterIds
+        +horodatage joinedAt
+        +Activate()
     }
 
     class Invitation {
-        +InvitationId id
-        +string token
+        +identifiant id
+        +texte token
         +InvitationType type
         +InvitationScope scope
-        +SessionId sessionId
-        +DateTime expiresAt
-        +int maxUses
-        +int usedCount
+        +identifiant sessionId
+        +horodatage expiresAt
+        +entier maxUses
+        +entier usedCount
         +InvitationStatus status
-        +DateTime createdAt
-        +Use() void
-        +Revoke() void
+        +horodatage createdAt
     }
 
     class GuestAccess {
-        +GuestAccessId id
-        +CampaignId campaignId
+        +identifiant id
+        +identifiant campaignId
         +GuestAccessScope scope
-        +SessionId sessionId
-        +string token
-        +string displayName
-        +CharacterId characterId
+        +identifiant sessionId
+        +texte token
+        +texte displayName
+        +identifiant characterId
         +GuestAccessStatus status
-        +DateTime expiresAt
-        +DateTime createdAt
-        +Create(campaignId, scope, sessionId)$ GuestAccessCreated
-        +SetDisplayName(name) void
-        +AssociateCharacter(characterId) void
-        +Expire() GuestAccessExpired
-        +Revoke() GuestAccessRevoked
-        +Convert(userId) GuestAccessConvertedToMember
+        +horodatage expiresAt
+        +horodatage createdAt
+        +Create(campaignId, scope, sessionId)$
+        +SetDisplayName(name)
+        +AssociateCharacter(characterId)
+        +Expire()
+        +Revoke()
+        +Convert(userId)
     }
 
     class CampaignCreated {
         <<domainEvent>>
-        +CampaignId campaignId
-        +UserId ownerId
+        +identifiant campaignId
+        +identifiant ownerId
         +CampaignType type
     }
 
     class MemberJoined {
         <<domainEvent>>
-        +CampaignId campaignId
-        +UserId userId
+        +identifiant campaignId
+        +identifiant userId
         +MemberRole role
     }
 
     class MemberActivated {
         <<domainEvent>>
-        +CampaignId campaignId
-        +UserId userId
+        +identifiant campaignId
+        +identifiant userId
     }
 
     class MemberRemoved {
         <<domainEvent>>
-        +CampaignId campaignId
-        +UserId userId
+        +identifiant campaignId
+        +identifiant userId
     }
 
     class InvitationCreated {
         <<domainEvent>>
-        +CampaignId campaignId
-        +InvitationId invitationId
-        +string token
+        +identifiant campaignId
+        +identifiant invitationId
+        +texte token
     }
 
     class InvitationRevoked {
         <<domainEvent>>
-        +CampaignId campaignId
-        +InvitationId invitationId
+        +identifiant campaignId
+        +identifiant invitationId
     }
 
     class CharacterAssociated {
         <<domainEvent>>
-        +CampaignId campaignId
-        +UserId userId
-        +CharacterId characterId
+        +identifiant campaignId
+        +identifiant userId
+        +identifiant characterId
     }
 
     class CampaignArchived {
         <<domainEvent>>
-        +CampaignId campaignId
+        +identifiant campaignId
     }
 
     class CampaignFrozen {
         <<domainEvent>>
-        +CampaignId campaignId
+        +identifiant campaignId
     }
 
     class CampaignUnfrozen {
         <<domainEvent>>
-        +CampaignId campaignId
+        +identifiant campaignId
     }
 
     class GuestAccessCreated {
         <<domainEvent>>
-        +GuestAccessId guestAccessId
-        +CampaignId campaignId
-        +string token
+        +identifiant guestAccessId
+        +identifiant campaignId
+        +texte token
     }
 
     class GuestAccessExpired {
         <<domainEvent>>
-        +GuestAccessId guestAccessId
+        +identifiant guestAccessId
     }
 
     class GuestAccessRevoked {
         <<domainEvent>>
-        +GuestAccessId guestAccessId
+        +identifiant guestAccessId
     }
 
     class GuestAccessConvertedToMember {
         <<domainEvent>>
-        +GuestAccessId guestAccessId
-        +UserId userId
-        +CampaignId campaignId
+        +identifiant guestAccessId
+        +identifiant userId
+        +identifiant campaignId
     }
 
     class CampaignType {
@@ -185,6 +183,19 @@ classDiagram
         SESSION
     }
 
+    class InvitationType {
+        <<enumeration>>
+        LINK
+        EMAIL
+    }
+
+    class InvitationStatus {
+        <<enumeration>>
+        ACTIVE
+        REVOKED
+        EXPIRED
+    }
+
     class GuestAccessStatus {
         <<enumeration>>
         ACTIVE
@@ -200,6 +211,8 @@ classDiagram
     CampaignMembership --> MemberRole
     CampaignMembership --> MembershipStatus
     Invitation --> InvitationScope
+    Invitation --> InvitationType
+    Invitation --> InvitationStatus
     GuestAccess --> GuestAccessStatus
     GuestAccess --> CampaignId
 

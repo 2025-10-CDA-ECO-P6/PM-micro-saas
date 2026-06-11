@@ -179,7 +179,31 @@ Nadia prépare une session de Dungeon World. Elle veut lancer en moins de 30 sec
 - User stories associées : [`US-UC-06-vue-session.md`](../user-stories/US-UC-06-vue-session.md)
 - Conception source : la conduite de session : [`docs/conception/domain/session-conduct.md`](../domain/session-conduct.md)
 - UC-05 Organiser le contenu : [`docs/conception/user-journeys/UJ-UC-05-organiser-contenu-dossiers.md`](UJ-UC-05-organiser-contenu-dossiers.md)
-- UC-07 Création à la volée : à venir
-- UC-08 Partage de document : à venir
-- UC-09 Accès invité / accès invité : à venir
-- UC-14 Recherche globale : à venir
+- UC-07 Création à la volée : [`docs/conception/user-journeys/UJ-UC-07-creation-volee-session.md`](UJ-UC-07-creation-volee-session.md)
+- UC-08 Partage de document : [`docs/conception/user-journeys/UJ-UC-08-partager-information.md`](UJ-UC-08-partager-information.md)
+- UC-09 Accès joueur sans compte : [`docs/conception/user-journeys/UJ-UC-09-acces-session-joueur.md`](UJ-UC-09-acces-session-joueur.md)
+- UC-14 Recherche globale : [`docs/conception/user-journeys/UJ-UC-14-recherche.md`](UJ-UC-14-recherche.md)
+
+---
+
+## Transitions inter-UC
+
+### Depuis UC-04 / UC-05 (préparation du contenu)
+
+La vue session (UC-06) consomme sans transformation le contenu préparé dans UC-04 (documents) et la structure de dossiers configurée dans UC-05. Les panneaux de la `SessionViewConfig` référencent des dossiers par leur identifiant — les documents qu'ils contiennent sont affichés tels quels, avec le nom de dossier actuel (renommages UC-05 inclus). La configuration des panneaux peut être faite avant la session (recommandé pour Thomas) ou ajustée en direct pendant la session `LIVE` sans l'interrompre. Un document préparé dans UC-04 avec `visibility = GM_ONLY` est visible uniquement dans la vue MJ ; il ne devient visible dans la vue joueur qu'après une action explicite de partage (UC-08).
+
+### Vers UC-07 (création à la volée)
+
+Depuis la vue session `LIVE`, le MJ peut créer un document ou une note sans quitter la vue session. UC-07 gère ce flux de création rapide ; le document résultant est un `Document` ordinaire au sens de UC-04, automatiquement épinglé dans `pinnedDocumentIds` de la session active. La visibilité par défaut du document créé à la volée est `GM_ONLY`. UC-07 retourne le contrôle à la vue session UC-06 sans transition visible pour le MJ.
+
+### Vers UC-08 (partage d'un document)
+
+Depuis la vue session `LIVE`, le MJ peut déclencher le partage d'un document via l'action « Partager » sur n'importe quel document visible. UC-08 gère la transition de `visibility = GM_ONLY` vers `PUBLIC` ; ce changement est **durable** au-delà de la session. En retour vers UC-06, le document partagé est automatiquement ajouté à `pinnedDocumentIds` de la session pour un accès rapide, et les joueurs ayant un `GuestAccess` actif ou un `CampaignMembership` voient immédiatement le document dans leur vue joueur. Cette transition UC-06 → UC-08 → UC-06 est transparente pour le MJ — il ne quitte pas la vue session.
+
+### Vers UC-09 (vue joueur)
+
+La vue joueur exposée par UC-09 est le pendant de la vue session MJ : elle affiche les documents `PUBLIC` de la campagne et les notes de session `PLAYER_PRIVATE` propres au joueur. La vue joueur est disponible uniquement si le MJ a un compte actif (mode local exclu — RB-01-06). Les joueurs accèdent à leur vue via un lien de session ponctuel (`GuestAccess`, portée `SESSION`) généré par le MJ depuis la vue session ou le panneau membres. Les documents que le MJ partage en session (UC-08) apparaissent dans la vue joueur en temps réel ; les documents restés `GM_ONLY` n'y sont jamais visibles même s'ils sont épinglés dans la session MJ.
+
+### Vers UC-14 (recherche globale)
+
+Depuis la vue session `LIVE`, le MJ dispose d'une barre de recherche globale pour retrouver un document non épinglé et non visible dans les panneaux configurés. Nadia cherche un PNJ spécifique au milieu d'une session sans quitter la vue session ; Émilie retrouve une note de session ou un scénario mémorisé par titre ou tag. Les résultats de recherche sont ouverts dans un panneau latéral sans interrompre le contexte de session. UC-14 décrit le système de recherche global (indexation, filtrage par type, visibilité des résultats) ; UC-06 exprime son usage : accès rapide pendant une session `LIVE`.

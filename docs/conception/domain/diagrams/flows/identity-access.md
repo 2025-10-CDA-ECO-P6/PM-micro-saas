@@ -21,16 +21,19 @@ sequenceDiagram
 
 ## 2. Connexion
 
+> Durées et révocation définies dans [ADR-015](../../../../architecture/decisions/ADR-015-securite-authentification-mvp.md) §3 : access token ≤ 15 min, refresh token ≤ 7 j absolu avec rotation et détection de réutilisation (denylist JTI). La révocation de la famille de tokens est déclenchée par `AccountSuspended` et `UserAnonymized` via `ITokenDenylist.RevokeFamilyAsync`.
+
 ```mermaid
 sequenceDiagram
     actor Utilisateur
     participant App as Application Layer
     participant Identity as ASP.NET Identity
+    participant Denylist as Token Denylist (JTI)
 
     Utilisateur->>App: Connexion (email, password)
     App->>Identity: SignIn(email, password)
     alt Identifiants valides et compte ACTIVE
-        Identity-->>App: JWT + refresh token
+        Identity-->>App: JWT (≤ 15 min) + refresh token (≤ 7 j, rotatif)
         App-->>Utilisateur: Authentifié
     else Identifiants invalides
         Identity-->>App: Échec
@@ -38,6 +41,7 @@ sequenceDiagram
     else Compte SUSPENDED ou DELETED
         App-->>Utilisateur: Accès refusé
     end
+    Note over App,Denylist: AccountSuspended / UserAnonymized → RevokeFamilyAsync(userId)<br/>invalide tous les refresh tokens actifs (denylist JTI)
 ```
 
 ## 3. Réinitialisation du mot de passe

@@ -4,7 +4,7 @@
 
 ## Objectif utilisateur
 
-Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans friction d'inscription, en stockant les données localement dans le navigateur (IndexedDB). L'objectif est de réduire le coût d'adoption initial et de démontrer la valeur de l'outil avant toute création de compte.
+Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans friction d'inscription, en stockant les données localement dans le navigateur. L'objectif est de réduire le coût d'adoption initial et de démontrer la valeur de l'outil avant toute création de compte.
 
 ---
 
@@ -56,7 +56,7 @@ sont des règles d'interface, pas des règles métier durables.
 flowchart TD
     A[MJ ouvre l'application] --> B{Première visite ?}
     B -- Oui --> C[Écran d'accueil\nDeux options proposées]
-    B -- Non --> D[Données récupérées depuis IndexedDB]
+    B -- Non --> D[Données récupérées depuis le stockage local]
     D --> E{Données trouvées ?}
     E -- Oui --> K[Écran création de campagne]
     E -- Non --> G[Message données introuvables\nUS-01-06]
@@ -70,7 +70,7 @@ flowchart TD
     M -- Oui --> N[Fonctionnalité visible mais désactivée\nCTA conversion — US-01-04]
     N --> O{Le MJ veut créer un compte ?}
     O -- Non --> L
-    O -- Oui --> P[Création de compte + migration silencieuse\nUS-01-05]
+    O -- Oui --> P[Création de compte + gate reconnaissance + migration\nUS-01-05]
 ```
 
 ---
@@ -82,7 +82,7 @@ flowchart LR
     US0101[US-01-01\nDémarrer sans compte]
     US0102[US-01-02\nRetrouver ses données]
     US0104[US-01-04\nVoir les fonctionnalités cloud]
-    US0105[US-01-05\nMigration vers compte]
+    US0105[US-01-05\nMigration après gate]
     US0106[US-01-06\nDonnées introuvables]
     UC10[UC-10\nCréation de compte]
 
@@ -148,14 +148,19 @@ Feature: Démarrage sans compte
 
 **Règles métier**
 
-- RM-01-01-1 : En mode local, aucune donnée n'est envoyée au serveur. Cette règle est une garantie de confiance envers l'utilisateur, pas uniquement une contrainte technique.
-- RM-01-01-2 : L'application propose systématiquement les deux options (sans compte / avec compte) à l'écran d'accueil, sans hiérarchie visuelle forçant l'inscription.
-- RM-01-01-3 : En mode local, le MJ peut créer au maximum 3 campagnes. Au-delà, la création est bloquée avec un message proposant de créer un compte.
+- RB-01-01 : En mode local, aucune donnée n'est envoyée au serveur. Cette règle est une garantie de confiance envers l'utilisateur, pas uniquement une contrainte technique.
+- RB-01-02 : L'application propose systématiquement les deux options (sans compte / avec compte) à l'écran d'accueil, sans hiérarchie visuelle forçant l'inscription.
+- RB-01-03 : En mode local, le MJ peut créer au maximum 3 campagnes. Au-delà, la création est bloquée avec un message proposant de créer un compte.
+- RB-01-14 : L'application affiche deux bandeaux distincts et non bloquants en mode local :
+  - **Bandeau de durabilité** : conditionnel — affiché lorsque le navigateur n'a pas garanti la conservation permanente des données. Message : *« Vos données sont en mode éphémère — elles peuvent être supprimées par le navigateur. Créez un compte pour les sécuriser. »* Câblé à l'invite UC-10.
+  - **Bandeau de confidentialité** : systématique en mode local — les données du stockage local du navigateur ne sont pas protégées contre la lecture ; toute personne ayant accès à ce navigateur sur ce poste peut les lire. Câblé à l'invite UC-10. Limitation MVP assumée (la protection des données stockées localement contre la lecture est repoussée post-MVP).
+  Ces deux bandeaux ont des causes, des risques et des publics cibles distincts — ils ne doivent pas être fusionnés.
+- RB-01-15 : En mode local, aucun élément donnant accès à des données protégées (jeton d'accès, secret, identifiant de connexion à un compte) n'est conservé dans le navigateur.
 
 **Notes de conception**
 
-- Le mode local n'instancie aucune compte utilisateur. la gestion de campagne opère avec un identifiant de session local opaque.
-- La règle "aucune donnée envoyée au serveur" doit être testable (ex : absence de requêtes réseau sortantes en mode local, vérifiable en tests d'intégration ou via Content Security Policy).
+- Le mode local n'instancie aucun compte utilisateur. La gestion de campagne opère avec un identifiant de session local opaque.
+- La règle "aucune donnée envoyée au serveur" doit être testable (ex : absence de requêtes réseau sortantes en mode local, vérifiable en tests d'intégration). Le raisonnement technique est tracé dans ADR-017.
 
 ---
 
@@ -189,13 +194,13 @@ Feature: Persistance des données locales
 
 **Règles métier**
 
-- RM-01-02-1 : Les données locales sont persistées dans IndexedDB.
-- RM-01-02-3 : Les limites de stockage (~50-100 Mo) sont des contraintes d'interface. Elles ne constituent pas des règles métier durables.
+- RB-01-04 : Les données créées en mode local sont durables — elles survivent à la fermeture et à la réouverture du navigateur. Dès l'entrée en mode local, l'application demande au navigateur la garantie de conservation permanente des données. Si cette garantie est refusée, les données restent conservées au mieux (le navigateur peut les supprimer sous pression de stockage) et un bandeau de durabilité non bloquant informe l'utilisateur de ce risque.
+- RB-01-05 : Les limites de stockage (~50-100 Mo) sont des contraintes d'interface. Elles ne constituent pas des règles métier durables.
 
 **Notes de conception**
 
-- IndexedDB est la technologie cible pour la persistance locale. Ne pas utiliser brouillon local (limité à 5-10 Mo) ni sessionStorage (non persistant).
-- Aucun utilisateur ne doit être modélisé pour le mode local. L'idest un identifiant de session opaque géré côté interface.
+- Aucun utilisateur ne doit être modélisé pour le mode local. L'id est un identifiant de session opaque géré côté interface.
+- Le comportement du navigateur face à la demande de conservation permanente des données est un comportement d'environnement d'exécution ; la logique applicative (lire le résultat de cette demande, déclencher le bandeau) est testable par simulation de l'API. Le raisonnement technique est tracé dans ADR-017.
 
 ---
 
@@ -237,9 +242,9 @@ Feature: Visibilité des fonctionnalités cloud en mode local
 
 **Règles métier**
 
-- RM-01-04-1 : Les fonctionnalités de partage (UC-08) et d'accès joueur (UC-09) nécessitent au minimum un compte gratuit.
-- RM-01-04-2 : Les fonctionnalités cloud sont visibles mais désactivées en mode local. Elles ne sont pas masquées.
-- RM-01-04-3 : Un CTA de conversion vers un compte doit accompagner chaque fonctionnalité cloud désactivée.
+- RB-01-06 : Les fonctionnalités de partage (UC-08) et d'accès joueur (UC-09) nécessitent au minimum un compte gratuit.
+- RB-01-07 : Les fonctionnalités cloud sont visibles mais désactivées en mode local. Elles ne sont pas masquées.
+- RB-01-08 : Un CTA de conversion vers un compte doit accompagner chaque fonctionnalité cloud désactivée.
 
 **Notes de conception**
 
@@ -248,7 +253,7 @@ Feature: Visibilité des fonctionnalités cloud en mode local
 
 ---
 
-### US-01-05 — Créer un compte depuis le mode local avec migration automatique
+### US-01-05 — Créer un compte depuis le mode local avec migration après gate de reconnaissance
 
 **Format**
 
@@ -274,7 +279,7 @@ Feature: Migration des données locales à la création de compte
     And il a tenté d'accéder à une fonctionnalité cloud
     When il choisit de créer un compte via le CTA
     Then il est redirigé vers le flow de création de compte (UC-10)
-    And après création du compte, ses données locales sont migrées automatiquement vers le cloud
+    And après création du compte, le gate de reconnaissance est présenté puis la migration est déclenchée après confirmation
     And il retrouve ses campagnes et contenus dans son espace cloud
 
   Scenario: Le MJ crée un compte depuis les paramètres
@@ -282,32 +287,34 @@ Feature: Migration des données locales à la création de compte
     When il accède aux paramètres et choisit de créer un compte
     Then le même flow de migration automatique est déclenché
 
-  Scenario: La migration démarre automatiquement sans demander de confirmation
+  Scenario: Le gate de reconnaissance est présenté avant la migration
     Given le MJ vient de créer un compte
+    And des données locales existent dans le navigateur
     When la création de compte est finalisée
-    Then la migration des données locales démarre automatiquement
-    And aucune confirmation n'est demandée au MJ
+    Then l'application présente les campagnes locales détectées avec titre, volume et date
+    And une confirmation explicite est demandée au MJ avant de démarrer la migration
+    And la migration ne démarre qu'après confirmation
 
-  Scenario: La migration échoue
-    Given le MJ vient de créer un compte
-    When la migration automatique des données locales échoue
-    Then un message d'erreur explicite est affiché
-    And les données locales sont préservées dans le navigateur
-    And le MJ peut relancer la migration manuellement
+  Scenario: La migration échoue pour une campagne
+    Given le MJ vient de créer un compte et a confirmé la migration
+    When la migration d'une campagne locale échoue (slug collision, properties invalides, type inconnu ou version non supportée)
+    Then un rapport de rejets est présenté indiquant les raisons par campagne
+    And les données locales de la campagne rejetée sont préservées intactes dans le navigateur
+    And le MJ peut reprendre la migration de cette campagne manuellement
+    And les autres campagnes migrées avec succès restent accessibles en cloud
 ```
 
 **Règles métier**
 
-- RM-01-05-1 : La création de compte depuis le mode local déclenche obligatoirement une migration des données locales vers le cloud.
-- RM-01-05-2 : Le MJ peut initier la création de compte depuis n'importe quelle page de l'application.
-- RM-01-05-3 : En cas d'échec de migration, les données locales sont préservées.
+- RB-01-09 : La création de compte depuis le mode local déclenche une migration des données locales vers le cloud. Si des données locales existent, un gate de reconnaissance est présenté (campagnes détectées, volume, date) et la migration ne démarre qu'après confirmation explicite de l'utilisateur. Cette exigence de confirmation est une exigence du système : aucune migration ne peut démarrer sans elle, quel que soit le moyen par lequel elle est déclenchée. La règle porteuse complète est RB-10-04 dans UC-10.
+- RB-01-10 : Le MJ peut initier la création de compte depuis n'importe quelle page de l'application.
+- RB-01-11 : En cas d'échec de migration, les données locales de la campagne concernée sont préservées intactes. Un rapport de rejets est présenté (raisons par campagne). Les campagnes migrées avec succès sont disponibles en cloud.
 
 **Notes de conception**
 
-- Ce flow est transverse : Identity & Access crée l'compte utilisateur, la gestion de campagne orchestre la migration des données locales. Ce n'est pas la responsabilité d'un seul périmètre fonctionnel.
-- La migration est silencieuse. Aucune confirmation n'est demandée au MJ avant le démarrage de la migration.
-- Dépendance forte avec UC-10 (création de compte) : cette story ne peut être livrée qu'après stabilisation d'UC-10.
-- La migration implique de lire les données depuis IndexedDB et de les persister via l'API la gestion de campagne / la bibliothèque de contenu.
+- Ce flow est transverse : Identity & Access crée le compte utilisateur, la gestion de campagne orchestre la migration des données locales. Ce n'est pas la responsabilité d'un seul périmètre fonctionnel.
+- Dépendance forte avec UC-10 (création de compte) : cette story ne peut être livrée qu'après stabilisation d'UC-10. Le raisonnement et les alternatives pour le gate de reconnaissance sont tracés dans ADR-016.
+- La migration implique de lire les données depuis le stockage local du navigateur et de les persister via l'API la gestion de campagne / la bibliothèque de contenu.
 
 ---
 
@@ -334,7 +341,7 @@ Feature: Gestion des données locales introuvables
 
   Scenario: Données effacées (cache vidé)
     Given le MJ a déjà utilisé l'application en mode local
-    And les données IndexedDB ont été supprimées (ex : cache navigateur vidé)
+    And les données du stockage local du navigateur ont été supprimées (ex : cache vidé)
     When le MJ rouvre l'application
     Then un message explicite indique que les données précédentes sont introuvables
     And le message distingue ce cas d'une première visite
@@ -347,7 +354,7 @@ Feature: Gestion des données locales introuvables
 
   Scenario: Stockage navigateur plein
     Given le MJ est en mode local
-    When le stockage IndexedDB atteint sa limite
+    When le stockage local du navigateur atteint sa limite
     Then un message indique que le stockage est plein
     And l'application propose de migrer les données vers le cloud (création de compte)
 
@@ -361,13 +368,14 @@ Feature: Gestion des données locales introuvables
 
 **Règles métier**
 
-- RM-01-06-1 : L'application distingue le cas "première visite" (aucune donnée attendue) du cas "données perdues" (des données étaient présentes précédemment). Les messages affichés sont différents.
-- RM-01-06-2 : En cas de stockage plein, la migration vers le cloud est proposée comme solution.
+- RB-01-12 : L'application distingue le cas "première visite" (aucune donnée attendue) du cas "données perdues" (des données étaient présentes précédemment). Les messages affichés sont différents.
+- RB-01-13 : En cas de stockage plein, la migration vers le cloud est proposée comme solution.
 
 **Notes de conception**
 
-- La distinction "première visite" vs. "données perdues" peut reposer sur un flag local persisté (ex : `haversack_has_visited` dans brouillon local) indépendant des données campagne. Ce flag est distinct des données métier.
+- La distinction "première visite" vs. "données perdues" peut reposer sur un flag local persisté indépendant des données campagne. Ce flag est distinct des données métier. En mode local, un flag d'interface persisté localement (distinguant première visite de données perdues) n'entre pas dans la catégorie des éléments protégés couverts par RB-01-15, car il ne donne accès à rien de protégé et sa lecture par un tiers est sans conséquence de sécurité. Le raisonnement est tracé dans ADR-017.
 - Le message "données introuvables" ne doit pas être anxiogène pour une première visite.
+- Le cas "données disparues après refus de la garantie de conservation permanente" est couvert par le même message que "cache vidé" (A3) — la cause technique est distincte mais la résolution proposée à l'utilisateur est identique.
 
 ---
 
@@ -375,7 +383,13 @@ Feature: Gestion des données locales introuvables
 
 ### US-01-03 — Comprendre le risque du mode local sans être bloqué
 
-**Raison d'exclusion** : Le bandeau persistant a été jugé trop intrusif. Un message informatif au premier démarrage est couvert par US-01-01.
+**Raison d'exclusion initiale** : Le bandeau persistant générique avait été jugé trop intrusif. Un message informatif au premier démarrage était couvert par US-01-01.
+
+**Révision apportée** : Les deux bandeaux non bloquants distincts, ciblés et conditionnels, ne relèvent plus d'un "bandeau persistant générique" :
+- **Bandeau de durabilité** : conditionnel — affiché quand le navigateur n'a pas garanti la conservation permanente des données. Risque d'éviction. Couvert par US-01-02 (voir RB-01-04 révisée) et US-01-06 (E1).
+- **Bandeau de confidentialité** : systématique en mode local — risque de lecture par un tiers sur poste partagé. Ce bandeau est minimal : affiché en mode local, câblé à l'invite UC-10, non bloquant.
+
+Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le premier affichage, US-01-02 pour la logique de durabilité, US-01-06 pour la gestion des erreurs) et par une règle métier ajoutée à US-01-01 (RB-01-14). US-01-03 reste exclue en tant que story autonome — les bandeaux sont distribués dans les stories fonctionnelles.
 
 **Format original**
 
@@ -400,7 +414,7 @@ Feature: Gestion des données locales introuvables
 ## Ordre de livraison recommandé
 
 1. **US-01-01** — Démarrer sans compte (fondation de l'epic)
-2. **US-01-02** — Persistance IndexedDB (nécessaire pour que l'outil soit utilisable)
+2. **US-01-02** — Persistance des données locales (nécessaire pour que l'outil soit utilisable)
 3. **US-01-04** — Visibilité des fonctionnalités cloud (prépare la conversion)
 4. **US-01-06** — Gestion des données introuvables (robustesse, Should Have)
 5. **US-01-05** — Migration vers compte (dépend UC-10, livrable uniquement après)
@@ -411,33 +425,45 @@ Feature: Gestion des données locales introuvables
 
 | Règle métier UC-01 | Story couvrant la règle |
 |---|---|
-| RM-1 : aucune donnée envoyée au serveur en mode local | US-01-01 |
-| RM-2 : migration obligatoire à la création de compte | US-01-05 |
-| RM-3 : bandeau de rappel non bloquant, permanent jusqu'à création de compte | US-01-01 (message informatif au premier démarrage uniquement — le bandeau persistant est supprimé) |
-| RM-4 : fonctionnalités de partage nécessitent un compte | US-01-04 |
+| RB-01-01 : aucune donnée envoyée au serveur en mode local | US-01-01 |
+| RB-01-09 : migration obligatoire à la création de compte | US-01-05 |
+| RB-01-02 : message informatif non bloquant au premier démarrage | US-01-01 (message informatif au premier démarrage uniquement — le bandeau persistant générique est supprimé ; les deux bandeaux ciblés sont portés par RB-01-14) |
+| RB-01-06 : fonctionnalités de partage nécessitent un compte | US-01-04 |
+| RB-01-14 : bandeaux durabilité + confidentialité | US-01-01 (RB-01-14), US-01-02 (logique de durabilité), US-01-06 (E1) |
+| RB-01-15 : aucun élément protégé conservé en mode local | US-01-01 (garanties du mode local) |
+| Fichier d'export validé et nettoyé avant enregistrement | Non couvert en MVP (US-01-07 exclue) — porté par UC-01 règle métier |
 
 | Critère d'acceptation UC-01 | Story couvrant le critère |
 |---|---|
 | Campagne créable sans compte | US-01-01 |
 | Persistance après fermeture/réouverture | US-01-02 |
-| Rappel non bloquant sur la nature locale | US-01-01 (message premier démarrage uniquement) |
+| Rappel non bloquant sur la nature locale | US-01-01 (message premier démarrage) + RB-01-14 (bandeaux durabilité/confidentialité) |
 | Création de compte depuis n'importe quelle page avec migration | US-01-05 |
-| Export JSON fonctionnel et réimportable | Non couvert en MVP — ce critère d'acceptation doit être révisé dans UC-01 |
+| Fichier de sauvegarde fonctionnel et réimportable | Non couvert en MVP — ce critère d'acceptation doit être révisé dans UC-01 |
 | Fonctionnalités de partage visibles mais désactivées avec invite | US-01-04 |
+| Bandeau durabilité si garantie de conservation refusée | US-01-02 (RB-01-04 révisée) |
+| Bandeau confidentialité systématique en mode local | US-01-01 (RB-01-14) |
 
 | Scénario alternatif UC-01 | Story couvrant le scénario |
 |---|---|
 | A1 — Conversion vers un compte | US-01-05 |
 | A2 — Retour après fermeture du navigateur | US-01-02 |
-| A3 — Données introuvables | US-01-06 |
-| A4 — Export manuel des données locales | Non couvert en MVP |
+| A3 — Données introuvables (cache vidé ou éviction navigateur) | US-01-06 |
+| A4 — Importation de fichier de sauvegarde (validation + nettoyage) | Non couvert en MVP (US-01-07 exclue) |
 | E1 — Stockage navigateur plein | US-01-06 |
 
 ---
 
 ## Questions ouvertes
 
-1. **Durée d'affichage du bandeau** — Sans objet. Le bandeau persistant est supprimé. Le message informatif au premier démarrage est couvert par US-01-01.
-2. **Confirmation de migration** — DÉCIDÉ : la migration est silencieuse. Aucune confirmation demandée.
+1. **Affichage des bandeaux de limitation** — Formalisé. Deux bandeaux ciblés et non bloquants remplacent un bandeau persistant générique : bandeau de durabilité (conditionnel — quand la garantie de conservation permanente est refusée) et bandeau de confidentialité (systématique en mode local). Portés par RB-01-14. Le message informatif au premier démarrage reste couvert par US-01-01.
+2. **Confirmation de migration des données locales** — Formalisé : un gate de reconnaissance est présenté avant migration si des données locales existent (campagnes détectées, volume estimé, date de création). La migration démarre uniquement après confirmation explicite. Cette confirmation est une exigence du système — aucune migration ne peut démarrer sans elle. La règle porteuse est RB-10-04 dans UC-10.
 3. **Limite du nombre de campagnes en mode local** — DÉCIDÉ : limite à 3 campagnes en mode local (cap numérique).
-4. **Périmètre de l'export JSON** — DÉCIDÉ : hors MVP. Périmètre non défini pour l'instant.
+4. **Périmètre de l'export / de la sauvegarde locale** — DÉCIDÉ : hors MVP. Périmètre non défini pour l'instant.
+
+---
+
+## Décisions liées
+
+- [ADR-016](../../architecture/decisions/ADR-016-serialisation-locale-migration.md) — Trace du raisonnement sur la sérialisation locale et le contrat de migration local→cloud, notamment le gate de confirmation avant migration.
+- [ADR-017](../../architecture/decisions/ADR-017-modele-indexeddb-local.md) — Trace du raisonnement sur le modèle de stockage local du navigateur et la sécurité du mode local : persistance et best-effort, bandeaux de durabilité et de confidentialité, importation et nettoyage de fichiers de sauvegarde.

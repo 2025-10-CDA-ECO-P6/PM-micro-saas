@@ -21,9 +21,33 @@ Documentation produit et fonctionnelle.
 - [conception/usecases/use-cases.md](conception/usecases/use-cases.md) — Diagrammes de cas d'utilisation (5 vues)
 - [conception/usecases/UC-HORS-MVP.md](conception/usecases/UC-HORS-MVP.md) — Fonctionnalités exclues et vision long terme
 
+### User Stories
+
+Epics de user stories avec critères d'acceptation et règles métier (RB-XX) pour chaque use case.
+
+→ [Index user stories](conception/user-stories/README.md)
+
+### User Journeys
+
+Parcours utilisateur pas à pas pour chaque use case, du point de vue des personas.
+
+→ [Index user journeys](conception/user-journeys/README.md)
+
 ### Personas
 
 - [conception/persona/README.md](conception/persona/README.md) — 7 personas : Thomas, Émilie, Lucas, Nadia, Antoine, Rémi, Sonia
+
+### Exigences non fonctionnelles (NFR)
+
+Performance perçue, hors connexion, confidentialité, accessibilité, internationalisation — exigences produit en langage besoin.
+
+→ [Index NFR](conception/nfr/README.md)
+
+### Parcours bout-en-bout
+
+Fil narratif de bout en bout pour chaque persona : couture transverse des use cases, vérification des transitions inter-UC.
+
+→ [Index parcours](conception/parcours/README.md)
 
 ### Domaine DDD
 

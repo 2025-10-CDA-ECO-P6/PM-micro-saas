@@ -19,7 +19,7 @@ Permettre à un utilisateur (MJ ou joueur) de créer un compte pour activer la s
 ## Use cases couverts
 
 - **UC-10** — Créer un compte et synchroniser dans le cloud
-  - Nominal 1 : inscription email + mot de passe avec migration silencieuse des données locales
+  - Nominal 1 : inscription email + mot de passe avec gate de reconnaissance et migration des données locales
   - Nominal 2 : inscription sans données locales
   - Nominal 3 : connexion avec email + mot de passe
   - Nominal 4 : connexion via Google OAuth
@@ -36,7 +36,7 @@ Permettre à un utilisateur (MJ ou joueur) de créer un compte pour activer la s
 
 | Priorité | Stories |
 |---|---|
-| Should Have | US-10-01, US-10-02, US-10-03, US-10-04, US-10-05 |
+| Must Have | US-10-01, US-10-02, US-10-03, US-10-04, US-10-05 |
 
 ---
 
@@ -44,6 +44,11 @@ Permettre à un utilisateur (MJ ou joueur) de créer un compte pour activer la s
 
 - **Identity & Access** — gère les comptes `User`, authentification (email/password, OAuth Google), sessions, réinitialisation de mot de passe.
 - **Campaign Management** — reçoit la notification de création de compte pour initialiser le tableau de bord.
+
+## Liens ADR
+
+- [ADR-015 — Sécurité authentification MVP](../../architecture/decisions/ADR-015-securite-authentification-mvp.md) — trace du raisonnement sur validation d'adresse, liaison d'un compte Google, réinitialisation de mot de passe.
+- [ADR-016 — Sérialisation locale et contrat de migration local→cloud](../../architecture/decisions/ADR-016-serialisation-locale-migration.md) — raisonnement et alternatives pour le gate de confirmation avant migration des données locales, parcours d'échec par campagne, conservation des données intactes.
 
 ---
 
@@ -67,7 +72,7 @@ flowchart TD
     F -->|Google OAuth| H[Authentification Google]
 
     G --> I{Donnees locales\nexistantes ?}
-    I -->|Oui| J[Migration silencieuse\nvers le cloud]
+    I -->|Oui| J[Gate de reconnaissance\npuis migration vers le cloud]
     I -->|Non| K[Compte cree\nTableau de bord vide]
     J --> L[Compte cree\nDonnees locales migrees]
     H --> K
@@ -92,7 +97,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    US1001[US-10-01\nS inscrire email et mdp\nmigration silencieuse]
+    US1001[US-10-01\nS inscrire email et mdp\ngate + migration]
     US1002[US-10-02\nSe connecter\nemail et mdp]
     US1003[US-10-03\nSe connecter ou inscrire\nvia Google OAuth]
     US1004[US-10-04\nReinitialiser\nson mot de passe]
@@ -128,45 +133,52 @@ flowchart LR
 
 ### US-10-01 — S'inscrire avec email et mot de passe
 
-**Priorité** : Should Have
+**Priorité** : Must Have
 
 **En tant que** MJ ou joueur,
 **je veux** créer un compte avec mon email et un mot de passe,
 **afin de** activer la synchronisation cloud, le partage avec mes joueurs et l'accès multi-device.
 
 **Notes de conception** :
-- Si des données locales existent (UC-01), la migration vers le cloud est silencieuse et automatique à la création du compte. Aucune confirmation n'est demandée à l'utilisateur.
+- Si des données locales existent (UC-01), un **gate de reconnaissance** est présenté avant la migration : l'application affiche les campagnes détectées (titre, volume, date) et affiche pour chaque campagne l'historique de session qu'elle contient (sessions terminées, notes de session, documents épinglés, résumés). Le gate signale aussi toute session en cours (LIVE) en indiquant qu'elle doit être clôturée pour que la campagne puisse migrer. L'application demande une confirmation explicite avant l'import. La migration n'est déclenchée qu'après cette confirmation. Cette confirmation est une exigence du système : aucune migration ne peut démarrer sans elle, quel que soit le moyen par lequel elle est déclenchée. Le passage par l'écran de présentation n'est pas le seul garde-fou — le système rejette toute demande de migration dépourvue de cette confirmation. Cette exigence vise à prévenir qu'un utilisateur s'approprie par inadvertance les données créées par quelqu'un d'autre sur un poste partagé en confirmant sans les reconnaître : en voyant précisément ce qui va être importé (y compris l'historique de session), il peut interrompre avant l'import. Si certaines campagnes sont refusées lors de la migration (en raison d'un contenu invalide, d'un intitulé en conflit avec un contenu existant, d'un type ou d'un format non reconnu), un rapport détaille la raison du refus pour chacune, et les données locales correspondantes restent intactes dans le navigateur ; les campagnes acceptées sont migrées et accessibles avec tout leur historique de session. Le raisonnement ayant conduit à ce choix (et les alternatives écartées) est tracé dans [ADR-016](../../architecture/decisions/ADR-016-serialisation-locale-migration.md) §4.
 - Un joueur invité (`GuestAccess`) qui crée un compte via un lien d'invitation (A3, UC-09) voit ses notes personnelles (`PLAYER_PRIVATE`) migrées vers son nouveau compte dans le même flux.
 - Identity & Access crée le `User` et publie un événement de domaine. Campaign Management initialise le tableau de bord en réponse.
-- Le mot de passe est hashé par ASP.NET Identity en infrastructure — le domaine ne le connaît pas.
-- Pas de validation email bloquante : l'accès est immédiat après inscription.
+- Le mot de passe est hashé en infrastructure — le domaine ne le connaît pas.
+- L'accès est immédiat après inscription. La validation email n'est pas bloquante au login, mais est requise avant les opérations sensibles (modification email/mdp, liaison d'un compte Google, effacement RGPD) — voir RB-10-05.
 
 **Règles métier** :
 - RB-10-01 : L'email est unique dans le système. Une tentative d'inscription avec un email déjà utilisé est rejetée avec un message explicite (E1).
 - RB-10-02 : Le mot de passe est hashé en infrastructure. Le domaine `User` ne manipule pas le mot de passe en clair.
 - RB-10-03 : Un `User` n'a pas de rôle global. Le rôle MJ ou Joueur est défini dans chaque campagne.
-- RB-10-04 : La migration des données locales vers le cloud est silencieuse lors de l'inscription. Aucune confirmation n'est demandée (décision UC-01).
-- RB-10-05 : L'accès est immédiat après inscription, sans validation email.
+- RB-10-04 : Avant la migration des données locales vers le cloud, l'application présente les données détectées (titres des campagnes, volume estimé, date de création) et affiche pour chaque campagne son historique de session : les sessions terminées, les notes de session attachées, les documents épinglés, les résumés. Le gate signale toute session en cours (statut LIVE) en indiquant qu'elle doit être clôturée avant que la campagne puisse migrer. L'application requiert une confirmation explicite de l'utilisateur. La migration ne démarre qu'après cette confirmation. Cette confirmation est une exigence du système : aucune migration ne peut démarrer sans elle, quel que soit le moyen par lequel elle est déclenchée. Cette confirmation est nécessaire même en l'absence de preuve d'appartenance formelle (pas de compte local enregistré, poste potentiellement partagé), et elle vise à prévenir qu'un utilisateur s'approprie par inadvertance les données créées par quelqu'un d'autre en confirmant sans les reconnaître. En cas de rejet d'une campagne lors de la migration (contenu invalide, intitulé en conflit avec un contenu existant, type ou format non reconnu), un rapport détaille la raison du refus pour chacune ; les données locales correspondantes restent intactes dans le navigateur, et les campagnes acceptées sont migrées et accessibles. Ce gate borne le risque d'accident ou d'inattention ; il ne constitue pas une preuve d'appartenance des données. Un utilisateur physiquement présent devant le poste peut confirmer l'import de données qui ne lui appartiennent pas.
+- RB-10-05 : L'accès est immédiat après inscription ; la validation email n'est pas bloquante au login. L'adresse email est validée de manière non bloquante après inscription. La validation email est cependant requise avant les opérations sensibles (modification d'email, modification du mot de passe, liaison d'un compte Google, demande d'effacement des données personnelles). Cette validation est une exigence du système : le système refuse toute opération sensible tant que l'email n'est pas validé, quel que soit le moyen par lequel l'opération est déclenchée. Un utilisateur qui s'inscrit via Google n'a pas besoin de revalider son adresse email puisqu'elle est déjà tenue pour vérifiée par Google.
 
 **Critères d'acceptation** :
 - [ ] Le formulaire d'inscription exige email, nom d'affichage et mot de passe.
 - [ ] Un compte est créé et l'utilisateur est authentifié immédiatement après soumission.
-- [ ] Si des données locales existent, elles sont migrées silencieusement vers le cloud sans confirmation.
-- [ ] L'utilisateur retrouve son espace de travail intact après migration.
+- [ ] Si des données locales existent, l'application présente les campagnes détectées (titre, volume estimé, date de création) et affiche pour chaque campagne son historique de session (sessions terminées, notes de session, documents épinglés, résumés), demande une confirmation explicite avant de démarrer la migration (gate de reconnaissance), et signale toute session en cours (LIVE) à clôturer avant que la campagne puisse migrer.
+- [ ] La migration ne démarre qu'après confirmation explicite de l'utilisateur. Aucune migration ne peut démarrer sans cette confirmation, même si elle est déclenchée par un autre moyen que l'interface utilisateur.
+- [ ] En cas de rejet d'une campagne lors de la migration (contenu invalide, intitulé en conflit avec un contenu existant, type ou format non reconnu), un rapport détaille la raison du refus pour chacune et les données locales correspondantes sont conservées intactes dans le navigateur.
+- [ ] L'utilisateur retrouve son espace de travail intact pour les campagnes migrées avec succès, avec tout leur historique de session (sessions passées consultables, notes et documents épinglés en place).
 - [ ] Un email déjà utilisé déclenche l'erreur E1 avec un message explicite.
-- [ ] Aucun email de validation bloquant n'est envoyé.
+- [ ] Aucune validation email ne bloque la connexion. La validation email est requise avant les opérations sensibles (modification email/mdp, liaison d'un compte Google, effacement RGPD). Le système refuse ces opérations tant que l'email n'est pas validé, quel que soit le moyen de déclenchement.
 - [ ] L'utilisateur est redirigé vers son tableau de bord après inscription.
 
 ```gherkin
 Scénario : Inscription depuis le mode local avec donnees locales (nominal 1)
   Etant donne qu Émilie utilise l application en mode local
   Et qu elle a cree deux campagnes et plusieurs documents localement
+  Et qu elle a egalement conduit des sessions en mode local avec des notes et documents epingles
   Quand elle clique sur l invite de sauvegarde cloud
   Et qu elle saisit son email, son nom d affichage et un mot de passe
   Et qu elle soumet le formulaire d inscription
   Alors son compte est cree immediatement
-  Et ses campagnes et documents locaux sont migres silencieusement vers le cloud
+  Et l application lui presente les campagnes locales detectees avec titre, volume et date
+  Et elle voit aussi pour chaque campagne son historique de session (sessions terminees, notes, documents epingles)
+  Et elle confirme explicitement la migration
+  Et ses campagnes, documents et historique de session locaux sont migres vers le cloud
   Et elle retrouve son espace de travail intact, maintenant synchronise
+  Et ses sessions passees sont consultables, ses notes et epingles sont en place
 
 Scénario : Inscription sans donnees locales (nominal 2)
   Etant donne que Thomas accede directement a la page d inscription
@@ -195,7 +207,7 @@ Scénario : Joueur invite cree un compte depuis un lien d invitation (A3)
 
 ### US-10-02 — Se connecter avec email et mot de passe
 
-**Priorité** : Should Have
+**Priorité** : Must Have
 
 **En tant que** utilisateur avec un compte,
 **je veux** me connecter avec mon email et mon mot de passe,
@@ -240,48 +252,55 @@ Scénario : Connexion avec un compte suspendu
 
 ### US-10-03 — Se connecter ou s'inscrire via Google OAuth
 
-**Priorité** : Should Have
+**Priorité** : Must Have
 
 **En tant que** MJ ou joueur,
 **je veux** me connecter ou créer un compte via mon compte Google,
 **afin de** accéder à l'application sans gérer un mot de passe supplémentaire.
 
 **Notes de conception** :
-- Google OAuth est inclus dans le MVP comme méthode d'authentification principale aux côtés de l'email + mot de passe.
-- Si l'email Google est déjà associé à un compte email/password, Identity & Access lie les deux méthodes au même `User`.
-- Si des données locales existent au moment de la première connexion OAuth (création de compte), elles sont migrées silencieusement (même comportement que US-10-01).
-- La migration locale → cloud reste silencieuse dans ce flux.
+- La connexion via Google est incluse dans le MVP comme méthode d'authentification principale aux côtés de l'email et mot de passe.
+- Si l'email Google correspond à un compte email/password existant, les deux méthodes de connexion ne sont liées au même `User` que si l'email de ce compte préexistant est vérifié. Si l'email n'est pas vérifié, la liaison est rejetée silencieusement (non-révélation d'existence) — voir RB-10-08.
+- Si des données locales existent au moment de la première connexion OAuth (création de compte), le même gate de reconnaissance s'applique : l'application présente les campagnes détectées (titre, volume estimé, date de création) et demande une confirmation explicite avant l'import. La migration ne démarre qu'après cette confirmation, qui est une exigence du système quel que soit le moyen par lequel elle est déclenchée. En cas de rejet de certaines campagnes, un rapport détaille la raison du refus pour chacune, les données locales correspondantes restent intactes, et les campagnes acceptées sont migrées.
 
 **Règles métier** :
-- RB-10-08 : Un email Google déjà associé à un compte email/password est lié au même `User` — aucune duplication de compte.
-- RB-10-09 : La création de compte via OAuth suit les mêmes règles de migration silencieuse (RB-10-04).
-- RB-10-10 : Un `User` authentifié via OAuth ne dispose pas d'un mot de passe dans le système. La réinitialisation de mot de passe ne s'applique pas à ce compte.
+- RB-10-08 : Quand un utilisateur tente de se connecter ou s'inscrire via Google avec une adresse email déjà associée à un compte créé par email et mot de passe, les deux méthodes de connexion ne sont rattachées au même compte que si l'adresse email de ce compte existant a été préalablement vérifiée par son détenteur. Si l'adresse n'a pas été vérifiée, le rattachement est refusé sans aucune indication révélant l'existence du compte, et sans fusion automatique. Justification : une adresse email jamais confirmée peut avoir été renseignée par n'importe qui ; autoriser automatiquement une connexion Google à se rattacher à ce compte permettrait à un tiers d'en prendre le contrôle sans avoir prouvé qu'il détient réellement l'adresse.
+- RB-10-09 : La création de compte via Google suit les mêmes règles de gate de reconnaissance avant migration que l'inscription par email et mot de passe (RB-10-04) : l'application présente les campagnes locales détectées (titre, volume estimé, date de création) ainsi que pour chaque campagne son historique de session (sessions terminées, notes de session, documents épinglés, résumés), signale toute session en cours (LIVE) à clôturer avant migration, requiert une confirmation explicite de l'utilisateur avant l'import, et cette confirmation est une exigence du système quel que soit le moyen de déclenchement. En cas de rejet de certaines campagnes, un rapport détaille la raison du refus pour chacune, les données locales correspondantes restent intactes, et les campagnes acceptées sont migrées avec tout leur historique de session.
+- RB-10-10 : Un `User` authentifié via un compte Google ne dispose pas d'un mot de passe dans le système. La réinitialisation de mot de passe ne s'applique pas à ce compte.
 
 **Critères d'acceptation** :
 - [ ] Le bouton "Se connecter avec Google" est disponible sur les pages de connexion et d'inscription.
 - [ ] Un premier accès via Google crée automatiquement un compte.
-- [ ] Un accès Google avec un email déjà présent dans le système est lié au compte existant.
-- [ ] Si des données locales existent, elles sont migrées silencieusement.
-- [ ] L'utilisateur est redirigé vers son tableau de bord après authentification OAuth.
+- [ ] Un accès Google avec un email déjà présent dans le système est lié au compte existant uniquement si l'email de ce compte est vérifié. Si non vérifié, la liaison est rejetée silencieusement.
+- [ ] Si des données locales existent, le gate de reconnaissance est présenté avec les campagnes détectées (titre, volume estimé, date de création), et la migration ne démarre qu'après confirmation explicite de l'utilisateur. Aucune migration ne peut démarrer sans cette confirmation, même si elle est déclenchée par un autre moyen que l'interface utilisateur.
+- [ ] L'utilisateur est redirigé vers son tableau de bord après authentification via Google.
 
 ```gherkin
-Scénario : Premiere connexion via Google OAuth — creation de compte (nominal 4)
+Scénario : Premiere connexion via Google — creation de compte (nominal 4)
   Etant donne que Thomas n a pas de compte Haversack
   Quand il clique sur "Se connecter avec Google"
   Et qu il autorise l acces via son compte Google
   Alors un compte User est cree avec son email Google
   Et il est redirige vers son tableau de bord
 
-Scénario : Connexion Google avec email deja present dans le systeme
-  Etant donne qu Émilie a un compte existant avec l email "emilie@gmail.com"
+Scénario : Connexion Google avec email deja present dans le systeme — email verifie
+  Etant donne qu Émilie a un compte existant avec l email "emilie@gmail.com" et que cet email est verifie
   Quand elle se connecte via Google avec ce meme email
-  Alors la methode OAuth est liee a son compte existant
+  Alors la connexion via Google est liee a son compte existant
   Et elle accede a son tableau de bord sans creer un doublon
+
+Scénario : Connexion Google avec email deja present dans le systeme — email non verifie
+  Etant donne qu un compte existe avec l email "emilie@gmail.com" mais que cet email n est pas verifie
+  Quand elle se connecte via Google avec ce meme email
+  Alors la liaison est rejetee silencieusement
+  Et un nouveau compte est cree sans doublon revele ni fusion automatique
 
 Scénario : Connexion Google avec donnees locales existantes
   Etant donne qu un utilisateur a des donnees locales
-  Quand il s inscrit pour la premiere fois via Google OAuth
-  Alors ses donnees locales sont migrees silencieusement vers le cloud
+  Quand il s inscrit pour la premiere fois via Google
+  Alors l application lui presente les campagnes locales detectees avec titre, volume et date
+  Et il confirme explicitement la migration
+  Et ses donnees locales sont migrees vers le cloud
   Et il retrouve son espace de travail intact
 ```
 
@@ -289,7 +308,7 @@ Scénario : Connexion Google avec donnees locales existantes
 
 ### US-10-04 — Réinitialiser son mot de passe
 
-**Priorité** : Should Have
+**Priorité** : Must Have
 
 **En tant que** utilisateur avec un compte email et mot de passe,
 **je veux** pouvoir réinitialiser mon mot de passe en cas d'oubli,
@@ -302,7 +321,7 @@ Scénario : Connexion Google avec donnees locales existantes
 
 **Règles métier** :
 - RB-10-11 : Un email de réinitialisation est envoyé si l'email est associé à un compte actif. Aucune information n'est révélée si l'email est inconnu (même message de confirmation).
-- RB-10-12 : Le lien de réinitialisation est temporaire et à usage unique. Un lien expiré déclenche l'erreur E3.
+- RB-10-12 : Le lien de réinitialisation expire au plus 15 minutes après son émission. Il ne peut servir qu'une seule fois, qu'il ait abouti ou non. L'émission d'un nouveau lien invalide tous les liens précédents (l'accumulation de liens actifs élargirait la fenêtre d'utilisation frauduleuse). Un lien expiré déclenche l'erreur E3.
 - RB-10-13 : Après réinitialisation réussie, l'ancien mot de passe est invalidé immédiatement.
 
 **Critères d'acceptation** :
@@ -339,7 +358,7 @@ Scénario : Reinitialisation reussie
 
 ### US-10-05 — Mettre à jour son profil
 
-**Priorité** : Should Have
+**Priorité** : Must Have
 
 **En tant que** utilisateur authentifié,
 **je veux** pouvoir modifier mon nom d'affichage,
@@ -385,7 +404,7 @@ Scénario : Modification du mot de passe
 | Story / Feature | Raison |
 |---|---|
 | Suppression de compte (RGPD A4) | Hors MVP — gérée manuellement. L'implémentation de la séquence d'anonymisation et de transfert de propriété est repoussée post-MVP. |
-| Validation email bloquante | Decision arbitree : acces immediat apres inscription, pas de confirmation d email bloquante. |
+| Validation email bloquante au login | Choix produit : accès immédiat après inscription. La validation email est requise uniquement avant les opérations sensibles (modification email/mdp, liaison d'un compte Google, effacement RGPD) — voir RB-10-05. |
 | Connexion via Apple Sign In | Hors scope MVP — pourra etre ajoute post-MVP. |
 | Gestion de la double authentification (2FA) | Hors scope MVP — securite applicative non prioritaire a ce stade. |
 | Suspension de compte (gestion admin) | Hors scope MVP — administration manuelle. |
@@ -406,7 +425,7 @@ Scénario : Modification du mot de passe
 
 | Cas UC-10 | Story couvrant |
 |---|---|
-| Nominal 1 — inscription avec migration silencieuse | US-10-01 |
+| Nominal 1 — inscription avec gate de reconnaissance et migration | US-10-01 |
 | Nominal 2 — inscription sans données locales | US-10-01 |
 | Nominal 3 — connexion email et mot de passe | US-10-02 |
 | Nominal 4 — connexion via Google OAuth | US-10-03 |
@@ -423,7 +442,5 @@ Scénario : Modification du mot de passe
 ## Questions ouvertes
 
 1. Faut-il un écran de bienvenue spécifique pour un nouvel inscrit sans données locales, ou la redirection directe vers la création de campagne est-elle suffisante ?
-2. La validation email en arrière-plan (non bloquante) est-elle utile pour améliorer la délivrabilité des emails de réinitialisation ? Si oui, quand déclencher cette vérification ?
-3. Pour Google OAuth, faut-il proposer la liaison avec un compte existant si l'email correspond — ou créer deux comptes distincts et laisser l'utilisateur fusionner manuellement ?
-4. La modification du mot de passe pour un compte lié à Google OAuth doit-elle créer un mot de passe en complément, ou rester bloquée ?
-5. Quelle durée d'expiration pour le token de réinitialisation ? 1 heure, 24 heures ? À valider avec les contraintes de sécurité.
+4. La modification du mot de passe pour un compte lié à Google doit-elle créer un mot de passe en complément, ou rester bloquée ?
+
