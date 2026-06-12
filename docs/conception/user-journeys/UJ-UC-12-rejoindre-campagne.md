@@ -105,6 +105,6 @@ flowchart TD
 - UC-11 Gérer membres campagne : [`docs/conception/usecases/UC-11-gerer-membres-campagne.md`](../usecases/UC-11-gerer-membres-campagne.md)
 - User Journey UC-09 : [`UJ-UC-09-acces-session-joueur.md`](UJ-UC-09-acces-session-joueur.md)
 - User Journey UC-11 : [`UJ-UC-11-gerer-membres-campagne.md`](UJ-UC-11-gerer-membres-campagne.md)
-- Conception Campaign Management : [`docs/conception/domain/campaign-management.md`](../domain/campaign-management.md)
+- Conception Space Management : [`docs/conception/domain/space-management.md`](../domain/space-management.md)
 - Conception Identity and Access : [`docs/conception/domain/identity-access.md`](../domain/identity-access.md)
 - Conception Bibliothèque de contenu : [`docs/conception/domain/content-library.md`](../domain/content-library.md)

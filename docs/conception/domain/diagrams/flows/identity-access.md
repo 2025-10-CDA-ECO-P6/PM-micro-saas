@@ -71,7 +71,7 @@ sequenceDiagram
     actor Utilisateur
     participant App as Application Layer
     participant IA as I&A Domain
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     Utilisateur->>App: Supprimer mon compte
     App->>CM: GetActiveCampaignsWithMembers(userId)
@@ -95,7 +95,7 @@ sequenceDiagram
     participant Billing as Billing Webhook (infrastructure)
     participant App as Application Layer
     participant IA as I&A Domain
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     Billing->>App: TierChanged(userId, newTier)
     App->>IA: User.ChangeTier(newTier)
@@ -118,14 +118,14 @@ sequenceDiagram
     actor Joueur
     participant App as Application Layer
     participant IA as I&A Domain
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     Note over Joueur: Joueur invité sans compte<br/>veut créer un compte
     Joueur->>App: Créer un compte (email, displayName, password, guestToken)
     App->>IA: User.Register(userId, email, displayName)
     IA-->>App: UserRegistered event
     App->>CM: ConvertGuestAccessToMembership(userId, guestToken)
-    CM->>CM: GuestAccess → CampaignMembership
+    CM->>CM: GuestAccess → SpaceMembership
     CM-->>App: OK
     App-->>Joueur: Compte créé, membre permanent de la campagne
 ```

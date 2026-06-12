@@ -143,7 +143,7 @@ Modélisation Domain-Driven Design — 4 bounded contexts + shared kernel.
 |---|---|---|
 | [domain/core.md](domain/core.md) | Core (Shared Kernel) | Abstractions DDD, IDs typés, value objects transverses |
 | [domain/identity-access.md](domain/identity-access.md) | Identity & Access | Comptes utilisateurs, authentification, tiers, suppression RGPD |
-| [domain/campaign-management.md](domain/campaign-management.md) | Campaign Management | Campagnes, one-shots, membres, invitations, accès invités |
+| [domain/space-management.md](domain/space-management.md) | Space Management | Campagnes, one-shots, membres, invitations, accès invités |
 | [domain/content-library.md](domain/content-library.md) | Content Library | Documents, dossiers, types de documents, références entre documents |
 | [domain/session-conduct.md](domain/session-conduct.md) | Session Conduct | Cycle de vie de session, tableau de bord configurable, notes de session |
 

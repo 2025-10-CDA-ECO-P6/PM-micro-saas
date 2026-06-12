@@ -41,7 +41,7 @@ journey
     section Sauvegarde
         Définir un statut: 2: Émilie, 4: Antoine, 3: Nadia
         Sauvegarder: 5: Émilie, 5: Antoine, 5: Nadia
-        Retrouver le scénario dans la campagne: 5: Émilie, 5: Antoine, 5: Nadia
+        Retrouver le scénario dans l'espace: 5: Émilie, 5: Antoine, 5: Nadia
 ```
 
 ### Flux fonctionnel
@@ -71,7 +71,7 @@ flowchart TD
 
     O --> P[Définit le statut du scénario\nbrouillon par défaut]
     P --> Q[Sauvegarde]
-    Q --> R[Scénario disponible dans la campagne]
+    Q --> R[Scénario disponible dans l'espace]
 ```
 
 ---

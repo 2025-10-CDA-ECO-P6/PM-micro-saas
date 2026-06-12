@@ -4,7 +4,7 @@
 erDiagram
     SESSION {
         identifiant id PK
-        identifiant campaign_id "ref Campaign Management"
+        identifiant space_id "ref Space Management"
         texte title
         texte status "LIVE | CLOSED | ARCHIVED"
         identifiant scenario_id "nullable — ref Content Library"
@@ -28,7 +28,7 @@ erDiagram
 
     SESSION_VIEW_CONFIG {
         identifiant id PK
-        identifiant campaign_id "UNIQUE — ref Campaign Management"
+        identifiant space_id "UNIQUE — ref Space Management"
         horodatage updated_at
     }
 

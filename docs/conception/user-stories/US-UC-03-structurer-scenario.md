@@ -103,8 +103,8 @@ flowchart LR
 **Priorité** : Must Have
 
 **En tant que** MJ,  
-**je veux** créer un scénario dans ma campagne,  
-**afin de** disposer d'un document de préparation rattaché à cette campagne.
+**je veux** créer un scénario dans mon espace,  
+**afin de** disposer d'un document de préparation rattaché à cet espace.
 
 **Notes de conception** :
 - Un scénario est un document scénario placé dans le dossier système "Scénarios" (`isSystem=true`).
@@ -115,9 +115,9 @@ flowchart LR
 
 ```gherkin
 Scenario: Créer un scénario avec titre uniquement
-  Given le MJ est dans la vue campagne, section Scénarios
+  Given le MJ est dans la vue de son espace, section Scénarios
   When il crée un scénario en saisissant uniquement un titre
-  Then le scénario est créé et apparaît dans la liste des scénarios de la campagne
+  Then le scénario est créé et apparaît dans la liste des scénarios de l'espace
 
 Scenario: Le titre est le seul champ obligatoire
   Given le MJ est dans le formulaire de création de scénario
@@ -127,12 +127,12 @@ Scenario: Le titre est le seul champ obligatoire
 Scenario: Un scénario improvisé minimal est valide (A4)
   Given le MJ crée un scénario avec titre uniquement
   When la création est confirmée
-  Then le scénario est fonctionnel et accessible dans la campagne sans configuration supplémentaire
+  Then le scénario est fonctionnel et accessible dans l'espace sans configuration supplémentaire
 ```
 
-- [ ] Le MJ peut créer un scénario depuis la vue campagne (section Scénarios).
+- [ ] Le MJ peut créer un scénario depuis la vue de son espace (section Scénarios).
 - [ ] Le titre est le seul champ obligatoire à la création.
-- [ ] Le scénario est visible dans la liste des scénarios de la campagne après création.
+- [ ] Le scénario est visible dans la liste des scénarios de l'espace après création.
 - [ ] Un scénario créé avec titre uniquement est valide (A4 couvert).
 
 ---

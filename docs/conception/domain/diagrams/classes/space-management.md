@@ -1,15 +1,15 @@
-# Campaign Management — Diagramme de classes
+# Space Management — Diagramme de classes
 
 ```mermaid
 classDiagram
-    class Campaign {
+    class Space {
         +identifiant id
         +identifiant ownerId
         +texte name
         +Slug slug
-        +CampaignType type
-        +CampaignStatus status
-        +liste de CampaignMembership memberships
+        +SpaceType type
+        +SpaceStatus status
+        +liste de SpaceMembership memberships
         +liste de Invitation invitations
         +horodatage createdAt
         +horodatage updatedAt
@@ -24,7 +24,7 @@ classDiagram
         +Unfreeze()
     }
 
-    class CampaignMembership {
+    class SpaceMembership {
         +identifiant userId
         +MemberRole role
         +MembershipStatus status
@@ -65,11 +65,11 @@ classDiagram
         +Convert(userId)
     }
 
-    class CampaignCreated {
+    class SpaceCreated {
         <<domainEvent>>
         +identifiant campaignId
         +identifiant ownerId
-        +CampaignType type
+        +SpaceType type
     }
 
     class MemberJoined {
@@ -111,17 +111,17 @@ classDiagram
         +identifiant characterId
     }
 
-    class CampaignArchived {
+    class SpaceArchived {
         <<domainEvent>>
         +identifiant campaignId
     }
 
-    class CampaignFrozen {
+    class SpaceFrozen {
         <<domainEvent>>
         +identifiant campaignId
     }
 
-    class CampaignUnfrozen {
+    class SpaceUnfrozen {
         <<domainEvent>>
         +identifiant campaignId
     }
@@ -150,13 +150,13 @@ classDiagram
         +identifiant campaignId
     }
 
-    class CampaignType {
+    class SpaceType {
         <<enumeration>>
         CAMPAIGN
         ONE_SHOT
     }
 
-    class CampaignStatus {
+    class SpaceStatus {
         <<enumeration>>
         ACTIVE
         ARCHIVED
@@ -204,17 +204,17 @@ classDiagram
         CONVERTED
     }
 
-    Campaign "1" *-- "1..*" CampaignMembership : memberships
-    Campaign "1" *-- "0..*" Invitation : invitations
-    Campaign --> CampaignType
-    Campaign --> CampaignStatus
-    CampaignMembership --> MemberRole
-    CampaignMembership --> MembershipStatus
+    Space "1" *-- "1..*" SpaceMembership : memberships
+    Space "1" *-- "0..*" Invitation : invitations
+    Space --> SpaceType
+    Space --> SpaceStatus
+    SpaceMembership --> MemberRole
+    SpaceMembership --> MembershipStatus
     Invitation --> InvitationScope
     Invitation --> InvitationType
     Invitation --> InvitationStatus
     GuestAccess --> GuestAccessStatus
-    GuestAccess --> CampaignId
+    GuestAccess --> SpaceId
 
     %% post-MVP
     class ScenarioLibraryEntry {
@@ -227,16 +227,16 @@ classDiagram
     ScenarioLibraryEntry --> User : owned by
     ScenarioLibraryEntry --> Document : promotes
 
-    Campaign ..> CampaignCreated : produces
-    Campaign ..> MemberJoined : produces
-    Campaign ..> MemberRemoved : produces
-    Campaign ..> InvitationCreated : produces
-    Campaign ..> InvitationRevoked : produces
-    Campaign ..> CharacterAssociated : produces
-    Campaign ..> CampaignArchived : produces
-    Campaign ..> CampaignFrozen : produces
-    Campaign ..> CampaignUnfrozen : produces
-    CampaignMembership ..> MemberActivated : produces
+    Space ..> SpaceCreated : produces
+    Space ..> MemberJoined : produces
+    Space ..> MemberRemoved : produces
+    Space ..> InvitationCreated : produces
+    Space ..> InvitationRevoked : produces
+    Space ..> CharacterAssociated : produces
+    Space ..> SpaceArchived : produces
+    Space ..> SpaceFrozen : produces
+    Space ..> SpaceUnfrozen : produces
+    SpaceMembership ..> MemberActivated : produces
     GuestAccess ..> GuestAccessCreated : produces
     GuestAccess ..> GuestAccessExpired : produces
     GuestAccess ..> GuestAccessRevoked : produces

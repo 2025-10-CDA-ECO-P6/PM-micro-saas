@@ -5,11 +5,11 @@
 ```mermaid
 sequenceDiagram
     participant App as Application Layer
-    participant CM as Campaign Management
+    participant CM as Space Management
     participant CL as Content Library
     participant SC as Session Conduct
 
-    CM-->>App: CampaignCreated(campaignId)
+    CM-->>App: SpaceCreated(campaignId)
     App->>CL: Créer les 4 dossiers système visibles + 1 dossier virtuel technique
     CL-->>App: [folderId1, folderId2, folderId3, folderId4, folderIdVirtual]
     App->>SC: SessionViewConfig.Create(campaignId, folderIds)
@@ -127,7 +127,7 @@ sequenceDiagram
     actor MJ
     participant App as Application Layer
     participant SC as Session Conduct
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     MJ->>App: Clôturer la session
     App->>SC: Session.Close()
@@ -143,7 +143,7 @@ sequenceDiagram
 sequenceDiagram
     actor Joueur
     participant App as Application Layer
-    participant CM as Campaign Management
+    participant CM as Space Management
     participant SC as Session Conduct
 
     Joueur->>App: Accéder à la session (guestToken)

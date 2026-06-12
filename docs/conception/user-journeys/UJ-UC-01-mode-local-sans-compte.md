@@ -4,7 +4,7 @@
 
 Ce parcours couvre l'expérience d'un Maître du Jeu qui utilise Haversack pour la première fois sans créer de compte, depuis la découverte de l'application jusqu'à la conversion éventuelle en compte enregistré.
 
-Il inclut les scénarios de limite atteinte et de retour après vidage de cache.
+Il inclut les scénarios de limite atteinte et de retour après vidage de cache, ainsi que la variante **capture-first** : le MJ crée du contenu immédiatement dans son espace personnel, sans passer par la création d'une campagne.
 
 ---
 
@@ -31,6 +31,9 @@ journey
       Choisir sans compte: 5: Nadia, Thomas
       Choisir sans compte: 3: Rémi
       Lire le message de démarrage: 4: Nadia, Thomas, Rémi
+    section Capture directe (variante capture-first)
+      Créer une idée lieu/PNJ/scénario: 5: Nadia, Thomas
+      Contenu atterrit dans l'espace personnel: 5: Nadia, Thomas
     section Prise en main
       Créer une campagne: 4: Nadia, Thomas
       Ajouter du contenu: 4: Nadia, Thomas
@@ -56,9 +59,13 @@ flowchart TD
     A([Ouvre l'application]) --> B[Écran d'accueil\nDeux options]
     B --> C[Commencer sans compte]
     C --> D[Message : données stockées\ndans ce navigateur]
-    D --> E[Écran de création de campagne]
-    E --> F[Crée une campagne]
-    F --> G[Ajoute du contenu\nPrépare une session]
+    D --> E{Que fait-il en premier ?}
+    E -->|Capture-first| CF[Crée une idée\nlieu / PNJ / scénario\ndirectement]
+    CF --> CFR[Contenu atterrit dans\nl'espace personnel\nsans campagne créée]
+    CFR --> G
+    E -->|Parcours principal| F[Écran de création de campagne]
+    F --> FC[Crée une campagne]
+    FC --> G[Ajoute du contenu\nPrépare une session]
     G --> H{Ferme le navigateur}
     H --> I[Retour le lendemain\nContenu retrouvé]
     I --> J[Tente de partager\nune info avec les joueurs]
@@ -78,6 +85,7 @@ flowchart TD
 | Ouvrir l'application | Rémi | Méfiance initiale, interface perçue comme complexe | Écran d'accueil épuré, deux choix clairs et équivalents |
 | Choisir sans compte | Tous | Libellé technique ou hiérarchie culpabilisante | "Commencer sans compte" — ton rassurant, pas technique |
 | Lire le message de démarrage | Tous | Message trop long ou alarmiste | Court, non bloquant, factuel — disparaît au premier clic |
+| **Créer du contenu directement (capture-first)** | **Nadia, Thomas** | **Redirection imposée « créez une campagne d'abord »** | **Premier écran = espace de travail ; idée/lieu/PNJ/scénario atterrit dans l'espace personnel sans campagne requise** |
 | Créer une campagne | Nadia, Thomas | Trop de champs obligatoires à la création | Création en un clic, nom par défaut modifiable |
 | Ajouter du contenu | Nadia, Thomas | Navigation confuse, actions introuvables | Actions essentielles accessibles sans formation |
 | Retour après fermeture | Nadia | Crainte de perte de données | Atterrit directement sur la dernière campagne ouverte |
@@ -87,6 +95,12 @@ flowchart TD
 ---
 
 ## Scénarios alternatifs et d'erreur
+
+**Nadia / Thomas — Capture-first (sans campagne)**
+- Le MJ ouvre l'application, voit son espace de travail personnel et crée immédiatement une idée (lieu, PNJ ou scénario) sans avoir à nommer ou créer une campagne au préalable.
+- Le contenu atterrit dans son espace personnel (`SpaceType.PERSONAL`).
+- Point de friction éliminé : plus de redirection "créer une campagne d'abord" qui brisait l'élan créatif.
+- Tension à surveiller : si le MJ veut ensuite rattacher ce contenu à une campagne, le geste de déplacement doit être découvrable sans formation.
 
 **Thomas — Évaluation sans engagement**
 - Crée une campagne de test, explore l'interface, constate que le partage nécessite un compte.

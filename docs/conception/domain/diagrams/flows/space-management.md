@@ -1,4 +1,4 @@
-# Campaign Management — Diagrammes de flux
+# Space Management — Diagrammes de flux
 
 ## 1. Créer une campagne
 
@@ -6,7 +6,7 @@
 sequenceDiagram
     actor MJ
     participant App as Application Layer
-    participant CM as Campaign Management
+    participant CM as Space Management
     participant CL as Content Library
 
     MJ->>App: Créer une campagne (name, type)
@@ -14,8 +14,8 @@ sequenceDiagram
     alt Quota dépassé
         App-->>MJ: Bloqué — upgrade requis
     else Quota OK
-        App->>CM: Campaign.Create(ownerId, name, type)
-        CM-->>App: CampaignCreated event
+        App->>CM: Space.Create(ownerId, name, type)
+        CM-->>App: SpaceCreated event
         App->>CL: Créer les dossiers système (Personnages, Joueurs, Scénarios, Notes)
         App-->>MJ: Campagne créée
     end
@@ -27,10 +27,10 @@ sequenceDiagram
 sequenceDiagram
     actor MJ
     participant App as Application Layer
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     MJ->>App: Générer un lien d'invitation (scope, options)
-    App->>CM: Campaign.CreateInvitation(LINK, scope, expiresAt?, maxUses?)
+    App->>CM: Space.CreateInvitation(LINK, scope, expiresAt?, maxUses?)
     CM-->>App: Invitation créée (token)
     App-->>MJ: Lien d'invitation (URL avec token)
     MJ->>MJ: Partage le lien (Discord, email, etc.)
@@ -42,7 +42,7 @@ sequenceDiagram
 sequenceDiagram
     actor Joueur
     participant App as Application Layer
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     Joueur->>App: Clic sur lien d'invitation (token)
     App->>CM: Valider invitation (token)
@@ -50,8 +50,8 @@ sequenceDiagram
         CM-->>App: Erreur
         App-->>Joueur: "Ce lien n'est plus actif"
     else Invitation valide
-        CM-->>App: CampaignId + scope
-        App->>CM: Campaign.AddMember(userId, PLAYER)
+        CM-->>App: SpaceId + scope
+        App->>CM: Space.AddMember(userId, PLAYER)
         CM-->>App: MemberJoined event
         App-->>Joueur: Accès à la campagne
     end
@@ -63,7 +63,7 @@ sequenceDiagram
 sequenceDiagram
     actor Joueur
     participant App as Application Layer
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     Joueur->>App: Clic sur lien d'invitation (token)
     App->>CM: Valider invitation (token)
@@ -86,7 +86,7 @@ sequenceDiagram
     participant Billing as Billing (infrastructure)
     participant App as Application Layer
     participant IA as Identity & Access
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     Billing->>App: Résiliation abonnement Pro (userId)
     App->>IA: User.ChangeTier(FREE)
@@ -94,20 +94,20 @@ sequenceDiagram
     App->>CM: GetActiveCampaigns(userId)
     CM-->>App: Liste des campagnes actives (triées par date de création)
     loop Pour chaque campagne excédentaire (rang > 3)
-        App->>CM: Campaign.Freeze()
-        CM-->>App: CampaignFrozen event
+        App->>CM: Space.Freeze()
+        CM-->>App: SpaceFrozen event
     end
     App-->>Billing: Confirmé
 ```
 
-## 6. Conversion GuestAccess → CampaignMembership
+## 6. Conversion GuestAccess → SpaceMembership
 
 ```mermaid
 sequenceDiagram
     actor Joueur
     participant App as Application Layer
     participant IA as Identity & Access
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     Note over Joueur: Joueur invité qui crée un compte
     Joueur->>App: Créer un compte (email, displayName, password, guestToken)
@@ -115,7 +115,7 @@ sequenceDiagram
     IA-->>App: UserRegistered
     App->>CM: ConvertGuestAccessToMembership(userId, guestToken)
     CM->>CM: GuestAccess.Convert(userId)
-    CM->>CM: Campaign.AddMember(userId, PLAYER)
+    CM->>CM: Space.AddMember(userId, PLAYER)
     CM-->>App: GuestAccessConvertedToMember + MemberJoined
     App-->>Joueur: Compte créé — membre permanent de la campagne
 ```
@@ -126,11 +126,11 @@ sequenceDiagram
 sequenceDiagram
     actor MJ
     participant App as Application Layer
-    participant CM as Campaign Management
+    participant CM as Space Management
 
     MJ->>App: Associer personnage (userId, characterId)
-    App->>CM: Campaign.AssociateCharacter(userId, characterId)
-    CM->>CM: Ajouter characterId dans CampaignMembership.characterIds
+    App->>CM: Space.AssociateCharacter(userId, characterId)
+    CM->>CM: Ajouter characterId dans SpaceMembership.characterIds
     CM-->>App: CharacterAssociated event
     App-->>MJ: Personnage associé
 ```

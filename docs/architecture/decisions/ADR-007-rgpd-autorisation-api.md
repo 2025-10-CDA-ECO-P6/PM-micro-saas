@@ -26,7 +26,7 @@ Le domaine `User` modélise déjà `User.Delete()` et `User.Anonymize()`. L'effa
 À l'inscription, l'utilisateur coche une case déclarant avoir au moins 16 ans. Aucun mécanisme de consentement parental n'est implémenté.
 
 **3. Invariant d'autorisation API.**
-Toute requête portant sur une ressource vérifie que cette ressource appartient à une campagne accessible à l'appelant. Un appelant est « accessible » s'il est membre actif (`CampaignMembership.status = ACTIVE`) ou s'il dispose d'un `GuestAccess` actif sur la campagne ou la session concernée. Cet invariant est appliqué dans la couche Application, distinct des règles métier du domaine.
+Toute requête portant sur une ressource vérifie que cette ressource appartient à une campagne accessible à l'appelant. Un appelant est « accessible » s'il est membre actif (`SpaceMembership.status = ACTIVE`) ou s'il dispose d'un `GuestAccess` actif sur la campagne ou la session concernée. Cet invariant est appliqué dans la couche Application, distinct des règles métier du domaine.
 
 ---
 

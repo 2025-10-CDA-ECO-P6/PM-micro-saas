@@ -55,8 +55,8 @@ pas pour son flux de travail.
 - Un espace de jeu créé avec quatre dossiers système par défaut : « Personnages », « Joueurs »,
   « Scénarios », « Notes » (UC-02, glossaire §3 `Folder`). Elle peut les renommer ou les
   supprimer librement.
-- Le `CampaignType` est `CAMPAIGN` par défaut — le glossaire définit `ONE_SHOT` comme valeur
-  possible de `CampaignType`, mais son point d'entrée dédié dans l'interface (« deux points
+- Le `SpaceType` est `CAMPAIGN` par défaut — le glossaire définit `ONE_SHOT` comme valeur
+  possible de `SpaceType`, mais son point d'entrée dédié dans l'interface (« deux points
   d'entrée distincts » — UC-02 §Contexte) fait partie du périmètre post-MVP.
 - Aucune donnée envoyée au serveur. Fonctionnalités de partage désactivées en mode local.
 

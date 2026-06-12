@@ -5,10 +5,10 @@
 ```mermaid
 sequenceDiagram
     participant App as Application Layer
-    participant CM as Campaign Management
+    participant CM as Space Management
     participant CL as Content Library
 
-    CM-->>App: CampaignCreated(campaignId, ownerId)
+    CM-->>App: SpaceCreated(campaignId, ownerId)
     App->>CL: Folder.Create(campaignId, "Personnages", isSystem=true)
     App->>CL: Folder.Create(campaignId, "Joueurs", isSystem=true)
     App->>CL: Folder.Create(campaignId, "Scénarios", isSystem=true)

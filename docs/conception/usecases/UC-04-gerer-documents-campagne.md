@@ -1,4 +1,4 @@
-# UC-04 — Gérer les documents d'une campagne
+# UC-04 — Gérer les documents d'un espace
 
 ## Acteur principal
 
@@ -11,14 +11,15 @@ Joueurs, uniquement si certains documents sont partagés.
 ## Objectif
 
 Permettre au MJ de créer, modifier, structurer, organiser, retrouver et éventuellement partager
-des documents de campagne modulaires : notes libres, scénarios, scènes, fiches de PNJ, lieux,
+des documents modulaires dans un espace : notes libres, scénarios, scènes, fiches de PNJ, lieux,
 factions, objets, lore, aides de jeu, résumés ou idées.
 
 ## Contexte
 
 La capture et la structuration d'information durable sont un besoin central pour un MJ.
-Dans Haversack, le document de campagne est l'unité fonctionnelle utilisée pour conserver
-ce que le MJ prépare, improvise, relie et partage.
+Dans Haversack, le document est l'unité fonctionnelle utilisée pour conserver ce que le MJ
+prépare, improvise, relie et partage — qu'il travaille dans un espace de campagne partagé
+ou dans son espace personnel.
 
 Une note ne disparaît pas : elle devient un cas simple de document, généralement libre
 ou associée au type "note". Le même modèle permet aussi de représenter un scénario, une scène, un PNJ,
@@ -30,23 +31,27 @@ une structure rigide ni une logique centrée sur un système de jeu particulier.
 
 ## Besoin utilisateur
 
-Le MJ veut centraliser son contenu durable, le structurer à son niveau de besoin, le relier
-aux autres éléments de campagne et le retrouver rapidement sans devoir attendre que l'application
-fournisse un écran spécialisé pour chaque cas.
+Le MJ veut centraliser son contenu durable dans l'espace qui correspond à son besoin — espace
+personnel pour ses captures et notes privées, espace de campagne pour le contenu lié à une
+aventure partagée — le structurer à son niveau de besoin, le relier aux autres éléments et le
+retrouver rapidement sans devoir attendre que l'application fournisse un écran spécialisé pour
+chaque cas.
 
 ## Déclencheur
 
 Le MJ prépare une campagne, rédige un scénario, crée une fiche, improvise une idée,
 réorganise son contenu ou transforme une capture de session en document durable.
+Il peut aussi créer un document directement dans son espace personnel (capture-first, hors
+contexte de campagne — cf. UC-01).
 
 ## Préconditions
 
-- Une campagne existe.
-- Le MJ a accès à la campagne.
+- Un espace existe (campagne ou espace personnel).
+- Le MJ a accès à cet espace.
 
 ## Scénario nominal
 
-1. Le MJ ouvre une campagne.
+1. Le MJ ouvre un espace (campagne ou espace personnel).
 2. Il accède à la bibliothèque de documents, à un dossier ou à une zone de création rapide.
 3. Il clique sur "Créer un document" ou "Créer une note rapide".
 4. Le système affiche l'éditeur de document.
@@ -63,7 +68,7 @@ réorganise son contenu ou transforme une capture de session en document durable
 7. Le MJ peut ajouter des blocs de contenu : texte libre, descriptions, listes, checklists,
    tableaux, images, séparateurs ou autres blocs disponibles.
 8. Le MJ peut lier le document à d'autres documents : scénario, scène, PNJ, lieu, aide de jeu,
-   résumé, révélation ou tout autre contenu de campagne.
+   résumé, révélation ou tout autre contenu de l'espace.
 9. Le MJ sauvegarde le document.
 10. Le document devient accessible depuis son dossier, la recherche, ses liens et les vues
     qui consomment la bibliothèque de contenu.
@@ -171,10 +176,10 @@ Le système refuse l'accès.
 
 ## Données manipulées
 
-### Document de campagne
+### Document d'espace
 
 - Identifiant
-- Campagne associée
+- Espace associé (`SpaceId`)
 - Dossier associé
 - Titre
 - Type optionnel
@@ -197,8 +202,8 @@ Le système refuse l'accès.
 - Un document appartient toujours à exactement un dossier.
 - Un document peut être lié à plusieurs autres documents.
 - Un document peut être instancié depuis un template réutilisable.
-- Un document partagé reste visible par les joueurs jusqu'à retrait explicite du partage.
-- Seul le MJ peut partager un document de campagne durable.
+- Un document partagé avec des joueurs reste visible jusqu'à retrait explicite du partage.
+- Seul le MJ peut partager un document d'un espace de campagne avec les joueurs.
 - Un joueur ne peut consulter et voir que les documents qui lui sont explicitement accessibles.
 - UC-03 possède la structure narrative des scénarios et scènes, même s'ils sont représentés par des documents.
 - UC-05 possède l'organisation en dossiers et les templates par défaut de dossier.
@@ -215,7 +220,7 @@ Le système refuse l'accès.
 - Le MJ peut lier un document à d'autres documents.
 - Le MJ peut organiser un document dans un dossier.
 - Le MJ peut créer un document privé.
-- Le MJ peut partager un document avec les joueurs.
+- Le MJ peut partager un document avec les joueurs (espace de campagne).
 - Le MJ peut modifier la visibilité d'un document.
 - Un document privé n'est pas visible par les joueurs.
 - Un document peut être retrouvé via la recherche.

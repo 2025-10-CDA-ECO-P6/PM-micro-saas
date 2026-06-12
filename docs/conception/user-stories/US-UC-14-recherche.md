@@ -2,7 +2,7 @@
 
 ## Objectif utilisateur
 
-Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapidement un document de la campagne active — PNJ, scène, note, lieu, personnage joueur — en cherchant par titre (correspondance) et en filtrant par type (regroupement des résultats). La recherche est disponible depuis la bibliothèque de contenu (préparation) et depuis la vue session (en cours de partie, dans un panneau latéral sans quitter la session).
+Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapidement un document de l'espace actif — PNJ, scène, note, lieu, personnage joueur — en cherchant par titre (correspondance) et en filtrant par type (regroupement des résultats). La recherche est disponible depuis la bibliothèque de contenu (préparation) et depuis la vue session (en cours de partie, dans un panneau latéral sans quitter la session).
 
 ---
 
@@ -19,7 +19,7 @@ Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapid
 ## Use cases couverts
 
 - **UC-14** — Rechercher rapidement une information
-  - Nominal : recherche par titre dans la campagne active
+  - Nominal : recherche par titre dans l'espace actif
   - A1 : aucun résultat (état vide avec suggestions)
   - A2 : filtrer les résultats par type de contenu
   - A3 : filtrer par tag (Could Have — mentionné dans stories exclues)
@@ -55,8 +55,8 @@ flowchart TD
     C --> E{Acteur}
     D --> E
 
-    E -->|MJ| F[Filtre : campagne active\nTous les documents GM_ONLY et PUBLIC\nResultats par titre et type optionnel]
-    E -->|Joueur| G[Filtre : campagne active\nDocuments PUBLIC uniquement\nResultats par titre et type optionnel]
+    E -->|MJ| F[Filtre : espace actif\nTous les documents GM_ONLY et PUBLIC\nResultats par titre et type optionnel]
+    E -->|Joueur| G[Filtre : espace actif\nDocuments PUBLIC uniquement\nResultats par titre et type optionnel]
 
     F --> H{Resultats ?}
     G --> H
@@ -99,19 +99,19 @@ flowchart LR
 **Priorité** : Should Have
 
 **En tant que** MJ,
-**je veux** saisir un titre ou une partie de titre dans la barre de recherche de ma campagne active,
+**je veux** saisir un titre ou une partie de titre dans la barre de recherche de mon espace actif,
 **afin de** retrouver rapidement le document correspondant sans naviguer manuellement dans les dossiers.
 
 **Notes de conception** :
 - La recherche porte uniquement sur le **titre** du `Document`. La recherche full-text sur le contenu des blocs est post-MVP.
-- Le périmètre est limité à la **campagne active**. Pas de recherche cross-campagne dans le MVP.
-- Le MJ voit tous les documents de la campagne : `GM_ONLY` et `PUBLIC`.
+- Le périmètre est limité à l'**espace actif**. Pas de recherche cross-espaces dans le MVP.
+- Le MJ voit tous les documents de l'espace : `GM_ONLY` et `PUBLIC`.
 - Les `LIVE_NOTE` des sessions passées sont incluses dans les résultats comme tout document.
 - La recherche est insensible à la casse et supporte la correspondance partielle sur le titre.
 - L'état vide (A1) propose une suggestion pour modifier la recherche ou créer un document.
 
 **Règles métier** :
-- RB-14-01 : La recherche est limitée aux documents de la campagne active.
+- RB-14-01 : La recherche est limitée aux documents de l'espace actif.
 - RB-14-02 : Un MJ voit les documents `GM_ONLY` et `PUBLIC` dans ses résultats.
 - RB-14-03 : Un joueur ne voit que les documents `PUBLIC` dans ses résultats — les documents `GM_ONLY` ne sont jamais retournés à un joueur.
 - RB-14-04 : Les `LIVE_NOTE` des sessions passées sont recherchables comme tout document.
@@ -119,7 +119,7 @@ flowchart LR
 **Critères d'acceptation** :
 - [ ] Le MJ peut saisir un titre (ou une partie de titre) dans la barre de recherche.
 - [ ] Les résultats affichent les documents dont le titre contient la chaîne saisie (insensible à la casse).
-- [ ] Les résultats sont limités à la campagne active.
+- [ ] Les résultats sont limités à l'espace actif.
 - [ ] Les documents `GM_ONLY` et `PUBLIC` sont retournés au MJ.
 - [ ] Les `LIVE_NOTE` des sessions passées apparaissent dans les résultats.
 - [ ] Aucun résultat : un état vide est affiché avec une suggestion.
@@ -127,24 +127,24 @@ flowchart LR
 
 ```gherkin
 Scénario : Recherche par titre avec résultat (nominal)
-  Etant donne que la campagne active contient un document "Seigneur Varek" de type PNJ avec visibility = GM_ONLY
+  Etant donne que l espace actif contient un document "Seigneur Varek" de type PNJ avec visibility = GM_ONLY
   Quand le MJ saisit "Varek" dans la barre de recherche
   Alors le document "Seigneur Varek" apparait dans les resultats
   Et le document peut etre ouvert depuis les resultats
 
 Scénario : Recherche partielle insensible a la casse
-  Etant donne que la campagne active contient un document "Note de session 3" de type LIVE_NOTE
+  Etant donne que l espace actif contient un document "Note de session 3" de type LIVE_NOTE
   Quand le MJ saisit "note de session"
   Alors le document "Note de session 3" apparait dans les resultats
 
 Scénario : Aucun resultat (A1)
-  Etant donne que la campagne active ne contient aucun document dont le titre contient "Dragon rouge"
+  Etant donne que l espace actif ne contient aucun document dont le titre contient "Dragon rouge"
   Quand le MJ saisit "Dragon rouge"
   Alors un etat vide est affiche
   Et une suggestion invite a modifier la recherche
 
 Scénario : Recherche joueur - documents GM_ONLY exclus (A4, E1)
-  Etant donne que la campagne active contient "Plan secret" avec visibility = GM_ONLY
+  Etant donne que l espace actif contient "Plan secret" avec visibility = GM_ONLY
   Et un document "Carte publique" avec visibility = PUBLIC
   Quand le joueur effectue une recherche sur "plan"
   Alors "Plan secret" n est pas dans les resultats
@@ -174,7 +174,7 @@ Scénario : LIVE_NOTE session passee recherchable
 
 **Règles métier** :
 - RB-14-05 : Le filtre par type est appliqué en conjonction avec la recherche par titre — les règles de visibilité (RB-14-02, RB-14-03) restent actives.
-- RB-14-06 : Les types proposés dans le filtre sont ceux de la campagne active.
+- RB-14-06 : Les types proposés dans le filtre sont ceux de l'espace actif.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut sélectionner un type de document pour filtrer les résultats.
@@ -286,7 +286,7 @@ Scénario : Recherche joueur depuis la vue session (A4, E1)
 
 | Cas UC-14 | Story couvrant |
 |---|---|
-| Nominal — recherche par titre dans la campagne active | US-14-01 |
+| Nominal — recherche par titre dans l'espace actif | US-14-01 |
 | A1 — aucun résultat | US-14-01, US-14-02 |
 | A2 — filtrer par type de contenu | US-14-02 |
 | A3 — filtrer par tag | Exclu MVP (Could Have) |

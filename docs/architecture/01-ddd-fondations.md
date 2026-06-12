@@ -108,7 +108,7 @@ void AssignOwner(Guid campaignId, Guid userId) { ... }
 AssignOwner(userId, campaignId); // compile, bug en production
 
 // Bon — erreur de compilation si on inverse
-void AssignOwner(CampaignId campaignId, UserId userId) { ... }
+void AssignOwner(SpaceId campaignId, UserId userId) { ... }
 AssignOwner(userId, campaignId); // erreur de compilation
 ```
 

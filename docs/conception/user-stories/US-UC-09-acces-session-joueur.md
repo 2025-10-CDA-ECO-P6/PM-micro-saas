@@ -40,7 +40,7 @@ Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lie
 ## Bounded contexts pressentis
 
 - **Identity & Access** — gère `GuestAccess`, `Member`, génération et révocation des tokens de lien, validation des accès.
-- **Campaign Management** — associe les membres et les `GuestAccess` à une campagne, contrôle la liste des participants.
+- **Space Management** — associe les membres et les `GuestAccess` à une campagne, contrôle la liste des participants.
 - **Conduite de session** — consomme l'accès joueur pour afficher la vue joueur, expose les documents `PUBLIC` et les `documents épinglés` en temps réel.
 
 ---
@@ -226,7 +226,7 @@ Scénario : Lien invalide ou mal forme (E1)
 **afin de** consulter l'historique des sessions passées et les documents de lore partagés entre les séances.
 
 **Notes de conception** :
-- Le lien permanent est associé à un `Member` de la campagne, géré par Identity & Access et Campaign Management.
+- Le lien permanent est associé à un `Member` de la campagne, géré par Identity & Access et Space Management.
 - Contrairement au lien ponctuel (`GuestAccess`), l'accès permanent nécessite un compte Haversack — il est valide jusqu'à révocation par le MJ.
 - Si le joueur n'a pas de compte, il est redirigé vers la création de compte (UC-10). Une fois le compte créé, il est associé comme `Member` de la campagne.
 - L'accès permanent donne accès à l'historique des sessions et aux documents de lore `PUBLIC`.

@@ -96,8 +96,8 @@ flowchart TD
 | Créer un document complet avec type | Antoine | Absence de types disponibles ou types peu clairs | Types affichés avec icône et description courte dans le sélecteur, sans masquer l'option libre |
 | Ajouter des blocs libres | Tous | Éditeur perçu comme trop abstrait si les blocs sont trop techniques | Blocs simples par défaut : texte, liste, checklist, tableau, image, séparateur |
 | Renseigner des propriétés structurées | Antoine | Confusion entre propriétés et contenu libre | Propriétés dans un panneau secondaire, contenu libre toujours central |
-| Ajouter des tags | Antoine, Nadia | Référentiel de tags vide ou suggestions absentes | Suggestions basées sur les tags existants de la campagne |
-| Lier des documents existants | Antoine, Thomas | Recherche de documents inexistante ou lente | Recherche rapide par titre dans la campagne, suggestion des documents récents |
+| Ajouter des tags | Antoine, Nadia | Référentiel de tags vide ou suggestions absentes | Suggestions basées sur les tags existants de l'espace |
+| Lier des documents existants | Antoine, Thomas | Recherche de documents inexistante ou lente | Recherche rapide par titre dans l'espace, suggestion des documents récents |
 | Définir la visibilité | Tous | Statut privé par défaut non perçu, MJ oublie de partager | Indicateur visuel clair du statut de visibilité sur la fiche du document |
 | Sauvegarder | Tous | Perte de données si la sauvegarde n'est pas automatique | Sauvegarde automatique + indicateur de synchronisation |
 | Retrouver un document après longue absence | Nadia | Aucun filtre, liste non triée, recherche absente | Tri par date de modification, filtre par type et tag, recherche plein texte (UC-14) |
@@ -125,7 +125,7 @@ flowchart TD
 | Premier document créé | MJ atteint l'éditeur avec un titre sauvegardé | Formulaire de création trop long ou bloquant |
 | Note rapide créée en session | Document sauvegardé sans quitter le flux de jeu | Trop d'étapes, titre obligatoire |
 | Premier document partagé avec les joueurs | Au moins un document visible côté joueurs | Mécanique de partage non trouvée ou non comprise |
-| Premier lien entre documents | Lien créé entre deux documents de la campagne | Recherche de documents absente ou trop lente |
+| Premier lien entre documents | Lien créé entre deux documents de l'espace | Recherche de documents absente ou trop lente |
 | Document retrouvé après longue absence | Le MJ accède au bon document via recherche ou navigation | Absence de filtre ou de tri pertinent |
 
 ---

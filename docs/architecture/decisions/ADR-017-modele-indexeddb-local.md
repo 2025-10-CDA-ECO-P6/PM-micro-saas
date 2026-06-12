@@ -54,11 +54,11 @@ Le store local projette le périmètre sérialisé défini dans ADR-016 §1.2. L
 | `document_tags` | `[document_id, tag]` | Tags normalisés |
 | `document_types` | `id` (UUID local) | Types custom uniquement (les types système sont seedés côté serveur) |
 
-**Exclusions identiques à ADR-016** : toute entité de session (`sessions`, `session_view_configs`, `session_pinned_documents`, `session_live_notes`, `session_view_folders`), entités d'identité (`users`, `campaign_memberships`, `membership_characters`), flags de cycle de vie serveur (`deleted_at`, `is_deleted`, `purge_claimed_at`). Ces exclusions ne sont pas des omissions de simplification — elles délimitent ce que le mode local UC-01 contient.
+**Exclusions identiques à ADR-016** : toute entité de session (`sessions`, `session_view_configs`, `session_pinned_documents`, `session_live_notes`, `session_view_folders`), entités d'identité (`users`, `space_memberships`, `membership_characters`), flags de cycle de vie serveur (`deleted_at`, `is_deleted`, `purge_claimed_at`). Ces exclusions ne sont pas des omissions de simplification — elles délimitent ce que le mode local UC-01 contient.
 
 #### 1.2 Structure aggregate-rooted plutôt que miroir relationnel
 
-Le store local n'est pas un miroir des tables serveur. Il est organisé autour de la campagne comme racine d'agrégat : son contenu (dossiers, documents, blocs, liens, tags, types custom) lui est rattaché par `campaign_id`. Cette organisation est délibérée.
+Le store local n'est pas un miroir des tables serveur. Il est organisé autour de la campagne comme racine d'agrégat : son contenu (dossiers, documents, blocs, liens, tags, types custom) lui est rattaché par `space_id`. Cette organisation est délibérée.
 
 Un miroir relationnel réimporterait dans le navigateur la logique d'intégrité référentielle serveur (contraintes FK, ordre d'insertion topologique, résolution de cycles), ce qu'ADR-001 refuse explicitement. L'aggregate-rooted conserve le store simple et interrogeable par le seul chemin qu'UC-01 requiert : accéder à tout le contenu d'une campagne depuis sa racine.
 
@@ -70,7 +70,7 @@ Les indexes sont créés uniquement pour les chemins de lecture qu'UC-01 exige r
 
 | Index | Object store | Champ | Justification |
 |---|---|---|---|
-| `by_campaign` | `documents`, `folders`, `document_types` | `campaign_id` | Navigation : lister tout le contenu d'une campagne |
+| `by_campaign` | `documents`, `folders`, `document_types` | `space_id` | Navigation : lister tout le contenu d'une campagne |
 | `by_folder` | `documents` | `folder_id` | Navigation de l'arborescence d'un dossier |
 | `by_document` | `document_blocks`, `document_links`, `document_tags` | `document_id` / `source_id` | Lecture du contenu d'un document |
 | `by_title` | `documents` | `title` | Recherche par titre (UC-01 — fonctionnalité « recherche locale ») |

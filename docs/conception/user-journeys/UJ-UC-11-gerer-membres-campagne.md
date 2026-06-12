@@ -56,7 +56,7 @@ flowchart TD
     LienCampagne --> Options[Options : date d expiration\nnombre d utilisations - facultatif]
     LienSession --> Options
 
-    Options --> Generate[Campaign Management\ncree l Invitation\nIdentity and Access\ngenerele token]
+    Options --> Generate[Space Management\ncree l Invitation\nIdentity and Access\ngenerele token]
     Generate --> Copy[Bouton Copier\nretour visuel toast\nMJ partage via Discord etc]
 
     Copy --> Wait{Joueur utilise le lien ?}
@@ -129,5 +129,5 @@ flowchart TD
 - UC-09 Accès session joueur : [`docs/conception/usecases/UC-09-acces-session-joueur.md`](../usecases/UC-09-acces-session-joueur.md)
 - UC-12 Consulter sa campagne (vue joueur) : [`docs/conception/usecases/UC-12-rejoindre-campagne.md`](../usecases/UC-12-rejoindre-campagne.md)
 - User Journey UC-09 : [`UJ-UC-09-acces-session-joueur.md`](UJ-UC-09-acces-session-joueur.md)
-- Conception Campaign Management : [`docs/conception/domain/campaign-management.md`](../domain/campaign-management.md)
+- Conception Space Management : [`docs/conception/domain/space-management.md`](../domain/space-management.md)
 - Conception Identity and Access : [`docs/conception/domain/identity-access.md`](../domain/identity-access.md)

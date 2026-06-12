@@ -91,6 +91,15 @@ demandée. Un compte joueur reste possible pour conserver un accès persistant e
 pas les jets de dés, les combats ou les mécaniques. Cette décision réduit la complexité
 et élargit la cible (D&D, Call of Cthulhu, Fate, Blades in the Dark, systèmes narratifs…).
 
+**Le contenu appartient à l'espace — la campagne est un type d'espace, pas un prérequis.**
+Le MJ peut créer et organiser du contenu (PNJ, lieu, scénario, règle maison, objet) sans
+qu'une campagne soit en cours ou même planifiée. Un **espace personnel** est disponible
+par défaut, y compris dès le mode local, pour accueillir ce contenu.
+La campagne est une façon d'organiser et d'utiliser une partie de ce contenu — pas sa condition
+d'existence. Ce choix est cohérent avec « Système de document générique » (tout est Document)
+et avec le différenciant « friction d'entrée nulle » : le MJ capture une idée immédiatement,
+sans créer de structure d'abord. *(ADR-018 — Voie 3 Space+PERSONAL, acté 2026-06-12.)*
+
 **Deux contextes de jeu de premier ordre — horizon produit.** Haversack reconnaît deux modes d'utilisation
 distincts qui ne partagent pas les mêmes besoins :
 
@@ -139,7 +148,7 @@ Pour valider le concept et justifier une suite, le MVP doit démontrer cinq hypo
 
 | # | Hypothèse | Seuil chiffré | Délai | Instrument de constat |
 |---|---|---|---|---|
-| **H1** | Un MJ peut créer une campagne structurée et y retrouver ses informations sans friction d'onboarding (pas de compte obligatoire au démarrage). | ≥ 60 % des MJ de la cohorte pilote qui ouvrent l'application atteignent **activation préparation** (campagne + premiers documents créés). | 14 jours après le premier usage. | Activation préparation (mesure d'usage anonyme). |
+| **H1** | Un MJ peut créer un espace structuré et y retrouver ses informations sans friction d'onboarding (pas de compte obligatoire au démarrage). | ≥ 60 % des MJ de la cohorte pilote qui ouvrent l'application atteignent **activation préparation** (espace actif — campagne ou espace personnel — avec premiers documents créés). *(instrument redéfini ADR-018 : l'espace personnel compte au même titre qu'une campagne créée — décision 2026-06-12.)* | 14 jours après le premier usage. | Activation préparation (mesure d'usage anonyme). |
 | **H2** | La vue session apporte une valeur réelle pendant une partie — réduction du temps de recherche, accès au contenu préparé, création à la volée. | ≥ 50 % des MJ ayant atteint activation préparation atteignent **activation vue session** (session ouverte ET réellement utilisée en partie). Signal de valeur confirmé : ≥ 50 % d'entre eux l'utilisent sur 2 sessions ou plus. | 30 jours pour la première activation vue session. 60 jours pour le signal de répétabilité (2 sessions+). | Activation vue session (mesure d'usage anonyme) + entretiens pour raison de non-adoption. |
 | **H3** | Le partage d'informations aux joueurs est plus fluide que les solutions actuelles (Discord, Google Docs, papier). | ≥ 40 % des MJ ayant animé une session avec joueurs atteignent **activation partage** (document partagé + au moins un joueur l'a consulté). La perception « plus fluide » est confirmée en entretien : ≥ 3 MJ sur 5 interrogés rapportent une fluidité supérieure aux solutions actuelles. | 60 jours pour activation partage. Entretiens parallèles ou récapitulatifs. | Activation partage (mesure d'usage anonyme). Entretiens utilisateurs (guide existant). |
 | **H4** | L'accès joueur sans compte n'est pas un frein à l'adoption du groupe entier. | Sur les sessions où un partage a eu lieu, ≥ 70 % comptent au moins un joueur ayant effectivement consulté le contenu partagé. Les abandons à l'entrée (joueurs ne consultant pas) se vérifient en entretien — moins de 2 joueurs sur 10 rapportent avoir renoncé à l'étape d'entrée. | 60 jours. | Activation partage (mesure d'usage anonyme : taux de consultation côté joueur). Entretiens pour identifier les motifs d'abandon. |
@@ -288,13 +297,13 @@ Typique pour les one-shots, les conventions, les groupes changeants.
 
 **Différenciants de Haversack :**
 
-- **Friction d'entrée nulle** — aucun compte pour commencer, données locales immédiates et toujours possédées par l'utilisateur (pas de compte requis pour conserver ses données en local). La possession est actionnable : le MJ peut exporter l'ensemble de sa campagne dans un format ouvert et la consulter hors de l'application.
+- **Friction d'entrée nulle** — aucun compte pour commencer, données locales immédiates et toujours possédées par l'utilisateur (pas de compte requis pour conserver ses données en local). La possession est actionnable : le MJ peut exporter l'ensemble de son espace dans un format ouvert et le consulter hors de l'application.
 - **Vue session dédiée** — le seul outil centré sur le pilotage de session en temps réel.
 - **Agnostique au système de jeu** — fonctionne pour D&D, Call of Cthulhu, Fate, Blades,
   systèmes maison, systèmes narratifs sans imposer une structure.
 - **Partage fluide** — le MJ contrôle ce qui est visible aux joueurs, document par document, et garde ses notes de préparation privées. L'ambition long terme est la granularité par joueur ou personnage, mais le MVP valide d'abord que le partage au groupe suffit à offrir une expérience plus fluide que les solutions actuelles.
 - **Accès joueur sans compte** — un lien, un nom, c'est tout.
-- **Organisation libre** — le MJ structure sa campagne à sa façon, pas à la façon de l'app.
+- **Organisation libre** — le MJ structure son espace à sa façon, pas à la façon de l'app.
 
 ---
 
@@ -312,7 +321,7 @@ Typique pour les one-shots, les conventions, les groupes changeants.
 
 ### Possession des données — arbitrage du 2026-06-10
 
-**Décision** : l'export de campagne est rehaussé en Should Have — le MJ peut exporter l'ensemble de sa campagne dans un format ouvert et la consulter hors de l'application.
+**Décision** : l'export d'espace est rehaussé en Should Have — le MJ peut exporter l'ensemble de son espace dans un format ouvert et le consulter hors de l'application.
 
 **Raison d'être produit** : le différenciant n°1 de la vision est la possession des données. Cette possession ne peut être qu'une affirmation sans une capacité concrète et actionnable. L'export matérialise la promesse de possession et répond aux douleurs de confiance (Thomas, Rémi) et au besoin de filet de sécurité du mode local.
 
@@ -329,6 +338,20 @@ Typique pour les one-shots, les conventions, les groupes changeants.
 **Alternatives considérées** : rehausser UC-13 dans la première livraison pour livrer les deux contextes dès le MVP — écartée. L'arbitrage privilégie la solidité du contexte campagne et maintient l'ambition deux-contextes pour la suite, avec trace explicite de la condition de retour.
 
 **Condition de retour** : si les entretiens ou l'usage révèlent que le profil one-shot exclusif (Sonia — conventions, groupes changeants, catalogue de scénarios) est une part significative des utilisateurs réels ou un levier d'adoption, UC-13 est réexaminé en priorité de la vague suivante.
+
+---
+
+### Espace personnel & généralisation Campaign→Space — arbitrage du 2026-06-12
+
+**Décision** : Voie 3 retenue — l'agrégat `Campaign` est généralisé en `Space` ; `SpaceType ∈ {CAMPAIGN, ONE_SHOT, PERSONAL}`. Un espace de type `PERSONAL` est créé par défaut à la création du compte (et disponible comme simple conteneur en mode local). L'espace personnel est opérationnel dès le MVP, y compris comme zone d'atterrissage par défaut pour les documents créés sans espace explicite. La campagne et le one-shot deviennent des spécialisations d'un espace — le contenu appartient à l'espace, pas à la campagne.
+
+**Raison d'être produit** : le processus créatif du MJ produit du contenu (lieu, PNJ, scénario, règle maison) sans lien avec une campagne en cours. Ce contenu est de premier ordre — il appartient au MJ, pas à une campagne. Reconnaître l'espace personnel comme conteneur par défaut supprime la friction « je dois créer une campagne pour noter une idée » et est directement cohérent avec le différenciant « friction d'entrée nulle » et avec le principe « Tout est Document ». Cette décision change la définition de l'instrument H1 : « activation préparation » compte désormais le contenu créé dans l'espace personnel au même titre qu'une campagne créée.
+
+**Alternatives considérées** :
+- *Voie 1 — racine sur l'Utilisateur (`Document.ownerId` de premier ordre, `campaignId` nullable)* — **rejetée, flaw STRUCTURAL sur trois axes indépendants** : violation de la frontière de contexte Identity & Access (ADR), résidu post-effacement RGPD (aucune saga ADR-011 n'atteint un document `campaignId = NULL`), incompatibilité mode local (pas de `User` en mode local, ADR-017 §1.1).
+- *Voie 2 — `CampaignType.PERSONAL` sans renommage* — repli viable, non retenu : dette sémantique significative (le MJ stocke son contenu dans « une campagne nommée Personnel », réintroduit le biais campagne-centré). La `ScenarioLibrary` reste un pont artificiel sans résolution naturelle.
+
+**Condition de retour** : si un use case démontre une nature distincte du contenu personnel — comportement de partage, gestion du cycle de vie, ou contrainte de visibilité — incompatible avec une spécialisation de l'agrégat `Space`, la séparation en agrégat dédié est réexaminée.
 
 ---
 

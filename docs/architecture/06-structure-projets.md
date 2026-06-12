@@ -36,7 +36,7 @@ coexistent dans un même assembly, les dépendances vont toujours domaine → ap
 
 ### Domaine et Application : projets uniques
 
-Les quatre bounded contexts (**Identity & Access**, **Campaign Management**, **Content Library**, **Session Conduct**)
+Les quatre bounded contexts (**Identity & Access**, **Space Management**, **Content Library**, **Session Conduct**)
 sont des **frontières logiques** — organisées en namespaces distincts et contrats internes clairs — pas une assembly par contexte.
 
 ```
@@ -48,7 +48,7 @@ Haversack.Domain/
   │   └── ...
   ├── CampaignManagement/
   │   ├── Campaign.cs
-  │   ├── CampaignId.cs
+  │   ├── SpaceId.cs
   │   ├── ICampaignRepository.cs
   │   └── ...
   ├── ContentLibrary/
@@ -209,7 +209,7 @@ Le parcours de migration est tout-ou-rien par campagne, avec un gate de reconnai
 ### Frontend : Angular SPA + Angular SSR/prerender
 
 Le frontend est construit en **Angular** — un seul écosystème, partagé par deux surfaces :
-- **Application principale** : SPA interactive (Campaign Management, Content Library, Session Conduct)
+- **Application principale** : SPA interactive (Space Management, Content Library, Session Conduct)
 - **Landing page** : SSR/prerender statique, déployable sur CDN pour SEO et performance au premier chargement
 
 **Blazor WASM est écarté** — bien que le backend soit .NET/C#, partager le domaine C# dans le navigateur

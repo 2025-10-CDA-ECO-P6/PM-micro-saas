@@ -4,7 +4,7 @@
 
 Ce parcours couvre la création d'un espace de jeu — campagne ou one-shot — depuis le tableau de bord jusqu'à la première interaction avec le contenu. Il inclut le scénario de blocage par la limite de campagnes.
 
-Le one-shot est techniquement une campagne avec `type = ONE_SHOT` ; le MJ ne voit pas ce détail.
+Le one-shot est techniquement un espace avec `type = ONE_SHOT` ; le MJ ne voit pas ce détail.
 
 > **Parcours one-shot MVP** : en première livraison, le one-shot se crée via le parcours campagne nominal (même formulaire, `type = ONE_SHOT` interne). Le parcours express ci-dessous (point d'entrée « Lancer un one-shot » distinct, branche Sonia) est **post-MVP** — conditionné à la livraison de UC-13. Les sections concernées sont annotées.
 
@@ -122,5 +122,5 @@ flowchart TD
 
 - Use case associé : `docs/conception/usecases/UC-02-creer-espace-jeu.md`
 - Vision produit : `docs/conception/vision/vision-produit.md`
-- Conception source : campaign-management : `docs/conception/domain/campaign-management.md`
+- Conception source : space-management : `docs/conception/domain/space-management.md`
 - User Journey UC-01 : `docs/conception/user-journeys/UJ-UC-01-mode-local-sans-compte.md`

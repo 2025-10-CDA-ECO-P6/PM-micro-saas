@@ -38,7 +38,7 @@ Permettre au MJ de contrôler qui accède à sa campagne : générer des liens d
 
 ## Bounded contexts pressentis
 
-- **Campaign Management** — gère `Member`, `Invitation`, associations joueur-personnage, liste des membres, statuts.
+- **Space Management** — gère `Member`, `Invitation`, associations joueur-personnage, liste des membres, statuts.
 - **Identity & Access** — valide les tokens d'invitation, crée les `GuestAccess` ou les `Member` à réception du lien.
 
 ---
@@ -107,7 +107,7 @@ flowchart LR
 
 **Notes de conception** :
 - Le MJ choisit le périmètre de l'invitation : `CAMPAIGN` (accès durable, lié à un `Member`) ou `SESSION` (accès temporaire, lié à un `GuestAccess`).
-- Le lien est généré par `Campaign Management` et le token est géré par `Identity & Access`.
+- Le lien est généré par `Space Management` et le token est géré par `Identity & Access`.
 - L'accès est automatique sur lien valide — pas d'étape d'approbation MJ après que le joueur a cliqué.
 - La plateforme ne gère pas l'envoi du lien (pas d'email, pas de notification push). Le MJ copie et partage lui-même.
 - Options configurables (toutes optionnelles) : date d'expiration, nombre d'utilisations maximum.
@@ -176,7 +176,7 @@ Scenario : Invitation expiree non reactivable (E2)
 
 **Notes de conception** :
 - La révocation est une action explicite du MJ depuis la liste des invitations.
-- `Campaign Management` passe le statut de l'`Invitation` à `REVOKED`. `Identity & Access` invalide le token.
+- `Space Management` passe le statut de l'`Invitation` à `REVOKED`. `Identity & Access` invalide le token.
 - Une invitation `REVOKED` ne peut plus créer d'accès — un joueur qui clique sur le lien voit le message "Ce lien n'est plus actif" (cohérent avec UC-09 US-09-02).
 - La révocation est distincte de l'expiration automatique (dépassement de date ou quota d'usages).
 - Pour réinviter, le MJ crée un nouveau lien (US-11-01).
@@ -225,7 +225,7 @@ Scenario : Invitation deja revoquee — pas de reactivation
 **afin de** révoquer son accès sans supprimer ses contributions (personnage, notes partagées).
 
 **Notes de conception** :
-- Retirer un membre passe son statut à `REMOVED` dans `Campaign Management`.
+- Retirer un membre passe son statut à `REMOVED` dans `Space Management`.
 - Les données du membre dans la campagne sont préservées : personnage, notes partagées, historique de session.
 - Un membre `REMOVED` ne peut plus accéder à la campagne. Un message d'accès refusé est affiché s'il tente d'utiliser un ancien lien.
 - Un membre `REMOVED` peut être réinvité via un nouveau lien (US-11-01) — son statut repasse à `PENDING` puis `ACTIVE`.
@@ -282,7 +282,7 @@ Scenario : Ancien lien d un membre retire
 
 **Notes de conception** :
 - L'association peut être faite dès qu'un joueur est `Member` `ACTIVE` ou `PENDING` (avant même qu'il utilise son lien).
-- L'association est gérée par `Campaign Management` (relation `Member` <-> `Document` de type `player_character`).
+- L'association est gérée par `Space Management` (relation `Member` <-> `Document` de type `player_character`).
 - Un joueur peut être associé à zéro ou plusieurs personnages. Un personnage peut n'être associé qu'à un seul joueur à la fois.
 - Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE` depuis sa vue joueur.
 - Si un `GuestAccess` (sans compte) est utilisé avec un lien pointant vers un personnage, le joueur accède à la **fiche** de ce personnage (`Document` de type `player_character`) — un nouveau lien vers le même personnage permet de retrouver cette fiche. Les notes `PLAYER_PRIVATE` appartiennent à leur auteur : un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent.
@@ -291,7 +291,7 @@ Scenario : Ancien lien d un membre retire
 **Règles métier** :
 - RB-11-16 : Seul le MJ propriétaire (`OWNER`) peut associer ou dissocier un joueur et un personnage.
 - RB-11-17 : Un `Member` peut être associé à zéro ou plusieurs `Document` de type `player_character`.
-- RB-11-18 : Un personnage ne peut être associé qu'à un seul `CampaignMembership` actif à la fois.
+- RB-11-18 : Un personnage ne peut être associé qu'à un seul `SpaceMembership` actif à la fois.
 - RB-11-19 : Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE`.
 - RB-11-20 : Un nouveau lien vers le même personnage permet à un `GuestAccess` de récupérer la **fiche** (`Document` de type `player_character`). Les notes `PLAYER_PRIVATE` appartiennent à leur auteur — un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent (RB-09-19).
 - RB-11-21 : Dissocier un joueur de son personnage ne supprime pas le personnage ni ses notes.

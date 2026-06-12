@@ -31,9 +31,9 @@ Tous les identifiants sont des types forts encapsulant un identifiant unique glo
 
 | Type | Utilisé dans |
 |---|---|
-| `UserId` | Identity & Access, Campaign Management, Content Library, Session Conduct |
-| `CampaignId` | Campaign Management, Content Library, Session Conduct |
-| `SessionId` | Session Conduct, Campaign Management |
+| `UserId` | Identity & Access, Space Management, Content Library, Session Conduct |
+| `SpaceId` | Space Management, Content Library, Session Conduct |
+| `SessionId` | Session Conduct, Space Management |
 | `DocumentId` | Content Library, Session Conduct |
 | `FolderId` | Content Library |
 
@@ -41,8 +41,8 @@ Tous les identifiants sont des types forts encapsulant un identifiant unique glo
 
 | VO | Validation | Utilisé dans |
 |---|---|---|
-| `Email` | Format RFC 5321, normalisé en minuscules | Identity & Access, Campaign Management (invitations) |
-| `Slug` | Alphanumérique + tirets, minuscules, 3–100 caractères | Content Library, Campaign Management |
+| `Email` | Format RFC 5321, normalisé en minuscules | Identity & Access, Space Management (invitations) |
+| `Slug` | Alphanumérique + tirets, minuscules, 3–100 caractères | Content Library, Space Management |
 | `Tag` | Chaîne non vide, max 50 caractères, normalisée | Content Library, Session Conduct |
 
 ### Primitives de traçabilité
@@ -50,7 +50,7 @@ Tous les identifiants sont des types forts encapsulant un identifiant unique glo
 | Concept | Champs | Utilisé dans |
 |---|---|---|
 | `AuditInfo` | `createdAt: DateTime`, `updatedAt: DateTime`, `createdById: UserId` | Tous les contextes |
-| `SoftDelete` | `isDeleted: bool`, `deletedAt: DateTime?` | Content Library, Campaign Management — **exception RGPD** : les notes `PLAYER_PRIVATE` sous obligation d'effacement (fin d'accès invité, suppression de compte) sont supprimées **physiquement** et ne relèvent pas de cette primitive (voir ci-dessous). |
+| `SoftDelete` | `isDeleted: bool`, `deletedAt: DateTime?` | Content Library, Space Management — **exception RGPD** : les notes `PLAYER_PRIVATE` sous obligation d'effacement (fin d'accès invité, suppression de compte) sont supprimées **physiquement** et ne relèvent pas de cette primitive (voir ci-dessous). |
 
 > **Exception RGPD à `SoftDelete`** : la suppression logique réversible (`SoftDelete`) ne s'applique
 > pas aux notes `PLAYER_PRIVATE` qui tombent sous une obligation d'effacement RGPD (article 17 —
@@ -76,12 +76,12 @@ Tous les identifiants sont des types forts encapsulant un identifiant unique glo
 
 | Concept | Appartient à | Raison |
 |---|---|---|
-| `AccessPolicy`, `GuestAccess` | Campaign Management | Spécifique à l'accès campagne |
-| `MemberRole`, `CampaignMembership` | Campaign Management | Rôle contextuel par campagne |
+| `AccessPolicy`, `GuestAccess` | Space Management | Spécifique à l'accès espace |
+| `MemberRole`, `SpaceMembership` | Space Management | Rôle contextuel par espace |
 | `DocumentType`, `DocumentBlock` | Content Library | Structure de contenu spécifique |
 | Machine d'états de Session | Session Conduct | Logique LIVE→CLOSED→ARCHIVED |
 | Documents de type `LIVE_NOTE`, documents épinglés de session | Session Conduct | Concepts de session uniquement |
-| `Invitation` | Campaign Management | Spécifique à l'accès campagne |
+| `Invitation` | Space Management | Spécifique à l'accès espace |
 | Moteur de recherche | Application / Infrastructure | La recherche plein texte est une préoccupation d'infrastructure, pas du domaine |
 | Toute entité avec un ID propre | Son bounded context propriétaire | Le Core ne contient jamais d'entités |
 
@@ -93,7 +93,7 @@ Avant d'ajouter un concept dans le Core :
 
 1. Ce concept est-il utile à **au moins deux** bounded contexts ?
 2. Son sens métier reste-t-il **identique** dans ces contextes ?
-3. Peut-il exister **sans connaître** Campaign, Session, Content ou Identity ?
+3. Peut-il exister **sans connaître** Space, Session, Content ou Identity ?
 4. Peut-il être **testé seul** ?
 5. Est-il **stable** — ne changera-t-il pas à chaque évolution d'un contexte spécifique ?
 6. S'agit-il d'une **abstraction ou d'un type**, et non d'une entité avec un cycle de vie ?

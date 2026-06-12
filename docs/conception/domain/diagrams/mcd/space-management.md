@@ -1,4 +1,4 @@
-# Campaign Management — Modèle Conceptuel de Données (MCD)
+# Space Management — Modèle Conceptuel de Données (MCD)
 
 ```mermaid
 erDiagram
@@ -14,7 +14,7 @@ erDiagram
     }
 
     CAMPAIGN_MEMBERSHIP {
-        identifiant campaign_id PK,FK
+        identifiant space_id PK,FK
         identifiant user_id PK,FK "ref users.id"
         texte role "OWNER | GM | PLAYER"
         texte status "PENDING | ACTIVE | REMOVED"
@@ -22,14 +22,14 @@ erDiagram
     }
 
     MEMBERSHIP_CHARACTER {
-        identifiant campaign_id PK,FK
+        identifiant space_id PK,FK
         identifiant user_id PK,FK
         identifiant character_id PK "ref Content Library"
     }
 
     INVITATION {
         identifiant id PK
-        identifiant campaign_id FK
+        identifiant space_id FK
         texte token "UUID unique"
         texte type "LINK | EMAIL"
         texte scope "CAMPAIGN | SESSION"
@@ -43,7 +43,7 @@ erDiagram
 
     GUEST_ACCESS {
         identifiant id PK
-        identifiant campaign_id FK
+        identifiant space_id FK
         texte scope "SESSION | CAMPAIGN"
         identifiant session_id "nullable, ref Session Conduct"
         texte token "UUID unique"

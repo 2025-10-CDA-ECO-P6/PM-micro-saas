@@ -1,6 +1,6 @@
 # Glossaire — Langage ubiquitaire Haversack
 
-> Version : 2026-06-10
+> Version : 2026-06-12
 > Nature : outil de nommage dérivé — **autorité de forme**, pas d'autorité de fond.
 > Ordre d'autorité (du plus faisant foi au moins) : personas → vision produit → use cases → user journeys / user stories / NFR → domaine → glossaire.
 > En cas de conflit sur le fond (le besoin), l'artefact le plus en amont fait foi. Le glossaire n'arbitre jamais un conflit de besoin. Une entrée de glossaire qui contredit un use case est l'entrée à corriger, pas le use case.
@@ -29,7 +29,7 @@ Unité fondamentale de contenu dans Haversack. Tout contenu créé dans le syst�
 
 - Propriétaire : **Content Library** (creation, stockage, visibilité).
 - Consommé par : **Session Conduct** (épinglage, notes de session).
-- Relation clé : un `Document` appartient toujours à exactement un `Folder` dans exactement une `Campagne`.
+- Relation clé : un `Document` appartient toujours à exactement un `Folder` dans exactement un `Espace`.
 
 > Gouvernance « tout est Document » : il n'existe pas de type « Scénario » ou « Scène » séparé du système documentaire. La hiérarchie Scénario → Scènes → PNJ est un cas d'usage parmi d'autres, pas une structure imposée.
 
@@ -41,7 +41,7 @@ Propriété portée par chaque `Document`. Détermine qui peut lire le document.
 
 | Valeur domaine | Sémantique |
 |---|---|
-| `PUBLIC` | Visible par tous les membres de la campagne et tous les `GuestAccess` actifs. |
+| `PUBLIC` | Visible par tous les membres de l'espace et tous les `GuestAccess` actifs. |
 | `GM_ONLY` | Visible uniquement par les membres avec le rôle `OWNER` ou `GM`. C'est la valeur par défaut à la création. |
 | `PLAYER_PRIVATE` | Lisible uniquement par l'auteur du document : le membre identifié par `createdById`, ou l'invité identifié par `guestAccessId`. Les membres `OWNER` et `GM` n'y ont aucun accès — ni lecture, ni énumération, ni métadonnées. |
 
@@ -60,7 +60,7 @@ Primitive de traçabilité portée par tous les agrégats : `createdAt`, `update
 
 ### `SoftDelete`
 
-Suppression logique : `isDeleted: bool`, `deletedAt: DateTime?`. Un document soft-deleted disparaît des vues mais n'est pas effacé. Défini dans le **Core**, utilisé dans **Content Library** et **Campaign Management**.
+Suppression logique : `isDeleted: bool`, `deletedAt: DateTime?`. Un document soft-deleted disparaît des vues mais n'est pas effacé. Défini dans le **Core**, utilisé dans **Content Library** et **Space Management**.
 
 ---
 
@@ -68,7 +68,7 @@ Suppression logique : `isDeleted: bool`, `deletedAt: DateTime?`. Un document sof
 
 ### `User`
 
-Compte utilisateur authentifié. Porte l'identité (`email`, `displayName`), le statut du compte (`AccountStatus`) et le tier d'abonnement (`AccountTier`). `User` ne porte aucun rôle métier global — le rôle MJ ou Joueur est défini dans chaque campagne par **Campaign Management**.
+Compte utilisateur authentifié. Porte l'identité (`email`, `displayName`), le statut du compte (`AccountStatus`) et le tier d'abonnement (`AccountTier`). `User` ne porte aucun rôle métier global — le rôle MJ ou Joueur est défini dans chaque espace par **Space Management**.
 
 - Agrégat unique de **Identity & Access**.
 - Relation clé : le `UserId` est l'identifiant partagé avec tous les autres contextes ; ils le consomment sans importer l'entité `User`.
@@ -87,8 +87,8 @@ Niveau d'abonnement du compte :
 
 | Valeur | Description |
 |---|---|
-| `FREE` | Compte gratuit — 3 campagnes cloud, 4 joueurs par session, 500 Mo. Tier initial à la création. |
-| `PRO` | Abonnement payant — campagnes illimitées, joueurs illimités, 5 Go+. |
+| `FREE` | Compte gratuit — 3 espaces cloud, 4 joueurs par session, 500 Mo. Tier initial à la création. |
+| `PRO` | Abonnement payant — espaces illimités, joueurs illimités, 5 Go+. |
 
 Le **mode local** (sans compte) n'est pas un tier. Il n'y a pas de `User` en mode local.
 
@@ -96,7 +96,7 @@ Le **mode local** (sans compte) n'est pas un tier. Il n'y a pas de `User` en mod
 
 ### `displayName`
 
-Nom d'affichage choisi par l'utilisateur lors de son inscription. Visible par les autres membres de la campagne. Modifiable à tout moment. Maximum 100 caractères, ne peut pas être vide.
+Nom d'affichage choisi par l'utilisateur lors de son inscription. Visible par les autres membres de l'espace. Modifiable à tout moment. Maximum 100 caractères, ne peut pas être vide.
 
 ---
 
@@ -111,7 +111,7 @@ Mode d'utilisation de l'application sans création de compte. Les données sont 
 
 ### Gate de reconnaissance
 
-Mécanisme de confirmation explicite présenté lors de la migration locale→cloud. Lorsqu'un utilisateur crée un compte depuis le mode local, le système présente les données locales détectées (titres des campagnes, volume, date) et exige une confirmation avant d'importer. La migration ne commence qu'après cette confirmation. Ce gate protège contre l'appropriation accidentelle de données d'un tiers.
+Mécanisme de confirmation explicite présenté lors de la migration locale→cloud. Lorsqu'un utilisateur crée un compte depuis le mode local, le système présente les données locales détectées (titres des espaces, volume, date) et exige une confirmation avant d'importer. La migration ne commence qu'après cette confirmation. Ce gate protège contre l'appropriation accidentelle de données d'un tiers.
 
 - Défini dans : **UC-01 A1**, **UC-10**, **US-UC-01**, **US-UC-10**.
 
@@ -119,40 +119,48 @@ Mécanisme de confirmation explicite présenté lors de la migration locale→cl
 
 ### Migration locale→cloud
 
-Opération applicative qui importe les campagnes et documents du mode local vers le compte cloud nouvellement créé. La migration est traitée campagne par campagne, tout-ou-rien par campagne. En cas d'échec d'une campagne, les données locales de cette campagne sont conservées intégralement.
+Opération applicative qui importe les espaces et documents du mode local vers le compte cloud nouvellement créé. La migration est traitée espace par espace, tout-ou-rien par espace. En cas d'échec d'un espace, les données locales de cet espace sont conservées intégralement.
 
 ---
 
-## 3. Campaign Management
+## 3. Space Management
 
-### `Campagne`
+### `Espace`
 
-Espace de jeu partagé entre un MJ et ses joueurs. Représente indifféremment une campagne longue ou un one-shot — la différence est portée par `CampaignType`. Une `Campagne` a toujours exactement un propriétaire (`OWNER`) et peut avoir plusieurs `CampaignMembership` actifs. Elle est le conteneur de tous les `Document` et `Folder` de jeu.
+Conteneur de jeu ou de contenu personnel appartenant à un propriétaire (`OWNER`). Un `Espace` représente indifféremment une campagne longue, un one-shot ou un espace personnel — la différence est portée par `SpaceType`. Un `Espace` a toujours exactement un propriétaire (`OWNER`) et peut avoir plusieurs `SpaceMembership` actifs. Il est le conteneur de tous les `Document` et `Folder` qui lui sont rattachés.
 
-- Agrégat principal de **Campaign Management**.
-- Relation clé : un `Folder` et un `Document` appartiennent toujours à exactement une `Campagne`.
+`Campagne` et `One-shot` sont des *types* d'espace (valeurs `CAMPAIGN` et `ONE_SHOT` de `SpaceType`), pas des agrégats distincts. Voir aussi : `Espace personnel`.
 
----
-
-### `CampaignType`
-
-Type de l'espace de jeu : `CAMPAIGN` (campagne longue, plusieurs sessions attendues) ou `ONE_SHOT` (session unique attendue, membres permanents optionnels). Les différences entre les deux types sont comportementales, pas structurelles — `ONE_SHOT` est un `Campaign` avec `type = ONE_SHOT`.
-
-En première livraison (MVP), aucune différence de comportement n'est implémentée : création, structure des dossiers, cycle de session et vue session sont identiques pour les deux types. Le tag `type` distingue les deux cas, qui convergent structurellement. Les différences comportementales cibles — parcours de création simplifié, point d'entrée distinct — sont des caractéristiques post-MVP couvertes par l'arbitrage UC-13 (vision-produit §5bis).
+- Agrégat principal de **Space Management**.
+- Relation clé : un `Folder` et un `Document` appartiennent toujours à exactement un `Espace`.
 
 ---
 
-### `CampaignStatus`
+### `SpaceType`
 
-État de la campagne : `ACTIVE` (opérationnelle), `ARCHIVED` (archivée manuellement par le MJ, lecture seule, irréversible dans le MVP), `FROZEN` (gelée automatiquement lors d'un downgrade de tier, lecture seule jusqu'à `Unfreeze()`).
+Type de l'espace : `CAMPAIGN` (campagne longue, plusieurs sessions attendues), `ONE_SHOT` (session unique attendue, membres permanents optionnels) ou `PERSONAL` (espace personnel du propriétaire — voir `Espace personnel`).
+
+Les différences entre `CAMPAIGN` et `ONE_SHOT` sont comportementales, pas structurelles — `ONE_SHOT` est un `Space` avec `type = ONE_SHOT`. En première livraison (MVP), aucune différence de comportement n'est implémentée entre ces deux valeurs : création, structure des dossiers, cycle de session et vue session sont identiques. Les différences comportementales cibles — parcours de création simplifié, point d'entrée distinct — sont des caractéristiques post-MVP couvertes par l'arbitrage UC-13 (vision-produit §5bis).
+
+`PERSONAL` désigne l'espace personnel du propriétaire : conteneur de premier ordre, créé par défaut à la création du compte, mono-membre. Il reçoit tout contenu créé sans espace de jeu explicite. Voir entrée dédiée `Espace personnel`.
+
+---
+
+### `SpaceStatus`
+
+État de l'espace : `ACTIVE` (opérationnel), `ARCHIVED` (archivé manuellement par le MJ, lecture seule, irréversible dans le MVP), `FROZEN` (gelé automatiquement lors d'un downgrade de tier, lecture seule jusqu'à `Unfreeze()`).
 
 > La valeur `FROZEN` et le mécanisme de downgrade de tier ne sont pas spécifiés dans le MVP. Voir **UC-HORS-MVP — Gel de campagnes au downgrade de tier (post-MVP)** pour la question ouverte délimitée.
+
+> **Point ouvert** : la sémantique de `ARCHIVED` et `FROZEN` pour un espace `PERSONAL` (mono-membre, sans partage) est à préciser à la modélisation — ces états ont-ils le même sens que pour un espace partagé ? Voir ADR-018 §Points à trancher.
 
 ---
 
 ### MJ (Maître du Jeu)
 
-Rôle dans une campagne. Dans le modèle de domaine, le MJ est le membre avec le rôle `OWNER` ou `GM` dans la campagne. Ce rôle est contextuel : un même `User` peut être MJ dans une campagne et Joueur dans une autre. Le terme « MJ » est employé dans les UC et US comme raccourci de la combinaison `OWNER | GM`.
+Rôle dans un espace de jeu partagé (campagne ou one-shot). Dans le modèle de domaine, le MJ est le membre avec le rôle `OWNER` ou `GM` dans l'espace. Ce rôle est contextuel : un même `User` peut être MJ dans un espace et Joueur dans un autre. Le terme « MJ » est employé dans les UC et US comme raccourci de la combinaison `OWNER | GM`.
+
+> **Point ouvert** : la notion de « MJ » s'applique aux espaces de type `CAMPAIGN` et `ONE_SHOT`. Pour un espace `PERSONAL` (mono-membre), le propriétaire est l'`OWNER` unique — la qualification MJ n'y a pas de sens naturel (il n'y a pas de joueurs). Ce point est à préciser à la modélisation.
 
 - Voir aussi : `MemberRole`.
 
@@ -160,48 +168,67 @@ Rôle dans une campagne. Dans le modèle de domaine, le MJ est le membre avec le
 
 ### Joueur
 
-Rôle dans une campagne. Membre avec le rôle `PLAYER`. Accède aux contenus partagés (`PUBLIC`) et à sa propre fiche de personnage. Peut créer des notes de session personnelles pendant une session. Peut être un `User` authentifié (via `CampaignMembership`) ou un invité sans compte (via `GuestAccess`).
+Rôle dans un espace de jeu partagé (campagne ou one-shot). Membre avec le rôle `PLAYER`. Accède aux contenus partagés (`PUBLIC`) et à sa propre fiche de personnage. Peut créer des notes de session personnelles pendant une session. Peut être un `User` authentifié (via `SpaceMembership`) ou un invité sans compte (via `GuestAccess`).
 
 ---
 
 ### `MemberRole`
 
-Rôle d'un membre dans une campagne : `OWNER` (propriétaire unique, responsabilité billing et RGPD), `GM` (co-maître du jeu, sans pouvoir de suppression de la campagne ni de gestion des autres GMs), `PLAYER` (joueur).
+Rôle d'un membre dans un espace : `OWNER` (propriétaire unique, responsabilité billing et RGPD), `GM` (co-maître du jeu, sans pouvoir de suppression de l'espace ni de gestion des autres GMs), `PLAYER` (joueur).
 
 ---
 
 ### Membre
 
-`CampaignMembership` avec `status = ACTIVE`. Dans tous les UC et US, « membre » désigne cette entité dans cet état. `CampaignMembership` est le terme technique interne ; « membre » est le terme du langage ubiquitaire.
+`SpaceMembership` avec `status = ACTIVE`. Dans tous les UC et US, « membre » désigne cette entité dans cet état. `SpaceMembership` est le terme technique interne ; « membre » est le terme du langage ubiquitaire.
 
 ---
 
-### `CampaignMembership`
+### `SpaceMembership`
 
-Entité (enfant de `Campaign`) représentant la participation d'un `User` à une campagne. Porte le `MemberRole`, le statut (`PENDING`, `ACTIVE`, `REMOVED`) et les références aux personnages associés.
+Entité (enfant de `Space`) représentant la participation d'un `User` à un espace. Porte le `MemberRole`, le statut (`PENDING`, `ACTIVE`, `REMOVED`) et les références aux personnages associés.
 
 ---
 
 ### `Invitation`
 
-Mécanisme d'entrée dans une campagne. Peut être de type `LINK` (lien partageable) ou `EMAIL` (hors MVP). De portée `CAMPAIGN` (accès permanent) ou `SESSION` (accès ponctuel). L'utilisation d'une invitation par un utilisateur authentifié crée un `CampaignMembership` ; par un utilisateur anonyme, crée un `GuestAccess`.
+Mécanisme d'entrée dans un espace. Peut être de type `LINK` (lien partageable) ou `EMAIL` (hors MVP). De portée `CAMPAIGN` (accès permanent à l'espace de campagne) ou `SESSION` (accès ponctuel à une session). L'utilisation d'une invitation par un utilisateur authentifié crée un `SpaceMembership` ; par un utilisateur anonyme, crée un `GuestAccess`.
+
+> **Note** : la valeur `CAMPAIGN` de `InvitationScope` (et `GuestAccessScope`) désigne spécifiquement les espaces de type `CAMPAIGN` ou `ONE_SHOT` — elle n'a pas été renommée dans cette vague. Sa renomination éventuelle fait l'objet d'une décision séparée.
 
 ---
 
 ### `GuestAccess`
 
-Accès d'un joueur sans compte à une campagne ou une session. Agrégat indépendant de `Campaign`. Le joueur y accède par un lien d'accès unique partagé par le MJ, et saisit uniquement un nom d'affichage (`displayName`) à l'arrivée. Un `GuestAccess` de portée `SESSION` expire à la fermeture de la session + 24 heures. Il peut être converti en `CampaignMembership` lors de la création de compte par l'invité.
+Accès d'un joueur sans compte à un espace ou une session. Agrégat indépendant de `Space`. Le joueur y accède par un lien d'accès unique partagé par le MJ, et saisit uniquement un nom d'affichage (`displayName`) à l'arrivée. Un `GuestAccess` de portée `SESSION` expire à la fermeture de la session + 24 heures. Il peut être converti en `SpaceMembership` lors de la création de compte par l'invité.
 
 - Statuts : `ACTIVE`, `EXPIRED`, `REVOKED`, `CONVERTED`.
 - Portée (`GuestAccessScope`) : `SESSION` ou `CAMPAIGN`.
-- Propriétaire : **Campaign Management**.
+- Propriétaire : **Space Management**.
 - Consommé par : **Session Conduct** (autorisation d'accès), **Content Library** (auteur invité d'une `LIVE_NOTE` via `guestAccessId`).
+
+---
+
+### `Espace personnel` (`SpaceType.PERSONAL`)
+
+Conteneur de premier ordre appartenant au propriétaire (`ownerId`), créé automatiquement à la création du compte utilisateur. L'espace personnel est **mono-membre** : le propriétaire est son seul membre (rôle `OWNER`). Il reçoit tout contenu créé sans espace de jeu explicite (documents pré-campagne, idées, scénarios en attente, notes personnelles).
+
+L'espace personnel est une spécialisation de l'agrégat `Space` avec `type = PERSONAL`. À la création, seul le dossier virtuel « Non classés » est créé automatiquement — les quatre dossiers système nommés (Personnages, Joueurs, Scénarios, Notes) sont réservés aux espaces `CAMPAIGN` et `ONE_SHOT`, où ils présupposent un groupe de jeu. Le propriétaire organise son espace personnel avec ses propres dossiers (organisation libre). À la suppression du compte, il est purgé de façon inconditionnelle via la saga `SpaceDeleted` — contrairement aux espaces partagés, aucun contenu ne survit sous identité anonymisée.
+
+La `ScenarioLibrary` (bibliothèque personnelle inter-espaces) est largement subsumée par l'espace personnel dans le nouveau paradigme : un scénario réutilisable est un `Document` de l'espace personnel avec `isReusable = true`. Voir ADR-018 §ScenarioLibrary.
+
+- Défini dans : **ADR-018**.
+- Voir aussi : `SpaceType`, `ScenarioLibrary`.
 
 ---
 
 ### `ScenarioLibrary`
 
-Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, cross-campagne. Agrégat de **Campaign Management** (décision retenue dans `content-library.md` §Concepts en attente). Entrée de type `ScenarioLibraryEntry(userId, documentId, promotedAt)`. Couvert par **UC-13** (Should Have — post-MVP).
+Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, cross-espace. Agrégat de **Space Management** (décision retenue dans `space-management.md` §Concepts en attente). Entrée de type `ScenarioLibraryEntry(ownerId, documentId, promotedAt)`. Couvert par **UC-13** (Should Have — post-MVP).
+
+> **Incohérence résolue** : le champ de l'entrée est `ownerId` (et non `userId` — incohérence de nommage signalée dans ADR-018 §Incohérences signalées, résolue ici en faveur du domaine `space-management.md`).
+
+> **Point ouvert** : sous ADR-018, l'espace `PERSONAL` subsume largement le rôle de bibliothèque personnelle de la `ScenarioLibrary` — un scénario réutilisable est un `Document` de l'espace personnel avec `isReusable = true`. L'attribution de ce concept à Space Management est à réexaminer ; la responsabilité pourrait relever d'un contexte distinct ou du domaine Content Library réécrit. Voir ADR-018 §Incohérences signalées.
 
 ---
 
@@ -209,9 +236,9 @@ Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, c
 
 ### `Folder` (dossier)
 
-Conteneur organisationnel. Structure l'arborescence du contenu dans une campagne. Un `Folder` appartient toujours à exactement une `Campagne`. Les dossiers système (`isSystem = true`) sont créés automatiquement à la création d'une campagne ; ils sont renommables et supprimables librement — `isSystem` est informatif, pas restrictif.
+Conteneur organisationnel. Structure l'arborescence du contenu dans un espace. Un `Folder` appartient toujours à exactement un `Espace`. Les dossiers système (`isSystem = true`) sont créés automatiquement à la création d'un espace ; ils sont renommables et supprimables librement — `isSystem` est informatif, pas restrictif.
 
-Le dossier virtuel « Non classés » (`isVirtual = true`) est non supprimable et invisible dans la navigation. Il reçoit automatiquement tout document dont le dossier explicite a été supprimé. Il en existe exactement un par campagne.
+Le dossier virtuel « Non classés » (`isVirtual = true`) est non supprimable et invisible dans la navigation. Il reçoit automatiquement tout document dont le dossier explicite a été supprimé. Il en existe exactement un par espace.
 
 ---
 
@@ -271,17 +298,20 @@ Value object représentant une référence ordonnée d'un `Document` vers un aut
 
 ### Dossiers système
 
-Quatre dossiers créés automatiquement à la création d'une campagne : `Personnages`, `Joueurs`, `Scénarios`, `Notes`. Plus le dossier virtuel « Non classés ». Ces noms sont des points de départ renommables et supprimables librement.
+Dossiers créés automatiquement à `SpaceCreated`, selon le type d'espace :
+
+- **`CAMPAIGN` ou `ONE_SHOT`** : quatre dossiers nommés (`Personnages`, `Joueurs`, `Scénarios`, `Notes`) + le dossier virtuel « Non classés ». Ces noms sont des points de départ renommables et supprimables librement.
+- **`PERSONAL`** : uniquement le dossier virtuel « Non classés ». Le propriétaire organise son espace avec ses propres dossiers.
 
 ---
 
-### Export de campagne
+### Export d'espace
 
-Capacité permettant au MJ d'exporter l'ensemble d'une campagne — documents, notes, structure de dossiers — dans un format ouvert, lisible et réutilisable hors de l'application. Disponible en mode local comme avec un compte. Matérialise la promesse de possession des données : la possession n'est actionnable que si elle est exportable.
+Capacité permettant au MJ d'exporter l'ensemble d'un espace — documents, notes, structure de dossiers — dans un format ouvert, lisible et réutilisable hors de l'application. Couvre tout type d'espace : campagne, one-shot ou personnel. Disponible en mode local comme avec un compte. Matérialise la promesse de possession des données : la possession n'est actionnable que si elle est exportable.
 
 - Priorité : **Should Have** (post-MVP, UC-HORS-MVP à créer — voir `vision/moscow.md` §Should Have et `vision/vision-produit.md` §5).
 - Distinct de la migration locale→cloud (qui importe des données vers un compte) : l'export produit un fichier autonome indépendant du compte.
-- Défini dans : **vision-produit.md** §5, **moscow.md** §Should Have, **UC-01 A4**.
+- Défini dans : **vision-produit.md** §5, **moscow.md** §Should Have, **UC-01 A4**, **ADR-018**.
 
 ---
 
@@ -289,7 +319,7 @@ Capacité permettant au MJ d'exporter l'ensemble d'une campagne — documents, n
 
 ### `Session`
 
-Agrégat représentant une séance de jeu. Cycle de vie unidirectionnel : `LIVE → CLOSED → ARCHIVED`. Créée directement en état `LIVE`. Porte la liste des documents épinglés (`pinnedDocumentIds`), les références aux notes de session (`sessionNoteIds`) et le résumé (`summary`). Il ne peut y avoir qu'une seule session `LIVE` par campagne simultanément.
+Agrégat représentant une séance de jeu. Cycle de vie unidirectionnel : `LIVE → CLOSED → ARCHIVED`. Créée directement en état `LIVE`. Porte la liste des documents épinglés (`pinnedDocumentIds`), les références aux notes de session (`sessionNoteIds`) et le résumé (`summary`). Il ne peut y avoir qu'une seule session `LIVE` par espace simultanément.
 
 ---
 
@@ -301,7 +331,7 @@ Agrégat représentant une séance de jeu. Cycle de vie unidirectionnel : `LIVE 
 
 ### `SessionViewConfig`
 
-Configuration du tableau de bord session au niveau de la campagne. Définit quels dossiers le MJ met en avant dans sa vue session (`focusedFolders`). Il en existe exactement un par campagne, créé automatiquement à `CampaignCreated`.
+Configuration du tableau de bord session au niveau de l'espace. Définit quels dossiers le MJ met en avant dans sa vue session (`focusedFolders`). Il en existe exactement un par espace, créé automatiquement à `SpaceCreated`.
 
 ---
 
@@ -333,14 +363,14 @@ Vue restreinte accessible aux joueurs (authentifiés ou invités) pendant une se
 
 | Terme écarté | Terme retenu | Raison / source |
 |---|---|---|
-| `propriétés structurées.guestAccessId` | `guestAccessId` (champ de premier niveau) | Promu depuis les propriétés structurées vers un champ de premier niveau du `Document` — `content-library.md` §DocumentType (note `live_note`) et `session-conduct.md` §Notes de session. L'ancien chemin `propriétés structurées.guestAccessId` est observable dans `UC-06-vue-session.md` l.229 (foyer de dérive signalé par l'audit CP-20). |
+| `propriétés structurées.guestAccessId` | `guestAccessId` (champ de premier niveau) | Promu depuis les propriétés structurées vers un champ de premier niveau du `Document` — `space-management.md` §DocumentType (note `live_note`) et `session-conduct.md` §Notes de session. L'ancien chemin `propriétés structurées.guestAccessId` est observable dans `UC-06-vue-session.md` l.229 (foyer de dérive signalé par l'audit CP-20). |
 | « note privée MJ » | « privé MJ » / `GM_ONLY` | Forme longue non normalisée. Le terme retenu dans la prose de besoin est « privé MJ » ; le terme domaine est `GM_ONLY`. Les deux formes coexistaient dans les UC et US (observable dans `UC-06-vue-session.md` et `US-UC-06-vue-session.md`). Cartographie explicite dans `US-UC-06-vue-session.md` §Mapping de visibilité. |
 | « note privée » (sans qualificatif) | « note de session privé MJ » ou « note de session personnelle joueur » | Terme ambigu : désignait tantôt `GM_ONLY` (privé MJ), tantôt `PLAYER_PRIVATE` (personnelle joueur). Les deux niveaux sont distincts et non interchangeables. Observable dans `UC-06-vue-session.md` l.256 (« note de session privé MJ ») et `identity-access.md` l.94 (« note privée résiduelle »). |
 | « note personnelle » | « note de session personnelle joueur » | Raccourci non qualifié ambiguisant avec les notes du MJ. Le terme complet est requis dans les artefacts de besoin. Observable dans `US-UC-06-vue-session.md` titre de l'US-06-08. |
 | « visible par les joueurs » | `PUBLIC` | Terme de langage besoin ; l'équivalent domaine est `visibility = PUBLIC`. Les deux formes sont légitimes dans leurs couches respectives. La dérive consistait à employer « visible par les joueurs » dans des artefacts de domaine au lieu de `PUBLIC` — observable dans `UC-06-vue-session.md` l.199-261. Cartographie dans `US-UC-06-vue-session.md` §Mapping. |
 | `personnelle joueur` (seul) | `PLAYER_PRIVATE` (domaine) / « note de session personnelle joueur » (besoin) | Forme contractée non qualifiée. Employée comme valeur de visibilité dans `UC-06-vue-session.md` l.228 (« Visibilité : visible par les joueurs, privé MJ ou personnelle joueur »). Le terme domaine est `PLAYER_PRIVATE` ; le terme de besoin qualifié est « note de session personnelle joueur ». |
 | « accès invité » (sans `Guest`) | `GuestAccess` | Traduction française partielle de l'identifiant de domaine. Les UC emploient parfois « accès invité » ou « joueur invité sans compte » ; l'identifiant canonique du domaine reste `GuestAccess`. La coexistence est observable dans `UC-09` et `UC-06`. |
-| « membres permanents » | `CampaignMembership` actifs / Membres | Terme employé dans `campaign-management.md` §One-shot pour distinguer les joueurs avec compte des invités. Remplacé par la formulation explicite (`CampaignMembership` vs `GuestAccess`). |
+| « membres permanents » | `SpaceMembership` actifs / Membres | Terme employé dans `space-management.md` §One-shot pour distinguer les joueurs avec compte des invités. Remplacé par la formulation explicite (`SpaceMembership` vs `GuestAccess`). |
 
 ---
 
@@ -348,7 +378,7 @@ Vue restreinte accessible aux joueurs (authentifiés ou invités) pendant une se
 
 ### Casse des identifiants de domaine
 
-- **`PascalCase`** pour les agrégats, entités et value objects : `Document`, `GuestAccess`, `SessionViewConfig`, `CampaignMembership`, `DocumentLink`.
+- **`PascalCase`** pour les agrégats, entités et value objects : `Document`, `GuestAccess`, `SessionViewConfig`, `SpaceMembership`, `DocumentLink`.
 - **`SCREAMING_SNAKE_CASE`** pour les valeurs d'enum : `GM_ONLY`, `PLAYER_PRIVATE`, `PUBLIC`, `LIVE_NOTE`, `PLAYER_CHARACTER`, `ONE_SHOT`, `ACTIVE`, `FROZEN`.
 - Les identifiants de domaine sont légitimes dans les artefacts de besoin quand ils désignent un concept précis du modèle. Ils ne sont pas de la technologie.
 
@@ -358,13 +388,13 @@ L'usage du corpus est le suivant : les noms de domaine structurants restent en a
 
 ### Pluriels
 
-Les pluriels suivent la morphologie française : `Documents`, `Campagnes`, `Sessions`, `Membres`. Les identifiants de domaine en `PascalCase` ne se pluralisent pas dans le code de domaine, mais peuvent se pluraliser dans la prose française de conception.
+Les pluriels suivent la morphologie française : `Documents`, `Espaces`, `Sessions`, `Membres`. Les identifiants de domaine en `PascalCase` ne se pluralisent pas dans le code de domaine, mais peuvent se pluraliser dans la prose française de conception.
 
 ### Abréviations admises
 
 | Abréviation | Développé |
 |---|---|
-| MJ | Maître du Jeu (rôle `OWNER` ou `GM` dans une campagne) |
+| MJ | Maître du Jeu (rôle `OWNER` ou `GM` dans un espace) |
 | UC | Use Case |
 | US | User Story |
 | UJ | User Journey |

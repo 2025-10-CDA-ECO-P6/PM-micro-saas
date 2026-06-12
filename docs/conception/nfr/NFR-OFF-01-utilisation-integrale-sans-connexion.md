@@ -6,7 +6,7 @@ Famille **Hors connexion** — [Index de conception](../README.md)
 
 ## Énoncé normatif
 
-Un MJ en mode local peut préparer une campagne, structurer des scénarios, organiser ses documents, lancer et piloter une vue session — le tout sans aucune connexion réseau, y compris en déplacement ou dans un lieu sans accès à Internet.
+Un MJ en mode local peut préparer une campagne, capturer du contenu dans son espace personnel, structurer des scénarios, organiser ses documents, lancer et piloter une vue session — le tout sans aucune connexion réseau, y compris en déplacement ou dans un lieu sans accès à Internet.
 
 ---
 
@@ -28,10 +28,10 @@ L'hypothèse de monétisation du produit (vision §2.3, H5) repose sur la conver
 
 **Ce que cette exigence couvre :**
 
-- La préparation d'une campagne, la structuration de scénarios et l'organisation de documents, en totalité, sans connexion réseau.
+- La préparation dans tout espace local du MJ (espace personnel et campagnes) : structuration de scénarios, organisation de documents, capture à la volée — en totalité, sans connexion réseau.
 - Le lancement et le pilotage d'une vue session complète, sans connexion réseau.
 - La création d'éléments à la volée en cours de session, sans connexion réseau.
-- La recherche dans le contenu local de la campagne, sans connexion réseau.
+- La recherche dans le contenu local du MJ, sans connexion réseau.
 
 **Ce que cette exigence ne couvre pas :**
 

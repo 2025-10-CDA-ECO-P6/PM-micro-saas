@@ -42,14 +42,14 @@ flowchart TD
     D --> E
 
     E --> F{Filtre de type applique ?}
-    F -->|Non| G[Recherche sur titre dans la campagne active]
-    F -->|Oui| H[Recherche par titre, restreinte par le filtre de type\ndans la campagne active]
+    F -->|Non| G[Recherche sur titre dans l espace actif]
+    F -->|Oui| H[Recherche par titre, restreinte par le filtre de type\ndans l espace actif]
 
     G --> I{Acteur}
     H --> I
 
-    I -->|MJ| J[Retourne documents GM_ONLY et PUBLIC\nde la campagne active]
-    I -->|Joueur| K[Retourne uniquement les documents PUBLIC\nde la campagne active\nGM_ONLY exclus]
+    I -->|MJ| J[Retourne documents GM_ONLY et PUBLIC\nde l espace actif]
+    I -->|Joueur| K[Retourne uniquement les documents PUBLIC\nde l espace actif\nGM_ONLY exclus]
 
     J --> L{Resultat de la recherche}
     K --> L

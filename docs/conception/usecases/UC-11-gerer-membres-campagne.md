@@ -85,7 +85,7 @@ Le système ne permet pas de réactiver une invitation expirée — il faut en c
 
 ## Données manipulées
 
-UC-11 est le **propriétaire unique** des données `Invitation` et `Membre de campagne` (`CampaignMembership`).
+UC-11 est le **propriétaire unique** des données `Invitation` et `Membre d'espace` (`SpaceMembership`).
 
 ### Invitation
 
@@ -97,7 +97,7 @@ UC-11 est le **propriétaire unique** des données `Invitation` et `Membre de ca
 - Nombre d'utilisations maximum (optionnel)
 - Statut (`ACTIVE`, `REVOKED`, `EXPIRED`)
 
-### Membre de campagne (CampaignMembership)
+### Membre d'espace (SpaceMembership)
 
 - Utilisateur associé (compte joueur)
 - Rôle dans la campagne (`PLAYER`)
@@ -107,7 +107,7 @@ UC-11 est le **propriétaire unique** des données `Invitation` et `Membre de ca
 ## Règles métier
 
 - Seul le MJ propriétaire peut gérer les membres de sa campagne.
-- L'octroi d'un accès durable (`CampaignMembership`) à un joueur est soumis à la limite du tier gratuit : sur un compte FREE, tout octroi d'accès supplémentaire — quelle qu'en soit la forme (membre permanent ou accès invité) — est refusé si la limite est déjà atteinte. Règle définie dans UC-09 (RB-09-21) ; UC-11 ne la redéfinit pas.
+- L'octroi d'un accès durable (`SpaceMembership`) à un joueur est soumis à la limite du tier gratuit : sur un compte FREE, tout octroi d'accès supplémentaire — quelle qu'en soit la forme (membre permanent ou accès invité) — est refusé si la limite est déjà atteinte. Règle définie dans UC-09 (RB-09-21) ; UC-11 ne la redéfinit pas.
 - Un lien d'invitation peut être limité en durée ou en nombre d'utilisations.
 - La révocation d'une invitation passe son statut à `REVOKED`. Elle ne peut plus créer de nouvel accès.
 - Retirer un membre ne supprime pas ses données dans la campagne.

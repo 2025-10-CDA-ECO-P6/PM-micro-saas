@@ -38,13 +38,15 @@ Le MJ crée et organise des fiches de lieux, factions, organisations et objets i
 
 ### UC-F07 — Créer un scénario directement dans la bibliothèque (sans campagne)
 
-Le MJ crée un nouveau scénario template directement depuis la ScenarioLibrary, sans passer par une campagne existante.
+> **Note ADR-018** : ce use case, qualifié de palliatif dans le corpus initial, est largement subsumé par la décision `Space + SpaceType.PERSONAL`. Créer du contenu dans l'espace personnel est désormais le cas nominal — il ne requiert ni campagne intermédiaire ni campagne-atelier. La reformulation ci-dessous en prend acte sans supprimer l'entrée, qui reste utile pour tracer l'historique de la décision. Voir ADR-018 §ScenarioLibrary/UC-F07.
+
+Le MJ crée un nouveau scénario template directement depuis son espace personnel (`SpaceType.PERSONAL`), sans passer par une campagne existante.
 
 **Persona concerné** : Sonia, qui veut préparer un nouveau one-shot pour son catalogue sans avoir à créer une campagne intermédiaire.
 
-**Pourquoi Could Have (non MVP)** : le MVP exige qu'un scénario soit d'abord créé dans une campagne puis promu en template (UC-13 A1). Ce flux couvre les cas courants. La création directe en bibliothèque est une ergonomie supplémentaire — Sonia peut utiliser une campagne "Atelier scénarios" comme conteneur de travail en attendant.
+**Pourquoi largement subsumé (Could Have résiduel)** : sous ADR-018, l'espace personnel est créé par défaut à l'ouverture du compte et constitue la zone d'atterrissage naturelle pour tout contenu créé sans espace explicite. Sonia crée son scénario dans son espace personnel — c'est le flux de base, pas un palliatif. Le Could Have résiduel concerne uniquement l'interface de bibliothèque dédiée (navigation, recherche, instanciation en un geste), restée post-MVP conformément aux recommandations MoSCoW d'ADR-018.
 
-**Condition de retour** : si les interviews révèlent que Sonia résiste au flux "campagne intermédiaire", ou si l'adoption de UC-13 est inférieure aux attentes.
+**Condition de retour** : l'interface de bibliothèque de réutilisation inter-espaces (catalogue, instanciation depuis l'espace personnel) — déclenchée par la condition de retour UC-13 (adoption du flux one-shot).
 
 ---
 
@@ -56,10 +58,10 @@ Lorsqu'un MJ perd son tier premium (fin d'abonnement, non-renouvellement) et se 
 
 **Question ouverte** : quelles campagnes deviennent inaccessibles (les plus anciennes ? les moins récemment modifiées ? un choix laissé au MJ ?), selon quel mécanisme (immédiat à l'expiration, différé avec fenêtre de grâce ?), et la situation est-elle réversible (les campagnes redeviennent-elles accessibles au ré-upgrade, sans perte de données) ?
 
-Ce use case délimite le périmètre de la valeur `FROZEN` dans `CampaignStatus` et du comportement `Unfreeze()` mentionnés dans le domaine. Aucun comportement n'est conçu ici — la question doit être arbitrée avant d'écrire un UC dédié.
+Ce use case délimite le périmètre de la valeur `FROZEN` dans `SpaceStatus` et du comportement `Unfreeze()` mentionnés dans le domaine. Aucun comportement n'est conçu ici — la question doit être arbitrée avant d'écrire un UC dédié.
 
-- Voir : `CampaignStatus` (`FROZEN`) dans le glossaire.
-- Concerne : `AccountTier`, la limite de campagnes `FREE`, `Campaign Management`.
+- Voir : `SpaceStatus` (`FROZEN`) dans le glossaire.
+- Concerne : `AccountTier`, la limite d'espaces `CAMPAIGN`/`ONE_SHOT` `FREE`, `Space Management`.
 
 ---
 

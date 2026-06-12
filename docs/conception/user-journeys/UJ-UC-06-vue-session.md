@@ -198,7 +198,7 @@ Depuis la vue session `LIVE`, le MJ peut créer un document ou une note sans qui
 
 ### Vers UC-08 (partage d'un document)
 
-Depuis la vue session `LIVE`, le MJ peut déclencher le partage d'un document via l'action « Partager » sur n'importe quel document visible. UC-08 gère la transition de `visibility = GM_ONLY` vers `PUBLIC` ; ce changement est **durable** au-delà de la session. En retour vers UC-06, le document partagé est automatiquement ajouté à `pinnedDocumentIds` de la session pour un accès rapide, et les joueurs ayant un `GuestAccess` actif ou un `CampaignMembership` voient immédiatement le document dans leur vue joueur. Cette transition UC-06 → UC-08 → UC-06 est transparente pour le MJ — il ne quitte pas la vue session.
+Depuis la vue session `LIVE`, le MJ peut déclencher le partage d'un document via l'action « Partager » sur n'importe quel document visible. UC-08 gère la transition de `visibility = GM_ONLY` vers `PUBLIC` ; ce changement est **durable** au-delà de la session. En retour vers UC-06, le document partagé est automatiquement ajouté à `pinnedDocumentIds` de la session pour un accès rapide, et les joueurs ayant un `GuestAccess` actif ou un `SpaceMembership` voient immédiatement le document dans leur vue joueur. Cette transition UC-06 → UC-08 → UC-06 est transparente pour le MJ — il ne quitte pas la vue session.
 
 ### Vers UC-09 (vue joueur)
 

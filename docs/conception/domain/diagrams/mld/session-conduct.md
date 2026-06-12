@@ -7,7 +7,7 @@
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
-| `campaign_id` | `uuid` | NOT NULL | FK physique réelle → `campaigns.id` (Campaign Management) — exception assumée inter-module, voir note ci-dessous |
+| `space_id` | `uuid` | NOT NULL | FK physique réelle → `spaces.id` (Space Management) — exception assumée inter-module, voir note ci-dessous |
 | `title` | `varchar(300)` | NOT NULL | |
 | `status` | `varchar(20)` | NOT NULL, DEFAULT `'LIVE'` | `LIVE` / `CLOSED` / `ARCHIVED` |
 | `scenario_id` | `uuid` | nullable | FK physique réelle → `documents.id` (Content Library) — exception assumée inter-module, voir note ci-dessous |
@@ -18,7 +18,7 @@
 | `updated_at` | `timestamptz` | NOT NULL | |
 | `created_by_id` | `uuid` | NOT NULL | FK physique réelle → `users.id` (Identity & Access) — exception assumée inter-module, voir note ci-dessous |
 
-**Contrainte partielle** : `UNIQUE (campaign_id) WHERE status = 'LIVE'` — une seule session au statut LIVE par campagne. *(C-14, décision B1)*
+**Contrainte partielle** : `UNIQUE (space_id) WHERE status = 'LIVE'` — une seule session au statut LIVE par campagne. *(C-14, décision B1)*
 
 ---
 
@@ -57,10 +57,10 @@ Notes de session — références vers des Documents de type LIVE_NOTE dans Cont
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
-| `campaign_id` | `uuid` | UNIQUE, NOT NULL | Un seul config par campagne |
+| `space_id` | `uuid` | UNIQUE, NOT NULL | Un seul config par campagne |
 | `updated_at` | `timestamptz` | NOT NULL | |
 
-**Index** : `UNIQUE (campaign_id)`
+**Index** : `UNIQUE (space_id)`
 
 ---
 
@@ -78,4 +78,4 @@ Notes de session — références vers des Documents de type LIVE_NOTE dans Cont
 
 ## Note — FK inter-modules
 
-Les colonnes traversant une frontière de bounded context (`campaign_id`, `scenario_id`, `document_id`, `created_by_id`, `folder_id`) sont des **clés étrangères physiques réelles** vers la table propriétaire de l'autre module. C'est une **exception assumée** du monolithe modulaire à base de données unique partagée : l'isolation des contextes est tenue au niveau du code (contrats, namespaces), pas par l'absence de FK. À l'extraction éventuelle d'un contexte en service dédié, ces FK deviendront des projections par events. *(ADR-009)*
+Les colonnes traversant une frontière de bounded context (`space_id`, `scenario_id`, `document_id`, `created_by_id`, `folder_id`) sont des **clés étrangères physiques réelles** vers la table propriétaire de l'autre module. C'est une **exception assumée** du monolithe modulaire à base de données unique partagée : l'isolation des contextes est tenue au niveau du code (contrats, namespaces), pas par l'absence de FK. À l'extraction éventuelle d'un contexte en service dédié, ces FK deviendront des projections par events. *(ADR-009)*

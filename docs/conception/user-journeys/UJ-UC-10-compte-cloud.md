@@ -59,7 +59,7 @@ flowchart TD
 
     K --> N{Donnees locales\nexistantes ?}
     N -->|Oui| O[Gate de reconnaissance\nCampagnes + historique de session\nsessions, notes, epingles\nConfirmation requise\nRB-10-04 / ADR-016 §4]
-    N -->|Non| P[Evenement publie\nCampaign Management\ninitialise tableau de bord]
+    N -->|Non| P[Evenement publie\nSpace Management\ninitialise tableau de bord]
     O --> P
 
     M --> P
@@ -135,4 +135,4 @@ Une fois la migration réussie, Émilie retrouve ses campagnes avec tout leur hi
 - UC-12 Consulter sa campagne (vue joueur) : [`docs/conception/usecases/UC-12-rejoindre-campagne.md`](../usecases/UC-12-rejoindre-campagne.md)
 - User Journey UC-09 : [`UJ-UC-09-acces-session-joueur.md`](UJ-UC-09-acces-session-joueur.md)
 - Conception Identity and Access : [`docs/conception/domain/identity-access.md`](../domain/identity-access.md)
-- Conception Campaign Management : [`docs/conception/domain/campaign-management.md`](../domain/campaign-management.md)
+- Conception Space Management : [`docs/conception/domain/space-management.md`](../domain/space-management.md)

@@ -23,7 +23,7 @@ pour une première découverte, ou aller directement au fichier pertinent.
 Haversack est modélisé avec **Domain-Driven Design (DDD)** organisé en 4 Bounded Contexts :
 
 - **Identity & Access** — utilisateurs authentifiés
-- **Campaign Management** — campagnes, membres, invitations, accès aux contenus
+- **Space Management** — campagnes, membres, invitations, accès aux contenus
 - **Content Library** — tout le contenu éditorial (documents, PNJ, personnages, scénarios)
 - **Session Conduct** — conduite des sessions en temps réel
 

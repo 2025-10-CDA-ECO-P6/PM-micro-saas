@@ -11,8 +11,8 @@
 
 | Catégorie | Nb | Éléments |
 |---|---|---|
-| **Must Have** | 10 UC + instrumentation | UC-01 à UC-10 (dont UC-05 base — dossiers libres) + instrumentation de validation du MVP |
-| **Should Have** | 6 | UC-05 riche (dossiers et types élaborés), UC-11, UC-12, UC-14, UC-13 *(hors première livraison)*, export de campagne |
+| **Must Have** | 10 UC + espace personnel + instrumentation | UC-01 à UC-10 (dont UC-05 base — dossiers libres) + espace personnel (capture-first, conteneur par défaut) + instrumentation de validation du MVP |
+| **Should Have** | 6 | UC-05 riche (dossiers et types élaborés), UC-11, UC-12, UC-14, UC-13 *(hors première livraison)*, export d'espace |
 | **Could Have** | 3 | Types personnalisés, réimport de fichier de sauvegarde *(post-MVP ; distinct de l'export Should Have)*, notes joueur |
 | **Won't Have** | — | Voir détail ci-dessous |
 
@@ -20,8 +20,9 @@
 
 ## Must Have — Le produit ne peut pas être validé sans eux
 
-Ces dix use cases forment le périmètre minimal cohérent : sans l'un d'eux, soit le produit
-ne peut pas être utilisé, soit l'hypothèse centrale ne peut pas être testée.
+Ces dix use cases, complétés par l'espace personnel, forment le périmètre minimal cohérent :
+sans l'un d'eux, soit le produit ne peut pas être utilisé, soit l'hypothèse centrale ne peut
+pas être testée.
 
 ### UC-01 — Mode local sans compte
 
@@ -33,7 +34,7 @@ Le mode local est aussi la fondation du modèle de monétisation non-agressif :
 local gratuit → compte gratuit (cloud + partage) → Pro (illimité).
 La valeur est perçue avant l'engagement financier.
 
-**Critère de sortie** : un MJ crée une campagne et prépare du contenu sans s'inscrire.
+**Critère de sortie** : un MJ crée un espace et prépare du contenu sans s'inscrire.
 Ses données persistent entre sessions navigateur.
 
 **Risque si absent** : friction d'onboarding maximale. Perte d'utilisateurs avant toute
@@ -41,16 +42,21 @@ perception de valeur.
 
 ---
 
-### UC-02 — Créer et configurer une campagne
+### UC-02 — Créer et configurer un espace (campagne ou one-shot)
 
-**Pourquoi Must Have** : la campagne est le conteneur de toutes les données.
+**Pourquoi Must Have** : un espace de type `CAMPAIGN` ou `ONE_SHOT` est le conteneur structurant
+pour une table et ses membres.
 La définition doit rester large : conteneur léger (Thomas), one-shot isolé (Sonia via UC-13),
 campagne narrative longue (Antoine). Configuration opérationnelle en moins de deux minutes.
 
-**Critère de sortie** : un MJ crée une campagne nommée et accède à son espace de travail.
-Fonctionne en mode local.
+L'espace personnel (`PERSONAL`) est créé automatiquement à l'initialisation du compte — il
+n'est pas décompté du quota d'espaces `CAMPAIGN`/`ONE_SHOT` (voir « Quota FREE » ci-dessous).
+UC-02 couvre la création d'espaces partagés ; l'espace personnel est provisonné par le système.
 
-**Risque si absent** : aucune structuration de contenu possible.
+**Critère de sortie** : un MJ crée un espace nommé (type `CAMPAIGN` ou `ONE_SHOT`) et accède à
+son espace de travail. Fonctionne en mode local.
+
+**Risque si absent** : aucune structuration de contenu collaboratif possible.
 
 ---
 
@@ -67,13 +73,17 @@ Fonctionne en mode local.
 
 ---
 
-### UC-04 — Gérer les documents de campagne
+### UC-04 — Gérer les documents d'un espace
 
 **Pourquoi Must Have** : les documents sont le filet de sécurité du MJ — préparation légère,
 capture d'urgence en session, consolidation post-session. Un MJ sans possibilité de capturer
 et retrouver ses informations n'utilisera pas l'outil. La capture en session doit être
 quasi-immédiate. UC-04 couvre l'ensemble des documents libres, des entrées rapides et du
 lore, sans restreindre le concept à la prise de notes.
+
+Depuis l'introduction de l'espace personnel (ADR-018), un document peut naître dans l'espace
+`PERSONAL` sans qu'un espace `CAMPAIGN` ou `ONE_SHOT` soit nécessaire — UC-04 s'applique à
+tout type d'espace.
 
 **Critère de sortie** : un MJ crée un document, le retrouve et le modifie.
 Fonctionne en mode local.
@@ -90,6 +100,9 @@ Sans dossiers libres, tout le contenu est à plat et l'agnosticisme système n'e
 La structure par défaut doit être neutre — des labels comme "Personnages", "Lieux", "Notes",
 "Sessions" plutôt que "PNJ", "Monstres", "Sorts". Antoine (Blades in the Dark) et Émilie
 (systèmes narratifs) doivent pouvoir renommer ou ignorer la structure.
+
+Chaque espace — y compris l'espace `PERSONAL` — dispose de sa propre arborescence de dossiers
+créée à l'initialisation de l'espace.
 
 **Critère de sortie** : un MJ crée des dossiers nommés librement. La structure par défaut
 est système-agnostique.
@@ -182,13 +195,62 @@ reclassement) sont conservés à titre de trace historique (ADR-006).
 
 ---
 
+### Espace personnel — conteneur par défaut et capture-first (Must Have — ADR-018)
+
+**Pourquoi Must Have** : le MJ produit du contenu — idée de donjon, esquisse de PNJ, note de
+convention — **sans lien avec une campagne en cours et sans intention d'en créer une**. Sans
+zone d'atterrissage naturelle, ce contenu est soit perdu, soit contraint à une création de
+campagne artificielle. L'espace personnel (`SpaceType.PERSONAL`) est cette zone.
+
+L'espace personnel est créé automatiquement par le système à l'initialisation de l'environnement
+du MJ (local ou compte). Il n'est pas décompté du quota d'espaces `CAMPAIGN`/`ONE_SHOT`
+du tier FREE (voir ci-dessous). Tout document créé sans espace explicite y atterrit par défaut.
+
+**Propriété vs activation vs bibliothèque — distinction MVP / post-MVP** :
+
+- **Must Have / MVP — propriété et capture** : l'espace personnel existe, appartient au MJ,
+  reçoit du contenu, dispose de sa propre arborescence de dossiers. Un document peut naître
+  dans l'espace personnel sans qu'une campagne soit nécessaire (UC-01, UC-04). C'est le
+  comportement acté dans cet item.
+- **Post-MVP — bibliothèque de réutilisation inter-espaces** : la promotion de contenu vers
+  un catalogue partageable, la navigation entre espaces, et l'instanciation en un geste
+  (`Document.Instantiate(spaceId, folderId)`) depuis l'espace personnel vers un espace
+  `CAMPAIGN`/`ONE_SHOT` constituent l'interface de bibliothèque. Ce comportement est aligné
+  sur UC-13 et reste hors première livraison.
+
+**Signal d'élargissement Must Have** : l'introduction de l'espace personnel étend le périmètre
+Must Have au-delà des dix use cases initiaux. L'opérateur a tranché : comportement opérationnel
+en MVP. Ce point a été arbitré explicitement (ADR-018 — recommandation « capture-first »,
+validation session 2026-06-12).
+
+**Critère de sortie** : un MJ en mode local peut créer et retrouver un document sans avoir
+créé d'espace `CAMPAIGN` ou `ONE_SHOT`. L'espace personnel est provisonné automatiquement.
+
+**Risque si absent** : le contenu pré-campagne est orphelin. Le modèle reste campagne-centré
+et résiste au besoin de capture spontanée identifié comme central (ADR-018 §Contexte).
+
+---
+
+### Quota FREE — espaces `CAMPAIGN`/`ONE_SHOT`
+
+Le tier FREE inclut un quota de **3 espaces de type `CAMPAIGN` ou `ONE_SHOT`**. L'espace
+personnel (`SpaceType.PERSONAL`) n'est **pas décompté** dans ce quota — il est provisionné
+inconditionnellement à la création du compte, indépendamment du tier.
+
+Cette règle est cohérente avec W1 (vision-produit.md) et UC-02 : l'espace personnel est une
+propriété permanente du compte, non une fonctionnalité soumise à limite.
+
+---
+
 ### Instrumentation de validation du MVP
 
 **Pourquoi Must Have** : le MVP unique teste simultanément trois piliers (préparation, vue session, partage). Sans mesure granulaire par pilier, un échec d'adoption serait indiagnosticable — impossible de savoir quel pilier n'a pas résonné avec les utilisateurs. L'instrumentation doit permettre une analyse rétrospective claire de chaque pilier.
 
 L'application permet de constater, de façon anonyme et sans capter le contenu narratif :
 
-1. **Activation préparation** : le MJ a créé une campagne ET y a créé ses premiers documents. Ce constat mesure si le pilier 1 (organisation et préparation) a engagé l'utilisateur au-delà de la création d'un conteneur.
+1. **Activation préparation** : le MJ a créé un espace (ou utilisé son espace personnel) ET y
+   a créé ses premiers documents. Ce constat mesure si le pilier 1 (organisation et préparation)
+   a engagé l'utilisateur au-delà de la création d'un conteneur.
 
 2. **Activation vue session** : une session a été ouverte ET réellement utilisée pendant une partie — interaction avec du contenu, création de notes, navigation dans les panneaux. Ce constat mesure si le pilier 2 (pilotage en direct) crée une valeur immédiate.
 
@@ -231,7 +293,7 @@ ses entrées sans contraindre la structure.
 
 ---
 
-### UC-11 — Gérer les membres d'une campagne
+### UC-11 — Gérer les membres d'un espace
 
 **Pourquoi Should Have** : couvre deux besoins distincts — membres permanents (Thomas, groupes
 stables, invitation durable) et accès ponctuels (Sonia, joueurs changeants, lien de session
@@ -243,17 +305,17 @@ temporaire. Il peut révoquer un accès.
 
 ---
 
-### UC-12 — Consulter sa campagne en tant que joueur (vue post-accès)
+### UC-12 — Consulter son espace en tant que joueur (vue post-accès)
 
 **Pourquoi Should Have** : distinct de UC-09 (octroi d'accès ponctuel) et UC-11 (gestion des
-membres côté MJ). Couvre la valeur obtenue par le joueur une fois entré dans la campagne : une
+membres côté MJ). Couvre la valeur obtenue par le joueur une fois entré dans l'espace : une
 vue cohérente regroupant sa fiche de personnage, les documents `PUBLIC` et l'historique partagé
 selon le périmètre de son accès. Sans cette vue, le joueur membre dispose d'un accès sans
 surface d'entrée unifiée — l'adhésion (octroi via lien, création de compte, création du
-`CampaignMembership`) relève d'UC-09 (côté joueur) et d'UC-11 (côté MJ).
+`SpaceMembership`) relève d'UC-09 (côté joueur) et d'UC-11 (côté MJ).
 
-**Critère de sortie** : un joueur disposant d'un `CampaignMembership` actif accède à une vue
-cohérente de sa campagne — fiche de personnage, documents `PUBLIC`, historique selon le
+**Critère de sortie** : un joueur disposant d'un `SpaceMembership` actif accède à une vue
+cohérente de son espace — fiche de personnage, documents `PUBLIC`, historique selon le
 périmètre de son accès.
 
 ---
@@ -263,7 +325,7 @@ périmètre de son accès.
 **Pourquoi Should Have** : Sonia (one-shots exclusivement, 15 scénarios en catalogue)
 est structurellement exclue du produit sans ce use case — le modèle campagne avec membres
 fixes ne correspond pas à son fonctionnement. Antoine bénéficie aussi des instances
-cross-campagnes. Sans UC-13, le produit ignore tout un profil de MJ actif.
+cross-espaces. Sans UC-13, le produit ignore tout un profil de MJ actif.
 
 **Critère de sortie** : le MJ marque un scénario comme réutilisable, crée une instance
 pour un nouveau groupe, l'instance est indépendante du source.
@@ -278,21 +340,25 @@ l'usage révèlent que le profil one-shot est une part significative des utilisa
 d'adoption, UC-13 est réexaminé en priorité de la vague suivante. Trace complète dans la vision produit,
 section « Traces d'arbitrage vision ↔ périmètre MVP ».
 
+**Note ADR-018** : la bibliothèque de réutilisation inter-espaces (UC-13 scénario nominal) s'appuiera
+sur l'espace personnel comme infrastructure. L'interface de catalogue, de promotion et d'instanciation
+reste post-MVP ; l'infrastructure (l'espace `PERSONAL` lui-même) est Must Have.
+
 ---
 
 ### UC-14 — Rechercher et filtrer l'information
 
 **Pourquoi Should Have** : fonctionnalité de survie en session pour les MJ avec du volume.
 Thomas (400 notes dans son vault) et Émilie (retrouver un PNJ inventé il y a trois séances)
-en font une nécessité dès que la campagne a quelques semaines d'existence. Inclut le filtrage
+en font une nécessité dès que l'espace a quelques semaines d'existence. Inclut le filtrage
 par tags — les tags sont un mécanisme au service de la recherche, pas un use case distinct.
 
-**Critère de sortie** : un MJ retrouve n'importe quel document de sa campagne par mot-clé
+**Critère de sortie** : un MJ retrouve n'importe quel document de son espace par mot-clé
 depuis la vue session en moins de cinq secondes.
 
 ---
 
-### Export de campagne
+### Export d'espace
 
 **Pourquoi Should Have** (rehaussé de Could Have par arbitrage du 2026-06-10) :
 l'export matérialise le différenciant n°1 de la vision — la possession des données, qui doit être
@@ -301,7 +367,7 @@ reste une déclaration sans preuve. L'export répond aussi à la douleur de conf
 de l'enfermement propriétaire) et de Rémi (réassurance face au numérique), et constitue un filet de
 sécurité critique pour le mode local.
 
-**Critère de sortie** : un MJ exporte l'ensemble de sa campagne — documents, notes, structure — dans un format ouvert, lisible et réutilisable hors de l'application. Disponible en mode local comme avec un compte.
+**Critère de sortie** : un MJ exporte l'ensemble de son espace — documents, notes, structure — dans un format ouvert, lisible et réutilisable hors de l'application. Disponible en mode local comme avec un compte.
 
 ---
 
@@ -326,7 +392,7 @@ semaines d'usage réel.
 
 ### Réimport de fichier de sauvegarde *(post-MVP — distinct de l'export Should Have)*
 
-Le MJ réimporte un fichier de sauvegarde exporté par l'application pour récupérer une campagne sans ressaisie. Distinct de l'**export de campagne** (Should Have, disponible dès le MVP).
+Le MJ réimporte un fichier de sauvegarde exporté par l'application pour récupérer un espace sans ressaisie. Distinct de l'**export d'espace** (Should Have, disponible dès le MVP).
 
 **Valeur** : Thomas a un vault Obsidian de 400 notes qu'il ne migrera pas manuellement.
 Un import partiel (même imparfait) réduit le coût de transition. Argument commercial fort
@@ -432,7 +498,9 @@ Vision long terme uniquement.
 
 ```
 UC-01 (Mode local)
-  └── UC-02 (Campagne)
+  ├── [espace PERSONAL — créé automatiquement, conteneur par défaut]
+  │     └── UC-04 (Documents — naissance sans campagne)
+  └── UC-02 (Espace CAMPAIGN / ONE_SHOT)
         ├── UC-03 (Scénario)
         ├── UC-04 (Documents)
         ├── UC-05 base (Dossiers libres — Must)
@@ -447,8 +515,10 @@ UC-10 (Compte — Must)  ← Must car UC-08/09 (Must) en dépendent
   │     └── UC-09 (liens de session)
   ├── UC-12 (Vue joueur — Should)
   └── UC-13 (One-shot — Should, hors première livraison) ── dépend aussi de UC-02, UC-03
+            ↑ infrastructure fournie par [espace PERSONAL] ; interface bibliothèque post-MVP
 ```
 
-**Point clé** : UC-01 est le nouveau point d'entrée. L'inscription (UC-10) est Must Have
-car elle conditionne le partage joueurs (UC-08) — déclenchée par l'intention de partager,
-pas par le démarrage. UC-11 à UC-14 restent Should Have.
+**Point clé** : UC-01 est le nouveau point d'entrée. L'espace personnel est provisionné dès
+UC-01 — un document peut naître sans espace `CAMPAIGN` ou `ONE_SHOT`. L'inscription (UC-10)
+est Must Have car elle conditionne le partage joueurs (UC-08) — déclenchée par l'intention de
+partager, pas par le démarrage. UC-11 à UC-14 restent Should Have.

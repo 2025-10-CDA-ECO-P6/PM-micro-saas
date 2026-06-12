@@ -278,7 +278,7 @@ Scénario : Partage depuis une session non LIVE
 | A3 — Partage depuis la vue session | US-08-03 |
 | A4 — Partage d'un récapitulatif post-session | US-08-01 |
 | E1 — Document déjà PUBLIC | US-08-01 |
-| E2 — Accès joueur expiré | Couvert par Campaign Management (GuestAccess) — hors scope UC-08 |
+| E2 — Accès joueur expiré | Couvert par Space Management (GuestAccess) — hors scope UC-08 |
 
 ---
 

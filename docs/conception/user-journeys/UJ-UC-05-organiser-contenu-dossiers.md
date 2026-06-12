@@ -78,7 +78,7 @@ flowchart TD
 
 | Étape | Persona(s) | Friction potentielle | Opportunité produit |
 |---|---|---|---|
-| Découvrir les dossiers système à la création de la campagne | Tous | Dossiers trop génériques ou inadaptés au système de jeu | Afficher les dossiers système dès l'écran de campagne avec une explication courte |
+| Découvrir les dossiers système à la création de l'espace | Tous | Dossiers trop génériques ou inadaptés au système de jeu | Afficher les dossiers système dès l'écran de l'espace avec une explication courte |
 | Renommer un dossier système | Thomas, Antoine | Action non trouvée si l'édition inline n'est pas évidente | Édition inline au clic sur le nom du dossier, sans passer par un panneau de configuration |
 | Créer un nouveau dossier thématique | Antoine, Thomas | Pas de point d'entrée visible pour ajouter un dossier | Bouton "+" à côté de la liste des dossiers |
 | Associer un template à un dossier | Antoine | Templates inexistants si UC-13 non implémenté — liste vide déconcertante | Afficher un message explicatif si aucun template n'est disponible + lien vers la création |
@@ -99,7 +99,7 @@ Antoine ouvre une nouvelle campagne Warhammer Fantasy. Les dossiers système son
 **Points de conversion** :
 - Premier dossier thématique créé avec succès.
 - Premier template associé et appliqué à la création d'un document.
-- Ordre persisté après fermeture et réouverture de la campagne.
+- Ordre persisté après fermeture et réouverture de l'espace.
 
 **Risques** :
 - Template non disponible si UC-13 n'est pas implémenté — valeur de US-05-03 réduite.
@@ -153,7 +153,7 @@ Thomas commence une campagne Blades in the Dark. Les dossiers système lui sembl
 | Premier template associé à un dossier | `defaultTemplateDocumentId` non null sur le dossier | Aucun template disponible — liste vide |
 | Premier document créé depuis un dossier avec template | Document ouvert avec la structure du template | Pas de retour visuel sur l'application du template |
 | Suppression d'un dossier non vide sans perte de documents | Documents retrouvables après suppression | Dialogue peu clair — MJ pense avoir perdu ses documents |
-| Ordre des dossiers persisté | Même ordre à la réouverture de la campagne | Ordre réinitialisé — frustration pour Antoine |
+| Ordre des dossiers persisté | Même ordre à la réouverture de l'espace | Ordre réinitialisé — frustration pour Antoine |
 
 ---
 

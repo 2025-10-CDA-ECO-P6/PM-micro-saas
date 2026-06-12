@@ -35,7 +35,7 @@ Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11
 
 ## Bounded contexts pressentis
 
-- **Campaign Management** — gère les `Member`, les associations joueur-personnage, le personnage actif.
+- **Space Management** — gère les `Member`, les associations joueur-personnage, le personnage actif.
 - **Identity & Access** — valide les tokens `GuestAccess` et `Member`, contrôle le périmètre d'accès.
 - **Bibliothèque de contenu** — fournit les documents `PUBLIC` et les fiches de personnage (Document de type `player_character`).
 
@@ -189,7 +189,7 @@ Scenario : Documents GM_ONLY invisibles pour le joueur
 - Le choix du personnage actif est local à la session en cours. Il ne modifie pas l'association définie par le MJ (US-11-04) — il détermine seulement quel personnage est affiché en priorité dans la vue joueur.
 - Le personnage actif conditionne uniquement les actions qui dépendent d'une fiche précise : affichage de la fiche en tête, notes `PLAYER_PRIVATE` visibles et éditables, accès aux ressources liées au personnage.
 - Si le joueur n'a qu'un seul personnage associé, aucune sélection n'est requise — la fiche s'affiche directement (US-12-01).
-- `Campaign Management` gère la liste des personnages associés à un `Member`. La sélection du personnage actif est une préférence de vue, côté client ou stockée en session, sans modifier les données de `Campaign Management`.
+- `Space Management` gère la liste des personnages associés à un `Member`. La sélection du personnage actif est une préférence de vue, côté client ou stockée en session, sans modifier les données de `Space Management`.
 
 **Règles métier** :
 - RB-12-06 : Un joueur associé à plusieurs personnages doit choisir un personnage actif pour les actions dépendant d'une fiche précise (notes `PLAYER_PRIVATE`, affichage de fiche).
@@ -236,7 +236,7 @@ Scenario : Joueur avec un seul personnage - pas de selection requise
 Scenario : Changement de personnage actif sans modifier les associations MJ
   Etant donne que Thomas a "Veran" comme personnage actif et change pour "Kael"
   Quand le MJ consulte le panneau membres
-  Alors l association de Thomas avec "Veran" et "Kael" est inchangee dans Campaign Management
+  Alors l association de Thomas avec "Veran" et "Kael" est inchangee dans Space Management
 ```
 
 ---

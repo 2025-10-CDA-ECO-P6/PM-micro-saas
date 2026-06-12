@@ -54,7 +54,7 @@ Fil narratif de bout en bout pour chaque persona : couture transverse des use ca
 - [conception/domain/README.md](conception/domain/README.md) — Index des 4 bounded contexts
 - [conception/domain/core.md](conception/domain/core.md) — Shared Kernel : abstractions, IDs typés, value objects transverses
 - [conception/domain/identity-access.md](conception/domain/identity-access.md) — Comptes, authentification, tiers, RGPD
-- [conception/domain/campaign-management.md](conception/domain/campaign-management.md) — Campagnes, membres, invitations, accès invités
+- [conception/domain/space-management.md](conception/domain/space-management.md) — Campagnes, membres, invitations, accès invités
 - [conception/domain/content-library.md](conception/domain/content-library.md) — Documents, dossiers, types, références entre documents
 - [conception/domain/session-conduct.md](conception/domain/session-conduct.md) — Cycle de vie de session, tableau de bord, notes de session
 

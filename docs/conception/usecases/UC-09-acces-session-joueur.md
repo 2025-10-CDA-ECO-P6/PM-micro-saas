@@ -44,7 +44,7 @@ Le MJ partage un lien d'accès à une session (lien ponctuel) ou à sa campagne 
 2. Le joueur clique sur le lien.
 3. S'il n'est pas encore connecté, l'application lui propose de se connecter ou de créer un compte (UC-10 pour la création de compte ; la jonction campagne se complète dans UC-09 une fois authentifié).
 4. Le joueur est connecté à son compte Haversack.
-5. L'application crée un `CampaignMembership` en `PENDING` puis l'active immédiatement via `Activate()` : le lien d'invitation campagne généré par le MJ (UC-11) tient lieu de validation au sens de RB-09-16 — c'est l'invitation préalable du MJ, pas un second clic, qui autorise l'activation. Le cycle de domaine `PENDING → ACTIVE` est respecté sans exception.
+5. L'application crée un `SpaceMembership` en `PENDING` puis l'active immédiatement via `Activate()` : le lien d'invitation campagne généré par le MJ (UC-11) tient lieu de validation au sens de RB-09-16 — c'est l'invitation préalable du MJ, pas un second clic, qui autorise l'activation. Le cycle de domaine `PENDING → ACTIVE` est respecté sans exception.
 6. Le joueur obtient un accès persistant à la campagne : il peut consulter les sessions passées, les documents partagés, et son historique de personnage selon le périmètre du lien.
 7. La vue obtenue une fois l'accès actif (fiche de campagne, documents `PUBLIC`, historique selon périmètre) relève d'**UC-12**.
 8. L'accès persiste jusqu'à révocation par le MJ (UC-11).
@@ -89,7 +89,7 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
 - Son accès expire à la fin de la session (pour les liens ponctuels).
 
 **Chemin B — campagne permanent (avec compte)**
-- Le `CampaignMembership` est actif (créé `PENDING` puis activé via `Activate()` à l'utilisation du lien d'invitation généré par le MJ).
+- Le `SpaceMembership` est actif (créé `PENDING` puis activé via `Activate()` à l'utilisation du lien d'invitation généré par le MJ).
 - Le joueur dispose d'un accès persistant à la campagne jusqu'à révocation par le MJ.
 
 ## Règles métier
@@ -102,7 +102,7 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
   La seule différence est technique : il n'a pas de compte persistant.
 - La création d'un compte depuis l'accès invité migre l'accès sans perdre les notes déjà prises.
 - Le MJ avec un compte gratuit peut inviter jusqu'à 4 joueurs par session. Le compte Pro lève cette limite.
-- **Distinction de consentement** : suivre un lien d'invitation **campagne** généré par le MJ (UC-11) vaut validation — le `CampaignMembership` est créé `PENDING` puis activé (`Activate()`), l'invitation préalable du MJ tenant lieu de validation au sens de RB-09-16. En revanche, un joueur invité ne peut pas **s'auto-promouvoir** membre sans lien d'invitation campagne du MJ — une telle demande crée un `CampaignMembership` `PENDING` en attente de validation explicite du MJ (RB-09-16, parcours-03). La validation se fait côté MJ (UC-11).
+- **Distinction de consentement** : suivre un lien d'invitation **campagne** généré par le MJ (UC-11) vaut validation — le `SpaceMembership` est créé `PENDING` puis activé (`Activate()`), l'invitation préalable du MJ tenant lieu de validation au sens de RB-09-16. En revanche, un joueur invité ne peut pas **s'auto-promouvoir** membre sans lien d'invitation campagne du MJ — une telle demande crée un `SpaceMembership` `PENDING` en attente de validation explicite du MJ (RB-09-16, parcours-03). La validation se fait côté MJ (UC-11).
 - **Ownership `GuestAccess`** : UC-09 est le propriétaire des données et du cycle de vie des enregistrements `GuestAccess`. Leur création, expiration, révocation et conversion sont pilotées par les règles de cet UC ; les règles RGPD qui s'y appliquent (RB-09-18, RB-09-19) vivent ici par cohérence de responsabilité.
 - RB-09-18 : À la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) cessent immédiatement d'être utilisées et affichées — plus aucune finalité produit. Leur effacement effectif intervient **au plus tard 90 jours** après la fin d'accès ; cette fenêtre bornée a pour seule finalité de permettre à l'invité d'exercer ses droits et de traiter une contestation, jamais un usage produit. ⚠️ Cette fenêtre de rétention de 90 jours porte **uniquement sur l'identifiant d'accès** (`displayName`, élément d'accès) — **les notes `PLAYER_PRIVATE` n'ont pas de fenêtre de rétention** : elles sont supprimées sans délai à la fin définitive de l'accès (RB-09-19). Si l'invité a été converti en compte, ses données suivent les règles du compte (RGPD Art. 5(1)(e) — limitation de la conservation).
 - RB-09-19 : À la fin définitive d'un `GuestAccess` non converti, les notes personnelles **écrites par cet invité** (`PLAYER_PRIVATE`) sont supprimées physiquement — la clé de suppression est l'auteur, pas le personnage. Seules les notes dont cet invité est l'auteur sont concernées, jamais celles d'autres participants. La **fiche de personnage** associée survit intacte (elle appartient à la campagne, est ré-associable, et ne contient aucune note d'un autre joueur) (RGPD Art. 17 — droit à l'oubli, fondement identique à la suppression des notes à la suppression d'un compte).
@@ -120,7 +120,7 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
 - Un lien révoqué affiche un message clair sans révéler d'information sur la campagne.
 
 **Chemin B — campagne permanent (avec compte)**
-- Un joueur authentifié suivant un lien de campagne obtient un `CampaignMembership` actif dans la campagne (cycle `PENDING → Activate()` respecté ; l'invitation du MJ tient lieu de validation).
+- Un joueur authentifié suivant un lien de campagne obtient un `SpaceMembership` actif dans la campagne (cycle `PENDING → Activate()` respecté ; l'invitation du MJ tient lieu de validation).
 - L'accès est persistant et visible dans la gestion des membres (UC-11).
 - Un joueur non connecté est invité à se connecter ou créer un compte avant que la jonction soit complétée.
 

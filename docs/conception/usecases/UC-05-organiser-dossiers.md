@@ -10,20 +10,25 @@ Aucun.
 
 ## Objectif
 
-Permettre au MJ de structurer librement le contenu de sa campagne en créant ses propres dossiers,
+Permettre au MJ de structurer librement le contenu de son espace en créant ses propres dossiers,
 d'associer un template par défaut à chaque dossier, et de déplacer des documents entre dossiers.
 
 ## Contexte
 
-Chaque campagne a une organisation qui lui est propre. Un MJ de D&D va vouloir des dossiers
+Chaque espace a une organisation qui lui est propre. Un MJ de D&D va vouloir des dossiers
 "Factions", "Lieux", "Artefacts". Un MJ de Call of Cthulhu préférera "Suspects", "Indices",
 "Lieux du crime". Imposer une structure fixe bride la créativité et force le MJ à contourner
 l'outil. Le système de dossiers donne la structure à l'utilisateur, pas à l'application.
 
-Des **dossiers système** sont créés automatiquement à la création de la campagne pour donner
-un point de départ neutre (Personnages, Joueurs, Scénarios, Notes).
+Pour un espace **`CAMPAIGN` ou `ONE_SHOT`**, quatre **dossiers système nommés** sont créés
+automatiquement à la création de l'espace pour donner un point de départ neutre
+(Personnages, Joueurs, Scénarios, Notes). Ces dossiers présupposent un groupe de jeu : les concepts
+« Joueurs » et « Personnages » n'ont pas de sens dans un espace solo.
 Ils peuvent être renommés ou supprimés comme n'importe quel autre dossier — `isSystem = true` indique
 l'origine automatique, pas une contrainte de non-suppression.
+
+Pour un espace **`PERSONAL`**, seul le dossier virtuel « Non classés » est créé automatiquement.
+Le propriétaire organise son espace avec ses propres dossiers (organisation libre).
 
 ### Deux niveaux de structure documentaire
 
@@ -80,23 +85,23 @@ productive.
 
 ## Déclencheur
 
-Le MJ commence à remplir sa campagne et veut l'organiser, ou a besoin d'une nouvelle catégorie
+Le MJ commence à remplir son espace et veut l'organiser, ou a besoin d'une nouvelle catégorie
 de contenu non prévue par défaut.
 
 ## Préconditions
 
-- Une campagne existe.
-- Le MJ est propriétaire de la campagne.
+- Un espace existe.
+- Le MJ est propriétaire de l'espace.
 
 ## Scénario nominal — Créer un dossier
 
-1. Le MJ accède à la section "Dossiers" ou à la barre latérale de la campagne.
+1. Le MJ accède à la section "Dossiers" ou à la barre latérale de l'espace.
 2. Il clique sur "Nouveau dossier".
 3. Il renseigne :
    - nom du dossier ;
    - template par défaut (optionnel) — le template appliqué à la création de tout document dans ce dossier.
 4. Il valide.
-5. Le dossier apparaît dans la navigation de la campagne.
+5. Le dossier apparaît dans la navigation de l'espace.
 6. Le MJ peut immédiatement créer des documents dans ce dossier.
 
 ## Scénario nominal — Associer un template à un dossier
@@ -131,7 +136,7 @@ placé dans ce dossier et initialisé avec son template par défaut s'il en a un
 
 ### A4 — Document sans dossier
 
-Un document "non classé" est automatiquement placé dans le dossier virtuel "Non classés" de la campagne.
+Un document "non classé" est automatiquement placé dans le dossier virtuel "Non classés" de l'espace.
 Ce dossier est invisible dans la navigation MJ mais les documents qu'il contient sont accessibles
 via la recherche et une vue "Non classés" dédiée. Le dossier associé d'un document n'est jamais nul : un document sans dossier explicite pointe vers le dossier virtuel "Non classés".
 
@@ -140,9 +145,9 @@ via la recherche et une vue "Non classés" dédiée. Le dossier associé d'un do
 Un dossier peut ne pas avoir de template par défaut. Dans ce cas, le document est créé
 avec un contenu vide.
 
-### A6 — Dossiers système à la création d'une campagne
+### A6 — Dossiers créés à la création d'un espace `CAMPAIGN` ou `ONE_SHOT`
 
-À la création d'une campagne, les dossiers système suivants sont créés automatiquement :
+À la création d'un espace `CAMPAIGN` ou `ONE_SHOT`, les dossiers système suivants sont créés automatiquement :
 - **Personnages** — type par défaut "PNJ", renommable (ex. : "Suspects", "Contacts", "Factions")
 - **Joueurs** — type par défaut "Personnage joueur", renommable
 - **Scénarios** — type par défaut "Scénario", structure narrative via UC-03
@@ -151,6 +156,9 @@ avec un contenu vide.
 Ces dossiers sont renommables et supprimables. Les noms proposés sont neutres et
 système-agnostiques — "Personnages" couvre PNJ, suspects, contacts, factions selon le système.
 Le MJ de Blades in the Dark peut renommer "Personnages" en "Factions" et changer le type par défaut.
+
+À la création d'un espace **`PERSONAL`**, seul le dossier virtuel « Non classés » est créé.
+Le MJ organise son espace personnel avec ses propres dossiers créés librement.
 
 ## Exceptions
 
@@ -180,7 +188,7 @@ sans erreur. Les documents déjà créés conservent leur contenu (ils sont des 
 
 ## Postconditions
 
-- Le dossier existe dans la campagne et est navigable.
+- Le dossier existe dans l'espace et est navigable.
 - Les documents qu'il contient sont accessibles depuis le dossier.
 - Le template par défaut est appliqué à tout nouveau document créé dans ce dossier.
 - Les documents existants ne sont pas modifiés.
@@ -191,7 +199,7 @@ sans erreur. Les documents déjà créés conservent leur contenu (ils sont des 
 
 - Identifiant unique
 - Nom
-- Campagne associée
+- Espace associé
 - Template par défaut (optionnel)
 - Indicateur système (`isSystem`)
 - Ordre d'affichage
@@ -203,7 +211,7 @@ sans erreur. Les documents déjà créés conservent leur contenu (ils sont des 
 
 ## Règles métier
 
-- Un dossier appartient à une campagne.
+- Un dossier appartient à un espace.
 - Un dossier peut avoir zéro ou un template par défaut.
 - Les dossiers système peuvent être supprimés. `isSystem = true` est informatif.
 - Tous les dossiers (y compris système) peuvent être renommés.
@@ -220,7 +228,7 @@ sans erreur. Les documents déjà créés conservent leur contenu (ils sont des 
 - Le MJ peut supprimer un dossier système comme n'importe quel autre dossier.
 - Le MJ peut supprimer un dossier en traitant son contenu (déplacer ou laisser non classé).
 - Le MJ peut déplacer un document d'un dossier à un autre.
-- À la création d'une campagne, les 4 dossiers système existent avec leurs templates.
+- À la création d'un espace `CAMPAIGN` ou `ONE_SHOT`, les 4 dossiers système existent avec leurs templates. À la création d'un espace `PERSONAL`, seul le dossier virtuel « Non classés » existe.
 - Un document créé depuis un dossier avec template est initialisé avec ce template.
 - Les documents existants ne sont jamais modifiés lors d'un changement de template par défaut.
 - Le MJ peut réordonner ses dossiers.

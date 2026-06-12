@@ -1,8 +1,8 @@
-# Campaign Management — Modèle Logique de Données (MLD)
+# Space Management — Modèle Logique de Données (MLD)
 
 > **Nature : vue physique assumée** — quatrième vue de la suite de modélisation du domaine (prose → classes → MCD → MLD). Les types SQL et index sont la fonction de ce document ; il reste dans la couche conception par arbitrage T-08 (2026-06-10), sans nommer de produit d'infrastructure.
 
-## Table `campaigns`
+## Table `spaces`
 
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
@@ -21,17 +21,17 @@
 
 ---
 
-## Table `campaign_memberships`
+## Table `space_memberships`
 
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
-| `campaign_id` | `uuid` | PK, FK → `campaigns.id`, NOT NULL | |
+| `space_id` | `uuid` | PK, FK → `spaces.id`, NOT NULL | |
 | `user_id` | `uuid` | PK, FK → `users.id`, NOT NULL | |
 | `role` | `varchar(10)` | NOT NULL | `OWNER` / `GM` / `PLAYER` |
 | `status` | `varchar(20)` | NOT NULL, DEFAULT `'ACTIVE'` | `PENDING` / `ACTIVE` / `REMOVED` |
 | `joined_at` | `timestamptz` | NOT NULL | |
 
-**PK** : `(campaign_id, user_id)`
+**PK** : `(space_id, user_id)`
 
 ---
 
@@ -41,12 +41,12 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
-| `campaign_id` | `uuid` | PK, FK → `campaigns.id`, NOT NULL | |
+| `space_id` | `uuid` | PK, FK → `spaces.id`, NOT NULL | |
 | `user_id` | `uuid` | PK, NOT NULL | |
 | `character_id` | `uuid` | PK, NOT NULL | FK physique réelle → `documents.id` (Content Library, type `player_character`) — exception assumée inter-module, voir note ci-dessous |
 
-**PK** : `(campaign_id, user_id, character_id)`
-**FK composite** : `(campaign_id, user_id) → campaign_memberships(campaign_id, user_id)` — intra-module (la PK de `campaign_memberships` est composite ; référencer `user_id` seul serait invalide).
+**PK** : `(space_id, user_id, character_id)`
+**FK composite** : `(space_id, user_id) → space_memberships(space_id, user_id)` — intra-module (la PK de `space_memberships` est composite ; référencer `user_id` seul serait invalide).
 
 ---
 
@@ -55,7 +55,7 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
-| `campaign_id` | `uuid` | FK → `campaigns.id`, NOT NULL | |
+| `space_id` | `uuid` | FK → `spaces.id`, NOT NULL | |
 | `token` | `uuid` | UNIQUE, NOT NULL | Utilisé dans l'URL |
 | `type` | `varchar(10)` | NOT NULL | `LINK` / `EMAIL` |
 | `scope` | `varchar(20)` | NOT NULL | `CAMPAIGN` / `SESSION` |
@@ -75,7 +75,7 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
-| `campaign_id` | `uuid` | FK → `campaigns.id`, NOT NULL | |
+| `space_id` | `uuid` | FK → `spaces.id`, NOT NULL | |
 | `scope` | `varchar(20)` | NOT NULL | `SESSION` / `CAMPAIGN` |
 | `session_id` | `uuid` | nullable | FK physique réelle → `sessions.id` (Session Conduct) — exception assumée inter-module, voir note ci-dessous |
 | `token` | `uuid` | UNIQUE, NOT NULL | Utilisé dans l'URL |
@@ -87,7 +87,7 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 
 **Index** : `UNIQUE (token)`
 
-> **Note — FK inter-modules** : les colonnes traversant une frontière de bounded context (`owner_id` → I&A, `campaign_memberships.user_id` → I&A, `membership_characters.character_id` → Content Library, `invitations.session_id` et `guest_accesses.session_id` → Session Conduct, `guest_accesses.character_id` → Content Library) sont des **clés étrangères physiques réelles** vers la table propriétaire de l'autre module. C'est une **exception assumée** du monolithe modulaire à base de données unique partagée : l'isolation des contextes est tenue au niveau du code (contrats, namespaces), pas par l'absence de FK. À l'extraction éventuelle d'un contexte en service dédié, ces FK deviendront des projections par events. *(ADR-009)*
+> **Note — FK inter-modules** : les colonnes traversant une frontière de bounded context (`owner_id` → I&A, `space_memberships.user_id` → I&A, `membership_characters.character_id` → Content Library, `invitations.session_id` et `guest_accesses.session_id` → Session Conduct, `guest_accesses.character_id` → Content Library) sont des **clés étrangères physiques réelles** vers la table propriétaire de l'autre module. C'est une **exception assumée** du monolithe modulaire à base de données unique partagée : l'isolation des contextes est tenue au niveau du code (contrats, namespaces), pas par l'absence de FK. À l'extraction éventuelle d'un contexte en service dédié, ces FK deviendront des projections par events. *(ADR-009)*
 
 ---
 

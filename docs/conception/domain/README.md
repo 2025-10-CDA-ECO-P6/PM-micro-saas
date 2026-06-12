@@ -16,7 +16,7 @@ Haversack est un monolithe modulaire organisé en quatre bounded contexts plus u
 ```
 Core (Shared Kernel)
   ├── Identity & Access
-  ├── Campaign Management
+  ├── Space Management
   ├── Content Library
   └── Session Conduct
 ```
@@ -32,7 +32,7 @@ Les échanges inter-contextes passent par des IDs, des événements domaine ou d
 |---|---|
 | [Core](core.md) | Abstractions DDD, IDs typés, value objects transverses |
 | [Identity & Access](identity-access.md) | Comptes authentifiés, tiers, suppression RGPD |
-| [Campaign Management](campaign-management.md) | Espaces de jeu (campagnes et one-shots), membres, invitations, accès invités |
+| [Space Management](space-management.md) | Espaces de jeu (campagnes et one-shots), membres, invitations, accès invités |
 | [Content Library](content-library.md) | Documents, dossiers, types de documents, références entre documents |
 | [Session Conduct](session-conduct.md) | Session LIVE, tableau de bord configurable, notes de session, accès joueurs |
 

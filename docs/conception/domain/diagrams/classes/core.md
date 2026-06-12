@@ -26,7 +26,7 @@ classDiagram
     class UserId {
         +value: identifiant
     }
-    class CampaignId {
+    class SpaceId {
         +value: identifiant
     }
     class SessionId {
@@ -75,7 +75,7 @@ classDiagram
 
     AggregateRoot --|> Entity
     ValueObject <|-- UserId
-    ValueObject <|-- CampaignId
+    ValueObject <|-- SpaceId
     ValueObject <|-- SessionId
     ValueObject <|-- DocumentId
     ValueObject <|-- FolderId

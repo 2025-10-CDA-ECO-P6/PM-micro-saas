@@ -45,7 +45,7 @@ Permettre à un utilisateur (MJ ou joueur) de créer un compte pour activer la s
 ## Bounded contexts
 
 - **Identity & Access** — gère les comptes `User`, authentification (adresse de messagerie et mot de passe, connexion fédérée), sessions, réinitialisation de mot de passe.
-- **Campaign Management** — reçoit la notification de création de compte pour initialiser le tableau de bord.
+- **Space Management** — reçoit la notification de création de compte pour initialiser le tableau de bord.
 
 ## Liens ADR
 
@@ -147,7 +147,7 @@ flowchart LR
 **Notes de conception** :
 - Si des données locales existent (UC-01), un **gate de reconnaissance** est présenté avant la migration : l'application affiche les campagnes détectées (titre, volume, date) et affiche pour chaque campagne l'historique de session qu'elle contient (sessions terminées, notes de session, documents épinglés, résumés). Le gate signale aussi toute session en cours (LIVE) en indiquant qu'elle doit être clôturée pour que la campagne puisse migrer. L'application demande une confirmation explicite avant l'import. La migration n'est déclenchée qu'après cette confirmation. Cette confirmation est une exigence du système : aucune migration ne peut démarrer sans elle, quel que soit le moyen par lequel elle est déclenchée. Le passage par l'écran de présentation n'est pas le seul garde-fou — le système rejette toute demande de migration dépourvue de cette confirmation. Cette exigence vise à prévenir qu'un utilisateur s'approprie par inadvertance les données créées par quelqu'un d'autre sur un poste partagé en confirmant sans les reconnaître : en voyant précisément ce qui va être importé (y compris l'historique de session), il peut interrompre avant l'import. Si certaines campagnes sont refusées lors de la migration (en raison d'un contenu invalide, d'un intitulé en conflit avec un contenu existant, d'un type ou d'un format non reconnu), un rapport détaille la raison du refus pour chacune, et les données locales correspondantes restent intactes dans le navigateur ; les campagnes acceptées sont migrées et accessibles avec tout leur historique de session. Le raisonnement ayant conduit à ce choix (et les alternatives écartées) est tracé dans [ADR-016](../../architecture/decisions/ADR-016-serialisation-locale-migration.md) §4.
 - Un joueur invité (`GuestAccess`) qui crée un compte via un lien d'invitation (A3, UC-09) voit ses notes personnelles (`PLAYER_PRIVATE`) migrées vers son nouveau compte dans le même flux.
-- Identity & Access crée le `User` et publie un événement de domaine. Campaign Management initialise le tableau de bord en réponse.
+- Identity & Access crée le `User` et publie un événement de domaine. Space Management initialise le tableau de bord en réponse.
 - Le mot de passe est hashé en infrastructure — le domaine ne le connaît pas.
 - L'accès est immédiat après inscription. La validation de l'adresse de messagerie n'est pas bloquante à la connexion, mais est requise avant les opérations sensibles (modification de l'adresse de messagerie, modification du mot de passe, liaison d'un compte via connexion fédérée, effacement RGPD) — voir RB-10-05.
 
@@ -371,7 +371,7 @@ Scénario : Reinitialisation reussie
 
 **Notes de conception** :
 - La mise à jour du nom d'affichage est la seule modification de profil couverte dans le MVP.
-- Identity & Access met à jour le `User`. Le nouveau nom d'affichage est propagé aux bounded contexts qui l'affichent (Campaign Management, Session Conduct).
+- Identity & Access met à jour le `User`. Le nouveau nom d'affichage est propagé aux bounded contexts qui l'affichent (Space Management, Session Conduct).
 - La modification du mot de passe est également couverte dans ce flux pour les comptes email/password.
 
 **Règles métier** :

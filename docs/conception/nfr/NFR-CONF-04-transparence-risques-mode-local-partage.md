@@ -12,11 +12,11 @@ Lorsque l'application détecte que les données locales d'un MJ pourraient être
 
 ## Raison d'être
 
-Le mode local sans compte repose sur un choix de conception délibéré : les données de campagne sont stockées dans l'espace de stockage de l'appareil utilisé, sans protection par mot de passe ni compte utilisateur. Ce choix permet une friction d'entrée nulle (vision §5) et une utilisation immédiate, mais il implique une limite assumée : sur un appareil partagé, toute personne ayant accès à ce même appareil et navigateur peut potentiellement lire ces données.
+Le mode local sans compte repose sur un choix de conception délibéré : le contenu local du MJ (espace personnel et campagnes) est stocké dans l'espace de stockage de l'appareil utilisé, sans protection par mot de passe ni compte utilisateur. Ce choix permet une friction d'entrée nulle (vision §5) et une utilisation immédiate, mais il implique une limite assumée : sur un appareil partagé, toute personne ayant accès à ce même appareil et navigateur peut potentiellement lire ces données.
 
 Cette limite ne peut pas être effacée par le mode local — elle en est une contrainte structurelle, documentée dans UC-01 et assumée pour le MVP (US-UC-01, RB-01-14). L'information honnête de l'utilisateur sur cette limite est préférable à une promesse de sécurité que le mode local ne peut pas tenir.
 
-Un MJ qui prépare ses campagnes sur un ordinateur familial ou un poste partagé doit pouvoir prendre une décision éclairée : continuer en mode local en connaissance des limites, ou créer un compte pour bénéficier d'une protection associée à des identifiants. C'est lui qui décide — le produit l'informe et lui propose une alternative, sans bloquer son usage.
+Un MJ qui prépare son contenu (campagnes ou captures personnelles) sur un ordinateur familial ou un poste partagé doit pouvoir prendre une décision éclairée : continuer en mode local en connaissance des limites, ou créer un compte pour bénéficier d'une protection associée à des identifiants. C'est lui qui décide — le produit l'informe et lui propose une alternative, sans bloquer son usage.
 
 La confiance dans un produit qui gère des données de préparation narrative — parfois riches en informations que le MJ souhaite garder secrètes de ses joueurs — passe par cette honnêteté. Un bandeau de confidentialité non bloquant, systématique en mode local, est le vecteur choisi pour cette transparence.
 

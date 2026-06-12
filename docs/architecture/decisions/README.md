@@ -31,7 +31,7 @@ sous **ADR-009**.
 | [ADR-008](ADR-008-structure-solution.md) | Structure physique de la solution | pré-implémentation | Accepté | 2026-06-09 |
 | [ADR-009](ADR-009-fk-campaign-owner.md) | FK CAMPAIGN.ownerId → USER | conception | Accepté | 2026-06-09 |
 | [ADR-010](ADR-010-suppression-campagne.md) | Suppression de campagne (soft-delete + purge + saga) | conception | Accepté | 2026-06-09 |
-| [ADR-011](ADR-011-cascade-integrite-referentielle.md) | Cascade & intégrité référentielle (sagas `CampaignDeleted` et `UserAnonymized`) | pré-implémentation | Accepté | 2026-06-09 |
+| [ADR-011](ADR-011-cascade-integrite-referentielle.md) | Cascade & intégrité référentielle (sagas `SpaceDeleted` et `UserAnonymized`) | pré-implémentation | Accepté | 2026-06-09 |
 | [ADR-012](ADR-012-rgpd-effacement-compte.md) | RGPD : effacement de compte (Art. 17 — droit à l'oubli) | conception | Accepté | 2026-06-09 |
 | [ADR-013](ADR-013-rgpd-donnees-invites.md) | RGPD : données des joueurs invités (GuestAccess, Art. 6/13) | conception | Accepté | 2026-06-09 |
 | [ADR-014](ADR-014-modele-autorisation-api.md) | Modèle d'autorisation API (appartenance ressource↔campagne) | conception | Accepté | 2026-06-09 |

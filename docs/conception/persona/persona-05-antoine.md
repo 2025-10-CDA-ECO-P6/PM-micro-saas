@@ -30,6 +30,8 @@ scénario puis par acte.
 - Un outil unique pour ses trois campagnes avec un accès rapide à chacune
 - Le partage joueurs pour ses trois groupes
 - Une structure documentaire qu'il peut vraiment adapter par système
+- Un espace personnel où stocker ses contenus réutilisables — templates de PNJ, factions génériques,
+  fragments de lore — pour les instancier ensuite dans la campagne qui en a besoin, sans les dupliquer
 
 ## Ce qu'il demande à l'app
 
@@ -37,6 +39,8 @@ scénario puis par acte.
 - Y a-t-il un dashboard multi-campagnes ou faut-il naviguer campagne par campagne ?
 - Comment modéliser les factions Blades in the Dark avant que l'entité dédiée soit disponible ?
 - Peut-on créer ses propres templates de documents par système ?
+- Comment garder un PNJ ou un fragment de lore dans mon espace personnel et le réutiliser dans
+  plusieurs campagnes sans copier-coller ?
 
 ## Ce que ce persona révèle
 
@@ -45,3 +49,9 @@ la structure documentaire s'adapte à des logiques radicalement différentes. Le
 défaut sont raisonnables pour D&D mais peuvent être perçus comme prescriptifs par des MJ
 d'autres univers. Le segment des MJ multi-campagnes a une douleur réelle de fragmentation et un
 fort potentiel d'adoption, à condition que la flexibilité soit réelle et pas juste déclarée.
+
+Antoine porte également un besoin distinct : le contenu lui appartient, la campagne en organise
+une partie. Il veut pouvoir conserver des ressources dans son espace personnel — PNJ récurrents,
+factions, templates — et les instancier dans ses différentes campagnes. Ce besoin inter-campagnes
+révèle une frontière produit : les espaces personnels ne sont pas de simples brouillons, ils sont
+des espaces de propriété et de réutilisation que les campagnes consomment.

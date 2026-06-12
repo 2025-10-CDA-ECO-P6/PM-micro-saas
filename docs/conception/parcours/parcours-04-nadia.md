@@ -44,7 +44,7 @@ Ouvrir l'application, ne pas remplir de formulaire d'inscription, créer une cam
 
 ### Couture vers l'étape 2
 
-UC-01 postcondition : "Le MJ peut utiliser toutes les fonctionnalités de préparation et de session sans compte." UC-01 scénario nominal (step 6) : "Il utilise l'application normalement (UC-02 à UC-06, UC-14)." La précondition de UC-06 est : "Une campagne existe et le MJ y a accès" et "Le MJ est authentifié **ou** en mode local sans compte." Les deux conditions sont satisfaites. **Couture continue.** Note : UC-12 (vue joueur) n'est pas disponible en mode local — il requiert un `GuestAccess` ou un `CampaignMembership` actif, qui présupposent un compte.
+UC-01 postcondition : "Le MJ peut utiliser toutes les fonctionnalités de préparation et de session sans compte." UC-01 scénario nominal (step 6) : "Il utilise l'application normalement (UC-02 à UC-06, UC-14)." La précondition de UC-06 est : "Une campagne existe et le MJ y a accès" et "Le MJ est authentifié **ou** en mode local sans compte." Les deux conditions sont satisfaites. **Couture continue.** Note : UC-12 (vue joueur) n'est pas disponible en mode local — il requiert un `GuestAccess` ou un `SpaceMembership` actif, qui présupposent un compte.
 
 ---
 

@@ -1,5 +1,7 @@
 # ADR-013 — RGPD : données des joueurs invités (GuestAccess, Art. 6/13)
 
+> **Annotation 2026-06-12** — Cascade ADR-018 (Campaign → Space) : `campaign_id` → `space_id`, `campaigns` → `spaces`, `campaign_memberships` → `space_memberships`, saga `CampaignDeleted` → `SpaceDeleted`, « Campaign Management » → « Space Management ». Le terme « campagne » est préservé pour le type d'espace `CAMPAIGN`. Précisions ajoutées : un espace `PERSONAL` n'a pas d'invité (GuestAccess uniquement dans les espaces partagés) ; un espace `PERSONAL` est purgé inconditionnellement à `UserDeleted` (distinction §6).
+
 - **Statut** : Accepté
 - **Date** : 2026-06-09
 - **Décideur** : opérateur (validation explicite, session de cadrage P1)
@@ -11,20 +13,22 @@
 
 Cet ADR couvre exclusivement les traitements liés au **cycle de vie des joueurs invités** (entités `GuestAccess`) : base légale des données collectées, obligation d'information Art. 13, rétention/purge autonome, posture sur les mineurs et la qualification sous-traitant/responsable.
 
+Les `GuestAccess` n'existent que dans les **espaces partagés** (types `CAMPAIGN` et `ONE_SHOT`). Un espace `PERSONAL` est mono-membre (le propriétaire uniquement) : il n'admet ni invité ni `GuestAccess`, et n'est donc pas couvert par cet ADR.
+
 **Hors périmètre de cet ADR** :
 - Procédure d'anonymisation d'un compte utilisateur → **ADR-012**
 - Règle F-08 (notes `PLAYER_PRIVATE` d'un compte supprimé accessible à un invité réassigné) → **ADR-012 §4** (déclencheur = suppression de compte)
 - Mécanique de pseudonymisation `deleted-{id}@haversack.invalid` → **ADR-012 §1** (référencée ici, non redéfinie)
-- Purge à la suppression de campagne (saga `CampaignDeleted`) → **ADR-011**
+- Purge à la suppression d'espace (saga `SpaceDeleted`) → **ADR-011**
 - Modèle d'autorisation API → **ADR-007**
 
 ---
 
 ## Contexte
 
-Un joueur invité participe à une campagne sans créer de compte. Son seul identifiant collecté au point d'entrée est un `display_name` saisi librement. À ce `GuestAccess` peuvent être associés : un `character_id` (personnage joué), des notes `PLAYER_PRIVATE` créées pendant la session, et des métadonnées techniques (IP de connexion, timestamps, logs d'accès).
+Un joueur invité participe à un espace partagé (type `CAMPAIGN` ou `ONE_SHOT`) sans créer de compte. Son seul identifiant collecté au point d'entrée est un `display_name` saisi librement. À ce `GuestAccess` peuvent être associés : un `character_id` (personnage joué), des notes `PLAYER_PRIVATE` créées pendant la session, et des métadonnées techniques (IP de connexion, timestamps, logs d'accès).
 
-ADR-007 avait identifié la base légale et la durée de conservation des données invitées comme un item bloquant avant lancement EU (finding F-04, reclassé bloquant dans les Compléments post-revue ADR-007). ADR-011 a défini que les `guest_accesses` sont hard-deletés en passe 2 de la saga `CampaignDeleted` — mais cette purge ne suffit pas pour une campagne vivante de longue durée.
+ADR-007 avait identifié la base légale et la durée de conservation des données invitées comme un item bloquant avant lancement EU (finding F-04, reclassé bloquant dans les Compléments post-revue ADR-007). ADR-011 a défini que les `guest_accesses` sont hard-deletés en passe 2 de la saga `SpaceDeleted` — mais cette purge ne suffit pas pour un espace partagé vivant de longue durée.
 
 Deux questions restaient ouvertes :
 
@@ -44,7 +48,7 @@ Deux questions restaient ouvertes :
 Le `display_name` est nécessaire à l'identification du joueur invité pendant la session et dans les contenus partagés de la campagne (personnages, notes, attribution des contributions). Sans cet identifiant, la coordination entre participants n'est pas fonctionnelle.
 
 **Test de mise en balance** (résumé) :
-- *Finalité* : identification en session, attribution des contributions dans le contexte de la campagne.
+- *Finalité* : identification en session, attribution des contributions dans le contexte de l'espace.
 - *Nécessité* : le `display_name` est le seul identifiant collecté ; aucune donnée supplémentaire n'est exigée pour participer.
 - *Proportionnalité* : la donnée est fournie volontairement par l'invité au moment de rejoindre la session ; aucun profilage n'en est tiré.
 - *Attentes raisonnables* : un joueur rejoignant une session de jeu de rôle s'attend à être identifié par un nom pendant la partie.
@@ -73,10 +77,10 @@ L'obligation d'information de l'Art. 13 RGPD s'applique au moment de la collecte
 | Élément | Contenu |
 |---|---|
 | Identité du responsable de traitement | Nom et coordonnées de l'éditeur de Haversack |
-| Finalité du traitement | Identification en session, attribution des contributions dans la campagne |
+| Finalité du traitement | Identification en session, attribution des contributions dans l'espace |
 | Base légale | Intérêt légitime |
-| Durée de conservation | (i) La ligne `guest_accesses` (dont le `display_name` de référence) est purgée 90 jours après `expires_at`. (ii) Les occurrences du `display_name` dans les contenus de campagne (notes, attributions) survivent tant que la campagne existe — leur sort suit le cycle de vie de la campagne (purge J+30 après soft-delete, saga `CampaignDeleted`). Les logs techniques (IP, timestamps) sont purgés à 30 jours après `expires_at`. |
-| Droits et modalités d'exercice (Art. 13§2(b)) | Accès, rectification, effacement, opposition — exercice par email à l'adresse support dédiée ([adresse à définir en implémentation]). Un invité sans compte peut exercer ses droits en contactant ce canal en mentionnant son `display_name` et la campagne concernée. |
+| Durée de conservation | (i) La ligne `guest_accesses` (dont le `display_name` de référence) est purgée 90 jours après `expires_at`. (ii) Les occurrences du `display_name` dans les contenus de l'espace (notes, attributions) survivent tant que l'espace existe — leur sort suit le cycle de vie de l'espace (purge J+30 après soft-delete, saga `SpaceDeleted`). Les logs techniques (IP, timestamps) sont purgés à 30 jours après `expires_at`. |
+| Droits et modalités d'exercice (Art. 13§2(b)) | Accès, rectification, effacement, opposition — exercice par email à l'adresse support dédiée ([adresse à définir en implémentation]). Un invité sans compte peut exercer ses droits en contactant ce canal en mentionnant son `display_name` et l'espace concerné. |
 | Durée de conservation — logs techniques (IP, timestamps) | 30 jours maximum après `expires_at` du `GuestAccess` (Art. 13§2(a)) |
 | Droit à l'opposition | L'invité peut s'opposer au traitement basé sur l'intérêt légitime |
 
@@ -84,15 +88,15 @@ L'obligation d'information de l'Art. 13 RGPD s'applique au moment de la collecte
 
 ### 3. Rétention autonome et purge des `guest_accesses` expirés
 
-**Règle** : les `guest_accesses` dont `status = EXPIRED` ou dont `expires_at` est dépassé sont purgés (DELETE physique) **90 jours après `expires_at`**, indépendamment du cycle de vie de la campagne.
+**Règle** : les `guest_accesses` dont `status = EXPIRED` ou dont `expires_at` est dépassé sont purgés (DELETE physique) **90 jours après `expires_at`**, indépendamment du cycle de vie de l'espace.
 
-**Motif** : la purge de la saga `CampaignDeleted` (ADR-011, J+30 après soft-delete) ne suffit pas pour une campagne vivante de longue durée. Une campagne peut rester active plusieurs années ; des `guest_accesses` expirés depuis 18 mois conserveraient le `display_name` sans aucune finalité résiduelle. L'Art. 5§1(e) (limitation de la conservation) impose une purge fondée sur la durée, pas uniquement sur la suppression de la campagne.
+**Motif** : la purge de la saga `SpaceDeleted` (ADR-011, J+30 après soft-delete) ne suffit pas pour un espace partagé vivant de longue durée. Un espace de type `CAMPAIGN` peut rester actif plusieurs années ; des `guest_accesses` expirés depuis 18 mois conserveraient le `display_name` sans aucune finalité résiduelle. L'Art. 5§1(e) (limitation de la conservation) impose une purge fondée sur la durée, pas uniquement sur la suppression de l'espace.
 
-**Implémentation** : un job de purge (Hosted Service .NET, distinct ou mutualisé avec le job de purge de campagnes) sélectionne les `guest_accesses WHERE expires_at ≤ now() - 90 jours` et les supprime. Les métadonnées techniques associées (logs d'accès, IP) sont supprimées ou anonymisées à **30 jours** après `expires_at` (délai plus court — voir §1), indépendamment de la purge de la ligne `guest_accesses` à 90 j. Un log d'accès contenant à la fois `guest_access_id` et `display_name` est purgé à 30 jours : la survie de la ligne `guest_accesses` jusqu'à 90 j ne justifie pas de conserver le log au-delà de 30 j.
+**Implémentation** : un job de purge (Hosted Service .NET, distinct ou mutualisé avec le job de purge d'espaces) sélectionne les `guest_accesses WHERE expires_at ≤ now() - 90 jours` et les supprime. Les métadonnées techniques associées (logs d'accès, IP) sont supprimées ou anonymisées à **30 jours** après `expires_at` (délai plus court — voir §1), indépendamment de la purge de la ligne `guest_accesses` à 90 j. Un log d'accès contenant à la fois `guest_access_id` et `display_name` est purgé à 30 jours : la survie de la ligne `guest_accesses` jusqu'à 90 j ne justifie pas de conserver le log au-delà de 30 j.
 
-**Interaction avec la saga `CampaignDeleted`** : si la campagne est purgée avant que le délai de 90 jours soit atteint, les `guest_accesses` sont supprimés en passe 2 de `CampaignDeleted` (ADR-011). Les deux mécanismes coexistent sans conflit : le premier à s'exécuter purge la ligne.
+**Interaction avec la saga `SpaceDeleted`** : si l'espace est purgé avant que le délai de 90 jours soit atteint, les `guest_accesses` sont supprimés en passe 2 de `SpaceDeleted` (ADR-011). Les deux mécanismes coexistent sans conflit : le premier à s'exécuter purge la ligne.
 
-**Idempotence** : le job de purge des `guest_accesses` (Hosted Service) doit être idempotent (claim/reprise), par cohérence avec le mécanisme de claim du job `CampaignDeleted` défini dans ADR-011. Un crash entre la sélection et la suppression physique doit être récupérable sans double effet de bord.
+**Idempotence** : le job de purge des `guest_accesses` (Hosted Service) doit être idempotent (claim/reprise), par cohérence avec le mécanisme de claim du job `SpaceDeleted` défini dans ADR-011. Un crash entre la sélection et la suppression physique doit être récupérable sans double effet de bord.
 
 ---
 
@@ -122,13 +126,18 @@ Haversack agit en qualité de sous-traitant vis-à-vis des MJ responsables de tr
 
 ---
 
-### 6. UC-11 — MJ propriétaire anonymisant son compte sur une campagne vivante
+### 6. UC-11 — MJ propriétaire anonymisant son compte sur un espace partagé vivant
 
-**Comportement MVP** : si le MJ propriétaire d'une campagne active supprime son compte (saga `UserAnonymized`), la campagne est conservée sous l'`id` anonymisé (ADR-011 — `campaigns.owner_id` pointe vers le `UserId` anonymisé, contrainte NOT NULL satisfaite). Aucun transfert de propriété automatique n'est effectué.
+**Distinction PERSONAL vs espaces partagés** :
 
-**Post-MVP** : un mécanisme de transfert de propriété forcé (désignation d'un successeur parmi les membres actifs, ou dissolution de la campagne) est prévu mais hors périmètre MVP.
+- **Espace `PERSONAL`** : un espace `PERSONAL` appartient à un seul membre (le propriétaire). À `UserDeleted`, cet espace est **purgé inconditionnellement** — il n'est pas conservé sous un `id` anonymisé. Voir ADR-011 et ADR-012 pour la mécanique de purge.
+- **Espaces partagés** (`CAMPAIGN`, `ONE_SHOT`) : le comportement décrit ci-dessous s'applique exclusivement à ces types. Les `GuestAccess` ne concernant que les espaces partagés, c'est le seul périmètre pertinent pour cet ADR.
 
-**Impact sur les invités** : les `guest_accesses` de la campagne survivante restent actifs jusqu'à leur expiration naturelle. Leur purge suit la règle §3 (90 jours après `expires_at`). La suppression du compte du MJ ne déclenche pas la purge immédiate des `guest_accesses` de ses campagnes.
+**Comportement MVP (espaces partagés)** : si le MJ propriétaire d'un espace partagé actif supprime son compte (saga `UserAnonymized`), l'espace est conservé sous l'`id` anonymisé (ADR-011 — `spaces.owner_id` pointe vers le `UserId` anonymisé, contrainte NOT NULL satisfaite). Aucun transfert de propriété automatique n'est effectué.
+
+**Post-MVP** : un mécanisme de transfert de propriété forcé (désignation d'un successeur parmi les membres actifs, ou dissolution de l'espace) est prévu mais hors périmètre MVP.
+
+**Impact sur les invités** : les `guest_accesses` de l'espace partagé survivant restent actifs jusqu'à leur expiration naturelle. Leur purge suit la règle §3 (90 jours après `expires_at`). La suppression du compte du MJ ne déclenche pas la purge immédiate des `guest_accesses` de ses espaces partagés.
 
 ---
 
@@ -138,9 +147,9 @@ Haversack agit en qualité de sous-traitant vis-à-vis des MJ responsables de tr
 |---|---|
 | Mécanique de pseudonymisation (`deleted-{id}@haversack.invalid`, ordre impératif) | **ADR-012 §1** |
 | Règle F-08 (notes `PLAYER_PRIVATE` accessibles à un invité réassigné) | **ADR-012 §4** |
-| Purge physique des `guest_accesses` à la suppression de campagne | **ADR-011** (saga `CampaignDeleted`, passe 2) |
-| `display_name` invité : neutralisation éventuelle à la suppression de compte | Non applicable — les `guest_accesses` d'une campagne vivante ne sont pas traités par `UserAnonymized` (ADR-011, saga `UserAnonymized`) |
-| UC-11 — MJ propriétaire anonymisant son compte sur une campagne vivante | **ADR-011** (saga `UserAnonymized`) + **ADR-013 §6** |
+| Purge physique des `guest_accesses` à la suppression d'espace | **ADR-011** (saga `SpaceDeleted`, passe 2) |
+| `display_name` invité : neutralisation éventuelle à la suppression de compte | Non applicable — les `guest_accesses` d'un espace partagé vivant ne sont pas traités par `UserAnonymized` (ADR-011, saga `UserAnonymized`) |
+| UC-11 — MJ propriétaire anonymisant son compte sur un espace partagé vivant | **ADR-011** (saga `UserAnonymized`) + **ADR-013 §6** |
 
 ---
 
@@ -154,9 +163,9 @@ Rejeté. Le consentement est révocable à tout moment. Si un invité retire son
 
 Non applicable. L'invité ne signe pas de contrat avec Haversack — il rejoint une session sans s'inscrire. La relation contractuelle s'établit entre le MJ (abonné) et Haversack, pas entre l'invité et Haversack.
 
-**Purge des `guest_accesses` expirés uniquement à la suppression de campagne**
+**Purge des `guest_accesses` expirés uniquement à la suppression d'espace**
 
-Rejetée. Insuffisant au regard de l'Art. 5§1(e) pour les campagnes de longue durée. Une campagne active depuis 2 ans peut contenir des `guest_accesses` expirés depuis 18 mois dont la finalité de conservation est nulle.
+Rejetée. Insuffisant au regard de l'Art. 5§1(e) pour les espaces partagés de longue durée. Un espace de type `CAMPAIGN` actif depuis 2 ans peut contenir des `guest_accesses` expirés depuis 18 mois dont la finalité de conservation est nulle.
 
 **Délai de rétention de 7 jours ou 30 jours après `expires_at`**
 
@@ -167,7 +176,7 @@ Rejetée. Insuffisant au regard de l'Art. 5§1(e) pour les campagnes de longue d
 ## Conséquences
 
 - Le formulaire de saisie du `display_name` (front Angular) doit intégrer la mention Art. 13 et la case d'attestation d'âge avant le lancement EU.
-- Un job de purge autonome des `guest_accesses` expirés (délai 90 jours après `expires_at`) doit être implémenté, distinct de la saga `CampaignDeleted`.
+- Un job de purge autonome des `guest_accesses` expirés (délai 90 jours après `expires_at`) doit être implémenté, distinct de la saga `SpaceDeleted`.
 - La politique de confidentialité doit couvrir : base légale `display_name`, durée de rétention, droits des invités, posture sous-traitant pour les contenus MJ.
 - La roadmap juridique doit inclure la rédaction du DPA (Data Processing Agreement) avant le lancement EU.
 - Les métadonnées techniques (IP, logs d'accès) suivent une durée de rétention de 30 jours après `expires_at`, gérée par le même job de purge ou un job dédié.

@@ -7,10 +7,10 @@
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
-| `campaign_id` | `uuid` | NOT NULL | FK physique réelle → `campaigns.id` (Campaign Management) — exception assumée inter-module, voir note ci-dessous |
+| `space_id` | `uuid` | NOT NULL | FK physique réelle → `spaces.id` (Space Management) — exception assumée inter-module, voir note ci-dessous |
 | `parent_folder_id` | `uuid` | FK → `folders.id`, nullable | Self-référence pour l'arborescence |
 | `name` | `varchar(200)` | NOT NULL | |
-| `is_system` | `bool` | NOT NULL, DEFAULT `false` | Créé automatiquement à `CampaignCreated` — informatif uniquement, non restrictif |
+| `is_system` | `bool` | NOT NULL, DEFAULT `false` | Créé automatiquement à `SpaceCreated` — informatif uniquement, non restrictif |
 | `is_virtual` | `bool` | NOT NULL, DEFAULT `false` | Dossier "Non classés" — invisible dans la navigation, non supprimable, un seul par campagne |
 | `default_document_type_id` | `uuid` | FK → `document_types.id`, nullable | |
 | `default_template_document_id` | `uuid` | FK → `documents.id`, nullable | Template utilisé pour initialiser les nouveaux documents créés dans ce dossier |
@@ -30,12 +30,12 @@
 | `name` | `varchar(100)` | NOT NULL | Nom affiché |
 | `properties_schema` | `jsonb` | nullable | Schéma JSON des propriétés structurées |
 | `is_system` | `bool` | NOT NULL, DEFAULT `false` | Types built-in non modifiables |
-| `campaign_id` | `uuid` | nullable | `null` pour types système, `campaign_id` pour types custom |
+| `space_id` | `uuid` | nullable | `null` pour types système, `space_id` pour types custom |
 | `created_at` | `timestamptz` | NOT NULL | |
 
 **Contraintes d'unicité sur `slug`** (C-16 — décision C2 : unicité conditionnelle, pas globale) :
-- `UNIQUE (slug) WHERE campaign_id IS NULL` — types système uniques globalement.
-- `UNIQUE (campaign_id, slug) WHERE campaign_id IS NOT NULL` — types custom uniques par campagne (permet à deux campagnes différentes de définir un type avec le même slug).
+- `UNIQUE (slug) WHERE space_id IS NULL` — types système uniques globalement.
+- `UNIQUE (space_id, slug) WHERE space_id IS NOT NULL` — types custom uniques par campagne (permet à deux campagnes différentes de définir un type avec le même slug).
 
 **Types seedés** : `scenario`, `scene`, `npc`, `location`, `note`, `player_character`, `live_note`, `reveal`
 
@@ -46,7 +46,7 @@
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
-| `campaign_id` | `uuid` | NOT NULL | FK physique réelle → `campaigns.id` (Campaign Management) — exception assumée inter-module, voir note ci-dessous |
+| `space_id` | `uuid` | NOT NULL | FK physique réelle → `spaces.id` (Space Management) — exception assumée inter-module, voir note ci-dessous |
 | `folder_id` | `uuid` | FK → `folders.id`, NOT NULL | |
 | `title` | `varchar(500)` | NOT NULL | |
 | `document_type_id` | `uuid` | FK → `document_types.id`, nullable | |
@@ -61,15 +61,15 @@
 | `updated_at` | `timestamptz` | NOT NULL | |
 | `created_by_id` | `uuid` | NOT NULL | FK physique réelle → `users.id` (Identity & Access) — exception assumée inter-module, voir note ci-dessous |
 | `character_id` | `uuid` | nullable | FK physique réelle → `documents.id` (Content Library, type `player_character`) — exception assumée intra-module ; personnage associé d'un LIVE_NOTE (promu depuis `properties`, ADR-002) |
-| `guest_access_id` | `uuid` | nullable | FK physique réelle → `guest_accesses.id` (Campaign Management) — exception assumée inter-module ; auteur invité d'un LIVE_NOTE quand `created_by_id` est null (promu depuis `properties`, ADR-002) |
+| `guest_access_id` | `uuid` | nullable | FK physique réelle → `guest_accesses.id` (Space Management) — exception assumée inter-module ; auteur invité d'un LIVE_NOTE quand `created_by_id` est null (promu depuis `properties`, ADR-002) |
 
 **Index**
 
 | Index | Type | Condition | Justification |
 |---|---|---|---|
-| `UNIQUE (campaign_id, document_type_id, slug) NULLS NOT DISTINCT` | B-tree unique | — | Unicité du slug par campagne et type (contrainte métier). `NULLS NOT DISTINCT` (option SQL non universelle, à défaut contrainte équivalente côté application) : deux documents sans type (`document_type_id IS NULL`) dans la même campagne avec le même slug sont rejetés — sans cette option, le SGBD traiterait les NULL comme distincts et laisserait passer des doublons. |
+| `UNIQUE (space_id, document_type_id, slug) NULLS NOT DISTINCT` | B-tree unique | — | Unicité du slug par campagne et type (contrainte métier). `NULLS NOT DISTINCT` (option SQL non universelle, à défaut contrainte équivalente côté application) : deux documents sans type (`document_type_id IS NULL`) dans la même campagne avec le même slug sont rejetés — sans cette option, le SGBD traiterait les NULL comme distincts et laisserait passer des doublons. |
 | `(folder_id) WHERE is_deleted = false` | B-tree partiel | `is_deleted = false` | Navigation de l'arborescence d'un dossier — exclut les soft-deletes. Source C-02. |
-| `(campaign_id, document_type_id) WHERE is_deleted = false` | B-tree partiel | `is_deleted = false` | Lookups par campagne + type (ex. lister les `player_character` d'une campagne pour la validation runtime ADR-002). Source C-02. |
+| `(space_id, document_type_id) WHERE is_deleted = false` | B-tree partiel | `is_deleted = false` | Lookups par campagne + type (ex. lister les `player_character` d'une campagne pour la validation runtime ADR-002). Source C-02. |
 | `GIN trigramme (title) WHERE is_deleted = false` | GIN trigramme | `is_deleted = false` | Recherche par sous-chaîne (« contient ») sur le titre. ⚠️ Requiert l'activation de l'extension de recherche trigramme du SGBD. Sources C-01/CR-5/H-05. **Note** : indexe le seul `title` — reste « recherche titre seul » au sens d'ADR-002. La recherche full-text sur le contenu (`tsvector`) est post-MVP assumée (non indexée ici). |
 | `(character_id) WHERE character_id IS NOT NULL` | B-tree partiel | `character_id IS NOT NULL` | **Préalable authz OBLIGATOIRE** — résolution des documents `PLAYER_PRIVATE` associés à un personnage. Cet index sert l'invariant métier n°6 (Content Library, prose domaine) : un document `PLAYER_PRIVATE` ne peut être lu que via son auteur, y compris quand cette identité est portée par le chemin de résolution `characterId` → résolution transitive `membership_characters`. |
 | `(guest_access_id) WHERE guest_access_id IS NOT NULL` | B-tree partiel | `guest_access_id IS NOT NULL` | **Préalable authz OBLIGATOIRE** — résolution des documents `PLAYER_PRIVATE` rattachés à un invité. Cet index sert l'invariant métier n°6 (Content Library, prose domaine) : un document `PLAYER_PRIVATE` ne peut être lu que par son auteur invité, y compris quand cette identité est portée par le chemin de résolution `guestAccessId`. |
@@ -129,6 +129,6 @@ Références ordonnées entre documents. Représente la relation "ce document en
 Certaines colonnes de `documents` sont des **clés étrangères physiques réelles** vers d'autres modules — exception assumée du monolithe modulaire (ADR-009). Deux natures à distinguer :
 
 - **Intra-module** : `character_id` → `documents.id` (même module Content Library, type `player_character`). Auto-FK dans le même bounded context.
-- **Cross-module** : `campaign_id` (dans `folders` et `documents`), `created_by_id`, et `guest_access_id` traversent une frontière de bounded context vers la table propriétaire de l'autre module.
+- **Cross-module** : `space_id` (dans `folders` et `documents`), `created_by_id`, et `guest_access_id` traversent une frontière de bounded context vers la table propriétaire de l'autre module.
 
 L'isolation des contextes est tenue au niveau du code (contrats, namespaces), pas par l'absence de FK. À l'extraction éventuelle d'un contexte en service dédié, ces FK deviendront des projections par events. *(ADR-009)*

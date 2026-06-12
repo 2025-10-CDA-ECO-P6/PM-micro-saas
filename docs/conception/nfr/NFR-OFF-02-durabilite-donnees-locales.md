@@ -28,7 +28,7 @@ Le scénario alternatif A2 d'UC-01 décrit précisément ce flux : le MJ ferme p
 
 **Ce que cette exigence couvre :**
 
-- La persistance des campagnes, documents, dossiers et configurations créés en mode local entre deux ouvertures successives de l'application, y compris après fermeture du navigateur ou redémarrage de l'appareil.
+- La persistance de l'ensemble du contenu local du MJ créé en mode local — campagnes, espace personnel, documents, dossiers et configurations — entre deux ouvertures successives de l'application, y compris après fermeture du navigateur ou redémarrage de l'appareil.
 - La durabilité sur le même appareil, dans le même navigateur.
 - L'information proactive du MJ lorsque cette durabilité ne peut pas être garantie par l'appareil — via un bandeau non bloquant distinct (couvert par NFR-OFF-03 pour le volet alerte).
 

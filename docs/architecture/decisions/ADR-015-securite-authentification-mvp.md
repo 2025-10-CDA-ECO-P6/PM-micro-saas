@@ -153,7 +153,7 @@ L'implémentation de référence utilise un store externe (Redis ou table SQL `t
 
 Les entrées de denylist dont `expires_at < now()` sont inutiles (un token expiré est rejeté par sa date d'expiration avant d'atteindre la vérification en denylist). Leur accumulation dégrade les performances de lookup.
 
-Un **Hosted Service .NET** assure la purge périodique des JTI expirés. Ce service est **introduit par cet ADR, sur le pattern du Hosted Service idempotent défini dans ADR-011** (saga `CampaignDeleted` — même structure : sélection par critère temporel, claim exclusif si applicable, transaction atomique, idempotence). ADR-011 ne couvre pas ce service : il couvre les sagas de purge domaine (`CampaignDeleted`, `UserAnonymized`) ; la purge JTI est une opération d'infrastructure d'authentification, distincte du domaine.
+Un **Hosted Service .NET** assure la purge périodique des JTI expirés. Ce service est **introduit par cet ADR, sur le pattern du Hosted Service idempotent défini dans ADR-011** (saga `SpaceDeleted` — même structure : sélection par critère temporel, claim exclusif si applicable, transaction atomique, idempotence). ADR-011 ne couvre pas ce service : il couvre les sagas de purge domaine (`SpaceDeleted`, `UserAnonymized`) ; la purge JTI est une opération d'infrastructure d'authentification, distincte du domaine.
 
 Paramètres de configuration minimaux : fréquence d'exécution (ex. toutes les heures), délai de grâce optionnel (purger les JTI expirés depuis au moins N minutes pour absorber les skews d'horloge).
 

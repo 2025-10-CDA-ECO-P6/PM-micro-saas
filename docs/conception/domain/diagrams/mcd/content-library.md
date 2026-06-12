@@ -4,7 +4,7 @@
 erDiagram
     FOLDER {
         identifiant id PK
-        identifiant campaign_id "ref Campaign Management"
+        identifiant space_id "ref Space Management"
         identifiant parent_folder_id FK "nullable — self-ref"
         texte name
         booléen is_system
@@ -22,13 +22,13 @@ erDiagram
         texte name
         structure properties_schema "nullable"
         booléen is_system
-        identifiant campaign_id "nullable — null pour types système"
+        identifiant space_id "nullable — null pour types système"
         horodatage created_at
     }
 
     DOCUMENT {
         identifiant id PK
-        identifiant campaign_id "ref Campaign Management"
+        identifiant space_id "ref Space Management"
         identifiant folder_id FK
         texte title
         identifiant document_type_id FK "nullable"

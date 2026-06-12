@@ -36,13 +36,14 @@ Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans frict
 | US-01-05 | Must Have (dépend UC-10) |
 | US-01-06 | Should Have |
 | US-01-07 | Should Have |
+| US-01-09 | Must Have |
 
 ---
 
 ## Bounded contexts pressentis
 
-- **la gestion de campagne** — création et stockage des campagnes locales, règle de quota (max 3 campagnes en mode local)
-- **la bibliothèque de contenu** — documents, dossiers, scénarios stockés localement
+- **la gestion de campagne** — création et stockage des espaces locaux (espace personnel par défaut, campagnes), règle de quota (max 3 campagnes en mode local)
+- **la bibliothèque de contenu** — documents, dossiers, scénarios stockés localement, y compris dans l'espace personnel
 - **Identity & Access** — activation lors de la conversion vers un compte (US-01-05 uniquement)
 
 Le mode local ne crée aucun compte utilisateur côté serveur. Les contraintes de stockage (~50-100 Mo)
@@ -86,9 +87,12 @@ flowchart LR
     US0106[US-01-06\nDonnées introuvables]
     UC10[UC-10\nCréation de compte]
 
+    US0109[US-01-09\nCapturer sans campagne]
+
     US0101 --> US0102
     US0101 --> US0104
     US0101 --> US0106
+    US0101 --> US0109
     US0104 --> US0105
     UC10 --> US0105
 ```
@@ -430,6 +434,61 @@ Feature: Export de campagne en format ouvert
 
 ---
 
+### US-01-09 — Capturer une idée dans l'espace personnel sans créer de campagne
+
+**Format**
+
+> En tant que MJ,
+> je veux pouvoir capturer une idée (lieu, PNJ, scénario, objet) immédiatement, sans avoir à créer une campagne au préalable,
+> afin de ne pas perdre une inspiration au moment où elle surgit.
+
+**Métadonnées**
+
+| Champ | Valeur |
+|---|---|
+| Priorité | Must Have |
+| Source | UC-01 — geste capture-first ; ADR-018 (espace personnel par défaut) |
+| Bounded context | la bibliothèque de contenu (capture et stockage), la gestion de l'espace (espace personnel par défaut) |
+
+**Critères d'acceptation**
+
+```gherkin
+Feature: Capture dans l'espace personnel sans campagne
+
+  Scenario: Le MJ crée un document sans avoir créé de campagne
+    Given le MJ est en mode local sans compte
+    And aucune campagne n'a été créée
+    When il crée un document (lieu, PNJ, scénario ou objet)
+    Then le document est enregistré dans l'espace personnel par défaut
+    And aucune campagne n'est requise pour valider l'action
+    And aucune donnée n'est envoyée au serveur
+
+  Scenario: Le MJ retrouve le contenu capturé
+    Given le MJ a capturé du contenu dans l'espace personnel en mode local
+    When il navigue vers l'espace personnel
+    Then tous les documents capturés sont visibles et accessibles
+
+  Scenario: Le MJ range le contenu dans une campagne ultérieurement
+    Given le MJ a du contenu dans l'espace personnel
+    And il a créé ou crée une campagne
+    When il décide de rattacher un document de l'espace personnel à cette campagne
+    Then le document est déplacé ou instancié dans la campagne
+    And l'espace personnel ne contient plus ce document (s'il a été déplacé)
+```
+
+**Règles métier**
+
+- RB-01-18 : En mode local sans compte, l'espace personnel est instancié automatiquement dès le premier démarrage. Il sert de conteneur par défaut pour tout contenu créé sans campagne. L'espace personnel local n'est pas associé à un compte utilisateur ; sa propriété est transférée lors de la migration vers un compte (US-01-05).
+- RB-01-19 : Tout contenu capturé dans l'espace personnel est retrouvable par le MJ à tout moment depuis l'espace personnel. Le MJ peut ultérieurement rattacher ou instancier ce contenu dans une campagne de son choix.
+
+**Notes de conception**
+
+- L'espace personnel est de type `SpaceType.PERSONAL` (ADR-018). Il n'est pas soumis à la limite de 3 campagnes (RB-01-03), qui ne concerne que les espaces de type CAMPAIGN.
+- En mode local, l'espace personnel est identifié par l'identifiant de session opaque géré côté interface (cohérent avec US-01-01 et US-01-02). Aucun compte utilisateur n'est requis.
+- La migration vers un compte (US-01-05) inclut le contenu de l'espace personnel : il est présenté dans le gate de reconnaissance au même titre que les campagnes locales.
+
+---
+
 ## Stories repoussées post-MVP
 
 ### US-01-03 — Comprendre le risque du mode local sans être bloqué
@@ -470,11 +529,12 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 ## Ordre de livraison recommandé
 
 1. **US-01-01** — Démarrer sans compte (fondation de l'epic)
-2. **US-01-02** — Persistance des données locales (nécessaire pour que l'outil soit utilisable)
-3. **US-01-04** — Visibilité des fonctionnalités cloud (prépare la conversion)
-4. **US-01-06** — Gestion des données introuvables (robustesse, Should Have)
-5. **US-01-05** — Migration vers compte (dépend UC-10, livrable uniquement après)
-6. **US-01-07** — Export de campagne en format ouvert (Should Have — transverse mode local / cloud)
+2. **US-01-09** — Capturer sans campagne dans l'espace personnel (geste capture-first, dépend US-01-01)
+3. **US-01-02** — Persistance des données locales (nécessaire pour que l'outil soit utilisable)
+4. **US-01-04** — Visibilité des fonctionnalités cloud (prépare la conversion)
+5. **US-01-06** — Gestion des données introuvables (robustesse, Should Have)
+6. **US-01-05** — Migration vers compte (dépend UC-10, livrable uniquement après)
+7. **US-01-07** — Export de campagne en format ouvert (Should Have — transverse mode local / cloud)
 
 ---
 
@@ -490,9 +550,12 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | RB-01-15 : aucun élément protégé conservé en mode local | US-01-01 (garanties du mode local) |
 | Export de campagne en format ouvert (RB-01-16/17) | US-01-07 (Should Have) |
 | Fichier réimporté validé et nettoyé avant enregistrement (post-MVP) | US-01-08 — post-MVP ; règles de validation tracées dans UC-01 A4b |
+| RB-01-18 : espace personnel instancié par défaut en mode local, propriété transférée à la migration | US-01-09 |
+| RB-01-19 : contenu capturé retrouvable et rangeable/instanciable ultérieurement | US-01-09 |
 
 | Critère d'acceptation UC-01 | Story couvrant le critère |
 |---|---|
+| Contenu capturable sans compte ni campagne (geste capture-first) | US-01-09 |
 | Campagne créable sans compte | US-01-01 |
 | Persistance après fermeture/réouverture | US-01-02 |
 | Rappel non bloquant sur la nature locale | US-01-01 (message premier démarrage) + RB-01-14 (bandeaux durabilité/confidentialité) |
@@ -520,6 +583,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 2. **Confirmation de migration des données locales** — Formalisé : un gate de reconnaissance est présenté avant migration si des données locales existent (campagnes détectées, volume estimé, date de création). La migration démarre uniquement après confirmation explicite. Cette confirmation est une exigence du système — aucune migration ne peut démarrer sans elle. La règle porteuse est RB-10-04 dans UC-10.
 3. **Limite du nombre de campagnes en mode local** — DÉCIDÉ : limite à 3 campagnes en mode local (cap numérique).
 4. **Périmètre de l'export / de la sauvegarde locale** — DÉCIDÉ : export de campagne = **Should Have** (vision §5bis, 2026-06-10), disponible en mode local comme avec un compte cloud. Le **réimport** d'un fichier de sauvegarde est un objet distinct, repoussé **post-MVP** (US-01-08).
+5. **Espace personnel et activation « préparation »** — OUVERT : si une métrique d'activation "préparation" (H1) est définie (jalon d'engagement mesurant qu'un MJ a démarré sa préparation), sa définition devra préciser si le contenu créé dans l'espace personnel sans campagne compte comme signal d'activation. Ce point est à trancher dans la vision §2.3 (vague ultérieure) — non décidé ici.
 
 ---
 
@@ -527,3 +591,4 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 
 - [ADR-016](../../architecture/decisions/ADR-016-serialisation-locale-migration.md) — Trace du raisonnement sur la sérialisation locale et le contrat de migration local→cloud, notamment le gate de confirmation avant migration.
 - [ADR-017](../../architecture/decisions/ADR-017-modele-indexeddb-local.md) — Trace du raisonnement sur le modèle de stockage local du navigateur et la sécurité du mode local : persistance et best-effort, bandeaux de durabilité et de confidentialité, importation et nettoyage de fichiers de sauvegarde.
+- [ADR-018](../../architecture/decisions/ADR-018-espace-personnel-generalisation-space.md) — Décision de généralisation `Campaign`→`Space` et introduction de `SpaceType.PERSONAL` ; fonde l'espace personnel par défaut couvert par US-01-09.

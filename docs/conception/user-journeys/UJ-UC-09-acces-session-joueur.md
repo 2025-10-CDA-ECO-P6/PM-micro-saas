@@ -116,5 +116,5 @@ flowchart TD
 - UC-11 Gérer membres campagne : [`docs/conception/usecases/UC-11-gerer-membres-campagne.md`](../usecases/UC-11-gerer-membres-campagne.md)
 - UC-08 Partager information : [`docs/conception/user-journeys/UJ-UC-08-partager-information.md`](UJ-UC-08-partager-information.md)
 - Conception Identity and Access : [`docs/conception/domain/identity-access.md`](../domain/identity-access.md)
-- Conception Campaign Management : [`docs/conception/domain/campaign-management.md`](../domain/campaign-management.md)
+- Conception Space Management : [`docs/conception/domain/space-management.md`](../domain/space-management.md)
 - Conception Session Conduct : [`docs/conception/domain/session-conduct.md`](../domain/session-conduct.md)

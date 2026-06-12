@@ -120,13 +120,13 @@ flowchart LR
 **Notes de conception** :
 - Création d'un dossier. Les sous-dossiers ne sont pas couverts par le MVP.
 - `defaultTemplateDocumentId` est optionnel à la création. Il peut être défini plus tard via US-05-03.
-- Un dossier appartient à exactement une campagne — pas de partage inter-campagnes.
+- Un dossier appartient à exactement un espace — pas de partage inter-espaces.
 - `isSystem = false` pour les dossiers créés manuellement par le MJ.
 - L'ordre du nouveau dossier est ajouté en fin de liste par défaut.
 
 **Règles métier** :
 - RB-05-01 : Le nom est obligatoire et non vide.
-- RB-05-02 : Un dossier appartient à une et une seule campagne.
+- RB-05-02 : Un dossier appartient à un et un seul espace.
 - RB-05-03 : Les sous-dossiers imbriqués sont hors périmètre MVP (`sous-dossier parent = null`).
 
 **Critères d'acceptation** :
