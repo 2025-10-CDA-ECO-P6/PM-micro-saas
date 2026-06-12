@@ -32,7 +32,7 @@ Permettre à un MJ de créer un espace de travail pour organiser une campagne lo
 | Story | Priorité |
 |---|---|
 | US-02-01 | Must Have |
-| US-02-02 | Must Have |
+| US-02-02 | Should Have — post-MVP (dépend UC-13 ; voir vision §5bis et UC-02 §A1) |
 | US-02-03 | Must Have |
 | US-02-04 | Should Have (dépend UC-13) |
 | US-02-05 | Exclue |
@@ -84,10 +84,10 @@ flowchart TD
 ```mermaid
 flowchart LR
     US0201[US-02-01\nCréer une campagne]
-    US0202[US-02-02\nOne-shot express]
+    US0202[US-02-02\nOne-shot express\npost-MVP]
     US0203[US-02-03\nBlocage quota]
-    US0204[US-02-04\nOne-shot depuis bibliothèque]
-    UC13[UC-13\nScénario réutilisable]
+    US0204[US-02-04\nOne-shot depuis bibliothèque\npost-MVP]
+    UC13[UC-13\nScénario réutilisable\npost-MVP]
 
     US0201 --> US0203
     US0202 --> US0203
@@ -165,7 +165,7 @@ Feature: Création d'une campagne
 
 - RB-02-01 : Le nom est obligatoire pour créer une campagne. Description et système de jeu sont facultatifs.
 - RB-02-02 : L'espace créé appartient à un seul propriétaire avec le rôle `MemberRole.OWNER`.
-- RB-02-03 : Les 4 dossiers système (Personnages, Joueurs, Scénarios, Notes) sont créés automatiquement. Ils sont non-supprimables mais renommables.
+- RB-02-03 : Les 4 dossiers système (Personnages, Joueurs, Scénarios, Notes) sont créés automatiquement. Ils sont renommables et supprimables (`isSystem` est informatif, non restrictif).
 - RB-02-04 : Un espace créé sans système de jeu est en mode générique — comportement recommandé par défaut.
 - RB-02-05 : Un espace créé en mode local est pleinement fonctionnel, au même titre qu'un espace cloud.
 
@@ -179,6 +179,8 @@ Feature: Création d'une campagne
 
 ### US-02-02 — Lancer un one-shot en parcours express
 
+> **Post-MVP** — Cette story décrit le parcours express one-shot (point d'entrée dédié « Lancer un one-shot »). En première livraison, un one-shot se crée via le parcours campagne nominal avec `type = ONE_SHOT` (US-02-01). La livraison de cette story est conditionnée à celle de UC-13 — voir vision §5bis et UC-02 §A1.
+
 **Format**
 
 > En tant que MJ,
@@ -189,7 +191,7 @@ Feature: Création d'une campagne
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have |
+| Priorité | Should Have — post-MVP (dépend UC-13) |
 | Source | UC-02 — scénario alternatif A1 |
 | Bounded context | la gestion de campagne |
 
@@ -354,6 +356,7 @@ Feature: One-shot depuis un scénario de bibliothèque
 
 ## Stories exclues ou repoussées
 
+- **US-02-02** — Should Have — post-MVP. Le parcours express one-shot (point d'entrée dédié) est reporté après la première livraison. En MVP, le one-shot se crée via le parcours campagne nominal avec `type = ONE_SHOT` (US-02-01). Conditionné à la livraison de UC-13.
 - **US-02-04** — Should Have (non bloquante pour le MVP, dépend de UC-13).
 - **US-02-05 — Sauvegarder une campagne en brouillon** — Exclue. Hors MVP. Le formulaire de création est minimal (1 champ obligatoire). Si implémenté, ce sera un état purement interface (brouillon local) sans statut DRAFT dans le modèle fonctionnel.
 
@@ -361,10 +364,15 @@ Feature: One-shot depuis un scénario de bibliothèque
 
 ## Ordre de livraison recommandé
 
-1. **US-02-01** — Créer une campagne (fondation de l'epic, débloque la valeur principale)
+**MVP (première livraison) :**
+
+1. **US-02-01** — Créer une campagne (fondation de l'epic, couvre aussi la création de one-shot via `type = ONE_SHOT`)
 2. **US-02-03** — Blocage quota (corollaire obligatoire de US-02-01, la création sans garde est risquée)
-3. **US-02-02** — One-shot express (Must Have, indépendant de US-02-01)
-4. **US-02-04** — One-shot depuis bibliothèque (Should Have — livrable uniquement après UC-13)
+
+**Post-MVP (après livraison de UC-13) :**
+
+3. **US-02-02** — One-shot express (parcours express dédié, conditionné à UC-13)
+4. **US-02-04** — One-shot depuis bibliothèque (conditionné à UC-13 et US-02-02)
 
 ---
 
@@ -375,7 +383,7 @@ Feature: One-shot depuis un scénario de bibliothèque
 | Un espace appartient à un seul propriétaire (MemberRole.OWNER) | US-02-01 |
 | Nom obligatoire pour les campagnes | US-02-01 |
 | Nom pré-rempli pour un one-shot depuis scénario existant | US-02-04 |
-| Dossiers système créés automatiquement, non-supprimables mais renommables | US-02-01 |
+| Dossiers système créés automatiquement, renommables et supprimables (`isSystem` informatif) | US-02-01 |
 | One-shot archivable manuellement par le MJ, comme une campagne | US-02-02 |
 | Un espace peut être archivé sans suppression définitive | US-02-02, US-02-03 |
 

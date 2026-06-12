@@ -1,5 +1,7 @@
 # UC-13 — Utiliser un scénario réutilisable (one-shot)
 
+> **Should Have — hors première livraison (post-MVP)** — Ce cas d'utilisation, ainsi que le parcours express one-shot qu'il conditionne (UC-02 §A1), sont reportés après la première livraison. Voir vision §5bis. En MVP, le one-shot se crée via le parcours campagne nominal (UC-02, scénario nominal, `type = ONE_SHOT`).
+
 ## Acteur principal
 
 MJ
@@ -28,7 +30,8 @@ Le MJ veut lancer un scénario existant avec un nouveau groupe, ou veut marquer 
 
 ## Préconditions
 
-- Le MJ a un compte (local ou cloud).
+- Le MJ utilise l'application en mode local ou avec un compte cloud.
+- La bibliothèque de scénarios réutilisables (`ScenarioLibrary`) est rattachée au compte MJ — elle n'est disponible qu'avec un compte cloud. En mode local sans compte, cette fonctionnalité n'est pas accessible.
 - Un scénario existe dans une campagne ou en bibliothèque.
 
 ## Scénario nominal — Rejouer un scénario depuis la bibliothèque
@@ -136,7 +139,7 @@ Si le MJ tente d'instancier un scénario dans une campagne archivée, l'opérati
 - Un MJ peut marquer un scénario comme réutilisable.
 - Il peut créer une instance de ce scénario sans modifier le source.
 - L'historique des instances (runs passés) est visible depuis le catalogue.
-- Une campagne "one-shot" peut être créée en moins de 30 secondes (nom + scénario).
+- *(post-MVP — conditionné au parcours express UC-02 §A1)* Une campagne one-shot peut être créée en moins de 30 secondes via le point d'entrée dédié (nom + scénario depuis la bibliothèque).
 - Modifier une instance n'affecte pas le scénario source.
 
 ## Questions à valider en interview

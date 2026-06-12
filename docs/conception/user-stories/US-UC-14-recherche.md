@@ -2,7 +2,7 @@
 
 ## Objectif utilisateur
 
-Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapidement un document de la campagne active — PNJ, scène, note, lieu, personnage joueur — en cherchant par titre et par type. La recherche est disponible depuis la bibliothèque de contenu (préparation) et depuis la vue session (en cours de partie, dans un panneau latéral sans quitter la session).
+Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapidement un document de la campagne active — PNJ, scène, note, lieu, personnage joueur — en cherchant par titre (correspondance) et en filtrant par type (regroupement des résultats). La recherche est disponible depuis la bibliothèque de contenu (préparation) et depuis la vue session (en cours de partie, dans un panneau latéral sans quitter la session).
 
 ---
 

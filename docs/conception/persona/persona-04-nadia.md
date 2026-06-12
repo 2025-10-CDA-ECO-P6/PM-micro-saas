@@ -1,4 +1,4 @@
-# Persona 04 — Nadia, la MJ débordée
+# Persona 04 — Nadia, MJ occasionnelle (ex-régulière, peu de temps aujourd'hui)
 
 
 ## Profil

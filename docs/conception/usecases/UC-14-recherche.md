@@ -16,7 +16,7 @@ Permettre au MJ de retrouver rapidement une information dans sa campagne.
 
 Même avec une bonne organisation, certaines informations peuvent être difficiles à retrouver pendant une session. La recherche est une fonctionnalité importante pour éviter les interruptions et maintenir le rythme de jeu.
 
-**Persona central : Nadia** (MJ casual, sessions espacées). Après plusieurs semaines d'absence, elle ne se souvient plus où est rangée une information. La recherche est son point d'entrée principal dans le contenu. Émilie en bénéficie aussi pendant la session (retrouver un PNJ en 2 secondes), Thomas moins (son organisation lui suffit).
+**Persona central : Nadia** (MJ occasionnelle, sessions espacées). Après plusieurs semaines d'absence, elle ne se souvient plus où est rangée une information. La recherche est son point d'entrée principal dans le contenu. Émilie en bénéficie aussi pendant la session (retrouver un PNJ en 2 secondes), Thomas moins (son organisation lui suffit).
 
 ## Besoin utilisateur
 
@@ -35,13 +35,9 @@ Le MJ cherche une information pendant la préparation ou pendant une session.
 ## Scénario nominal
 
 1. Le MJ utilise la barre de recherche.
-2. Il saisit un mot-clé. La recherche MVP porte sur le **titre des documents uniquement** — aucune indexation du contenu des blocs.
+2. Il saisit un mot-clé. La recherche MVP porte sur le **titre des documents uniquement** — aucune indexation du contenu des blocs. La correspondance repose exclusivement sur le titre ; le type de document sert au **regroupement et au filtre** des résultats, pas à la correspondance.
 3. Le système affiche les résultats correspondants, filtrés à la campagne active.
-4. Les résultats sont regroupés par type de document :
-   - documents sans type (libres) ;
-   - PNJ, Lieux, Objets, Factions (documents typés) ;
-   - scénarios ;
-   - notes de session.
+4. Les résultats sont regroupés par type de document. Au MVP, les types disponibles sont les huit types built-in : `SCENARIO`, `SCENE`, `NPC` (PNJ), `LOCATION` (lieu), `NOTE`, `PLAYER_CHARACTER` (personnage joueur), `LIVE_NOTE` (note de session), `REVEAL` (révélation) — plus un groupe « sans type » pour les documents libres. Les types personnalisés définis par le MJ (« Objets », « Factions », etc.) sont **post-MVP (Could Have)** ; au MVP, ces documents apparaissent dans le groupe « sans type ».
 
 5. Le MJ sélectionne un résultat.
 6. Le système ouvre l'élément correspondant.
@@ -64,6 +60,10 @@ Le MJ filtre les résultats par tag ou catégorie.
 ### A4 — Recherche joueur
 
 Le joueur utilise une recherche limitée aux informations visibles pour lui.
+
+### A5 — Pondération session active *(depuis la vue session)*
+
+Quand le MJ déclenche la recherche depuis la vue session, les documents liés à la session en cours — documents épinglés, notes de session (`LIVE_NOTE`) de la session active, documents du scénario associé — remontent en tête des résultats.
 
 ## Exceptions
 
@@ -96,6 +96,7 @@ Si la recherche échoue, le système affiche un message d'erreur et propose une 
 - La recherche du MJ inclut les éléments privés et partagés de sa campagne.
 - La recherche joueur n'inclut que les éléments visibles par ce joueur.
 - Les résultats doivent être limités au contexte de la campagne active.
+- Depuis la vue session, les documents liés à la session en cours (épinglés, `LIVE_NOTE` de la session active, documents du scénario associé) sont mis en tête des résultats.
 
 ## Critères d'acceptation
 
@@ -104,6 +105,7 @@ Si la recherche échoue, le système affiche un message d'erreur et propose une 
 - Le MJ peut ouvrir un résultat.
 - Les notes privées ne sont pas visibles dans la recherche joueur.
 - La recherche fonctionne depuis la vue session.
+- Depuis la vue session, les documents liés à la session active apparaissent en tête des résultats.
 
 ## Questions à valider en interview
 

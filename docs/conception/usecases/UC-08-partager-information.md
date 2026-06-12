@@ -58,7 +58,7 @@ comme les autres documents partagés.
 
 ### A3 — Partage depuis la vue session
 
-Le MJ partage une information pendant une partie.
+Le MJ partage une information pendant une partie. Lorsque la session est en statut `LIVE`, le document partagé est automatiquement ajouté aux documents épinglés de la session (auto-épinglage). L'auto-épinglage ne s'applique qu'aux sessions `LIVE` — un partage depuis une vue de session `CLOSED` rend le document visible par les joueurs sans l'épingler.
 
 ### A4 — Partage d'un récapitulatif post-session
 
@@ -95,10 +95,12 @@ Un joueur dont l'accès invité a expiré ou été révoqué ne peut plus consul
 
 - Tout document créé par le MJ est privé par défaut.
 - Seul le MJ peut partager une information de campagne durable.
-- Un joueur ne peut consulter que les documents partagés et ses propres notes personnelles.
+- Un joueur ne peut consulter que les documents partagés et ses propres notes de session personnelles joueur.
 - Le MJ peut retirer un partage via l’action de retrait du partage.
 - Le partage est durable : le document reste accessible entre les sessions jusqu’à retrait explicite.
 - Le partage sélectif par joueur ou personnage n’est pas dans le périmètre MVP — voir l’arbitrage ci-dessous.
+- Un document partagé depuis la vue session pendant une session `LIVE` est automatiquement ajouté aux documents épinglés de cette session. Ce comportement (auto-épinglage) est limité aux sessions en statut `LIVE`.
+- L’épinglage et la visibilité sont indépendants : retirer le partage d’un document épinglé ne le supprime pas des documents épinglés — il y reste mais n’est plus visible que du MJ. Désépingler et retirer le partage sont deux opérations distinctes.
 
 ### Arbitrage — Granularité du partage (2026-06-10)
 

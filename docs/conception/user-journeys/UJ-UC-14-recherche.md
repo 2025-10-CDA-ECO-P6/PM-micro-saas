@@ -43,7 +43,7 @@ flowchart TD
 
     E --> F{Filtre de type applique ?}
     F -->|Non| G[Recherche sur titre dans la campagne active]
-    F -->|Oui| H[Recherche sur titre ET type dans la campagne active]
+    F -->|Oui| H[Recherche par titre, restreinte par le filtre de type\ndans la campagne active]
 
     G --> I{Acteur}
     H --> I

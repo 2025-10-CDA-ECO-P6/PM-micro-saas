@@ -269,8 +269,9 @@ Typique pour les one-shots, les conventions, les groupes changeants.
 **Contraintes** :
 - L'accès expire à la fin de la session (fenêtre de grâce de 24h).
 - Pas d'accès à l'historique des sessions précédentes.
-- Peut créer un compte à tout moment pour convertir son accès en membre permanent (UC-12),
-  sans perdre les données de session déjà consultées.
+- Peut créer un compte à tout moment pour convertir son accès en membre permanent (UC-09 —
+  octroi d'accès, UC-11 — gestion côté MJ), sans perdre les données de session déjà consultées.
+  Une fois membre, il accède à une vue cohérente de la campagne (UC-12 — vue joueur).
 
 ---
 
@@ -348,7 +349,7 @@ Long terme — Règles légères sur les propriétés
   └── Émulation partielle de système de jeu (jamais un moteur complet)
 ```
 
-Le schéma de données `Document` prévoit `documentTypeId` et `properties` (JSON structuré)
+Le schéma de données `Document` prévoit `documentTypeId` et `properties` (structure de données structurée)
 dès le MVP pour ne pas nécessiter de migration majeure lors de l'activation des relations.
 
 Détail → [UC-HORS-MVP — UC-F06](../usecases/UC-HORS-MVP.md)

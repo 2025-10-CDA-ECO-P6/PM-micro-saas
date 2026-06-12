@@ -151,6 +151,38 @@ depuis Session Conduct par son lien d'accès.
 
 ---
 
+### ScenarioLibrary et ScenarioLibraryEntry (post-MVP)
+
+> **Statut : post-MVP — modélisé, non implémenté.** Ce concept est présent dans le modèle
+> pour éviter une migration structurelle ultérieure, au même titre que la valeur `EMAIL` de
+> `InvitationType` conservée inactive en MVP. Son implémentation est conditionnée à UC-13.
+
+La `ScenarioLibrary` représente la bibliothèque de scénarios réutilisables au niveau du compte MJ,
+transverse aux campagnes. Elle appartient à **Campaign Management** car elle opère au niveau du
+compte MJ (comme les quotas et l'`ownerId`), et non au niveau d'une campagne donnée —
+ce qui dépasse les responsabilités de Content Library (toujours campagne-scoped).
+
+#### ScenarioLibraryEntry (agrégat dans Campaign Management)
+
+Chaque entrée représente la promotion d'un scénario (`Document` de type `SCENARIO`) vers la
+bibliothèque personnelle du MJ propriétaire du compte.
+
+| Champ | Type | Description |
+|---|---|---|
+| `id` | `ScenarioLibraryEntryId` | Identifiant unique de l'entrée |
+| `ownerId` | `UserId` | Compte MJ propriétaire de la bibliothèque |
+| `documentId` | `DocumentId` | Référence vers le Document de type `SCENARIO` promu (Content Library) |
+| `promotedAt` | `DateTime` | Date de promotion dans la bibliothèque |
+
+**Règles associées (post-MVP)**
+
+- Un `Document` ne peut être promu que s'il a `isReusable = true` et `documentTypeId = SCENARIO`.
+- Une entrée de bibliothèque est liée à l'`ownerId` — elle n'est pas transférable.
+- La suppression du document source retire l'entrée de bibliothèque correspondante.
+- L'instanciation d'un scénario depuis la bibliothèque reste dans `Document.Instantiate()` (Content Library).
+
+---
+
 ## Value Objects
 
 | VO | Validation | Description |
@@ -203,6 +235,9 @@ depuis Session Conduct par son lien d'accès.
 8. Un `GuestAccess` avec `status = CONVERTED` ne peut plus être utilisé pour accéder à la campagne.
 9. Un `GuestAccess` avec `status = EXPIRED` ou `REVOKED` ne donne plus accès.
 10. Un `DocumentId` référençant un personnage ne peut être associé qu'à un seul `CampaignMembership` actif à la fois dans une campagne (RB-11-18). Le `DocumentId` associé doit référencer un `Document` de type `player_character` — cette validation est appliquée à l'écriture dans l'invariant de domaine de `CampaignMembership`. La même contrainte s'applique au champ `characterId` de `GuestAccess` : le `DocumentId` fourni doit également référencer un `Document` de type `player_character`.
+11. Pour une `Campaign` dont l'`ownerId` référence un utilisateur FREE, le propriétaire ne peut pas accorder l'accès à une session à plus de **4 joueurs distincts**, MJ non compté. Tout octroi d'accès supplémentaire — quelle qu'en soit la forme (`CampaignMembership` PLAYER/GM ou `GuestAccess`) — est refusé au moment de l'octroi dès que cette limite est atteinte. L'intention est d'éviter tout contournement par composition entre les types d'accès existants et futurs. **À préciser à la modélisation** : la sémantique exacte de comptage inter-types (un membre permanent compte-t-il une fois par campagne ou par session ? extensibilité aux types d'accès futurs) est à affiner ; la règle de besoin est portée par UC-09 / RB-09-21, qui fait foi.
+
+12. *(post-MVP)* Une `ScenarioLibraryEntry` est unique par `(ownerId, documentId)` : un même document ne peut être promu qu'une seule fois dans la bibliothèque personnelle d'un propriétaire (RB-13-03 / US-13).
 
 ---
 

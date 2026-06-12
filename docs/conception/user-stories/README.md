@@ -10,7 +10,7 @@ Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmè
 |---|---|---|
 | Emilie | MJ débutante, improvise beaucoup, peu de préparation | Création à la volée, vue session rapide |
 | Thomas | MJ expérimenté, préparation minutieuse, multi-campagnes | Organisation des dossiers, panneaux configurés |
-| Nadia | MJ casual, joue peu souvent, sessions espacées | Reprise rapide, recherche intuitive |
+| Nadia | MJ occasionnelle, joue peu souvent, sessions espacées | Reprise rapide, recherche intuitive |
 | Sonia | MJ convention, one-shots exclusivement, 15 scénarios en catalogue | Scénarios réutilisables, lancement rapide |
 | Antoine | MJ avancé, 3 campagnes simultanées, systèmes variés | Structures réutilisables, types de documents |
 | Lucas | Joueur type, pas d'outil supplémentaire voulu | Accès sans compte, friction minimale |
@@ -32,8 +32,8 @@ Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmè
 | UC-09 | Accès session joueur | Must Have | [US-UC-09](US-UC-09-acces-session-joueur.md) | [UJ-UC-09](../user-journeys/UJ-UC-09-acces-session-joueur.md) |
 | UC-10 | Créer un compte et synchroniser dans le cloud | Must Have | [US-UC-10](US-UC-10-compte-cloud.md) | [UJ-UC-10](../user-journeys/UJ-UC-10-compte-cloud.md) |
 | UC-11 | Gérer les membres d'une campagne | Should Have | [US-UC-11](US-UC-11-gerer-membres-campagne.md) | [UJ-UC-11](../user-journeys/UJ-UC-11-gerer-membres-campagne.md) |
-| UC-12 | Rejoindre une campagne | Should Have | [US-UC-12](US-UC-12-rejoindre-campagne.md) | [UJ-UC-12](../user-journeys/UJ-UC-12-rejoindre-campagne.md) |
-| UC-13 | Scénario réutilisable | Should Have | [US-UC-13](US-UC-13-scenario-reutilisable.md) | [UJ-UC-13](../user-journeys/UJ-UC-13-scenario-reutilisable.md) |
+| UC-12 | Consulter sa campagne en tant que joueur (vue post-accès) | Should Have | [US-UC-12](US-UC-12-rejoindre-campagne.md) | [UJ-UC-12](../user-journeys/UJ-UC-12-rejoindre-campagne.md) |
+| UC-13 | Scénario réutilisable | Should Have — hors première livraison | [US-UC-13](US-UC-13-scenario-reutilisable.md) | [UJ-UC-13](../user-journeys/UJ-UC-13-scenario-reutilisable.md) |
 | UC-14 | Recherche | Should Have | [US-UC-14](US-UC-14-recherche.md) | [UJ-UC-14](../user-journeys/UJ-UC-14-recherche.md) |
 
 ---
@@ -42,7 +42,7 @@ Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmè
 
 **Must Have (UC-01 à UC-10)** : toutes les fonctionnalités nécessaires pour qu'un MJ seul puisse utiliser l'application localement, structurer une campagne, animer une session et partager des informations avec ses joueurs. UC-10 (compte cloud) est Must Have car le partage joueurs (UC-08/09) l'exige et le MVP est livré en un seul bloc — raisonnement de priorisation détaillé dans la section MoSCoW (`../vision/moscow.md`). UC-05 base (dossiers libres) est Must Have ; la couche riche (types élaborés) est Should Have.
 
-**Should Have (UC-05 riche + UC-11 à UC-14)** : couche riche des dossiers (types de document élaborés), gestion de groupe, réutilisabilité des scénarios et recherche.
+**Should Have (UC-05 riche + UC-11, UC-12, UC-14)** : couche riche des dossiers (types de document élaborés), gestion de groupe et recherche. **UC-13 (scénario réutilisable) est Should Have mais hors première livraison** — voir MoSCoW.
 
 **Could Have / Won't Have** : référencés dans `../usecases/UC-HORS-MVP.md` et dans les sections "Stories exclues" de chaque epic.
 
@@ -67,7 +67,7 @@ flowchart LR
 
     subgraph Should["Should Have"]
         UC11["UC-11\nMembres"]
-        UC12["UC-12\nRejoindre"]
+        UC12["UC-12\nConsulter / vue joueur"]
         UC13["UC-13\nScénario réutilisable"]
         UC14["UC-14\nRecherche"]
     end
@@ -96,7 +96,7 @@ flowchart LR
 |---|---|
 | Mode local = point d'entrée (pas d'inscription obligatoire) | UC-01 Must Have, UC-10 Must Have (le partage joueurs exige un compte — voir MoSCoW) |
 | Migration locale vers cloud avec gate de reconnaissance | US-01-05, US-10-01 |
-| Cap 3 campagnes en mode local | US-01-04 |
+| Cap 3 campagnes en **mode local** (règle d'interface — RB-01-03 / RB-02-11) **et en cloud tier gratuit** (règle stable — RB-02-10) | [US-01](US-UC-01-mode-local-sans-compte.md) / RB-01-03 (local) ; [US-02](US-UC-02-creer-espace-jeu.md) / RB-02-10 (cloud) |
 | Archivage uniquement manuel (pas d'auto-archivage) | UC-02, UC-13 A3 |
 | Tout est Document (bibliothèque de contenu) | Architecture transversale |
 | Type REVEAL pour partage scène vers joueurs | US-03-04, UC-08 |
@@ -104,8 +104,8 @@ flowchart LR
 | Partage = opération permanente sur visibility (pas temporaire) | UC-08, UC-06 |
 | Epinglage et visibilité sont indépendants | US-08-02 |
 | Pas de validation email à l'inscription | US-10-01 |
-| Google OAuth dans le MVP | US-10-03 |
-| Suppression de compte RGPD hors MVP | Stories exclues UC-10 |
+| **Connexion fédérée (fournisseur d'identité externe)** dans le MVP | US-10-03 |
+| Suppression de compte RGPD **dans le MVP** ; transfert de propriété de campagnes à membres actifs = post-MVP | Stories exclues UC-10 |
 | Invitation par lien uniquement (pas d'email par la plateforme) | US-11-01 |
 | Recherche titre + type uniquement (full-text post-MVP) | US-14-XX |
 | Catalogue scénarios au niveau compte (cross-campagne) | US-13-XX, extension domaine ScenarioLibrary |
@@ -130,7 +130,7 @@ Fondations : accès sans compte, création de campagne, organisation en dossiers
 Valeur core : structurer un scénario, animer une session, créer à la volée, partager des informations.
 
 **Phase 3 — Partage joueurs** : UC-09, UC-11, UC-12
-Multi-joueurs : accès joueur en session, gestion des membres, invitation et rejoindre une campagne.
+Multi-joueurs : accès joueur en session, gestion des membres, octroi d'accès permanent (UC-09/UC-11) et vue joueur post-accès (UC-12).
 
 **Phase 4 — Cloud et catalogue** : UC-10, UC-13, UC-14
 Extensions : compte cloud, scénarios réutilisables cross-campagne, recherche.

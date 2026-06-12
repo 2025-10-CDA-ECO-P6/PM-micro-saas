@@ -2,7 +2,7 @@
 
 ## Périmètre
 
-Parcours couvrant deux flux distincts du point de vue du MJ : la gestion rapide des invitations (Émilie — table occasionnelle, friction minimale) et la gestion complète des membres (Thomas — table stable, association joueur-personnage, surveillance des accès). Le flux du joueur qui rejoint suite à une invitation est couvert par UC-12 (avec compte) et UC-09 (sans compte). L'invitation par email est hors MVP.
+Parcours couvrant deux flux distincts du point de vue du MJ : la gestion rapide des invitations (Émilie — table occasionnelle, friction minimale) et la gestion complète des membres (Thomas — table stable, association joueur-personnage, surveillance des accès). Le flux du joueur qui rejoint suite à une invitation est couvert par UC-09 (scénario nominal campagne, avec compte) et UC-09 (sans compte) ; UC-12 couvre la vue obtenue par le joueur après l'accès. L'invitation par email est hors MVP.
 
 ---
 
@@ -60,7 +60,7 @@ flowchart TD
     Generate --> Copy[Bouton Copier\nretour visuel toast\nMJ partage via Discord etc]
 
     Copy --> Wait{Joueur utilise le lien ?}
-    Wait -->|Oui - avec compte| MemberActive[Member ACTIVE\nUC-12]
+    Wait -->|Oui - avec compte| MemberActive[Member ACTIVE → vue UC-12]
     Wait -->|Oui - sans compte| GuestOK[GuestAccess actif\nUC-09]
     Wait -->|Joueur deja membre| E1[E1 - Doublon detecte\nMJ informe - pas de creation]
     Wait -->|Lien expire ou quota atteint| AutoRevoke[Invitation REVOKED\nautomatiquement]
@@ -80,7 +80,7 @@ flowchart TD
 
     Action -->|Associer un personnage| Assoc[US-11-04\nAssocier joueur et personnage]
     Assoc --> SelectMembre[MJ selectionne le membre]
-    SelectMembre --> SelectPerso[MJ selectionne le personnage\nPlayerCharacter de la campagne]
+    SelectMembre --> SelectPerso[MJ selectionne le personnage\npersonnage joueur de la campagne]
     SelectPerso --> UniqueCheck{Personnage deja associe ?}
     UniqueCheck -->|Oui| UniqueErr[Erreur - personnage\ndeja associe a un autre membre]
     UniqueCheck -->|Non| AssocOK[Association creee\nJoueur accede a la fiche\net aux notes PLAYER_PRIVATE]
@@ -127,7 +127,7 @@ flowchart TD
 - Use case source : [`docs/conception/usecases/UC-11-gerer-membres-campagne.md`](../usecases/UC-11-gerer-membres-campagne.md)
 - User stories associées : [`US-UC-11-gerer-membres-campagne.md`](../user-stories/US-UC-11-gerer-membres-campagne.md)
 - UC-09 Accès session joueur : [`docs/conception/usecases/UC-09-acces-session-joueur.md`](../usecases/UC-09-acces-session-joueur.md)
-- UC-12 Rejoindre une campagne : [`docs/conception/usecases/UC-12-rejoindre-campagne.md`](../usecases/UC-12-rejoindre-campagne.md)
+- UC-12 Consulter sa campagne (vue joueur) : [`docs/conception/usecases/UC-12-rejoindre-campagne.md`](../usecases/UC-12-rejoindre-campagne.md)
 - User Journey UC-09 : [`UJ-UC-09-acces-session-joueur.md`](UJ-UC-09-acces-session-joueur.md)
 - Conception Campaign Management : [`docs/conception/domain/campaign-management.md`](../domain/campaign-management.md)
 - Conception Identity and Access : [`docs/conception/domain/identity-access.md`](../domain/identity-access.md)

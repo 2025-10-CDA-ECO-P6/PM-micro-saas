@@ -29,14 +29,14 @@
 
 ---
 
-## Should Have — UC-05 riche + UC-11 à UC-14
+## Should Have — UC-05 riche + UC-11 à UC-14 *(UC-13 hors première livraison)*
 
 | ID | Use Case | Acteur | Pilier | Résumé |
 |---|---|---|---|---|
 | [UC-05](UC-05-organiser-dossiers.md) | Organiser par dossiers *(riche — types élaborés)* | MJ | 1 | Le MJ associe un type de document optionnel (PNJ, Lieu, Objet…) à un dossier ou un document pour enrichir ses entrées sans contraindre la structure. *(La base UC-05 est Must Have.)* |
 | [UC-11](UC-11-gerer-membres-campagne.md) | Gérer les membres d'une campagne | MJ | — | Le MJ invite des membres permanents à sa campagne et génère des liens de session temporaires pour les groupes ponctuels (one-shots, conventions). |
-| [UC-12](UC-12-rejoindre-campagne.md) | Rejoindre une campagne (membre permanent) | Joueur | — | Un joueur avec un compte rejoint une campagne de façon durable et accède à l'historique des sessions partagées et aux documents que le MJ rend visibles. |
-| [UC-13](UC-13-scenario-reutilisable.md) | Scénario réutilisable | MJ | 1 | Le MJ marque un scénario comme réutilisable et crée des instances indépendantes pour le rejouer avec des groupes différents — le scénario source reste intact entre les runs. |
+| [UC-12](UC-12-rejoindre-campagne.md) | Consulter sa campagne en tant que joueur (vue post-accès) | Joueur | — | Après avoir obtenu l'accès (via UC-09 ou UC-11), le joueur consulte sa campagne : fiche, documents `PUBLIC`, périmètre SESSION/CAMPAIGN. |
+| [UC-13](UC-13-scenario-reutilisable.md) | Scénario réutilisable *(Should Have — hors première livraison)* | MJ | 1 | Le MJ marque un scénario comme réutilisable et crée des instances indépendantes pour le rejouer avec des groupes différents — le scénario source reste intact entre les runs. |
 | [UC-14](UC-14-recherche.md) | Rechercher et filtrer | MJ | 1 + 2 | Le MJ retrouve n'importe quel document de la campagne par mot-clé ou par tag depuis n'importe quelle vue, y compris en pleine session. |
 
 ---

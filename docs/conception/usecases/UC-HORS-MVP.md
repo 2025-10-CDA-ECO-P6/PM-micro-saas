@@ -48,6 +48,21 @@ Le MJ crée un nouveau scénario template directement depuis la ScenarioLibrary,
 
 ---
 
+### Gel de campagnes au downgrade de tier
+
+**Statut : post-MVP — spécification complète à définir ultérieurement. UC dédié à créer.**
+
+Lorsqu'un MJ perd son tier premium (fin d'abonnement, non-renouvellement) et se retrouve alors au-delà de la limite de campagnes du tier gratuit, que se passe-t-il ?
+
+**Question ouverte** : quelles campagnes deviennent inaccessibles (les plus anciennes ? les moins récemment modifiées ? un choix laissé au MJ ?), selon quel mécanisme (immédiat à l'expiration, différé avec fenêtre de grâce ?), et la situation est-elle réversible (les campagnes redeviennent-elles accessibles au ré-upgrade, sans perte de données) ?
+
+Ce use case délimite le périmètre de la valeur `FROZEN` dans `CampaignStatus` et du comportement `Unfreeze()` mentionnés dans le domaine. Aucun comportement n'est conçu ici — la question doit être arbitrée avant d'écrire un UC dédié.
+
+- Voir : `CampaignStatus` (`FROZEN`) dans le glossaire.
+- Concerne : `AccountTier`, la limite de campagnes `FREE`, `Campaign Management`.
+
+---
+
 ## Vision long terme
 
 ### UC-F01 — Utiliser des templates de système de jeu
@@ -145,6 +160,6 @@ C'est une émulation légère de système de jeu — pas un moteur de règles co
 
 **Risque** : frontière floue avec un vrai moteur de règles. Risque de dérive vers la simulation. Doit rester un outil d'aide, pas de substitution au système de jeu.
 
-**Prérequis techniques** : les types de document (UC-05) doivent être implémentés et stables. Le schéma de document doit prévoir type optionnel et propriétés structurées (JSON structuré) dès le MVP pour ne pas nécessiter de migration majeure.
+**Prérequis techniques** : les types de document (UC-05) doivent être implémentés et stables. Le schéma de document doit prévoir type optionnel et propriétés structurées (structure de données structurée) dès le MVP pour ne pas nécessiter de migration majeure.
 
 **Position recommandée** : Couche 1 (relations) post-MVP, après validation de l'adoption des types de document. Couche 2 (règles) vision long terme uniquement.

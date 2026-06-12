@@ -21,7 +21,7 @@ Chaque fichier contient quatre sections :
 |---|---|---|
 | Emilie | MJ débutante, improvise | Score bas sur les étapes de configuration longues |
 | Thomas | MJ expérimenté, préparateur | Score bas sur les étapes non configurables |
-| Nadia | MJ casual | Score bas sur tout ce qui demande une mémoire de l'outil |
+| Nadia | MJ occasionnelle | Score bas sur tout ce qui demande une mémoire de l'outil |
 | Sonia | MJ convention, one-shots | Score bas sur les flux de création de campagne |
 | Antoine | MJ avancé, multi-campagnes | Score bas sur l'absence de structure typée |
 | Lucas | Joueur, pas d'outil supplémentaire | Score bas sur toute demande de compte ou d'inscription |
@@ -43,8 +43,8 @@ Chaque fichier contient quatre sections :
 | UC-09 | Accès session joueur | Must Have | [UJ-UC-09](UJ-UC-09-acces-session-joueur.md) | [US-UC-09](../user-stories/US-UC-09-acces-session-joueur.md) |
 | UC-10 | Compte cloud | Must Have | [UJ-UC-10](UJ-UC-10-compte-cloud.md) | [US-UC-10](../user-stories/US-UC-10-compte-cloud.md) |
 | UC-11 | Gérer les membres | Should Have | [UJ-UC-11](UJ-UC-11-gerer-membres-campagne.md) | [US-UC-11](../user-stories/US-UC-11-gerer-membres-campagne.md) |
-| UC-12 | Rejoindre une campagne | Should Have | [UJ-UC-12](UJ-UC-12-rejoindre-campagne.md) | [US-UC-12](../user-stories/US-UC-12-rejoindre-campagne.md) |
-| UC-13 | Scénario réutilisable | Should Have | [UJ-UC-13](UJ-UC-13-scenario-reutilisable.md) | [US-UC-13](../user-stories/US-UC-13-scenario-reutilisable.md) |
+| UC-12 | Consulter sa campagne en tant que joueur (vue post-accès) | Should Have | [UJ-UC-12](UJ-UC-12-rejoindre-campagne.md) | [US-UC-12](../user-stories/US-UC-12-rejoindre-campagne.md) |
+| UC-13 | Scénario réutilisable | Should Have — hors première livraison | [UJ-UC-13](UJ-UC-13-scenario-reutilisable.md) | [US-UC-13](../user-stories/US-UC-13-scenario-reutilisable.md) |
 | UC-14 | Recherche | Should Have | [UJ-UC-14](UJ-UC-14-recherche.md) | [US-UC-14](../user-stories/US-UC-14-recherche.md) |
 
 ---

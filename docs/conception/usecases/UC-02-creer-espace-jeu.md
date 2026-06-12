@@ -138,8 +138,9 @@ et conserve les données saisies.
 ## Critères d'acceptation
 
 - Un MJ peut créer une campagne depuis son tableau de bord avec juste un nom.
-- Un MJ peut lancer un one-shot en moins de 30 secondes depuis le tableau de bord.
-- Un one-shot lancé depuis un scénario existant redirige directement vers la vue session.
+- Un MJ peut créer un one-shot via le parcours campagne nominal avec `type = ONE_SHOT`.
+- *(post-MVP — parcours express)* Un MJ peut lancer un one-shot en moins de 30 secondes depuis le tableau de bord via un point d'entrée dédié.
+- *(post-MVP — parcours express)* Un one-shot lancé depuis un scénario existant redirige directement vers la vue session.
 - Les quatre dossiers système existent et portent les noms neutres définis.
 - Un espace créé en mode local (sans compte) est pleinement fonctionnel.
 

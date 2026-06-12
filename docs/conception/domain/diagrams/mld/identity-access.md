@@ -8,6 +8,7 @@
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | Partagé avec la table du composant d'identité |
 | `email` | `varchar(256)` | UNIQUE, NOT NULL | Adresse email normalisée |
+| `email_verified` | `boolean` | NOT NULL, DEFAULT `false` | Vérification de l'adresse de messagerie |
 | `display_name` | `varchar(100)` | NOT NULL | Nom d'affichage |
 | `status` | `varchar(20)` | NOT NULL, DEFAULT 'ACTIVE' | ACTIVE / SUSPENDED / DELETED |
 | `tier` | `varchar(10)` | NOT NULL, DEFAULT 'FREE' | FREE / PRO |

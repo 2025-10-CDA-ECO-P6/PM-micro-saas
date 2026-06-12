@@ -68,7 +68,7 @@ Aucune.
 3. Le MJ choisit "Commencer sans compte".
 4. L'application affiche un message court expliquant que les données seront stockées dans le stockage local du navigateur, avec un lien vers la FAQ.
 5. Le MJ est redirigé vers l'écran de création de campagne.
-6. Il utilise l'application normalement (UC-02 à UC-06, UC-14, UC-12).
+6. Il utilise l'application normalement (UC-02 à UC-06, UC-14).
 
 ## Scénarios alternatifs
 
@@ -92,12 +92,20 @@ Aucune.
 2. L'application détecte l'absence de données locales et affiche un message explicatif distinguant ce cas d'une première visite.
 3. Elle propose de créer une nouvelle campagne ou de se connecter à un compte existant.
 
-### A4 — Export et import manuel des données locales
+### A4 — Export de campagne et réimport manuel d'un fichier de sauvegarde
 
-1. Le MJ (sans compte) souhaite sauvegarder ses données.
-2. Depuis les paramètres, il exporte ses campagnes dans un fichier de sauvegarde.
-3. Il peut les réimporter ultérieurement (même navigateur, autre navigateur, ou lors d'une migration vers un compte).
-4. Lors du réimport, le fichier de sauvegarde est soumis avant toute écriture dans le stockage local à deux vérifications dans cet ordre :
+#### A4a — Export de campagne (Should Have — disponible en mode local comme avec un compte)
+
+1. Le MJ (sans compte) souhaite sauvegarder ses données ou récupérer ses campagnes.
+2. Depuis les paramètres, il exporte sa campagne dans un fichier de sauvegarde au format ouvert.
+3. Le fichier est téléchargé sur son poste. Il en est propriétaire.
+
+#### A4b — Réimport d'un fichier de sauvegarde (post-MVP)
+
+> **Post-MVP.** Le filet de sécurité du mode local repose sur la persistance navigateur, l'export et la migration vers un compte (NFR-OFF-02/03) — il ne dépend pas du réimport. Ce scénario est conservé pour tracer le raisonnement et les règles de validation à reprendre lors de l'implémentation ultérieure.
+
+1. Le MJ souhaite réimporter un fichier de sauvegarde (même navigateur, autre navigateur, ou lors d'une migration vers un compte).
+2. Lors du réimport, le fichier de sauvegarde est soumis avant toute écriture dans le stockage local à deux vérifications dans cet ordre :
    - **Validation structurelle** : le fichier est vérifié (version reconnue, format des champs, types attendus). Un fichier malformé ou d'une version non reconnue est rejeté avec un message d'erreur.
    - **Nettoyage de contenu** : le contenu est nettoyé de tout élément susceptible de déclencher l'exécution de code avant d'être enregistré. Un fichier importé n'est jamais enregistré tel quel dans le stockage local.
 
@@ -130,7 +138,8 @@ Le navigateur refuse l'enregistrement de nouvelles données. L'application affic
 - Un MJ peut créer une campagne et préparer du contenu sans créer de compte.
 - Les données persistent après fermeture et réouverture du navigateur.
 - Le MJ peut créer un compte depuis n'importe quelle page de l'app ; si des données locales existent, la migration est proposée avec confirmation explicite.
-- Le réimport d'un fichier de sauvegarde fonctionne : validation de structure (version reconnue, formats, types) puis nettoyage avant enregistrement dans le stockage local. (L'export depuis les paramètres est hors-MVP — US-01-07.)
+- Le MJ peut exporter sa campagne dans un format ouvert depuis les paramètres (Should Have — disponible en mode local comme avec un compte).
+- Le réimport d'un fichier de sauvegarde (post-MVP) : validation de structure (version reconnue, formats, types) puis nettoyage avant enregistrement dans le stockage local.
 - Les fonctionnalités de partage sont visibles mais désactivées avec une invite claire en mode local.
 - Si le navigateur n'a pas garanti la conservation permanente des données, le bandeau de durabilité est affiché (non bloquant).
 - Le bandeau de confidentialité est affiché en mode local (risque d'accès par une personne sur un poste partagé).
@@ -146,4 +155,4 @@ Le navigateur refuse l'enregistrement de nouvelles données. L'application affic
 - Est-ce que la contrainte "données liées au navigateur" est acceptable pour un MJ qui veut évaluer l'outil ?
 - Le message de risque sur la perte de données est-il suffisant ou bloquant ?
 - À quel moment le MJ est-il prêt à créer un compte (après quelle action ou quel délai) ?
-- L'export JSON est-il suffisant comme filet de sécurité, ou faut-il un export plus lisible (Markdown, PDF) ?
+- Le format ouvert retenu pour l'export de campagne est-il suffisant comme filet de sécurité, ou faut-il un format plus lisible (document texte, PDF) ?

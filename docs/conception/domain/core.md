@@ -50,7 +50,19 @@ Tous les identifiants sont des types forts encapsulant un identifiant unique glo
 | Concept | Champs | Utilisé dans |
 |---|---|---|
 | `AuditInfo` | `createdAt: DateTime`, `updatedAt: DateTime`, `createdById: UserId` | Tous les contextes |
-| `SoftDelete` | `isDeleted: bool`, `deletedAt: DateTime?` | Content Library, Campaign Management |
+| `SoftDelete` | `isDeleted: bool`, `deletedAt: DateTime?` | Content Library, Campaign Management — **exception RGPD** : les notes `PLAYER_PRIVATE` sous obligation d'effacement (fin d'accès invité, suppression de compte) sont supprimées **physiquement** et ne relèvent pas de cette primitive (voir ci-dessous). |
+
+> **Exception RGPD à `SoftDelete`** : la suppression logique réversible (`SoftDelete`) ne s'applique
+> pas aux notes `PLAYER_PRIVATE` qui tombent sous une obligation d'effacement RGPD (article 17 —
+> droit à l'effacement). Deux populations concernées :
+> - Notes créées par un utilisateur dont le compte est supprimé (fin de compte).
+> - Notes créées par un joueur invité dont l'accès a pris fin définitivement (expiration ou révocation
+>   sans conversion en compte).
+>
+> Pour ces populations, « supprimé » signifie « **effacé physiquement** », pas « masqué ». Le
+> `SoftDelete` est réservé aux suppressions réversibles dans le cycle de vie normal du contenu
+> (suppression MJ d'un document, archivage). Il n'est pas un substitut à l'effacement légal.
+> Voir règle F-08 dans Session Conduct et Identity & Access.
 
 ### Enums partagés
 

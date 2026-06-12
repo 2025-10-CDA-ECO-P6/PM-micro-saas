@@ -2,7 +2,7 @@
 
 ## Périmètre
 
-Parcours couvrant trois flux d'entrée : l'inscription par un MJ venant du mode local (Émilie), la création directe de compte pour usage multi-device (Thomas), et la création de compte depuis un lien d'invitation par un joueur (Lucas). La migration avec gate de reconnaissance des données locales est intégrée dans le flux d'Émilie. La suppression de compte est hors MVP et exclue de ce périmètre.
+Parcours couvrant trois flux d'entrée : l'inscription par un MJ venant du mode local (Émilie), la création directe de compte pour usage multi-device (Thomas), et la création de compte depuis un lien d'invitation par un joueur (Lucas). La migration avec gate de reconnaissance des données locales est intégrée dans le flux d'Émilie. La suppression de compte (A4) est couverte par UC-10 et US-10-06 ; son flux détaillé fait l'objet d'une section dédiée ci-dessous.
 
 ---
 
@@ -24,7 +24,7 @@ journey
         Retrouver son espace intact dans le cloud: 5: Émilie
     section Connexion ulterieure
         Saisir email et mot de passe: 4: Émilie, 4: Thomas
-        Se connecter via Google OAuth: 5: Thomas
+        Se connecter via un fournisseur d identite externe: 5: Thomas
         Acceder au tableau de bord: 5: Émilie, 5: Thomas, 5: Lucas
     section Gestion du compte
         Reinitialiser son mot de passe: 3: Émilie
@@ -47,13 +47,13 @@ flowchart TD
 
     E --> F{Methode choisie}
     F -->|Email et mot de passe| G[Validation des donnees\nEmail unique - RB-10-01]
-    F -->|Google OAuth| H[Redirection Google\nAutorisation OAuth]
+    F -->|Connexion federee| H[Fournisseur d identite externe\nConnexion federee]
 
     G --> I{Email deja utilise ?}
     I -->|Oui| J[Erreur E1\nEmail deja associe a un compte]
     I -->|Non| K[Compte User cree\nIdentity and Access]
 
-    H --> L{Email Google deja present ?}
+    H --> L{Adresse deja presente ?}
     L -->|Oui| M[Liaison au compte existant\nRB-10-08]
     L -->|Non| K
 
@@ -68,7 +68,7 @@ flowchart TD
 
     Q --> R{Action suivante}
     R -->|Connexion ulterieure\nemail et mdp| S[Formulaire connexion]
-    R -->|Connexion ulterieure\nGoogle OAuth| T[Authentification Google]
+    R -->|Connexion ulterieure\nvia fournisseur d identite| T[Connexion federee]
     R -->|Mot de passe oublie| U[Formulaire reinitialisation]
     R -->|Modifier profil| V[Page profil\nNom d affichage\nMot de passe]
 
@@ -91,7 +91,7 @@ flowchart TD
 
 - **Invite contextuelle peu visible en mode local** : Émilie peut passer plusieurs sessions sans voir l'invite de sauvegarde cloud. Si le bandeau est discret ou apparait en bas d'écran, le déclencheur naturel de l'inscription peut être raté. Le contexte idéal pour l'afficher est la première tentative de partage avec un joueur.
 
-- **Friction à la saisie du mot de passe pour Lucas** : Lucas arrive depuis un lien d'invitation — il vient d'utiliser l'application sans mot de passe (mode invité). Lui demander de choisir un mot de passe sécurisé à ce moment peut créer un abandon. Google OAuth réduit ce frein mais ne couvre pas tous les cas.
+- **Friction à la saisie du mot de passe pour Lucas** : Lucas arrive depuis un lien d'invitation — il vient d'utiliser l'application sans mot de passe (mode invité). Lui demander de choisir un mot de passe sécurisé à ce moment peut créer un abandon. La connexion fédérée réduit ce frein mais ne couvre pas tous les cas.
 
 - **Sessions en cours à clôturer avant migration** : Émilie peut avoir une session ouverte (LIVE) au moment où elle souhaite créer son compte et migrer. Le gate de reconnaissance signale cette session et indique qu'elle doit être clôturée — si ce message n'est pas clair, Émilie peut être frustrée de ne pas pouvoir procéder immédiatement.
 
@@ -109,7 +109,7 @@ flowchart TD
 
 - **Toast de confirmation post-migration** : après la migration, afficher une confirmation discrète "Vos X campagnes et Y documents ont été synchronisés" rassure Émilie sans interrompre son flux. Ce toast est une amélioration UX facultative, distincte du gate de reconnaissance pré-import (ADR-016 §4) qui, lui, est décidé et obligatoire.
 
-- **Google OAuth en premier plan** : sur les pages d'inscription et de connexion, Google OAuth peut être présenté en priorité (bouton principal) pour réduire la friction, notamment pour Lucas qui arrive depuis un lien et veut un accès rapide.
+- **Connexion fédérée en premier plan** : sur les pages d'inscription et de connexion, la connexion fédérée peut être présentée en priorité (bouton principal) pour réduire la friction, notamment pour Lucas qui arrive depuis un lien et veut un accès rapide.
 
 - **Pré-remplissage de l'email depuis le lien d'invitation** : si le lien d'invitation UC-09 contient un contexte de campagne, la page d'inscription peut afficher "Vous rejoignez la campagne de [MJ]" et contextualiser l'inscription — la conversion est meilleure quand le but est explicite.
 
@@ -132,7 +132,7 @@ Une fois la migration réussie, Émilie retrouve ses campagnes avec tout leur hi
 - UC-01 Mode local : [`docs/conception/usecases/UC-01-mode-local-sans-compte.md`](../usecases/UC-01-mode-local-sans-compte.md)
 - UC-09 Accès session joueur : [`docs/conception/usecases/UC-09-acces-session-joueur.md`](../usecases/UC-09-acces-session-joueur.md)
 - UC-11 Gérer membres campagne : [`docs/conception/usecases/UC-11-gerer-membres-campagne.md`](../usecases/UC-11-gerer-membres-campagne.md)
-- UC-12 Rejoindre campagne : [`docs/conception/usecases/UC-12-rejoindre-campagne.md`](../usecases/UC-12-rejoindre-campagne.md)
+- UC-12 Consulter sa campagne (vue joueur) : [`docs/conception/usecases/UC-12-rejoindre-campagne.md`](../usecases/UC-12-rejoindre-campagne.md)
 - User Journey UC-09 : [`UJ-UC-09-acces-session-joueur.md`](UJ-UC-09-acces-session-joueur.md)
 - Conception Identity and Access : [`docs/conception/domain/identity-access.md`](../domain/identity-access.md)
 - Conception Campaign Management : [`docs/conception/domain/campaign-management.md`](../domain/campaign-management.md)

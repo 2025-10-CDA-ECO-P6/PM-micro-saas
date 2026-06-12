@@ -133,7 +133,7 @@ placé dans ce dossier et initialisé avec son template par défaut s'il en a un
 
 Un document "non classé" est automatiquement placé dans le dossier virtuel "Non classés" de la campagne.
 Ce dossier est invisible dans la navigation MJ mais les documents qu'il contient sont accessibles
-via la recherche et une vue "Non classés" dédiée. dossier associé n'est jamais null.
+via la recherche et une vue "Non classés" dédiée. Le dossier associé d'un document n'est jamais nul : un document sans dossier explicite pointe vers le dossier virtuel "Non classés".
 
 ### A5 — Dossier sans template
 

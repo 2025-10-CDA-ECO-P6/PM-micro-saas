@@ -44,7 +44,7 @@ Ouvrir l'application, ne pas remplir de formulaire d'inscription, créer une cam
 
 ### Couture vers l'étape 2
 
-UC-01 postcondition : "Le MJ peut utiliser toutes les fonctionnalités de préparation et de session sans compte." UC-01 scénario nominal (step 6) : "Il utilise l'application normalement (UC-02 à UC-06, UC-14, UC-12)." La précondition de UC-06 est : "Une campagne existe et le MJ y a accès" et "Le MJ est authentifié **ou** en mode local sans compte." Les deux conditions sont satisfaites. **Couture continue.**
+UC-01 postcondition : "Le MJ peut utiliser toutes les fonctionnalités de préparation et de session sans compte." UC-01 scénario nominal (step 6) : "Il utilise l'application normalement (UC-02 à UC-06, UC-14)." La précondition de UC-06 est : "Une campagne existe et le MJ y a accès" et "Le MJ est authentifié **ou** en mode local sans compte." Les deux conditions sont satisfaites. **Couture continue.** Note : UC-12 (vue joueur) n'est pas disponible en mode local — il requiert un `GuestAccess` ou un `CampaignMembership` actif, qui présupposent un compte.
 
 ---
 
@@ -164,16 +164,15 @@ Relancer une session depuis la campagne déjà constituée, bénéficier cette f
 
 Les points suivants sont fondés sur le corpus lu (UC, UJ, persona).
 
-**1. Pas de parcours express pour les one-shots**
-L'arbitrage du 2026-06-10 (vision-produit.md, section 5bis) place le parcours express one-shot hors première livraison. Nadia peut créer une campagne à session unique en utilisant le type `ONE_SHOT`, mais elle n'a pas accès à un lancement en 30 secondes depuis une bibliothèque de scénarios réutilisables. Le coût concret : Nadia doit créer une campagne, un titre, potentiellement sélectionner un scénario — même pour jouer une seule séance. Ce n'est pas un lancement en moins de 30 secondes sans contenu préalable.
+**Note de frontière (hors profil Nadia) :** Le cadrage one-shot — parcours express, type `ONE_SHOT`, campagne à session unique — concerne le persona Sonia (persona-07), dont c'est le cœur de pratique. Nadia est une MJ de campagne dont les sessions sont espacées sur la même continuité narrative ; la problématique one-shot ne lui appartient pas.
 
-**2. Configuration des panneaux : travail différé ou friction en session**
+**1. Configuration des panneaux : travail différé ou friction en session**
 Si Nadia ne configure pas la `SessionViewConfig` avant sa session, les panneaux affichent les dossiers par défaut et un message d'invitation à configurer. Pour Nadia qui veut "lancer vite", ce message est une friction non bloquante mais réelle. La configuration des panneaux est faisable en direct pendant la session `LIVE` sans l'interrompre (UC-06 A2, UJ-UC-06 : "Modifier `SessionViewConfig` en direct"), mais cela coûte du temps qu'elle n'a pas.
 
-**3. Recherche MVP limitée aux titres**
+**2. Recherche MVP limitée aux titres**
 La recherche du MVP porte uniquement sur les titres des documents (UC-14 scénario nominal). Nadia qui revient après six semaines est documentée comme le persona central de UC-14. Si ses documents ont des titres peu mémorables, la recherche ne l'aide pas. Ce point est un risque identifié dans UJ-UC-14 ("état vide peu informatif") et non résolu dans le périmètre MVP.
 
-**4. Risque de perte de données en mode local**
+**3. Risque de perte de données en mode local**
 Nadia n'est pas sensible au risque de perte de données immédiate (elle crée une session par mois). Mais après six semaines sans ouvrir le navigateur, le stockage local peut être vidé par le navigateur. Le bandeau de durabilité l'a prévenue. UC-01 A3 couvre le cas ("données introuvables — cache vidé") mais la récupération est impossible sans export préalable (et l'export de paramètres est lui-même Should Have).
 
 ---
@@ -187,4 +186,4 @@ Nadia n'est pas sensible au risque de perte de données immédiate (elle crée u
 | C3 | Session CLOSED → retour après six semaines | 3 → 4 | **Continue (conditionnelle)** | UC-01 A2 couvre le retour après fermeture du navigateur. La continuité est conditionnée par la conservation des données du navigateur. Cette condition est communiquée via le bandeau de durabilité. Si les données ont été effacées, UC-01 A3 s'applique (rupture de données, non de parcours). Le parcours reste continu tant que les données sont présentes. |
 | C4 | Retrouvabilité post-absence → recherche par titre | 4 | **Continue (limitation documentée)** | UC-14 précondition : campagne existante avec données recherchables. Satisfaite. La limitation MVP (recherche sur titre uniquement) est documentée dans UC-14 scénario nominal et constitue un risque pour Nadia si ses titres sont peu descriptifs. Ce n'est pas une rupture mais une zone de friction avérée. |
 | C5 | Données retrouvées → relancement de session | 4 → 5 | **Continue** | Même précondition que C2. La `SessionViewConfig` est persistée entre sessions (UJ-UC-06, opportunité UX "persistée entre deux sessions"). La nouvelle `Session` est créée en `LIVE` depuis la campagne existante. |
-| C6 | One-shot MVP : campagne à session unique | transversal | **Limite assumée** | Au MVP, créer un one-shot revient à créer une campagne avec `CampaignType = ONE_SHOT` via le parcours campagne nominal (UC-02 scénario nominal). Aucun comportement de création, de structure ou de session ne diffère de `CAMPAIGN` — le formulaire de création est identique, les dossiers système et la vue session sont identiques. Les différences comportementales cibles (parcours express, deux points d'entrée distincts) sont reportées post-MVP via l'arbitrage UC-13 (vision-produit.md §5bis). En MVP, `ONE_SHOT` se distingue de `CAMPAIGN` uniquement par le tag `type`. Le parcours express et la présentation de deux créations distinctes sont hors première livraison — Nadia crée un one-shot en utilisant le même formulaire que pour une campagne, avec `CampaignType = ONE_SHOT`. |
+| — | *(Hors profil Nadia)* Le cadrage one-shot et le type `ONE_SHOT` sont documentés dans le parcours Sonia (parcours-07-sonia.md), dont c'est le cœur. Ce parcours ne couvre pas cette frontière. | — | — | — |

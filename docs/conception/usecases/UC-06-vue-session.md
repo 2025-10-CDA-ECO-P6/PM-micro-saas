@@ -16,7 +16,7 @@ Permettre au MJ de piloter une session de jeu en accédant rapidement aux inform
 
 La vue session est l'interface centrale pendant une partie de jeu de rôle. Contrairement au mode préparation, elle est optimisée pour la rapidité : le MJ n'a pas le temps de naviguer dans des arborescences profondes. L'enjeu est de réduire la latence entre "le MJ cherche une information" et "le MJ la trouve", sans jamais casser le rythme de la table.
 
-En parallèle, les joueurs disposent de leur propre vue restreinte depuis laquelle ils peuvent consulter ce que le MJ leur a partagé et prendre leurs notes personnelles (personnelle joueur).
+En parallèle, les joueurs disposent de leur propre vue restreinte depuis laquelle ils peuvent consulter ce que le MJ leur a partagé et prendre leurs notes de session personnelles joueur.
 
 ## Besoin utilisateur
 
@@ -89,6 +89,8 @@ leurs lieux ou leurs scènes. Aucune structure n'est imposée par l'application.
 ---
 
 ## Scénario nominal — Vue joueur pendant la session LIVE
+
+> **Frontière UC-12.** La **vue joueur pendant `LIVE`** décrite ici **étend la vue post-accès d'UC-12** : UC-12 couvre la consultation (fiche, documents `PUBLIC`, choix du personnage actif) ; UC-06 y ajoute, pendant une session `LIVE`, la **capacité de prendre des notes de session**. La ligne de partage est la capacité (écrire en LIVE = UC-06), pas le contenu (identique).
 
 1. Le joueur accède à la campagne pendant une session `LIVE`.
 2. Le système lui présente une vue joueur simplifiée.
@@ -246,7 +248,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 ## Règles métier
 
 - La vue session MJ est accessible uniquement au MJ de la campagne.
-- Les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées et leurs propres notes personnelle joueur.
+- Les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées et leurs propres notes de session personnelles joueur.
 - **Mode local et vue joueur** : en mode local sans compte, il n'existe ni vue joueur ni accès invité — la vue session est utilisée par le MJ seul, et seules des notes de session du MJ peuvent exister. Toute participation de joueurs à une session présuppose un compte MJ.
 - **notes de session en session LIVE** :
   - MJ : peut créer des notes de session à tout moment pendant `LIVE`. Visibilité par défaut : privé MJ. Peut basculer en visible par les joueurs.
@@ -279,7 +281,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 - Le MJ peut rechercher dans tous les documents de la campagne sans quitter la vue session.
 - Le MJ peut créer un élément à la volée → UC-07.
 - Le MJ peut partager une information → UC-08.
-- Le MJ peut terminer la session → UC-12.
+- Le MJ peut terminer la session (clôture interne, passage `LIVE → CLOSED`).
 
 ### Vue Joueur
 
@@ -304,7 +306,6 @@ La session a été créée sans `scenarioId` (session improvisée).
 | [UC-08](UC-08-partager-information.md) — Partager une information | Appelé depuis UC-06 A4 |
 | [UC-09](UC-09-acces-session-joueur.md) — Accéder à une session en tant que joueur | Accès ponctuel aux sessions LIVE via lien généré depuis UC-06 |
 | [UC-14](UC-14-recherche.md) — Rechercher une information | Appelé depuis UC-06 A3 |
-| [UC-12](UC-12-rejoindre-campagne.md) — Rejoindre une campagne ou session | Alimente la vue joueur et les accès invités |
 | [UC-07](UC-07-creation-volee-session.md) — Créer à la volée | Appelé depuis UC-06 A2 |
 
 ---

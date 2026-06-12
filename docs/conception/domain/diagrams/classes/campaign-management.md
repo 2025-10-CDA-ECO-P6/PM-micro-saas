@@ -216,6 +216,17 @@ classDiagram
     GuestAccess --> GuestAccessStatus
     GuestAccess --> CampaignId
 
+    %% post-MVP
+    class ScenarioLibraryEntry {
+        +identifiant id
+        +identifiant ownerId
+        +identifiant documentId
+        +horodatage promotedAt
+    }
+
+    ScenarioLibraryEntry --> User : owned by
+    ScenarioLibraryEntry --> Document : promotes
+
     Campaign ..> CampaignCreated : produces
     Campaign ..> MemberJoined : produces
     Campaign ..> MemberRemoved : produces

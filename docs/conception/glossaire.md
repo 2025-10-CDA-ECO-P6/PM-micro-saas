@@ -1,8 +1,9 @@
 # Glossaire — Langage ubiquitaire Haversack
 
 > Version : 2026-06-10
-> Source d'autorité : la prose des quatre fichiers de domaine (`domain/*.md`).
-> En cas de conflit entre le glossaire et un artefact de besoin (UC, US, UJ), la prose de domaine fait foi, puis le glossaire, puis l'artefact de besoin.
+> Nature : outil de nommage dérivé — **autorité de forme**, pas d'autorité de fond.
+> Ordre d'autorité (du plus faisant foi au moins) : personas → vision produit → use cases → user journeys / user stories / NFR → domaine → glossaire.
+> En cas de conflit sur le fond (le besoin), l'artefact le plus en amont fait foi. Le glossaire n'arbitre jamais un conflit de besoin. Une entrée de glossaire qui contredit un use case est l'entrée à corriger, pas le use case.
 
 ---
 
@@ -14,7 +15,7 @@ Ce glossaire est la **source de référence terminologique** de la conception Ha
 
 2. **Détecter les dérives** : un terme absent du glossaire employé dans un artefact est un signal d'enrichissement à instruire. Un terme divergent (synonyme non tracé, reformulation silencieuse) est un signal de consolidation à traiter.
 
-**Comment enrichir le glossaire** : ouvrir une issue ou une PR ciblée sur ce fichier. Proposer le terme retenu, sa définition et, si applicable, la ligne de l'artefact de besoin qui l'introduit. La décision finale revient à l'équipe produit et se reflète dans la prose de domaine en premier lieu.
+**Comment enrichir le glossaire** : ouvrir une issue ou une PR ciblée sur ce fichier. Proposer le terme retenu, sa définition et, si applicable, la ligne de l'artefact de besoin qui l'introduit. La décision terminologique est arrêtée au niveau du besoin (use cases, user stories) et se reflète ensuite dans le domaine puis dans le glossaire.
 
 **Périmètre** : vocabulaire de conception pure. Aucun nom de technologie, d'infrastructure, d'API ou d'outil n'a sa place dans ce glossaire. Les identifiants de domaine (`PLAYER_PRIVATE`, `GuestAccess`, `LIVE_NOTE`…) sont du vocabulaire de domaine légitime — ils ne désignent pas des choix techniques.
 
@@ -145,6 +146,8 @@ En première livraison (MVP), aucune différence de comportement n'est implémen
 
 État de la campagne : `ACTIVE` (opérationnelle), `ARCHIVED` (archivée manuellement par le MJ, lecture seule, irréversible dans le MVP), `FROZEN` (gelée automatiquement lors d'un downgrade de tier, lecture seule jusqu'à `Unfreeze()`).
 
+> La valeur `FROZEN` et le mécanisme de downgrade de tier ne sont pas spécifiés dans le MVP. Voir **UC-HORS-MVP — Gel de campagnes au downgrade de tier (post-MVP)** pour la question ouverte délimitée.
+
 ---
 
 ### MJ (Maître du Jeu)
@@ -218,6 +221,16 @@ Spécialisation optionnelle d'un `Document`. Les types système built-in sont : 
 
 ---
 
+### Personnage joueur
+
+`Document` de type `PLAYER_CHARACTER` (`documentTypeId = PLAYER_CHARACTER`). Il n'existe pas d'entité dédiée `PlayerCharacter` dans le modèle — un personnage joueur est un document ordinaire spécialisé par son type. Le personnage est un point d'**affichage** et d'organisation : les notes `PLAYER_PRIVATE` sont liées à leur **auteur** (`createdById` ou `guestAccessId`), pas au personnage. L'association `characterId` sur une `LIVE_NOTE` sert à l'affichage groupé, pas à définir un droit de propriété.
+
+- Créé et géré par le joueur dans sa section dédiée (UC-06, UC-12).
+- Propriétaire domaine : **Content Library**.
+- Voir aussi : `DocumentType`, `LIVE_NOTE`, `PLAYER_PRIVATE`.
+
+---
+
 ### `LIVE_NOTE` (note de session)
 
 Type de document (`documentTypeId = LIVE_NOTE`) représentant une note prise pendant ou juste après une session. Une note de session est un `Document` ordinaire stocké dans **Content Library** ; **Session Conduct** la référence via `sessionNoteIds`. Deux champs de premier niveau spécifiques : `characterId` (personnage associé, pour les notes `PLAYER_PRIVATE` joueur) et `guestAccessId` (auteur invité sans compte).
@@ -259,6 +272,16 @@ Value object représentant une référence ordonnée d'un `Document` vers un aut
 ### Dossiers système
 
 Quatre dossiers créés automatiquement à la création d'une campagne : `Personnages`, `Joueurs`, `Scénarios`, `Notes`. Plus le dossier virtuel « Non classés ». Ces noms sont des points de départ renommables et supprimables librement.
+
+---
+
+### Export de campagne
+
+Capacité permettant au MJ d'exporter l'ensemble d'une campagne — documents, notes, structure de dossiers — dans un format ouvert, lisible et réutilisable hors de l'application. Disponible en mode local comme avec un compte. Matérialise la promesse de possession des données : la possession n'est actionnable que si elle est exportable.
+
+- Priorité : **Should Have** (post-MVP, UC-HORS-MVP à créer — voir `vision/moscow.md` §Should Have et `vision/vision-produit.md` §5).
+- Distinct de la migration locale→cloud (qui importe des données vers un compte) : l'export produit un fichier autonome indépendant du compte.
+- Défini dans : **vision-produit.md** §5, **moscow.md** §Should Have, **UC-01 A4**.
 
 ---
 

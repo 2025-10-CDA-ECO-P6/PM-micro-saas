@@ -1,5 +1,7 @@
 # Epic — Utiliser un scénario réutilisable (UC-13)
 
+> **Should Have — hors première livraison (post-MVP)** — Cet epic, ainsi que le parcours express one-shot qu'il conditionne (UC-02 §A1, US-02-02, US-02-04), sont reportés après la première livraison. Voir vision §5bis et UC-13. En MVP, le one-shot se crée via le parcours campagne nominal (US-02-01, `type = ONE_SHOT`).
+
 ## Objectif utilisateur
 
 Permettre au MJ de créer un scénario une fois et de le rejouer avec des groupes différents, en conservant le contenu source intact. L'unité de travail de Sonia n'est pas la campagne — c'est le scénario. Elle veut "lancer ce scénario ce soir" sans recréer une structure depuis zéro à chaque fois.
@@ -35,10 +37,10 @@ Permettre au MJ de créer un scénario une fois et de le rejouer avec des groupe
 
 ## Bounded contexts pressentis
 
-- **Content Library** — héberge la `ScenarioLibrary`, les scénarios sources (templates) et les instances créées par copie profonde.
-- **Campaign Management** — accueille les instances de scénario dans les campagnes ou one-shots ; gère la relation entre une instance et son contexte de jeu.
+- **Campaign Management** — héberge la `ScenarioLibrary` (concept cross-campagne rattaché au compte MJ), les scénarios sources (templates) et les instances créées par copie profonde. Accueille également les instances dans les campagnes ou one-shots et gère la relation entre une instance et son contexte de jeu.
+- **Content Library** — consomme les instances de scénario comme documents de campagne dans le contexte de jeu cible.
 
-Note de conception : la `ScenarioLibrary` est un nouveau concept cross-campagne appartenant au compte MJ. Elle s'inscrit dans le `Content Library` bounded context ou constitue une extension de celui-ci ; ce point devra être tranché lors de la modélisation du domaine.
+Note de conception : la `ScenarioLibrary` est rattachée à **Campaign Management** — décision actée. La `ScenarioLibrary` existant au niveau du compte MJ (cross-campagne), elle relève du contexte qui gère les espaces de jeu et le cycle de vie des campagnes, pas du stockage documentaire intra-campagne.
 
 ---
 

@@ -142,7 +142,7 @@ flowchart LR
 - [ ] Le nom d'affichage du joueur est visible par le MJ dans la vue session.
 - [ ] Un joueur déjà connecté accède directement sans saisir de nom (A1).
 - [ ] L'accès expire après la session + 24 heures (le token `GuestAccess` est invalidé).
-- [ ] Avant ou au moment de saisir son nom d'affichage, le joueur reçoit une information simple sur les données conservées (nom d'affichage, notes privées), la durée de conservation (durée de l'accès + 24 h de grâce) et leur suppression à la fin de l'accès.
+- [ ] Avant ou au moment de saisir son nom d'affichage, le joueur reçoit une information simple sur les données conservées (nom d'affichage, notes privées), la durée de conservation (durée de l'accès + 24 h de grâce ; nom d'affichage effacé au plus tard 90 jours après la fin d'accès), et leur sort : notes privées supprimées sans délai à la fin d'accès si pas de compte créé, nom d'affichage cessant d'être utilisé immédiatement.
 
 ```gherkin
 Scénario : Joueur rejoint via lien ponctuel sans compte (nominal)

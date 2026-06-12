@@ -5,6 +5,7 @@ classDiagram
     class User {
         +identifiant id
         +Email email
+        +booléen emailVerified
         +texte displayName
         +AccountStatus status
         +AccountTier tier

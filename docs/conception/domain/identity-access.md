@@ -38,6 +38,7 @@
 |---|---|---|
 | `id` | `UserId` | Identifiant unique, partagé avec le référentiel d'identité de l'infrastructure |
 | `email` | `Email` | Adresse email unique dans le système |
+| `emailVerified` | `bool` | Indique si l'adresse de messagerie a été confirmée par l'utilisateur. `false` à la création, `true` après vérification. |
 | `displayName` | `string` | Nom d'affichage choisi par l'utilisateur |
 | `status` | `AccountStatus` | État du compte (ACTIVE, SUSPENDED, DELETED) |
 | `tier` | `AccountTier` | Niveau d'abonnement (FREE, PRO) |
@@ -48,10 +49,13 @@
 
 | Méthode | Événement produit | Description |
 |---|---|---|
-| `Register(email, displayName)` | `UserRegistered` | Crée un nouveau compte. Tier initial = FREE. |
+| `Register(email, displayName)` | `UserRegistered` | Crée un nouveau compte. Tier initial = FREE. `emailVerified = false`. |
+| `VerifyEmail()` | `EmailVerified` | Marque l'adresse de messagerie comme vérifiée. `emailVerified` passe à `true`. |
 | `UpdateDisplayName(name)` | `DisplayNameUpdated` | Met à jour le nom d'affichage. |
+| `ChangeEmail(newEmail)` | `EmailChangeRequested` | Demande un changement d'adresse de messagerie. Exige `emailVerified = true`. Repasse `emailVerified` à `false` jusqu'à confirmation de la nouvelle adresse. |
+| `LinkFederatedIdentity(provider, externalId)` | `FederatedIdentityLinked` | Associe une identité fédérée (SSO) au compte. Exige `emailVerified = true`. |
 | `ChangeTier(tier)` | `AccountTierChanged` | Change le tier (FREE → PRO ou PRO → FREE). |
-| `Delete()` | `UserDeleted` | Marque le compte pour suppression. Déclenche l'anonymisation. |
+| `Delete()` | `UserDeleted` | Marque le compte pour suppression. Exige `emailVerified = true`. Déclenche l'anonymisation. |
 | `Anonymize()` | `UserAnonymized` | Remplace les données nominatives par `[Compte supprimé]`. |
 | `Suspend()` | `AccountSuspended` | Désactive temporairement le compte. |
 
@@ -83,6 +87,7 @@
 4. `displayName` ne peut pas être vide ni dépasser 100 caractères.
 5. `tier = FREE` est le tier initial à la création.
 6. La suppression est irréversible. L'anonymisation remplace `email` et `displayName` par des valeurs neutres. Le `UserId` est conservé comme référence morte dans les autres contextes.
+7. L'effacement RGPD (`User.Delete()`) et toutes les opérations sensibles — modification d'adresse de messagerie (`ChangeEmail()`), liaison d'une identité fédérée (`LinkFederatedIdentity()`) — **exigent `emailVerified = true`**. Ces opérations sont bloquées si `emailVerified = false`. Cette exigence garantit que l'adresse de messagerie est bien contrôlée par l'utilisateur avant qu'une action irréversible ou à fort impact soit appliquée sur le compte (aligné RB-10-05 et NFR-CONF-03).
 
 ---
 
@@ -91,7 +96,7 @@
 1. Le mot de passe est délégué à l'infrastructure d'identité — `User` ne le connaît pas.
 2. `User` ne porte aucun rôle métier global. Tout utilisateur authentifié peut créer une campagne.
 3. La transition `PRO → FREE` (résiliation) est déclenchée par une notification du système de facturation (infrastructure) via une commande applicative. `User.ChangeTier(FREE)` publie `AccountTierChanged`. Campaign Management écoute cet événement et applique ses propres règles (gel des campagnes excédentaires).
-4. **Règle F-08 — Suppression physique des documents privés à la suppression de compte** (RGPD, article 17 — droit à l'effacement) : après suppression d'un compte, deux populations de documents privés sont supprimées physiquement : (a) les documents avec `visibility = PLAYER_PRIVATE` créés par cet utilisateur, et (b) les documents avec `visibility = PLAYER_PRIVATE` créés par cet utilisateur et rattachés aux personnages incarnés par l'utilisateur dans l'ensemble des campagnes vivantes où il était membre. Cette extension couvre le risque de résidu : un personnage pouvant être réassocié ultérieurement à un autre joueur, une note privée résiduelle rattachée à ce personnage serait exposée au nouveau propriétaire. Les contenus partagés (`PUBLIC`, `GM_ONLY`) sont conservés sous intérêt légitime pour assurer la continuité de campagne. La mise en œuvre de cette obligation est arbitrée par ADR-012.
+4. **Règle F-08 — Effacement effectif des documents privés à la suppression de compte** (RGPD, article 17 — droit à l'effacement) : après suppression d'un compte, deux populations de documents privés sont supprimées **physiquement** (pas via `SoftDelete` — la suppression logique réversible ne constitue pas un effacement au sens légal) : (a) les documents avec `visibility = PLAYER_PRIVATE` créés par cet utilisateur, et (b) les documents avec `visibility = PLAYER_PRIVATE` créés par cet utilisateur et rattachés aux personnages incarnés par l'utilisateur dans l'ensemble des campagnes vivantes où il était membre. Cette extension couvre le risque de résidu : un personnage pouvant être réassocié ultérieurement à un autre joueur, une note privée résiduelle rattachée à ce personnage serait exposée au nouveau propriétaire. Les contenus partagés (`PUBLIC`, `GM_ONLY`) sont conservés sous intérêt légitime pour assurer la continuité de campagne. La mise en œuvre de cette obligation est arbitrée par ADR-012.
 5. Les contenus créés (documents, notes) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu.
 
 ---

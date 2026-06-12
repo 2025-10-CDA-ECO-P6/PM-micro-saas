@@ -165,8 +165,7 @@ Le système refuse l'accès.
 ## Postconditions
 
 - Le document est enregistré.
-- Un document créé sans dossier explicite est placé dans le dossier virtuel **Non classés** ou,
-  pour une note rapide, dans le dossier système **Notes** selon le point d'entrée choisi.
+- Un document créé sans dossier explicite est placé dans le dossier virtuel **Non classés** (règle unique — UC-05 fait foi sur l'organisation en dossiers).
 - Le document respecte sa configuration de visibilité.
 - Le document est indexable par la recherche.
 

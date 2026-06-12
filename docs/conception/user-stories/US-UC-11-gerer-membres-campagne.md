@@ -58,7 +58,7 @@ flowchart TD
     E --> F
 
     F --> G{Joueur utilise le lien ?}
-    G -->|Oui — avec compte| H[Member ACTIVE\nUC-12]
+    G -->|Oui — avec compte| H[Member ACTIVE → vue UC-12]
     G -->|Oui — sans compte| I[GuestAccess actif\nUC-09]
     G -->|Lien expire ou jamais utilise| J[Invitation REVOKED ou expiree\nCreer un nouveau lien]
 
@@ -80,7 +80,7 @@ flowchart LR
 
     UC11[UC-11\nGerer membres campagne]
     UC09[UC-09\nAcces session joueur]
-    UC12[UC-12\nRejoindre une campagne]
+    UC12[UC-12\nConsulter / vue joueur]
 
     UC11 --> US1101
     UC11 --> US1102
@@ -282,18 +282,18 @@ Scenario : Ancien lien d un membre retire
 
 **Notes de conception** :
 - L'association peut être faite dès qu'un joueur est `Member` `ACTIVE` ou `PENDING` (avant même qu'il utilise son lien).
-- L'association est gérée par `Campaign Management` (relation `Member` <-> `PlayerCharacter`).
+- L'association est gérée par `Campaign Management` (relation `Member` <-> `Document` de type `player_character`).
 - Un joueur peut être associé à zéro ou plusieurs personnages. Un personnage peut n'être associé qu'à un seul joueur à la fois.
 - Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE` depuis sa vue joueur.
-- Si un `GuestAccess` (sans compte) est utilisé avec un lien pointant vers un personnage, le joueur accède aux notes `PLAYER_PRIVATE` de ce personnage — un nouveau lien vers le même personnage permet de récupérer ces données.
+- Si un `GuestAccess` (sans compte) est utilisé avec un lien pointant vers un personnage, le joueur accède à la **fiche** de ce personnage (`Document` de type `player_character`) — un nouveau lien vers le même personnage permet de retrouver cette fiche. Les notes `PLAYER_PRIVATE` appartiennent à leur auteur : un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent.
 - Le MJ peut dissocier un joueur de son personnage sans supprimer le personnage.
 
 **Règles métier** :
 - RB-11-16 : Seul le MJ propriétaire (`OWNER`) peut associer ou dissocier un joueur et un personnage.
-- RB-11-17 : Un `Member` peut être associé à zéro ou plusieurs personnages (`PlayerCharacter`).
+- RB-11-17 : Un `Member` peut être associé à zéro ou plusieurs `Document` de type `player_character`.
 - RB-11-18 : Un personnage ne peut être associé qu'à un seul `CampaignMembership` actif à la fois.
 - RB-11-19 : Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE`.
-- RB-11-20 : Un nouveau lien vers le même personnage permet à un `GuestAccess` de récupérer la fiche et les notes `PLAYER_PRIVATE` associées.
+- RB-11-20 : Un nouveau lien vers le même personnage permet à un `GuestAccess` de récupérer la **fiche** (`Document` de type `player_character`). Les notes `PLAYER_PRIVATE` appartiennent à leur auteur — un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent (RB-09-19).
 - RB-11-21 : Dissocier un joueur de son personnage ne supprime pas le personnage ni ses notes.
 
 **Critères d'acceptation** :
@@ -301,7 +301,7 @@ Scenario : Ancien lien d un membre retire
 - [ ] Après association, le joueur voit la fiche du personnage et ses notes `PLAYER_PRIVATE` dans sa vue joueur.
 - [ ] Un personnage ne peut être associé qu'à un seul membre à la fois.
 - [ ] Le MJ peut dissocier un joueur de son personnage sans supprimer le personnage.
-- [ ] Un `GuestAccess` vers un personnage déjà associé récupère les notes `PLAYER_PRIVATE` existantes.
+- [ ] Un `GuestAccess` vers un personnage déjà associé récupère la **fiche** du personnage (`Document` de type `player_character`) ; il n'hérite jamais des notes `PLAYER_PRIVATE` d'un invité précédent.
 
 ```gherkin
 Scenario : MJ associe un joueur a un personnage (A1)
@@ -316,11 +316,12 @@ Scenario : Personnage deja associe — unicite
   Quand Thomas tente d associer Aelindra a un autre membre
   Alors le systeme indique qu Aelindra est deja associee a Sophie
 
-Scenario : GuestAccess recupere les notes via lien personnage
-  Etant donne qu un personnage "Aelindra" a des notes PLAYER_PRIVATE existantes
+Scenario : GuestAccess recupere la fiche via lien personnage, pas les notes d un invité précédent
+  Etant donne qu un personnage "Aelindra" a une fiche existante dans la campagne
   Et qu un nouveau lien GuestAccess pointant vers Aelindra est genere
   Quand le joueur utilise ce lien sans compte
-  Alors il accede a la fiche d Aelindra et a ses notes PLAYER_PRIVATE
+  Alors il accede a la fiche d Aelindra
+  Et les notes PLAYER_PRIVATE d un invité précédent ne lui sont pas accessibles
 
 Scenario : Dissociation sans suppression
   Etant donne que Sophie est associee a Aelindra

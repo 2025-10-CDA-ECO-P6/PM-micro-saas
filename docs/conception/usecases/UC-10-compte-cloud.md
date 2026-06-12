@@ -71,11 +71,11 @@ Le MJ veut activer la sauvegarde cloud ou le partage joueurs. Le joueur veut acc
 3. Le système valide les identifiants.
 4. L'utilisateur est redirigé vers son tableau de bord.
 
-## Scénario nominal — Connexion via Google OAuth
+## Scénario nominal — Connexion via un fournisseur d'identité externe
 
-1. L'utilisateur clique sur "Continuer avec Google" depuis la page d'inscription ou de connexion.
-2. Il s'authentifie via le flux OAuth Google.
-3. Si c'est un premier accès : le système crée automatiquement un compte (tier gratuit) avec l'email et le nom d'affichage Google. Aucun mot de passe n'est défini.
+1. L'utilisateur clique sur "Continuer avec [fournisseur d'identité externe]" depuis la page d'inscription ou de connexion.
+2. Il s'authentifie via la connexion fédérée du fournisseur choisi.
+3. Si c'est un premier accès : le système crée automatiquement un compte (tier gratuit) avec l'email et le nom d'affichage fournis par le fournisseur. Aucun mot de passe n'est défini.
 4. Si un compte existe déjà avec cet email : le système connecte l'utilisateur à ce compte existant.
 5. Si des données locales existent, le gate de reconnaissance est présenté (titres, volume, date) et la migration ne démarre qu'après confirmation explicite — ADR-016 §4.
 6. L'utilisateur est redirigé vers son tableau de bord.
@@ -96,14 +96,16 @@ Un joueur invité sans compte clique sur un lien d'invitation, crée un compte e
 
 ### A4 — Suppression du compte (droit à l'effacement RGPD)
 
+**Précondition** : la validation de l'adresse de messagerie est requise avant de pouvoir déclencher cette opération (RB-10-05). Le système refuse la demande tant que l'adresse de messagerie n'est pas validée.
+
 1. L'utilisateur accède à la page profil et demande la suppression de son compte.
 2. Le système affiche les conséquences :
    - les campagnes dont l'utilisateur est propriétaire (`ownerId`) seront orphelines — il doit d'abord transférer leur propriété ou accepter leur suppression en cascade ;
-   - ses notes privées (personnelle joueur) seront supprimées physiquement, ainsi que les notes privées qu'il a créées rattachées aux personnages qu'il incarnait dans les campagnes vivantes ;
+   - ses notes privées (note de session personnelle joueur) seront supprimées physiquement, ainsi que les notes privées qu'il a créées rattachées aux personnages qu'il incarnait dans les campagnes vivantes ;
    - les autres données liées (participations, memberships) seront anonymisées.
 3. L'utilisateur confirme la suppression.
 4. Le système exécute la séquence :
-   a. Suppression physique des `note de session` avec `visibility = personnelle joueur` créées par l'utilisateur supprimé.
+   a. Suppression physique des `note de session personnelle joueur` créées par l'utilisateur supprimé.
       Cette suppression emporte également les notes privées rattachées aux personnages que cet utilisateur incarnait
       dans les campagnes vivantes, afin d'éviter qu'une note résiduelle ne soit exposée à un futur joueur réassocié au personnage.
       La fiche du personnage elle-même survit et reste ré-associable à un autre joueur pour préserver la continuité de campagne.
@@ -146,7 +148,7 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 ### Suppression de compte
 - Le compte est marqué `status = DELETED`.
 - Les données nominatives sont anonymisées.
-- Les notes privées (personnelle joueur) créées par l'utilisateur supprimé sont supprimées physiquement, y compris celles rattachées aux personnages qu'il incarnait.
+- Les notes privées (note de session personnelle joueur) créées par l'utilisateur supprimé sont supprimées physiquement, y compris celles rattachées aux personnages qu'il incarnait.
 - Les fiches de personnages survivent et restent ré-associables à d'autres joueurs.
 - L'utilisateur est déconnecté.
 
@@ -165,13 +167,18 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 - Le mot de passe est hashé en infrastructure — le compte utilisateur ne le connaît pas.
 - Un utilisateur ne porte aucun rôle global. Le rôle MJ ou Joueur est défini dans chaque campagne. Tout utilisateur authentifié peut créer une campagne et en devenir le MJ.
 - Un compte suspendu ou supprimé ne peut pas se connecter.
+- **Validation de l'adresse de messagerie** :
+  - L'accès est immédiat après inscription ; la validation de l'adresse de messagerie n'est pas bloquante à la connexion.
+  - La validation de l'adresse de messagerie est requise avant les opérations sensibles : modification de l'adresse de messagerie, modification du mot de passe, liaison d'un compte via connexion fédérée, demande d'effacement des données personnelles (A4).
+  - Cette validation est une exigence du système : le système refuse toute opération sensible tant que l'adresse de messagerie n'est pas validée, quel que soit le moyen par lequel l'opération est déclenchée.
+  - Un utilisateur qui s'inscrit via connexion fédérée n'a pas besoin de revalider son adresse de messagerie si elle est déjà tenue pour vérifiée par le fournisseur d'identité.
 - **Migration des données locales vers le cloud** :
   - La migration d'une campagne emporte tout son historique de session : sessions terminées, notes de session, documents épinglés et résumés. Rien de cet historique n'est perdu à la migration.
   - Une session en cours (statut LIVE) ne migre pas en l'état : elle doit être clôturée avant la migration. Le gate de reconnaissance signale au MJ toute session en cours et indique qu'elle doit être clôturée pour que la campagne puisse migrer.
   - La configuration de la vue session (choix des panneaux affichés) n'est pas reprise : elle est recréée et le MJ la reconfigure.
 - **RGPD — droit à l'effacement** :
   - La suppression d'un compte déclenche l'anonymisation des données nominatives dans toutes les tables.
-  - Les `note de session` avec `visibility = personnelle joueur` créées par l'utilisateur supprimé sont supprimées physiquement.
+  - Les `note de session personnelle joueur` créées par l'utilisateur supprimé sont supprimées physiquement.
     Cela emporte également les notes privées rattachées aux personnages que cet utilisateur incarnait dans les campagnes vivantes,
     afin d'éviter qu'une note résiduelle ne soit exposée à un futur joueur réassocié au personnage.
     La fiche du personnage elle-même survit et reste ré-associable à un autre joueur pour préserver la continuité de campagne.
@@ -196,7 +203,6 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 
 ## Questions à valider en interview
 
-- Les MJ sont-ils à l'aise avec un compte email classique ou préfèrent-ils une connexion sociale (Google) ?
+- Les MJ sont-ils à l'aise avec un compte par adresse de messagerie classique ou préfèrent-ils une connexion fédérée ?
 - La création de compte est-elle un frein perçu pour les joueurs ?
-- Faut-il une validation par email à l'inscription pour le MVP ?
 - Quelle politique d'anonymisation est suffisante pour le RGPD dans ce contexte (remplacer le nom, ou supprimer les enregistrements) ?

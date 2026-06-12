@@ -4,6 +4,27 @@ Index de toute la documentation de conception produit et domaine.
 
 ---
 
+## Ordre d'autorité entre artefacts
+
+En cas de conflit entre deux artefacts de conception, l'artefact le plus en amont de la hiérarchie suivante fait foi :
+
+**personas → vision produit → use cases → user journeys / user stories / NFR → domaine → glossaire**
+
+### Trois conséquences directes
+
+1. Les **use cases** sont la source de vérité du besoin. Les user journeys, user stories et NFR en dérivent et s'y conforment.
+2. Le **domaine** modélise la résolution du besoin — il s'y conforme. Il ne dicte pas le besoin.
+3. Le **glossaire n'est pas une autorité de fond** — c'est un outil de nommage dérivé. Une entrée de glossaire qui contredit un use case est l'entrée à corriger.
+
+### Distinction autorité de forme / autorité de fond
+
+Ces deux notions sont distinctes et ne se confondent pas :
+
+- **Autorité de forme (nommage)** — légitime pour le glossaire : une fois un terme décidé au niveau du besoin, le glossaire est la référence de forme (terme retenu, identifiant, orthographe). « Nommer » n'est pas « arbitrer ». Tout artefact (UC, US, UJ, diagramme) doit employer les termes du glossaire.
+- **Autorité de fond (le besoin lui-même)** — réservée à la hiérarchie ci-dessus. Le glossaire ne tranche jamais un conflit de besoin. Si une définition de glossaire semble contredire un use case, c'est la définition de glossaire qui est à corriger.
+
+---
+
 ## Sens de dépendance besoin ↔ décision
 
 ### Filtre de nature : conception vs implémentation
@@ -55,7 +76,7 @@ Chaque contributeur applique ce balayage au fichier qu'il vient de modifier, **a
 | [persona/persona-01-thomas.md](persona/persona-01-thomas.md) | Thomas — MJ préparateur |
 | [persona/persona-02-emilie.md](persona/persona-02-emilie.md) | Émilie — MJ impro |
 | [persona/persona-03-lucas.md](persona/persona-03-lucas.md) | Lucas — joueur sans compte |
-| [persona/persona-04-nadia.md](persona/persona-04-nadia.md) | Nadia — MJ casual |
+| [persona/persona-04-nadia.md](persona/persona-04-nadia.md) | Nadia — MJ occasionnelle |
 | [persona/persona-05-antoine.md](persona/persona-05-antoine.md) | Antoine — MJ avancé |
 | [persona/persona-06-remi.md](persona/persona-06-remi.md) | Rémi — MJ débutant |
 | [persona/persona-07-sonia.md](persona/persona-07-sonia.md) | Sonia — MJ one-shot |
@@ -81,7 +102,7 @@ Chaque contributeur applique ce balayage au fichier qu'il vient de modifier, **a
 | [UC-09](usecases/UC-09-acces-session-joueur.md) | Accès session joueur |
 | [UC-10](usecases/UC-10-compte-cloud.md) | Compte cloud |
 | [UC-11](usecases/UC-11-gerer-membres-campagne.md) | Gérer les membres d'une campagne |
-| [UC-12](usecases/UC-12-rejoindre-campagne.md) | Rejoindre une campagne |
+| [UC-12](usecases/UC-12-rejoindre-campagne.md) | Consulter sa campagne en tant que joueur (vue post-accès) |
 | [UC-13](usecases/UC-13-scenario-reutilisable.md) | Scénario réutilisable |
 | [UC-14](usecases/UC-14-recherche.md) | Recherche |
 | [UC-HORS-MVP](usecases/UC-HORS-MVP.md) | Fonctionnalités exclues du MVP |

@@ -1,5 +1,7 @@
 # User Journey — Utiliser un scénario réutilisable (UC-13)
 
+> **Should Have — hors première livraison (post-MVP)** — Ce parcours décrit la cible produit complète. En première livraison, le one-shot se crée via le parcours campagne nominal (UC-02, `type = ONE_SHOT`). La `ScenarioLibrary` et le parcours express sont reportés post-MVP — voir UC-13 et vision §5bis.
+
 ## Périmètre
 
 Ce parcours couvre deux profils distincts : Sonia, qui anime des one-shots avec un catalogue de 15 scénarios qu'elle rejoue avec des groupes différents, et Antoine, qui veut réutiliser des structures entre ses 3 campagnes simultanées. Le parcours part du moment où le MJ décide de rejouer un scénario et s'arrête au lancement de la session depuis l'instance créée.

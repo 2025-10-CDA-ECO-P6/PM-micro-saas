@@ -1,4 +1,4 @@
-# Epic — Rejoindre une campagne ou une session (UC-12)
+# Epic — Consulter sa campagne en tant que joueur (vue post-accès) (UC-12)
 
 ## Objectif utilisateur
 
@@ -17,7 +17,7 @@ Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11
 
 ## Use cases couverts
 
-- **UC-12** — Rejoindre une campagne ou une session (point de vue joueur, post-accès)
+- **UC-12** — Consulter sa campagne en tant que joueur (vue post-accès)
   - Nominal : vue joueur post-accès — fiche personnage + documents `PUBLIC`
   - A1 : joueur associé à plusieurs personnages — choix du personnage actif
   - A2 : accès limité à la session seulement (périmètre `SESSION`, sans accès campagne complet)
@@ -89,7 +89,7 @@ flowchart LR
     US1201[US-12-01\nAcceder a sa fiche\net aux informations partagees]
     US1202[US-12-02\nChoisir son personnage actif\nmulti-personnages]
 
-    UC12[UC-12\nRejoindre une campagne\nperspective joueur]
+    UC12[UC-12\nConsulter / vue joueur]
     UC09[UC-09\nAcces session joueur]
     UC11[UC-11\nGerer membres campagne]
     UC08[UC-08\nPartager information]
@@ -118,14 +118,14 @@ flowchart LR
 **Notes de conception** :
 - La vue joueur est rendue disponible dès que le `GuestAccess` ou le `Member` est actif (UC-09).
 - La fiche de personnage n'est visible que si le MJ a associé un personnage à ce joueur (US-11-04). Sans association, le joueur consulte uniquement les documents `PUBLIC`.
-- Les notes `PLAYER_PRIVATE` sont liées au personnage (Document de type `player_character`), pas au `GuestAccess`. Un `GuestAccess` récupère les notes `PLAYER_PRIVATE` du personnage associé, y compris celles d'une session précédente.
+- Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, rattachées au personnage pour l'affichage. Un `GuestAccess` récupère la **fiche** du personnage associé — les notes `PLAYER_PRIVATE` ne sont visibles que si le même auteur y accède de nouveau (compte stable) ; un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent (RB-12-02, RB-09-19).
 - Les documents `PUBLIC` sont fournis par la Bibliothèque de contenu et filtrés selon le périmètre d'accès (`SESSION` ou `CAMPAIGN`).
 - Un accès périmètre `SESSION` donne accès aux documents épinglés de la session et aux documents `PUBLIC` de la campagne, mais pas à l'historique complet du lore campagne (couvert par US-09-03).
 - Un accès périmètre `CAMPAIGN` (`Member`) donne accès à l'ensemble des documents `PUBLIC` de la campagne et à l'historique des sessions.
 
 **Règles métier** :
 - RB-12-01 : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` et les documents `PLAYER_PRIVATE` d'autres personnages sont invisibles.
-- RB-12-02 : Les notes `PLAYER_PRIVATE` sont liées au personnage (Document de type `player_character`), pas à l'accès (`GuestAccess` ou `Member`). Elles persistent entre les sessions pour un même personnage.
+- RB-12-02 : Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, **rattachées au personnage pour l'affichage** ; elles persistent entre les sessions pour le **même auteur** (compte stable). Elles ne sont pas propriété du personnage — un joueur (invité ou membre) qui accède à un personnage déjà joué par quelqu'un d'autre ne récupère jamais les notes de son prédécesseur (RB-09-19).
 - RB-12-03 : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
 - RB-12-04 : Un accès périmètre `SESSION` ne donne pas accès à l'historique complet des sessions et du lore de la campagne. Seuls les documents `PUBLIC` et les documents épinglés de la session sont visibles.
 - RB-12-05 : Un accès périmètre `CAMPAIGN` (`Member`) donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions passées.
@@ -162,11 +162,11 @@ Scenario : Acces perimetre SESSION - pas d acces au lore campagne complet
   Alors Lucas voit les documents epingles de la session et les documents PUBLIC
   Et Lucas ne voit pas l historique des sessions precedentes ni le lore complet de la campagne
 
-Scenario : Notes PLAYER_PRIVATE preservees entre les sessions
+Scenario : Notes PLAYER_PRIVATE preservees entre les sessions pour le meme auteur
   Etant donne que Lucas a pris des notes PLAYER_PRIVATE sur Aldric lors d une session precedente
-  Et que Lucas rejoint une nouvelle session avec le meme personnage Aldric
+  Et que Lucas rejoint une nouvelle session en tant que meme auteur (meme compte)
   Quand la vue joueur s affiche
-  Alors les notes PLAYER_PRIVATE d Aldric de la session precedente sont disponibles
+  Alors les notes PLAYER_PRIVATE ecrites par Lucas sur Aldric sont disponibles
 
 Scenario : Documents GM_ONLY invisibles pour le joueur
   Etant donne que la campagne contient un document avec la visibilite GM_ONLY
@@ -277,6 +277,6 @@ Scenario : Changement de personnage actif sans modifier les associations MJ
 
 1. Le personnage actif doit-il être mémorisé entre les sessions (préférence persistante) ou remis à zéro à chaque nouvelle connexion ? La story couvre uniquement la session en cours.
 2. Quand Thomas a deux personnages associés et que le MJ épingle un document lié à un seul personnage, ce document doit-il apparaître dans la vue joueur quel que soit le personnage actif, ou seulement quand le personnage concerné est actif ?
-3. Un joueur sans personnage associé peut-il prendre des notes "libres" non liées à un personnage ? Ces notes seraient rattachées à son `Member` ou `GuestAccess`, pas à un `PlayerCharacter`.
+3. Un joueur sans personnage associé peut-il prendre des notes "libres" non liées à un personnage ? Ces notes seraient rattachées à son `Member` ou `GuestAccess`, pas à un personnage joueur (`Document` de type `player_character`).
 4. La sélection du personnage actif doit-elle être visible par le MJ dans sa vue session ? Cela permettrait au MJ de savoir quel personnage Thomas joue ce soir sans lui poser la question.
 5. Si un joueur a un accès périmètre `SESSION` et un accès périmètre `CAMPAIGN` simultanément (par exemple après migration invité vers compte), quelle vue s'affiche en priorité ?

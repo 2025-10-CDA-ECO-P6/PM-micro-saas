@@ -9,6 +9,7 @@ erDiagram
     USER {
         uuid id PK "Identifiant unique du compte"
         string email "Unique, normalisé en minuscules"
+        boolean email_verified "Adresse de messagerie vérifiée"
         string display_name "Nom d'affichage public"
         string status "ACTIVE | SUSPENDED | DELETED"
         string tier "FREE | PRO"

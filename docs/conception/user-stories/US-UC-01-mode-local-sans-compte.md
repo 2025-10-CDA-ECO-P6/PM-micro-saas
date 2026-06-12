@@ -13,7 +13,7 @@ Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans frict
 | Persona | Profil | Douleur principale | Lien avec cet epic |
 |---|---|---|---|
 | **Nadia** | MJ infirmière, 42 ans | Coût d'adoption trop élevé pour sa fréquence de jeu | Bénéficiaire directe — peut tester sans s'engager |
-| **Thomas** | MJ développeur, 35 ans | Lock-in propriétaire, migration lourde | Concerné par l'export JSON et la liberté des données |
+| **Thomas** | MJ développeur, 35 ans | Lock-in propriétaire, migration lourde | Concerné par l'export en format ouvert et la liberté des données — ce besoin est transverse au mode local et au compte cloud |
 | **Rémi** | MJ libraire, 48 ans | Ne voit pas la valeur face à un carnet | Entrée sans friction peut abaisser sa résistance initiale |
 
 ---
@@ -35,7 +35,7 @@ Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans frict
 | US-01-04 | Must Have |
 | US-01-05 | Must Have (dépend UC-10) |
 | US-01-06 | Should Have |
-| US-01-07 | Exclue (voir section Stories exclues ou repoussées) |
+| US-01-07 | Should Have |
 
 ---
 
@@ -379,7 +379,58 @@ Feature: Gestion des données locales introuvables
 
 ---
 
-## Stories exclues ou repoussées
+### US-01-07 — Exporter sa campagne dans un format ouvert
+
+**Priorité** : Should Have (vision §5bis, décision 2026-06-10)
+
+**Note de transversalité** : ce besoin de possession des données existe en mode local comme avec un compte cloud — l'export n'est pas une fonctionnalité exclusive au mode local. L'implémentation sera commune aux deux contextes.
+
+**Format**
+
+> En tant que MJ,
+> je veux pouvoir exporter ma campagne dans un format ouvert depuis les paramètres,
+> afin de disposer d'une copie de sauvegarde et de ne pas être enfermé dans l'outil.
+
+**Métadonnées**
+
+| Champ | Valeur |
+|---|---|
+| Priorité | Should Have |
+| Source | UC-01 — scénario alternatif A4a ; vision §5bis |
+| Bounded context | la gestion de campagne |
+
+**Critères d'acceptation**
+
+```gherkin
+Feature: Export de campagne en format ouvert
+
+  Scenario: Le MJ exporte sa campagne depuis les paramètres (mode local)
+    Given le MJ est en mode local sans compte
+    And il a au moins une campagne
+    When il accède aux paramètres et déclenche l'export
+    Then un fichier de sauvegarde au format ouvert est généré et téléchargé
+    And le fichier contient l'intégralité des données de la campagne
+
+  Scenario: Le MJ exporte sa campagne depuis les paramètres (compte cloud)
+    Given le MJ est connecté avec un compte
+    When il accède aux paramètres et déclenche l'export d'une campagne
+    Then un fichier de sauvegarde au format ouvert est généré et téléchargé
+    And le fichier contient l'intégralité des données de la campagne
+```
+
+**Règles métier**
+
+- RB-01-16 : L'export de campagne est disponible en mode local comme avec un compte cloud. L'utilisateur est propriétaire du fichier généré.
+- RB-01-17 : Le fichier d'export utilise un format ouvert et documenté, lisible sans dépendance à l'outil.
+
+**Notes de conception**
+
+- Ceci est la story centrale de l'export ; le réimport (lecture d'un fichier de sauvegarde) est une story distincte, repoussée post-MVP (US-01-08).
+- La transversalité mode local / compte cloud implique que l'implémentation de l'export ne peut pas résider exclusivement dans le périmètre du mode local.
+
+---
+
+## Stories repoussées post-MVP
 
 ### US-01-03 — Comprendre le risque du mode local sans être bloqué
 
@@ -399,15 +450,20 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 
 ---
 
-### US-01-07 — Exporter ses données locales en JSON
+### US-01-08 — Réimporter un fichier de sauvegarde (post-MVP)
 
-**Raison d'exclusion** : Hors MVP pour l'instant. À reconsidérer si le lock-in propriétaire est identifié comme frein principal lors des entretiens utilisateurs.
+> **Post-MVP.** Le filet de sécurité du mode local repose sur la persistance navigateur, l'export (US-01-07) et la migration vers un compte (NFR-OFF-02/03). Cette story est conservée pour tracer le raisonnement et les règles de validation à reprendre lors de l'implémentation ultérieure.
 
-**Format original**
+**Format**
 
-> En tant que MJ en mode local,
-> je veux pouvoir exporter mes données locales en JSON depuis les paramètres,
-> afin de disposer d'une copie de sauvegarde et de ne pas être enfermé dans l'outil.
+> En tant que MJ,
+> je veux pouvoir réimporter un fichier de sauvegarde précédemment exporté,
+> afin de restaurer mes campagnes sur un autre navigateur ou après perte des données locales.
+
+**Règles de validation à reprendre (post-MVP)**
+
+- Validation structurelle : le fichier est vérifié (version reconnue, format des champs, types attendus). Un fichier malformé ou d'une version non reconnue est rejeté avec un message d'erreur.
+- Nettoyage de contenu : le contenu est nettoyé de tout élément susceptible de déclencher l'exécution de code avant d'être enregistré. Un fichier importé n'est jamais enregistré tel quel dans le stockage local.
 
 ---
 
@@ -418,6 +474,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 3. **US-01-04** — Visibilité des fonctionnalités cloud (prépare la conversion)
 4. **US-01-06** — Gestion des données introuvables (robustesse, Should Have)
 5. **US-01-05** — Migration vers compte (dépend UC-10, livrable uniquement après)
+6. **US-01-07** — Export de campagne en format ouvert (Should Have — transverse mode local / cloud)
 
 ---
 
@@ -431,7 +488,8 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | RB-01-06 : fonctionnalités de partage nécessitent un compte | US-01-04 |
 | RB-01-14 : bandeaux durabilité + confidentialité | US-01-01 (RB-01-14), US-01-02 (logique de durabilité), US-01-06 (E1) |
 | RB-01-15 : aucun élément protégé conservé en mode local | US-01-01 (garanties du mode local) |
-| Fichier d'export validé et nettoyé avant enregistrement | Non couvert en MVP (US-01-07 exclue) — porté par UC-01 règle métier |
+| Export de campagne en format ouvert (RB-01-16/17) | US-01-07 (Should Have) |
+| Fichier réimporté validé et nettoyé avant enregistrement (post-MVP) | US-01-08 — post-MVP ; règles de validation tracées dans UC-01 A4b |
 
 | Critère d'acceptation UC-01 | Story couvrant le critère |
 |---|---|
@@ -439,7 +497,8 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | Persistance après fermeture/réouverture | US-01-02 |
 | Rappel non bloquant sur la nature locale | US-01-01 (message premier démarrage) + RB-01-14 (bandeaux durabilité/confidentialité) |
 | Création de compte depuis n'importe quelle page avec migration | US-01-05 |
-| Fichier de sauvegarde fonctionnel et réimportable | Non couvert en MVP — ce critère d'acceptation doit être révisé dans UC-01 |
+| Export de campagne en format ouvert (Should Have) | US-01-07 |
+| Réimport de fichier de sauvegarde (post-MVP) | US-01-08 — post-MVP |
 | Fonctionnalités de partage visibles mais désactivées avec invite | US-01-04 |
 | Bandeau durabilité si garantie de conservation refusée | US-01-02 (RB-01-04 révisée) |
 | Bandeau confidentialité systématique en mode local | US-01-01 (RB-01-14) |
@@ -449,7 +508,8 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | A1 — Conversion vers un compte | US-01-05 |
 | A2 — Retour après fermeture du navigateur | US-01-02 |
 | A3 — Données introuvables (cache vidé ou éviction navigateur) | US-01-06 |
-| A4 — Importation de fichier de sauvegarde (validation + nettoyage) | Non couvert en MVP (US-01-07 exclue) |
+| A4a — Export de campagne (format ouvert) | US-01-07 (Should Have) |
+| A4b — Réimport de fichier de sauvegarde (validation + nettoyage) | US-01-08 — post-MVP |
 | E1 — Stockage navigateur plein | US-01-06 |
 
 ---
@@ -459,7 +519,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 1. **Affichage des bandeaux de limitation** — Formalisé. Deux bandeaux ciblés et non bloquants remplacent un bandeau persistant générique : bandeau de durabilité (conditionnel — quand la garantie de conservation permanente est refusée) et bandeau de confidentialité (systématique en mode local). Portés par RB-01-14. Le message informatif au premier démarrage reste couvert par US-01-01.
 2. **Confirmation de migration des données locales** — Formalisé : un gate de reconnaissance est présenté avant migration si des données locales existent (campagnes détectées, volume estimé, date de création). La migration démarre uniquement après confirmation explicite. Cette confirmation est une exigence du système — aucune migration ne peut démarrer sans elle. La règle porteuse est RB-10-04 dans UC-10.
 3. **Limite du nombre de campagnes en mode local** — DÉCIDÉ : limite à 3 campagnes en mode local (cap numérique).
-4. **Périmètre de l'export / de la sauvegarde locale** — DÉCIDÉ : hors MVP. Périmètre non défini pour l'instant.
+4. **Périmètre de l'export / de la sauvegarde locale** — DÉCIDÉ : export de campagne = **Should Have** (vision §5bis, 2026-06-10), disponible en mode local comme avec un compte cloud. Le **réimport** d'un fichier de sauvegarde est un objet distinct, repoussé **post-MVP** (US-01-08).
 
 ---
 

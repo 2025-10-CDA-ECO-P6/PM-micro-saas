@@ -81,7 +81,7 @@ Ce que ces interviews ne cherchent pas : recueillir des listes de fonctionnalit�
 - En pleine session, si vous aviez besoin d'accéder à une fiche PNJ ou une description de lieu préparée, combien de temps vous mettez à la retrouver dans votre organisation actuelle ? [MJ expérimenté, MJ débutant]
 - Pendant une partie, est-ce qu'il vous arrive de devoir quitter votre système de notes principal pour chercher un détail ailleurs — papier, autre onglet, mémoire ? Racontez un exemple. [MJ expérimenté, MJ débutant]
 - Après une session, que faites-vous de vos notes de session — les relisez-vous avant la session suivante ? Où les rangez-vous ? [MJ expérimenté, MJ débutant]
-- Avez-vous déjà cherché dans des notes de sessions passées une information précise — du type "dans quelle session est-ce qu'on a mentionné ce PNJ" ? Comment vous faites ça aujourd'hui ? [MJ expérimenté, Nadia - profil casual]
+- Avez-vous déjà cherché dans des notes de sessions passées une information précise — du type "dans quelle session est-ce qu'on a mentionné ce PNJ" ? Comment vous faites ça aujourd'hui ? [MJ expérimenté, Nadia - profil occasionnel]
 - Sur quoi consultez-vous vos notes pendant une partie : ordinateur, tablette, téléphone, papier ? [tous MJ]
 
 ### Partage avec les joueurs
@@ -113,7 +113,7 @@ Ce que ces interviews ne cherchent pas : recueillir des listes de fonctionnalit�
 
 - Avez-vous peur de perdre vos notes de campagne ? Est-ce que ça vous est déjà arrivé ? [tous MJ]
 - Est-ce que vous préparez vos sessions depuis plusieurs appareils ou depuis un seul ? [MJ expérimenté, MJ débutant]
-- Si un outil conservait vos données uniquement dans votre navigateur — sans compte, sans serveur — et vous proposait une sauvegarde manuelle, est-ce que ce serait suffisant pour commencer à l'utiliser ? Qu'est-ce qui vous ferait douter ? [MJ débutant, Nadia - profil casual]
+- Si un outil conservait vos données uniquement dans votre navigateur — sans compte, sans serveur — et vous proposait une sauvegarde manuelle, est-ce que ce serait suffisant pour commencer à l'utiliser ? Qu'est-ce qui vous ferait douter ? [MJ débutant, Nadia - profil occasionnel]
 - À quel moment vous dites-vous "il faut que je crée un compte" pour un outil — qu'est-ce qui déclenche ce moment ? [tous MJ]
 - Si vous utilisiez un outil depuis plusieurs semaines et que quelqu'un vous proposait de synchroniser vos données dans le cloud, quel serait votre premier réflexe ? [MJ expérimenté, MJ débutant]
 
@@ -174,16 +174,16 @@ Les questions suivantes couvrent les incertitudes les plus critiques identifiée
 
 | # | Question | Profil cible | Hypothèse à valider ou invalider |
 |---|---|---|---|
-| 1 | À quel moment vous dites-vous "il faut que je crée un compte" pour un outil — qu'est-ce qui déclenche ce moment ? | MJ débutant, MJ casual (Nadia) | H : le déclencheur naturel est le partage avec les joueurs, pas la peur de perdre des données. Si faux, le message "risque de perte" doit être plus présent en mode local (UC-01). |
+| 1 | À quel moment vous dites-vous "il faut que je crée un compte" pour un outil — qu'est-ce qui déclenche ce moment ? | MJ débutant, MJ occasionnelle (Nadia) | H : le déclencheur naturel est le partage avec les joueurs, pas la peur de perdre des données. Si faux, le message "risque de perte" doit être plus présent en mode local (UC-01). |
 | 2 | Quand vous relancez un scénario avec un nouveau groupe, qu'est-ce que vous voulez garder exactement identique, et qu'est-ce que vous adaptez ? | MJ convention (Sonia) | H : Sonia veut un "instantané" du scénario source, pas un diff. Si faux, un mécanisme de comparaison source/instance est nécessaire (UC-13). |
 | 3 | Avez-vous un "catalogue" de vos scénarios — même informel — ou chaque one-shot existe de façon indépendante ? | MJ convention (Sonia) | H : Sonia a une organisation mentale par scénario, pas par campagne. Si vrai, le point d'entrée "Bibliothèque" du tableau de bord est prioritaire sur la vue "Campagnes". |
 | 4 | Les MJ font-ils une séparation mentale claire entre "campagne" et "one-shot" avant de lancer l'application ? | MJ débutant, MJ convention | H : la distinction campagne / one-shot est évidente pour l'utilisateur. Si faux, le choix au démarrage risque de bloquer l'onboarding (UC-02). |
-| 5 | Avez-vous cherché dans des notes de sessions passées une information précise ? Comment vous faites ça aujourd'hui ? | MJ casual (Nadia), MJ expérimenté | H : la recherche dans les notes de sessions archivées est un besoin réel non couvert par la navigation (UC-14 périmètre MVP à trancher). |
+| 5 | Avez-vous cherché dans des notes de sessions passées une information précise ? Comment vous faites ça aujourd'hui ? | MJ occasionnelle (Nadia), MJ expérimenté | H : la recherche dans les notes de sessions archivées est un besoin réel non couvert par la navigation (UC-14 périmètre MVP à trancher). |
 | 6 | Est-ce qu'il vous arrive de vouloir partager une information à un joueur précis mais pas aux autres ? Comment vous gérez ça aujourd'hui ? | MJ expérimenté (Antoine) | H : le partage par groupe (tous les joueurs) suffit pour le MVP. Si faux, la granularité par joueur ou personnage doit être réévaluée (UC-08, UC-09). |
 | 7 | Pendant une session, qu'est-ce qui se passe quand les joueurs font quelque chose que vous n'aviez pas prévu — comment vous le notez à ce moment-là ? | MJ expérimenté, MJ débutant (Émilie) | H : la création à la volée (UC-07) est un besoin fort pendant la session. Valide l'importance du panneau de création rapide. |
 | 8 | En tant que joueur, est-ce que vous accédez aux informations de campagne depuis votre téléphone ou plutôt depuis un ordinateur ? | Joueur régulier (Lucas), Joueur occasionnel | H : les joueurs accèdent depuis mobile. Si vrai, la vue joueur mobile est critique pour le MVP (UC-06, UC-09 — angle mort identifié). |
-| 9 | Avez-vous déjà essayé de partager un outil numérique avec votre groupe et rencontré des résistances ? Racontez. | MJ expérimenté, MJ débutant | H : l'obligation de création de compte côté joueur est le premier frein d'adoption. Valide ou invalide le choix "accès joueur sans compte" (UC-09, UC-12). |
-| 10 | Si un outil conservait vos données uniquement dans votre navigateur sans compte, est-ce que ce serait suffisant pour commencer à l'utiliser ? | MJ débutant, MJ casual (Nadia, Rémi) | H : le mode local sans compte réduit la friction d'onboarding. Si faux, il faut revoir le message de risque de perte de données ou proposer un export plus lisible dès le départ (UC-01). |
+| 9 | Avez-vous déjà essayé de partager un outil numérique avec votre groupe et rencontré des résistances ? Racontez. | MJ expérimenté, MJ débutant | H : l'obligation de création de compte côté joueur est le premier frein d'adoption. Valide ou invalide le choix "accès joueur sans compte" (UC-09 — octroi d'accès) et la valeur de la vue joueur une fois entré (UC-12 — vue joueur). |
+| 10 | Si un outil conservait vos données uniquement dans votre navigateur sans compte, est-ce que ce serait suffisant pour commencer à l'utiliser ? | MJ débutant, MJ occasionnelle (Nadia, Rémi) | H : le mode local sans compte réduit la friction d'onboarding. Si faux, il faut revoir le message de risque de perte de données ou proposer un export plus lisible dès le départ (UC-01). |
 
 ---
 

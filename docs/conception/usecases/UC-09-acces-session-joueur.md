@@ -1,4 +1,4 @@
-# UC-09 — Accéder à une session en tant que joueur (sans compte)
+# UC-09 — Accès joueur via lien (session ou campagne)
 
 ## Acteur principal
 
@@ -10,7 +10,7 @@ MJ
 
 ## Objectif
 
-Permettre à un joueur d'accéder aux informations partagées par le MJ via un lien, sans créer de compte, avec une friction minimale.
+Permettre à un joueur d'obtenir l'accès à une campagne ou à une session via un lien partagé par le MJ, avec ou sans compte : soit comme invité ponctuel pour une session (sans compte, friction minimale), soit comme membre permanent de la campagne (avec compte, accès persistant).
 
 ## Contexte
 
@@ -20,16 +20,17 @@ L'accès joueur sans compte est la condition d'adoption du groupe entier, ce qui
 
 ## Déclencheur
 
-Le MJ partage un lien d'accès à une session ou à sa campagne avec ses joueurs.
+Le MJ partage un lien d'accès à une session (lien ponctuel) ou à sa campagne (lien permanent) avec ses joueurs.
 
 ## Préconditions
 
 - Le MJ a un compte (au minimum gratuit) — le partage nécessite un backend.
-- Le MJ a généré un lien de session ponctuel depuis la vue session ou le panneau membres (UC-06).
+- Pour le chemin session ponctuelle : le MJ a généré un lien de session ponctuel depuis la vue session ou le panneau membres (UC-11).
+- Pour le chemin campagne permanent : le MJ a généré un lien de campagne depuis le panneau membres (UC-11).
 
-## Scénario nominal — Accès session ponctuel (sans compte)
+## Scénario nominal A — Accès session ponctuel (sans compte)
 
-1. Le MJ génère un lien de session depuis la vue session ou le panneau membres.
+1. Le MJ génère un lien de session depuis la vue session ou le panneau membres (UC-11).
 2. Il partage le lien (Discord, WhatsApp, email, peu importe).
 3. Le joueur clique sur le lien.
 4. L'application affiche immédiatement les informations partagées par le MJ pour cette session.
@@ -37,11 +38,22 @@ Le MJ partage un lien d'accès à une session ou à sa campagne avec ses joueurs
 6. Il peut consulter les documents partagés, les informations révélées en temps réel pendant la session.
 7. À la fin de la session, son accès expire.
 
+## Scénario nominal B — Accès campagne permanent (joueur authentifié)
+
+1. Le MJ génère un lien de campagne depuis le panneau membres (UC-11) et le partage avec le joueur.
+2. Le joueur clique sur le lien.
+3. S'il n'est pas encore connecté, l'application lui propose de se connecter ou de créer un compte (UC-10 pour la création de compte ; la jonction campagne se complète dans UC-09 une fois authentifié).
+4. Le joueur est connecté à son compte Haversack.
+5. L'application crée un `CampaignMembership` en `PENDING` puis l'active immédiatement via `Activate()` : le lien d'invitation campagne généré par le MJ (UC-11) tient lieu de validation au sens de RB-09-16 — c'est l'invitation préalable du MJ, pas un second clic, qui autorise l'activation. Le cycle de domaine `PENDING → ACTIVE` est respecté sans exception.
+6. Le joueur obtient un accès persistant à la campagne : il peut consulter les sessions passées, les documents partagés, et son historique de personnage selon le périmètre du lien.
+7. La vue obtenue une fois l'accès actif (fiche de campagne, documents `PUBLIC`, historique selon périmètre) relève d'**UC-12**.
+8. L'accès persiste jusqu'à révocation par le MJ (UC-11).
+
 ## Scénarios alternatifs
 
-### A1 — Joueur avec un compte existant
+### A1 — Joueur déjà connecté suivant un lien de session ponctuel
 
-1. Le joueur clique sur le lien.
+1. Le joueur clique sur le lien de session.
 2. Il est déjà connecté à son compte Haversack.
 3. Il accède directement aux informations partagées, avec son historique de session.
 
@@ -49,17 +61,11 @@ Le MJ partage un lien d'accès à une session ou à sa campagne avec ses joueurs
 
 1. Le joueur a accédé comme invité à plusieurs sessions.
 2. Il veut conserver ses notes personnelles entre sessions.
-3. Il crée un compte depuis la page invité.
+3. Il crée un compte depuis la page invité (UC-10).
 4. Ses notes et accès existants sont migrés vers son compte.
-5. Il devient membre permanent de la campagne si le MJ valide.
+5. Il peut ensuite rejoindre la campagne via un lien de campagne (scénario nominal B).
 
-### A3 — Lien de campagne permanent (membres réguliers)
-
-1. Le MJ invite un joueur régulier avec un lien de campagne (et non un lien de session).
-2. Le joueur peut accéder à l'historique des sessions passées et aux documents de lore partagés.
-3. Ce mode nécessite un compte joueur (accès persistant → UC-10).
-
-### A4 — Lien expiré ou révoqué
+### A3 — Lien expiré ou révoqué
 
 1. Le joueur clique sur un lien de session expiré ou que le MJ a révoqué.
 2. L'application affiche un message clair : "Ce lien n'est plus actif."
@@ -77,9 +83,14 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
 
 ## Postconditions
 
+**Chemin A — session ponctuelle (sans compte)**
 - Le joueur accède aux informations partagées sans avoir créé de compte.
 - Son nom d'affichage est visible dans la session pour le MJ.
 - Son accès expire à la fin de la session (pour les liens ponctuels).
+
+**Chemin B — campagne permanent (avec compte)**
+- Le `CampaignMembership` est actif (créé `PENDING` puis activé via `Activate()` à l'utilisation du lien d'invitation généré par le MJ).
+- Le joueur dispose d'un accès persistant à la campagne jusqu'à révocation par le MJ.
 
 ## Règles métier
 
@@ -91,17 +102,27 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
   La seule différence est technique : il n'a pas de compte persistant.
 - La création d'un compte depuis l'accès invité migre l'accès sans perdre les notes déjà prises.
 - Le MJ avec un compte gratuit peut inviter jusqu'à 4 joueurs par session. Le compte Pro lève cette limite.
-- RB-09-18 : À la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) ne sont pas conservées au-delà — elles sont supprimées. Si l'invité a été converti en compte, ses données suivent les règles du compte (RGPD Art. 5(1)(e) — limitation de la conservation).
-- RB-09-19 : À la fin définitive d'un `GuestAccess` non converti, les notes `PLAYER_PRIVATE` créées par cet invité sont supprimées physiquement. Seules les notes créées par cet invité sont concernées, jamais celles d'autres participants (RGPD Art. 17 — droit à l'oubli, fondement identique à la suppression des notes à la suppression d'un compte).
-- RB-09-20 : Au moment où l'invité saisit son nom d'affichage (avant ou à l'entrée en session), il est informé de manière simple de ce qui est conservé (son nom d'affichage, ses notes privées éventuelles), pour combien de temps (durée de l'accès + grâce), et de leur suppression à la fin de l'accès (RGPD Art. 13 — information de la personne concernée).
+- **Distinction de consentement** : suivre un lien d'invitation **campagne** généré par le MJ (UC-11) vaut validation — le `CampaignMembership` est créé `PENDING` puis activé (`Activate()`), l'invitation préalable du MJ tenant lieu de validation au sens de RB-09-16. En revanche, un joueur invité ne peut pas **s'auto-promouvoir** membre sans lien d'invitation campagne du MJ — une telle demande crée un `CampaignMembership` `PENDING` en attente de validation explicite du MJ (RB-09-16, parcours-03). La validation se fait côté MJ (UC-11).
+- **Ownership `GuestAccess`** : UC-09 est le propriétaire des données et du cycle de vie des enregistrements `GuestAccess`. Leur création, expiration, révocation et conversion sont pilotées par les règles de cet UC ; les règles RGPD qui s'y appliquent (RB-09-18, RB-09-19) vivent ici par cohérence de responsabilité.
+- RB-09-18 : À la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) cessent immédiatement d'être utilisées et affichées — plus aucune finalité produit. Leur effacement effectif intervient **au plus tard 90 jours** après la fin d'accès ; cette fenêtre bornée a pour seule finalité de permettre à l'invité d'exercer ses droits et de traiter une contestation, jamais un usage produit. ⚠️ Cette fenêtre de rétention de 90 jours porte **uniquement sur l'identifiant d'accès** (`displayName`, élément d'accès) — **les notes `PLAYER_PRIVATE` n'ont pas de fenêtre de rétention** : elles sont supprimées sans délai à la fin définitive de l'accès (RB-09-19). Si l'invité a été converti en compte, ses données suivent les règles du compte (RGPD Art. 5(1)(e) — limitation de la conservation).
+- RB-09-19 : À la fin définitive d'un `GuestAccess` non converti, les notes personnelles **écrites par cet invité** (`PLAYER_PRIVATE`) sont supprimées physiquement — la clé de suppression est l'auteur, pas le personnage. Seules les notes dont cet invité est l'auteur sont concernées, jamais celles d'autres participants. La **fiche de personnage** associée survit intacte (elle appartient à la campagne, est ré-associable, et ne contient aucune note d'un autre joueur) (RGPD Art. 17 — droit à l'oubli, fondement identique à la suppression des notes à la suppression d'un compte).
+- RB-09-20 : Au moment où l'invité saisit son nom d'affichage (avant ou à l'entrée en session), il est informé de manière simple de ce qui est conservé (son nom d'affichage, ses notes privées éventuelles), pour combien de temps (durée de l'accès + grâce), et du sort de ses données à la fin de l'accès : ses notes privées sont supprimées s'il n'a pas créé de compte, son nom d'affichage cesse d'être utilisé immédiatement et est effacé au plus tard 90 jours après la fin d'accès (RGPD Art. 13 — information de la personne concernée).
+- RB-09-21 : Sur un compte `FREE`, une session est limitée à **4 joueurs distincts disposant d'un accès à la séance**, quel que soit le type d'accès (accès invité ponctuel, membre de campagne, ou autre type d'accès futur). Le MJ n'est jamais compté. La limite porte sur le nombre d'**accès distincts accordés** au moment de leur octroi — c'est le refus du **5e accès** qui bloque, pas une mesure de présence en temps réel. Compter un seul type d'accès rendrait la limite contournable et viderait le levier de l'offre supérieure. Le joueur dont l'accès est refusé voit un message sobre d'erreur, sans révélation sur la campagne (même registre que le message de lien expiré) ; le MJ reçoit le signalement de la limite atteinte avec une invitation à passer `PRO` pour la lever.
+- RB-09-22 : Au-delà de l'information donnée à la saisie du nom (RB-09-20), l'invité est averti **en temps utile** — à un moment qui lui laisse la possibilité d'agir avant la fin de son accès — que ses notes personnelles ne seront conservées que s'il crée un compte avant cette fin. Cet avertissement traite le risque que l'information initiale ne soit plus présente à l'esprit lorsque l'accès prend fin, et laisse à l'invité le temps de décider de créer un compte pour conserver ses notes (UC-09 A2, RB-09-14).
 
 ## Critères d'acceptation
 
+**Chemin A — session ponctuelle (sans compte)**
 - Un joueur peut rejoindre une session en cliquant sur un lien, en saisissant uniquement un nom, sans inscription.
 - Le joueur voit en temps réel les informations que le MJ partage pendant la session.
 - Le lien expire correctement après la session.
 - Le joueur peut créer un compte depuis la page invité sans perdre ses données de session.
 - Un lien révoqué affiche un message clair sans révéler d'information sur la campagne.
+
+**Chemin B — campagne permanent (avec compte)**
+- Un joueur authentifié suivant un lien de campagne obtient un `CampaignMembership` actif dans la campagne (cycle `PENDING → Activate()` respecté ; l'invitation du MJ tient lieu de validation).
+- L'accès est persistant et visible dans la gestion des membres (UC-11).
+- Un joueur non connecté est invité à se connecter ou créer un compte avant que la jonction soit complétée.
 
 ## Questions à valider en interview
 

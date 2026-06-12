@@ -183,6 +183,22 @@ et ne peuvent pas être modifiés. Les types personnalisés (Could Have) permett
 
 ---
 
+**Propriétés structurées du type `scenario`**
+
+Le statut d'un scénario (brouillon / prêt / joué / archivé, évoqué par US-03-06) se loge dans
+les **propriétés structurées (`properties`) du type `SCENARIO`**. Il n'y a pas de nouveau champ
+`status` sur `Document` ni de nouvelle entité — le modèle générique le permet déjà.
+
+| Propriété structurée | Type | Valeurs | Description |
+|---|---|---|---|
+| `scenarioStatus` | `enum` | `DRAFT` \| `READY` \| `PLAYED` \| `ARCHIVED` | État éditorial du scénario, géré par le MJ. Distinct du `status` de campagne (Campaign Management) et du `status` de session (Session Conduct). |
+
+> `scenarioStatus` est porté par `Document.properties` et est invisible au modèle générique `Document`.
+> Il n'est accessible qu'en présence d'un `documentTypeId = SCENARIO`.
+> La valeur par défaut à la création est `DRAFT`.
+
+---
+
 ## Cas d'usage illustrés
 
 ### Scénario avec scènes structurées
@@ -262,6 +278,7 @@ Document (SCENE) "Entrée de la crypte"
 7. Les types système (`isSystem = true`) ne peuvent pas être modifiés ni supprimés.
 8. Un document `REVEAL` lié à une scène est créé avec `visibility = GM_ONLY` par défaut. Il passe à `PUBLIC` uniquement via une action explicite du MJ en session (→ UC-08 — partage d'information). Ce passage est permanent jusqu'à `Unshare()`.
 9. Si un `Folder.defaultTemplateDocumentId` est défini, tout nouveau `Document` créé dans ce dossier est initialisé en appelant `Document.Instantiate()` sur le template. Si le template est supprimé, le champ passe à `null` — les documents existants ne sont pas affectés.
+10. **Effacement physique sous obligation RGPD** : les Documents avec `visibility = PLAYER_PRIVATE` qui tombent sous une obligation d'effacement légal (suppression de compte utilisateur, fin définitive d'un `GuestAccess` non converti) sont supprimés **physiquement**, et non via le mécanisme `SoftDelete`. La suppression logique réversible ne constitue pas un effacement au sens de l'article 17 du RGPD — elle ne fait que masquer le contenu. Pour ces populations, la suppression est définitive et non réversible. Les Documents avec `visibility = PUBLIC` ou `GM_ONLY` ne sont pas concernés : ils restent attachés à la campagne sous intérêt légitime (continuité de campagne).
 
 ---
 
@@ -303,22 +320,11 @@ Document (SCENE) "Entrée de la crypte"
 
 ---
 
-## Concepts en attente d'arbitrage
+## Note sur la ScenarioLibrary (UC-13)
 
-### ScenarioLibrary (UC-13)
-
-UC-13 et US-13 introduisent une `ScenarioLibrary` appartenant au compte MJ, cross-campagne.
-Ce concept n'est pas encore modélisé dans ce contexte.
-
-**Deux options :**
-
-**Option A — Agrégat `ScenarioLibrary` dans Content Library**
-La `ScenarioLibrary` est un agrégat léger avec une liste de références de scénarios marqués comme réutilisables (`isReusable = true`). L'instanciation reste dans `Document.Instantiate()`. Avantage : minimal, ne crée pas un nouveau contexte.
-
-**Option B — Extension de Campaign Management** *(recommandé)*
-La `ScenarioLibrary` vit au niveau du compte, pas de la campagne — elle dépasse les responsabilités de Content Library qui est toujours campagne-scoped. Un micro-agrégat `ScenarioLibraryEntry(userId, documentId, promotedAt)` dans Campaign Management est plus cohérent : Campaign Management gère déjà les ressources au niveau du compte MJ (quotas, ownerId).
-
-> Décision : **Option B retenue**. Implémentation dans Campaign Management avant UC-13.
+La `ScenarioLibrary` appartient à **Campaign Management** — décision actée (option B retenue).
+Post-MVP, voir UC-13 et la section `ScenarioLibraryEntry` dans `campaign-management.md`.
+L'instanciation d'un scénario depuis la bibliothèque reste dans `Document.Instantiate()` de ce contexte.
 
 ---
 

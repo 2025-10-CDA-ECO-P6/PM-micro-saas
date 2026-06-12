@@ -54,8 +54,18 @@ erDiagram
         horodatage created_at
     }
 
+    %% post-MVP
+    SCENARIO_LIBRARY_ENTRY {
+        identifiant id PK
+        identifiant owner_id FK "ref users.id"
+        identifiant document_id FK "ref documents.id (Content Library)"
+        horodatage promoted_at
+    }
+
     CAMPAIGN ||--o{ CAMPAIGN_MEMBERSHIP : "a des membres"
     CAMPAIGN ||--o{ INVITATION : "a des invitations"
     CAMPAIGN ||--o{ GUEST_ACCESS : "a des accès invités"
     CAMPAIGN_MEMBERSHIP ||--o{ MEMBERSHIP_CHARACTER : "associé à des personnages"
+    SCENARIO_LIBRARY_ENTRY }o--|| USER : "appartient à"
+    SCENARIO_LIBRARY_ENTRY }o--|| DOCUMENT : "promeut"
 ```

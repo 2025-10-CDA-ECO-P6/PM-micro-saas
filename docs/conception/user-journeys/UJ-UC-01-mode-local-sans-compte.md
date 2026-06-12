@@ -12,7 +12,7 @@ Il inclut les scénarios de limite atteinte et de retour après vidage de cache.
 
 | Persona | Profil | Objectif dans ce parcours |
 |---|---|---|
-| **Nadia** | MJ débordée, a abandonné Notion | Valeur rapide — va jusqu'à la conversion |
+| **Nadia** | MJ occasionnelle, a abandonné Notion | Valeur rapide — va jusqu'à la conversion |
 | **Thomas** | MJ Obsidian, évaluateur | Tester sans s'engager — reste en mode local |
 | **Rémi** | MJ papier, résistant au numérique | Tester le partage de résumé — expérience de démarrage médiocre |
 

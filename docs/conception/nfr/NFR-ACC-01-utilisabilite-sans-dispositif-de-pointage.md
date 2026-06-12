@@ -56,7 +56,7 @@ Il oriente l'implémentation sans se substituer au besoin formulé ici.
   (UC-02), structurer un scénario (UC-03), gérer des documents (UC-04), organiser par dossiers
   (UC-05), lancer et piloter une session (UC-06), créer à la volée (UC-07), partager une
   information (UC-08), accéder à la session en tant que joueur (UC-09), gérer les membres
-  (UC-11), rejoindre une campagne (UC-12), et rechercher une information (UC-14).
+  (UC-11), consulter sa campagne en tant que joueur — vue joueur (UC-12), et rechercher une information (UC-14).
 - La navigation entre les panneaux de la vue session, l'épinglage d'un document, la prise de
   notes de session, le basculement de visibilité d'une note.
 - Les actions joueur : accès à la vue session, consultation des documents partagés, prise de

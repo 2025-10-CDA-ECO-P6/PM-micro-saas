@@ -12,8 +12,8 @@
 | Catégorie | Nb | Éléments |
 |---|---|---|
 | **Must Have** | 10 UC + instrumentation | UC-01 à UC-10 (dont UC-05 base — dossiers libres) + instrumentation de validation du MVP |
-| **Should Have** | 6 | UC-05 riche (dossiers et types élaborés), UC-11 à UC-14, export de campagne |
-| **Could Have** | 3 | Types personnalisés, import, notes joueur |
+| **Should Have** | 6 | UC-05 riche (dossiers et types élaborés), UC-11, UC-12, UC-14, UC-13 *(hors première livraison)*, export de campagne |
+| **Could Have** | 3 | Types personnalisés, réimport de fichier de sauvegarde *(post-MVP ; distinct de l'export Should Have)*, notes joueur |
 | **Won't Have** | — | Voir détail ci-dessous |
 
 ---
@@ -243,14 +243,18 @@ temporaire. Il peut révoquer un accès.
 
 ---
 
-### UC-12 — Rejoindre une campagne (membre permanent)
+### UC-12 — Consulter sa campagne en tant que joueur (vue post-accès)
 
-**Pourquoi Should Have** : distinct de UC-09 (accès ponctuel sans compte). Couvre le joueur
-régulier qui veut accéder à l'historique des sessions partagées et aux documents de lore
-visibles entre les parties. Nécessite un compte joueur.
+**Pourquoi Should Have** : distinct de UC-09 (octroi d'accès ponctuel) et UC-11 (gestion des
+membres côté MJ). Couvre la valeur obtenue par le joueur une fois entré dans la campagne : une
+vue cohérente regroupant sa fiche de personnage, les documents `PUBLIC` et l'historique partagé
+selon le périmètre de son accès. Sans cette vue, le joueur membre dispose d'un accès sans
+surface d'entrée unifiée — l'adhésion (octroi via lien, création de compte, création du
+`CampaignMembership`) relève d'UC-09 (côté joueur) et d'UC-11 (côté MJ).
 
-**Critère de sortie** : un joueur avec un compte rejoint une campagne via un lien permanent
-et accède aux informations historiques partagées par le MJ.
+**Critère de sortie** : un joueur disposant d'un `CampaignMembership` actif accède à une vue
+cohérente de sa campagne — fiche de personnage, documents `PUBLIC`, historique selon le
+périmètre de son accès.
 
 ---
 
@@ -320,9 +324,9 @@ semaines d'usage réel.
 
 ---
 
-### Import depuis Obsidian / Notion
+### Réimport de fichier de sauvegarde *(post-MVP — distinct de l'export Should Have)*
 
-Le MJ importe des fichiers Markdown existants pour récupérer son travail passé sans ressaisie.
+Le MJ réimporte un fichier de sauvegarde exporté par l'application pour récupérer une campagne sans ressaisie. Distinct de l'**export de campagne** (Should Have, disponible dès le MVP).
 
 **Valeur** : Thomas a un vault Obsidian de 400 notes qu'il ne migrera pas manuellement.
 Un import partiel (même imparfait) réduit le coût de transition. Argument commercial fort
@@ -382,7 +386,7 @@ La complexité UX des relations bidirectionnelles est élevée. À construire ap
 de l'adoption des types de document.
 
 **Prérequis technique à ne pas rater** : le schéma `Document` doit prévoir
-`documentTypeId` et `properties` (JSON structuré) dès le MVP pour éviter une migration
+`documentTypeId` et `properties` (structure de données structurée) dès le MVP pour éviter une migration
 majeure lors de l'activation des relations.
 
 ---
@@ -441,8 +445,8 @@ UC-01 (Mode local)
 UC-10 (Compte — Must)  ← Must car UC-08/09 (Must) en dépendent
   ├── UC-11 (Membres — Should)
   │     └── UC-09 (liens de session)
-  ├── UC-12 (Rejoindre — Should)
-  └── UC-13 (One-shot — Should) ── dépend aussi de UC-02, UC-03
+  ├── UC-12 (Vue joueur — Should)
+  └── UC-13 (One-shot — Should, hors première livraison) ── dépend aussi de UC-02, UC-03
 ```
 
 **Point clé** : UC-01 est le nouveau point d'entrée. L'inscription (UC-10) est Must Have

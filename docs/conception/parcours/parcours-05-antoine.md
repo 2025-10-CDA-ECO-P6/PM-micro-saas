@@ -209,7 +209,7 @@ Antoine mène 2 à 3 sessions par semaine. Il passe d'une campagne à l'autre. P
 
 ### Couture vers l'étape 7
 
-UC-11 précondition : « Une campagne existe. Le MJ est propriétaire de la campagne. L'adhésion d'un membre permanent présuppose que le joueur dispose d'un compte ou en crée un au fil du parcours d'invitation (UC-10, UC-12). » Satisfait — Antoine est propriétaire de ses trois campagnes.
+UC-11 précondition : « Une campagne existe. Le MJ est propriétaire de la campagne. L'adhésion d'un membre permanent présuppose que le joueur dispose d'un compte ou en crée un au fil du parcours d'invitation (UC-10). » Satisfait — Antoine est propriétaire de ses trois campagnes.
 
 **Couture continue.**
 
@@ -229,8 +229,8 @@ Antoine a des groupes stables pour chaque campagne. Il veut inviter ses joueurs 
 - Il génère un lien d'invitation de périmètre `CAMPAIGN` (accès durable).
 - Il peut configurer une date d'expiration ou un nombre maximum d'utilisations.
 - Il partage le lien à ses joueurs.
-- Quand un joueur utilise le lien avec un compte existant, un `CampaignMembership` est créé en statut `ACTIVE` (UC-12 scénario nominal).
-- Quand un joueur sans compte utilise le lien, il crée son compte dans le même parcours (UC-10 A3, UC-12 A3) — son `GuestAccess` est converti en `CampaignMembership`.
+- Quand un joueur utilise le lien avec un compte existant, un `CampaignMembership` est créé en statut `ACTIVE` (UC-09 — octroi d'accès, scénario nominal côté joueur ; UC-11 — validation côté MJ). La vue cohérente que le joueur obtient ensuite relève d'UC-12 (vue joueur).
+- Quand un joueur sans compte utilise le lien, il crée son compte dans le même parcours (UC-10 A3, UC-09 A2) — son `GuestAccess` est converti en `CampaignMembership`.
 - Antoine associe chaque joueur membre à son personnage (`CampaignMembership` + personnage associé, UC-11 A1).
 - Il peut révoquer une invitation active (UC-11 A2) ou retirer un membre (UC-11 A3) sans perdre ses données.
 
@@ -296,7 +296,7 @@ Ces points sont fondés sur le corpus (fiche persona, UJ-UC-05, UJ-UC-07) — au
 | C3 | Dossiers adaptés → création du contenu | 3 → 4 | **Continue** | UC-04 précondition = campagne existante + MJ y ayant accès. Satisfait. Les dossiers renommés sont immédiatement utilisables. |
 | C4 | Contenu créé → configuration vue session | 4 → 5 | **Continue** | UC-06 (SessionViewConfig) précondition = campagne existante. Satisfait. Les dossiers renommés apparaissent avec leur nouveau nom (UJ-UC-05 §Vers UC-06). |
 | C5 | Vue session configurée → conduite de session | 5 → 6 | **Continue** | UC-06 lancement : campagne existante + MJ authentifié. La SessionViewConfig configurée est retrouvée à l'identique. |
-| C6 | Conduite de session → invitation membres | 6 → 7 | **Continue** | UC-11 précondition = campagne existante + MJ propriétaire + joueurs disposant d'un compte (ou en créant un). Satisfait. |
+| C6 | Conduite de session → invitation membres | 6 → 7 | **Continue** | UC-11 précondition = campagne existante + MJ propriétaire + joueurs disposant d'un compte (ou en créant un via UC-09/UC-10). Satisfait. L'octroi (`CampaignMembership`) relève d'UC-09 (joueur) et UC-11 (MJ) ; la vue joueur post-accès relève d'UC-12. |
 | C7 | Membres invités → partage en session | 7 → 8 | **Continue** | UC-08 précondition = MJ authentifié + joueurs/`GuestAccess` accessibles. `CampaignMembership` actifs existent. Satisfait. |
 | C8 | Templates de dossier indisponibles (UC-13 hors MVP) | 3 | **Limite assumée** | UJ-UC-05 §Transitions inter-UC trace explicitement la dépendance : la liste des modèles pour un dossier dépend de UC-13 (Should Have — post-MVP, hors première livraison) ; en son absence, l'association de modèle n'est pas opérante et un message explicatif est prévu si aucun modèle n'est disponible (UJ-UC-05, points de vigilance). Localisé : UJ-UC-05 §Transitions inter-UC — Vers UC-04, et UC-05 scénario nominal « Associer un template à un dossier ». Antoine ne peut pas associer de template à ses dossiers Factions, Suspects ou Clocks dans la première livraison — limite de périmètre tracée, pas un trou de spécification. |
 | C9 | Dashboard multi-campagnes | 2, 6 | **Continue (couture)** | UC-02 postcondition : après création d'une campagne, depuis le tableau de bord, le MJ retrouve l'ensemble des espaces de jeu dont il est propriétaire ou membre, jusqu'à la limite de son AccountTier. Étape 2 : création des trois campagnes. Étape 6 : Antoine accède à son tableau de bord et retrouve ses trois campagnes, puis navigue entre elles pour conduire ses sessions. La navigation multi-espaces est continue — pas de rupture de parcours. |

@@ -88,3 +88,16 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 **Index** : `UNIQUE (token)`
 
 > **Note — FK inter-modules** : les colonnes traversant une frontière de bounded context (`owner_id` → I&A, `campaign_memberships.user_id` → I&A, `membership_characters.character_id` → Content Library, `invitations.session_id` et `guest_accesses.session_id` → Session Conduct, `guest_accesses.character_id` → Content Library) sont des **clés étrangères physiques réelles** vers la table propriétaire de l'autre module. C'est une **exception assumée** du monolithe modulaire à base de données unique partagée : l'isolation des contextes est tenue au niveau du code (contrats, namespaces), pas par l'absence de FK. À l'extraction éventuelle d'un contexte en service dédié, ces FK deviendront des projections par events. *(ADR-009)*
+
+---
+
+## Table `scenario_library_entries` *(post-MVP)*
+
+| Colonne | Type SQL | Contraintes | Description |
+|---|---|---|---|
+| `id` | `uuid` | PK, NOT NULL | |
+| `owner_id` | `uuid` | FK → `users.id`, NOT NULL | Compte propriétaire de l'entrée — FK physique réelle inter-module (I&A), exception assumée *(ADR-009)* |
+| `document_id` | `uuid` | FK → `documents.id`, NOT NULL | Document promu depuis Content Library — FK physique réelle inter-module, exception assumée *(ADR-009)* |
+| `promoted_at` | `timestamptz` | NOT NULL | Horodatage de la promotion |
+
+**Index** : `UNIQUE (owner_id, document_id)`
