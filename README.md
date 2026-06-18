@@ -66,7 +66,10 @@ Table virtuelle visuelle, moteur de règles, gestion de combat, IA générative,
 
 ### Zoning / wireframes
 
-> _À créer : esquisses des vues principales (tableau de bord MJ, vue session, fiche campagne)._
+Le zoning d'interface MVP (arbitrages AR-01..17, inventaire des 20 écrans, châssis, exclusions) et les 20 wireframes basse-fidélité couvrant l'ensemble des surfaces MVP sont produits.
+
+- Zoning complet : [`docs/conception/interface/zoning.md`](docs/conception/interface/zoning.md)
+- Index des fiches et table de couverture UC→écran : [`docs/presentation/wireframes/`](docs/presentation/wireframes/)
 
 ---
 

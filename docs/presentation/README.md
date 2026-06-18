@@ -8,17 +8,18 @@ Dossier dédié aux assets de présentation et d'identité visuelle du produit.
 
 Ce dossier accueille les assets de présentation et d'identité du produit.
 
-**Wireframes — Vue session** : au périmètre de la conception documentaire. Produits en session dédiée avec l'opérateur en fin de complétude de la conception, avant le jalon final (décision du 2026-06-10 — arbitrage T-09, audit conception pure 2026-06).
+**Wireframes** : le zoning d'interface (arbitrages AR-01..17, inventaire des 20 écrans, châssis, exclusions) et les 20 fiches basse-fidélité couvrant l'ensemble des surfaces MVP sont **produits**. Voir [`wireframes/README.md`](wireframes/README.md) pour l'index complet et la table de couverture UC→écran.
 
 **Autres assets** (logo, charte graphique, ressources d'interface) : relèvent de la phase de présentation post-conception.
 
 ---
 
-## Contenu attendu
+## Contenu
 
 | Asset | Responsable | Statut |
 |---|---|---|
-| **Wireframes — Vue session** | Session dédiée opérateur (conception) | À produire en fin de complétude, avant le jalon final |
+| **Zoning d'interface MVP** | Session dédiée opérateur (conception) | Produit — `docs/conception/interface/zoning.md` |
+| **Wireframes basse-fidélité — 20 fiches** | Session dédiée opérateur (conception) | Produits — [`wireframes/`](wireframes/) |
 | **Logo** | Design graphique | Post-conception |
 | **Charte graphique** (couleurs, typographie, grille) | Design graphique | Post-conception |
 | **Ressources d'interface** (icônes, composants visuels) | Design graphique | Post-conception |
@@ -36,5 +37,5 @@ Ce dossier accueille les assets de présentation et d'identité du produit.
 
 ## Notes
 
-- Les wireframes de **vue session** constituent un livrable prioritaire de conception, dérivé du user journey (UJ-UC-06) et des critères d'acceptation des user stories. Ils seront produits en session dédiée opérateur en fin de complétude de la conception, avant le jalon final.
+- Les wireframes constituent un livrable de conception, dérivés des user journeys et des critères d'acceptation des user stories. Ils couvrent les 20 écrans du périmètre MVP (décision opérateur du 2026-06-12 étendant l'arbitrage T-09 à l'ensemble des surfaces).
 - Cette documentation est interne au projet ; les assets de présentation finaux (logo, charte) seront publiés selon la stratégie appropriée une fois la conception approuvée.
