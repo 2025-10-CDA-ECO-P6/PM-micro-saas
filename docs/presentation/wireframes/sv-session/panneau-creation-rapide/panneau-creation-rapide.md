@@ -60,16 +60,15 @@ Intention : le MJ crée un document ou une note sans quitter la vue session,
 - [UC-07 §Préconditions] fermer le panneau sans créer → retour à la vue session
   dans l'état où elle était avant l'ouverture du panneau ; aucun document créé
 
-Note sur l'auto-épinglage :
-  Selon S4, le document créé est automatiquement épinglé dans le panneau
-  des documents épinglés. UC-07 A5 (préconditions : création depuis CLOSED)
-  est mentionné dans le corpus sans préciser si l'auto-épinglage s'applique
-  aussi en mode CLOSED.
-  [SOUS-SPÉCIFIÉ — UC-07 A5 ; S4 §Panneau de création rapide] comportement
-  de l'auto-épinglage lors d'une création rétroactive depuis le mode
-  consultation CLOSED — non tranché dans le corpus.
-  Ce que dit S4 sans ambiguïté : le document créé est automatiquement épinglé
-  (énoncé général, sans restriction à LIVE).
+Comportement de l'auto-épinglage selon le mode :
+  En mode LIVE : le document créé est automatiquement épinglé dans le panneau
+  des documents épinglés (UC-08 A3 — l'auto-épinglage est réservé à la session
+  active).
+  En mode consultation CLOSED : PAS d'auto-épinglage à la création rétroactive.
+  Le document est créé et rangé dans l'espace ; il n'est pas épinglé
+  automatiquement. Le MJ peut l'épingler manuellement ensuite.
+  Cohérent avec « partage rétroactif sans auto-épinglage » (vue-session-mj.md
+  §Mode consultation CLOSED).
 
 Invocation depuis la vue session :
   - en mode LIVE : [UC-07 ; zoning.md §S3] le panneau est accessible depuis
@@ -96,8 +95,8 @@ Invocation depuis la vue session :
 état créé (après validation) :
   le panneau se referme ; la vue session retrouve son état précédent ;
   le document nouvellement créé est disponible dans l'espace ;
-  [SOUS-SPÉCIFIÉ — UC-07 A5 ; S4] auto-épinglage selon le mode courant —
-  voir note ci-dessus
+  auto-épinglage en mode LIVE uniquement (UC-08 A3) ;
+  en mode CLOSED : document rangé sans épinglage automatique
 ```
 
 ---

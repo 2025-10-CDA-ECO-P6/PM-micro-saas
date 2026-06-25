@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Panneau de création rapide à la volée</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">sur-couche de la vue session · titre seul obligatoire (UC-07)</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">Sources : UC-07 · S4 §Vue session MJ · UC-08 A3 · NFR-ACC-02   ·   <span style="color:#a39a86">s'affiche par-dessus la vue session sans la remplacer · invoqué en LIVE et en CLOSED, jamais en configuration</span></div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran — la vue session reste visible derrière</div>
+
+<!-- ---------- LIVE : PANNEAU OUVERT (SAISIE) ---------- -->
+<div style="position:absolute;left:40px;top:200px;width:620px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Mode LIVE — panneau ouvert · saisie en cours</span>
+  </div>
+  <div style="position:relative;background:#f3efe6;border:1.5px solid #2b2620;border-radius:9px;box-shadow:0 4px 20px rgba(60,50,35,.14);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 15px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c">Les Cendres de Kar-Thol</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 12px;background:#2b2620;border-radius:14px;color:#fbfaf6;font:600 11.5px 'Hanken Grotesk'"><span style="width:8px;height:8px;border-radius:50%;background:#fbfaf6;box-shadow:0 0 0 3px rgba(251,250,246,.28)"></span>Session en cours</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:9px;padding:7px 15px;background:#e7e0d1;border-bottom:1px solid #d8d1c2">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#9a917f">indicateur de partage</span>
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:11px;font:500 10.5px 'Hanken Grotesk'">Carte de la région</span>
+      </div>
+      <div style="flex:1;display:flex;gap:10px;padding:12px">
+        <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="padding:8px 11px;border-bottom:1px solid #ece6d9;font:600 12px 'Hanken Grotesk';color:#3a342c">Personnages</div>
+          <div style="padding:8px 11px;border-bottom:1px solid #f1ece1;font:500 12px 'Hanken Grotesk';color:#46403a">Maître Corâr</div>
+          <div style="padding:8px 11px;font:500 12px 'Hanken Grotesk';color:#46403a">Sœur Vesna</div>
+        </div>
+        <div style="width:200px;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="padding:8px 11px;border-bottom:1px solid #ece6d9;font:600 12px 'Hanken Grotesk';color:#3a342c">Épinglés</div>
+          <div style="padding:8px 11px;border-bottom:1px solid #f1ece1;font:500 12px 'Hanken Grotesk';color:#46403a">Carte de la région</div>
+          <div style="padding:8px 11px;font:500 12px 'Hanken Grotesk';color:#46403a">Initiative du combat</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:9px 15px">
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:46px;padding:9px 12px;font:400 12px 'Hanken Grotesk';color:#6b6456">zone de notes — reste co-présente</div>
+      </div>
+    </div>
+    <!-- scrim -->
+    <div style="position:absolute;inset:0;background:rgba(43,38,32,.34)"></div>
+    <!-- panneau -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:368px;background:#fbfaf6;border:1px solid #cdc6b8;border-radius:12px;box-shadow:0 20px 52px rgba(40,32,20,.36);overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 17px;border-bottom:1px solid #ece6d9">
+        <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Création rapide</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid #cdc6b8;border-radius:6px;font:500 13px 'Hanken Grotesk';color:#6b6456">✕</span>
+      </div>
+      <div style="padding:16px 17px;display:flex;flex-direction:column;gap:13px">
+        <span style="font:400 11.5px 'Hanken Grotesk';color:#8a8275">Un titre suffit — vous compléterez le contenu ensuite.</span>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">TITRE <span style="color:#a8775a">— requis</span></span>
+          <div style="height:44px;background:#fff;border:1.5px solid #2b2620;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:500 13px 'Hanken Grotesk';color:#2b2620">Embuscade au pont<span style="display:inline-block;width:1.5px;height:18px;background:#2b2620;margin-left:2px"></span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+          <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">complétable ensuite :</span>
+          <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#8a8275">type</span>
+          <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#8a8275">dossier</span>
+          <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#8a8275">contenu</span>
+        </div>
+      </div>
+      <div style="padding:12px 17px;background:#efe9de;border-top:1px solid #e4ded0;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:11px">
+          <button style="flex:1;height:42px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13px 'Hanken Grotesk';cursor:pointer">Créer</button>
+          <span style="font:600 12px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8;padding-bottom:1px">Fermer</span>
+        </div>
+        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#7a9264;line-height:1.5">● en LIVE → le document est auto-épinglé (UC-08 A3)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- ÉTAT VIDE (PANNEAU SEUL) ---------- -->
+<div style="position:absolute;left:700px;top:200px;width:368px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">État vide</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">validation indisponible</span>
+  </div>
+  <div style="background:#fbfaf6;border:1px solid #cdc6b8;border-radius:12px;box-shadow:0 20px 52px rgba(40,32,20,.18);overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 17px;border-bottom:1px solid #ece6d9">
+      <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Création rapide</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid #cdc6b8;border-radius:6px;font:500 13px 'Hanken Grotesk';color:#6b6456">✕</span>
+    </div>
+    <div style="padding:16px 17px;display:flex;flex-direction:column;gap:13px">
+      <span style="font:400 11.5px 'Hanken Grotesk';color:#8a8275">Un titre suffit — vous compléterez le contenu ensuite.</span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">TITRE <span style="color:#a8775a">— requis</span></span>
+        <div style="height:44px;background:#fff;border:1.5px solid #2b2620;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:400 13px 'Hanken Grotesk';color:#bdb4a1">Titre du document ou de la note…</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+        <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">complétable ensuite :</span>
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#8a8275">type</span>
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#8a8275">dossier</span>
+      </div>
+    </div>
+    <div style="padding:12px 17px;background:#efe9de;border-top:1px solid #e4ded0;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:11px">
+        <button style="flex:1;height:42px;border:none;border-radius:8px;background:#ddd6c8;color:#a8a08e;font:600 13px 'Hanken Grotesk';cursor:not-allowed">Créer</button>
+        <span style="font:600 12px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8;padding-bottom:1px">Fermer</span>
+      </div>
+      <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86;line-height:1.5">« Créer » inactif tant que le titre est vide</span>
+    </div>
+  </div>
+  <div data-drags-parent="1" style="margin-top:14px;display:flex;align-items:flex-start;gap:9px;background:#fff;border:1px solid #e0dccd;border-radius:7px;padding:10px 13px;box-shadow:0 1px 4px rgba(60,50,35,.06)">
+    <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;white-space:nowrap;margin-top:2px">fermer</span>
+    <span style="font:400 11px/1.5 'Hanken Grotesk';color:#5c554a">Fermer sans créer → retour à la vue session dans son état exact d'avant l'ouverture ; aucun document créé (UC-07 §Préconditions).</span>
+  </div>
+</div>
+
+<!-- ---------- CLOSED : CRÉATION RÉTROACTIVE ---------- -->
+<div style="position:absolute;left:1108px;top:200px;width:620px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Mode consultation CLOSED — création rétroactive</span>
+  </div>
+  <div style="position:relative;background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 15px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c">Les Cendres de Kar-Thol</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 12px;background:#ddd6c8;border-radius:14px;color:#5c554a;font:600 11.5px 'Hanken Grotesk'">✓ Session terminée</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:9px;padding:7px 15px;background:#eee8db;border-bottom:1px solid #dcd5c6;opacity:.6">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86">indicateur de partage</span>
+        <span style="font:500 11px 'Hanken Grotesk';color:#7a7264">[DÉSACTIVÉ] — pas de retour en LIVE (RB-06-21)</span>
+      </div>
+      <div style="flex:1;display:flex;gap:10px;padding:12px;opacity:.7">
+        <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="padding:8px 11px;border-bottom:1px solid #ece6d9;font:600 12px 'Hanken Grotesk';color:#3a342c">Personnages</div>
+          <div style="padding:8px 11px;border-bottom:1px solid #f1ece1;font:500 12px 'Hanken Grotesk';color:#46403a">Maître Corâr</div>
+          <div style="padding:8px 11px;font:500 12px 'Hanken Grotesk';color:#46403a">Sœur Vesna</div>
+        </div>
+        <div style="width:200px;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="padding:8px 11px;border-bottom:1px solid #ece6d9;font:600 12px 'Hanken Grotesk';color:#3a342c">Épinglés</div>
+          <div style="padding:8px 11px;font:500 12px 'Hanken Grotesk';color:#46403a">Carte de la région</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:9px 15px">
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:46px;padding:9px 12px;font:400 12px 'Hanken Grotesk';color:#6b6456">zone de notes — annotations rétroactives</div>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;background:rgba(43,38,32,.30)"></div>
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:368px;background:#fbfaf6;border:1px solid #cdc6b8;border-radius:12px;box-shadow:0 20px 52px rgba(40,32,20,.34);overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 17px;border-bottom:1px solid #ece6d9">
+        <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Création rapide</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid #cdc6b8;border-radius:6px;font:500 13px 'Hanken Grotesk';color:#6b6456">✕</span>
+      </div>
+      <div style="padding:16px 17px;display:flex;flex-direction:column;gap:13px">
+        <span style="font:400 11.5px 'Hanken Grotesk';color:#8a8275">Annotation rétroactive — un titre suffit.</span>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">TITRE <span style="color:#a8775a">— requis</span></span>
+          <div style="height:44px;background:#fff;border:1.5px solid #2b2620;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:500 13px 'Hanken Grotesk';color:#2b2620">Conséquences — le Baron épargné</div>
+        </div>
+      </div>
+      <div style="padding:12px 17px;background:#efe9de;border-top:1px solid #e4ded0;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:11px">
+          <button style="flex:1;height:42px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13px 'Hanken Grotesk';cursor:pointer">Créer</button>
+          <span style="font:600 12px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8;padding-bottom:1px">Fermer</span>
+        </div>
+        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a6a4a;line-height:1.5">○ en CLOSED → rangé dans l'espace, <b>sans</b> auto-épinglage (réservé au LIVE)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FLÈCHE -->
+<div style="position:absolute;left:1736px;top:430px;display:flex;flex-direction:column;align-items:center;gap:5px;width:60px">
+  <span style="font:600 22px 'Hanken Grotesk';color:#2b2620">→</span>
+  <span style="font:500 8px 'Spline Sans Mono',monospace;color:#9a917f;text-align:center;line-height:1.3">Créer<br>(LIVE)</span>
+</div>
+
+<!-- ---------- APRÈS VALIDATION (LIVE) ---------- -->
+<div style="position:absolute;left:1796px;top:200px;width:620px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Après validation (LIVE) — panneau refermé, doc auto-épinglé</span>
+  </div>
+  <div style="background:#f3efe6;border:1.5px solid #2b2620;border-radius:9px;box-shadow:0 4px 20px rgba(60,50,35,.14);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 15px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c">Les Cendres de Kar-Thol</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 12px;background:#2b2620;border-radius:14px;color:#fbfaf6;font:600 11.5px 'Hanken Grotesk'"><span style="width:8px;height:8px;border-radius:50%;background:#fbfaf6;box-shadow:0 0 0 3px rgba(251,250,246,.28)"></span>Session en cours</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:9px;padding:7px 15px;background:#e7e0d1;border-bottom:1px solid #d8d1c2">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#9a917f">indicateur de partage</span>
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:11px;font:500 10.5px 'Hanken Grotesk'">Carte de la région</span>
+        <span style="margin-left:auto;font:400 9.5px 'Spline Sans Mono',monospace;color:#a39a86">le nouveau doc reste privé MJ (créer ≠ partager)</span>
+      </div>
+      <div style="flex:1;display:flex;gap:10px;padding:12px">
+        <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="padding:8px 11px;border-bottom:1px solid #ece6d9;font:600 12px 'Hanken Grotesk';color:#3a342c">Personnages</div>
+          <div style="padding:8px 11px;border-bottom:1px solid #f1ece1;font:500 12px 'Hanken Grotesk';color:#46403a">Maître Corâr</div>
+          <div style="padding:8px 11px;font:500 12px 'Hanken Grotesk';color:#46403a">Sœur Vesna</div>
+        </div>
+        <div style="width:222px;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #ece6d9"><span style="font:600 12px 'Hanken Grotesk';color:#3a342c">Épinglés</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">3</span></div>
+          <div style="padding:9px 11px;border-bottom:1px solid #f1ece1;background:#f3efe6;box-shadow:inset 3px 0 0 #2b2620">
+            <div style="display:flex;align-items:center;gap:7px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#fff">NOTE</span><span style="flex:1;font:600 12px 'Hanken Grotesk';color:#2b2620">Embuscade au pont</span></div>
+            <div style="display:flex;gap:6px;margin-top:7px"><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid #cdc6b8;color:#8a8275;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">privé MJ</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;background:#2b2620;color:#fbfaf6;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">épinglé · auto</span></div>
+          </div>
+          <div style="padding:8px 11px;border-bottom:1px solid #f1ece1;font:500 12px 'Hanken Grotesk';color:#46403a">Carte de la région</div>
+          <div style="padding:8px 11px;font:500 12px 'Hanken Grotesk';color:#46403a">Initiative du combat</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:9px 15px">
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:46px;padding:9px 12px;font:400 12px 'Hanken Grotesk';color:#6b6456">zone de notes — création annoncée assistivement, focus non déplacé (NFR-ACC-02)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POST-ITS -->
+<div style="position:absolute;left:2440px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi — arbitrages</div>
+<div style="position:absolute;left:2440px;top:202px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-07</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320"><b>Titre seul obligatoire.</b> Le reste (type, dossier, contenu) se complète ensuite — capture-first, sans interrompre la table.</div>
+</div>
+<div style="position:absolute;left:2440px;top:362px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.7deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">sur-couche</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">S'affiche <b>par-dessus</b> la vue session sans la remplacer. Fermer → retour à l'état exact d'avant ; aucun document créé.</div>
+</div>
+<div style="position:absolute;left:2440px;top:522px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-08 A3</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">En <b>LIVE</b> → auto-épinglage. En <b>CLOSED</b> → rangé sans auto-épinglage. Créer ≠ partager : le doc reste privé MJ.</div>
+</div>
+<div style="position:absolute;left:2440px;top:686px;width:248px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">invocation</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Accessible depuis la vue session en <b>LIVE</b> et en <b>CLOSED</b> — jamais en mode configuration (pas de session active).</div>
+</div>
+
+<!-- ============ TABLETTE ============ -->
+<div style="position:absolute;left:40px;top:880px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette (AR-07) — feuille basse par-dessus la session</div>
+
+<div style="position:absolute;left:40px;top:930px;width:430px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — LIVE · panneau ouvert</span>
+  </div>
+  <div style="position:relative;background:#f3efe6;border:1.5px solid #2b2620;border-radius:9px;box-shadow:0 4px 18px rgba(60,50,35,.13);overflow:hidden">
+    <div style="min-height:540px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:700 13px 'Hanken Grotesk';color:#3a342c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Les Cendres de Kar-Thol</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;background:#2b2620;border-radius:13px;color:#fbfaf6;font:600 10.5px 'Hanken Grotesk'"><span style="width:7px;height:7px;border-radius:50%;background:#fbfaf6"></span>En cours</span>
+      </div>
+      <div style="flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:9px">
+        <div style="background:#fff;border:1px solid #ddd6c8;border-radius:7px;padding:9px 12px;font:600 12px 'Hanken Grotesk';color:#3a342c">Personnages</div>
+        <div style="background:#fff;border:1px solid #ddd6c8;border-radius:7px;padding:9px 12px;font:500 12px 'Hanken Grotesk';color:#46403a">Maître Corâr</div>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;background:rgba(43,38,32,.34)"></div>
+    <!-- feuille basse -->
+    <div style="position:absolute;left:0;right:0;bottom:0;background:#fbfaf6;border-top:1px solid #cdc6b8;border-radius:14px 14px 0 0;box-shadow:0 -14px 40px rgba(40,32,20,.3);overflow:hidden">
+      <div style="display:flex;justify-content:center;padding:8px 0 2px"><span style="width:38px;height:4px;background:#d8d1c2;border-radius:2px"></span></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 17px 12px">
+        <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Création rapide</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid #cdc6b8;border-radius:6px;font:500 13px 'Hanken Grotesk';color:#6b6456">✕</span>
+      </div>
+      <div style="padding:0 17px 14px;display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">TITRE <span style="color:#a8775a">— requis</span></span>
+          <div style="height:46px;background:#fff;border:1.5px solid #2b2620;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:500 13px 'Hanken Grotesk';color:#2b2620">Embuscade au pont</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:11px">
+          <button style="flex:1;height:46px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13.5px 'Hanken Grotesk'">Créer</button>
+          <span style="font:600 12.5px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8;padding-bottom:1px">Fermer</span>
+        </div>
+        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#7a9264">● en LIVE → auto-épinglé (UC-08 A3)</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1180, &quot;height&quot;: 640}}"></script>
+</body>
+</html>

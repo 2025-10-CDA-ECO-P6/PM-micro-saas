@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Vue joueur (post-accès)</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">consulter · noter · fiche personnage (UC-12)</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">Sources : UC-12 · UC-06 §vue joueur · AR-03 · AR-06 · NFR-CONF-01   ·   temps réel : apparition ambiante / disparition symétrique · état vide illustré</div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran</div>
+
+<div style="position:absolute;left:40px;top:200px;width:1180px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Vue joueur — accès actif, personnage associé</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:620px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;align-items:baseline;gap:10px"><span style="font:700 16px 'Hanken Grotesk';color:#2b2620">Haversack</span><span style="font:400 11px 'Hanken Grotesk';color:#8a8275">· session en cours</span></div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font:600 11.5px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;padding-bottom:1px">Créer un compte</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 13px;border:1px solid #cdc6b8;border-radius:15px;font:500 11.5px 'Hanken Grotesk';color:#5c554a"><span style="width:8px;height:8px;border-radius:50%;background:#9aa07f"></span>Kael · invité</span>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;gap:16px;padding:18px">
+        <!-- documents partagés -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:10px;min-width:0">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de documents partagés · lecture seule</span>
+            <span style="font:400 9.5px 'Spline Sans Mono',monospace;color:#b3aa96">mise à jour en temps réel (AR-06)</span>
+          </div>
+          <div style="background:#fff;border:1px solid #2b2620;border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;position:relative">
+            <span style="position:absolute;top:12px;right:14px;display:inline-flex;align-items:center;gap:5px;font:600 9.5px 'Hanken Grotesk';color:#6b6456"><span style="width:7px;height:7px;border-radius:50%;background:#2b2620"></span>nouveau</span>
+            <div style="display:flex;align-items:center;gap:9px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">NOTE</span><span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Indice : la marque sur la lame</span></div>
+            <span style="font:400 12.5px/1.6 'Hanken Grotesk';color:#46403a">Le forgeron a gravé un symbole de la Guilde des Cendres sous la garde.</span>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:9px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Carte de la région</span></div>
+            <div style="height:96px;border-radius:6px;background:repeating-linear-gradient(135deg,#f0ebe0,#f0ebe0 9px,#e8e1d3 9px,#e8e1d3 18px);border:1px solid #e4ded0;display:flex;align-items:center;justify-content:center"><span style="font:400 10px 'Spline Sans Mono',monospace;color:#a8a08e">[ image partagée ]</span></div>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:center;gap:9px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">NOTE</span><span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Lettre du Baron</span></div>
+            <span style="width:82%;height:8px;background:#ece6d9;border-radius:4px"></span>
+          </div>
+        </div>
+        <!-- colonne droite : fiche + notes -->
+        <div style="width:340px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de fiche de personnage</span>
+            <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:38px;height:38px;border-radius:8px;background:repeating-linear-gradient(135deg,#f0ebe0,#f0ebe0 6px,#e8e1d3 6px,#e8e1d3 12px);border:1px solid #e4ded0"></span><div style="display:flex;flex-direction:column;gap:1px"><span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Kael</span><span style="font:400 11px 'Hanken Grotesk';color:#8a8275">Rôdeur · niveau 4</span></div></div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;background:#f7f4ee;border:1px solid #e4ded0;border-radius:12px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">PV 28</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;background:#f7f4ee;border:1px solid #e4ded0;border-radius:12px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">CA 15</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;background:#f7f4ee;border:1px solid #e4ded0;border-radius:12px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">Arc long</span></div>
+              <span style="font:400 9.5px 'Spline Sans Mono',monospace;color:#a39a86">associé par le MJ · lecture seule (RB-12-07)</span>
+            </div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de notes personnelles · privées</span>
+            <div style="flex:1;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px;display:flex;flex-direction:column;gap:8px">
+              <span style="font:400 12.5px/1.55 'Hanken Grotesk';color:#46403a">Ne pas faire confiance au Baron — Kael a un mauvais pressentiment.</span>
+              <span style="width:60%;height:8px;background:#ece6d9;border-radius:4px"></span>
+              <span style="display:inline-flex;align-items:center;align-self:flex-start;height:28px;padding:0 12px;border:1px dashed #c9c2b4;border-radius:7px;font:500 11px 'Hanken Grotesk';color:#6b6456;margin-top:2px">+ note</span>
+              <span style="margin-top:auto;font:400 9.5px/1.5 'Spline Sans Mono',monospace;color:#a39a86">PLAYER_PRIVATE — invisible du MJ et des autres joueurs (RB-12-02)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POST-ITS -->
+<div style="position:absolute;left:1300px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi</div>
+<div style="position:absolute;left:1300px;top:202px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-06</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Partage en temps réel : <b>apparition ambiante</b> (repère « nouveau » discret), <b>disparition symétrique</b> au retrait. Aucune notification active au MVP.</div>
+</div>
+<div style="position:absolute;left:1300px;top:380px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-03 · RB-12-02</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Notes <b>PLAYER_PRIVATE</b> invisibles même du MJ. Le joueur consulte et note — il ne pilote jamais la visibilité.</div>
+</div>
+<div style="position:absolute;left:1300px;top:548px;width:250px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">RB-12-03 · absent par nature</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Sans personnage associé, la zone de notes personnelles est <b>absente</b> (pas grisée). Enrichissement campagne (historique, multi-perso) = différé (AR-10).</div>
+</div>
+
+<!-- état vide — aucun document partagé -->
+<div style="position:absolute;left:660px;top:950px;width:540px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">État vide — accès valide, aucun document partagé</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;align-items:baseline;gap:9px"><span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Haversack</span><span style="font:400 10.5px 'Hanken Grotesk';color:#8a8275">· session en cours</span></div>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border:1px solid #cdc6b8;border-radius:14px;font:500 11px 'Hanken Grotesk';color:#5c554a"><span style="width:7px;height:7px;border-radius:50%;background:#9aa07f"></span>Kael · invité</span>
+      </div>
+      <div style="flex:1;display:flex;gap:14px;padding:16px">
+        <div style="flex:1;display:flex;flex-direction:column;gap:9px;min-width:0">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de documents partagés · état vide</span>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px dashed #cdc6b8;border-radius:8px;padding:28px 22px;text-align:center">
+            <span style="width:30px;height:30px;border-radius:50%;border:1.5px dashed #c9c2b4"></span>
+            <span style="font:600 13.5px 'Hanken Grotesk';color:#5c554a">Rien n'est partagé pour l'instant</span>
+            <span style="font:400 11.5px/1.55 'Hanken Grotesk';color:#8a8275;max-width:260px">Les documents que le MJ partage apparaîtront ici en temps réel, sans recharger.</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;background:#f7f4ee;border:1px solid #e4ded0;border-radius:7px"><span style="width:8px;height:8px;border-radius:50%;background:#7a9264;flex-shrink:0"></span><span style="font:400 10px/1.5 'Spline Sans Mono',monospace;color:#7a7264">apparition annoncée assistivement (AR-06 ; NFR-ACC-02)</span></div>
+        </div>
+        <div style="width:200px;display:flex;flex-direction:column;gap:9px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">fiche de personnage</span>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:9px"><span style="width:34px;height:34px;border-radius:8px;background:repeating-linear-gradient(135deg,#f0ebe0,#f0ebe0 6px,#e8e1d3 6px,#e8e1d3 12px);border:1px solid #e4ded0"></span><div style="display:flex;flex-direction:column"><span style="font:700 13px 'Hanken Grotesk';color:#2b2620">Kael</span><span style="font:400 10px 'Hanken Grotesk';color:#8a8275">Rôdeur · niv. 4</span></div></div>
+            <span style="font:400 9px 'Spline Sans Mono',monospace;color:#a39a86">lecture seule (RB-12-07)</span>
+          </div>
+          <div style="flex:1;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:11px;display:flex;flex-direction:column;gap:7px"><span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">mes notes privées</span><span style="display:inline-flex;align-items:center;align-self:flex-start;height:26px;padding:0 11px;border:1px dashed #c9c2b4;border-radius:7px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">+ note</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BANDE TABLETTE ============ -->
+<div style="position:absolute;left:40px;top:900px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07)</div>
+
+<div style="position:absolute;left:40px;top:950px;width:560px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — vue joueur</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">768px</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:700px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Haversack</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border:1px solid #cdc6b8;border-radius:14px;font:500 11px 'Hanken Grotesk';color:#5c554a"><span style="width:7px;height:7px;border-radius:50%;background:#9aa07f"></span>Kael</span>
+      </div>
+      <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:13px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">documents partagés · temps réel</span>
+        <div style="background:#fff;border:1px solid #2b2620;border-radius:8px;padding:13px 14px;display:flex;flex-direction:column;gap:7px;position:relative">
+          <span style="position:absolute;top:11px;right:13px;font:600 9px 'Hanken Grotesk';color:#6b6456">● nouveau</span>
+          <div style="display:flex;align-items:center;gap:9px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">NOTE</span><span style="font:700 14px 'Hanken Grotesk';color:#2b2620">Indice : la marque sur la lame</span></div>
+          <span style="font:400 12px/1.55 'Hanken Grotesk';color:#46403a">Symbole de la Guilde des Cendres sous la garde.</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:#fff;border:1px solid #ddd6c8;border-radius:8px">
+          <div style="display:flex;align-items:center;gap:9px"><span style="width:30px;height:30px;border-radius:7px;background:repeating-linear-gradient(135deg,#f0ebe0,#f0ebe0 6px,#e8e1d3 6px,#e8e1d3 12px);border:1px solid #e4ded0"></span><div style="display:flex;flex-direction:column"><span style="font:700 13px 'Hanken Grotesk';color:#2b2620">Kael</span><span style="font:400 10px 'Hanken Grotesk';color:#8a8275">Rôdeur · niv. 4</span></div></div>
+          <span style="font:600 13px 'Hanken Grotesk';color:#a39a86">▾</span>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:7px">
+          <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">mes notes · privées (PLAYER_PRIVATE)</span>
+          <div style="flex:1;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px;display:flex;flex-direction:column;gap:7px"><span style="font:400 12.5px/1.55 'Hanken Grotesk';color:#46403a">Ne pas faire confiance au Baron.</span><span style="display:inline-flex;align-items:center;align-self:flex-start;height:28px;padding:0 12px;border:1px dashed #c9c2b4;border-radius:7px;font:500 11px 'Hanken Grotesk';color:#6b6456">+ note</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 700 }
+}"></script>
+</body>
+</html>

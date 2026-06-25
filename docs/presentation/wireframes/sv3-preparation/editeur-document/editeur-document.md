@@ -3,7 +3,7 @@
 > Fiche de description d'écran basse-fidélité — Vague 3, cluster B.
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..17`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..20`.
 
 ---
 
@@ -15,7 +15,7 @@ Surface      : MJ
 Contexte     : préparation
 Type d'espace: CAMPAIGN | ONE_SHOT | PERSONAL
 Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-04, UC-07 ; AR-11
+Traçabilité  : UC-04, UC-07 ; AR-11 ; AR-19
 ```
 
 ---
@@ -45,28 +45,46 @@ Intention : le MJ crée ou modifie un document dans son espace — en lui donnan
   ancrage  : UC-04 §Scénario nominal (étape 5 — titre, type optionnel) ; UC-04 §Règles métier
 
 [ ZONE DE PROPRIÉTÉS STRUCTURÉES ]
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] disposition et affordances de type :
-    la zone existe si un type est sélectionné (UC-04 A2), mais la présentation des
-    propriétés structurées selon le type n'est pas décrite dans le corpus.
   type     : formulaire
   rôle     : affiche les propriétés structurées associées au type sélectionné,
-             sans remplacer ni bloquer la zone de contenu libre
+             sans remplacer ni bloquer la zone de contenu libre ; la zone
+             apparaît quand le MJ sélectionne un type ; elle n'est jamais
+             imposée et ne conditionne pas l'accès au contenu libre
+  présentation du type : le type est un champ discret dans la zone d'en-tête du
+             document, vide par défaut (valeur « Aucun type ») ; la sélection
+             d'un type révèle cette zone de propriétés structurées ; ne pas
+             sélectionner de type est un chemin de premier rang — la non-sélection
+             n'est pas un état dégradé (UC-04 A2)
   priorité : secondaire-configurable (présente uniquement si un type est choisi — UC-04 A2)
+  densité  : repliée par défaut (divulgation progressive — AR-19) ; accessible
+             à la demande
   visibilité : MJ seul
-  ancrage  : UC-04 A2 (document typé) ; UC-04 §Clarification du modèle documentaire
+  ancrage  : UC-04 A2 (document typé) ; UC-04 §Clarification du modèle documentaire ;
+             AR-19 §Divulgation progressive
 
 [ ZONE DE CONTENU LIBRE ]
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] disposition des blocs et affordances d'édition :
-    UC-04 décrit les types de blocs disponibles (texte, description, liste, checklist,
-    tableau, image, séparateur…) mais ne précise pas la disposition de l'interface d'édition
-    ni les affordances permettant d'ajouter, réordonner ou supprimer des blocs.
   type     : principal
   rôle     : saisie du contenu du document en blocs libres — les blocs représentent des
              formats variés sans objet dédié pour chaque besoin ; le corps reste libre
-             quelle que soit la présence d'un type
+             quelle que soit la présence d'un type (UC-04 §Clarification)
+  disposition : édition en flux de blocs verticaux ; chaque bloc dispose d'une poignée
+             apparaissant au survol ou au focus, exposant les actions : ajouter un bloc
+             sous celui-ci, supprimer, déplacer vers le haut ou vers le bas ;
+             une affordance « + » persistante en fin de document permet d'ajouter
+             un bloc après le dernier ; au survol d'un interstice entre deux blocs,
+             une affordance « + » contextuelle permet d'insérer un bloc entre les deux ;
+             le type de bloc est choisi au moment de la création du bloc via un menu
+             inline (texte, description, liste, checklist, tableau, image, séparateur…)
+  réordonnancement : le déplacement d'un bloc est possible par déplacement explicite
+             (haut/bas via la poignée) et par interaction clavier, de façon à ne pas
+             exclure les utilisateurs ne pouvant pas utiliser le glisser-déposer
+             (NFR-ACC-01) ; tout réordonnancement est annoncé assistivement (NFR-ACC-02)
+  plancher garanti : cette zone est au premier plan en permanence (AR-19 §Plancher garanti) ;
+             elle n'est jamais masquée ni reléguée, quelle que soit la configuration
   priorité : principal
   visibilité : MJ seul
-  ancrage  : UC-04 §Clarification du modèle documentaire §Blocs documentaires
+  ancrage  : UC-04 §Clarification du modèle documentaire §Blocs documentaires ;
+             NFR-ACC-01 ; NFR-ACC-02 ; AR-19 §Plancher garanti
 
 [ ZONE DE VISIBILITÉ ET MÉTADONNÉES ]
   type     : formulaire
@@ -79,27 +97,37 @@ Intention : le MJ crée ou modifie un document dans son espace — en lui donnan
              (« Tout document créé par le MJ est privé par défaut »)
 
 [ ZONE DES DOCUMENTS LIÉS ]
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] gestion des liens :
-    UC-04 décrit le modèle de liens entre documents (un document peut être lié à plusieurs
-    autres) mais ne précise pas l'interface de saisie et d'affichage de ces liens.
   type     : latéral
   rôle     : liste les documents explicitement liés à ce document depuis l'espace ;
              permet d'ajouter ou de retirer des liens vers d'autres documents
+  interface de saisie : un champ « + lier un document » ouvre une recherche par titre ;
+             la sélection d'un résultat crée le lien ; la recherche porte sur le titre
+             seul au MVP (cohérent avec UC-14 — recherche titre seul) ;
+             les liens existants s'affichent sous forme de liste de titres cliquables
+             permettant de naviguer vers le document lié
   priorité : secondaire-configurable
+  densité  : repliée par défaut (divulgation progressive — AR-19) ; accessible à la demande ;
+             tant que l'interface de liaison n'est pas figée, cette zone ne s'affiche pas
+             au premier plan
   visibilité : MJ seul
-  ancrage  : UC-04 §Scénario nominal (étape 8 — lier à d'autres documents) ; UC-04 §Règles métier
+  ancrage  : UC-04 §Scénario nominal (étape 8 — lier à d'autres documents) ;
+             UC-04 §Règles métier ; UC-14 (recherche titre seul) ; AR-19 §Divulgation progressive
 
 [ ZONE « RÉFÉRENCÉ PAR » (BACKLINKS) ]
-  [SOUS-SPÉCIFIÉ — S9 §Écran de consultation des backlinks non décrit ; AR-11] :
-    la vision §2.2 mentionne les backlinks ; UJ-UC-04 utilise le label « Référencé par » ;
-    mais aucun UC ni US ne décrit l'interface de consultation des backlinks —
-    AR-11 traite ce placement comme une recommandation révisable, non une décision figée.
-  type     : latéral
+  type     : latéral secondaire
   rôle     : liste les documents de l'espace qui font référence à ce document ;
+             lecture seule — un backlink se crée automatiquement quand un autre
+             document crée un lien vers celui-ci (cohérent AR-11) ;
              permet de naviguer vers ces documents sans quitter l'éditeur
+  placement : zone latérale secondaire, sous la zone des documents liés ;
+             jamais imposée au premier plan
+  densité  : repliée par défaut (divulgation progressive — AR-19) ; accessible à la demande ;
+             tant que l'interface de backlinks n'est pas figée, cette zone ne s'affiche pas
+             au premier plan
   priorité : secondaire-configurable
   visibilité : MJ seul
-  ancrage  : AR-11 (recommandation — placement révisable) ; vision §2.2 (backlinks mentionnés)
+  ancrage  : AR-11 (placement révisable — décision retenue : zone latérale secondaire,
+             lecture seule) ; vision §2.2 (backlinks mentionnés) ; AR-19 §Divulgation progressive
 ```
 
 ---
@@ -126,9 +154,10 @@ Intention : le MJ crée ou modifie un document dans son espace — en lui donnan
   un dossier ; s'il n'est pas rattaché explicitement, il est placé dans « Non classés »
   (UC-04 §Postconditions ; UC-05)
 
-- [UC-04 §Scénario nominal] lier à d'autres documents →
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] l'interface de saisie des liens n'est pas
-  décrite dans le corpus ; UC-04 établit que le lien est possible, pas comment il se saisit
+- [UC-04 §Scénario nominal] lier à d'autres documents → depuis la zone latérale
+  « Documents liés », le MJ utilise le champ « + lier un document » pour rechercher
+  par titre ; la sélection d'un résultat crée le lien ; les documents liés s'affichent
+  sous forme de liste de titres cliquables (UC-14 — recherche titre seul au MVP)
 
 - [UC-04 A3] créer depuis un template → si le dossier définit un modèle par défaut,
   le document s'ouvre avec une copie indépendante ; les modifications n'affectent pas
@@ -224,17 +253,8 @@ Fonctions cloud désactivées sur l'éditeur de document en mode local :
     « Mes scénarios » (post-MVP — AR-08 révisé)
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] disposition des blocs de contenu
-    dans l'interface d'édition et affordances permettant d'ajouter, réordonner
-    ou supprimer des blocs — UC-04 décrit le modèle, pas l'interface
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] affordances de sélection du type :
-    comment le type est présenté et sélectionné (liste, icônes, champ libre…)
-    — non décrit dans le corpus
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] interface de saisie et d'affichage
-    des liens entre documents — UC-04 établit que le lien est possible (un document
-    peut être lié à plusieurs autres) sans décrire comment ce lien se saisit
-    dans l'interface
-  [SOUS-SPÉCIFIÉ — S9 §Écran de consultation des backlinks non décrit] zone
-    « Référencé par » (backlinks) — placement et format non décidés (AR-11 :
-    recommandation révisable ; aucun UC ni US ne décrit l'interface)
+  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document ; NFR-OFF-04] comportement de l'éditeur
+    en cas de perte de connexion (sauvegarde automatique locale, indicateur de brouillon,
+    reprise) — non décrit dans le corpus au-delà de UC-03 E2 ; point d'interview
+    produit non couvert par les décisions actuelles
 ```

@@ -4,7 +4,7 @@
 > Hub de préparation d'un espace partagé — ancre la grammaire de préparation des autres fiches de la sous-vague.
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..17`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..20`.
 
 ---
 
@@ -17,7 +17,7 @@ Contexte     : préparation
 Type d'espace: CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — voir AR-14 ; la version réduite
                de cette surface pour l'espace personnel n'est pas wireframée ici)
 Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-02, UC-04, UC-05, UC-06, UC-08, UC-11 ; AR-01, AR-09, AR-10, AR-13
+Traçabilité  : UC-02, UC-04, UC-05, UC-06, UC-08, UC-11 ; AR-01, AR-09, AR-10, AR-11, AR-13, AR-18
 ```
 
 ---
@@ -66,22 +66,15 @@ Intention : le MJ accède depuis un point d'entrée unique à l'ensemble des res
 
 [ ZONE D'ACCÈS AUX PARAMÈTRES ]
   type     : latéral
-  rôle     : accès à la configuration de la vue session (dossiers mis en avant, ordre),
-             à l'archivage de l'espace et à la génération du lien d'invitation
+  rôle     : renvoi vers le mode configuration de la surface session (AR-18 : la
+             configuration des panneaux session est portée par la surface session,
+             pas par la vue campagne), accès à l'archivage de l'espace et accès à
+             la génération du lien d'invitation de campagne (lien permanent — AR-10
+             révisé : point de génération unique pour les invitations de campagne)
   priorité : secondaire-configurable
   visibilité : MJ seul
-  ancrage  : AR-09 (configuration de la vue session) ; UC-11 (lien d'invitation)
-
-[ AFFORDANCE DE GÉNÉRATION DE LIEN D'INVITATION ]
-  [SOUS-SPÉCIFIÉ — S4 §Surface MJ — Accès ; AR-10] placement non figé :
-    l'affordance est logée dans la vue session OU dans la vue campagne — non tranché.
-    Elle figure ici à titre de traçabilité en cohérence avec vue-session-mj.md (D2 :
-    pas de fiche dédiée) ; son appartenance à cet écran n'est pas une décision.
-  rôle     : permet au MJ de générer le lien d'invitation à partager aux joueurs ;
-             le lien donne accès à la session en cours (accès temporaire) ou à la
-             campagne de façon durable selon le périmètre choisi (UC-11)
-  visibilité : MJ seul
-  ancrage  : UC-06 (lien ponctuel) ; UC-11 §Scénario nominal ; UC-11 A4 (fraction Must — AR-10)
+  ancrage  : AR-18 (renvoi vers configuration surface session) ; AR-10 (génération
+             lien d'invitation campagne) ; UC-11 (lien d'invitation)
 
 [ BARRE DE RECHERCHE ]
   type     : châssis
@@ -121,14 +114,16 @@ Intention : le MJ accède depuis un point d'entrée unique à l'ensemble des res
 - [UC-14 ; AR-11] rechercher dans le contenu de l'espace → titre seul au MVP ;
   résultats affichés sans interrompre le contexte de la vue campagne
 
-- [UC-06 ; UC-11 A4] générer un lien d'invitation →
-  [SOUS-SPÉCIFIÉ — S4 §Surface MJ — Accès ; AR-10] l'affordance est logée dans
-  la vue session ou la vue campagne — non tranché ; le lien donne accès à la
-  session en cours (accès temporaire) ou à la campagne de façon durable selon
-  le périmètre choisi (UC-11)
+- [AR-10 révisé — tranché] accéder à la gestion des invitations → la vue campagne
+  oriente vers le point de génération approprié selon la nature du lien souhaité :
+  lien de campagne (permanent) → paramètres de campagne ;
+  lien de session (ponctuel) → vue session ;
+  la vue campagne n'est pas elle-même un point de génération (UC-11 ; AR-10)
 
-- [AR-09] accéder aux paramètres de l'espace → configuration de la vue session
-  (dossiers mis en avant, ordre), archivage de l'espace
+- [AR-18] accéder aux paramètres de l'espace → renvoi vers le mode configuration
+  de la surface session (la configuration des panneaux session — dossiers mis en
+  avant, ordre — est portée par la surface session, pas par la vue campagne) ;
+  accès à l'archivage de l'espace
 ```
 
 ---
@@ -226,11 +221,11 @@ Fonctions disponibles localement (non désactivées) :
     est la fraction Must couverte — AR-10)
   [HORS-MVP — UC-11 scénario nominal] écran Membres complet (révocations,
     associations joueur-personnage) — différé (AR-10)
-  [HORS-MVP — moscow.md §Could Have] export d'espace
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S4 §Surface MJ — Accès ; AR-10] placement de l'affordance de
-    génération de lien d'invitation : vue session OU vue campagne — non tranché
+  [AR-10 révisé — tranché] placement du lien d'invitation : lien de session ponctuel
+    → vue session ; lien de campagne permanent → paramètres de campagne ;
+    la vue campagne n'est pas un point de génération
   [SOUS-SPÉCIFIÉ — S9 §Interface de l'espace personnel sous-spécifiée] la
     déclinaison réduite de cette surface pour l'espace personnel (sans vue session,
     sans invitation de joueurs, sans dossiers système nommés) n'est pas wireframée

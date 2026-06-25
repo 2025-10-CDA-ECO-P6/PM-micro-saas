@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Création d'un espace de jeu</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">nom obligatoire · description &amp; système optionnels (UC-02)</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">Sources : UC-02 §Scénario nominal · §Postconditions · §Exceptions E1/E2 · AR-01 · AR-16 · AR-13   ·   <span style="color:#a39a86">surface : « campagne », jamais « espace de jeu » (AR-05) · [ libellé ] = nom de zone (Registre 2)</span></div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran — formulaire minimaliste</div>
+
+<!-- ---------- ÉTAT VIDE ---------- -->
+<div style="position:absolute;left:40px;top:200px;width:540px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">État vide</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">aucune saisie · validation inactive</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:9px;padding:13px 22px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:500 11px 'Spline Sans Mono',monospace;color:#bdb4a1">‹ tableau de bord</span>
+      </div>
+      <div style="flex:1;padding:26px 30px;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font:700 19px 'Hanken Grotesk';color:#2b2620">Créer une campagne</span>
+          <span style="font:400 12.5px 'Hanken Grotesk';color:#8a8275">Un espace partagé pour préparer et mener votre table.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:13px">
+          <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">formulaire de création d'espace</span>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM DE LA CAMPAGNE <span style="color:#a8775a">— requis</span></span>
+            <div style="height:44px;background:#fff;border:1.5px solid #2b2620;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:400 13px 'Hanken Grotesk';color:#bdb4a1"><span style="border-right:1.5px solid #2b2620;padding-right:1px;height:18px"></span><span style="margin-left:3px">Nom de la campagne…</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">DESCRIPTION <span style="color:#bdb4a1">— optionnel</span></span>
+            <div style="min-height:64px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;padding:11px 13px;font:400 12.5px 'Hanken Grotesk';color:#bdb4a1">Quelques mots sur l'univers, le ton, les attentes…</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">SYSTÈME DE JEU <span style="color:#bdb4a1">— optionnel</span></span>
+            <div style="height:44px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:400 12.5px 'Hanken Grotesk';color:#bdb4a1">D&amp;D 5e, Pathfinder, maison…</div>
+          </div>
+        </div>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px">
+          <button style="height:46px;border:none;border-radius:8px;background:#ddd6c8;color:#a8a08e;font:600 13.5px 'Hanken Grotesk';cursor:not-allowed">Créer la campagne</button>
+          <span style="font:400 10.5px 'Spline Sans Mono',monospace;color:#a39a86;line-height:1.5">validation inactive tant que le nom est vide (UC-02 E1)</span>
+        </div>
+      </div>
+      <div style="border-top:1px dashed #e4ded0;background:#efe9de;padding:11px 22px;font:400 11px/1.55 'Spline Sans Mono',monospace;color:#a39a86">à la validation → l'espace et ses 4 dossiers système (<b style="color:#7a7264">Personnages · Joueurs · Scénarios · Notes</b>) sont créés ; redirection vers le tableau de bord (UC-02 §Postconditions ; AR-16)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- ÉTAT CHARGÉ ---------- -->
+<div style="position:absolute;left:620px;top:200px;width:430px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Nom saisi · prêt à valider</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:472px;display:flex;flex-direction:column;padding:22px 24px;gap:15px">
+      <span style="font:700 16px 'Hanken Grotesk';color:#2b2620">Créer une campagne</span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM DE LA CAMPAGNE <span style="color:#a8775a">— requis</span></span>
+        <div style="height:44px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:500 13px 'Hanken Grotesk';color:#2b2620">Les Cendres de Kar-Thol</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">DESCRIPTION <span style="color:#bdb4a1">— optionnel</span></span>
+        <div style="min-height:58px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;padding:10px 13px;font:400 12.5px/1.5 'Hanken Grotesk';color:#46403a">Dark fantasy dans une cité de forgerons rongée par une vieille dette.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">SYSTÈME DE JEU <span style="color:#bdb4a1">— optionnel</span></span>
+        <div style="height:44px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:400 12.5px 'Hanken Grotesk';color:#46403a">Maison</div>
+      </div>
+      <button style="margin-top:4px;height:46px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13.5px 'Hanken Grotesk';cursor:pointer">Créer la campagne</button>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- E1 : NOM MANQUANT ---------- -->
+<div style="position:absolute;left:1090px;top:200px;width:430px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">E1 — validation tentée, nom absent</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:472px;display:flex;flex-direction:column;padding:22px 24px;gap:15px">
+      <span style="font:700 16px 'Hanken Grotesk';color:#2b2620">Créer une campagne</span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM DE LA CAMPAGNE <span style="color:#a8775a">— requis</span></span>
+        <div style="height:44px;background:#fff;border:1.5px solid #c79a7e;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:400 13px 'Hanken Grotesk';color:#bdb4a1">Nom de la campagne…</div>
+        <div style="display:flex;align-items:center;gap:7px;margin-top:1px"><span style="width:14px;height:14px;border-radius:50%;border:1.5px solid #a8775a;display:flex;align-items:center;justify-content:center;font:600 9px 'Hanken Grotesk';color:#a8775a">!</span><span style="font:400 11px 'Hanken Grotesk';color:#7a5240">Donnez un nom à votre campagne pour continuer.</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">DESCRIPTION <span style="color:#bdb4a1">— optionnel</span></span>
+        <div style="min-height:58px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;padding:10px 13px;font:400 12.5px 'Hanken Grotesk';color:#bdb4a1">Quelques mots sur l'univers…</div>
+      </div>
+      <button style="margin-top:auto;height:46px;border:none;border-radius:8px;background:#ddd6c8;color:#a8a08e;font:600 13.5px 'Hanken Grotesk';cursor:not-allowed">Créer la campagne</button>
+      <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86;line-height:1.5">retour non bloquant sous le champ · annoncé sans déplacer le focus (NFR-ACC-02)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- E2 : ERREUR DE CRÉATION ---------- -->
+<div style="position:absolute;left:1560px;top:200px;width:430px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">E2 — erreur à la création</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">données intactes</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:472px;display:flex;flex-direction:column;padding:22px 24px;gap:14px">
+      <span style="font:700 16px 'Hanken Grotesk';color:#2b2620">Créer une campagne</span>
+      <div style="display:flex;align-items:flex-start;gap:9px;padding:11px 13px;background:#f4ebe4;border:1px solid #d8c0b0;border-radius:7px">
+        <span style="width:16px;height:16px;border-radius:50%;border:1.5px solid #a8775a;display:flex;align-items:center;justify-content:center;font:600 10px 'Hanken Grotesk';color:#a8775a;flex-shrink:0;margin-top:1px">!</span>
+        <span style="font:400 11.5px/1.45 'Hanken Grotesk';color:#7a5240">La création n'a pas abouti. Vos informations sont conservées — vous pouvez réessayer.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM DE LA CAMPAGNE <span style="color:#a8775a">— requis</span></span>
+        <div style="height:44px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:500 13px 'Hanken Grotesk';color:#2b2620">Les Cendres de Kar-Thol</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">DESCRIPTION <span style="color:#bdb4a1">— optionnel</span></span>
+        <div style="min-height:42px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;padding:9px 13px;font:400 12px/1.45 'Hanken Grotesk';color:#46403a">Dark fantasy dans une cité de forgerons…</div>
+      </div>
+      <button style="margin-top:auto;height:46px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13.5px 'Hanken Grotesk';cursor:pointer">Réessayer</button>
+      <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86;line-height:1.5">aucun rechargement · le formulaire reste affiché (UC-02 E2)</span>
+    </div>
+  </div>
+</div>
+
+<!-- POST-ITS POURQUOI -->
+<div style="position:absolute;left:2070px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi — arbitrages</div>
+<div style="position:absolute;left:2070px;top:202px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-02</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Le <b>nom</b> est le seul champ obligatoire. Description et système restent optionnels — friction minimale à la création.</div>
+</div>
+<div style="position:absolute;left:2070px;top:360px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.7deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-16</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">À la validation, 4 dossiers système — <b>Personnages, Joueurs, Scénarios, Notes</b> — sont créés (réservés à CAMPAIGN / ONE_SHOT).</div>
+</div>
+<div style="position:absolute;left:2070px;top:524px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-05</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">En surface on dit <b>« campagne »</b> — jamais « espace de jeu » (terme de conception). Le type CAMPAIGN/ONE_SHOT est porté par le parcours d'entrée.</div>
+</div>
+<div style="position:absolute;left:2070px;top:702px;width:248px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">S8 — différé</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Parcours express one-shot dédié = <b>post-MVP</b>. Au MVP, le one-shot se crée via ce même formulaire (type ONE_SHOT).</div>
+</div>
+
+<!-- ============ MODE LOCAL ============ -->
+<div style="position:absolute;left:40px;top:880px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Mode local · sans compte — création disponible localement (AR-13)</div>
+
+<div style="position:absolute;left:40px;top:930px;width:540px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Mode local — bandeaux présents</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">aucune fonction cloud-dépendante ici</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:520px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 22px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:500 11px 'Spline Sans Mono',monospace;color:#bdb4a1">‹ tableau de bord</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 11px;border:1px dashed #c9c2b4;border-radius:13px;font:500 11px 'Hanken Grotesk';color:#6b6456">● Mode local</span>
+      </div>
+      <div style="padding:12px 22px 0;display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff;border:1px solid #ddd6c8;border-left:4px solid #c9c2b4;border-radius:6px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;white-space:nowrap">bandeau de durabilité</span>
+          <span style="flex:1;font:400 12px 'Hanken Grotesk';color:#5c554a">Conservée sur cet appareil uniquement — sans garantie permanente.</span>
+          <span style="font:600 11.5px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;padding-bottom:1px;white-space:nowrap">Créer un compte</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff;border:1px solid #ddd6c8;border-left:4px solid #c9c2b4;border-radius:6px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;white-space:nowrap">bandeau de confidentialité</span>
+          <span style="flex:1;font:400 12px 'Hanken Grotesk';color:#5c554a">Aucune protection par identifiants sur ce navigateur.</span>
+          <span style="font:600 11.5px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;padding-bottom:1px;white-space:nowrap">Créer un compte</span>
+        </div>
+      </div>
+      <div style="flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:700 16px 'Hanken Grotesk';color:#2b2620">Créer une campagne</span>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM DE LA CAMPAGNE <span style="color:#a8775a">— requis</span></span>
+          <div style="height:44px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:500 13px 'Hanken Grotesk';color:#2b2620">Partie du dimanche</div>
+        </div>
+        <button style="height:46px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13.5px 'Hanken Grotesk';cursor:pointer">Créer la campagne</button>
+        <span style="font:400 10.5px 'Spline Sans Mono',monospace;color:#a39a86;line-height:1.5">la création d'un espace partagé est disponible sans compte (AR-13 ; UC-01 §Règles métier)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TABLETTE ============ -->
+<div style="position:absolute;left:640px;top:880px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette (AR-07)</div>
+
+<div style="position:absolute;left:640px;top:930px;width:430px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — création</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">colonne unique · 768px</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:520px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:9px;padding:12px 18px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">‹</span>
+        <span style="font:700 14px 'Hanken Grotesk';color:#3a342c">Nouvelle campagne</span>
+      </div>
+      <div style="flex:1;padding:20px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM DE LA CAMPAGNE <span style="color:#a8775a">— requis</span></span>
+          <div style="height:46px;background:#fff;border:1.5px solid #2b2620;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:400 13px 'Hanken Grotesk';color:#bdb4a1">Nom de la campagne…</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">DESCRIPTION <span style="color:#bdb4a1">— optionnel</span></span>
+          <div style="min-height:70px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;padding:11px 13px;font:400 12.5px 'Hanken Grotesk';color:#bdb4a1">Univers, ton, attentes…</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">SYSTÈME DE JEU <span style="color:#bdb4a1">— optionnel</span></span>
+          <div style="height:46px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:400 12.5px 'Hanken Grotesk';color:#bdb4a1">D&amp;D 5e, maison…</div>
+        </div>
+        <button style="margin-top:auto;height:48px;border:none;border-radius:8px;background:#ddd6c8;color:#a8a08e;font:600 14px 'Hanken Grotesk';cursor:not-allowed">Créer la campagne</button>
+        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86;text-align:center">priorité de lecture : nom › optionnels › validation (NFR-ACC-04)</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1180, &quot;height&quot;: 640}}"></script>
+</body>
+</html>

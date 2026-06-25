@@ -3,7 +3,7 @@
 > Fiche de description d'écran basse-fidélité — Vague 3, écran prioritaire.
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md` sur l'écran le plus riche du MVP.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..17`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..20`.
 
 ---
 
@@ -100,14 +100,48 @@ Intention : le MJ pilote sa session depuis un tableau de bord configurable qui l
   visibilité : MJ seul
   ancrage  : AR-11 ; NFR-PERF-04
 
+[ RÈGLES DE DENSITÉ — MODE LIVE (AR-19) ]
+  type     : règle de zoning
+  rôle     : définit le plancher garanti, le plafond d'éviction et la priorité
+             d'éviction quand les panneaux saturent la surface en mode LIVE
+
+  Plancher garanti (jamais masqué quelle que soit la configuration) :
+    - indicateur de statut de session
+    - indicateur de partage
+    - zone de notes
+    - barre de recherche
+    Ces quatre zones ne peuvent pas être évincées par l'ouverture d'un panneau
+    de dossier, de résultats de recherche ou du panneau des épinglés.
+
+  Plafond d'éviction — panneaux de dossiers :
+    Le nombre de panneaux de dossiers affichables simultanément est borné
+    (nombre maximal défini en configuration, non libre) ; au-delà du plafond,
+    les panneaux excédentaires se replient automatiquement dans le rail de
+    bascule (AR-07) — le MJ accède aux dossiers repliés via ce rail sans
+    perdre l'accès aux zones du plancher.
+
+  Priorité d'éviction quand le panneau latéral de résultats de recherche s'ouvre :
+    Le panneau de dossier le moins prioritaire (dernier ajouté dans la
+    configuration, ou panneau de priorité la plus basse déclarée par le MJ)
+    cède la place en premier ; le panneau des documents épinglés ne cède jamais
+    la place au panneau de résultats (les épinglés restent visibles pendant
+    une recherche).
+
+  Divulgation progressive — zones secondaires :
+    Les zones secondaires (panneau des documents épinglés, panneaux de dossiers
+    supplémentaires) s'affichent selon l'espace disponible après placement du
+    plancher ; elles n'apparaissent pas si la surface est pleine après le plancher.
+
+  ancrage  : AR-19 ; AR-07 ; AR-04
+
 [ AFFORDANCE DE GÉNÉRATION DE LIEN D'INVITATION ]
-  [SOUS-SPÉCIFIÉ — S4 §Surface MJ — Accès ; AR-10] placement non figé :
-    l'affordance est logée dans la vue session OU dans la vue campagne —
-    non tranché. Elle figure ici à titre de traçabilité ; son appartenance
-    à cet écran n'est pas une décision.
-  rôle     : permet au MJ de générer le lien d'invitation à partager aux joueurs ;
-             le lien donne accès à la session en cours (accès temporaire) ou à la
-             campagne de façon durable selon le périmètre choisi (UC-11)
+  type     : action
+  rôle     : permet au MJ de générer le lien de SESSION PONCTUEL (GuestAccess SESSION —
+             AR-10) à partager aux joueurs pour rejoindre la session en cours ;
+             ce lien est temporaire et limité à la session active — il n'ouvre pas
+             un accès durable à la campagne ; l'affordance est logée dans la vue session :
+             c'est un acte de pilotage en séance, déclenché en mode LIVE (AR-10 ; AR-18)
+  priorité : secondaire-configurable
   visibilité : MJ seul
   ancrage  : UC-06 (lien ponctuel) ; UC-11 §Scénario nominal ; UC-11 A4 (fraction Must — AR-10)
 ```
@@ -153,11 +187,11 @@ Intention : le MJ pilote sa session depuis un tableau de bord configurable qui l
 - [UC-06 ; RB-06-21] terminer la session → la session passe au statut terminée ;
   la machine d'états est unidirectionnelle (pas de retour en LIVE)
 
-- [UC-06 ; UC-11 A4] générer un lien d'invitation →
-  [SOUS-SPÉCIFIÉ — S4 §Surface MJ — Accès ; AR-10] l'affordance est logée dans
-  la vue session ou la vue campagne — non tranché ; le lien donne accès à la
-  session en cours (accès temporaire) ou à la campagne de façon durable selon
-  le périmètre choisi (UC-11)
+- [UC-06 ; UC-11 A4 ; AR-10] générer le lien de SESSION PONCTUEL →
+  le MJ génère depuis la vue session le GuestAccess SESSION (AR-10) :
+  lien temporaire donnant accès à la session en cours uniquement ;
+  acte de pilotage en séance, logé dans cet écran (AR-18) ;
+  le lien permanent de campagne relève de la vue campagne — hors périmètre de cet écran
 ```
 
 ---
@@ -219,9 +253,9 @@ hiérarchie de lecture à distance :
 ### Sources
 
 ```
-Sources : UC-06 ; UC-07 ; UC-08 ; UC-14 ;
+Sources : UC-06 ; UC-07 ; UC-08 ; UC-11 ; UC-14 ;
           US-06-01 à US-06-10 ; UJ-UC-06 ;
-          AR-04 ; AR-06 ; AR-09 ; AR-11 ; AR-12 ;
+          AR-04 ; AR-06 ; AR-07 ; AR-09 ; AR-10 ; AR-11 ; AR-12 ; AR-18 ; AR-19 ;
           NFR-ACC-02 ; NFR-ACC-04 ; NFR-OFF-04 ; NFR-PERF-04 ;
           RB-06-14 ; RB-06-21 ;
           châssis S7 (zoning.md §S7)
@@ -272,7 +306,9 @@ Déclencheur : le MJ a lancé la session depuis le mode configuration ou depuis
               la vue campagne ; la session est au statut en cours
 
 Zones actives : toutes les zones listées dans « Zones et hiérarchie »
-  (y compris indicateur de partage et toutes affordances de partage)
+  (y compris indicateur de partage et toutes affordances de partage) ;
+  les règles de densité AR-19 s'appliquent (plancher garanti, plafond d'éviction,
+  priorité d'éviction — voir zone RÈGLES DE DENSITÉ ci-dessus)
 
 Affordances spécifiques :
   - [AR-12 ; UC-08] partager un document → visible par les joueurs (PUBLIC) +
@@ -284,6 +320,10 @@ Affordances spécifiques :
     voir fiche `panneau-creation-rapide.md`
   - [UC-06 ; RB-06-21] terminer la session → basculement en mode consultation CLOSED ;
     unidirectionnel (pas de retour en LIVE — machine d'états RB-06-21)
+  - [UC-06 ; UC-11 A4 ; AR-10 ; AR-18] générer le lien de SESSION PONCTUEL →
+    GuestAccess SESSION (lien temporaire, limité à la session en cours) ;
+    la configuration de la vue session se fait dans le mode configuration de CET écran
+    (AR-18) — paramètres-campagne pointe vers cet écran, ne duplique pas
 
 Note sur la frontière de confidentialité :
   L'annonce de l'apparition d'un document partagé côté vue joueur est gérée par
@@ -315,8 +355,10 @@ Zones absentes par nature :
     unidirectionnelle ; une session terminée ne retourne pas en cours (RB-06-21)
   [ABSENT PAR NATURE] auto-épinglage au partage — l'auto-épinglage (UC-08 A3)
     est réservé au mode LIVE
-  Création rétroactive : l'auto-épinglage du document créé en CLOSED n'est pas
-    tranché — voir `panneau-creation-rapide.md` ([SOUS-SPÉCIFIÉ], UC-07 A5).
+  [ABSENT PAR NATURE] auto-épinglage à la création rétroactive — en mode CLOSED,
+    le document créé à la volée est rangé dans l'espace sans être épinglé
+    automatiquement ; cohérent avec « partage rétroactif sans auto-épinglage » ;
+    voir fiche `panneau-creation-rapide.md` (tranché)
 
 Affordances spécifiques :
   - [UC-07 ; S4 §Vue session MJ] créer un document ou une note à la volée de façon
@@ -407,6 +449,4 @@ Fonctions disponibles localement (non désactivées) :
     de récupération des notes personnelles joueur d'un invité via un nouveau lien
     est évoquée dans UC-06 §Règles métier mais non entièrement spécifiée —
     relève de remédiation corpus
-  [SOUS-SPÉCIFIÉ — S4 §Surface MJ — Accès ; AR-10] placement de l'affordance de
-    génération de lien d'invitation : vue session OU vue campagne — non tranché
 ```

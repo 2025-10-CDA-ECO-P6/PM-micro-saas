@@ -6,7 +6,7 @@
 > pas dans cette fiche (AR-14 ; Famille 7 de conventions-wireframe.md).
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..17`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..20`.
 
 ---
 
@@ -18,7 +18,7 @@ Surface      : MJ
 Contexte     : préparation
 Type d'espace: PERSONAL
 Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-01, UC-04 ; AR-14, AR-15, AR-16, AR-17
+Traçabilité  : UC-01, UC-04 ; AR-14, AR-15, AR-16, AR-17, AR-20
 ```
 
 ---
@@ -28,9 +28,13 @@ Traçabilité  : UC-01, UC-04 ; AR-14, AR-15, AR-16, AR-17
 ### Intention
 
 ```
-Intention : le MJ accède à son foyer de contenu capturé hors campagne — il y crée, organise
+Intention : le MJ accède à son espace de notes et contenus hors campagne — il y crée, organise
             et retrouve des documents immédiatement, sans avoir à créer un espace partagé,
             dès la première ouverture de l'application (capture-first — UC-01 ; AR-15).
+            Micro-copy d'intention en tête de surface : « Vos notes et contenus, hors campagne »
+            (neutre — compatible avec la capture-first et le foyer de contenus réutilisables ;
+            ne nomme pas les deux modèles mentaux ; compatible avec le futur « Mes scénarios »
+            post-MVP sans l'implémenter — AR-15 ; AR-17).
 ```
 
 ---
@@ -41,15 +45,20 @@ Intention : le MJ accède à son foyer de contenu capturé hors campagne — il 
 [ ZONE DE NAVIGATION PAR DOSSIERS ]
   type     : principal
   rôle     : affiche l'arborescence des dossiers de l'espace personnel — débutant avec
-             le seul dossier virtuel « Non classés » à la création, sans aucun dossier
+             le seul dossier « Non classés » à la création, sans aucun dossier
              système nommé (AR-16 — raison principale : « Non classés » seul pour
              PERSONAL, les dossiers Personnages/Joueurs/Scénarios/Notes présupposent
              un groupe absent d'un espace mono-membre) ; le propriétaire crée
-             librement ses propres dossiers par la suite ; tout document appartient
-             à exactement un dossier (AR-11 — unicité d'appartenance, transverse)
+             librement ses propres dossiers par la suite, les renomme et les supprime
+             à sa guise (AR-20 — arborescence entièrement libre : dossiers renommables
+             et supprimables) ; tout document appartient à exactement un dossier
+             (AR-11 — unicité d'appartenance, transverse) ;
+             garde-fou AR-20 : « Non classés » est le réceptacle garanti — toujours
+             présent, peut être renommé, ne peut pas disparaître du système
   priorité : principal
   visibilité : MJ seul
-  ancrage  : AR-16 (raison principale — espace personnel sans dossiers système) ;
+  ancrage  : AR-16 (espace personnel sans dossiers système — « Non classés » seul) ;
+             AR-20 (arborescence libre, renommable, supprimable ; réceptacle garanti) ;
              AR-11 (unicité d'appartenance — transverse à tous les espaces) ;
              UC-04 ; UC-05 §espace personnel
 
@@ -96,9 +105,18 @@ Intention : le MJ accède à son foyer de contenu capturé hors campagne — il 
 - [UC-04] ouvrir un document existant → l'éditeur s'ouvre sur le contenu
   du document sélectionné
 
-- [UC-05 §espace personnel ; AR-16] créer un dossier → le nouveau dossier
+- [UC-05 §espace personnel ; AR-16 ; AR-20] créer un dossier → le nouveau dossier
   est ajouté à l'arborescence ; le propriétaire choisit librement le nom
   et l'organisation (pas de contrainte de structure)
+
+- [AR-20] renommer un dossier → tous les dossiers sont renommables, y compris
+  « Non classés » ; les documents contenus ne sont pas affectés
+
+- [AR-20] supprimer un dossier → tous les dossiers sont supprimables (sauf le
+  réceptacle garanti qui reste présent en tant que réceptacle, même si renommé) ;
+  avant suppression, les documents du dossier sont traités : déplacés vers un
+  autre dossier ou déposés dans « Non classés » ; aucune suppression silencieuse
+  de documents
 
 - [UC-05 §espace personnel] déplacer un document dans un dossier →
   le document est rattaché au dossier cible ; il quitte son dossier
@@ -115,14 +133,18 @@ Intention : le MJ accède à son foyer de contenu capturé hors campagne — il 
 
 ```
 état vide (espace personnel fraîchement créé) :
-  la zone de navigation affiche uniquement le dossier virtuel « Non classés »
-  (AR-16 — aucun dossier système nommé) ; la zone de contenu invite à créer
-  un premier document ; l'accès à l'éditeur est disponible immédiatement
-  pour une capture sans friction (AR-15)
+  la micro-copy « Vos notes et contenus, hors campagne » est affichée en tête
+  de surface (AR-15 — compatible capture-first ; AR-17) ;
+  la zone de navigation affiche uniquement le dossier « Non classés »
+  (AR-16 — aucun dossier système nommé ; AR-20 — réceptacle garanti) ;
+  la zone de contenu invite à créer un premier document ; l'accès à l'éditeur
+  est disponible immédiatement pour une capture sans friction (AR-15)
 
 état chargé (espace personnel avec documents) :
+  la micro-copy reste présente en tête de surface ;
   la zone de navigation affiche l'arborescence complète des dossiers créés par
-  le propriétaire, plus « Non classés » ; la zone de contenu liste les documents
+  le propriétaire (renommables et supprimables — AR-20), plus « Non classés »
+  (réceptacle garanti, toujours présent) ; la zone de contenu liste les documents
   du dossier courant en vue condensée ; l'éditeur est accessible pour tout
   document sélectionné
 ```
@@ -154,7 +176,7 @@ hiérarchie de lecture à distance :
 
 ```
 Sources : UC-01 ; UC-04 ; UC-05 ;
-          AR-11 ; AR-14 ; AR-15 ; AR-16 ; AR-17 ;
+          AR-11 ; AR-14 ; AR-15 ; AR-16 ; AR-17 ; AR-20 ;
           NFR-ACC-02 ; NFR-ACC-04 ;
           domaine space-management.md (invariant 13 : mono-membre, pas d'AddMember,
             pas de CreateInvitation) ;
@@ -196,11 +218,14 @@ Fonctions cloud désactivées sur l'espace personnel en mode local :
     vers une vue filtrée interne, sans nouveau nœud d'arborescence
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S9] présence de l'espace personnel au tableau de bord et libellé
-    de surface exacts — points d'interview (UC-02 §Questions à valider en interview ;
-    AR-05 §Condition de retour)
-  [SOUS-SPÉCIFIÉ — S9] vue « Non classés » : interface de la vue dédiée au dossier
-    virtuel de repli — non tranchée dans le corpus
   [SOUS-SPÉCIFIÉ — S9] sémantique ARCHIVED / FROZEN d'un espace PERSONAL — non
     tranchée à ce stade (AR-14 §Condition de retour)
+
+Points précédemment sous-spécifiés, maintenant résolus :
+  - présence et libellé de l'espace personnel au tableau de bord : tranché —
+    carte en tête de grille, badge hors quota, micro-copy neutre
+    « Vos notes et contenus, hors campagne » (AR-17 ; AR-05)
+  - vue « Non classés » : tranché — traité comme un dossier ordinaire de
+    l'arborescence (filtre du dossier « Non classés »), pas une vue spéciale
+    séparée ; réceptacle garanti par construction (AR-20 ; AR-16)
 ```

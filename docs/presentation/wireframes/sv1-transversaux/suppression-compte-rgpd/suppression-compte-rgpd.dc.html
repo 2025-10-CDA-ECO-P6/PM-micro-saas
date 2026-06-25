@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Suppression de compte (RGPD)</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">conséquences avant confirmation (UC-10 A4 · NFR-CONF-03)</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">verrou « adresse e-mail validée » (RB-10-05) + blocage campagnes actives (E4) · trois états</div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran</div>
+
+<!-- état confirmable -->
+<div style="position:absolute;left:40px;top:200px;width:580px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">État confirmable — suppression possible</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 16px;background:#efe9de;border-bottom:1px solid #d8d1c2"><span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹ profil</span><span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c">Supprimer mon compte</span></div>
+      <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de présentation des conséquences</span>
+        <div style="background:#fff;border:1px solid #d8c0b0;border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <span style="font:700 14px 'Hanken Grotesk';color:#7a5240">Cette action est irréversible</span>
+          <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#a8775a;font:600 12px 'Hanken Grotesk';line-height:1.5">—</span><span style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a">Vos notes de session personnelles sont <b>supprimées définitivement</b>.</span></div>
+          <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#a8775a;font:600 12px 'Hanken Grotesk';line-height:1.5">—</span><span style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a">Vos données nominatives sont <b>anonymisées</b> dans les espaces partagés.</span></div>
+          <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#a8775a;font:600 12px 'Hanken Grotesk';line-height:1.5">—</span><span style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a">Vous êtes déconnecté et redirigé vers l'accueil.</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-top:auto">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de confirmation de suppression</span>
+          <div style="display:flex;align-items:center;gap:8px"><span style="display:inline-flex;align-items:center;gap:6px;height:23px;padding:0 10px;background:#dfe9d6;border:1px solid #b7cda6;border-radius:12px;font:600 10.5px 'Hanken Grotesk';color:#3f6b34">✓ Adresse e-mail vérifiée</span><span style="font:400 9.5px 'Spline Sans Mono',monospace;color:#a39a86">précondition RB-10-05 satisfaite</span></div>
+          <div style="display:flex;align-items:center;gap:9px;padding:10px 13px;background:#fff;border:1px solid #d3ccbe;border-radius:7px"><span style="width:16px;height:16px;border-radius:4px;border:1.5px solid #2b2620;background:#2b2620;display:flex;align-items:center;justify-content:center;font:600 10px 'Hanken Grotesk';color:#fbfaf6">✓</span><span style="font:400 11.5px 'Hanken Grotesk';color:#46403a">J'ai compris que cette action est définitive.</span></div>
+          <button style="height:44px;border:none;border-radius:8px;background:#7a3f2a;color:#fbf3ee;font:600 13px 'Hanken Grotesk';cursor:pointer">Supprimer définitivement mon compte</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- état bloqué -->
+<div style="position:absolute;left:660px;top:200px;width:580px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">État bloqué — campagnes actives avec membres (E4)</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 16px;background:#efe9de;border-bottom:1px solid #d8d1c2"><span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹ profil</span><span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c">Supprimer mon compte</span></div>
+      <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de présentation des conséquences</span>
+        <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px 15px;display:flex;flex-direction:column;gap:6px;opacity:.7">
+          <span style="font:400 11.5px/1.5 'Hanken Grotesk';color:#5c554a">Notes personnelles supprimées · données anonymisées · déconnexion…</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-top:auto">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de blocage</span>
+          <div style="background:#fff;border:1px solid #d8c0b0;border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <span style="font:700 13.5px 'Hanken Grotesk';color:#7a5240">Suppression impossible pour l'instant</span>
+            <span style="font:400 11.5px/1.5 'Hanken Grotesk';color:#5c554a">Vous êtes propriétaire de campagnes actives avec des membres. Excluez leurs membres avant de supprimer votre compte.</span>
+            <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;background:#f7f4ee;border:1px solid #e4ded0;border-radius:6px"><span style="font:600 12px 'Hanken Grotesk';color:#46403a;flex:1">Les Cendres de Kar-Thol</span><span style="font:400 10.5px 'Hanken Grotesk';color:#8a8275">4 membres</span><span style="font:500 11px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620">Gérer</span></div>
+            <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;background:#f7f4ee;border:1px solid #e4ded0;border-radius:6px"><span style="font:600 12px 'Hanken Grotesk';color:#46403a;flex:1">Le Murmure des Profondeurs</span><span style="font:400 10.5px 'Hanken Grotesk';color:#8a8275">5 membres</span><span style="font:500 11px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620">Gérer</span></div>
+          </div>
+          <button style="height:44px;border:1px solid #cdc6b8;border-radius:8px;background:#efe9de;color:#a8a08e;font:600 13px 'Hanken Grotesk';cursor:not-allowed">Supprimer définitivement (indisponible)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- état verrouillé : adresse e-mail non validée (RB-10-05) -->
+<div style="position:absolute;left:1280px;top:200px;width:580px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">État verrouillé — adresse e-mail non validée (RB-10-05)</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 16px;background:#efe9de;border-bottom:1px solid #d8d1c2"><span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹ profil</span><span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c">Supprimer mon compte</span></div>
+      <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de présentation des conséquences</span>
+        <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px 15px;display:flex;flex-direction:column;gap:6px;opacity:.7">
+          <span style="font:400 11.5px/1.5 'Hanken Grotesk';color:#5c554a">Notes personnelles supprimées · données anonymisées · déconnexion…</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-top:auto">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de confirmation de suppression — verrouillée</span>
+          <div style="background:#fff;border:1px solid #d8c0b0;border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:9px"><span style="width:18px;height:18px;border-radius:50%;border:1.5px solid #a8775a;display:flex;align-items:center;justify-content:center;font:600 10px 'Hanken Grotesk';color:#a8775a">!</span><span style="font:700 13.5px 'Hanken Grotesk';color:#7a5240">Vérifiez d'abord votre adresse e-mail</span></div>
+            <span style="font:400 11.5px/1.5 'Hanken Grotesk';color:#5c554a">La suppression définitive n'est possible qu'avec une adresse de messagerie validée (RB-10-05). Un lien de vérification a été envoyé à <b>thomas@exemple.fr</b>.</span>
+            <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap"><span style="font:500 11px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;padding-bottom:1px">Renvoyer l'e-mail de vérification</span><span style="font:400 9.5px 'Spline Sans Mono',monospace;color:#a39a86">message annoncé assistivement (NFR-ACC-02)</span></div>
+          </div>
+          <button style="height:44px;border:1px solid #cdc6b8;border-radius:8px;background:#efe9de;color:#a8a08e;font:600 13px 'Hanken Grotesk';cursor:not-allowed">Supprimer définitivement (indisponible)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POST-ITS -->
+<div style="position:absolute;left:1900px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi</div>
+<div style="position:absolute;left:1900px;top:202px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">NFR-CONF-03</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Suppression <b>effective</b> : conséquences exposées avant toute action. Confirmation délibérée, jamais déclenchable par erreur.</div>
+</div>
+<div style="position:absolute;left:1900px;top:558px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-10 E4</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Bloquée si campagnes actives avec membres — la <b>zone de blocage</b> remplace la confirmation et guide vers l'action requise. Un espace personnel ne bloque jamais.</div>
+</div>
+<div style="position:absolute;left:1900px;top:736px;width:250px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">HORS-MVP</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Déblocage au MVP = exclure les membres. Le transfert de propriété de campagne est post-MVP.</div>
+</div>
+
+<div style="position:absolute;left:1900px;top:380px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.5deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">RB-10-05</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">La confirmation n'est <b>accessible qu'avec une adresse e-mail validée</b>. Sinon : verrou + invite à vérifier, annoncé assistivement (NFR-ACC-02).</div>
+</div>
+
+<!-- ============ BANDE TABLETTE ============ -->
+<div style="position:absolute;left:40px;top:820px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07)</div>
+
+<div style="position:absolute;left:40px;top:870px;width:480px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — suppression (confirmable)</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:520px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:#efe9de;border-bottom:1px solid #d8d1c2"><span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹</span><span style="font:700 13px 'Hanken Grotesk';color:#3a342c">Supprimer mon compte</span></div>
+      <div style="flex:1;padding:15px;display:flex;flex-direction:column;gap:13px">
+        <div style="background:#fff;border:1px solid #d8c0b0;border-radius:8px;padding:13px 15px;display:flex;flex-direction:column;gap:9px">
+          <span style="font:700 13.5px 'Hanken Grotesk';color:#7a5240">Action irréversible</span>
+          <span style="font:400 11.5px/1.5 'Hanken Grotesk';color:#5c554a">Notes personnelles supprimées · données anonymisées · déconnexion.</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;padding:10px 13px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;margin-top:auto"><span style="width:16px;height:16px;border-radius:4px;border:1.5px solid #2b2620;background:#2b2620;display:flex;align-items:center;justify-content:center;font:600 10px 'Hanken Grotesk';color:#fbfaf6">✓</span><span style="font:400 11.5px 'Hanken Grotesk';color:#46403a">J'ai compris.</span></div>
+        <button style="height:44px;border:none;border-radius:8px;background:#7a3f2a;color:#fbf3ee;font:600 12.5px 'Hanken Grotesk'">Supprimer définitivement</button>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1240, &quot;height&quot;: 640 }
+}"></script>
+</body>
+</html>

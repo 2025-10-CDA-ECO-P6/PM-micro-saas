@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Profil utilisateur</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">nom, mot de passe, niveau de compte (UC-10 A2)</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">actions sensibles séparées pour éviter toute activation involontaire · état erreur e-mail non validée (RB-10-05)</div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran</div>
+
+<div style="position:absolute;left:40px;top:200px;width:680px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">Profil — utilisateur authentifié</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:600px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 18px;background:#efe9de;border-bottom:1px solid #d8d1c2"><span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹ tableau de bord</span><span style="font:700 14px 'Hanken Grotesk';color:#3a342c;margin-left:4px">Profil</span></div>
+      <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:16px">
+        <!-- infos compte -->
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone d'informations de compte · lecture seule</span>
+          <div style="display:flex;align-items:center;gap:13px;padding:14px 16px;background:#fff;border:1px solid #ddd6c8;border-radius:8px">
+            <span style="width:44px;height:44px;border-radius:10px;background:repeating-linear-gradient(135deg,#f0ebe0,#f0ebe0 6px,#e8e1d3 6px,#e8e1d3 12px);border:1px solid #e4ded0"></span>
+            <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Thomas</span><span style="font:400 11.5px 'Hanken Grotesk';color:#8a8275">thomas@exemple.fr</span></div>
+            <span style="display:inline-flex;align-items:center;height:26px;padding:0 12px;background:#2b2620;color:#fbfaf6;border-radius:13px;font:600 11px 'Hanken Grotesk'">Compte gratuit</span>
+          </div>
+        </div>
+        <!-- nom d'affichage -->
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">formulaire de modification du nom d'affichage</span>
+          <div style="display:flex;gap:9px;align-items:flex-end">
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM D'AFFICHAGE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:500 12.5px 'Hanken Grotesk';color:#46403a">Thomas</div></div>
+            <span style="display:inline-flex;align-items:center;height:40px;padding:0 16px;background:#2b2620;color:#fbfaf6;border-radius:7px;font:600 12px 'Hanken Grotesk'">Enregistrer</span>
+          </div>
+          <span style="font:400 9.5px 'Spline Sans Mono',monospace;color:#a39a86">répercuté dans tous les espaces où vous êtes membre</span>
+        </div>
+        <!-- mot de passe -->
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">formulaire de modification du mot de passe</span>
+          <div style="display:flex;gap:9px">
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">MOT DE PASSE ACTUEL</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">••••••••</div></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOUVEAU</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">••••••••</div></div>
+          </div>
+          <span style="font:400 9.5px 'Spline Sans Mono',monospace;color:#a39a86">requiert une adresse de messagerie validée (RB-10-05) · sans objet si connexion fédérée</span>
+        </div>
+        <!-- actions sensibles -->
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone d'accès aux actions sensibles</span>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 15px;background:#fff;border:1px solid #d8c0b0;border-radius:8px">
+            <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:600 12.5px 'Hanken Grotesk';color:#7a5240">Supprimer mon compte</span><span style="font:400 11px 'Hanken Grotesk';color:#a8917f">Action irréversible (RGPD).</span></div>
+            <span style="display:inline-flex;align-items:center;height:32px;padding:0 14px;border:1.5px solid #c79a7e;border-radius:6px;color:#7a5240;font:600 12px 'Hanken Grotesk'">Supprimer…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- état erreur : adresse e-mail non validée (RB-10-05) -->
+<div style="position:absolute;left:760px;top:200px;width:480px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">État erreur — adresse e-mail non validée (RB-10-05)</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 16px;background:#efe9de;border-bottom:1px solid #d8d1c2"><span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹ tableau de bord</span><span style="font:700 14px 'Hanken Grotesk';color:#3a342c;margin-left:4px">Profil</span></div>
+      <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:15px">
+        <div style="display:flex;align-items:center;gap:13px;padding:13px 15px;background:#fff;border:1px solid #ddd6c8;border-radius:8px">
+          <span style="width:40px;height:40px;border-radius:9px;background:repeating-linear-gradient(135deg,#f0ebe0,#f0ebe0 6px,#e8e1d3 6px,#e8e1d3 12px);border:1px solid #e4ded0"></span>
+          <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:700 14px 'Hanken Grotesk';color:#2b2620">Thomas</span><span style="font:400 11px 'Hanken Grotesk';color:#8a8275">thomas@exemple.fr</span></div>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;background:#f4ebe4;border:1px solid #d8c0b0;border-radius:12px;font:600 10px 'Hanken Grotesk';color:#7a5240">! e-mail non vérifié</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">formulaire de modification du mot de passe — verrouillé</span>
+          <div style="display:flex;align-items:flex-start;gap:9px;padding:11px 13px;background:#f4ebe4;border:1px solid #d8c0b0;border-radius:7px"><span style="width:16px;height:16px;border-radius:50%;border:1.5px solid #a8775a;display:flex;align-items:center;justify-content:center;font:600 10px 'Hanken Grotesk';color:#a8775a;flex-shrink:0;margin-top:1px">!</span><span style="font:400 11.5px/1.45 'Hanken Grotesk';color:#7a5240">Vérifiez votre adresse e-mail pour pouvoir changer votre mot de passe (RB-10-05).</span></div>
+          <div style="display:flex;gap:9px;opacity:.55">
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">MOT DE PASSE ACTUEL</span><div style="height:40px;background:#f7f4ee;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">••••••••</div></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOUVEAU</span><div style="height:40px;background:#f7f4ee;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">••••••••</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap"><span style="font:500 11px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;padding-bottom:1px">Renvoyer l'e-mail de vérification</span><span style="font:400 9.5px 'Spline Sans Mono',monospace;color:#a39a86">erreur de précondition annoncée assistivement (NFR-ACC-02)</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:auto">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">modification du nom — reste disponible</span>
+          <span style="font:400 10.5px/1.5 'Spline Sans Mono',monospace;color:#a39a86">seul le mot de passe est verrouillé par RB-10-05 ; le nom d'affichage et la suppression de compte restent accessibles</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POST-ITS -->
+<div style="position:absolute;left:1280px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi</div>
+<div style="position:absolute;left:1280px;top:202px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-10 A2</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Le niveau de compte est en <b>lecture seule</b> ; nom et mot de passe sont éditables. Modifier le mot de passe exige un email validé (RB-10-05).</div>
+</div>
+<div style="position:absolute;left:1280px;top:380px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">bonne pratique</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">La suppression de compte est <b>isolée</b> (zone à part, registre d'alerte) — pas d'activation involontaire. Elle ouvre l'écran RGPD, ne supprime rien ici.</div>
+</div>
+
+<!-- ============ BANDE TABLETTE ============ -->
+<div style="position:absolute;left:40px;top:880px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07)</div>
+
+<div style="position:absolute;left:40px;top:930px;width:480px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — profil</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:#efe9de;border-bottom:1px solid #d8d1c2"><span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹</span><span style="font:700 13px 'Hanken Grotesk';color:#3a342c">Profil</span></div>
+      <div style="flex:1;padding:15px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:#fff;border:1px solid #ddd6c8;border-radius:8px">
+          <span style="width:40px;height:40px;border-radius:9px;background:repeating-linear-gradient(135deg,#f0ebe0,#f0ebe0 6px,#e8e1d3 6px,#e8e1d3 12px);border:1px solid #e4ded0"></span>
+          <div style="flex:1;display:flex;flex-direction:column"><span style="font:700 14px 'Hanken Grotesk';color:#2b2620">Thomas</span><span style="font:400 11px 'Hanken Grotesk';color:#8a8275">thomas@exemple.fr</span></div>
+          <span style="display:inline-flex;align-items:center;height:24px;padding:0 11px;background:#2b2620;color:#fbfaf6;border-radius:12px;font:600 10.5px 'Hanken Grotesk'">Gratuit</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM D'AFFICHAGE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:500 12.5px 'Hanken Grotesk';color:#46403a">Thomas</div></div>
+        <button style="height:42px;border:none;border-radius:7px;background:#2b2620;color:#fbfaf6;font:600 12.5px 'Hanken Grotesk'">Enregistrer le nom</button>
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">CHANGER LE MOT DE PASSE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">Mot de passe actuel</div></div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 13px;background:#fff;border:1px solid #d8c0b0;border-radius:8px;margin-top:auto"><span style="flex:1;font:600 12px 'Hanken Grotesk';color:#7a5240">Supprimer mon compte</span><span style="display:inline-flex;align-items:center;height:30px;padding:0 13px;border:1.5px solid #c79a7e;border-radius:6px;color:#7a5240;font:600 11.5px 'Hanken Grotesk'">Supprimer…</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 760, &quot;height&quot;: 640 }
+}"></script>
+</body>
+</html>

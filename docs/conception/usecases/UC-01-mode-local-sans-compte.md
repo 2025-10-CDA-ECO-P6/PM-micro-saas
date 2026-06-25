@@ -102,7 +102,7 @@ Aucune.
 
 ### A4 — Export de campagne et réimport manuel d'un fichier de sauvegarde
 
-#### A4a — Export (Should Have — disponible en mode local comme avec un compte)
+#### A4a — Export (Must Have / version minimale — disponible en mode local comme avec un compte)
 
 1. Le MJ (sans compte) souhaite sauvegarder ses données ou récupérer son contenu.
 2. Depuis les paramètres, il exporte un espace (ou son espace personnel) dans un fichier de sauvegarde au format ouvert.
@@ -148,7 +148,7 @@ Le navigateur refuse l'enregistrement de nouvelles données. L'application affic
 - Un MJ peut créer du contenu (lieu, PNJ, scénario, note) et préparer une session sans créer de compte ni créer d'espace de jeu partagé.
 - Les données persistent après fermeture et réouverture du navigateur.
 - Le MJ peut créer un compte depuis n'importe quelle page de l'app ; si des données locales existent, la migration est proposée avec confirmation explicite.
-- Le MJ peut exporter un espace (ou son espace personnel) dans un format ouvert depuis les paramètres (Should Have — disponible en mode local comme avec un compte).
+- Le MJ peut exporter un espace (ou son espace personnel) dans un format ouvert depuis les paramètres (Must Have / version minimale — disponible en mode local comme avec un compte ; promu 2026-06-25).
 - Le réimport d'un fichier de sauvegarde (post-MVP) : validation de structure (version reconnue, formats, types) puis nettoyage avant enregistrement dans le stockage local.
 - Les fonctionnalités de partage sont visibles mais désactivées avec une invite claire en mode local.
 - Si le navigateur n'a pas garanti la conservation permanente des données, le bandeau de durabilité est affiché (non bloquant).

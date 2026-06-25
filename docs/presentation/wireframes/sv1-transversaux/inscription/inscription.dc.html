@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Inscription</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">email + nom + mot de passe, ou fournisseur externe (UC-10)</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">fournisseur externe mis en avant — moindre coût à l'instant de bascule (AR-13) · arrivée depuis invite contextuelle (UC-01 A1)</div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran</div>
+
+<!-- normal -->
+<div style="position:absolute;left:40px;top:200px;width:560px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">Inscription — état vide</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column;padding:30px 34px;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:center"><span style="font:700 20px 'Hanken Grotesk';color:#2b2620">Créer un compte</span><span style="font:400 12px 'Hanken Grotesk';color:#8a8275">Cloud sync · partage joueurs · multi-appareils</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone d'accès via fournisseur externe (un geste)</span>
+        <button style="height:44px;border:1.5px solid #2b2620;border-radius:8px;background:#fff;color:#2b2620;font:600 13px 'Hanken Grotesk';display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer"><span style="width:18px;height:18px;border-radius:50%;border:1.5px solid #2b2620"></span>Continuer avec un fournisseur</button>
+        <span style="font:400 9px 'Spline Sans Mono',monospace;color:#bdb4a1;text-align:center">[SOUS-SPÉCIFIÉ — fournisseur(s) et wording à valider]</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span style="flex:1;height:1px;background:#ddd6c8"></span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">ou</span><span style="flex:1;height:1px;background:#ddd6c8"></span></div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">formulaire de création de compte</span>
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">ADRESSE DE MESSAGERIE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">thomas@exemple.fr</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM D'AFFICHAGE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">Thomas</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">MOT DE PASSE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">••••••••</div></div>
+        <button style="height:44px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13.5px 'Hanken Grotesk';cursor:pointer;margin-top:2px">Créer mon compte</button>
+      </div>
+      <span style="font:400 12px 'Hanken Grotesk';color:#8a8275;text-align:center;margin-top:auto">Déjà un compte ? <span style="color:#2b2620;font-weight:600;border-bottom:1px solid #2b2620;padding-bottom:1px">Se connecter</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- erreur -->
+<div style="position:absolute;left:640px;top:200px;width:440px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">État erreur — email déjà utilisé (E1)</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:300px;display:flex;flex-direction:column;padding:24px;gap:12px">
+      <span style="font:700 16px 'Hanken Grotesk';color:#2b2620">Créer un compte</span>
+      <div style="display:flex;align-items:center;gap:9px;padding:10px 13px;background:#f4ebe4;border:1px solid #d8c0b0;border-radius:7px"><span style="width:16px;height:16px;border-radius:50%;border:1.5px solid #a8775a;display:flex;align-items:center;justify-content:center;font:600 10px 'Hanken Grotesk';color:#a8775a">!</span><span style="font:400 11.5px/1.45 'Hanken Grotesk';color:#7a5240">Cette adresse est déjà associée à un compte.</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">ADRESSE DE MESSAGERIE</span><div style="height:40px;background:#fff;border:1.5px solid #c79a7e;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#46403a">thomas@exemple.fr</div></div>
+      <span style="font:400 11.5px 'Hanken Grotesk';color:#8a8275">Corrigez l'adresse, ou <span style="color:#2b2620;font-weight:600;border-bottom:1px solid #2b2620">connectez-vous</span>.</span>
+    </div>
+  </div>
+</div>
+
+<!-- arrivée depuis invite contextuelle (UC-01 A1) -->
+<div style="position:absolute;left:1120px;top:200px;width:480px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">Depuis une invite contextuelle (UC-01 A1) — travail conservé</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:520px;display:flex;flex-direction:column;padding:26px 28px;gap:14px">
+      <div style="display:flex;align-items:flex-start;gap:11px;padding:12px 14px;background:#fff;border:1px solid #ddd6c8;border-left:4px solid #2b2620;border-radius:7px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;white-space:nowrap;margin-top:2px">invite</span>
+        <span style="font:400 12px/1.5 'Hanken Grotesk';color:#46403a">Vous créez un compte depuis votre espace de travail. <b>Tout ce que vous avez commencé reste en place</b> et sera synchronisé.</span>
+      </div>
+      <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone d'accès via fournisseur externe (un geste)</span>
+      <button style="height:44px;border:1.5px solid #2b2620;border-radius:8px;background:#fff;color:#2b2620;font:600 13px 'Hanken Grotesk';display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer"><span style="width:18px;height:18px;border-radius:50%;border:1.5px solid #2b2620"></span>Continuer avec un fournisseur</button>
+      <div style="display:flex;align-items:center;gap:10px"><span style="flex:1;height:1px;background:#ddd6c8"></span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">ou</span><span style="flex:1;height:1px;background:#ddd6c8"></span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">ADRESSE DE MESSAGERIE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">vous@exemple.fr</div></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">MOT DE PASSE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">••••••••</div></div>
+      <button style="height:44px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13.5px 'Hanken Grotesk';cursor:pointer">Créer mon compte et continuer</button>
+      <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86;text-align:center">aucune perte du contenu en cours — on revient là où vous étiez (UC-01 A1 ; AR-13)</span>
+    </div>
+  </div>
+</div>
+
+<!-- POST-ITS -->
+<div style="position:absolute;left:1640px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi</div>
+<div style="position:absolute;left:1640px;top:202px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-13</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Fournisseur externe <b>en haut</b> : chemin d'un geste, moindre coût à l'instant de bascule depuis le mode local.</div>
+</div>
+<div style="position:absolute;left:1640px;top:372px;width:248px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">UC-10 · migration</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Si des données locales existent, la <b>gate de migration local→cloud</b> s'intercale avant toute migration (écran dédié).</div>
+</div>
+
+<div style="position:absolute;left:1640px;top:540px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-01 A1 · invite</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Le passage au compte est proposé <b>au bon moment, sans forcer</b> ; le contenu en cours n'est jamais perdu — on reprend où on était.</div>
+</div>
+
+<!-- ============ BANDE TABLETTE ============ -->
+<div style="position:absolute;left:40px;top:840px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07)</div>
+
+<div style="position:absolute;left:40px;top:890px;width:440px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — inscription</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:540px;display:flex;flex-direction:column;padding:26px;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:3px;align-items:center"><span style="font:700 18px 'Hanken Grotesk';color:#2b2620">Créer un compte</span></div>
+      <button style="height:44px;border:1.5px solid #2b2620;border-radius:8px;background:#fff;color:#2b2620;font:600 13px 'Hanken Grotesk';display:flex;align-items:center;justify-content:center;gap:9px"><span style="width:18px;height:18px;border-radius:50%;border:1.5px solid #2b2620"></span>Continuer avec un fournisseur</button>
+      <div style="display:flex;align-items:center;gap:10px"><span style="flex:1;height:1px;background:#ddd6c8"></span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">ou</span><span style="flex:1;height:1px;background:#ddd6c8"></span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">ADRESSE DE MESSAGERIE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">vous@exemple.fr</div></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOM D'AFFICHAGE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">Votre nom</div></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">MOT DE PASSE</span><div style="height:40px;background:#fff;border:1px solid #d3ccbe;border-radius:7px;display:flex;align-items:center;padding:0 12px;font:400 12.5px 'Hanken Grotesk';color:#a8a08e">••••••••</div></div>
+      <button style="height:44px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13.5px 'Hanken Grotesk'">Créer mon compte</button>
+      <span style="font:400 11.5px 'Hanken Grotesk';color:#8a8275;text-align:center">Déjà un compte ? <span style="color:#2b2620;font-weight:600">Se connecter</span></span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1120, &quot;height&quot;: 620 }
+}"></script>
+</body>
+</html>

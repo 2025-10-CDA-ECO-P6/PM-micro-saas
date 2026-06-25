@@ -3,7 +3,7 @@
 > Fiche de description d'écran basse-fidélité — Vague 4, sous-vague 1 (transversaux), lot B.
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..17`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..20`.
 
 ---
 

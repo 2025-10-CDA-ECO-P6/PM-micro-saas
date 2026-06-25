@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Éditeur de scénario</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">cas spécialisé de l'éditeur de document (UC-03) · monobloc A1 illustré</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">Sources : UC-03 · hérite editeur-document (en-tête, contenu, visibilité, liens, backlinks)   ·   <span style="color:#a39a86">[ libellé ] = nom de zone</span></div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran</div>
+
+<div style="position:absolute;left:40px;top:200px;width:1180px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Éditeur de scénario — scène sélectionnée</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">infos générales + scènes + édition de scène</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:740px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 16px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹ Scénarios</span>
+        <div style="display:flex;align-items:center;gap:11px">
+          <span style="display:inline-flex;align-items:center;gap:6px;font:500 11px 'Spline Sans Mono',monospace;color:#9a917f"><span style="width:7px;height:7px;border-radius:50%;background:#9aa07f"></span>Enregistré</span>
+          <span style="display:inline-flex;align-items:center;height:30px;padding:0 13px;border:1px solid #cdc6b8;border-radius:6px;font:600 11.5px 'Hanken Grotesk';color:#5c554a">⋯</span>
+        </div>
+      </div>
+      <!-- INFOS GÉNÉRALES -->
+      <div style="padding:14px 16px 0;display:flex;flex-direction:column;gap:8px">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone d'informations générales du scénario</span>
+        <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px 15px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:22px;padding:0 7px;border:1px solid #cdc6b8;border-radius:5px;font:500 10px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">SCÉN</span>
+            <span style="flex:1;font:700 20px 'Hanken Grotesk';color:#2b2620">La Forge Maudite</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 11px;border:1px solid #cdc6b8;border-radius:13px;font:500 11px 'Hanken Grotesk';color:#5c554a">Statut : En préparation ▾</span>
+          </div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <div style="flex:2;min-width:260px;display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">RÉSUMÉ</span><span style="font:400 12.5px/1.55 'Hanken Grotesk';color:#46403a">Les PJ enquêtent sur des armes de cendre vendues au marché noir — la piste remonte à la forge de Maître Corâr.</span></div>
+            <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">CONTEXTE</span><span style="font:400 12.5px/1.55 'Hanken Grotesk';color:#46403a">Cité de Kar-Thol, quartier des forges — tensions entre la Guilde des Cendres et le Baron.</span></div>
+            <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">OBJECTIF NARRATIF</span><span style="font:400 12.5px/1.55 'Hanken Grotesk';color:#46403a">Découvrir le pacte du Baron et choisir d'exposer ou protéger Corâr.</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- SCÈNES + ÉDITION -->
+      <div style="flex:1;display:flex;gap:12px;padding:14px;min-height:0">
+        <div style="width:268px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone des scènes <span style="color:#c9a25f">[S9]</span></span>
+            <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">+ scène</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:9px;padding:11px 12px;border-bottom:1px solid #f1ece1"><span style="font:500 12px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#efe9de;font:600 10px 'Hanken Grotesk';color:#6b6456">1</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Arrivée au marché</span></div>
+            <div style="display:flex;align-items:center;gap:9px;padding:11px 12px;border-bottom:1px solid #f1ece1;background:#efe9de;box-shadow:inset 3px 0 0 #2b2620"><span style="font:500 12px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#2b2620;font:600 10px 'Hanken Grotesk';color:#fbfaf6">2</span><span style="flex:1;font:600 12.5px 'Hanken Grotesk';color:#2b2620">La Forge</span></div>
+            <div style="display:flex;align-items:center;gap:9px;padding:11px 12px;border-bottom:1px solid #f1ece1"><span style="font:500 12px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#efe9de;font:600 10px 'Hanken Grotesk';color:#6b6456">3</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Confrontation</span></div>
+            <div style="margin-top:auto;padding:10px 12px;border-top:1px dashed #e4ded0;font:400 9.5px/1.5 'Spline Sans Mono',monospace;color:#a39a86">une scène = document SCENE lié, ordonné (UC-03) · A1 : scénario monobloc sans scènes possible</div>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone d'édition de scène (focus) <span style="color:#c9a25f">[S9]</span></span>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="padding:13px 15px;border-bottom:1px solid #ece6d9;display:flex;flex-direction:column;gap:8px">
+              <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">‹ La Forge Maudite › Scène 2 — fil d'Ariane (remonter au scénario)</span>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#2b2620;font:600 11px 'Hanken Grotesk';color:#fbfaf6">2</span>
+                <span style="flex:1;font:700 17px 'Hanken Grotesk';color:#2b2620">La Forge</span>
+                <span style="font:500 10.5px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8">documents liés</span>
+              </div>
+            </div>
+            <div style="padding:13px 15px;display:flex;flex-direction:column;gap:13px;flex:1">
+              <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">OBJECTIF DE SCÈNE</span><span style="font:400 12.5px 'Hanken Grotesk';color:#46403a">Faire parler Corâr sans le braquer.</span></div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">DESCRIPTION (BLOCS LIBRES)</span>
+                <span style="font:400 12.5px/1.6 'Hanken Grotesk';color:#46403a">L'atelier empeste la suie. Corâr martèle une lame ; il se méfie des inconnus.</span>
+                <span style="width:80%;height:8px;background:#ece6d9;border-radius:4px"></span>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <div style="flex:1;min-width:200px;background:#f7f4ee;border:1px solid #e4ded0;border-left:3px solid #c9c2b4;border-radius:6px;padding:9px 12px;display:flex;flex-direction:column;gap:5px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOTES PRIVÉES MJ</span><span style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a">Corâr ment d'abord ; cède si on évoque sa fille.</span></div>
+                <div style="flex:1;min-width:200px;background:#2b2620;border-radius:6px;padding:9px 12px;display:flex;flex-direction:column;gap:5px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:rgba(251,250,246,.6);letter-spacing:.04em">INFORMATIONS PARTAGEABLES</span><span style="font:400 12px/1.5 'Hanken Grotesk';color:#fbfaf6">Description de la forge à lire aux joueurs.</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:10px;border-top:1px dashed #ece6d9">
+                <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86">liés à la scène</span>
+                <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#f3efe6;border:1px solid #e4ded0;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">Maître Corâr</span>
+                <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#f3efe6;border:1px solid #e4ded0;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">Forge de Corâr</span>
+                <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#8a8275">+ lier</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POST-ITS -->
+<div style="position:absolute;left:1300px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi</div>
+<div style="position:absolute;left:1300px;top:202px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-03</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Spécialisation de l'éditeur : <b>infos générales</b> (propriétés du type SCENARIO) + <b>scènes</b> liées ordonnées. Hérite en-tête / contenu / liens / backlinks.</div>
+</div>
+<div style="position:absolute;left:1300px;top:372px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-03 A1 · A4</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Scénario <b>monobloc</b> possible (sans scènes), et <b>minimal</b> (titre seul) — improvisé juste avant une session.</div>
+</div>
+<div style="position:absolute;left:1300px;top:540px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">séparation</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Par scène : <b>notes privées MJ</b> (clair) vs <b>informations partageables</b> (sombre) — la frontière privé/visible est visible dès l'écriture.</div>
+</div>
+<div style="position:absolute;left:1300px;top:712px;width:250px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">SOUS-SPÉCIFIÉ — S9</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Disposition de la liste de scènes et articulation scène ↔ scénario parent : non figées au corpus — proposition à valider.</div>
+</div>
+
+<!-- scénario monobloc (UC-03 A1) -->
+<div style="position:absolute;left:800px;top:1060px;width:480px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">Scénario monobloc — sans scènes (UC-03 A1)</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:430px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 15px;background:#efe9de;border-bottom:1px solid #d8d1c2"><span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹ Scénarios</span><span style="display:inline-flex;align-items:center;gap:6px;font:500 10.5px 'Spline Sans Mono',monospace;color:#9a917f"><span style="width:7px;height:7px;border-radius:50%;background:#9aa07f"></span>Enregistré</span></div>
+      <div style="padding:14px 15px 0;display:flex;flex-direction:column;gap:8px">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone d'informations générales</span>
+        <div style="display:flex;align-items:center;gap:10px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:21px;padding:0 6px;border:1px solid #cdc6b8;border-radius:5px;font:500 9.5px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">SCÉN</span><span style="flex:1;font:700 18px 'Hanken Grotesk';color:#2b2620">L'Embuscade au pont</span></div>
+      </div>
+      <div style="flex:1;padding:12px 15px;display:flex;flex-direction:column;gap:8px;min-height:0">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de contenu libre · blocs — le rail de scènes n'est pas affiché</span>
+        <div style="flex:1;display:flex;flex-direction:column;gap:9px;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px 15px">
+          <span style="font:400 13px/1.6 'Hanken Grotesk';color:#46403a">Trois bandits embusqués sur le pont de la Suie réclament un péage. L'un d'eux porte une lame de cendre.</span>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 10px 'Spline Sans Mono',monospace;color:#a39a86">LISTE</span><span style="font:400 12.5px 'Hanken Grotesk';color:#46403a">• Réaction si les PJ paient — si refus — si interrogent</span></div>
+          <span style="display:inline-flex;align-items:center;align-self:flex-start;height:28px;padding:0 12px;border:1px dashed #c9c2b4;border-radius:7px;font:500 11px 'Hanken Grotesk';color:#6b6456">+ ajouter un bloc</span>
+        </div>
+        <div style="font:400 9.5px/1.5 'Spline Sans Mono',monospace;color:#a39a86">aucune scène associée → le rail de scènes est <b>absent</b> (pas vide) ; seule la zone de contenu libre est présente (UC-03 A1)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BANDE TABLETTE ============ -->
+<div style="position:absolute;left:40px;top:1010px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07)</div>
+
+<div style="position:absolute;left:40px;top:1060px;width:720px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — éditeur de scénario</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">768px</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:860px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹ Scénarios</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font:500 10.5px 'Spline Sans Mono',monospace;color:#9a917f"><span style="width:7px;height:7px;border-radius:50%;background:#9aa07f"></span>Enregistré</span>
+      </div>
+      <div style="padding:14px 14px 0;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:21px;padding:0 6px;border:1px solid #cdc6b8;border-radius:5px;font:500 9.5px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">SCÉN</span>
+          <span style="flex:1;font:700 19px 'Hanken Grotesk';color:#2b2620">La Forge Maudite</span>
+        </div>
+        <span style="display:inline-flex;align-self:flex-start;align-items:center;height:26px;padding:0 11px;border:1px solid #cdc6b8;border-radius:13px;font:500 11px 'Hanken Grotesk';color:#5c554a">Statut : En préparation ▾</span>
+      </div>
+      <div style="padding:13px 14px 0;display:flex;flex-direction:column;gap:7px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">scènes — sélection</span>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border:1px solid #cdc6b8;color:#5c554a;border-radius:14px;font:500 11.5px 'Hanken Grotesk'"><span style="display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:#efe9de;font:600 9px 'Hanken Grotesk'">1</span>Arrivée</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;background:#2b2620;color:#fbfaf6;border-radius:14px;font:600 11.5px 'Hanken Grotesk'"><span style="display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:rgba(251,250,246,.2);font:600 9px 'Hanken Grotesk'">2</span>La Forge</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border:1px solid #cdc6b8;color:#5c554a;border-radius:14px;font:500 11.5px 'Hanken Grotesk'"><span style="display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:#efe9de;font:600 9px 'Hanken Grotesk'">3</span>Confront.</span>
+          <span style="display:inline-flex;align-items:center;height:28px;padding:0 11px;border:1px dashed #c9c2b4;color:#6b6456;border-radius:14px;font:500 11.5px 'Hanken Grotesk'">+ scène</span>
+        </div>
+      </div>
+      <div style="flex:1;padding:13px 14px;display:flex;flex-direction:column;gap:8px;min-height:0">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">édition de scène · La Forge</span>
+        <div style="flex:1;display:flex;flex-direction:column;gap:11px;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">OBJECTIF</span><span style="font:400 12.5px 'Hanken Grotesk';color:#46403a">Faire parler Corâr sans le braquer.</span></div>
+          <span style="font:400 12.5px/1.6 'Hanken Grotesk';color:#46403a">L'atelier empeste la suie. Corâr se méfie des inconnus.</span>
+          <div style="background:#f7f4ee;border:1px solid #e4ded0;border-left:3px solid #c9c2b4;border-radius:6px;padding:9px 11px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">NOTES PRIVÉES MJ</span><div style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a;margin-top:4px">Cède si on évoque sa fille.</div></div>
+          <div style="background:#2b2620;border-radius:6px;padding:9px 11px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:rgba(251,250,246,.6);letter-spacing:.04em">PARTAGEABLE</span><div style="font:400 12px/1.5 'Hanken Grotesk';color:#fbfaf6;margin-top:4px">Description à lire aux joueurs.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 760 }
+}"></script>
+</body>
+</html>

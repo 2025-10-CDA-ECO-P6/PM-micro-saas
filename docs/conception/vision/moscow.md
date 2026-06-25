@@ -11,9 +11,9 @@
 
 | Catégorie | Nb | Éléments |
 |---|---|---|
-| **Must Have** | 10 UC + espace personnel + instrumentation | UC-01 à UC-10 (dont UC-05 base — dossiers libres) + espace personnel (capture-first, conteneur par défaut) + instrumentation de validation du MVP |
-| **Should Have** | 6 | UC-05 riche (dossiers et types élaborés), UC-11, UC-12, UC-14, UC-13 *(hors première livraison)*, export d'espace |
-| **Could Have** | 3 | Types personnalisés, réimport de fichier de sauvegarde *(post-MVP ; distinct de l'export Should Have)*, notes joueur |
+| **Must Have** | 10 UC + espace personnel + instrumentation + export d'espace | UC-01 à UC-10 (dont UC-05 base — dossiers libres) + espace personnel (capture-first, conteneur par défaut) + instrumentation de validation du MVP + export d'espace (version minimale — promotion du 2026-06-25) |
+| **Should Have** | 5 | UC-05 riche (dossiers et types élaborés), UC-11, UC-12, UC-14, UC-13 *(hors première livraison)* |
+| **Could Have** | 3 | Types personnalisés, réimport de fichier de sauvegarde *(post-MVP ; distinct de l'export Must Have)*, notes joueur |
 | **Won't Have** | — | Voir détail ci-dessous |
 
 ---
@@ -242,6 +242,36 @@ propriété permanente du compte, non une fonctionnalité soumise à limite.
 
 ---
 
+### Export d'espace (Must Have — version minimale)
+
+**Pourquoi Must Have** (promu de Should Have par décision opérateur du 2026-06-25) :
+l'export matérialise le différenciant n°1 de la vision — la possession des données, qui doit être
+actionnable et non simplement affirmée. Sans export accessible, la promesse de possession des données
+reste une déclaration sans preuve. L'export répond aussi à la douleur de confiance de Thomas (crainte
+de l'enfermement propriétaire) et de Rémi (réassurance face au numérique), et constitue un filet de
+sécurité critique pour le mode local.
+
+**Motivation de la promotion** : la portabilité est un critère d'adoption pour le segment MJ-organisé
+(persona Thomas — *"la portabilité, ce n'est pas un confort, c'est une question de confiance"*). Inclure
+l'export en version minimale dès le MVP est nécessaire pour que la promesse de possession des données soit
+crédible au premier contact.
+
+**Périmètre MVP — version minimale** : export d'un espace (ou de l'espace personnel) en format ouvert,
+lisible et réutilisable hors de l'application. Disponible en mode local comme avec un compte. L'UX
+d'export avancée (granularité, formats multiples, export sélectif) est post-MVP.
+
+**Distinct du réimport** : le réimport d'un fichier de sauvegarde reste Could Have / post-MVP (voir
+section correspondante).
+
+**Critère de sortie** : un MJ exporte l'ensemble de son espace — documents, notes, structure — dans un format ouvert, lisible et réutilisable hors de l'application. Disponible en mode local comme avec un compte.
+
+> **Note de révision — 2026-06-25** : promu de Should Have (arbitrage 2026-06-10) à Must Have / version
+> minimale. Motivation : adoption segment MJ-organisé (Thomas) — la portabilité est un critère de confiance,
+> pas un confort. L'export doit être présent dès le MVP pour rendre la promesse de possession des données
+> actionnable. Seul l'EXPORT est promu ; le RÉIMPORT reste Could Have / post-MVP.
+
+---
+
 ### Instrumentation de validation du MVP
 
 **Pourquoi Must Have** : le MVP unique teste simultanément trois piliers (préparation, vue session, partage). Sans mesure granulaire par pilier, un échec d'adoption serait indiagnosticable — impossible de savoir quel pilier n'a pas résonné avec les utilisateurs. L'instrumentation doit permettre une analyse rétrospective claire de chaque pilier.
@@ -358,19 +388,6 @@ depuis la vue session en moins de cinq secondes.
 
 ---
 
-### Export d'espace
-
-**Pourquoi Should Have** (rehaussé de Could Have par arbitrage du 2026-06-10) :
-l'export matérialise le différenciant n°1 de la vision — la possession des données, qui doit être
-actionnable et non simplement affirmée. Sans export accessible, la promesse de possession des données
-reste une déclaration sans preuve. L'export répond aussi à la douleur de confiance de Thomas (crainte
-de l'enfermement propriétaire) et de Rémi (réassurance face au numérique), et constitue un filet de
-sécurité critique pour le mode local.
-
-**Critère de sortie** : un MJ exporte l'ensemble de son espace — documents, notes, structure — dans un format ouvert, lisible et réutilisable hors de l'application. Disponible en mode local comme avec un compte.
-
----
-
 ## Could Have — Valeur réelle, non prioritaire pour la validation initiale
 
 Ces fonctionnalités répondent à des besoins identifiés mais ne conditionnent pas la validation
@@ -390,9 +407,9 @@ semaines d'usage réel.
 
 ---
 
-### Réimport de fichier de sauvegarde *(post-MVP — distinct de l'export Should Have)*
+### Réimport de fichier de sauvegarde *(post-MVP — distinct de l'export Must Have)*
 
-Le MJ réimporte un fichier de sauvegarde exporté par l'application pour récupérer un espace sans ressaisie. Distinct de l'**export d'espace** (Should Have, disponible dès le MVP).
+Le MJ réimporte un fichier de sauvegarde exporté par l'application pour récupérer un espace sans ressaisie. Distinct de l'**export d'espace** (Must Have / version minimale, disponible dès le MVP — promu 2026-06-25).
 
 **Valeur** : Thomas a un vault Obsidian de 400 notes qu'il ne migrera pas manuellement.
 Un import partiel (même imparfait) réduit le coût de transition. Argument commercial fort

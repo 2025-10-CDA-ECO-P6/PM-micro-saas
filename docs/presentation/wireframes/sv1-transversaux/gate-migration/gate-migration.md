@@ -3,7 +3,7 @@
 > Fiche de description d'écran basse-fidélité — Vague 4, sous-vague 1 (transversaux), lot B.
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..17`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..20`.
 
 ---
 
@@ -40,17 +40,23 @@ Intention : au moment de la création de compte depuis le mode local, l'utilisat
 ### Zones et hiérarchie
 
 ```
-[ ZONE DE PRÉSENTATION DES ESPACES LOCAUX DÉTECTÉS ]
+[ ZONE DE PRÉSENTATION ET SÉLECTION DES ESPACES LOCAUX DÉTECTÉS ]
   type     : principal
-  rôle     : liste les espaces locaux détectés, espace par espace ; pour chaque espace :
-             titre, type (campagne ou espace personnel), historique de session
-             (sessions terminées, notes de session, documents épinglés, résumés),
-             volume estimé, date de création ou de dernière modification ;
-             chaque espace est présenté de façon individuelle car la migration
-             est traitée espace par espace (UC-10 §Règles métier) ;
-             si une session est au statut en cours dans un espace, cet espace
-             est signalé avec une indication que la session doit être clôturée
-             avant que cet espace puisse migrer
+  rôle     : liste les espaces locaux détectés sous forme de liste à sélection
+             individuelle — chaque espace est coché par défaut (tout coché à
+             l'ouverture du gate) ; l'utilisateur peut décocher des espaces
+             individuellement pour les exclure du lot à migrer ;
+             la granularité est par espace (UC-10 §Règles métier : migration
+             espace par espace, tout-ou-rien par espace — la sélection est
+             globale par espace, pas par document) ;
+             pour chaque espace : titre, type (campagne ou espace personnel),
+             historique de session (sessions terminées, notes de session,
+             documents épinglés, résumés), volume estimé, date de création
+             ou de dernière modification ;
+             un espace contenant une session au statut en cours est affiché
+             DÉSACTIVÉ (case non cochable) avec le motif inline
+             « session à clôturer » ; l'utilisateur doit clôturer la session
+             depuis la vue session avant de pouvoir inclure cet espace
   priorité : co-présent-jamais-masqué
   visibilité : utilisateur en cours de création de compte depuis le mode local
   ancrage  : UC-01 A1 ; UC-10 §Scénario nominal étape 5 ; UC-10 §Règles métier
@@ -66,15 +72,17 @@ Intention : au moment de la création de compte depuis le mode local, l'utilisat
   ancrage  : UC-10 §Règles métier (migration — config vue session recréée) ;
              S4 §Gate de migration local→cloud
 
-[ ZONE DE CONFIRMATION EXPLICITE ]
+[ ZONE DE CONFIRMATION EXPLICITE GLOBALE ]
   type     : formulaire
   rôle     : recueille la confirmation explicite de l'utilisateur avant le déclenchement
-             de la migration ; la confirmation porte sur l'ensemble des espaces listés ;
-             aucune migration ne commence sans cette confirmation (UC-10 §Préconditions ;
-             ADR-016 §4 — gate de reconnaissance anti-appropriation) ;
-             la zone de confirmation n'est accessible que si aucune session en cours
-             ne subsiste dans les espaces listés, ou si les espaces concernés ont été
-             exclus du lot à migrer
+             de la migration ; la confirmation porte sur l'ensemble des espaces cochés
+             dans la sélection ; aucune migration ne commence sans cette confirmation
+             (UC-10 §Préconditions ; ADR-016 §4 — gate de reconnaissance
+             anti-appropriation) ;
+             la zone de confirmation est accessible uniquement si aucun des espaces
+             cochés ne contient de session en cours (les espaces désactivés avec
+             motif « session à clôturer » ne bloquent pas la confirmation si
+             l'utilisateur les a décochés)
   priorité : principal
   visibilité : utilisateur en cours de création de compte depuis le mode local
 ```
@@ -84,21 +92,25 @@ Intention : au moment de la création de compte depuis le mode local, l'utilisat
 ### Ce que l'utilisateur peut faire
 
 ```
-- [UC-01 A1 ; UC-10 §Scénario nominal étape 5] consulter les espaces locaux détectés
-  → l'utilisateur prend connaissance des espaces, de leur historique de session, du
-  volume estimé et de la date, espace par espace, avant toute action
+- [UC-01 A1 ; UC-10 §Scénario nominal étape 5] consulter et sélectionner les espaces
+  locaux détectés → l'utilisateur prend connaissance des espaces, de leur historique
+  de session, du volume estimé et de la date, espace par espace, avant toute action ;
+  tous les espaces sont cochés par défaut ; l'utilisateur peut décocher des espaces
+  individuellement pour les exclure de la migration
 
 - [UC-10 §Règles métier] identifier les sessions en cours qui bloquent la migration
-  d'un espace → le gate signale clairement quel espace contient une session en cours
-  (statut en cours) et indique que cette session doit être clôturée avant que cet espace
-  puisse migrer ; l'utilisateur peut choisir de clôturer la session, puis revenir
+  d'un espace → les espaces contenant une session en cours (statut en cours) sont
+  affichés DÉSACTIVÉS avec le motif inline « session à clôturer » ; l'utilisateur
+  peut choisir de clôturer la session depuis la vue session puis revenir,
+  ou décocher l'espace pour l'exclure du lot et poursuivre la migration des autres
 
 - [UC-01 A1 ; UC-10 §Scénario nominal étape 6] confirmer la migration → après lecture
-  des espaces détectés et de l'avertissement sur la configuration de vue session,
-  l'utilisateur confirme ; la migration démarre espace par espace, tout-ou-rien par
-  espace ; les espaces migrés avec succès sont accessibles dans l'espace de travail
-  cloud ; les espaces rejetés font l'objet d'un rapport de rejets et leurs données
-  locales restent intactes (UC-10 E5)
+  des espaces cochés et de l'avertissement sur la configuration de vue session,
+  l'utilisateur confirme ; la confirmation porte sur l'ensemble du lot coché ;
+  la migration démarre espace par espace, tout-ou-rien par espace ; les espaces
+  migrés avec succès sont accessibles dans l'espace de travail cloud ; les espaces
+  rejetés font l'objet d'un rapport de rejets et leurs données locales restent
+  intactes (UC-10 E5)
 ```
 
 ---
@@ -113,12 +125,11 @@ Intention : au moment de la création de compte depuis le mode local, l'utilisat
   confirmer la migration
 
 état bloquant partiel (au moins un espace contient une session en cours) :
-  la zone de présentation des espaces signale le ou les espaces bloqués avec indication
-  que la session doit être clôturée avant migration ; la zone de confirmation est
-  accessible uniquement pour les espaces sans session en cours, ou après clôture de
-  toutes les sessions en cours — selon la granularité de sélection ;
-  [SOUS-SPÉCIFIÉ — S4 §Gate de migration local→cloud] agencement et granularité de
-  la sélection des espaces à migrer : non tranché dans le corpus
+  le ou les espaces bloqués s'affichent DÉSACTIVÉS dans la liste avec le motif inline
+  « session à clôturer » ; ils ne peuvent pas être cochés tant que la session n'est
+  pas clôturée ; la zone de confirmation reste accessible si l'utilisateur a décoché
+  tous les espaces bloqués (ou si les espaces bloqués ont été clôturés) — la migration
+  peut démarrer sur le sous-lot coché sans attendre les espaces exclus
 
 état post-migration (rapport de rejets) :
   si des espaces ont été rejetés lors de la migration (UC-10 E5), un rapport de rejets
@@ -176,10 +187,5 @@ Sources : UC-01 A1 ; UC-10 §Scénario nominal (inscription depuis le mode local
     chemin local→cloud par création de compte
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S4 §Gate de migration local→cloud]
-    agencement des espaces détectés sur l'écran : non tranché dans le corpus
-  [SOUS-SPÉCIFIÉ — S4 §Gate de migration local→cloud]
-    granularité de la sélection des espaces à migrer (tout sélectionner par défaut,
-    ou sélection individuelle) : non tranché dans le corpus ; la règle espace par espace
-    (UC-10 §Règles métier) pose le traitement unitaire, pas la granularité de la sélection
+  — (aucun élément sous-spécifié restant dans le périmètre de cet écran)
 ```

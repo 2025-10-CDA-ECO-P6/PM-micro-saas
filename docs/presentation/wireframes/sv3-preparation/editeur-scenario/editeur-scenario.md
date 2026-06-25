@@ -3,7 +3,7 @@
 > Fiche de description d'écran basse-fidélité — Vague 3, cluster B.
 > Cas spécialisé de l'éditeur de document — instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..17`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..20`.
 > Cas général : `docs/presentation/wireframes/editeur-document.md`.
 
 ---
@@ -16,7 +16,7 @@ Surface      : MJ
 Contexte     : préparation
 Type d'espace: CAMPAIGN | ONE_SHOT | PERSONAL
 Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-03
+Traçabilité  : UC-03 ; AR-19
 ```
 
 ---
@@ -38,6 +38,8 @@ Intention : le MJ structure un scénario en lui donnant ses informations génér
 
 L'éditeur de scénario est un cas spécialisé de l'éditeur de document. Il hérite de toutes les zones décrites dans `editeur-document.md` et les enrichit de zones spécifiques à la structure narrative. Les zones communes (en-tête, contenu libre, visibilité, documents liés, backlinks) ne sont pas répétées ici ; seules les zones propres au scénario sont décrites.
 
+Héritage des décisions de conception (vague 3 — résolutions UX) : la disposition en flux de blocs verticaux, les affordances d'ajout/suppression/réordonnancement de blocs (NFR-ACC-01), la sélection optionnelle du type via champ discret, l'interface de saisie des liens par recherche-titre inline (UC-14), la zone « Référencé par » en lecture seule, et le principe de densité AR-19 (plancher garanti, plafond borné, divulgation progressive) s'appliquent à l'éditeur de scénario selon les mêmes termes que l'éditeur de document — voir `editeur-document.md §Zones et hiérarchie`.
+
 ```
 [ ZONE D'INFORMATIONS GÉNÉRALES DU SCÉNARIO ]
   type     : formulaire
@@ -50,33 +52,44 @@ L'éditeur de scénario est un cas spécialisé de l'éditeur de document. Il h�
   ancrage  : UC-03 §Scénario nominal (étape 5)
 
 [ ZONE DES SCÈNES ]
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] disposition de la liste de scènes
-    et affordances de navigation entre scènes : UC-03 décrit le modèle (une scène
-    est un document de type SCENE lié au scénario, avec titre, description, objectif,
-    ordre d'affichage, notes privées, informations partageables, documents liés) mais
-    ne précise pas comment ces scènes sont présentées et naviguées dans l'interface.
-  type     : principal
+  type     : principal — rail latéral gauche (liste-détail)
   rôle     : liste les scènes associées au scénario dans leur ordre d'affichage ;
              chaque scène est un document lié ; le MJ peut ajouter, modifier ou
              supprimer une scène depuis cette zone ; une scène peut référencer
              des documents liés (PNJ, lieux, objets, révélations, notes)
+  disposition : colonne/rail de scènes ordonnée à gauche ; la sélection d'une scène
+             ouvre la scène en zone d'édition focus (zone centrale) ;
+             le réordonnancement des scènes est possible par déplacement explicite
+             (annoncé assistivement — NFR-ACC-02) ;
+             si le scénario est monobloc (UC-03 A1 — aucune scène associée),
+             le rail n'est pas affiché : seule la zone de contenu libre est présente
+  présence : conditionnelle — absente si le scénario ne contient aucune scène
+             (monobloc, UC-03 A1) ; présente dès qu'au moins une scène existe
   priorité : principal
   visibilité : MJ seul
   ancrage  : UC-03 §Scénario nominal (étapes 6-7) ; UC-03 §Données manipulées §Scène ;
-             UC-03 §Règles métier
+             UC-03 §Règles métier ; UC-03 A1 (scénario monobloc) ; NFR-ACC-02
 
 [ ZONE D'ÉDITION DE SCÈNE (focus) ]
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] présentation et disposition de la zone
-    d'édition d'une scène sélectionnée — comment l'édition d'une scène s'articule
-    avec la liste des scènes et le contenu du scénario parent n'est pas décrit
-    dans le corpus.
-  type     : principal
+  type     : principal — zone centrale
   rôle     : édition du contenu d'une scène sélectionnée — titre, description,
              objectif, notes privées MJ, informations partageables, documents liés
              à la scène ; contenu libre en blocs accessible en parallèle
+  articulation deux niveaux : les deux niveaux (scénario parent et scène) coexistent
+             sur une seule surface sans changement d'écran (principe S1) ;
+             le panneau gauche porte les informations générales du scénario et le
+             rail de scènes ; la zone centrale affiche l'édition de la scène active ;
+             si aucune scène n'est sélectionnée, la zone centrale affiche le contenu
+             libre du scénario parent ; un fil d'Ariane « Scénario › Scène N »
+             signale le niveau en cours d'édition et permet de remonter au niveau
+             scénario sans quitter l'éditeur
+  présence : conditionnelle — présente si une scène est sélectionnée ou créée ;
+             remplacée par la zone de contenu libre du scénario si aucune scène
+             n'est sélectionnée
   priorité : principal (présente si une scène est sélectionnée ou créée)
   visibilité : MJ seul
-  ancrage  : UC-03 §Scénario nominal (étape 7) ; UC-03 §Données manipulées §Scène
+  ancrage  : UC-03 §Scénario nominal (étape 7) ; UC-03 §Données manipulées §Scène ;
+             principe S1 (surface unique)
 ```
 
 ---
@@ -194,15 +207,9 @@ Fonctions cloud désactivées sur l'éditeur de scénario en mode local :
     « Mes scénarios » — l'interface de bibliothèque est post-MVP (AR-08 révisé)
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] disposition de la liste de scènes
-    et affordances de navigation entre scènes dans l'interface — UC-03 décrit
-    le modèle (scènes liées, ordre d'affichage, documents liés par scène),
-    pas la disposition de l'interface
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] articulation entre la zone d'édition
-    du scénario parent et la zone d'édition de la scène sélectionnée —
-    comment ces deux niveaux d'édition coexistent sur la même surface
-    n'est pas décrit dans le corpus
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document] affordances de l'interface de saisie
-    des liens entre documents (liens vers PNJ, lieux, objets, révélations) —
-    hérité du cas général ; voir editeur-document.md §Hors-périmètre
+  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document ; NFR-OFF-04] comportement de l'éditeur
+    en cas de perte de connexion — hérité du cas général ; non décrit en détail
+    dans le corpus pour ce cas ; UC-03 E2 mentionne que le système conserve les données
+    saisies localement si possible ; point d'interview produit non couvert par les
+    décisions actuelles
 ```

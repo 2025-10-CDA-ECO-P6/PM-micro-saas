@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Tableau de bord des espaces de jeu</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">point d'entrée (AR-01)</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">Sources : UC-02 postcondition · UC-06 A5 · UC-01 · AR-01 · AR-15 · AR-17 · état vide 0/3 (S4)   ·   <span style="color:#a39a86">[ libellé ] = nom de zone (Registre 2)</span></div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran</div>
+
+<!-- ---------- LAPTOP : mode local ---------- -->
+<div style="position:absolute;left:40px;top:200px;width:1180px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">État : mode local</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">sans compte · bandeaux présents</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:648px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <span style="font:700 17px 'Hanken Grotesk';color:#2b2620">Haversack</span>
+          <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">outil d'assistance au MJ</span>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 13px;border:1px dashed #c9c2b4;border-radius:14px;font:500 11.5px 'Hanken Grotesk';color:#6b6456">● Mode local — sans compte</span>
+      </div>
+      <div style="padding:11px 18px 0;display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff;border:1px solid #ddd6c8;border-left:4px solid #c9c2b4;border-radius:6px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;white-space:nowrap">bandeau de durabilité</span>
+          <span style="flex:1;font:400 12px 'Hanken Grotesk';color:#5c554a">Vos données sont conservées sur cet appareil uniquement — sans garantie de conservation permanente.</span>
+          <span style="font:600 11.5px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;padding-bottom:1px">Créer un compte</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff;border:1px solid #ddd6c8;border-left:4px solid #c9c2b4;border-radius:6px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;white-space:nowrap">bandeau de confidentialité</span>
+          <span style="flex:1;font:400 12px 'Hanken Grotesk';color:#5c554a">Aucune protection par identifiants — toute personne ayant accès à ce navigateur voit ce contenu.</span>
+          <span style="font:600 11.5px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;padding-bottom:1px">Créer un compte</span>
+        </div>
+      </div>
+      <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between">
+          <span style="font:700 19px 'Hanken Grotesk';color:#2b2620">Mes espaces de jeu</span>
+          <div style="display:flex;align-items:flex-end;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-start">
+              <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">compteur d'espaces partagés</span>
+              <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;background:#fff;border:1px solid #d3ccbe;border-radius:6px;font:600 13px 'Hanken Grotesk';color:#3a342c">2 <span style="color:#a8a08e;font-weight:400;margin:0 2px">/</span> 3</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-start">
+              <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">accès création d'espace</span>
+              <button style="height:30px;padding:0 15px;border:none;border-radius:6px;background:#2b2620;color:#fbfaf6;font:600 12.5px 'Hanken Grotesk';cursor:pointer">+ Nouvelle campagne</button>
+            </div>
+          </div>
+        </div>
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">liste des espaces de jeu</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px">
+          <div style="position:relative;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:11px;min-height:128px">
+            <div style="position:absolute;top:12px;right:13px;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+              <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#b3aa96;letter-spacing:.02em">repère « session en cours »</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;height:23px;padding:0 10px;background:#2b2620;color:#fbfaf6;border-radius:12px;font:600 10.5px 'Hanken Grotesk'"><span style="width:7px;height:7px;border-radius:50%;background:#fbfaf6"></span>Session en cours</span>
+            </div>
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">campagne</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Les Cendres de Kar-Thol</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">4 joueurs · 12 sessions · D&D 5e</span>
+            <button style="margin-top:auto;align-self:flex-start;height:30px;padding:0 15px;border:1.5px solid #2b2620;border-radius:6px;background:transparent;color:#2b2620;font:600 12px 'Hanken Grotesk';cursor:pointer">Reprendre la session ›</button>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:11px;min-height:128px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">campagne</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Le Murmure des Profondeurs</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">5 joueurs · 7 sessions · Call of Cthulhu</span>
+            <span style="margin-top:auto;font:500 12px 'Hanken Grotesk';color:#6b6456">Ouvrir l'espace ›</span>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:11px;min-height:128px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">one-shot</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">La Nuit du Corbeau</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">session unique · non démarrée</span>
+            <span style="margin-top:auto;font:500 12px 'Hanken Grotesk';color:#6b6456">Ouvrir l'espace ›</span>
+          </div>
+          <div style="position:relative;background:#f7f4ee;border:1.5px dashed #c9c2b4;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:11px;min-height:128px">
+            <div style="position:absolute;top:12px;right:13px;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+              <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#b3aa96;letter-spacing:.02em">espace personnel</span>
+              <span style="display:inline-flex;align-items:center;height:21px;padding:0 9px;border:1px solid #c9c2b4;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">hors quota</span>
+            </div>
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">conteneur permanent</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Espace personnel</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">capture immédiate · préparation uniquement</span>
+            <span style="margin-top:auto;font:500 12px 'Hanken Grotesk';color:#6b6456">Ouvrir ›</span>
+          </div>
+        </div>
+        <div style="font:400 10.5px 'Spline Sans Mono',monospace;color:#a39a86">l'espace personnel n'entre jamais dans le compteur — jamais bloqué ni grisé (AR-17)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- LAPTOP : avec compte ---------- -->
+<div style="position:absolute;left:1300px;top:200px;width:1180px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">État : avec compte</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">compte gratuit · quota atteint</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:648px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <span style="font:700 17px 'Hanken Grotesk';color:#2b2620">Haversack</span>
+          <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">outil d'assistance au MJ</span>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 13px;border:1px solid #cdc6b8;border-radius:14px;font:500 11.5px 'Hanken Grotesk';color:#5c554a">Compte gratuit · Thomas</span>
+      </div>
+      <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between">
+          <span style="font:700 19px 'Hanken Grotesk';color:#2b2620">Mes espaces de jeu</span>
+          <div style="display:flex;align-items:flex-end;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-start">
+              <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">compteur d'espaces partagés</span>
+              <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;background:#fff;border:1px solid #d3ccbe;border-radius:6px;font:600 13px 'Hanken Grotesk';color:#3a342c">3 <span style="color:#a8a08e;font-weight:400;margin:0 2px">/</span> 3</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-start">
+              <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">accès création · quota atteint</span>
+              <button style="height:30px;padding:0 15px;border:1px solid #cdc6b8;border-radius:6px;background:#efe9de;color:#a8a08e;font:600 12.5px 'Hanken Grotesk';cursor:not-allowed">+ Nouvelle campagne</button>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:#fff;border:1px dashed #c9c2b4;border-radius:6px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;white-space:nowrap">invite contextuelle</span>
+          <span style="flex:1;font:400 12px 'Hanken Grotesk';color:#5c554a">Quota de 3 campagnes atteint — passez à l'offre Pro pour des espaces illimités.</span>
+          <span style="font:600 11.5px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;padding-bottom:1px">Voir l'offre Pro</span>
+        </div>
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">liste des espaces de jeu</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px">
+          <div style="position:relative;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:11px;min-height:128px">
+            <div style="position:absolute;top:12px;right:13px;display:inline-flex;align-items:center;gap:6px;height:23px;padding:0 10px;background:#2b2620;color:#fbfaf6;border-radius:12px;font:600 10.5px 'Hanken Grotesk'"><span style="width:7px;height:7px;border-radius:50%;background:#fbfaf6"></span>Session en cours</div>
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">campagne</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Les Cendres de Kar-Thol</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">4 joueurs · 12 sessions · D&D 5e</span>
+            <button style="margin-top:auto;align-self:flex-start;height:30px;padding:0 15px;border:1.5px solid #2b2620;border-radius:6px;background:transparent;color:#2b2620;font:600 12px 'Hanken Grotesk';cursor:pointer">Reprendre la session ›</button>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:11px;min-height:128px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">campagne</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Le Murmure des Profondeurs</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">5 joueurs · 7 sessions · Call of Cthulhu</span>
+            <span style="margin-top:auto;font:500 12px 'Hanken Grotesk';color:#6b6456">Ouvrir l'espace ›</span>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:11px;min-height:128px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">one-shot</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">La Nuit du Corbeau</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">session unique · non démarrée</span>
+            <span style="margin-top:auto;font:500 12px 'Hanken Grotesk';color:#6b6456">Ouvrir l'espace ›</span>
+          </div>
+          <div style="position:relative;background:#f7f4ee;border:1.5px dashed #c9c2b4;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:11px;min-height:128px">
+            <div style="position:absolute;top:12px;right:13px;display:inline-flex;align-items:center;height:21px;padding:0 9px;border:1px solid #c9c2b4;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">hors quota</div>
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">conteneur permanent</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Espace personnel</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">capture immédiate · préparation uniquement</span>
+            <span style="margin-top:auto;font:500 12px 'Hanken Grotesk';color:#6b6456">Ouvrir ›</span>
+          </div>
+        </div>
+        <div style="font:400 10.5px 'Spline Sans Mono',monospace;color:#a39a86">3/3 espaces partagés — création bloquée ; l'espace personnel reste accessible (AR-17)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BANDE TABLETTE ============ -->
+<div style="position:absolute;left:40px;top:960px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07)</div>
+
+<!-- ---------- TABLETTE : mode local ---------- -->
+<div style="position:absolute;left:40px;top:1010px;width:720px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — mode local</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">colonne unique · 768px</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:980px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 15px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:700 16px 'Hanken Grotesk';color:#2b2620">Haversack</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 11px;border:1px dashed #c9c2b4;border-radius:13px;font:500 11px 'Hanken Grotesk';color:#6b6456">● Mode local</span>
+      </div>
+      <div style="padding:11px 15px 0;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:11px;padding:9px 13px;background:#fff;border:1px solid #ddd6c8;border-left:4px solid #c9c2b4;border-radius:6px">
+          <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;white-space:nowrap">durabilité</span>
+          <span style="flex:1;font:400 11.5px 'Hanken Grotesk';color:#5c554a">Données locales — sans garantie de conservation.</span>
+          <span style="font:600 11px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;white-space:nowrap">Compte</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:11px;padding:9px 13px;background:#fff;border:1px solid #ddd6c8;border-left:4px solid #c9c2b4;border-radius:6px">
+          <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;white-space:nowrap">confidentialité</span>
+          <span style="flex:1;font:400 11.5px 'Hanken Grotesk';color:#5c554a">Aucune protection par identifiants.</span>
+          <span style="font:600 11px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;white-space:nowrap">Compte</span>
+        </div>
+      </div>
+      <div style="flex:1;padding:15px;display:flex;flex-direction:column;gap:13px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <span style="font:700 17px 'Hanken Grotesk';color:#2b2620">Mes espaces de jeu</span>
+          <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end">
+            <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">compteur espaces partagés</span>
+            <span style="display:inline-flex;align-items:center;height:28px;padding:0 11px;background:#fff;border:1px solid #d3ccbe;border-radius:6px;font:600 12.5px 'Hanken Grotesk';color:#3a342c">2 / 3</span>
+          </div>
+        </div>
+        <button style="height:38px;border:none;border-radius:7px;background:#2b2620;color:#fbfaf6;font:600 13px 'Hanken Grotesk';cursor:pointer">+ Nouvelle campagne</button>
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">liste des espaces de jeu</span>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <div style="position:relative;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:9px">
+            <div style="position:absolute;top:13px;right:13px;display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:11px;font:600 10px 'Hanken Grotesk'"><span style="width:6px;height:6px;border-radius:50%;background:#fbfaf6"></span>Session en cours</div>
+            <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86">campagne</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Les Cendres de Kar-Thol</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">4 joueurs · 12 sessions</span>
+            <button style="align-self:flex-start;height:32px;padding:0 14px;border:1.5px solid #2b2620;border-radius:6px;background:transparent;color:#2b2620;font:600 12px 'Hanken Grotesk'">Reprendre la session ›</button>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px">
+            <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86">campagne</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Le Murmure des Profondeurs</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">5 joueurs · 7 sessions</span>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px">
+            <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86">one-shot</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">La Nuit du Corbeau</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">session unique · non démarrée</span>
+          </div>
+          <div style="position:relative;background:#f7f4ee;border:1.5px dashed #c9c2b4;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px">
+            <div style="position:absolute;top:13px;right:13px;display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #c9c2b4;border-radius:10px;font:500 9.5px 'Hanken Grotesk';color:#6b6456">hors quota</div>
+            <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86">espace personnel</span>
+            <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Espace personnel</span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">capture immédiate · préparation</span>
+          </div>
+        </div>
+        <div style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">espace personnel hors compteur — jamais bloqué (AR-17)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- état vide 0/3 ---------- -->
+<div style="position:absolute;left:800px;top:1010px;width:560px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">État vide — compte neuf, aucun espace partagé (0/3)</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:560px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:700 16px 'Hanken Grotesk';color:#2b2620">Haversack</span>
+        <span style="display:inline-flex;align-items:center;height:28px;padding:0 13px;border:1px solid #cdc6b8;border-radius:14px;font:500 11.5px 'Hanken Grotesk';color:#5c554a">Compte gratuit · Thomas</span>
+      </div>
+      <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between">
+          <span style="font:700 18px 'Hanken Grotesk';color:#2b2620">Mes espaces de jeu</span>
+          <div style="display:flex;align-items:flex-end;gap:12px">
+            <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;background:#fff;border:1px solid #d3ccbe;border-radius:6px;font:600 13px 'Hanken Grotesk';color:#3a342c">0 <span style="color:#a8a08e;font-weight:400;margin:0 2px">/</span> 3</span>
+            <button style="height:30px;padding:0 15px;border:none;border-radius:6px;background:#2b2620;color:#fbfaf6;font:600 12.5px 'Hanken Grotesk';cursor:pointer">+ Nouvelle campagne</button>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:11px;background:#fff;border:1px dashed #cdc6b8;border-radius:8px;padding:30px 24px;text-align:center">
+          <div style="width:54px;height:54px;border:2px dashed #cdc6b8;border-radius:13px;display:flex;align-items:center;justify-content:center;font:300 28px 'Hanken Grotesk';color:#c9c2b4">+</div>
+          <span style="font:700 16px 'Hanken Grotesk';color:#2b2620">Aucune campagne pour l'instant</span>
+          <span style="font:400 12.5px/1.55 'Hanken Grotesk';color:#8a8275;max-width:330px">Créez votre première campagne pour inviter des joueurs — ou commencez à capturer vos idées dans votre espace personnel.</span>
+          <span style="display:inline-flex;align-items:center;height:38px;padding:0 18px;background:#2b2620;color:#fbfaf6;border-radius:7px;font:600 13px 'Hanken Grotesk'">+ Créer une campagne</span>
+        </div>
+        <div style="position:relative;background:#f7f4ee;border:1.5px dashed #c9c2b4;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:9px">
+          <div style="position:absolute;top:13px;right:13px;display:inline-flex;align-items:center;height:21px;padding:0 9px;border:1px solid #c9c2b4;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">hors quota</div>
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">conteneur permanent</span>
+          <span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Espace personnel</span>
+          <span style="font:400 12px 'Hanken Grotesk';color:#8a8275">déjà prêt — capture immédiate, même à 0/3</span>
+          <span style="margin-top:2px;font:500 12px 'Hanken Grotesk';color:#6b6456">Ouvrir ›</span>
+        </div>
+        <div style="margin-top:auto;font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">l'espace personnel existe dès le départ et reste hors compteur (AR-17 ; AR-15)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- POST-ITS ---------- -->
+<div style="position:absolute;left:2560px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi — arbitrages</div>
+<div style="position:absolute;left:2560px;top:202px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1.1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-01 · AR-17</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Ossature : <b>Tableau de bord → Espace → {Préparation | Vue session}</b>. L'espace personnel se branche sur Préparation seulement, figure <b>hors quota</b>, jamais bloqué ni grisé.</div>
+</div>
+<div style="position:absolute;left:2560px;top:380px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.9deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-09 · UC-06 A5</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Une session en cours dans un espace partagé se <b>reprend en un clic</b> via le repère « session en cours », sans reconfiguration.</div>
+</div>
+<div style="position:absolute;left:2560px;top:546px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.5deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-15</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Ce tableau est un <b>état de navigation</b>, pas l'écran d'atterrissage de la première ouverture (capture dans l'espace personnel — onboarding capture-first).</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 820 }
+}"></script>
+</body>
+</html>

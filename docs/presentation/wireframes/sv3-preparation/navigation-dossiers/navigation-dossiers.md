@@ -3,7 +3,7 @@
 > Fiche de description d'écran basse-fidélité — Vague 3, sous-vague 3 (préparation espace partagé), cluster A.
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..17`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..20`.
 
 ---
 
@@ -13,10 +13,10 @@
 Nom          : Navigation par dossiers
 Surface      : MJ
 Contexte     : préparation
-Type d'espace: CAMPAIGN | ONE_SHOT (PERSONAL : présent avec structure réduite — dossier virtuel
+Type d'espace: CAMPAIGN | ONE_SHOT (PERSONAL : présent avec structure réduite — dossier
                « Non classés » uniquement à la création, sans dossiers système nommés — AR-16)
 Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-05 scénario nominal ; UC-04 ; AR-11 ; AR-16
+Traçabilité  : UC-05 scénario nominal ; UC-04 ; AR-11 ; AR-16 ; AR-20
 ```
 
 ---
@@ -40,16 +40,20 @@ Intention : le MJ parcourt l'arborescence des dossiers de son espace, visualise 
 [ ARBORESCENCE DES DOSSIERS ]
   type     : principal
   rôle     : liste tous les dossiers de l'espace selon leur ordre d'affichage persisté ;
-             pour un espace CAMPAIGN ou ONE_SHOT, inclut les dossiers système
-             (Personnages, Joueurs, Scénarios, Notes) et les dossiers créés librement ;
+             pour un espace CAMPAIGN ou ONE_SHOT, inclut les dossiers proposés par
+             défaut (Personnages, Joueurs, Scénarios, Notes) et les dossiers créés
+             librement par le MJ ; ces dossiers proposés par défaut constituent un
+             GABARIT DE DÉPART ENTIÈREMENT MODIFIABLE — ils sont renommables et
+             supprimables au même titre que les dossiers créés librement (AR-20) ;
              pour un espace PERSONAL, inclut les dossiers créés librement par le
              propriétaire (aucun dossier système nommé — AR-16) ;
-             le dossier virtuel « Non classés » n'apparaît pas dans l'arborescence
-             (UC-05 A4 évoque une vue dédiée — non spécifiée ;
-             voir [SOUS-SPÉCIFIÉ] ci-dessous)
+             le dossier « Non classés » apparaît dans l'arborescence comme un dossier
+             ordinaire — c'est le filtre du dossier « Non classés », pas une vue
+             spéciale séparée ; il est le réceptacle garanti : toujours présent,
+             peut être renommé, ne peut pas disparaître du système (AR-20 ; AR-16)
   priorité : principal
   visibilité : MJ seul
-  ancrage  : UC-05 scénario nominal ; AR-11 ; AR-16
+  ancrage  : UC-05 scénario nominal ; AR-11 ; AR-16 ; AR-20
 
 [ LISTE CONDENSÉE DES DOCUMENTS ]
   type     : principal
@@ -77,9 +81,10 @@ Intention : le MJ parcourt l'arborescence des dossiers de son espace, visualise 
 - [UC-04] ouvrir un document existant → l'éditeur de document s'ouvre sur le
   contenu du document sélectionné
 
-- [UC-05 A1] renommer un dossier → le dossier prend le nouveau nom ; les documents
-  qu'il contient ne sont pas affectés ; renommage disponible pour tous les dossiers,
-  y compris les dossiers système
+- [UC-05 A1 ; AR-20] renommer un dossier → le dossier prend le nouveau nom ; les
+  documents qu'il contient ne sont pas affectés ; renommage disponible pour TOUS
+  les dossiers, y compris les dossiers proposés par défaut (Personnages, Joueurs,
+  Scénarios, Notes) — ceux-ci sont un gabarit de départ, pas une structure figée
 
 - [UC-05 A2] réordonner les dossiers → le MJ modifie l'ordre d'affichage des
   dossiers dans l'arborescence ; l'ordre est persisté
@@ -87,9 +92,13 @@ Intention : le MJ parcourt l'arborescence des dossiers de son espace, visualise 
 - [UC-05 scénario nominal] créer un nouveau dossier → le MJ saisit un nom ;
   le dossier apparaît dans l'arborescence ; un template par défaut peut y être associé
 
-- [UC-05 E2 ; UC-05 E3] supprimer un dossier → le MJ doit traiter les documents
-  du dossier avant la suppression : les déplacer vers un autre dossier ou les
-  laisser dans « Non classés » ; aucune suppression silencieuse de documents
+- [UC-05 E2 ; UC-05 E3 ; AR-20] supprimer un dossier → suppression disponible pour
+  TOUS les dossiers, y compris les dossiers proposés par défaut — ceux-ci sont un
+  gabarit de départ, pas une structure figée ; garde-fou : le réceptacle garanti
+  (« Non classés » ou son équivalent renommé) ne peut pas être supprimé du système ;
+  avant toute suppression, les documents du dossier sont traités : déplacés vers
+  un autre dossier ou déposés dans le réceptacle garanti ; aucune suppression
+  silencieuse de documents
 
 - [UC-05 scénario nominal — déplacer un document] déplacer un document vers un
   autre dossier → le document quitte son dossier d'origine et rejoint le dossier
@@ -142,7 +151,7 @@ hiérarchie de lecture à distance :
 
 ```
 Sources : UC-04 ; UC-05 scénario nominal, A1, A2, A3, A4, E2, E3 ;
-          AR-11 ; AR-16 ;
+          AR-11 ; AR-16 ; AR-20 ;
           NFR-ACC-02 ; NFR-ACC-04 ; NFR-OFF-04 ;
           châssis S7 (zoning.md §S7)
 ```
@@ -179,10 +188,11 @@ Aucune fonction de navigation par dossiers n'est cloud-dépendante :
     numérique) n'est pas figé dans le wireframe
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S9 §Vue « Non classés »] la vue dédiée aux documents non classés
-    est évoquée dans UC-05 A4 (*« vue 'Non classés' dédiée »*) mais son interface
-    n'est pas décrite. Le dossier virtuel « Non classés » est invisible dans
-    l'arborescence de navigation (content-library invariant 4) ; l'entrée UC-05 A4
-    et S9 §Vue « Non classés » évoquent une vue dédiée accessible en dehors de
-    l'arborescence — tension non tranchée. Ce point n'est pas décidé ici.
+  aucun — le point précédemment sous-spécifié est résolu :
+  - vue « Non classés » : tranché — « Non classés » est traité comme un dossier
+    ordinaire de l'arborescence (filtre du dossier « Non classés »), pas une vue
+    spéciale séparée accessible en dehors de l'arborescence ; la tension UC-05 A4
+    (« vue dédiée ») est close par cette décision ; « Non classés » apparaît dans
+    l'arborescence et se navigue comme tout autre dossier, avec le statut de
+    réceptacle garanti (AR-20 ; AR-16)
 ```

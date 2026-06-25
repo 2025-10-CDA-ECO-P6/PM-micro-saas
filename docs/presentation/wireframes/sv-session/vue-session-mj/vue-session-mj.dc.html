@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Vue session MJ</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">une surface · 3 modes (AR-09) · écran prioritaire H2</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">Sources : UC-06 · UC-07 · UC-08 · UC-14 · AR-04 · AR-09 · AR-11 · AR-12 · NFR-ACC-04   ·   <span style="color:#a39a86">[ libellé ] = nom de zone (Registre 2)</span></div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran</div>
+
+<!-- ---------- LAPTOP : CONFIGURATION ---------- -->
+<div style="position:absolute;left:40px;top:200px;width:1180px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Mode configuration</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">aucune session active</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:712px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:9px 16px 11px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">‹ vue campagne</span>
+          <span style="font:700 14px 'Hanken Grotesk';color:#3a342c">Les Cendres de Kar-Thol</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;max-width:360px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">barre de recherche</span>
+          <div style="display:flex;align-items:center;gap:8px;height:32px;padding:0 11px;background:#fff;border:1px solid #d3ccbe;border-radius:6px">
+            <span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#a8a08e">Rechercher un titre…</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:11px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">indicateur de statut de session</span>
+            <div style="display:flex;align-items:center;gap:7px;height:30px;padding:0 13px;border:1.5px solid #cdc6b8;border-radius:15px;color:#6b6456;font:600 12px 'Hanken Grotesk'">
+              <span style="width:8px;height:8px;border:1.5px solid #a39a86;border-radius:50%"></span>Aucune session active
+            </div>
+          </div>
+          <button style="height:32px;padding:0 17px;border:none;border-radius:6px;background:#2b2620;color:#fbfaf6;font:600 12.5px 'Hanken Grotesk';cursor:pointer">Lancer la session ›</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;background:#eee8db;border-bottom:1px solid #dcd5c6;opacity:.6">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">indicateur de partage</span>
+        <span style="font:500 11.5px 'Hanken Grotesk';color:#7a7264">[DÉSACTIVÉ] — disponible en session LIVE</span>
+      </div>
+      <div style="flex:1;display:flex;gap:12px;padding:14px">
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneaux de dossiers · configuration (US-06-02)</span>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="padding:9px 13px;border-bottom:1px solid #ece6d9;font:600 12.5px 'Hanken Grotesk';color:#3a342c">Choisir les dossiers mis en avant — glisser pour ordonner</div>
+            <div style="padding:6px 0">
+              <div style="display:flex;align-items:center;gap:11px;padding:9px 13px">
+                <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span>
+                <span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Personnages</span>
+                <span style="font:400 11px 'Hanken Grotesk';color:#9a917f">12 documents</span>
+                <span style="display:inline-flex;align-items:center;width:34px;height:19px;background:#2b2620;border-radius:10px;padding:2px"><span style="margin-left:auto;width:15px;height:15px;background:#fbfaf6;border-radius:50%"></span></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:11px;padding:9px 13px;border-top:1px solid #f1ece1">
+                <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span>
+                <span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Lieux</span>
+                <span style="font:400 11px 'Hanken Grotesk';color:#9a917f">8 documents</span>
+                <span style="display:inline-flex;align-items:center;width:34px;height:19px;background:#2b2620;border-radius:10px;padding:2px"><span style="margin-left:auto;width:15px;height:15px;background:#fbfaf6;border-radius:50%"></span></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:11px;padding:9px 13px;border-top:1px solid #f1ece1;opacity:.65">
+                <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span>
+                <span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Scénarios</span>
+                <span style="font:400 11px 'Hanken Grotesk';color:#9a917f">3 documents</span>
+                <span style="display:inline-flex;align-items:center;width:34px;height:19px;border:1.5px solid #cdc6b8;border-radius:10px;padding:2px"><span style="width:13px;height:13px;background:#cdc6b8;border-radius:50%"></span></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:11px;padding:9px 13px;border-top:1px solid #f1ece1;opacity:.65">
+                <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span>
+                <span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Notes</span>
+                <span style="font:400 11px 'Hanken Grotesk';color:#9a917f">5 documents</span>
+                <span style="display:inline-flex;align-items:center;width:34px;height:19px;border:1.5px solid #cdc6b8;border-radius:10px;padding:2px"><span style="width:13px;height:13px;background:#cdc6b8;border-radius:50%"></span></span>
+              </div>
+            </div>
+            <div style="margin-top:auto;padding:11px 13px;border-top:1px dashed #e4ded0;font:400 11px 'Spline Sans Mono',monospace;color:#a39a86">défaut épuré mais informatif — configuration persistée entre les modes (AR-04 ; AR-09)</div>
+          </div>
+        </div>
+        <sc-if value="{{ showSearchResults }}" hint-placeholder-val="{{ true }}">
+        <div style="width:298px;display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneau latéral · résultats de recherche (AR-11)</span>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="padding:8px 12px;border-bottom:1px solid #ece6d9;display:flex;justify-content:space-between;align-items:center">
+              <span style="font:500 12px 'Hanken Grotesk';color:#3a342c">« corâr »</span>
+              <span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">3 résultats</span>
+            </div>
+            <div style="padding:9px 12px 4px;font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">PNJ</div>
+            <div style="display:flex;align-items:center;gap:8px;padding:6px 12px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="font:500 12px 'Hanken Grotesk';color:#46403a">Maître Corâr</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:6px 12px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="font:500 12px 'Hanken Grotesk';color:#46403a">Dame Corâline</span></div>
+            <div style="padding:9px 12px 4px;font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86">LIEU</div>
+            <div style="display:flex;align-items:center;gap:8px;padding:6px 12px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="font:500 12px 'Hanken Grotesk';color:#46403a">Forge de Corâr</span></div>
+            <div style="margin-top:auto;padding:10px 12px;border-top:1px dashed #e4ded0;font:400 10.5px 'Spline Sans Mono',monospace;color:#a39a86">sélection d'un résultat → consultation en place (AR-11 ; NFR-PERF-04)</div>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:10px 16px 14px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de notes · co-présente, jamais masquée (AR-04)</span>
+          <span style="display:inline-flex;align-items:center;height:21px;padding:0 9px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">privé MJ</span>
+        </div>
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:78px;padding:11px 13px;display:flex;flex-direction:column;gap:8px">
+          <span style="font:400 12.5px 'Hanken Grotesk';color:#6b6456">Notes préparatoires — penser à introduire la rumeur sur la forge…</span>
+          <span style="width:62%;height:8px;background:#ece6d9;border-radius:4px"></span>
+          <span style="width:44%;height:8px;background:#ece6d9;border-radius:4px"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- LAPTOP : LIVE ---------- -->
+<div style="position:absolute;left:1300px;top:200px;width:1180px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Mode LIVE</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">session en cours · écran central H2</span>
+  </div>
+  <div style="background:#f3efe6;border:1.5px solid #2b2620;border-radius:9px;box-shadow:0 4px 20px rgba(60,50,35,.14);overflow:hidden">
+    <div style="min-height:712px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:9px 16px 11px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">‹ vue campagne</span>
+          <span style="font:700 14px 'Hanken Grotesk';color:#3a342c">Les Cendres de Kar-Thol</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;max-width:340px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">barre de recherche</span>
+          <div style="display:flex;align-items:center;gap:8px;height:32px;padding:0 11px;background:#fff;border:1px solid #d3ccbe;border-radius:6px">
+            <span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#a8a08e">Rechercher un titre…</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:11px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">indicateur de statut de session</span>
+            <div style="display:flex;align-items:center;gap:7px;height:30px;padding:0 13px;background:#2b2620;border-radius:15px;color:#fbfaf6;font:600 12px 'Hanken Grotesk'">
+              <span style="width:8px;height:8px;border-radius:50%;background:#fbfaf6;box-shadow:0 0 0 3px rgba(251,250,246,.28)"></span>Session en cours
+            </div>
+          </div>
+          <button style="height:32px;padding:0 15px;border:1.5px solid #cdc6b8;border-radius:6px;background:transparent;color:#5c554a;font:600 12px 'Hanken Grotesk';cursor:pointer">Terminer</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;background:#e7e0d1;border-bottom:1px solid #d8d1c2;flex-wrap:wrap">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#9a917f;letter-spacing:.02em">indicateur de partage</span>
+        <span style="font:500 11.5px 'Hanken Grotesk';color:#5c554a">Visible par les joueurs :</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;height:24px;padding:0 6px 0 11px;background:#2b2620;color:#fbfaf6;border-radius:13px;font:500 11px 'Hanken Grotesk'">Carte de la région <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(251,250,246,.18);font-size:10px">×</span></span>
+        <span style="display:inline-flex;align-items:center;gap:7px;height:24px;padding:0 6px 0 11px;background:#2b2620;color:#fbfaf6;border-radius:13px;font:500 11px 'Hanken Grotesk'">Lettre du Baron <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(251,250,246,.18);font-size:10px">×</span></span>
+        <span style="margin-left:auto;font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">retrait → disparition en temps réel côté joueur (AR-06)</span>
+      </div>
+      <div style="flex:1;display:flex;gap:12px;padding:14px">
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneaux de dossiers · clic sur un titre → consultation</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 10px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">+ créer à la volée</span>
+          </div>
+          <div style="display:flex;gap:12px;flex:1;min-height:0">
+            <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #ece6d9"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Personnages</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">12</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #f1ece1;background:#f7f4ee;box-shadow:inset 3px 0 0 #2b2620">
+                <span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#fff">PNJ</span>
+                <span style="flex:1;font:600 12.5px 'Hanken Grotesk';color:#2b2620">Maître Corâr</span>
+                <span style="font:500 10px 'Spline Sans Mono',monospace;color:#7a7264">consulter ›</span>
+                <span style="display:inline-flex;align-items:center;height:21px;padding:0 8px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">partager</span>
+                <span style="display:inline-flex;align-items:center;height:21px;padding:0 8px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">épingler</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Sœur Vesna</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Le Baron des Cendres</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Garde Tomar</span></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #ece6d9"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Lieux</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">8</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Forge de Corâr</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Crypte du Silence</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Marché aux Suies</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="width:290px;display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneau des documents épinglés</span>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #ece6d9"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Épinglés</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">3</span></div>
+            <div style="padding:9px 11px;border-bottom:1px solid #f1ece1">
+              <div style="display:flex;align-items:center;gap:7px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="flex:1;font:500 12px 'Hanken Grotesk';color:#46403a">Carte de la région</span></div>
+              <div style="display:flex;gap:6px;margin-top:7px"><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;background:#2b2620;color:#fbfaf6;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">visible</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;background:#2b2620;color:#fbfaf6;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">épinglé</span></div>
+            </div>
+            <div style="padding:9px 11px;border-bottom:1px solid #f1ece1">
+              <div style="display:flex;align-items:center;gap:7px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 12px 'Hanken Grotesk';color:#46403a">Sœur Vesna</span></div>
+              <div style="display:flex;gap:6px;margin-top:7px"><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid #cdc6b8;color:#8a8275;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">privé MJ</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;background:#2b2620;color:#fbfaf6;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">épinglé</span></div>
+            </div>
+            <div style="padding:9px 11px">
+              <div style="display:flex;align-items:center;gap:7px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">NOTE</span><span style="flex:1;font:500 12px 'Hanken Grotesk';color:#46403a">Initiative du combat</span></div>
+              <div style="display:flex;gap:6px;margin-top:7px"><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid #cdc6b8;color:#8a8275;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">privé MJ</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;background:#2b2620;color:#fbfaf6;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">épinglé</span></div>
+            </div>
+            <div style="margin-top:auto;padding:10px 11px;border-top:1px dashed #e4ded0;font:400 10px 'Spline Sans Mono',monospace;color:#a39a86;line-height:1.5">clic → consultation · partager ≠ épingler (AR-12)</div>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:10px 16px 14px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de notes · co-présente, jamais masquée (AR-04)</span>
+          <span style="display:inline-flex;align-items:center;height:21px;padding:0 9px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">privé MJ</span>
+        </div>
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:78px;padding:11px 13px;display:flex;flex-direction:column;gap:8px">
+          <span style="font:400 12.5px 'Hanken Grotesk';color:#46403a">Le Baron ment sur la disparition de sa fille — Vesna le sait.</span>
+          <span style="width:70%;height:8px;background:#ece6d9;border-radius:4px"></span>
+          <span style="width:40%;height:8px;background:#ece6d9;border-radius:4px"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FLÈCHE DE TRANSITION -->
+<div style="position:absolute;left:2488px;top:448px;display:flex;flex-direction:column;align-items:center;gap:5px;width:64px">
+  <span style="font:600 24px 'Hanken Grotesk';color:#2b2620">→</span>
+  <span style="font:500 8px 'Spline Sans Mono',monospace;color:#9a917f;text-align:center;line-height:1.3">clic sur<br>un doc</span>
+  <span style="margin-top:6px;font:600 20px 'Hanken Grotesk';color:#b3aa96">←</span>
+  <span style="font:500 8px 'Spline Sans Mono',monospace;color:#b3aa96;text-align:center;line-height:1.3">✕ / Échap</span>
+</div>
+
+<!-- ---------- LAPTOP : DOCUMENT OUVERT ---------- -->
+<div style="position:absolute;left:2560px;top:200px;width:1180px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Mode LIVE — document ouvert</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">consultation en place · sans rupture (AR-02 ; AR-11)</span>
+  </div>
+  <div style="background:#f3efe6;border:1.5px solid #2b2620;border-radius:9px;box-shadow:0 4px 20px rgba(60,50,35,.14);overflow:hidden">
+    <div style="min-height:712px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:9px 16px 11px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">‹ vue campagne</span>
+          <span style="font:700 14px 'Hanken Grotesk';color:#3a342c">Les Cendres de Kar-Thol</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;max-width:340px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">barre de recherche</span>
+          <div style="display:flex;align-items:center;gap:8px;height:32px;padding:0 11px;background:#fff;border:1px solid #d3ccbe;border-radius:6px">
+            <span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#a8a08e">Rechercher un titre…</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:11px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">indicateur de statut de session</span>
+            <div style="display:flex;align-items:center;gap:7px;height:30px;padding:0 13px;background:#2b2620;border-radius:15px;color:#fbfaf6;font:600 12px 'Hanken Grotesk'">
+              <span style="width:8px;height:8px;border-radius:50%;background:#fbfaf6;box-shadow:0 0 0 3px rgba(251,250,246,.28)"></span>Session en cours
+            </div>
+          </div>
+          <button style="height:32px;padding:0 15px;border:1.5px solid #cdc6b8;border-radius:6px;background:transparent;color:#5c554a;font:600 12px 'Hanken Grotesk';cursor:pointer">Terminer</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;background:#e7e0d1;border-bottom:1px solid #d8d1c2;flex-wrap:wrap">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#9a917f;letter-spacing:.02em">indicateur de partage</span>
+        <span style="font:500 11.5px 'Hanken Grotesk';color:#5c554a">Visible par les joueurs :</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;height:24px;padding:0 6px 0 11px;background:#2b2620;color:#fbfaf6;border-radius:13px;font:500 11px 'Hanken Grotesk'">Carte de la région <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(251,250,246,.18);font-size:10px">×</span></span>
+      </div>
+      <div style="flex:1;display:flex;gap:12px;padding:14px">
+        <div style="width:244px;display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneaux de dossiers · navigation conservée</span>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:7px;padding:8px 11px;background:#efe9de;border-bottom:1px solid #ece6d9"><span style="font:600 9px 'Hanken Grotesk';color:#6b6456">▾</span><span style="flex:1;font:600 12px 'Hanken Grotesk';color:#2b2620">Personnages</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">12</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:7px 11px 7px 24px;border-bottom:1px solid #f1ece1;background:#f7f4ee;box-shadow:inset 3px 0 0 #2b2620"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:17px;padding:0 4px;border:1px solid #cdc6b8;border-radius:4px;font:500 8.5px 'Spline Sans Mono',monospace;color:#7a7264;background:#fff">PNJ</span><span style="flex:1;font:600 11.5px 'Hanken Grotesk';color:#2b2620">Maître Corâr</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:7px 11px 7px 24px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:17px;padding:0 4px;border:1px solid #cdc6b8;border-radius:4px;font:500 8.5px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 11.5px 'Hanken Grotesk';color:#6b6456">Sœur Vesna</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:7px 11px 7px 24px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:17px;padding:0 4px;border:1px solid #cdc6b8;border-radius:4px;font:500 8.5px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 11.5px 'Hanken Grotesk';color:#6b6456">Le Baron des Cendres</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:8px 11px;border-bottom:1px solid #f1ece1"><span style="font:600 9px 'Hanken Grotesk';color:#a39a86">▸</span><span style="flex:1;font:600 12px 'Hanken Grotesk';color:#3a342c">Lieux</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">8</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:8px 11px;border-bottom:1px solid #f1ece1"><span style="font:600 9px 'Hanken Grotesk';color:#a39a86">▸</span><span style="flex:1;font:600 12px 'Hanken Grotesk';color:#3a342c">Scénarios</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">3</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:8px 11px"><span style="font:600 9px 'Hanken Grotesk';color:#a39a86">▸</span><span style="flex:1;font:600 12px 'Hanken Grotesk';color:#3a342c">Notes</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">5</span></div>
+            <div style="margin-top:auto;padding:10px 11px;border-top:1px dashed #e4ded0;font:400 9.5px/1.5 'Spline Sans Mono',monospace;color:#a39a86">déplier un dossier (Lieux…) ou la recherche → ouvre un autre document, qui remplace la lecture</div>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">consultation du document · lecture en session — ✕ / Échap pour revenir</span>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="padding:13px 16px;border-bottom:1px solid #ece6d9;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:22px;padding:0 7px;border:1px solid #cdc6b8;border-radius:5px;font:500 10px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span>
+                <span style="flex:1;font:700 18px 'Hanken Grotesk';color:#2b2620">Maître Corâr</span>
+                <span style="display:inline-flex;align-items:center;height:23px;padding:0 10px;border:1px solid #cdc6b8;border-radius:12px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">privé MJ</span>
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid #cdc6b8;border-radius:6px;font:500 13px 'Hanken Grotesk';color:#6b6456">✕</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 13px;border:1.5px solid #2b2620;border-radius:6px;font:600 11.5px 'Hanken Grotesk';color:#2b2620">Partager</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 13px;border:1px solid #cdc6b8;border-radius:6px;font:600 11.5px 'Hanken Grotesk';color:#5c554a">Épingler</span>
+                <span style="margin-left:auto;font:500 11.5px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8;padding-bottom:1px">Ouvrir dans l'éditeur ›</span>
+              </div>
+            </div>
+            <div style="padding:11px 16px;border-bottom:1px dashed #ece6d9;display:flex;flex-wrap:wrap;gap:9px 22px">
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">RÔLE</span><span style="font:500 12px 'Hanken Grotesk';color:#3a342c">Maître forgeron</span></span>
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">FACTION</span><span style="font:500 12px 'Hanken Grotesk';color:#3a342c">Guilde des Cendres</span></span>
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">ATTITUDE</span><span style="font:500 12px 'Hanken Grotesk';color:#3a342c">Méfiant</span></span>
+              <span style="align-self:center;font:400 9.5px 'Spline Sans Mono',monospace;color:#bdb4a1">propriétés structurées (type optionnel)</span>
+            </div>
+            <div style="padding:14px 16px;display:flex;flex-direction:column;gap:11px;flex:1">
+              <span style="font:400 13px/1.6 'Hanken Grotesk';color:#46403a">Forgeron taciturne de la basse-ville. Connaît l'origine des armes de cendre mais refuse d'en parler tant que sa dette envers le Baron n'est pas éteinte.</span>
+              <span style="width:92%;height:9px;background:#ece6d9;border-radius:4px"></span>
+              <span style="width:78%;height:9px;background:#ece6d9;border-radius:4px"></span>
+              <div style="margin-top:4px;background:#f7f4ee;border:1px solid #e4ded0;border-left:3px solid #c9c2b4;border-radius:6px;padding:10px 13px;display:flex;flex-direction:column;gap:6px">
+                <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">SECRET — PRIVÉ MJ</span>
+                <span style="font:400 12.5px/1.55 'Hanken Grotesk';color:#5c554a">A forgé la lame qui a tué le frère du Baron. Le révélera si on lui promet protection.</span>
+              </div>
+            </div>
+            <div style="padding:10px 16px;border-top:1px dashed #ece6d9;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;min-width:104px">documents liés</span>
+                <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#fff;border:1px solid #dcd5c6;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#46403a">Forge de Corâr</span>
+                <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#fff;border:1px solid #dcd5c6;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#46403a">Guilde des Cendres</span>
+                <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#8a8275">+ lier</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;min-width:104px">référencé par (AR-11)</span>
+                <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#f3efe6;border:1px solid #e4ded0;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">Crypte du Silence</span>
+                <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#f3efe6;border:1px solid #e4ded0;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">Sœur Vesna</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="width:248px;display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">documents épinglés</span>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #ece6d9"><span style="font:600 12px 'Hanken Grotesk';color:#3a342c">Épinglés</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">3</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:9px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:17px;padding:0 4px;border:1px solid #cdc6b8;border-radius:4px;font:500 8.5px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="flex:1;font:500 11.5px 'Hanken Grotesk';color:#46403a">Carte de la région</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:9px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:17px;padding:0 4px;border:1px solid #cdc6b8;border-radius:4px;font:500 8.5px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 11.5px 'Hanken Grotesk';color:#46403a">Sœur Vesna</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:9px 11px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:17px;padding:0 4px;border:1px solid #cdc6b8;border-radius:4px;font:500 8.5px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">NOTE</span><span style="flex:1;font:500 11.5px 'Hanken Grotesk';color:#46403a">Initiative du combat</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:10px 16px 14px;display:flex;flex-direction:column;gap:6px">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de notes · reste co-présente pendant la lecture (AR-04)</span>
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:56px;padding:10px 13px;display:flex;flex-direction:column;gap:7px">
+          <span style="font:400 12.5px 'Hanken Grotesk';color:#46403a">Corâr → piste de la dette envers le Baron.</span>
+          <span style="width:50%;height:8px;background:#ece6d9;border-radius:4px"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- LAPTOP : CONSULTATION CLOSED ---------- -->
+<div style="position:absolute;left:3820px;top:200px;width:1180px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Mode consultation CLOSED</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">session terminée · lecture seule</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:712px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:9px 16px 11px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">‹ vue campagne</span>
+          <span style="font:700 14px 'Hanken Grotesk';color:#3a342c">Les Cendres de Kar-Thol</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;max-width:340px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">barre de recherche</span>
+          <div style="display:flex;align-items:center;gap:8px;height:32px;padding:0 11px;background:#fff;border:1px solid #d3ccbe;border-radius:6px">
+            <span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#a8a08e">Rechercher un titre…</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:11px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">indicateur de statut de session</span>
+            <div style="display:flex;align-items:center;gap:7px;height:30px;padding:0 13px;background:#ddd6c8;border-radius:15px;color:#5c554a;font:600 12px 'Hanken Grotesk'">
+              <span style="font:600 11px 'Hanken Grotesk'">✓</span>Session terminée
+            </div>
+          </div>
+          <button style="height:32px;padding:0 15px;border:1.5px solid #cdc6b8;border-radius:6px;background:transparent;color:#5c554a;font:600 12px 'Hanken Grotesk';cursor:pointer">Archiver</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;background:#eee8db;border-bottom:1px solid #dcd5c6;opacity:.6">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">indicateur de partage</span>
+        <span style="font:500 11.5px 'Hanken Grotesk';color:#7a7264">[DÉSACTIVÉ] — une session terminée ne repasse pas en LIVE (RB-06-21)</span>
+      </div>
+      <div style="flex:1;display:flex;gap:12px;padding:14px">
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneaux de dossiers</span>
+            <span style="display:inline-flex;align-items:center;height:21px;padding:0 9px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#8a8275">lecture seule</span>
+          </div>
+          <div style="display:flex;gap:12px;flex:1;min-height:0;opacity:.62">
+            <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #ece6d9"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Personnages</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">12</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Maître Corâr</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Sœur Vesna</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Le Baron des Cendres</span></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #ece6d9"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Lieux</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">8</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Forge de Corâr</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 11px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="flex:1;font:500 12.5px 'Hanken Grotesk';color:#46403a">Crypte du Silence</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="width:290px;display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneau des documents épinglés</span>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden;opacity:.62">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #ece6d9"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Épinglés</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">3</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:9px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="flex:1;font:500 12px 'Hanken Grotesk';color:#46403a">Carte de la région</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:9px 11px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 12px 'Hanken Grotesk';color:#46403a">Sœur Vesna</span></div>
+            <div style="display:flex;align-items:center;gap:7px;padding:9px 11px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">NOTE</span><span style="flex:1;font:500 12px 'Hanken Grotesk';color:#46403a">Initiative du combat</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:10px 16px 14px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de notes · annotations rétroactives possibles en CLOSED</span>
+          <span style="display:inline-flex;align-items:center;height:21px;padding:0 9px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">privé MJ</span>
+        </div>
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:78px;padding:11px 13px;display:flex;flex-direction:column;gap:8px">
+          <span style="font:400 12.5px 'Hanken Grotesk';color:#46403a">Résumé de séance — les joueurs ont épargné le Baron. Conséquences à préparer.</span>
+          <span style="width:55%;height:8px;background:#ece6d9;border-radius:4px"></span>
+          <div style="margin-top:2px;font:400 10.5px 'Spline Sans Mono',monospace;color:#a39a86">partage rétroactif possible — sans auto-épinglage (réservé au mode LIVE — UC-08 A3)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BANDE DE TRANSITION -->
+<div style="position:absolute;left:1300px;top:934px;width:2440px;display:flex;align-items:flex-start;gap:13px;background:#fff;border:1px solid #e0dccd;border-radius:7px;padding:11px 15px;box-shadow:0 1px 4px rgba(60,50,35,.06)">
+  <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;white-space:nowrap;margin-top:2px">transition</span>
+  <span style="font:400 12px/1.55 'Hanken Grotesk';color:#5c554a">Clic sur un document (depuis un <b>panneau de dossiers</b>, les <b>épinglés</b> ou les <b>résultats de recherche</b>) → <b>consultation en place</b>, jamais l'éditeur plein écran : pas de rupture du rythme de session (AR-02 surfaces distinctes ; AR-11 panneau non-disruptif ; NFR-PERF-01/03). <b>✕</b> ou <b>Échap</b> → retour aux panneaux ; sélectionner un autre document remplace le contenu. La consultation = lecture + partager / épingler ; pour <b>éditer en profondeur</b> → « Ouvrir dans l'éditeur » bascule vers la surface de préparation (AR-02).</span>
+</div>
+
+<!-- ============ BANDE TABLETTE ============ -->
+<div style="position:absolute;left:40px;top:1024px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07) — un panneau focus + rail de bascule, zone de notes prioritaire</div>
+
+<!-- ---------- TABLETTE : CONFIGURATION ---------- -->
+<div style="position:absolute;left:40px;top:1074px;width:720px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — configuration</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">768px</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:912px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">‹</span>
+          <span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Les Cendres de Kar-Thol</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border:1.5px solid #cdc6b8;border-radius:14px;color:#6b6456;font:600 11px 'Hanken Grotesk'"><span style="width:7px;height:7px;border:1.5px solid #a39a86;border-radius:50%"></span>Aucune session</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d3ccbe;border-radius:6px;background:#fff"><span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span></span>
+        </div>
+      </div>
+      <div style="padding:12px 14px 0">
+        <button style="width:100%;height:40px;border:none;border-radius:7px;background:#2b2620;color:#fbfaf6;font:600 13.5px 'Hanken Grotesk';cursor:pointer">Lancer la session ›</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 14px 0">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">indicateur de partage</span>
+        <span style="font:500 10.5px 'Hanken Grotesk';color:#8a8275">[DÉSACTIVÉ] — en session LIVE</span>
+      </div>
+      <div style="flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneaux de dossiers · configuration (US-06-02)</span>
+        <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="padding:10px 13px;border-bottom:1px solid #ece6d9;font:600 12.5px 'Hanken Grotesk';color:#3a342c">Dossiers mis en avant — glisser pour ordonner</div>
+          <div style="display:flex;align-items:center;gap:11px;padding:11px 13px;border-bottom:1px solid #f1ece1"><span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Personnages</span><span style="font:400 11px 'Hanken Grotesk';color:#9a917f">12</span><span style="display:inline-flex;align-items:center;width:34px;height:19px;background:#2b2620;border-radius:10px;padding:2px"><span style="margin-left:auto;width:15px;height:15px;background:#fbfaf6;border-radius:50%"></span></span></div>
+          <div style="display:flex;align-items:center;gap:11px;padding:11px 13px;border-bottom:1px solid #f1ece1"><span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Lieux</span><span style="font:400 11px 'Hanken Grotesk';color:#9a917f">8</span><span style="display:inline-flex;align-items:center;width:34px;height:19px;background:#2b2620;border-radius:10px;padding:2px"><span style="margin-left:auto;width:15px;height:15px;background:#fbfaf6;border-radius:50%"></span></span></div>
+          <div style="display:flex;align-items:center;gap:11px;padding:11px 13px;border-bottom:1px solid #f1ece1;opacity:.65"><span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Scénarios</span><span style="font:400 11px 'Hanken Grotesk';color:#9a917f">3</span><span style="display:inline-flex;align-items:center;width:34px;height:19px;border:1.5px solid #cdc6b8;border-radius:10px;padding:2px"><span style="width:13px;height:13px;background:#cdc6b8;border-radius:50%"></span></span></div>
+          <div style="display:flex;align-items:center;gap:11px;padding:11px 13px;opacity:.65"><span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">⋮⋮</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Notes</span><span style="font:400 11px 'Hanken Grotesk';color:#9a917f">5</span><span style="display:inline-flex;align-items:center;width:34px;height:19px;border:1.5px solid #cdc6b8;border-radius:10px;padding:2px"><span style="width:13px;height:13px;background:#cdc6b8;border-radius:50%"></span></span></div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:10px 14px 14px;display:flex;flex-direction:column;gap:6px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de notes — co-présente (AR-04)</span>
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:58px;padding:10px 12px;display:flex;flex-direction:column;gap:7px">
+          <span style="font:400 12.5px 'Hanken Grotesk';color:#6b6456">Notes préparatoires…</span>
+          <span style="width:55%;height:8px;background:#ece6d9;border-radius:4px"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- TABLETTE : LIVE ---------- -->
+<div style="position:absolute;left:800px;top:1074px;width:720px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — LIVE</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">rail de bascule</span>
+  </div>
+  <div style="background:#f3efe6;border:1.5px solid #2b2620;border-radius:9px;box-shadow:0 4px 18px rgba(60,50,35,.13);overflow:hidden">
+    <div style="min-height:912px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">‹</span>
+          <span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Les Cendres de Kar-Thol</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;background:#2b2620;border-radius:14px;color:#fbfaf6;font:600 11px 'Hanken Grotesk'"><span style="width:7px;height:7px;border-radius:50%;background:#fbfaf6"></span>En cours</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d3ccbe;border-radius:6px;background:#fff"><span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span></span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:#e7e0d1;border-bottom:1px solid #d8d1c2;flex-wrap:wrap">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#9a917f;letter-spacing:.02em">indicateur de partage</span>
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:11px;font:500 10.5px 'Hanken Grotesk'">Carte de la région</span>
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:11px;font:500 10.5px 'Hanken Grotesk'">Lettre du Baron</span>
+      </div>
+      <div style="padding:11px 14px 0;display:flex;flex-direction:column;gap:6px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">rail de bascule — un panneau focus à la fois (AR-07)</span>
+        <div style="display:flex;gap:0;background:#e7e0d1;border:1px solid #d8d1c2;border-radius:8px;padding:3px">
+          <span style="flex:1;text-align:center;padding:7px 0;background:#fff;border-radius:6px;font:600 12px 'Hanken Grotesk';color:#2b2620;box-shadow:0 1px 2px rgba(60,50,35,.12)">Dossiers</span>
+          <span style="flex:1;text-align:center;padding:7px 0;font:500 12px 'Hanken Grotesk';color:#8a8275">Épinglés</span>
+          <span style="flex:1;text-align:center;padding:7px 0;font:500 12px 'Hanken Grotesk';color:#8a8275">Recherche</span>
+        </div>
+      </div>
+      <div style="flex:1;padding:11px 14px;display:flex;flex-direction:column;gap:8px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneau de dossiers · focus — clic sur un titre → consultation</span>
+        <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid #ece6d9"><span style="font:600 13px 'Hanken Grotesk';color:#3a342c">Personnages</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">12</span></div>
+          <div style="display:flex;align-items:center;gap:9px;padding:11px 12px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:19px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">Maître Corâr</span><span style="display:inline-flex;align-items:center;height:23px;padding:0 9px;border:1px solid #cdc6b8;border-radius:12px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">partager</span></div>
+          <div style="display:flex;align-items:center;gap:9px;padding:11px 12px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:19px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">Sœur Vesna</span><span style="display:inline-flex;align-items:center;height:23px;padding:0 9px;border:1px solid #cdc6b8;border-radius:12px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">partager</span></div>
+          <div style="display:flex;align-items:center;gap:9px;padding:11px 12px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:19px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">Le Baron des Cendres</span><span style="display:inline-flex;align-items:center;height:23px;padding:0 9px;border:1px solid #cdc6b8;border-radius:12px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">partager</span></div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:10px 14px 14px;display:flex;flex-direction:column;gap:6px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de notes — reste prioritaire (AR-07)</span>
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:58px;padding:10px 12px;display:flex;flex-direction:column;gap:7px">
+          <span style="font:400 12.5px 'Hanken Grotesk';color:#46403a">Vesna sait pour la fille du Baron…</span>
+          <span style="width:58%;height:8px;background:#ece6d9;border-radius:4px"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- TABLETTE : DOCUMENT OUVERT ---------- -->
+<div style="position:absolute;left:1560px;top:1074px;width:720px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — document ouvert</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">consultation plein focus</span>
+  </div>
+  <div style="background:#f3efe6;border:1.5px solid #2b2620;border-radius:9px;box-shadow:0 4px 18px rgba(60,50,35,.13);overflow:hidden">
+    <div style="min-height:912px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">‹</span>
+          <span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Les Cendres de Kar-Thol</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;background:#2b2620;border-radius:14px;color:#fbfaf6;font:600 11px 'Hanken Grotesk'"><span style="width:7px;height:7px;border-radius:50%;background:#fbfaf6"></span>En cours</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d3ccbe;border-radius:6px;background:#fff"><span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span></span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:#e7e0d1;border-bottom:1px solid #d8d1c2">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#9a917f;letter-spacing:.02em">indicateur de partage</span>
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:11px;font:500 10.5px 'Hanken Grotesk'">Carte de la région</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px 0">
+        <span style="display:inline-flex;align-items:center;gap:6px;font:600 11.5px 'Hanken Grotesk';color:#5c554a"><span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">‹</span>Personnages</span>
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">consultation · ‹ ou ✕ pour revenir aux dossiers</span>
+      </div>
+      <div style="flex:1;padding:10px 14px;display:flex;flex-direction:column;gap:8px;min-height:0">
+        <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="padding:12px 15px;border-bottom:1px solid #ece6d9;display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <span style="display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:21px;padding:0 6px;border:1px solid #cdc6b8;border-radius:5px;font:500 9.5px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span>
+              <span style="flex:1;font:700 17px 'Hanken Grotesk';color:#2b2620">Maître Corâr</span>
+              <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">privé MJ</span>
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;border:1px solid #cdc6b8;border-radius:6px;font:500 12px 'Hanken Grotesk';color:#6b6456">✕</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="display:inline-flex;align-items:center;height:28px;padding:0 13px;border:1.5px solid #2b2620;border-radius:6px;font:600 11.5px 'Hanken Grotesk';color:#2b2620">Partager</span>
+              <span style="display:inline-flex;align-items:center;height:28px;padding:0 13px;border:1px solid #cdc6b8;border-radius:6px;font:600 11.5px 'Hanken Grotesk';color:#5c554a">Épingler</span>
+              <span style="margin-left:auto;font:500 11px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8">Éditeur ›</span>
+            </div>
+          </div>
+          <div style="padding:11px 15px;border-bottom:1px dashed #ece6d9;display:flex;flex-wrap:wrap;gap:9px 20px">
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">RÔLE</span><span style="font:500 12px 'Hanken Grotesk';color:#3a342c">Maître forgeron</span></span>
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">FACTION</span><span style="font:500 12px 'Hanken Grotesk';color:#3a342c">Guilde des Cendres</span></span>
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">ATTITUDE</span><span style="font:500 12px 'Hanken Grotesk';color:#3a342c">Méfiant</span></span>
+          </div>
+          <div style="padding:13px 15px;display:flex;flex-direction:column;gap:10px;flex:1">
+            <span style="font:400 12.5px/1.6 'Hanken Grotesk';color:#46403a">Forgeron taciturne de la basse-ville. Connaît l'origine des armes de cendre mais refuse d'en parler tant que sa dette envers le Baron n'est pas éteinte.</span>
+            <span style="width:88%;height:9px;background:#ece6d9;border-radius:4px"></span>
+            <div style="margin-top:2px;background:#f7f4ee;border:1px solid #e4ded0;border-left:3px solid #c9c2b4;border-radius:6px;padding:9px 12px;display:flex;flex-direction:column;gap:5px">
+              <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">SECRET — PRIVÉ MJ</span>
+              <span style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a">A forgé la lame qui a tué le frère du Baron.</span>
+            </div>
+          </div>
+          <div style="padding:10px 15px;border-top:1px dashed #ece6d9;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">liens / référencé par</span>
+            <span style="display:inline-flex;align-items:center;height:21px;padding:0 9px;background:#fff;border:1px solid #dcd5c6;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#46403a">Forge de Corâr</span>
+            <span style="display:inline-flex;align-items:center;height:21px;padding:0 9px;background:#f3efe6;border:1px solid #e4ded0;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">Sœur Vesna</span>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:10px 14px 14px;display:flex;flex-direction:column;gap:6px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de notes — co-présente pendant la lecture (AR-04)</span>
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:50px;padding:9px 12px"><span style="font:400 12px 'Hanken Grotesk';color:#46403a">Corâr → dette envers le Baron.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- TABLETTE : CONSULTATION CLOSED ---------- -->
+<div style="position:absolute;left:2320px;top:1074px;width:720px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — consultation CLOSED</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">lecture seule</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:912px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">‹</span>
+          <span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Les Cendres de Kar-Thol</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;background:#ddd6c8;border-radius:14px;color:#5c554a;font:600 11px 'Hanken Grotesk'">✓ Terminée</span>
+          <span style="display:inline-flex;align-items:center;height:28px;padding:0 12px;border:1.5px solid #cdc6b8;border-radius:6px;background:transparent;color:#5c554a;font:600 11px 'Hanken Grotesk'">Archiver</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:#eee8db;border-bottom:1px solid #dcd5c6;opacity:.6">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">indicateur de partage</span>
+        <span style="font:500 10.5px 'Hanken Grotesk';color:#7a7264">[DÉSACTIVÉ] — pas de retour en LIVE (RB-06-21)</span>
+      </div>
+      <div style="padding:11px 14px 0;display:flex;flex-direction:column;gap:6px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">rail de bascule (lecture seule)</span>
+        <div style="display:flex;gap:0;background:#e7e0d1;border:1px solid #d8d1c2;border-radius:8px;padding:3px;opacity:.75">
+          <span style="flex:1;text-align:center;padding:7px 0;background:#fff;border-radius:6px;font:600 12px 'Hanken Grotesk';color:#2b2620">Dossiers</span>
+          <span style="flex:1;text-align:center;padding:7px 0;font:500 12px 'Hanken Grotesk';color:#8a8275">Épinglés</span>
+          <span style="flex:1;text-align:center;padding:7px 0;font:500 12px 'Hanken Grotesk';color:#8a8275">Recherche</span>
+        </div>
+      </div>
+      <div style="flex:1;padding:11px 14px;display:flex;flex-direction:column;gap:8px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneau de dossiers · focus</span>
+        <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden;opacity:.62">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid #ece6d9"><span style="font:600 13px 'Hanken Grotesk';color:#3a342c">Personnages</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">12</span></div>
+          <div style="display:flex;align-items:center;gap:9px;padding:11px 12px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:19px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">Maître Corâr</span></div>
+          <div style="display:flex;align-items:center;gap:9px;padding:11px 12px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:19px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">Sœur Vesna</span></div>
+          <div style="display:flex;align-items:center;gap:9px;padding:11px 12px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:19px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">Le Baron des Cendres</span></div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #d8d1c2;background:#efe9de;padding:10px 14px 14px;display:flex;flex-direction:column;gap:6px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de notes — annotations rétroactives</span>
+        <div style="background:#fff;border:1px solid #d3ccbe;border-radius:7px;min-height:58px;padding:10px 12px;display:flex;flex-direction:column;gap:7px">
+          <span style="font:400 12.5px 'Hanken Grotesk';color:#46403a">Résumé — le Baron épargné.</span>
+          <span style="width:50%;height:8px;background:#ece6d9;border-radius:4px"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- POST-ITS POURQUOI ---------- -->
+<div style="position:absolute;left:40px;top:2080px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi — arbitrages</div>
+<div style="position:absolute;left:40px;top:2110px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-09</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Une seule surface à 3 modes, machine d'états <b>unidirectionnelle</b> : configuration → LIVE → CLOSED. Indicateur de statut omniprésent.</div>
+</div>
+<div style="position:absolute;left:312px;top:2110px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-04</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">La <b>zone de notes</b> est co-présente et jamais masquée — laptop comme tablette, même document ouvert.</div>
+</div>
+<div style="position:absolute;left:584px;top:2110px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.5deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-12</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320"><b>Partager ≠ épingler</b> : deux affordances distinctes. En LIVE, partager auto-épingle (sens unique).</div>
+</div>
+<div style="position:absolute;left:856px;top:2110px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-07</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Tablette = <b>un panneau focus + rail de bascule</b>. La navigation des dossiers et la lecture restent atteignables ; notes prioritaires.</div>
+</div>
+<div style="position:absolute;left:1128px;top:2110px;width:252px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">À TRACER — consultation en session</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Ouvrir un document <b>en session</b> = consultation en place (pas l'éditeur). Comblé par analogie à AR-11 ; à acter au zoning.</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 900 },
+  &quot;showSearchResults&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const showSearchResults = this.props.showSearchResults ?? true;
+    return { showSearchResults };
+  }
+}
+</script>
+</body>
+</html>
