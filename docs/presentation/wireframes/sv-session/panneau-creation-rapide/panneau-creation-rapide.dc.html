@@ -81,13 +81,18 @@
           <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#8a8275">dossier</span>
           <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px dashed #c9c2b4;border-radius:11px;font:500 10.5px 'Hanken Grotesk';color:#8a8275">contenu</span>
         </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="width:16px;height:16px;border-radius:4px;background:#2b2620;display:flex;align-items:center;justify-content:center;font:600 10px 'Hanken Grotesk';color:#fbfaf6;flex-shrink:0">✓</span>
+          <span style="flex:1;font:400 11.5px 'Hanken Grotesk';color:#46403a">Épingler à la vue session</span>
+          <span style="font:400 8.5px 'Spline Sans Mono',monospace;color:#c9a25f">[OUVERT — si utile / systématique]</span>
+        </div>
       </div>
       <div style="padding:12px 17px;background:#efe9de;border-top:1px solid #e4ded0;display:flex;flex-direction:column;gap:8px">
         <div style="display:flex;align-items:center;gap:11px">
           <button style="flex:1;height:42px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13px 'Hanken Grotesk';cursor:pointer">Créer</button>
           <span style="font:600 12px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8;padding-bottom:1px">Fermer</span>
         </div>
-        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#7a9264;line-height:1.5">● en LIVE → le document est auto-épinglé (UC-08 A3)</span>
+        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#7a9264;line-height:1.5">● épinglage à la création : possible en LIVE <b>comme en CLOSED</b> (UC-07) — distinct de l'auto-épinglage du <i>partage</i> (UC-08 A3, LIVE seul)</span>
       </div>
     </div>
   </div>
@@ -172,13 +177,18 @@
           <span style="font:500 8.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.04em">TITRE <span style="color:#a8775a">— requis</span></span>
           <div style="height:44px;background:#fff;border:1.5px solid #2b2620;border-radius:7px;display:flex;align-items:center;padding:0 13px;font:500 13px 'Hanken Grotesk';color:#2b2620">Conséquences — le Baron épargné</div>
         </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="width:16px;height:16px;border-radius:4px;background:#2b2620;display:flex;align-items:center;justify-content:center;font:600 10px 'Hanken Grotesk';color:#fbfaf6;flex-shrink:0">✓</span>
+          <span style="flex:1;font:400 11.5px 'Hanken Grotesk';color:#46403a">Épingler à la vue session</span>
+          <span style="font:400 8.5px 'Spline Sans Mono',monospace;color:#c9a25f">[OUVERT — si utile / systématique]</span>
+        </div>
       </div>
       <div style="padding:12px 17px;background:#efe9de;border-top:1px solid #e4ded0;display:flex;flex-direction:column;gap:8px">
         <div style="display:flex;align-items:center;gap:11px">
           <button style="flex:1;height:42px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13px 'Hanken Grotesk';cursor:pointer">Créer</button>
           <span style="font:600 12px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8;padding-bottom:1px">Fermer</span>
         </div>
-        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a6a4a;line-height:1.5">○ en CLOSED → rangé dans l'espace, <b>sans</b> auto-épinglage (réservé au LIVE)</span>
+        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a6a4a;line-height:1.5">○ en CLOSED → rangé dans l'espace, <b>épinglable aussi</b> — créer ≠ partager : seul le <i>partage</i> auto-épingle, et en LIVE seulement (UC-08 A3)</span>
       </div>
     </div>
   </div>
@@ -193,7 +203,7 @@
 <!-- ---------- APRÈS VALIDATION (LIVE) ---------- -->
 <div style="position:absolute;left:1796px;top:200px;width:620px">
   <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
-    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Après validation (LIVE) — panneau refermé, doc auto-épinglé</span>
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Après validation (LIVE) — panneau refermé, doc épinglé</span>
   </div>
   <div style="background:#f3efe6;border:1.5px solid #2b2620;border-radius:9px;box-shadow:0 4px 20px rgba(60,50,35,.14);overflow:hidden">
     <div style="min-height:560px;display:flex;flex-direction:column">
@@ -216,7 +226,7 @@
           <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #ece6d9"><span style="font:600 12px 'Hanken Grotesk';color:#3a342c">Épinglés</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">3</span></div>
           <div style="padding:9px 11px;border-bottom:1px solid #f1ece1;background:#f3efe6;box-shadow:inset 3px 0 0 #2b2620">
             <div style="display:flex;align-items:center;gap:7px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#fff">NOTE</span><span style="flex:1;font:600 12px 'Hanken Grotesk';color:#2b2620">Embuscade au pont</span></div>
-            <div style="display:flex;gap:6px;margin-top:7px"><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid #cdc6b8;color:#8a8275;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">privé MJ</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;background:#2b2620;color:#fbfaf6;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">épinglé · auto</span></div>
+            <div style="display:flex;gap:6px;margin-top:7px"><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid #cdc6b8;color:#8a8275;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">privé MJ</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;background:#2b2620;color:#fbfaf6;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">épinglé à la création</span></div>
           </div>
           <div style="padding:8px 11px;border-bottom:1px solid #f1ece1;font:500 12px 'Hanken Grotesk';color:#46403a">Carte de la région</div>
           <div style="padding:8px 11px;font:500 12px 'Hanken Grotesk';color:#46403a">Initiative du combat</div>
@@ -240,8 +250,12 @@
   <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">S'affiche <b>par-dessus</b> la vue session sans la remplacer. Fermer → retour à l'état exact d'avant ; aucun document créé.</div>
 </div>
 <div style="position:absolute;left:2440px;top:522px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
-  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-08 A3</div>
-  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">En <b>LIVE</b> → auto-épinglage. En <b>CLOSED</b> → rangé sans auto-épinglage. Créer ≠ partager : le doc reste privé MJ.</div>
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">UC-07 · UC-08 A3</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Créer ≠ partager : le doc reste privé MJ. Un document <b>créé</b> à la volée est épinglable en <b>LIVE comme en CLOSED</b> (UC-07). L'auto-épinglage ne concerne que le <b>partage</b>, en LIVE (UC-08 A3).</div>
+</div>
+<div style="position:absolute;left:2440px;top:846px;width:248px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.5deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">OUVERT — non tranché</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Épinglage de création : « si utile » (conditionnel) ou systématique ? Le corpus hésite — montré ici <b>proposé par défaut, décochable</b>, sans trancher.</div>
 </div>
 <div style="position:absolute;left:2440px;top:686px;width:248px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
   <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">invocation</div>
@@ -283,7 +297,7 @@
           <button style="flex:1;height:46px;border:none;border-radius:8px;background:#2b2620;color:#fbfaf6;font:600 13.5px 'Hanken Grotesk'">Créer</button>
           <span style="font:600 12.5px 'Hanken Grotesk';color:#6b6456;border-bottom:1px solid #cdc6b8;padding-bottom:1px">Fermer</span>
         </div>
-        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#7a9264">● en LIVE → auto-épinglé (UC-08 A3)</span>
+        <span style="font:400 10px 'Spline Sans Mono',monospace;color:#7a9264">● épinglable à la création — en LIVE comme en CLOSED (UC-07)</span>
       </div>
     </div>
   </div>

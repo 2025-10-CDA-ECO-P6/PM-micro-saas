@@ -19,6 +19,28 @@
 
 ---
 
+## 0bis. Addendum — corrections UI/UX D1..D13 (2026-07-02)
+
+> Passe de corrections UX appliquée aux planches (autorité : UC > domaine > zoning AR-01..20 > fiches). Le langage basse-fidélité est préservé (aucun contrôle natif). Aucun fichier d'autorité modifié ; aucune tension ouverte tranchée.
+
+- **D1 — `panneau-creation-rapide`** : distinction création ≠ partage rétablie. Un document *créé* à la volée est épinglable en LIVE **comme en CLOSED** (UC-07) ; seul l'auto-épinglage du *partage* est réservé au LIVE (UC-08 A3). Affordance « Épingler à la vue session » ajoutée aux panneaux LIVE et CLOSED ; modalité (« si utile » vs systématique) signalée `[OUVERT]`, non tranchée.
+- **D2 — `parametres-campagne`** : la zone de configuration de la vue session devient un **aperçu en lecture seule** + renvoi « Configurer dans la vue session › » — la vue session (mode configuration) est la seule source (AR-18 ; US-06-02). Laptop + tablette.
+- **D3 — `vue-session-mj`** : affordance « ⧉ Lien de session › » (lien ponctuel) ajoutée au mode LIVE, laptop et tablette (AR-10 révisé).
+- **D4 — `vue-session-mj`** : règle de densité déclarée sur la planche (bande « règle de densité (AR-19) » + post-it) : plancher garanti (statut de session · partage · zone de notes · recherche) et ordre d'éviction à saturation : 1. résultats de recherche → 2. épinglés → 3. dossiers condensés (AR-19 volet b).
+- **D5 — `parametres-campagne`** : l'export d'espace n'est plus présenté grisé/post-MVP — action **disponible** (version minimale, MVP — reflexion-ux §7 Décision 3, persona Thomas), maintenue hors du premier plan.
+- **D6 — toutes surfaces MJ** : accès compte = **composant de châssis** (zoning S7), affordance identique (avatar + « Thomas ▾ » ; en mode local : « Créer un compte ») sur `tableau-de-bord`, `creation-espace`, `vue-campagne`, `navigation-dossiers`, `recherche-preparation`, `editeur-document`, `editeur-scenario`, `parametres-campagne`, `vue-espace-personnel` et `vue-session-mj` (tous modes), laptop + tablette.
+- **D7 — `vue-campagne`, `parametres-campagne`** : cadres « placement non décidé » retirés ; AR-10 révisé appliqué (ponctuel → vue session ; permanent → paramètres). Le sélecteur Session/Campagne des paramètres est remplacé par le seul lien permanent ; « Inviter des joueurs » en vue campagne est annoté comme renvoi, pas un point de génération.
+- **D8 — `gate-migration`** : sélection **par espace** rendue (éligibles cochés par défaut, décochables ; espace bloqué — session en cours — non sélectionnable). Granularité globale (un seul lot vs lots successifs) signalée `[OUVERT]`. Fiche alignée : la modalité de sélection est un choix de maquette, non arbitré par le corpus.
+- **D9 — `vue-espace-personnel`** : micro-copy d'intention « Vos notes et contenus, hors campagne » rendue en **libellé discret** sous le titre (laptop, état vide, tablette) — pas de texte d'accueil (reflexion-ux §2).
+- **D10 — `editeur-document`, `editeur-scenario`** : documents liés et « Référencé par » **repliés par défaut** sur laptop (divulgation progressive, AR-19c ; reflexion-ux §4), alignés sur la variante tablette.
+- **D11 — `vue-espace-personnel`** : affordance « déplacer › » présente sur **chaque ligne** de la liste — rendu et annotation alignés (unicité AR-11).
+- **D12 — `navigation-dossiers` + `vue-espace-personnel`** : règle unique pour « Non classés » : **masqué s'il est vide, affiché dès qu'il contient des documents** — annotée sur les deux écrans (UC-05 A4 ; AR-16/AR-20).
+- **D13 — `vue-session-mj`** : en mode configuration, le panneau de résultats de recherche n'est plus projeté sans recherche en cours (AR-19c) — réactivable via le tweak `showSearchResults`. Mode LIVE inchangé.
+
+**Point de navigation §5.1 (placement du lien d'invitation) : résolu** par AR-10 révisé — voir D3/D7. Les points §5.2 à §5.5 restent ouverts.
+
+---
+
 ## 1. Synthèse exécutive
 
 Le MVP recense **20 écrans canoniques**. À l'issue du remaniement du répertoire :

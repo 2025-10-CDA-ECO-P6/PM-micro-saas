@@ -272,4 +272,99 @@ Les résolutions ci-dessous sont portées (ou à porter) dans `zoning.md` comme 
 |---|---|
 | Export d'espace : passage de Should Have à Must Have | `vision/moscow.md` |
 
-Les résolutions de cette passe sont en cours d'application au corpus dans la même vague de travail.
+Les résolutions de la passe 1 ont été appliquées au corpus. Les résolutions de la passe 2 (§9) sont appliquées aux wireframes et aux fiches concernées.
+
+---
+
+## 9. Passe 2 — re-audit post-remaniement (2026-06-25)
+
+### Contexte de la passe
+
+Les 20 wireframes ont été remaniés et co-localisés selon la structure `<surface>/<slug>/`. Les 3 écrans manquants identifiés en passe 1 — `vue-session-mj`, `creation-espace`, `panneau-creation-rapide` — ont été produits. La vérité terrain mécanique est saine : identité par contenu, support.js, liens index.html et autonomie des planches vérifiés.
+
+Le mode de défaut dominant détecté dans cette passe n'est pas mécanique. C'est un **décalage corpus ↔ planche** : plusieurs arbitrages datés du 2026-06-25 (AR-18, AR-19, AR-20, AR-10 révisé) et décisions opérateur n'étaient pas redescendus dans le HTML des wireframes. C'est sur ce périmètre que les 4 lentilles ont été rejouées.
+
+### Ce qui a changé depuis la passe 1
+
+La passe 1 avait posé le socle (châssis, frontière MJ/joueur, reprise session, principes de densité, lien d'invitation). Elle avait aussi identifié trois faiblesses à corriger et trois écrans à alléger. La passe 2 constate que :
+
+- Les **trois faiblesses de passe 1 sont résolues** (voir lentille 1).
+- Les **principes de densité** (lentille 2, AR-19) n'étaient pas redescendus dans les planches — ils le sont désormais.
+- Deux **régressions ponctuelles** ont été détectées et corrigées : règle d'éviction absente de la planche vue-session-mj, export marqué « post-MVP » alors que la décision §7.3 le place au MVP.
+- Un **défaut de fond** a été identifié et tranché sur `panneau-creation-rapide` (confusion de deux épinglages — voir lentille 4).
+- La **micro-copy d'intention** de `vue-espace-personnel` a été réconciliée avec les deux positions corpus en tension.
+
+### Lentille 1 — Architecture de l'information & navigation
+
+**Socle confirmé sain.** Les trois forces identifiées en passe 1 sont toutes rendues : châssis mode local (RB-01 à RB-14 présent sur toutes les surfaces MJ sans exception), frontière MJ/joueur étanche bout-en-bout (AR-03, NFR-CONF-01), reprise session doublement câblée (AR-09 — tableau de bord + vue campagne).
+
+**Faiblesses résiduelles résolues dans cette passe.**
+
+*(a) Configuration vue session — AR-18.* La configuration de vue session était rendue autonome dans `parametres-campagne` au lieu d'un renvoi vers la surface session. Corrigé conformément à AR-18 : `parametres-campagne` propose un renvoi + récapitulatif lecture seule ; la configuration effective s'effectue dans la surface session.
+
+*(b) Accès compte absent du châssis — S7.* L'accès compte n'était pas rendu comme composant de châssis : libellé passif, glyphe muet, absent de la vue session. Corrigé : rendu de manière identique sur les 6 surfaces MJ (S7).
+
+*(c) Lien d'invitation — AR-10 révisé.* Le lien au cadre « non tranché » obsolète a été remplacé par l'application de AR-10 révisé : lien ponctuel (valable pour une session donnée) ajouté à `vue-session-mj` ; lien permanent (valable pour toute la campagne) dans `parametres-campagne`.
+
+### Lentille 2 — Questions de design
+
+**Gate-migration — granularité de sélection.** La granularité de sélection est rendue par espace (case à cocher par espace), conformément à la fiche alignée lors de cette passe. La granularité **globale** (sélection d'un lot unique vs plusieurs lots) reste une **question de design ouverte** au niveau wireframe : elle n'est pas arbitrée par le corpus et n'est pas forcée dans cette passe.
+
+### Lentille 3 — Charge informationnelle (grille AR-19)
+
+**Plancher garanti tenu en vue session.** Les quatre zones du plancher garanti — statut de session, état de partage, notes co-présentes, recherche — sont co-présentes dans `vue-session-mj`.
+
+**Corrections appliquées.**
+
+- *Règle d'éviction des panneaux.* AR-19 volet b exige que la règle d'éviction soit déclarée sur la planche elle-même. Elle était absente. Corrigée : règle d'éviction désormais déclarée sur la planche `vue-session-mj` LIVE.
+- *Backlinks.* Backlinks repliés par défaut sur `editeur-document` et `editeur-scenario` en version laptop, conformément à AR-19c.
+- *Export — régression corrigée.* L'export était marqué « post-MVP » sur `parametres-campagne`, en contradiction avec la décision §7.3 (export au MVP en version minimale). Corrigé : export sorti du premier plan de l'écran mais actif au MVP (section dédiée, non proéminente), conformément à la décision §7.3.
+
+### Lentille 4 — Sous-spécification & adéquation personas
+
+**Aucune régression de couverture persona.** Thomas est re-servi : l'export rétabli au MVP (correction de régression ci-dessus) répond directement à son critère de confiance et de portabilité (§6).
+
+**Vue-espace-personnel — micro-copy d'intention réconciliée.** La fiche indiquait une micro-copy d'intention « en tête de surface » ; la position §76 du corpus indiquait que « l'espace personnel se découvre, pas de paragraphe d'accueil ». Réconciliation retenue : la formulation **« Vos notes et contenus, hors campagne »** est rendue comme micro-label discret sous le titre — un libellé neutre court n'est pas un paragraphe d'accueil au sens du corpus.
+
+**Panneau de création rapide — défaut de fond tranché.** La planche confondait deux épinglages distincts :
+
+- L'épinglage du **partage** (UC-08 A3) — réservé au mode LIVE.
+- L'épinglage de la **création à la volée** (UC-07, session-conduct Règle 7, PinDocument « LIVE ou CLOSED »).
+
+La planche appliquait à la création la restriction du partage en citant UC-08 A3 comme autorité — ce qui était incorrect. Corrigé : l'épinglage de création est possible en mode LIVE comme en mode CLOSED.
+
+**Tension corpus résiduelle (illustrée sans la trancher — remédiation corpus à conduire en amont).** Une tension entre UC-07 (« si le document est utile » — conditionnel) et session-conduct Règle 7 (épinglage systématique) demeure dans le corpus. La planche l'illustre sans la trancher : elle rend co-présents l'affordance « peut être épinglé » (UC-07 conditionnel) et l'état « auto-épinglé » (Règle 7 systématique), exprimant ainsi l'absence de réconciliation corpus. La résolution appartient au corpus amont (UC/domaine), pas à l'interface — ce qui est la bonne manière de ne pas trancher une tension ouverte côté interface.
+
+### Tableau synthétique des résolutions
+
+| # | Planche(s) concernée(s) | Correction apportée | Autorité corpus | Statut |
+|---|---|---|---|---|
+| 1 | `parametres-campagne` | Renvoi + récap lecture seule remplace configuration autonome | AR-18 | Résolu |
+| 2 | 6 surfaces MJ | Accès compte rendu composant de châssis identique | S7 | Résolu |
+| 3 | `vue-session-mj`, `parametres-campagne` | AR-10 révisé appliqué (ponctuel / permanent) | AR-10 révisé | Résolu |
+| 4 | `vue-session-mj` LIVE | Règle d'éviction des panneaux déclarée sur la planche | AR-19 volet b | Résolu |
+| 5 | `editeur-document`, `editeur-scenario` (laptop) | Backlinks repliés par défaut | AR-19c | Résolu |
+| 6 | `parametres-campagne` | Export rétabli actif au MVP (section dédiée, non proéminente) | Décision §7.3 | Résolu |
+| 7 | `vue-espace-personnel` | Micro-copy rendue comme micro-label discret sous le titre | §2 (micro-copy neutre) + §76 corpus (pas de paragraphe d'accueil) | Résolu |
+| 8 | `gate-migration` | Granularité par espace (case par espace) ; fiche alignée | Décision opérateur passe 2 (4) | Résolu |
+| 9 | `panneau-creation-rapide` | Épinglage création possible LIVE et CLOSED (confusion UC-08 A3 corrigée) | UC-07, session-conduct Règle 7, PinDocument | Résolu |
+| 10 | `vue-session-mj`, `creation-espace`, `panneau-creation-rapide` | Trois écrans manquants produits | Périmètre MVP | Résolu |
+| 11 | `vue-session-mj` | Plancher garanti (statut, partage, notes, recherche) co-présent | AR-19 volet a | Résolu |
+| 12 | Co-localisation générale | 20 wireframes co-localisés `<surface>/<slug>/` ; vérité terrain mécanique saine | Périmètre remaniement | Résolu |
+
+### Points ouverts après passe 2
+
+| Point ouvert | Nature | Où résoudre |
+|---|---|---|
+| Tension épinglage conditionnel (UC-07) vs systématique (session-conduct Règle 7) | Tension corpus non tranchée | Remédiation corpus amont (UC/domaine) — hors périmètre interface |
+| Granularité globale gate-migration (sélection lot unique vs plusieurs lots) | Question de design ouverte | Wireframe — non arbitrée par le corpus |
+| Navigation UC-09 A2 — cible « créer un compte » depuis surface joueur | Sous-spécification de parcours | Fiche `surface-joueur` + UC-09 |
+| Vue « Non classés » dédiée | Point de présentation ouvert | Décision de wireframe |
+| Famille C zoning §S9 — présentation espace personnel | Trou de corpus / interview | Non forcée (famille C) |
+
+### Décisions opérateur actées dans cette passe
+
+1. **Périmètre** : documenter les décalages corpus ↔ planche et corriger ; pas de nouvel arbitrage AR.
+2. **AR-18** : renvoi + récapitulatif lecture seule dans `parametres-campagne`.
+3. **Micro-copy** : micro-label discret sous le titre (réconciliation fiche / §76 corpus).
+4. **Gate-migration** : granularité par espace (case par espace) ; fiche alignée.

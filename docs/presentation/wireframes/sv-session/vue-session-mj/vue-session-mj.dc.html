@@ -58,6 +58,10 @@
             </div>
           </div>
           <button style="height:32px;padding:0 17px;border:none;border-radius:6px;background:#2b2620;color:#fbfaf6;font:600 12.5px 'Hanken Grotesk';cursor:pointer">Lancer la session ›</button>
+          <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">accès compte (châssis S7)</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px;background:#fff;border:1px solid #cdc6b8;border-radius:15px;font:600 11.5px 'Hanken Grotesk';color:#5c554a"><span style="width:14px;height:14px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
+          </div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;background:#eee8db;border-bottom:1px solid #dcd5c6;opacity:.6">
@@ -95,10 +99,10 @@
                 <span style="display:inline-flex;align-items:center;width:34px;height:19px;border:1.5px solid #cdc6b8;border-radius:10px;padding:2px"><span style="width:13px;height:13px;background:#cdc6b8;border-radius:50%"></span></span>
               </div>
             </div>
-            <div style="margin-top:auto;padding:11px 13px;border-top:1px dashed #e4ded0;font:400 11px 'Spline Sans Mono',monospace;color:#a39a86">défaut épuré mais informatif — configuration persistée entre les modes (AR-04 ; AR-09)</div>
+            <div style="margin-top:auto;padding:11px 13px;border-top:1px dashed #e4ded0;font:400 11px 'Spline Sans Mono',monospace;color:#a39a86">défaut épuré mais informatif — configuration persistée entre les modes (AR-04 ; AR-09) · résultats de recherche : non projetés sans recherche en cours — panneau latéral à la demande (AR-19c)</div>
           </div>
         </div>
-        <sc-if value="{{ showSearchResults }}" hint-placeholder-val="{{ true }}">
+        <sc-if value="{{ showSearchResults }}" hint-placeholder-val="{{ false }}">
         <div style="width:298px;display:flex;flex-direction:column;gap:8px">
           <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">panneau latéral · résultats de recherche (AR-11)</span>
           <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
@@ -159,6 +163,7 @@
             </div>
           </div>
           <button style="height:32px;padding:0 15px;border:1.5px solid #cdc6b8;border-radius:6px;background:transparent;color:#5c554a;font:600 12px 'Hanken Grotesk';cursor:pointer">Terminer</button>
+          <span style="display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px;background:#fff;border:1px solid #cdc6b8;border-radius:15px;font:600 11.5px 'Hanken Grotesk';color:#5c554a"><span style="width:14px;height:14px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;background:#e7e0d1;border-bottom:1px solid #d8d1c2;flex-wrap:wrap">
@@ -166,6 +171,8 @@
         <span style="font:500 11.5px 'Hanken Grotesk';color:#5c554a">Visible par les joueurs :</span>
         <span style="display:inline-flex;align-items:center;gap:7px;height:24px;padding:0 6px 0 11px;background:#2b2620;color:#fbfaf6;border-radius:13px;font:500 11px 'Hanken Grotesk'">Carte de la région <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(251,250,246,.18);font-size:10px">×</span></span>
         <span style="display:inline-flex;align-items:center;gap:7px;height:24px;padding:0 6px 0 11px;background:#2b2620;color:#fbfaf6;border-radius:13px;font:500 11px 'Hanken Grotesk'">Lettre du Baron <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(251,250,246,.18);font-size:10px">×</span></span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 12px;background:#fff;border:1.5px solid #2b2620;border-radius:13px;font:600 11px 'Hanken Grotesk';color:#2b2620">⧉ Lien de session ›</span>
+        <span style="font:400 9.5px 'Spline Sans Mono',monospace;color:#a39a86">lien ponctuel — AR-10 révisé</span>
         <span style="margin-left:auto;font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">retrait → disparition en temps réel côté joueur (AR-06)</span>
       </div>
       <div style="flex:1;display:flex;gap:12px;padding:14px">
@@ -267,12 +274,14 @@
             </div>
           </div>
           <button style="height:32px;padding:0 15px;border:1.5px solid #cdc6b8;border-radius:6px;background:transparent;color:#5c554a;font:600 12px 'Hanken Grotesk';cursor:pointer">Terminer</button>
+          <span style="display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px;background:#fff;border:1px solid #cdc6b8;border-radius:15px;font:600 11.5px 'Hanken Grotesk';color:#5c554a"><span style="width:14px;height:14px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;background:#e7e0d1;border-bottom:1px solid #d8d1c2;flex-wrap:wrap">
         <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#9a917f;letter-spacing:.02em">indicateur de partage</span>
         <span style="font:500 11.5px 'Hanken Grotesk';color:#5c554a">Visible par les joueurs :</span>
         <span style="display:inline-flex;align-items:center;gap:7px;height:24px;padding:0 6px 0 11px;background:#2b2620;color:#fbfaf6;border-radius:13px;font:500 11px 'Hanken Grotesk'">Carte de la région <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(251,250,246,.18);font-size:10px">×</span></span>
+        <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 12px;background:#fff;border:1.5px solid #2b2620;border-radius:13px;font:600 11px 'Hanken Grotesk';color:#2b2620">⧉ Lien de session ›</span>
       </div>
       <div style="flex:1;display:flex;gap:12px;padding:14px">
         <div style="width:244px;display:flex;flex-direction:column;gap:8px">
@@ -383,6 +392,7 @@
             </div>
           </div>
           <button style="height:32px;padding:0 15px;border:1.5px solid #cdc6b8;border-radius:6px;background:transparent;color:#5c554a;font:600 12px 'Hanken Grotesk';cursor:pointer">Archiver</button>
+          <span style="display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px;background:#fff;border:1px solid #cdc6b8;border-radius:15px;font:600 11.5px 'Hanken Grotesk';color:#5c554a"><span style="width:14px;height:14px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;background:#eee8db;border-bottom:1px solid #dcd5c6;opacity:.6">
@@ -440,11 +450,17 @@
   <span style="font:400 12px/1.55 'Hanken Grotesk';color:#5c554a">Clic sur un document (depuis un <b>panneau de dossiers</b>, les <b>épinglés</b> ou les <b>résultats de recherche</b>) → <b>consultation en place</b>, jamais l'éditeur plein écran : pas de rupture du rythme de session (AR-02 surfaces distinctes ; AR-11 panneau non-disruptif ; NFR-PERF-01/03). <b>✕</b> ou <b>Échap</b> → retour aux panneaux ; sélectionner un autre document remplace le contenu. La consultation = lecture + partager / épingler ; pour <b>éditer en profondeur</b> → « Ouvrir dans l'éditeur » bascule vers la surface de préparation (AR-02).</span>
 </div>
 
+<!-- BANDE RÈGLE DE DENSITÉ (AR-19) -->
+<div style="position:absolute;left:1300px;top:1008px;width:2440px;display:flex;align-items:flex-start;gap:13px;background:#fff;border:1px solid #e0dccd;border-radius:7px;padding:11px 15px;box-shadow:0 1px 4px rgba(60,50,35,.06)">
+  <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;white-space:nowrap;margin-top:2px">règle de densité (AR-19)</span>
+  <span style="font:400 12px/1.55 'Hanken Grotesk';color:#5c554a"><b>Plancher garanti</b> — jamais masqué, quel que soit l'état ou la configuration : <b>statut de session · affordance de partage · zone de notes · recherche</b>. <b>Plafond borné</b> — quand dossiers, résultats de recherche et épinglés saturent l'écran simultanément, l'éviction suit cet ordre déclaré : <b>1.</b> le panneau de résultats de recherche se replie → <b>2.</b> le panneau des épinglés se replie → <b>3.</b> les panneaux de dossiers se condensent (un seul déplié). Le plancher ne cède jamais sa place (AR-19 volet b — hiérarchie déclarée au niveau de ce wireframe).</span>
+</div>
+
 <!-- ============ BANDE TABLETTE ============ -->
-<div style="position:absolute;left:40px;top:1024px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07) — un panneau focus + rail de bascule, zone de notes prioritaire</div>
+<div style="position:absolute;left:40px;top:1124px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07) — un panneau focus + rail de bascule, zone de notes prioritaire</div>
 
 <!-- ---------- TABLETTE : CONFIGURATION ---------- -->
-<div style="position:absolute;left:40px;top:1074px;width:720px">
+<div style="position:absolute;left:40px;top:1174px;width:720px">
   <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
     <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — configuration</span>
     <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">768px</span>
@@ -459,6 +475,7 @@
         <div style="display:flex;align-items:center;gap:9px">
           <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border:1.5px solid #cdc6b8;border-radius:14px;color:#6b6456;font:600 11px 'Hanken Grotesk'"><span style="width:7px;height:7px;border:1.5px solid #a39a86;border-radius:50%"></span>Aucune session</span>
           <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d3ccbe;border-radius:6px;background:#fff"><span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span></span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;background:#fff;border:1px solid #cdc6b8;border-radius:14px;font:600 11px 'Hanken Grotesk';color:#5c554a"><span style="width:13px;height:13px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
         </div>
       </div>
       <div style="padding:12px 14px 0">
@@ -490,7 +507,7 @@
 </div>
 
 <!-- ---------- TABLETTE : LIVE ---------- -->
-<div style="position:absolute;left:800px;top:1074px;width:720px">
+<div style="position:absolute;left:800px;top:1174px;width:720px">
   <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
     <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — LIVE</span>
     <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">rail de bascule</span>
@@ -505,12 +522,14 @@
         <div style="display:flex;align-items:center;gap:9px">
           <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;background:#2b2620;border-radius:14px;color:#fbfaf6;font:600 11px 'Hanken Grotesk'"><span style="width:7px;height:7px;border-radius:50%;background:#fbfaf6"></span>En cours</span>
           <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d3ccbe;border-radius:6px;background:#fff"><span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span></span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;background:#fff;border:1px solid #cdc6b8;border-radius:14px;font:600 11px 'Hanken Grotesk';color:#5c554a"><span style="width:13px;height:13px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:#e7e0d1;border-bottom:1px solid #d8d1c2;flex-wrap:wrap">
         <span style="font:500 9px 'Spline Sans Mono',monospace;color:#9a917f;letter-spacing:.02em">indicateur de partage</span>
         <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:11px;font:500 10.5px 'Hanken Grotesk'">Carte de la région</span>
         <span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:11px;font:500 10.5px 'Hanken Grotesk'">Lettre du Baron</span>
+        <span style="margin-left:auto;display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 10px;background:#fff;border:1.5px solid #2b2620;border-radius:12px;font:600 10.5px 'Hanken Grotesk';color:#2b2620">⧉ Lien de session</span>
       </div>
       <div style="padding:11px 14px 0;display:flex;flex-direction:column;gap:6px">
         <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">rail de bascule — un panneau focus à la fois (AR-07)</span>
@@ -541,7 +560,7 @@
 </div>
 
 <!-- ---------- TABLETTE : DOCUMENT OUVERT ---------- -->
-<div style="position:absolute;left:1560px;top:1074px;width:720px">
+<div style="position:absolute;left:1560px;top:1174px;width:720px">
   <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
     <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — document ouvert</span>
     <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">consultation plein focus</span>
@@ -556,6 +575,7 @@
         <div style="display:flex;align-items:center;gap:9px">
           <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;background:#2b2620;border-radius:14px;color:#fbfaf6;font:600 11px 'Hanken Grotesk'"><span style="width:7px;height:7px;border-radius:50%;background:#fbfaf6"></span>En cours</span>
           <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d3ccbe;border-radius:6px;background:#fff"><span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span></span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;background:#fff;border:1px solid #cdc6b8;border-radius:14px;font:600 11px 'Hanken Grotesk';color:#5c554a"><span style="width:13px;height:13px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:#e7e0d1;border-bottom:1px solid #d8d1c2">
@@ -610,7 +630,7 @@
 </div>
 
 <!-- ---------- TABLETTE : CONSULTATION CLOSED ---------- -->
-<div style="position:absolute;left:2320px;top:1074px;width:720px">
+<div style="position:absolute;left:2320px;top:1174px;width:720px">
   <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
     <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — consultation CLOSED</span>
     <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">lecture seule</span>
@@ -625,6 +645,7 @@
         <div style="display:flex;align-items:center;gap:9px">
           <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;background:#ddd6c8;border-radius:14px;color:#5c554a;font:600 11px 'Hanken Grotesk'">✓ Terminée</span>
           <span style="display:inline-flex;align-items:center;height:28px;padding:0 12px;border:1.5px solid #cdc6b8;border-radius:6px;background:transparent;color:#5c554a;font:600 11px 'Hanken Grotesk'">Archiver</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;background:#fff;border:1px solid #cdc6b8;border-radius:14px;font:600 11px 'Hanken Grotesk';color:#5c554a"><span style="width:13px;height:13px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:#eee8db;border-bottom:1px solid #dcd5c6;opacity:.6">
@@ -660,35 +681,43 @@
 </div>
 
 <!-- ---------- POST-ITS POURQUOI ---------- -->
-<div style="position:absolute;left:40px;top:2080px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi — arbitrages</div>
-<div style="position:absolute;left:40px;top:2110px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+<div style="position:absolute;left:40px;top:2180px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi — arbitrages</div>
+<div style="position:absolute;left:1400px;top:2210px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.5deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-19</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320"><b>Plancher garanti</b> (statut, partage, notes, recherche) + <b>ordre d'éviction déclaré</b> à saturation : recherche → épinglés → dossiers condensés. Voir la bande « règle de densité ».</div>
+</div>
+<div style="position:absolute;left:1672px;top:2210px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.7deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-10 révisé · S7</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Le <b>lien de session ponctuel</b> se génère ici, en LIVE (acte de pilotage) ; le lien permanent vit dans les paramètres. L'<b>accès compte</b> est un composant de châssis, présent sur toute surface MJ.</div>
+</div>
+<div style="position:absolute;left:40px;top:2210px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
   <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-09</div>
   <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Une seule surface à 3 modes, machine d'états <b>unidirectionnelle</b> : configuration → LIVE → CLOSED. Indicateur de statut omniprésent.</div>
 </div>
-<div style="position:absolute;left:312px;top:2110px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+<div style="position:absolute;left:312px;top:2210px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
   <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-04</div>
   <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">La <b>zone de notes</b> est co-présente et jamais masquée — laptop comme tablette, même document ouvert.</div>
 </div>
-<div style="position:absolute;left:584px;top:2110px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.5deg)">
+<div style="position:absolute;left:584px;top:2210px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.5deg)">
   <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-12</div>
   <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320"><b>Partager ≠ épingler</b> : deux affordances distinctes. En LIVE, partager auto-épingle (sens unique).</div>
 </div>
-<div style="position:absolute;left:856px;top:2110px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.6deg)">
+<div style="position:absolute;left:856px;top:2210px;width:252px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.6deg)">
   <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-07</div>
   <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Tablette = <b>un panneau focus + rail de bascule</b>. La navigation des dossiers et la lecture restent atteignables ; notes prioritaires.</div>
 </div>
-<div style="position:absolute;left:1128px;top:2110px;width:252px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.8deg)">
+<div style="position:absolute;left:1128px;top:2210px;width:252px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.8deg)">
   <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">À TRACER — consultation en session</div>
   <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Ouvrir un document <b>en session</b> = consultation en place (pas l'éditeur). Comblé par analogie à AR-11 ; à acter au zoning.</div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 900 },
-  &quot;showSearchResults&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; }
+  &quot;showSearchResults&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot; }
 }">
 class Component extends DCLogic {
   renderVals() {
-    const showSearchResults = this.props.showSearchResults ?? true;
+    const showSearchResults = this.props.showSearchResults ?? false;
     return { showSearchResults };
   }
 }

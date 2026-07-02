@@ -1,11 +1,17 @@
 # Wireframes basse-fidélité — MVP Haversack
 
 > Index complet des 20 écrans du MVP. Chaque écran a son **dossier** (`<slug>/`) regroupant
-> sa fiche de spécification `.md` et, quand l'export existe, son wireframe HTML basse-fidélité (`<slug>.dc.html`).
+> sa fiche de spécification `.md` et son wireframe HTML basse-fidélité (`<slug>.dc.html`).
 > Périmètre : ensemble des surfaces MVP (zoning complet — décision opérateur du 2026-06-12).
-> Statut : 20 fiches déposées ; **17 wireframes HTML co-localisés** ; **3 écrans encore sans export**
-> (`vue-session-mj`, `creation-espace`, `panneau-creation-rapide`).
+> Statut : 20 fiches déposées ; **20 wireframes HTML co-localisés (20/20)**.
+> Passe de corrections UI/UX **D1..D13** appliquée le 2026-07-02 (épinglage création vs partage,
+> aperçu non modifiable des paramètres, lien de session ponctuel en vue session, règle de densité AR-19,
+> export MVP, accès compte = composant de châssis sur toute surface MJ, sélection par espace au gate,
+> micro-copy espace personnel, liens/backlinks repliés, règle « Non classés » unifiée) — détail : [`AUDIT.md`](AUDIT.md) §0bis.
 > Navigation cliquable entre écrans : [`index.html`](index.html) — audit de conformité : [`AUDIT.md`](AUDIT.md).
+> Parcours cliquable écran par écran (shell iframe piloté par le graphe de navigation `zoning.md §S3`) :
+> [`prototype.html`](prototype.html) — distinct du hub `index.html` (catalogue de flux) : ici, on navigue planche
+> après planche via les transitions réelles du graphe, sans modifier aucun `.dc.html`.
 
 ---
 
@@ -17,9 +23,10 @@ Les écrans sont **regroupés par surface** (codes SV du zoning S4) ; un dossier
 <surface>/                ex. sv1-transversaux, sv2-entree-espace, sv3-preparation,
   <slug>/                     sv4-espace-personnel, sv5-joueur, sv-session
     <slug>.md         fiche de spécification (source de vérité écran)
-    <slug>.dc.html    wireframe HTML basse-fidélité (présent pour 17 des 20 écrans)
+    <slug>.dc.html    wireframe HTML basse-fidélité (présent pour les 20 écrans)
 support.js            runtime partagé des exports (chaque HTML le référence en ../../support.js)
 index.html            hub de navigation cliquable entre écrans
+prototype.html        parcours cliquable écran par écran (shell iframe, dérivé du graphe zoning.md §S3)
 AUDIT.md              audit de conformité écran par écran + écrans manquants
 _quarantine/          exports corrompus conservés pour traçabilité (non exploitables)
 ```

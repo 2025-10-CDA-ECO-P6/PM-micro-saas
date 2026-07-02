@@ -49,6 +49,12 @@ Intention : au moment de la création de compte depuis le mode local, l'utilisat
              la granularité est par espace (UC-10 §Règles métier : migration
              espace par espace, tout-ou-rien par espace — la sélection est
              globale par espace, pas par document) ;
+             la modalité de sélection individuelle (liste à cases, tout coché
+             par défaut) est un choix de maquette — le corpus ne prescrit que
+             le tout-ou-rien par espace, pas la modalité de sélection ;
+             la granularité globale de la migration (un seul lot confirmé
+             en une fois vs lots successifs) n'est pas tranchée par le corpus
+             — question ouverte, à ne pas présenter comme décidée ;
              pour chaque espace : titre, type (campagne ou espace personnel),
              historique de session (sessions terminées, notes de session,
              documents épinglés, résumés), volume estimé, date de création

@@ -38,6 +38,7 @@ sous **ADR-009**.
 | [ADR-015](ADR-015-securite-authentification-mvp.md) | Sécurité authentification MVP (politique mdp, tokens, OAuth, rate limiting) | pré-implémentation | Accepté | 2026-06-10 |
 | [ADR-016](ADR-016-serialisation-locale-migration.md) | Sérialisation locale et contrat de migration local→cloud (format payload, frontière de confiance, parcours d'échec) | mixte (dominante pré-implémentation) | Accepté | 2026-06-10 |
 | [ADR-017](ADR-017-modele-indexeddb-local.md) | Modèle IndexedDB local et sécurité du mode local (object stores, posture migration-only, persist(), F-09) | mixte (dominante pré-implémentation) | Accepté | 2026-06-10 |
+| [ADR-018](ADR-018-espace-personnel-generalisation-space.md) | Contenu personnel de premier ordre : généralisation de `Campaign` en `Space` (`SpaceType.PERSONAL`) | conception | Accepté | 2026-06-12 |
 
 ---
 
