@@ -12,7 +12,10 @@ classDiagram
         +date createdAt
         +date updatedAt
         +Register(email, displayName)$
+        +VerifyEmail()
         +UpdateDisplayName(name)
+        +ChangeEmail(newEmail)
+        +LinkFederatedIdentity(provider, externalId)
         +ChangeTier(tier)
         +Delete()
         +Anonymize()
@@ -61,6 +64,24 @@ classDiagram
         +horodatage occurredAt
     }
 
+    class EmailVerified {
+        +identifiant userId
+        +horodatage occurredAt
+    }
+
+    class EmailChangeRequested {
+        +identifiant userId
+        +Email newEmail
+        +horodatage occurredAt
+    }
+
+    class FederatedIdentityLinked {
+        +identifiant userId
+        +texte provider
+        +texte externalId
+        +horodatage occurredAt
+    }
+
     class AccountSuspended {
         +identifiant userId
         +horodatage occurredAt
@@ -69,7 +90,10 @@ classDiagram
     User --> AccountStatus
     User --> AccountTier
     User ..> UserRegistered : produces
+    User ..> EmailVerified : produces
     User ..> DisplayNameUpdated : produces
+    User ..> EmailChangeRequested : produces
+    User ..> FederatedIdentityLinked : produces
     User ..> AccountTierChanged : produces
     User ..> AccountSuspended : produces
     User ..> UserDeleted : produces

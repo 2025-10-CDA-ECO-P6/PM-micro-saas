@@ -9,9 +9,6 @@
 > export MVP, accès compte = composant de châssis sur toute surface MJ, sélection par espace au gate,
 > micro-copy espace personnel, liens/backlinks repliés, règle « Non classés » unifiée) — détail : [`AUDIT.md`](AUDIT.md) §0bis.
 > Navigation cliquable entre écrans : [`index.html`](index.html) — audit de conformité : [`AUDIT.md`](AUDIT.md).
-> Parcours cliquable écran par écran (shell iframe piloté par le graphe de navigation `zoning.md §S3`) :
-> [`prototype.html`](prototype.html) — distinct du hub `index.html` (catalogue de flux) : ici, on navigue planche
-> après planche via les transitions réelles du graphe, sans modifier aucun `.dc.html`.
 
 ---
 
@@ -26,7 +23,6 @@ Les écrans sont **regroupés par surface** (codes SV du zoning S4) ; un dossier
     <slug>.dc.html    wireframe HTML basse-fidélité (présent pour les 20 écrans)
 support.js            runtime partagé des exports (chaque HTML le référence en ../../support.js)
 index.html            hub de navigation cliquable entre écrans
-prototype.html        parcours cliquable écran par écran (shell iframe, dérivé du graphe zoning.md §S3)
 AUDIT.md              audit de conformité écran par écran + écrans manquants
 _quarantine/          exports corrompus conservés pour traçabilité (non exploitables)
 ```

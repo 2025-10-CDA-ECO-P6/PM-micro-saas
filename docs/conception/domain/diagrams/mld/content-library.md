@@ -11,7 +11,7 @@
 | `parent_folder_id` | `uuid` | FK → `folders.id`, nullable | Self-référence pour l'arborescence |
 | `name` | `varchar(200)` | NOT NULL | |
 | `is_system` | `bool` | NOT NULL, DEFAULT `false` | Créé automatiquement à `SpaceCreated` — informatif uniquement, non restrictif |
-| `is_virtual` | `bool` | NOT NULL, DEFAULT `false` | Dossier "Non classés" — invisible dans la navigation, non supprimable, un seul par campagne |
+| `is_virtual` | `bool` | NOT NULL, DEFAULT `false` | Dossier "Non classés" — invisible dans la navigation, non supprimable, un seul par espace |
 | `default_document_type_id` | `uuid` | FK → `document_types.id`, nullable | |
 | `default_template_document_id` | `uuid` | FK → `documents.id`, nullable | Template utilisé pour initialiser les nouveaux documents créés dans ce dossier |
 | `order` | `int` | NOT NULL DEFAULT 0 | Ordre d'affichage dans le dossier parent |
@@ -26,7 +26,7 @@
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
-| `slug` | `varchar(50)` | NOT NULL | `scenario`, `scene`, `npc`, `location`, `note`, `player_character` — voir contraintes d'unicité ci-dessous |
+| `slug` | `varchar(50)` | NOT NULL | Ex: `scenario`, `scene`, `npc`, `location`, `note`, `player_character` — voir types seedés et contraintes d'unicité ci-dessous |
 | `name` | `varchar(100)` | NOT NULL | Nom affiché |
 | `properties_schema` | `jsonb` | nullable | Schéma JSON des propriétés structurées |
 | `is_system` | `bool` | NOT NULL, DEFAULT `false` | Types built-in non modifiables |
@@ -35,7 +35,7 @@
 
 **Contraintes d'unicité sur `slug`** (C-16 — décision C2 : unicité conditionnelle, pas globale) :
 - `UNIQUE (slug) WHERE space_id IS NULL` — types système uniques globalement.
-- `UNIQUE (space_id, slug) WHERE space_id IS NOT NULL` — types custom uniques par campagne (permet à deux campagnes différentes de définir un type avec le même slug).
+- `UNIQUE (space_id, slug) WHERE space_id IS NOT NULL` — types custom uniques par espace (permet à deux espaces différents de définir un type avec le même slug).
 
 **Types seedés** : `scenario`, `scene`, `npc`, `location`, `note`, `player_character`, `live_note`, `reveal`
 
@@ -67,9 +67,9 @@
 
 | Index | Type | Condition | Justification |
 |---|---|---|---|
-| `UNIQUE (space_id, document_type_id, slug) NULLS NOT DISTINCT` | B-tree unique | — | Unicité du slug par campagne et type (contrainte métier). `NULLS NOT DISTINCT` (option SQL non universelle, à défaut contrainte équivalente côté application) : deux documents sans type (`document_type_id IS NULL`) dans la même campagne avec le même slug sont rejetés — sans cette option, le SGBD traiterait les NULL comme distincts et laisserait passer des doublons. |
+| `UNIQUE (space_id, document_type_id, slug) NULLS NOT DISTINCT` | B-tree unique | — | Unicité du slug par espace et type (contrainte métier). `NULLS NOT DISTINCT` (option SQL non universelle, à défaut contrainte équivalente côté application) : deux documents sans type (`document_type_id IS NULL`) dans le même espace avec le même slug sont rejetés — sans cette option, le SGBD traiterait les NULL comme distincts et laisserait passer des doublons. |
 | `(folder_id) WHERE is_deleted = false` | B-tree partiel | `is_deleted = false` | Navigation de l'arborescence d'un dossier — exclut les soft-deletes. Source C-02. |
-| `(space_id, document_type_id) WHERE is_deleted = false` | B-tree partiel | `is_deleted = false` | Lookups par campagne + type (ex. lister les `player_character` d'une campagne pour la validation runtime ADR-002). Source C-02. |
+| `(space_id, document_type_id) WHERE is_deleted = false` | B-tree partiel | `is_deleted = false` | Lookups par espace + type (ex. lister les `player_character` d'un espace pour la validation runtime ADR-002). Source C-02. |
 | `GIN trigramme (title) WHERE is_deleted = false` | GIN trigramme | `is_deleted = false` | Recherche par sous-chaîne (« contient ») sur le titre. ⚠️ Requiert l'activation de l'extension de recherche trigramme du SGBD. Sources C-01/CR-5/H-05. **Note** : indexe le seul `title` — reste « recherche titre seul » au sens d'ADR-002. La recherche full-text sur le contenu (`tsvector`) est post-MVP assumée (non indexée ici). |
 | `(character_id) WHERE character_id IS NOT NULL` | B-tree partiel | `character_id IS NOT NULL` | **Préalable authz OBLIGATOIRE** — résolution des documents `PLAYER_PRIVATE` associés à un personnage. Cet index sert l'invariant métier n°6 (Content Library, prose domaine) : un document `PLAYER_PRIVATE` ne peut être lu que via son auteur, y compris quand cette identité est portée par le chemin de résolution `characterId` → résolution transitive `membership_characters`. |
 | `(guest_access_id) WHERE guest_access_id IS NOT NULL` | B-tree partiel | `guest_access_id IS NOT NULL` | **Préalable authz OBLIGATOIRE** — résolution des documents `PLAYER_PRIVATE` rattachés à un invité. Cet index sert l'invariant métier n°6 (Content Library, prose domaine) : un document `PLAYER_PRIVATE` ne peut être lu que par son auteur invité, y compris quand cette identité est portée par le chemin de résolution `guestAccessId`. |

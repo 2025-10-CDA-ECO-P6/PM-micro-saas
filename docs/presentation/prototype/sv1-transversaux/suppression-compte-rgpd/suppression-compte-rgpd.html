@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suppression de compte (RGPD) — Haversack</title>
+<link rel="stylesheet" href="../../site.css">
+<script defer src="../../overlay.js"></script>
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="app-header__brand">
+        <span class="app-header__logo">Haversack</span>
+        <span class="app-header__tagline">Outil d'assistance au MJ</span>
+      </div>
+      <div class="app-header__account">
+        <span class="account-chip" data-menu="account-menu">
+          <span class="account-chip__avatar"></span>
+          Thomas
+          <span class="account-chip__caret">▾</span>
+          <span class="menu" id="account-menu">
+            <a href="../profil/profil.html" class="menu__item">Profil</a>
+            <a href="../accueil/accueil.html" class="menu__item">Se déconnecter</a>
+          </span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Bandeau de contexte : retour "‹ profil" trouvé sur la planche canonique.
+       Câblé vers le profil (parcours complet). -->
+  <nav class="app-nav">
+    <div class="app-nav__inner">
+      <a href="../profil/profil.html" style="font-weight:600;color:var(--text-soft);">‹ profil</a>
+      <h1 style="font-size:var(--text-md);">Supprimer mon compte</h1>
+    </div>
+  </nav>
+
+  <main class="app-main">
+    <div class="app-content" style="align-items:center;">
+      <div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:var(--space-5);">
+
+        <!-- Zone de présentation des conséquences : co-présent-jamais-masqué,
+             visible avant toute action de confirmation. -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <span class="list-label">zone de présentation des conséquences</span>
+          <div class="card card--dashed" style="gap:var(--space-3);">
+            <span class="card__title" style="font-size:var(--text-base);">Cette action est irréversible</span>
+            <p class="card__meta">— Vos notes de session personnelles sont supprimées définitivement.</p>
+            <p class="card__meta">— Vos données nominatives sont anonymisées dans les espaces partagés.</p>
+            <p class="card__meta">— Vous êtes déconnecté et redirigé vers l'accueil.</p>
+          </div>
+        </div>
+
+        <!-- Zone de confirmation de suppression : état confirmable (adresse
+             validée, aucune campagne active avec membres). -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+          <span class="list-label">zone de confirmation de suppression</span>
+          <div style="display:flex;align-items:center;gap:var(--space-2);">
+            <span class="badge badge--outline"><span class="badge__dot"></span>Adresse e-mail vérifiée</span>
+            <span class="footnote">précondition RB-10-05 satisfaite</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--radius-sm);">
+            <span style="width:18px;height:18px;border-radius:4px;background:var(--accent);color:var(--accent-contrast);display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">✓</span>
+            <span>J'ai compris que cette action est définitive.</span>
+          </div>
+          <!-- Câblé vers l'accueil (déconnexion + redirection), conformément au
+               texte de conséquences ci-dessus (parcours complet). -->
+          <a href="../accueil/accueil.html" class="btn btn--primary">Supprimer définitivement mon compte</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

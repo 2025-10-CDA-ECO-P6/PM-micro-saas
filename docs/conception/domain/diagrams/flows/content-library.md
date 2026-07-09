@@ -1,19 +1,19 @@
 # Content Library — Diagrammes de flux
 
-## 1. Création des dossiers système à la création de campagne
+## 1. Création des dossiers système à la création d'espace
 
 ```mermaid
 sequenceDiagram
     participant App as Application Layer
-    participant CM as Space Management
+    participant SM as Space Management
     participant CL as Content Library
 
-    CM-->>App: SpaceCreated(campaignId, ownerId)
-    App->>CL: Folder.Create(campaignId, "Personnages", isSystem=true)
-    App->>CL: Folder.Create(campaignId, "Joueurs", isSystem=true)
-    App->>CL: Folder.Create(campaignId, "Scénarios", isSystem=true)
-    App->>CL: Folder.Create(campaignId, "Notes", isSystem=true)
-    App->>CL: Folder.Create(campaignId, "Non classés", isSystem=true, isVirtual=true)
+    SM-->>App: SpaceCreated(spaceId, ownerId)
+    App->>CL: Folder.Create(spaceId, "Personnages", isSystem=true)
+    App->>CL: Folder.Create(spaceId, "Joueurs", isSystem=true)
+    App->>CL: Folder.Create(spaceId, "Scénarios", isSystem=true)
+    App->>CL: Folder.Create(spaceId, "Notes", isSystem=true)
+    App->>CL: Folder.Create(spaceId, "Non classés", isSystem=true, isVirtual=true)
     Note over CL: Dossier virtuel invisible — garantit folderId non-nullable sur Document
     CL-->>App: 4 dossiers système visibles + 1 dossier virtuel technique créés
 ```
@@ -27,7 +27,7 @@ sequenceDiagram
     participant CL as Content Library
 
     MJ->>App: Créer un document (title, folderId, typeId?)
-    App->>CL: Document.Create(campaignId, folderId, title, typeId?)
+    App->>CL: Document.Create(spaceId, folderId, title, typeId?)
     CL-->>App: DocumentCreated event
     App-->>MJ: Document créé — éditeur ouvert
 ```
@@ -41,12 +41,12 @@ sequenceDiagram
     participant CL as Content Library
 
     MJ->>App: Créer un scénario
-    App->>CL: Document.Create(campaignId, folderId, title, typeId=SCENARIO)
+    App->>CL: Document.Create(spaceId, folderId, title, typeId=SCENARIO)
     CL-->>App: Document scénario créé (docId)
 
     loop Pour chaque scène
         MJ->>App: Ajouter une scène (title)
-        App->>CL: Document.Create(campaignId, folderId, title, typeId=SCENE)
+        App->>CL: Document.Create(spaceId, folderId, title, typeId=SCENE)
         CL-->>App: Document scène créé (sceneId)
         App->>CL: Document.LinkDocument(docId, targetId=sceneId, order)
         CL-->>App: Lien ajouté
@@ -78,11 +78,11 @@ sequenceDiagram
     participant App as Application Layer
     participant CL as Content Library
 
-    MJ->>App: Utiliser ce scénario pour un nouveau groupe (sourceDocId, campaignId)
-    App->>CL: Document.Instantiate(campaignId, folderId)
+    MJ->>App: Utiliser ce scénario pour un nouveau groupe (sourceDocId, spaceId)
+    App->>CL: Document.Instantiate(spaceId, folderId)
     Note over CL: Copie profonde :<br/>blocs + liens + propriétés<br/>sourceDocumentId = sourceDocId<br/>isReusable = false sur l'instance
     CL-->>App: DocumentInstantiated (newDocId)
-    App-->>MJ: Instance indépendante créée dans la campagne
+    App-->>MJ: Instance indépendante créée dans l'espace
 ```
 
 ## 6. Partager un document avec les joueurs
@@ -113,7 +113,7 @@ sequenceDiagram
 
     Note over MJ: En pleine session — un PNJ imprévu apparaît
     MJ->>App: Créer un PNJ à la volée (title, sessionId)
-    App->>CL: Document.Create(campaignId, folderId, title, typeId=NPC)
+    App->>CL: Document.Create(spaceId, folderId, title, typeId=NPC)
     CL-->>App: DocumentCreated (docId)
     App->>SC: Ajouter le document à la session active (sessionId, docId)
     App-->>MJ: PNJ créé et visible dans la vue session (< 10 secondes)

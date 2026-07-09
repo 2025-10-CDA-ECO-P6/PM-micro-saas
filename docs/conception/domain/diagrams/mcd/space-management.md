@@ -2,18 +2,18 @@
 
 ```mermaid
 erDiagram
-    CAMPAIGN {
+    SPACE {
         identifiant id PK
         identifiant owner_id FK "ref users.id"
         texte name
         texte slug "unique par owner"
-        texte type "CAMPAIGN | ONE_SHOT"
+        texte type "CAMPAIGN | ONE_SHOT | PERSONAL"
         texte status "ACTIVE | ARCHIVED | FROZEN"
         horodatage created_at
         horodatage updated_at
     }
 
-    CAMPAIGN_MEMBERSHIP {
+    SPACE_MEMBERSHIP {
         identifiant space_id PK,FK
         identifiant user_id PK,FK "ref users.id"
         texte role "OWNER | GM | PLAYER"
@@ -62,10 +62,10 @@ erDiagram
         horodatage promoted_at
     }
 
-    CAMPAIGN ||--o{ CAMPAIGN_MEMBERSHIP : "a des membres"
-    CAMPAIGN ||--o{ INVITATION : "a des invitations"
-    CAMPAIGN ||--o{ GUEST_ACCESS : "a des accès invités"
-    CAMPAIGN_MEMBERSHIP ||--o{ MEMBERSHIP_CHARACTER : "associé à des personnages"
+    SPACE ||--o{ SPACE_MEMBERSHIP : "a des membres"
+    SPACE ||--o{ INVITATION : "a des invitations"
+    SPACE ||--o{ GUEST_ACCESS : "a des accès invités"
+    SPACE_MEMBERSHIP ||--o{ MEMBERSHIP_CHARACTER : "associé à des personnages"
     SCENARIO_LIBRARY_ENTRY }o--|| USER : "appartient à"
     SCENARIO_LIBRARY_ENTRY }o--|| DOCUMENT : "promeut"
 ```

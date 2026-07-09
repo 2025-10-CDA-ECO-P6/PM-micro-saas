@@ -53,9 +53,9 @@ Le MJ veut activer la sauvegarde cloud ou le partage joueurs. Le joueur veut acc
    - nom d'affichage ;
    - mot de passe.
 4. Le système crée le compte (tier gratuit).
-5. L'application présente les données locales détectées (titres des campagnes, volume, date) et affiche pour chaque campagne son historique de session : les sessions terminées, les notes de session attachées à chaque session, les documents épinglés, les résumés. Si une campagne contient une session en cours (statut LIVE), le gate signale au MJ qu'elle doit être clôturée avant que la campagne puisse migrer. L'application demande une confirmation explicite avant l'import (gate de reconnaissance anti-appropriation — voir [ADR-016](../../architecture/decisions/ADR-016-serialisation-locale-migration.md) §4).
-6. Après confirmation, les données locales (campagnes, documents, dossiers et tout leur historique de session — sessions terminées, notes de session, documents épinglés, résumés) sont importées vers le cloud ; la migration est traitée campagne par campagne, tout-ou-rien par campagne.
-7. Le MJ retrouve son espace de travail intact pour les campagnes importées avec succès, maintenant synchronisé. Son historique de session est retrouvé complet : les sessions passées sont consultables, les notes et les documents épinglés sont en place. Seule la configuration des panneaux de la vue session doit être recréée par le MJ.
+5. L'application présente les données locales détectées (titres des espaces, volume, date) et affiche pour chaque espace son historique de session : les sessions terminées, les notes de session attachées à chaque session, les documents épinglés, les résumés. Si un espace contient une session en cours (statut LIVE), le gate signale au MJ qu'elle doit être clôturée avant que l'espace puisse migrer. L'application demande une confirmation explicite avant l'import (gate de reconnaissance anti-appropriation — voir [ADR-016](../../architecture/decisions/ADR-016-serialisation-locale-migration.md) §4).
+6. Après confirmation, les données locales (espaces, documents, dossiers et tout leur historique de session — sessions terminées, notes de session, documents épinglés, résumés) sont importées vers le cloud ; la migration est traitée espace par espace, tout-ou-rien par espace.
+7. Le MJ retrouve son espace de travail intact pour les espaces importés avec succès, maintenant synchronisé. Son historique de session est retrouvé complet : les sessions passées sont consultables, les notes et les documents épinglés sont en place. Seule la configuration des panneaux de la vue session doit être recréée par le MJ.
 
 ## Scénario nominal — Inscription sans données locales
 
@@ -136,7 +136,7 @@ L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes 
 
 ### E5 — Échec ou interruption de la migration local→cloud
 
-Si la migration des données locales vers le cloud échoue ou est interrompue (erreur réseau, le système ne répond pas dans le délai attendu, fermeture du navigateur en cours de migration), le traitement est tout-ou-rien **par campagne** : une campagne importée avec succès est confirmée ; une campagne en échec est rejetée. Les données locales des campagnes rejetées — campagnes, documents, dossiers et tout leur historique de session (sessions terminées, notes de session, documents épinglés, résumés) — sont conservées intégralement dans le navigateur. Un rapport de rejets est présenté au MJ, indiquant les raisons par campagne (l'identifiant de campagne cible est déjà occupé, propriétés de document invalides, type inconnu, version du format de données non reconnue). Le compte est créé mais reste en état « migration en attente » pour les campagnes non importées : le MJ peut reprendre la migration depuis son espace de travail sans perte de données. Aucune donnée locale n'est supprimée avant que la migration ne soit confirmée pour la campagne concernée. — Voir [ADR-016](../../architecture/decisions/ADR-016-serialisation-locale-migration.md) §4.
+Si la migration des données locales vers le cloud échoue ou est interrompue (erreur réseau, le système ne répond pas dans le délai attendu, fermeture du navigateur en cours de migration), le traitement est tout-ou-rien **par espace** : un espace importé avec succès est confirmé ; un espace en échec est rejeté. Les données locales des espaces rejetés — espaces, documents, dossiers et tout leur historique de session (sessions terminées, notes de session, documents épinglés, résumés) — sont conservées intégralement dans le navigateur. Un rapport de rejets est présenté au MJ, indiquant les raisons par espace (l'identifiant d'espace cible est déjà occupé, propriétés de document invalides, type inconnu, version du format de données non reconnue). Le compte est créé mais reste en état « migration en attente » pour les espaces non importés : le MJ peut reprendre la migration depuis son espace de travail sans perte de données. Aucune donnée locale n'est supprimée avant que la migration ne soit confirmée pour l'espace concerné. — Voir [ADR-016](../../architecture/decisions/ADR-016-serialisation-locale-migration.md) §4.
 
 ## Postconditions
 
@@ -173,8 +173,8 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
   - Cette validation est une exigence du système : le système refuse toute opération sensible tant que l'adresse de messagerie n'est pas validée, quel que soit le moyen par lequel l'opération est déclenchée.
   - Un utilisateur qui s'inscrit via connexion fédérée n'a pas besoin de revalider son adresse de messagerie si elle est déjà tenue pour vérifiée par le fournisseur d'identité.
 - **Migration des données locales vers le cloud** :
-  - La migration d'une campagne emporte tout son historique de session : sessions terminées, notes de session, documents épinglés et résumés. Rien de cet historique n'est perdu à la migration.
-  - Une session en cours (statut LIVE) ne migre pas en l'état : elle doit être clôturée avant la migration. Le gate de reconnaissance signale au MJ toute session en cours et indique qu'elle doit être clôturée pour que la campagne puisse migrer.
+  - La migration d'un espace emporte tout son historique de session : sessions terminées, notes de session, documents épinglés et résumés. Rien de cet historique n'est perdu à la migration.
+  - Une session en cours (statut LIVE) ne migre pas en l'état : elle doit être clôturée avant la migration. Le gate de reconnaissance signale au MJ toute session en cours et indique qu'elle doit être clôturée pour que l'espace puisse migrer.
   - La configuration de la vue session (choix des panneaux affichés) n'est pas reprise : elle est recréée et le MJ la reconfigure.
 - **RGPD — droit à l'effacement** :
   - La suppression d'un compte déclenche l'anonymisation des données nominatives dans toutes les tables.
@@ -195,8 +195,8 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 - Un utilisateur peut mettre à jour son nom d'affichage.
 - Un joueur invité peut créer un compte et rejoindre la campagne en une action.
 - Un utilisateur nouvellement inscrit peut immédiatement créer une campagne ou rejoindre une campagne existante via invitation.
-- Le gate de reconnaissance présente l'historique de session détecté par campagne (sessions terminées, notes de session, documents épinglés, résumés) ; toute session en cours (LIVE) est signalée avec indication qu'elle doit être clôturée avant que la campagne puisse migrer.
-- Après migration réussie, l'historique de session des campagnes migrées est retrouvé intact dans l'espace de travail cloud.
+- Le gate de reconnaissance présente l'historique de session détecté par espace (sessions terminées, notes de session, documents épinglés, résumés) ; toute session en cours (LIVE) est signalée avec indication qu'elle doit être clôturée avant que l'espace puisse migrer.
+- Après migration réussie, l'historique de session des espaces migrés est retrouvé intact dans l'espace de travail cloud.
 - Un utilisateur peut demander la suppression de son compte depuis sa page profil.
 - La suppression est bloquée si l'utilisateur est propriétaire de campagnes avec des membres actifs.
 - Après suppression : le compte est désactivé, les données nominatives sont anonymisées, les notes privées de l'utilisateur sont supprimées physiquement.

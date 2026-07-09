@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace personnel — Haversack</title>
+<link rel="stylesheet" href="../../site.css">
+<script src="../../overlay.js" defer></script>
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="app-header__brand">
+        <span class="app-header__logo">Haversack</span>
+        <span class="app-header__tagline">Outil d'assistance au MJ</span>
+      </div>
+      <div class="app-header__account">
+        <!-- Composant de châssis (S7) : même affordance sur toutes les
+             surfaces MJ. Artboard canonique « état chargé » = utilisateur
+             avec compte (cf. data/sv4-espace-personnel.js → CANONICAL_ARTBOARD.EspacePerso).
+             Déclencheur de menu déroulant (overlay.js) : le menu ne mène
+             qu'à Profil / accueil (MJ), jamais à la surface joueur (AR-03). -->
+        <span class="account-chip" data-menu="account-menu">
+          <span class="account-chip__avatar"></span>
+          Thomas
+          <span class="account-chip__caret">▾</span>
+          <span class="menu" id="account-menu">
+            <a href="../../sv1-transversaux/profil/profil.html" class="menu__item">Profil</a>
+            <a href="../../sv1-transversaux/accueil/accueil.html" class="menu__item">Se déconnecter</a>
+          </span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="app-content">
+
+      <div class="section-header">
+        <div>
+          <!-- « ‹ tableau de bord » : retour câblé vers Tableau de bord
+               (décision opérateur — cf. brief de la vague). -->
+          <a href="../../sv2-entree-espace/tableau-de-bord/tableau-de-bord.html" class="footnote">‹ tableau de bord</a>
+          <h1 class="section-header__title">Espace personnel <span class="badge badge--outline">hors quota</span></h1>
+          <p class="card__meta">Vos notes et contenus, hors campagne</p>
+        </div>
+        <div class="section-header__actions">
+          <!-- Barre de recherche de châssis (UC-14 ; AR-11) — omniprésente dans
+               l'espace personnel. `<button>` stylé (pas d'<input> natif), pattern
+               repris à l'identique de sv-session/vue-session-mj/vue-session-mj.html :
+               ouvre le panneau latéral #search-results (site.css §4 .side-panel),
+               sans remplacer le contexte courant (AR-11). Remplace l'ancien lien
+               vers recherche-preparation.html (page autonome, désormais overlay
+               embarqué — décision opérateur). -->
+          <button type="button" class="search-bar" data-open="search-results" aria-haspopup="true">
+            <span class="search-bar__icon">⌕</span>
+            <span class="search-bar__text">Rechercher un titre…</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panneau dossiers EMBARQUÉ (décision opérateur) : colonne persistante
+           via la primitive deux colonnes de site.css §4 (.split-2col), aside =
+           arborescence des dossiers, main = contenu de l'espace personnel.
+           Contenu repris de navigation-dossiers.md, adapté au contexte PERSONAL
+           (AR-16 : aucun dossier système nommé, seul « Non classés » à la
+           création ; AR-20 : arborescence libre, « Non classés » = réceptacle
+           garanti, toujours présent). Remplace l'ancien layout ad hoc en flex
+           inline local (candidat de dette de la vague précédente) par la
+           primitive existante — aucune classe inventée. -->
+      <div class="split-2col">
+        <aside class="split-2col__aside">
+          <div class="section-header">
+            <span class="list-label">Zone de navigation par dossiers</span>
+            <!-- "+ dossier" (création) : action visible sur la planche mais
+                 aucune arête NAV_MAP ne la modélise — non cliquable. -->
+            <span class="footnote">+ dossier</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+
+            <!-- Dossier courant (mise en avant locale via tokens existants,
+                 reprend le surlignage inset de la planche source). -->
+            <article class="card" style="border-left:3px solid var(--accent); background:var(--accent-soft)">
+              <h2 class="card__title">Idées de campagne</h2>
+              <p class="card__meta">7 documents</p>
+            </article>
+
+            <article class="card">
+              <h2 class="card__title">PNJ réutilisables</h2>
+              <p class="card__meta">5 documents</p>
+            </article>
+
+            <article class="card">
+              <h2 class="card__title">Maisons &amp; règles</h2>
+              <p class="card__meta">3 documents</p>
+            </article>
+
+            <!-- « Non classés » : réceptacle garanti (AR-20), jamais absent,
+                 mis en italique conformément à la planche source. -->
+            <article class="card card--dashed">
+              <h2 class="card__title" style="font-style:italic">Non classés</h2>
+              <p class="card__meta">2 documents</p>
+            </article>
+
+          </div>
+
+          <p class="footnote">Aucun dossier système nommé — « Non classés » seul à la création (AR-16) ; réceptacle garanti, toujours présent (AR-20).</p>
+        </aside>
+
+        <div class="split-2col__main">
+
+          <!-- Sous-répartition contenu / recherche : site.css ne fournit qu'une
+               primitive DEUX colonnes ; la colonne dossiers ci-dessus consomme
+               déjà l'aside de niveau 1. On réutilise .split-2col imbriqué
+               (même primitive, même classes) pour porter le panneau latéral de
+               résultats de recherche sans consommer la colonne dossiers ni
+               inventer de nouvelle classe — pattern strictement identique à
+               vue-session-mj, un niveau plus profond. -->
+          <div class="split-2col">
+            <div class="split-2col__main">
+
+              <div class="section-header">
+                <span class="list-label">Zone de contenu / liste des documents — Idées de campagne</span>
+                <!-- EspacePerso → EditeurDocPerso (NAV_MAP.EspacePerso). -->
+                <a href="../../sv3-preparation/editeur-document/editeur-document.html" class="btn btn--primary">+ Nouveau document</a>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+
+                <!-- Ouvrir une ligne de document existant mène aussi à l'éditeur
+                     (même arête EspacePerso → EditeurDocPerso), mais le data file
+                     ne retient que « + Nouveau document » comme affordance câblée
+                     pour éviter un doublon sur la même arête EDGES — les lignes
+                     restent donc non cliquables ici (cf. data/sv4-espace-personnel.js). -->
+                <article class="card">
+                  <span class="card__eyebrow">SCÉN</span>
+                  <h2 class="card__title">La cité engloutie</h2>
+                  <span class="card__link">déplacer ›</span>
+                </article>
+
+                <article class="card">
+                  <span class="card__eyebrow">PNJ</span>
+                  <h2 class="card__title">L'Oracle aveugle</h2>
+                  <span class="card__link">déplacer ›</span>
+                </article>
+
+                <article class="card card--dashed">
+                  <span class="card__eyebrow">—</span>
+                  <h2 class="card__title">Twist : le mentor est le traître</h2>
+                  <span class="card__link">déplacer ›</span>
+                </article>
+
+                <article class="card">
+                  <span class="card__eyebrow">LIEU</span>
+                  <h2 class="card__title">Taverne du Pendu</h2>
+                  <span class="card__link">déplacer ›</span>
+                </article>
+
+              </div>
+
+              <p class="footnote">Surface = préparation seule (navigation · éditeur · recherche) — clic sur un document → éditeur ; déplacer un document → un seul dossier à la fois (AR-11).</p>
+
+            </div>
+
+            <!-- Panneau latéral de résultats de recherche — masqué par défaut
+                 (site.css .side-panel), ouvert via la barre de recherche
+                 ci-dessus (data-open="search-results"). Contenu d'exemple repris
+                 de recherche-preparation.md (résultats groupés par type de
+                 document, requête neutre « cité »). Sélection d'un résultat →
+                 ouverture dans l'éditeur. AR-03 : aucune cible ne mène à la
+                 surface joueur. -->
+            <aside class="split-2col__aside side-panel" id="search-results">
+              <div class="section-header">
+                <div class="action-group">
+                  <span class="action-group__label">zone de résultats — 3 résultats</span>
+                  <span class="badge badge--outline">« cité »</span>
+                </div>
+                <button type="button" class="btn btn--secondary" data-close aria-label="Fermer les résultats">✕</button>
+              </div>
+
+              <div class="chip-row">
+                <span class="badge badge--solid">Tous</span>
+                <span class="badge badge--outline">Scénario</span>
+                <span class="badge badge--outline">Lieu</span>
+                <span class="badge badge--outline">Note</span>
+              </div>
+
+              <div>
+                <span class="list-label">SCÉNARIO · 1</span>
+                <a class="result-row" href="../../sv3-preparation/editeur-document/editeur-document.html">
+                  <span class="result-row__type">SCÉN</span>
+                  <span>La cité engloutie</span>
+                </a>
+              </div>
+
+              <div>
+                <span class="list-label">LIEU · 1</span>
+                <a class="result-row" href="../../sv3-preparation/editeur-document/editeur-document.html">
+                  <span class="result-row__type">LIEU</span>
+                  <span>Cité-close des artisans</span>
+                </a>
+              </div>
+
+              <div>
+                <span class="list-label">SANS TYPE · 1</span>
+                <a class="result-row" href="../../sv3-preparation/editeur-document/editeur-document.html">
+                  <span class="result-row__type">—</span>
+                  <span>Notes sur la cité engloutie</span>
+                </a>
+              </div>
+            </aside>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

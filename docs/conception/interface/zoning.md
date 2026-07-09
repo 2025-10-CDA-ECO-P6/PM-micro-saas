@@ -457,7 +457,7 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 **Alternatives considérées** : schéma anticipé + comportement post-MVP (timing MVP tranché par l'opérateur). Surface identique à un espace partagé avec vue session grisée — écarté : la session n'a pas de sens pour un espace mono-membre ; grisé crée de la confusion là où l'absence est la bonne réponse.
 
-**Condition de retour** : reports domaine non bloquants (sémantique `ARCHIVED`/`FROZEN` d'un espace `PERSONAL` — cf. S9, non tranchée à ce stade).
+**Condition de retour** : aucune — le seul report domaine identifié (sémantique `ARCHIVED`/`FROZEN` d'un espace `PERSONAL`) est désormais résolu, cf. S9.
 
 ---
 
@@ -663,5 +663,5 @@ Les éléments suivants relèvent d'un entretien utilisateur ou d'une session de
 | **Interface de l'espace personnel — RÉSOLU** | Décision : mix assumé — entrée distincte hors-quota au tableau de bord (AR-17), atterrissage capture-first (AR-15), conteneur de transit. Libellé « Espace personnel » confirmé (AR-05). Micro-copy d'intention neutre retenue : « Vos notes et contenus, hors campagne » — sert les deux modèles mentaux (capture-first et foyer réutilisable) sans les nommer. L'espace personnel ne se présente pas par un texte d'explication, il se découvre par l'usage. Points d'interview restants (perçu comme naturel ou à expliquer, libellé de surface) : relèvent d'interview et ne bloquent pas le wireframe. Renvoi : réflexion-ux-mvp.md. |
 | **Notification active côté joueur** | US-06 §Questions ouvertes — *« non décidé pour le MVP »*. Angle d'interview (Famille C). Laissé ouvert. |
 | **Persistance des notes invité inter-sessions sans compte** | La mécanique de récupération des notes `PLAYER_PRIVATE` d'un invité via un nouveau lien vers le même personnage est évoquée dans UC-06 §Règles métier mais non entièrement spécifiée. Parcours-03 §Couture C5 identifie ce point comme zone muette. Angle d'interview (Famille C). Laissé ouvert — relève de remédiation corpus. |
-| **Sémantique `ARCHIVED PERSONAL` non tranchée** | Le glossaire §SpaceStatus et `space-management.md` invariant 14 (NOTE i) signalent que la sémantique de `ARCHIVED` et `FROZEN` pour un espace mono-membre est à préciser à la modélisation — ces états ont-ils le même sens que pour un espace partagé ? Non arbitré. Angle d'interview (Famille C). Laissé ouvert — trou de corpus à traiter en W2. |
+| **Sémantique `ARCHIVED PERSONAL` — RÉSOLUE** | Le glossaire §SpaceStatus et `space-management.md` invariant 14 tranchent : un espace `PERSONAL` est toujours `ACTIVE` — `ARCHIVED` et `FROZEN` ne lui sont pas applicables (`FROZEN` = gel des espaces excédentaires au downgrade, `PERSONAL` est hors quota ; `ARCHIVED` contredirait l'invariant 14). Cohérent avec l'absence d'UI d'archivage pour l'espace personnel déjà en place dans ce zoning (§Paramètres de campagne, réservé aux espaces partagés). |
 | **Fournisseurs d'identité** | La liste exacte des fournisseurs d'identité externes proposés à l'inscription et à la connexion n'est pas tranchée dans le corpus. Angle d'interview (Famille C). Laissé ouvert — relève d'une décision produit/technique hors périmètre zoning. |

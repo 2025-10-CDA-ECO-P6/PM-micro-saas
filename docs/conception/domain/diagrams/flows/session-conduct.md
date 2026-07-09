@@ -1,18 +1,18 @@
 # Session Conduct — Diagrammes de flux
 
-## 1. Initialisation de SessionViewConfig à la création de campagne
+## 1. Initialisation de SessionViewConfig à la création d'espace
 
 ```mermaid
 sequenceDiagram
     participant App as Application Layer
-    participant CM as Space Management
+    participant SM as Space Management
     participant CL as Content Library
     participant SC as Session Conduct
 
-    CM-->>App: SpaceCreated(campaignId)
+    SM-->>App: SpaceCreated(spaceId)
     App->>CL: Créer les 4 dossiers système visibles + 1 dossier virtuel technique
     CL-->>App: [folderId1, folderId2, folderId3, folderId4, folderIdVirtual]
-    App->>SC: SessionViewConfig.Create(campaignId, folderIds)
+    App->>SC: SessionViewConfig.Create(spaceId, folderIds)
     SC-->>App: SessionViewConfig initialisé avec les dossiers système
 ```
 
@@ -44,9 +44,9 @@ sequenceDiagram
     participant SC as Session Conduct
 
     MJ->>App: Démarrer une session (title, scenarioId?)
-    App->>SC: Session.Start(campaignId, title, scenarioId?)
+    App->>SC: Session.Start(spaceId, title, scenarioId?)
     SC-->>App: SessionStarted event
-    App->>SC: Charger SessionViewConfig(campaignId)
+    App->>SC: Charger SessionViewConfig(spaceId)
     SC-->>App: Liste des dossiers en focus
     App-->>MJ: Vue session ouverte avec les panneaux configurés
 ```
@@ -94,7 +94,7 @@ sequenceDiagram
     participant SC as Session Conduct
 
     MJ->>App: Nouvelle note (content, visibility)
-    App->>CL: Document.Create(campaignId, folderId="Notes", typeId=LIVE_NOTE)
+    App->>CL: Document.Create(spaceId, folderId="Notes", typeId=LIVE_NOTE)
     CL-->>App: DocumentCreated (docId)
     App->>CL: Document.UpdateContent([TextBlock(content)])
     App->>SC: Session.AttachNote(docId)
@@ -113,7 +113,7 @@ sequenceDiagram
     participant SC as Session Conduct
 
     MJ->>App: Créer un PNJ à la volée (title, sessionId)
-    App->>CL: Document.Create(campaignId, folderId, title, typeId=NPC)
+    App->>CL: Document.Create(spaceId, folderId, title, typeId=NPC)
     CL-->>App: DocumentCreated (docId)
     App->>SC: Session.PinDocument(docId)
     SC-->>App: DocumentPinned event
@@ -127,13 +127,13 @@ sequenceDiagram
     actor MJ
     participant App as Application Layer
     participant SC as Session Conduct
-    participant CM as Space Management
+    participant SM as Space Management
 
     MJ->>App: Clôturer la session
     App->>SC: Session.Close()
     SC-->>App: SessionClosed event
-    App->>CM: Déclencher expiration GuestAccess SESSION (campaignId, sessionId)
-    CM-->>App: OK
+    App->>SM: Déclencher expiration GuestAccess SESSION (spaceId, sessionId)
+    SM-->>App: OK
     App-->>MJ: Session clôturée — résumé éditable
 ```
 
@@ -143,16 +143,16 @@ sequenceDiagram
 sequenceDiagram
     actor Joueur
     participant App as Application Layer
-    participant CM as Space Management
+    participant SM as Space Management
     participant SC as Session Conduct
 
     Joueur->>App: Accéder à la session (guestToken)
-    App->>CM: Valider GuestAccess(token)
+    App->>SM: Valider GuestAccess(token)
     alt GuestAccess invalide / expiré
-        CM-->>App: Refusé
+        SM-->>App: Refusé
         App-->>Joueur: "Ce lien n'est plus actif"
     else GuestAccess valide
-        CM-->>App: GuestAccessId + campaignId + characterId?
+        SM-->>App: GuestAccessId + spaceId + characterId?
         App->>SC: Charger vue session (documents PUBLIC, notes de session PUBLIC)
         SC-->>App: Contenu autorisé
         App-->>Joueur: Vue joueur — documents partagés en temps réel

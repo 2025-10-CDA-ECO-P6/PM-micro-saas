@@ -8,11 +8,15 @@ pour une première découverte, ou aller directement au fichier pertinent.
 
 ## Ordre de lecture conseillé
 
+> Les numéros de fichiers sont des **identifiants stables**, pas une séquence dense : certains numéros peuvent être réservés ou retirés au fil de la conception (les slots 02-05 n'ont pas vocation à être produits).
+
 | Fichier | Contenu | Pour qui |
 |---|---|---|
 | [01-ddd-fondations.md](01-ddd-fondations.md) | Pourquoi DDD, vocabulaire et concepts appliqués au projet | Toute personne qui rejoint le projet |
 | [stack.md](stack.md) | Choix technologiques, justifications, points forts/faibles, roadmap clients | Développeur qui veut comprendre la stack retenue |
 | [06-structure-projets.md](06-structure-projets.md) | Structure des projets .NET + périmètre du mode local TypeScript | Développeur qui échafaude ou navigue la solution |
+| [specs/](specs/) | Spécifications techniques pré-build dérivées des ADR (contrats API, sanitisation/CSP, mapping EF Core, schémas de propriétés, télémétrie, config, repli temps réel, effacement) | Développeur en entrée de build |
+| [07-architecture-detaillee.md](07-architecture-detaillee.md) | Vue transverse par préoccupation, renvoyant aux ADR | Qui veut une carte des décisions d'archi par sujet |
 | [decisions/README.md](decisions/README.md) | Registre des décisions d'architecture (ADR) | Toute personne qui veut comprendre les arbitrages structurels |
 
 ---

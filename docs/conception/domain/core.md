@@ -33,9 +33,10 @@ Tous les identifiants sont des types forts encapsulant un identifiant unique glo
 |---|---|
 | `UserId` | Identity & Access, Space Management, Content Library, Session Conduct |
 | `SpaceId` | Space Management, Content Library, Session Conduct |
+| `GuestAccessId` | Space Management, Content Library, Session Conduct |
 | `SessionId` | Session Conduct, Space Management |
 | `DocumentId` | Content Library, Session Conduct |
-| `FolderId` | Content Library |
+| `FolderId` | Content Library, Session Conduct |
 
 ### Value objects primitifs
 
@@ -76,7 +77,7 @@ Tous les identifiants sont des types forts encapsulant un identifiant unique glo
 
 | Concept | Appartient à | Raison |
 |---|---|---|
-| `AccessPolicy`, `GuestAccess` | Space Management | Spécifique à l'accès espace |
+| `AccessPolicy`, `GuestAccess` | Space Management | Spécifique à l'accès espace — seul le type `GuestAccessId` est partagé au Core (même patron que `Document`/`DocumentId` : l'entité vit dans son contexte, son ID typé est au Core) |
 | `MemberRole`, `SpaceMembership` | Space Management | Rôle contextuel par espace |
 | `DocumentType`, `DocumentBlock` | Content Library | Structure de contenu spécifique |
 | Machine d'états de Session | Session Conduct | Logique LIVE→CLOSED→ARCHIVED |

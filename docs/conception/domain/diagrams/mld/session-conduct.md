@@ -18,7 +18,7 @@
 | `updated_at` | `timestamptz` | NOT NULL | |
 | `created_by_id` | `uuid` | NOT NULL | FK physique réelle → `users.id` (Identity & Access) — exception assumée inter-module, voir note ci-dessous |
 
-**Contrainte partielle** : `UNIQUE (space_id) WHERE status = 'LIVE'` — une seule session au statut LIVE par campagne. *(C-14, décision B1)*
+**Contrainte partielle** : `UNIQUE (space_id) WHERE status = 'LIVE'` — une seule session au statut LIVE par espace. *(C-14, décision B1)*
 
 ---
 
@@ -57,7 +57,7 @@ Notes de session — références vers des Documents de type LIVE_NOTE dans Cont
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
-| `space_id` | `uuid` | UNIQUE, NOT NULL | Un seul config par campagne |
+| `space_id` | `uuid` | UNIQUE, NOT NULL | Un seul config par espace |
 | `updated_at` | `timestamptz` | NOT NULL | |
 
 **Index** : `UNIQUE (space_id)`

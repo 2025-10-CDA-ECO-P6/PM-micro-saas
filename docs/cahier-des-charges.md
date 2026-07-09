@@ -6,9 +6,9 @@
 |---|---|
 | Version | 1.0 |
 | Date | 2026-07-02 |
-| Statut | Version de travail — périmètre produit stabilisé ; volet architecture technique à confirmer, cf. §7 |
+| Statut | Version de travail — périmètre produit stabilisé ; volet architecture technique à confirmer, cf. [§7](#7-contraintes-techniques-rgpd--sécurité) |
 | Porteur / responsable du document | Pierre-Marie Marchio |
-| Validation / approbation | *(à compléter)* |
+| Validation / approbation | Pierre-Marie Marchio (opérateur) — validé en conception ; volet architecture technique ([§7](#7-contraintes-techniques-rgpd--sécurité)) à re-confirmer à l'entrée en build |
 
 ### Historique des révisions
 
@@ -90,6 +90,9 @@ Ce cahier des charges est le document officiel de référence pour la constructi
   - [9.4 Renvoi wireframes](#94-renvoi-wireframes)
 - [10. Glossaire](#10-glossaire)
 - [11. Phasage & jalons](#11-phasage--jalons)
+  - [Macro-ordonnancement (nomenclature canonique)](#macro-ordonnancement-nomenclature-canonique)
+  - [Légende — codes de renvoi des ADR](#légende--codes-de-renvoi-des-adr)
+  - [Incohérence apparente à clarifier](#incohérence-apparente-à-clarifier)
 - [12. Annexes](#12-annexes)
   - [12.1 Points à arbitrer et questions ouvertes](#121-points-à-arbitrer-et-questions-ouvertes)
   - [12.2 Matrice de traçabilité](#122-matrice-de-traçabilité)
@@ -812,9 +815,13 @@ Le palier local persiste les données exclusivement dans le navigateur de l'appa
 
 ### 7.6 Architecture détaillée
 
-*À définir.*
+Cette sous-section consolide, au niveau synthèse, l'état des décisions d'architecture actées pour le MVP — sans en reproduire le détail, dans le prolongement de la logique du reste de [§7](#7-contraintes-techniques-rgpd--sécurité). La vue transverse par préoccupation, qui recense les décisions actées du registre ADR ([§12.3](#123-index-des-décisions-darchitecture-adr)) sous un angle organisé par sujet plutôt que décision par décision, est consolidée dans **`docs/architecture/07-architecture-detaillee.md`**.
 
-> Sources : docs/architecture/stack.md, docs/architecture/ArchitectureIndex.md, docs/architecture/01-ddd-fondations.md, docs/architecture/06-structure-projets.md, docs/architecture/decisions/ADR-001-execution-domaine-mode-local.md, ADR-002-tout-est-document-gouvernance.md, ADR-003-stack-front.md, ADR-004-transport-temps-reel.md, ADR-007-rgpd-autorisation-api.md, ADR-008-structure-solution.md, ADR-012-rgpd-effacement-compte.md, ADR-013-rgpd-donnees-invites.md, ADR-014-modele-autorisation-api.md, ADR-015-securite-authentification-mvp.md, ADR-016-serialisation-locale-migration.md, ADR-017-modele-indexeddb-local.md
+**Ce qui est consolidé dès à présent** : la synthèse des choix structurants déjà actés — principes d'architecture, stack technique, sécurité & authentification, conformité RGPD, contraintes de stockage ([§7.1](#71-principes-darchitecture) à [§7.5](#75-contraintes-de-stockage)) — et leur mise en regard transverse dans `07-architecture-detaillee.md`, qui organise différemment une matière déjà tranchée sans y ajouter de décision nouvelle.
+
+**Ce qui reste différé** : la conception détaillée « en avant » — vues composants, vues séquences, contrats de module au-delà de ce que couvrent les ADR — demeure un travail dédié, à mener en amont de l'entrée en construction. Ce report est cohérent avec l'encadré « section provisoire » en tête de [§7](#7-contraintes-techniques-rgpd--sécurité) : les ADR cadrent une trajectoire technique de nature pré-implémentation, non encore confrontée à la construction effective du MVP.
+
+> Sources : docs/architecture/07-architecture-detaillee.md, docs/architecture/stack.md, docs/architecture/ArchitectureIndex.md, docs/architecture/01-ddd-fondations.md, docs/architecture/06-structure-projets.md, docs/architecture/decisions/ADR-001-execution-domaine-mode-local.md, ADR-002-tout-est-document-gouvernance.md, ADR-003-stack-front.md, ADR-004-transport-temps-reel.md, ADR-007-rgpd-autorisation-api.md, ADR-008-structure-solution.md, ADR-012-rgpd-effacement-compte.md, ADR-013-rgpd-donnees-invites.md, ADR-014-modele-autorisation-api.md, ADR-015-securite-authentification-mvp.md, ADR-016-serialisation-locale-migration.md, ADR-017-modele-indexeddb-local.md
 
 ---
 
@@ -917,7 +924,7 @@ flowchart TB
 
 Les diagrammes associés à chaque contexte borné — modèle conceptuel de données (MCD), modèle logique de données (MLD), diagrammes de classes et diagrammes de flux — sont disponibles dans `docs/conception/domain/diagrams/` et ne sont pas reproduits dans ce document.
 
-> Sources : docs/conception/domain/README.md, docs/conception/domain/core.md, docs/conception/domain/identity-access.md, docs/conception/domain/space-management.md, docs/conception/domain/content-library.md, docs/conception/domain/session-conduct.md
+> Sources : docs/conception/domain/README.md, docs/conception/domain/core.md, docs/conception/domain/identity-access.md, docs/conception/domain/space-management.md, docs/conception/domain/content-library.md, docs/conception/domain/session-conduct.md, docs/architecture/decisions/ADR-018-espace-personnel-generalisation-space.md
 
 ---
 
@@ -1096,7 +1103,35 @@ Ce glossaire reprend, en langage besoin, les termes structurants employés dans 
 
 ## 11. Phasage & jalons
 
-*À définir.*
+Le périmètre livrable est fixé ([§3](#3-périmètre-moscow) et [§5](#5-spécifications-fonctionnelles)) ; cette section n'en redéfinit rien — elle **ordonnance** ce périmètre déjà arrêté. Le phasage détaillé (contenu précis de chaque lot, jalons datés, critères d'entrée/sortie) n'est pas arrêté à ce stade et fera l'objet d'un **artefact de planification dédié**, établi en amont de l'entrée en construction. Ce qui suit pose uniquement le macro-ordonnancement de référence, à titre **indicatif et non figé**.
+
+### Macro-ordonnancement (nomenclature canonique)
+
+Le corpus retient une nomenclature en **Vagues** comme repère macro de séquencement :
+
+- **Vague 0** — revue et audit de la conception.
+- **Vague 1** — première vague de build.
+- **Vague 2**, **Vague 3** — vagues de build ultérieures.
+
+Ce macro-ordonnancement reste indicatif : le contenu précis affecté à chaque Vague, ses jalons datés et ses critères d'entrée/sortie relèvent de l'artefact de planification dédié mentionné ci-dessus, non de la présente section.
+
+### Légende — codes de renvoi des ADR
+
+Les décisions d'architecture ([§12.3](#123-index-des-décisions-darchitecture-adr)) portent, dans leurs sections « Conséquences » ou « Points à trancher », des codes tels que `B1.x`, `M1`, `L1`, `P0.5`, `P6`, `P7`, `B3.2`, `B5.x`… Ces codes sont des **tags de renvoi** identifiant un travail détaillé (implémentation, test, spécification complémentaire) **rattaché à une Vague** — ils ne constituent en aucun cas un second schéma de phasage distinct du macro-ordonnancement ci-dessus.
+
+**Ancrage documenté** (le seul établi à ce jour) :
+
+- **Vague 1 ⊇ Build-out B1.x** — ADR-011, §Points à trancher : « Les éléments suivants sont explicitement renvoyés à la Vague 1 (Build-out B1.x) » (`ADR-011-cascade-integrite-referentielle.md:271`).
+
+**Ancrage inféré, à confirmer** — distinct de l'ancrage documenté ci-dessus : ADR-010, §Conséquences, écrit seulement que « l'implémentation complète est prévue en Vague 1 (hors périmètre du lot P0.5) » (`ADR-010-suppression-campagne.md:95`). Cette phrase établit une **antériorité** de P0.5 par rapport à la Vague 1 — elle n'établit pas littéralement que P0.5 = Vague 0. Le rapprochement **Vague 0 ≈ lot P0.5** n'est donc qu'une **inférence** de cette antériorité (hors-périmètre P0.5 ⇒ antérieur à la Vague 1 ⇒ situé au niveau de la Vague 0), pas un ancrage documentaire au même titre que le précédent — à confirmer explicitement dans l'artefact de planification dédié.
+
+**Codes non ancrés** : `M1`, `L1`, `P6`, `P7`, `B3.2`, `B5.x` et les autres codes de renvoi présents dans les ADR ne sont, à ce stade, rattachés à aucune Vague de façon documentée. Leur rattachement sera précisé dans l'artefact de planification dédié — ils ne sont **pas mappés** ici, pour ne pas geler prématurément un séquencement qui reste à trancher.
+
+### Incohérence apparente à clarifier
+
+ADR-007, §Conséquences, mentionne un « jalon J1 (Vague 3) » (`ADR-007-rgpd-autorisation-api.md:48`), sans que la relation entre la série de codes `P` (`P0.5`, `P6`, `P7`…) et la nomenclature en Vagues ne soit documentée par ailleurs dans le corpus actuel. Cette incohérence apparente de repère est signalée ici mais reste à trancher dans l'artefact de planification dédié, pas dans le présent document.
+
+> Sources : docs/architecture/decisions/ADR-010-suppression-campagne.md, ADR-011-cascade-integrite-referentielle.md, ADR-007-rgpd-autorisation-api.md
 
 ---
 
@@ -1142,7 +1177,7 @@ Le tableau suivant relie chaque section de ce cahier des charges à ses sources 
 | 5. Spécifications fonctionnelles | `docs/conception/usecases/` (UC-01 à UC-14), `docs/conception/usecases/README.md`, `docs/conception/user-stories/` (US-UC-01 à US-UC-14) |
 | 6. Exigences non-fonctionnelles | `docs/conception/nfr/README.md`, `docs/conception/nfr/` (NFR-PERF, NFR-OFF, NFR-CONF, NFR-ACC, NFR-I18N) |
 | 7. Contraintes techniques, RGPD & sécurité | `docs/architecture/stack.md`, `docs/architecture/ArchitectureIndex.md`, `docs/architecture/01-ddd-fondations.md`, `docs/architecture/06-structure-projets.md`, `docs/architecture/decisions/` (ADR-001, 002, 003, 004, 007, 008, 012, 013, 014, 015, 016, 017) |
-| 8. Modèle de données & domaine | `docs/conception/domain/README.md`, `docs/conception/domain/core.md`, `docs/conception/domain/identity-access.md`, `docs/conception/domain/space-management.md`, `docs/conception/domain/content-library.md`, `docs/conception/domain/session-conduct.md` |
+| 8. Modèle de données & domaine | `docs/conception/domain/README.md`, `docs/conception/domain/core.md`, `docs/conception/domain/identity-access.md`, `docs/conception/domain/space-management.md`, `docs/conception/domain/content-library.md`, `docs/conception/domain/session-conduct.md`, `docs/architecture/decisions/ADR-018-espace-personnel-generalisation-space.md` |
 | 9. Conception d'interface | `docs/conception/interface/zoning.md`, `docs/presentation/wireframes/README.md` |
 | 10. Glossaire | `docs/conception/glossaire.md` |
 
@@ -1179,15 +1214,15 @@ Les valeurs consolidées dans cette annexe sont **volatiles** : elles sont susce
 
 | Paramètre | Valeur (au 2026-07-02) | Source (corpus) |
 |---|---|---|
-| Quota d'espaces CAMPAIGN/ONE_SHOT (palier gratuit) | 3 espaces | `docs/conception/vision/moscow.md`, `docs/conception/vision/vision-produit.md [§3](#3-périmètre-moscow)` |
-| Espace personnel décompté du quota | Non | `docs/conception/vision/moscow.md`, `docs/conception/vision/vision-produit.md [§3](#3-périmètre-moscow)` |
-| Nombre de joueurs par session (palier gratuit) | 4 joueurs distincts, MJ non compté — sémantique de comptage à préciser, cf. [§12.1](#121-points-à-arbitrer-et-questions-ouvertes) | `docs/conception/vision/vision-produit.md [§3](#3-périmètre-moscow)`, `docs/conception/domain/space-management.md` (invariant 11) |
+| Quota d'espaces CAMPAIGN/ONE_SHOT (palier gratuit) | 3 espaces | `docs/conception/vision/moscow.md`, `docs/conception/vision/vision-produit.md §3` |
+| Espace personnel décompté du quota | Non | `docs/conception/vision/moscow.md`, `docs/conception/vision/vision-produit.md §3` |
+| Nombre de joueurs par session (palier gratuit) | 4 joueurs distincts, MJ non compté — sémantique de comptage à préciser, cf. [§12.1](#121-points-à-arbitrer-et-questions-ouvertes) | `docs/conception/vision/vision-produit.md §3`, `docs/conception/domain/space-management.md` (invariant 11) |
 | Stockage — palier local | Aucun quota propre au produit ; limité par la seule capacité de l'appareil | `docs/architecture/decisions/ADR-017-modele-indexeddb-local.md` |
-| Stockage — palier gratuit | 500 Mo | `docs/conception/vision/vision-produit.md [§3](#3-périmètre-moscow)` |
-| Stockage — palier Pro | 5 Go et plus | `docs/conception/vision/vision-produit.md [§3](#3-périmètre-moscow)` |
-| Tarif — palier Pro | Environ 7 €/mois | `docs/conception/vision/vision-produit.md [§3](#3-périmètre-moscow)` |
-| H1 — seuil et délai | Seuil : ≥ 60 % des MJ de la cohorte pilote atteignent l'activation préparation. Délai : 14 jours après le premier usage. | `docs/conception/vision/vision-produit.md [§2.3](#23-hypothèses-de-validation-h1-à-h5)` |
-| H2 (centrale) — seuil et délai | Seuil : ≥ 50 % des MJ ayant atteint l'activation préparation atteignent l'activation vue session ; signal de répétabilité si ≥ 50 % d'entre eux l'utilisent sur deux sessions ou plus. Délai : 30 jours pour la première activation, 60 jours pour le signal de répétabilité. | `docs/conception/vision/vision-produit.md [§2.3](#23-hypothèses-de-validation-h1-à-h5)` |
-| H3 — seuil et délai | Seuil : ≥ 40 % des MJ ayant animé une session avec joueurs atteignent l'activation partage ; perception de fluidité supérieure confirmée par au moins 3 MJ interrogés sur 5. Délai : 60 jours pour l'activation partage. | `docs/conception/vision/vision-produit.md [§2.3](#23-hypothèses-de-validation-h1-à-h5)` |
-| H4 — seuil et délai | Seuil : sur les sessions avec partage, ≥ 70 % comptent au moins un joueur ayant consulté le contenu partagé ; moins de 2 joueurs sur 10 interrogés rapportent avoir renoncé à l'étape d'entrée. Délai : 60 jours. | `docs/conception/vision/vision-produit.md [§2.3](#23-hypothèses-de-validation-h1-à-h5)` |
-| H5 — seuil et délai | Seuil : ≥ 10 % des MJ actifs en mode local créent un compte, déclencheur constaté = intention de partage ou de sauvegarde. Délai : 90 jours. | `docs/conception/vision/vision-produit.md [§2.3](#23-hypothèses-de-validation-h1-à-h5)` |
+| Stockage — palier gratuit | 500 Mo | `docs/conception/vision/vision-produit.md §3` |
+| Stockage — palier Pro | 5 Go et plus | `docs/conception/vision/vision-produit.md §3` |
+| Tarif — palier Pro | Environ 7 €/mois | `docs/conception/vision/vision-produit.md §3` |
+| H1 — seuil et délai | Seuil : ≥ 60 % des MJ de la cohorte pilote atteignent l'activation préparation. Délai : 14 jours après le premier usage. | `docs/conception/vision/vision-produit.md §2.3` |
+| H2 (centrale) — seuil et délai | Seuil : ≥ 50 % des MJ ayant atteint l'activation préparation atteignent l'activation vue session ; signal de répétabilité si ≥ 50 % d'entre eux l'utilisent sur deux sessions ou plus. Délai : 30 jours pour la première activation, 60 jours pour le signal de répétabilité. | `docs/conception/vision/vision-produit.md §2.3` |
+| H3 — seuil et délai | Seuil : ≥ 40 % des MJ ayant animé une session avec joueurs atteignent l'activation partage ; perception de fluidité supérieure confirmée par au moins 3 MJ interrogés sur 5. Délai : 60 jours pour l'activation partage. | `docs/conception/vision/vision-produit.md §2.3` |
+| H4 — seuil et délai | Seuil : sur les sessions avec partage, ≥ 70 % comptent au moins un joueur ayant consulté le contenu partagé ; moins de 2 joueurs sur 10 interrogés rapportent avoir renoncé à l'étape d'entrée. Délai : 60 jours. | `docs/conception/vision/vision-produit.md §2.3` |
+| H5 — seuil et délai | Seuil : ≥ 10 % des MJ actifs en mode local créent un compte, déclencheur constaté = intention de partage ou de sauvegarde. Délai : 90 jours. | `docs/conception/vision/vision-produit.md §2.3` |

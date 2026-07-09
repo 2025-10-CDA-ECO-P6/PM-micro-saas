@@ -62,8 +62,8 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `CreateInvitation(type, scope, options)` | `InvitationCreated` | Crée une invitation enfant. Bloqué pour `type = PERSONAL` (voir invariant 13). |
 | `RevokeInvitation(invitationId)` | `InvitationRevoked` | Passe l'invitation en REVOKED. |
 | `AssociateCharacter(userId, characterId)` | `CharacterAssociated` | Associe un personnage (référence Content Library) à un membre. Le paramètre `characterId` est un `DocumentId` pointant vers un `Document` de type `player_character`. |
-| `Archive()` | `SpaceArchived` | Archivage manuel par le MJ. Irréversible (MVP). |
-| `Freeze()` | `SpaceFrozen` | Gel automatique lors d'un downgrade de tier. Passe en lecture seule. |
+| `Archive()` | `SpaceArchived` | Archivage manuel par le MJ. Irréversible (MVP). Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). |
+| `Freeze()` | `SpaceFrozen` | Gel automatique lors d'un downgrade de tier. Passe en lecture seule. Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). |
 | `Unfreeze()` | `SpaceUnfrozen` | Dégel lors d'un upgrade de tier. |
 | `Delete()` | `SpaceDeleted` | Suppression d'un espace. Matérialise le contrat présupposé par ADR-010/011 (saga de suppression/purge) — absent du modèle domaine avant ADR-018. |
 
@@ -98,6 +98,8 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 
 > Le MJ propriétaire est aussi en membership avec `role = OWNER` pour la cohérence des requêtes.
 > `ownerId` sur `Space` reste le champ de responsabilité technique (billing, RGPD).
+>
+> Sur un espace `PERSONAL`, l'acteur est le **propriétaire** (`MemberRole.OWNER`), jamais « MJ ». « MJ » est réservé au rôle orienté-jeu des espaces partagés (`CAMPAIGN`/`ONE_SHOT`), où des joueurs existent.
 
 ---
 
@@ -154,45 +156,12 @@ depuis Session Conduct par son lien d'accès.
 
 ---
 
-### ScenarioLibrary et ScenarioLibraryEntry (post-MVP)
+### Scénario réutilisable — subsumé (ADR-018)
 
-> **Statut : post-MVP — modélisé, non implémenté.** Ce concept est présent dans le modèle
-> pour éviter une migration structurelle ultérieure, au même titre que la valeur `EMAIL` de
-> `InvitationType` conservée inactive en MVP. Son implémentation est conditionnée à UC-13.
-
-La `ScenarioLibrary` représente la bibliothèque de scénarios réutilisables au niveau du compte MJ,
-transverse aux espaces. Elle appartient à **Space Management** car elle opère au niveau du
-compte MJ (comme les quotas et l'`ownerId`), et non au niveau d'un espace donné —
-ce qui dépasse les responsabilités de Content Library (toujours espace-scoped).
-
-> **Point à confirmer (ADR-018)** : l'introduction de l'espace `PERSONAL` comme conteneur par défaut
-> du contenu hors d'un espace de jeu partagé soulève la question de l'attribution de la `ScenarioLibrary` sous ce
-> nouveau paradigme (ADR-018 la signale potentiellement subsumée). Ce point n'est pas résolu ici —
-> la `ScenarioLibrary` est conservée dans ce contexte sans modification ; la question d'attribution
-> est à trancher en W2.
-
-#### ScenarioLibraryEntry (agrégat dans Space Management)
-
-Chaque entrée représente la promotion d'un scénario (`Document` de type `SCENARIO`) vers la
-bibliothèque personnelle du MJ propriétaire du compte.
-
-| Champ | Type | Description |
-|---|---|---|
-| `id` | `ScenarioLibraryEntryId` | Identifiant unique de l'entrée |
-| `ownerId` | `UserId` | Compte MJ propriétaire de la bibliothèque |
-| `documentId` | `DocumentId` | Référence vers le Document de type `SCENARIO` promu (Content Library) |
-| `promotedAt` | `DateTime` | Date de promotion dans la bibliothèque |
-
-> **Point ouvert (W2)** : le champ `ownerId` de `ScenarioLibraryEntry` utilise `UserId` alors que
-> certains documents dans le corpus utilisent `userId` pour le même concept — l'incohérence
-> `ownerId`/`userId` est à résoudre en W2 (hors périmètre de cette réécriture).
-
-**Règles associées (post-MVP)**
-
-- Un `Document` ne peut être promu que s'il a `isReusable = true` et `documentTypeId = SCENARIO`.
-- Une entrée de bibliothèque est liée à l'`ownerId` — elle n'est pas transférable.
-- La suppression du document source retire l'entrée de bibliothèque correspondante.
-- L'instanciation d'un scénario depuis la bibliothèque reste dans `Document.Instantiate()` (Content Library).
+Il n'existe pas d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry`. La réutilisabilité
+est portée par `Document.isReusable` + `Document.Instantiate` (Content Library) ; la bibliothèque
+personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PERSONAL` ∧
+`isReusable = true`).
 
 ---
 
@@ -233,7 +202,7 @@ bibliothèque personnelle du MJ propriétaire du compte.
 | Parcours de création | Configuration complète | Express — nom + scénario, aucun membre requis *(post-MVP)* | Automatique à la création du compte (voir invariant 14) |
 | Membres permanents | Attendus | Optionnels — GuestAccess typique, mais SpaceMembership possible | Aucun — propriétaire uniquement (voir invariant 13) |
 | Sessions | Multiples | Une seule attendue (non forcée techniquement) | Non applicable (conteneur de contenu, pas de session) |
-| Archivage | Manuel par le MJ | Manuel par le MJ | À préciser — voir NOTE (invariant 14, point i) |
+| Archivage | Manuel par le MJ | Manuel par le MJ | Interdit — garde d'agrégat (invariant 15) |
 | Invitations | Oui | Oui | Non (voir invariant 13) |
 
 **MVP** : Au MVP, aucune différence comportementale n'existe entre `CAMPAIGN` et `ONE_SHOT` — création, structure des dossiers, cycle de session et vue session sont identiques pour les deux types. Le parcours de création express est une caractéristique cible post-MVP (arbitrage UC-13, vision-produit §5bis). L'espace `PERSONAL` est créé automatiquement à la création du compte.
@@ -253,15 +222,14 @@ bibliothèque personnelle du MJ propriétaire du compte.
 9. Un `GuestAccess` avec `status = EXPIRED` ou `REVOKED` ne donne plus accès.
 10. Un `DocumentId` référençant un personnage ne peut être associé qu'à un seul `SpaceMembership` actif à la fois dans un espace (RB-11-18). Le `DocumentId` associé doit référencer un `Document` de type `player_character` — cette validation est appliquée à l'écriture dans l'invariant de domaine de `SpaceMembership`. La même contrainte s'applique au champ `characterId` de `GuestAccess` : le `DocumentId` fourni doit également référencer un `Document` de type `player_character`.
 11. Pour un `Space` dont l'`ownerId` référence un utilisateur FREE, le propriétaire ne peut pas accorder l'accès à une session à plus de **4 joueurs distincts**, MJ non compté. Tout octroi d'accès supplémentaire — quelle qu'en soit la forme (`SpaceMembership` PLAYER/GM ou `GuestAccess`) — est refusé au moment de l'octroi dès que cette limite est atteinte. L'intention est d'éviter tout contournement par composition entre les types d'accès existants et futurs. **À préciser à la modélisation** : la sémantique exacte de comptage inter-types (un membre permanent compte-t-il une fois par espace ou par session ? extensibilité aux types d'accès futurs) est à affiner ; la règle de besoin est portée par UC-09 / RB-09-21, qui fait foi.
-12. *(post-MVP)* Une `ScenarioLibraryEntry` est unique par `(ownerId, documentId)` : un même document ne peut être promu qu'une seule fois dans la bibliothèque personnelle d'un propriétaire (RB-13-03 / US-13).
+12. *(retiré — `ScenarioLibraryEntry` subsumé sous ADR-018 : la bibliothèque personnelle est une vue de l'espace `PERSONAL`, pas un agrégat de pont ; cf. Lot 10)*
 13. Un espace `PERSONAL` est mono-membre : seul le propriétaire (`role = OWNER`) y est membre. Les opérations `AddMember()`, `CreateInvitation()` et tout octroi de `GuestAccess` sont bloqués pour `type = PERSONAL`.
-14. Un espace `PERSONAL` existe par défaut pour chaque propriétaire de compte. La règle de besoin est : à tout moment, un propriétaire dispose d'un et d'un seul espace `PERSONAL` actif. **Point d'articulation avec Identity & Access à confirmer** : le déclencheur exact de la création (événement ou étape du flux de création de compte) est à préciser avec le contexte Identity & Access — voir NOTE ci-dessous.
+14. Un compte actif possède toujours un et un seul espace `PERSONAL` **actif**. À la création du compte, le flux **applicatif** — à réception de l'événement `UserRegistered` — invoque de façon synchrone la commande `Space.Create(ownerId, type = PERSONAL)` dans Space Management. Identity & Access ne crée pas l'espace (frontière de contexte : I&A ne connaît pas la notion d'espace). En mode local, il n'y a ni `User` ni `ownerId` ; le conteneur par défaut local **est** l'espace `PERSONAL` (sans `ownerId`), lié à l'espace `PERSONAL` cloud à la création du compte / migration (mapping 1:1). L'invariant 14 est régi par le régime compte.
+15. Un espace `PERSONAL` est toujours `ACTIVE`. `Archive()` et `Freeze()` sont refusées pour `type = PERSONAL` (garde d'agrégat, même patron que l'invariant 13). `FROZEN` est sans objet (l'espace `PERSONAL` est hors quota, jamais excédentaire) ; `ARCHIVED` contredirait l'invariant 14 (un `PERSONAL` actif à tout moment).
 
-> **NOTE — points ouverts sur l'espace `PERSONAL`**
+> **NOTE — implémentation de l'invariant 14**
 >
-> (i) **Sémantique de `SpaceStatus` `ARCHIVED`/`FROZEN` pour un espace `PERSONAL`** — à préciser (voir tableau One-shot, colonne PERSONAL, ligne Archivage). Un espace `PERSONAL` est le conteneur par défaut du propriétaire ; les conséquences d'un archivage ou d'un gel sur ce cas particulier n'ont pas encore été arbitrées.
->
-> (ii) **Déclencheur exact de la création de l'espace `PERSONAL`** — à préciser avec le contexte Identity & Access. Candidats : réaction à `UserRegistered`, étape synchrone dans le flux de création de compte, ou commande applicative dédiée. Ce point conditionne l'articulation entre les deux contextes (invariant 14).
+> L'atomicité « même transaction que la création de compte » est une posture MVP ; l'invariant reste une garantie de résultat (une saga future la satisferait autrement — l'invariant énonce un résultat, pas un mécanisme).
 
 ---
 
@@ -308,8 +276,9 @@ bibliothèque personnelle du MJ propriétaire du compte.
 
 | Événement / Requête | Source | Action |
 |---|---|---|
+| `UserRegistered` | Identity & Access | Invoquer de façon synchrone `Space.Create(ownerId, type = PERSONAL)` (invariant 14) — création de l'espace `PERSONAL` du compte |
 | `AccountTierChanged` | Identity & Access | Geler les espaces excédentaires si downgrade |
-| `UserDeleted` | Identity & Access | Anonymiser les données nominatives des memberships |
+| `UserDeleted` | Identity & Access | Routage de cascade par type d'espace (invariant 3 d'I&A) : hard-delete inconditionnel de l'espace `PERSONAL` via la saga `SpaceDeleted` ; anonymisation de l'`ownerId` et des données de membership pour `CAMPAIGN`/`ONE_SHOT` (conservation sous identité anonymisée) |
 | `DisplayNameUpdated` | Identity & Access | Mettre à jour le nom d'affichage dans les vues membres |
 
 ### Ce que Space Management publie

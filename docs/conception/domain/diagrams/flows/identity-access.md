@@ -7,15 +7,15 @@ sequenceDiagram
     actor MJ
     participant App as Application Layer
     participant IA as I&A Domain
-    participant Identity as ASP.NET Identity
+    participant Identity as Infrastructure d'identité
 
     MJ->>App: Créer un compte (email, displayName, password)
     App->>Identity: CreateIdentityUser(id, email, password)
     Identity-->>App: OK
     App->>IA: User.Register(userId, email, displayName)
     IA-->>App: UserRegistered event
-    App->>App: Migrer les données locales (IndexedDB → cloud)
-    Note over App: Orchestration applicative :<br/>importe campagnes, documents,<br/>dossiers depuis l'export local
+    App->>App: Migrer les données locales (stockage local → cloud)
+    Note over App: Orchestration applicative :<br/>importe espaces, documents,<br/>dossiers depuis l'export local
     App-->>MJ: Compte créé, données migrées
 ```
 
@@ -27,7 +27,7 @@ sequenceDiagram
 sequenceDiagram
     actor Utilisateur
     participant App as Application Layer
-    participant Identity as ASP.NET Identity
+    participant Identity as Infrastructure d'identité
     participant Denylist as Token Denylist (JTI)
 
     Utilisateur->>App: Connexion (email, password)
@@ -50,7 +50,7 @@ sequenceDiagram
 sequenceDiagram
     actor Utilisateur
     participant App as Application Layer
-    participant Identity as ASP.NET Identity
+    participant Identity as Infrastructure d'identité
     participant Email as Service Email
 
     Utilisateur->>App: Demande reset (email)
@@ -71,19 +71,19 @@ sequenceDiagram
     actor Utilisateur
     participant App as Application Layer
     participant IA as I&A Domain
-    participant CM as Space Management
+    participant SM as Space Management
 
     Utilisateur->>App: Supprimer mon compte
-    App->>CM: GetActiveCampaignsWithMembers(userId)
-    alt Campagnes actives avec membres
-        CM-->>App: Liste des campagnes bloquantes
-        App-->>Utilisateur: Bloqué — gérer les campagnes d'abord
-    else Aucune campagne bloquante
+    App->>SM: GetActiveSpacesWithMembers(userId)
+    alt Espaces actifs avec membres
+        SM-->>App: Liste des espaces bloquants
+        App-->>Utilisateur: Bloqué — gérer les espaces d'abord
+    else Aucun espace bloquant
         App->>IA: User.Delete()
         IA-->>App: UserDeleted event
         App->>IA: User.Anonymize()
         IA-->>App: UserAnonymized event
-        App->>CM: Réagir à UserDeleted (anonymiser member data)
+        App->>SM: Réagir à UserDeleted (anonymiser member data)
         App-->>Utilisateur: Compte supprimé, déconnecté
     end
 ```
@@ -95,18 +95,18 @@ sequenceDiagram
     participant Billing as Billing Webhook (infrastructure)
     participant App as Application Layer
     participant IA as I&A Domain
-    participant CM as Space Management
+    participant SM as Space Management
 
     Billing->>App: TierChanged(userId, newTier)
     App->>IA: User.ChangeTier(newTier)
     IA-->>App: AccountTierChanged event
-    App->>CM: Réagir à AccountTierChanged
+    App->>SM: Réagir à AccountTierChanged
     alt Downgrade FREE → PRO (résiliation)
-        CM->>CM: Geler les campagnes excédentaires (> 3)
-        CM-->>App: OK
+        SM->>SM: Geler les espaces excédentaires (> 3)
+        SM-->>App: OK
     else Upgrade FREE → PRO
-        CM->>CM: Débloquer les quotas
-        CM-->>App: OK
+        SM->>SM: Débloquer les quotas
+        SM-->>App: OK
     end
     App-->>Billing: Confirmé
 ```
@@ -118,14 +118,14 @@ sequenceDiagram
     actor Joueur
     participant App as Application Layer
     participant IA as I&A Domain
-    participant CM as Space Management
+    participant SM as Space Management
 
     Note over Joueur: Joueur invité sans compte<br/>veut créer un compte
     Joueur->>App: Créer un compte (email, displayName, password, guestToken)
     App->>IA: User.Register(userId, email, displayName)
     IA-->>App: UserRegistered event
-    App->>CM: ConvertGuestAccessToMembership(userId, guestToken)
-    CM->>CM: GuestAccess → SpaceMembership
-    CM-->>App: OK
-    App-->>Joueur: Compte créé, membre permanent de la campagne
+    App->>SM: ConvertGuestAccessToMembership(userId, guestToken)
+    SM->>SM: GuestAccess → SpaceMembership
+    SM-->>App: OK
+    App-->>Joueur: Compte créé, membre permanent de l'espace
 ```

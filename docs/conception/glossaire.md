@@ -47,6 +47,8 @@ Propriété portée par chaque `Document`. Détermine qui peut lire le document.
 
 La confidentialité `PLAYER_PRIVATE` est absolue quel que soit le chemin d'accès (direct, via personnage associé, ou via accès invité).
 
+> **Résolution (espace `PERSONAL`)** : sur un espace `PERSONAL` mono-membre, `PUBLIC`/`GM_ONLY`/`PLAYER_PRIVATE` collapsent tous à « visible du propriétaire uniquement » via la résolution de visibilité existante (l'ensemble des membres = {propriétaire}) — **aucun code spécifique**. L'enum `Visibility` (Core) est **inchangé** (partagé, stable). Les documents d'un `PERSONAL` portent une **valeur par défaut réelle** (`GM_ONLY`), non `null` : aucune garde de domaine n'interdit `PLAYER_PRIVATE` (une telle garde couplerait Content Library à `SpaceType` pour zéro gain, et nuirait au déplacement inter-espaces `PERSONAL → partagé`). Le contrôle de visibilité est **masqué à l'UI** sur un `PERSONAL` (concern de présentation).
+
 - Défini dans le **Core** comme enum partagé `Visibility`.
 - Utilisé dans : **Content Library** (tous les documents), **Session Conduct** (notes de session).
 
@@ -152,7 +154,7 @@ Les différences entre `CAMPAIGN` et `ONE_SHOT` sont comportementales, pas struc
 
 > La valeur `FROZEN` et le mécanisme de downgrade de tier ne sont pas spécifiés dans le MVP. Voir **UC-HORS-MVP — Gel de campagnes au downgrade de tier (post-MVP)** pour la question ouverte délimitée.
 
-> **Point ouvert** : la sémantique de `ARCHIVED` et `FROZEN` pour un espace `PERSONAL` (mono-membre, sans partage) est à préciser à la modélisation — ces états ont-ils le même sens que pour un espace partagé ? Voir ADR-018 §Points à trancher.
+> **Résolution** : un espace `PERSONAL` est toujours `ACTIVE` : `ARCHIVED` et `FROZEN` ne lui sont pas applicables (`FROZEN` = gel des espaces excédentaires au downgrade, or `PERSONAL` est hors quota ; `ARCHIVED` contredirait l'invariant 14 — un `PERSONAL` actif à tout moment). Garde d'agrégat, cf. invariant 15 de Space Management.
 
 ---
 
@@ -160,7 +162,7 @@ Les différences entre `CAMPAIGN` et `ONE_SHOT` sont comportementales, pas struc
 
 Rôle dans un espace de jeu partagé (campagne ou one-shot). Dans le modèle de domaine, le MJ est le membre avec le rôle `OWNER` ou `GM` dans l'espace. Ce rôle est contextuel : un même `User` peut être MJ dans un espace et Joueur dans un autre. Le terme « MJ » est employé dans les UC et US comme raccourci de la combinaison `OWNER | GM`.
 
-> **Point ouvert** : la notion de « MJ » s'applique aux espaces de type `CAMPAIGN` et `ONE_SHOT`. Pour un espace `PERSONAL` (mono-membre), le propriétaire est l'`OWNER` unique — la qualification MJ n'y a pas de sens naturel (il n'y a pas de joueurs). Ce point est à préciser à la modélisation.
+> **Résolution** : MJ est le rôle orienté-jeu des espaces **partagés** (`CAMPAIGN`/`ONE_SHOT`), où des joueurs existent — raccourci de `OWNER`|`GM`. Sur un espace `PERSONAL` mono-membre (sans joueurs), l'acteur est le **propriétaire** (`MemberRole.OWNER`), **pas** un « MJ ». Le même humain est *propriétaire* de son espace `PERSONAL` et devient *MJ* lorsqu'il anime un espace de jeu.
 
 - Voir aussi : `MemberRole`.
 
@@ -224,11 +226,7 @@ La `ScenarioLibrary` (bibliothèque personnelle inter-espaces) est largement sub
 
 ### `ScenarioLibrary`
 
-Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, cross-espace. Agrégat de **Space Management** (décision retenue dans `space-management.md` §Concepts en attente). Entrée de type `ScenarioLibraryEntry(ownerId, documentId, promotedAt)`. Couvert par **UC-13** (Should Have — post-MVP).
-
-> **Incohérence résolue** : le champ de l'entrée est `ownerId` (et non `userId` — incohérence de nommage signalée dans ADR-018 §Incohérences signalées, résolue ici en faveur du domaine `space-management.md`).
-
-> **Point ouvert** : sous ADR-018, l'espace `PERSONAL` subsume largement le rôle de bibliothèque personnelle de la `ScenarioLibrary` — un scénario réutilisable est un `Document` de l'espace personnel avec `isReusable = true`. L'attribution de ce concept à Space Management est à réexaminer ; la responsabilité pourrait relever d'un contexte distinct ou du domaine Content Library réécrit. Voir ADR-018 §Incohérences signalées.
+Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, cross-espace. Subsumée sous ADR-018 : il n'existe pas d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry`. La réutilisabilité est portée par `Document.isReusable` (Content Library) ; la bibliothèque personnelle **est** une vue filtrée de l'espace `PERSONAL` du MJ (`type = PERSONAL` ∧ `isReusable = true`), pas un agrégat distinct. Couvert par **UC-13** (Should Have — post-MVP).
 
 ---
 
@@ -280,7 +278,7 @@ Type de document créé lié à une scène pour représenter une information à 
 
 `Document` avec `isReusable = true`. Peut être instancié : l'instanciation crée une copie profonde indépendante. Les modifications du source après instanciation n'affectent pas les instances. Une instance est identifiée par `sourceDocumentId` renseigné.
 
-- Relation clé : le `ScenarioLibrary` est construit sur des `Document` réutilisables marqués `isReusable = true`.
+- Relation clé : la bibliothèque personnelle (`ScenarioLibrary`, subsumée sous ADR-018) est une vue filtrée sur les `Document` réutilisables marqués `isReusable = true` de l'espace `PERSONAL` — pas un agrégat distinct.
 
 ---
 

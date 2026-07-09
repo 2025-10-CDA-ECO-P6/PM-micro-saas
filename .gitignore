@@ -155,3 +155,4 @@ logs/
 
 # ── Docs locaux / audits (non versionnés) ────────────
 /docs/audit/
+/docs/BACKLOG.md

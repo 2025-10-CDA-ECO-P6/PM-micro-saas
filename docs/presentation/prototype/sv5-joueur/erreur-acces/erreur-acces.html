@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erreur d'accès — Haversack</title>
+<link rel="stylesheet" href="../../site.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Châssis minimal (surface joueur, AR-03) : pas de tagline, pas de puce compte —
+       écran terminal qui ne révèle rien de la campagne. -->
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="app-header__brand">
+        <span class="app-header__logo">Haversack</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Écran terminal (NAV_MAP.ErreurAcces.affordances = []) : aucune arête sortante,
+       aucun <a> câblé sur cette page — seule action possible : contacter le MJ
+       hors-ligne (UC-09 A3), jamais une navigation dans l'app. -->
+  <main class="app-main" style="display:flex; align-items:center; justify-content:center;">
+    <div class="app-content" style="align-items:center;">
+
+      <article class="card" style="width:100%; max-width:480px; text-align:center; align-items:center; margin-top:var(--space-6);">
+        <span style="width:56px; height:56px; border:2px solid var(--border-strong); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:var(--text-xl); color:var(--text-faint);">!</span>
+        <h1 class="card__title" style="font-size:var(--text-lg);">Ce lien n'est plus actif</h1>
+        <p class="card__meta">Contactez votre Maître du Jeu pour obtenir un nouveau lien de session.</p>
+        <p class="footnote">Aucun détail sur le motif n'est communiqué — lien expiré, révoqué, invalide ou quota atteint (RB-09-21).</p>
+      </article>
+
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

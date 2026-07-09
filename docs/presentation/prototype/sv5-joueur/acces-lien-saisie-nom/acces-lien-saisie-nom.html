@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rejoindre une session — Haversack</title>
+<link rel="stylesheet" href="../../site.css">
+</head>
+<body>
+<!-- Ajustement structurel local (documenté — voir en-tête site.css « sauf ajustement
+     strictement local documenté en commentaire ») : cet écran est à deux colonnes
+     (contenu partagé + panneau de saisie du nom) ; site.css ne fournit pas encore de
+     classe de mise en page à deux colonnes dédiée. Le conteneur ci-dessous utilise donc
+     un style inline strictement structurel (display:flex, gap, largeur de colonne,
+     min-width:0) qui réutilise exclusivement les tokens existants (var(--space-*)) —
+     aucune couleur ni taille nouvelle n'est introduite. Même remarque que
+     sv3-preparation/vue-campagne.html. Signalé à l'orchestrateur : site.css reste hors
+     du périmètre de cet agent (cf. CLOSING NOTE). -->
+<div class="app-shell">
+
+  <!-- Châssis surface joueur (AR-03) : pas de puce compte MJ, pas de menu de
+       navigation par dossiers — surface séparée de la surface MJ. -->
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="app-header__brand">
+        <span class="app-header__logo">Haversack</span>
+        <span class="app-header__tagline">Session de jeu</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="app-content">
+
+      <div style="display:flex; gap:var(--space-5); align-items:flex-start; flex-wrap:wrap;">
+
+        <!-- ZONE DE CONTENU PARTAGÉ (priorité 1) : documents PUBLIC de la session,
+             visibles dès l'ouverture du lien, avant toute saisie du nom. -->
+        <section style="flex:1 1 480px; min-width:0; display:flex; flex-direction:column; gap:var(--space-3);">
+          <span class="list-label">Documents partagés pour cette session</span>
+          <div class="grid-cards">
+
+            <article class="card">
+              <span class="card__eyebrow">lieu</span>
+              <h2 class="card__title">Carte de la région</h2>
+              <p class="card__meta">Document partagé par le MJ</p>
+            </article>
+
+            <article class="card">
+              <span class="card__eyebrow">note</span>
+              <h2 class="card__title">Lettre du Baron</h2>
+              <p class="card__meta">« Si vous lisez ceci, c'est que la forge a déjà parlé… »</p>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- FORMULAIRE DE SAISIE DU NOM D'AFFICHAGE (priorité 2) + ZONE D'INFORMATION
+             RGPD (priorité co-présent-jamais-masqué, RB-09-20). -->
+        <aside style="flex:0 1 360px; display:flex; flex-direction:column; gap:var(--space-4);">
+
+          <article class="card">
+            <h2 class="card__title">Rejoindre la session</h2>
+            <div class="field">
+              <span class="field__label">NOM D'AFFICHAGE</span>
+              <span class="field__value">Kael</span>
+            </div>
+            <!-- NAV_MAP.SaisieNom : "Rejoindre ›" → VueJoueur (seule affordance câblée). -->
+            <a href="../vue-joueur-base/vue-joueur-base.html" class="btn btn--primary card__action">Rejoindre ›</a>
+            <p class="card__meta">Aucun compte ni mot de passe requis.</p>
+          </article>
+
+          <div class="banner banner--inline">
+            <span class="banner__eyebrow">information RGPD</span>
+            <p class="banner__text">Nom d'affichage et notes privées conservés pour la durée de la session (+ 24 h). Sans compte, les notes sont supprimées à la fin de l'accès ; le nom est effacé sous 90 jours.</p>
+            <!-- NAV_MAP.SaisieNom : arête SaisieNom→Inscription câblée (décision opérateur
+                 AR-03) vers la page transversale d'inscription — cible sans structure MJ,
+                 cœur d'AR-03 préservé. -->
+            <a href="../../sv1-transversaux/inscription/inscription.html" class="banner__action">Créer un compte pour conserver mes notes</a>
+          </div>
+
+        </aside>
+
+      </div>
+
+      <p class="footnote">Accès par lien reçu du MJ — seul le contenu PUBLIC de cette session est visible ; aucune structure de campagne n'est exposée (AR-03).</p>
+
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

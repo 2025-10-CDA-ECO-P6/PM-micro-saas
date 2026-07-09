@@ -4,7 +4,7 @@
 classDiagram
     class Document {
         +identifiant id
-        +identifiant campaignId
+        +identifiant spaceId
         +identifiant folderId
         +texte title
         +identifiant documentTypeId
@@ -20,14 +20,14 @@ classDiagram
         +identifiant guestAccessId
         +AuditInfo auditInfo
         +SoftDelete softDelete
-        +Create(campaignId, folderId, title, typeId)$
+        +Create(spaceId, folderId, title, typeId)$
         +UpdateContent(blocks)
         +LinkDocument(targetId, order)
         +UnlinkDocument(targetId)
         +Share()
         +Unshare()
         +Delete()
-        +Instantiate(campaignId, folderId)
+        +Instantiate(spaceId, folderId)
     }
 
     class DocumentBlock {
@@ -39,13 +39,14 @@ classDiagram
     }
 
     class DocumentLink {
+        <<valueObject>>
         +identifiant targetDocumentId
         +entier order
     }
 
     class Folder {
         +identifiant id
-        +identifiant campaignId
+        +identifiant spaceId
         +identifiant parentFolderId
         +texte name
         +booléen isSystem
@@ -54,7 +55,7 @@ classDiagram
         +identifiant defaultTemplateDocumentId
         +entier order
         +AuditInfo auditInfo
-        +Create(campaignId, name, parentId?)$
+        +Create(spaceId, name, parentId?)$
         +Rename(name)
         +Delete()
     }
@@ -65,7 +66,7 @@ classDiagram
         +texte name
         +structure propertiesSchema
         +booléen isSystem
-        +identifiant campaignId
+        +identifiant spaceId
     }
 
     class BlockType {
@@ -78,7 +79,7 @@ classDiagram
 
     class DocumentCreated {
         +identifiant documentId
-        +identifiant campaignId
+        +identifiant spaceId
         +horodatage occurredAt
     }
 
@@ -91,14 +92,14 @@ classDiagram
 
     class DocumentDeleted {
         +identifiant documentId
-        +identifiant campaignId
+        +identifiant spaceId
         +horodatage occurredAt
     }
 
     class DocumentInstantiated {
         +identifiant sourceDocumentId
         +identifiant newDocumentId
-        +identifiant campaignId
+        +identifiant spaceId
         +horodatage occurredAt
     }
 
@@ -115,9 +116,15 @@ classDiagram
         +horodatage occurredAt
     }
 
+    class FolderCreated {
+        +identifiant folderId
+        +identifiant spaceId
+        +horodatage occurredAt
+    }
+
     class FolderDeleted {
         +identifiant folderId
-        +identifiant campaignId
+        +identifiant spaceId
         +horodatage occurredAt
     }
 
@@ -130,6 +137,7 @@ classDiagram
     Document ..> DocumentInstantiated : produces
     Document ..> DocumentLinked : produces
     Document ..> DocumentUnlinked : produces
+    Folder ..> FolderCreated : produces
     Folder ..> FolderDeleted : produces
     DocumentBlock --> BlockType
     Folder "1" o-- "0..*" Document : contains

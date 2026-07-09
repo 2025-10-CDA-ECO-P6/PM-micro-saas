@@ -22,6 +22,7 @@ classDiagram
         +Archive()
         +Freeze()
         +Unfreeze()
+        +Delete()
     }
 
     class SpaceMembership {
@@ -35,7 +36,7 @@ classDiagram
 
     class Invitation {
         +identifiant id
-        +texte token
+        +InvitationToken token
         +InvitationType type
         +InvitationScope scope
         +identifiant sessionId
@@ -48,16 +49,16 @@ classDiagram
 
     class GuestAccess {
         +identifiant id
-        +identifiant campaignId
+        +identifiant spaceId
         +GuestAccessScope scope
         +identifiant sessionId
-        +texte token
+        +GuestAccessToken token
         +texte displayName
         +identifiant characterId
         +GuestAccessStatus status
         +horodatage expiresAt
         +horodatage createdAt
-        +Create(campaignId, scope, sessionId)$
+        +Create(spaceId, scope, sessionId)$
         +SetDisplayName(name)
         +AssociateCharacter(characterId)
         +Expire()
@@ -67,70 +68,75 @@ classDiagram
 
     class SpaceCreated {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
         +identifiant ownerId
         +SpaceType type
     }
 
     class MemberJoined {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
         +identifiant userId
         +MemberRole role
     }
 
     class MemberActivated {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
         +identifiant userId
     }
 
     class MemberRemoved {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
         +identifiant userId
     }
 
     class InvitationCreated {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
         +identifiant invitationId
-        +texte token
+        +InvitationToken token
     }
 
     class InvitationRevoked {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
         +identifiant invitationId
     }
 
     class CharacterAssociated {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
         +identifiant userId
         +identifiant characterId
     }
 
     class SpaceArchived {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
     }
 
     class SpaceFrozen {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
     }
 
     class SpaceUnfrozen {
         <<domainEvent>>
-        +identifiant campaignId
+        +identifiant spaceId
+    }
+
+    class SpaceDeleted {
+        <<domainEvent>>
+        +identifiant spaceId
     }
 
     class GuestAccessCreated {
         <<domainEvent>>
         +identifiant guestAccessId
-        +identifiant campaignId
-        +texte token
+        +identifiant spaceId
+        +GuestAccessToken token
     }
 
     class GuestAccessExpired {
@@ -147,13 +153,14 @@ classDiagram
         <<domainEvent>>
         +identifiant guestAccessId
         +identifiant userId
-        +identifiant campaignId
+        +identifiant spaceId
     }
 
     class SpaceType {
         <<enumeration>>
         CAMPAIGN
         ONE_SHOT
+        PERSONAL
     }
 
     class SpaceStatus {
@@ -204,6 +211,12 @@ classDiagram
         CONVERTED
     }
 
+    class GuestAccessScope {
+        <<enumeration>>
+        SESSION
+        CAMPAIGN
+    }
+
     Space "1" *-- "1..*" SpaceMembership : memberships
     Space "1" *-- "0..*" Invitation : invitations
     Space --> SpaceType
@@ -214,18 +227,8 @@ classDiagram
     Invitation --> InvitationType
     Invitation --> InvitationStatus
     GuestAccess --> GuestAccessStatus
+    GuestAccess --> GuestAccessScope
     GuestAccess --> SpaceId
-
-    %% post-MVP
-    class ScenarioLibraryEntry {
-        +identifiant id
-        +identifiant ownerId
-        +identifiant documentId
-        +horodatage promotedAt
-    }
-
-    ScenarioLibraryEntry --> User : owned by
-    ScenarioLibraryEntry --> Document : promotes
 
     Space ..> SpaceCreated : produces
     Space ..> MemberJoined : produces
@@ -236,6 +239,7 @@ classDiagram
     Space ..> SpaceArchived : produces
     Space ..> SpaceFrozen : produces
     Space ..> SpaceUnfrozen : produces
+    Space ..> SpaceDeleted : produces
     SpaceMembership ..> MemberActivated : produces
     GuestAccess ..> GuestAccessCreated : produces
     GuestAccess ..> GuestAccessExpired : produces

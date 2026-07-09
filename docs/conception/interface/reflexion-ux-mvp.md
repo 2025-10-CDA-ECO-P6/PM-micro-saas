@@ -308,7 +308,7 @@ La passe 1 avait posé le socle (châssis, frontière MJ/joueur, reprise session
 
 ### Lentille 2 — Questions de design
 
-**Gate-migration — granularité de sélection.** La granularité de sélection est rendue par espace (case à cocher par espace), conformément à la fiche alignée lors de cette passe. La granularité **globale** (sélection d'un lot unique vs plusieurs lots) reste une **question de design ouverte** au niveau wireframe : elle n'est pas arbitrée par le corpus et n'est pas forcée dans cette passe.
+**Gate-migration — granularité de sélection.** La granularité de sélection est rendue par espace (case à cocher par espace), conformément à la fiche alignée lors de cette passe. La granularité **globale** (sélection d'un lot unique vs plusieurs lots) est **tranchée : lot unique** (cf. Décisions opérateur actées, point 5 — décision opérateur 2026-07-09).
 
 ### Lentille 3 — Charge informationnelle (grille AR-19)
 
@@ -357,7 +357,7 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 | Point ouvert | Nature | Où résoudre |
 |---|---|---|
 | Tension épinglage conditionnel (UC-07) vs systématique (session-conduct Règle 7) | Tension corpus non tranchée | Remédiation corpus amont (UC/domaine) — hors périmètre interface |
-| Granularité globale gate-migration (sélection lot unique vs plusieurs lots) | Question de design ouverte | Wireframe — non arbitrée par le corpus |
+| Granularité globale gate-migration (sélection lot unique vs plusieurs lots) | ✓ Résolu (décision opérateur 2026-07-09) | Décisions opérateur actées — lot unique |
 | Navigation UC-09 A2 — cible « créer un compte » depuis surface joueur | Sous-spécification de parcours | Fiche `surface-joueur` + UC-09 |
 | Vue « Non classés » dédiée | Point de présentation ouvert | Décision de wireframe |
 | Famille C zoning §S9 — présentation espace personnel | Trou de corpus / interview | Non forcée (famille C) |
@@ -368,3 +368,4 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 2. **AR-18** : renvoi + récapitulatif lecture seule dans `parametres-campagne`.
 3. **Micro-copy** : micro-label discret sous le titre (réconciliation fiche / §76 corpus).
 4. **Gate-migration** : granularité par espace (case par espace) ; fiche alignée.
+5. **Gate-migration — granularité globale (décision opérateur 2026-07-09)** : **lot unique**. Tous les espaces éligibles migrent en un seul passage (une confirmation unique ; les espaces éligibles cochés par défaut, décochables individuellement). Périmètre : granularité **globale** seulement — le tout-ou-rien **par espace** (déjà acté, inchangé) reste en place. Justification : le contrat serveur (ADR-016 §3.1) est indifférent à la granularité globale ; l'option A privilégie la simplicité du récit d'onboarding. L'exclusion ponctuelle d'un espace n'est pas promue comme parcours de reprise nominal — elle relève du chemin d'échec/reprise E5 d'UC-10.

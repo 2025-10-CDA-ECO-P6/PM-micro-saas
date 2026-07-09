@@ -46,10 +46,10 @@ Haversack.Domain/
   │   ├── UserId.cs
   │   ├── IUserRepository.cs
   │   └── ...
-  ├── CampaignManagement/
-  │   ├── Campaign.cs
+  ├── SpaceManagement/
+  │   ├── Space.cs
   │   ├── SpaceId.cs
-  │   ├── ICampaignRepository.cs
+  │   ├── ISpaceRepository.cs
   │   └── ...
   ├── ContentLibrary/
   │   ├── Document.cs
@@ -69,7 +69,7 @@ Haversack.Domain/
 
 Haversack.Application/
   ├── Handlers/
-  │   ├── CampaignHandlers.cs
+  │   ├── SpaceHandlers.cs
   │   ├── DocumentHandlers.cs
   │   └── ...
   ├── Dtos/
@@ -90,10 +90,10 @@ Les préoccupations techniques transversales restent isolées dès J0 :
 Infrastructure.Persistence/
   ├── EfCore/
   │   ├── Migrations/
-  │   ├── CampaignPersistenceConfiguration.cs
+  │   ├── SpacePersistenceConfiguration.cs
   │   └── ...
   └── Repositories/
-      ├── CampaignRepository.cs
+      ├── SpaceRepository.cs
       ├── DocumentRepository.cs
       └── ...
 
@@ -187,7 +187,7 @@ Le domaine C#/.NET côté serveur reste la **source de vérité unique**.
 
 Lorsqu'un utilisateur migre ses données locales vers le cloud, il s'agit d'une **importation**, pas d'une simple copie de confiance :
 - les données sont revalidées par le domaine serveur
-- les invariants métier complexes sont appliqués (une campagne a exactement un OWNER, une session LIVE est unique)
+- les invariants métier complexes sont appliqués (un espace a exactement un OWNER, une session LIVE est unique)
 - toute donnée qui ne satisfait pas les règles est rejetée ou mise en quarantaine
 
 **Invariant clé** : `validation locale ⊆ validation serveur`. Le mode local peut accepter un état que le serveur refuserait,
@@ -201,7 +201,7 @@ Un seul format, deux usages :
 2. Payload de migration lors de la synchronisation cloud
 
 Le format inclut un champ `schemaVersion` obligatoire ; les versions inconnues sont rejetées proprement.
-Le parcours de migration est tout-ou-rien par campagne, avec un gate de reconnaissance anti-appropriation
+Le parcours de migration est tout-ou-rien par espace, avec un gate de reconnaissance anti-appropriation
 (présentation des données détectées + confirmation explicite) et un rapport de rejets.
 
 *Sources : [ADR-001, § Décision](decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-016 — Sérialisation locale et contrat de migration local→cloud](decisions/ADR-016-serialisation-locale-migration.md) ; [ADR-017 — Modèle IndexedDB local et sécurité du mode local](decisions/ADR-017-modele-indexeddb-local.md) (object stores, posture migration-only, `navigator.storage.persist()`, sécurité F-09)*
@@ -248,7 +248,7 @@ il est construit après que la structure .NET et le modèle IndexedDB soient sta
 - **B0.4** ✓ : nommage `SharedKernel` acté et documenté (§4)
 - **J0** : test d'architecture en CI (NetArchTest ou convention namespace)
 - **Vague 2** : extraction de bounded contexts en projets séparés si besoin réel (équipe, dépendances)
-- **Statué (ADR-016)** : migration locale → cloud — format de sérialisation, gate de reconnaissance, parcours d'échec par campagne (voir [ADR-016](decisions/ADR-016-serialisation-locale-migration.md))
+- **Statué (ADR-016)** : migration locale → cloud — format de sérialisation, gate de reconnaissance, parcours d'échec par espace (voir [ADR-016](decisions/ADR-016-serialisation-locale-migration.md))
 - **Statué (ADR-017)** : modèle IndexedDB local — object stores, versionnement du store, `navigator.storage.persist()`, sécurité mode local (bandeaux durabilité/confidentialité, import JSON, sanitisation client) (voir [ADR-017](decisions/ADR-017-modele-indexeddb-local.md))
 - **Vague 2** : configuration EF Core (voir [ADR-008, § Conséquences](decisions/ADR-008-structure-solution.md))
 

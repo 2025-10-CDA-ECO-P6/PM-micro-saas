@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription — Haversack</title>
+<link rel="stylesheet" href="../../site.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="app-header__brand">
+        <span class="app-header__logo">Haversack</span>
+        <span class="app-header__tagline">Outil d'assistance au MJ</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="app-content" style="align-items:center;">
+
+      <article class="card" style="width:100%;max-width:480px;gap:var(--space-5);margin-top:var(--space-6);">
+
+        <div style="text-align:center;display:flex;flex-direction:column;gap:var(--space-1);">
+          <h1 class="card__title" style="font-size:var(--text-lg);">Créer un compte</h1>
+          <p class="card__meta">Cloud sync · partage joueurs · multi-appareils</p>
+        </div>
+
+        <!-- Formulaire de création de compte : priorité 1 (chemin principal) selon
+             inscription.md §Accessibilité (hiérarchie de lecture à distance). Le
+             .dc.html place la zone fournisseur externe AVANT le formulaire (AR-13,
+             "mis en avant") — divergence tranchée en faveur de la fiche .md, qui fait
+             du formulaire le chemin principal (priorité 1) et du fournisseur externe
+             un chemin alternatif (priorité 2), donc affiché après ici. -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+          <span class="list-label">formulaire de création de compte</span>
+          <div class="field">
+            <span class="field__label">ADRESSE DE MESSAGERIE</span>
+            <span class="field__placeholder">thomas@exemple.fr</span>
+          </div>
+          <div class="field">
+            <span class="field__label">NOM D'AFFICHAGE</span>
+            <span class="field__placeholder">Thomas</span>
+          </div>
+          <div class="field">
+            <span class="field__label">MOT DE PASSE</span>
+            <span class="field__placeholder">••••••••</span>
+          </div>
+          <!-- NAV_MAP.Inscription : "Créer mon compte" → Tableau -->
+          <a href="../../sv2-entree-espace/tableau-de-bord/tableau-de-bord.html" class="btn btn--primary">Créer mon compte</a>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:var(--space-3);">
+          <span style="flex:1;height:1px;background:var(--border);"></span>
+          <span class="footnote">ou</span>
+          <span style="flex:1;height:1px;background:var(--border);"></span>
+        </div>
+
+        <!-- Zone d'accès via fournisseur externe : priorité 2 (chemin alternatif en
+             un geste). Postcondition identique au formulaire (inscription réussie)
+             → Tableau. -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <span class="list-label">zone d'accès via fournisseur externe</span>
+          <a href="../../sv2-entree-espace/tableau-de-bord/tableau-de-bord.html" class="btn btn--secondary" style="justify-content:center;width:100%;">Continuer avec un fournisseur</a>
+        </div>
+
+        <!-- Lien vers la connexion : priorité 3. -->
+        <p class="footnote" style="text-align:center;">Déjà un compte ? <a href="../connexion/connexion.html" class="banner__action">Se connecter</a></p>
+
+      </article>
+
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

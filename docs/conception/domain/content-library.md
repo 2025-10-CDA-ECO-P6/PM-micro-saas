@@ -334,9 +334,9 @@ Document (SCENE) "Entrée de la crypte"
 
 ## Note sur la ScenarioLibrary (UC-13)
 
-La `ScenarioLibrary` appartient à **Space Management** — décision actée (option B retenue).
-Post-MVP, voir UC-13 et la section `ScenarioLibraryEntry` dans `space-management.md`.
-L'instanciation d'un scénario depuis la bibliothèque reste dans `Document.Instantiate()` de ce contexte.
+La réutilisabilité est portée par `Document.isReusable` + `Document.Instantiate` (Content Library) ;
+la bibliothèque personnelle est une vue de l'espace `PERSONAL` (Space Management). Il n'existe pas
+d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry` (subsumé, ADR-018).
 
 ---
 

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mode local — Haversack</title>
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Châssis transversal non authentifié (mode local — aucun compte créé) :
+       pas de puce compte, cf. accueil.html et zoning.md §S7 « Châssis mode local ». -->
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="app-header__brand">
+        <span class="app-header__logo">Haversack</span>
+        <span class="app-header__tagline">Outil d'assistance au MJ</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="app-content" style="align-items:center;">
+
+      <!-- Nœud abstrait du graphe de navigation (zoning.md §S3, ModeLocal) : pas un
+           écran du produit, mais l'état transversal « mode local » qui aiguille vers
+           l'une des trois situations ci-dessous selon ce qui est détecté sur l'appareil. -->
+      <div class="card card--dashed" style="width:100%;max-width:640px;text-align:center;align-items:center;margin-top:var(--space-6);">
+        <span class="card__eyebrow">nœud abstrait — ModeLocal</span>
+        <h1 class="card__title" style="font-size:var(--text-lg);">Mode local — démarrer sans compte</h1>
+        <p class="card__meta">Ceci n'est pas un écran du produit : c'est le point de bifurcation du parcours en mode local. Choisissez la branche à explorer.</p>
+      </div>
+
+      <!-- Châssis mode local (zoning.md §S7) : deux bandeaux distincts et non
+           fusionnés, présents sur toutes les surfaces MJ tant qu'aucun compte
+           n'est créé. -->
+      <div style="display:flex;flex-direction:column;gap:var(--space-3);width:100%;max-width:640px;margin-top:var(--space-5);">
+
+        <div class="banner banner--inline">
+          <span class="banner__eyebrow">durabilité</span>
+          <p class="banner__text">Vos données locales ne bénéficient d'aucune garantie de conservation permanente sur cet appareil — elles pourraient disparaître sous pression de stockage.</p>
+          <a class="banner__action" href="../sv1-transversaux/inscription/inscription.html">Créer un compte pour sécuriser mes données</a>
+        </div>
+
+        <div class="banner banner--inline">
+          <span class="banner__eyebrow">confidentialité</span>
+          <p class="banner__text">Ces données ne sont protégées par aucun identifiant : toute personne ayant accès à ce navigateur sur cet appareil peut les consulter.</p>
+          <a class="banner__action" href="../sv1-transversaux/inscription/inscription.html">Créer un compte</a>
+        </div>
+
+      </div>
+
+      <span class="list-label" style="width:100%;max-width:640px;margin-top:var(--space-5);">sorties du nœud ModeLocal — choisir la branche à explorer</span>
+      <div class="grid-cards" style="width:100%;max-width:640px;">
+
+        <article class="card">
+          <span class="card__eyebrow">capture immédiate</span>
+          <h2 class="card__title">Espace personnel</h2>
+          <p class="card__meta">Aucun espace local détecté — démarrage direct en espace personnel.</p>
+          <a href="../sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.html" class="card__link">Ouvrir ›</a>
+        </article>
+
+        <article class="card">
+          <span class="card__eyebrow">espaces locaux détectés</span>
+          <h2 class="card__title">Passage au compte</h2>
+          <p class="card__meta">Des espaces créés en mode local existent déjà sur l'appareil — migration à confirmer.</p>
+          <a href="../sv1-transversaux/gate-migration/gate-migration.html" class="card__link">Ouvrir ›</a>
+        </article>
+
+        <article class="card">
+          <span class="card__eyebrow">aucun espace local</span>
+          <h2 class="card__title">Tableau de bord</h2>
+          <p class="card__meta">Rien à migrer — passage direct au tableau de bord.</p>
+          <a href="../sv2-entree-espace/tableau-de-bord/tableau-de-bord.html" class="card__link">Ouvrir ›</a>
+        </article>
+
+      </div>
+
+      <p class="footnote" style="width:100%;max-width:640px;margin-top:var(--space-4);">Nœud abstrait ModeLocal (zoning.md §S3) — les trois sorties ci-dessus correspondent aux arêtes du graphe ; aucune n'existe comme écran séparé.</p>
+
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

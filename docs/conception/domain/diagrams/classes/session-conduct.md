@@ -4,7 +4,7 @@
 classDiagram
     class Session {
         +identifiant id
-        +identifiant campaignId
+        +identifiant spaceId
         +texte title
         +SessionStatus status
         +identifiant scenarioId
@@ -14,7 +14,7 @@ classDiagram
         +horodatage startedAt
         +horodatage closedAt
         +AuditInfo auditInfo
-        +Start(campaignId, title, scenarioId?)$
+        +Start(spaceId, title, scenarioId?)$
         +Close()
         +Archive()
         +PinDocument(docId)
@@ -25,7 +25,7 @@ classDiagram
 
     class SessionViewConfig {
         +identifiant id
-        +identifiant campaignId
+        +identifiant spaceId
         +liste de SessionViewFolder focusedFolders
         +horodatage updatedAt
         +AddFolder(folderId, order)
@@ -48,13 +48,13 @@ classDiagram
 
     class SessionStarted {
         +identifiant sessionId
-        +identifiant campaignId
+        +identifiant spaceId
         +horodatage occurredAt
     }
 
     class SessionClosed {
         +identifiant sessionId
-        +identifiant campaignId
+        +identifiant spaceId
         +horodatage occurredAt
     }
 

@@ -7,7 +7,7 @@
 
 ## Pourquoi DDD
 
-Haversack gère un domaine riche et évolutif : campagnes, scénarios, PNJ,
+Haversack gère un domaine riche et évolutif : espaces, scénarios, PNJ,
 personnages, sessions, partage de contenu, systèmes de jeu différents.
 Sans structure explicite, ce type de domaine dérive vers une "big ball of mud" —
 un monolithe sans frontières claires où tout dépend de tout, impossible à faire
@@ -21,7 +21,7 @@ fidèlement les règles et concepts du domaine métier.
 DDD impose trois disciplines concrètes :
 
 **Un langage ubiquitaire** — les mêmes termes dans le code, la documentation
-et les conversations. `Campaign`, `Session`, `Document` dans le code, pas `Project`,
+et les conversations. `Space`, `Session`, `Document` dans le code, pas `Project`,
 `Event`, `Record`. Quand le code parle le même langage que le métier,
 les malentendus disparaissent et le code se documente lui-même.
 
@@ -29,8 +29,8 @@ les malentendus disparaissent et le code se documente lui-même.
 indépendants. Chaque contexte a sa propre logique, ses propres règles, son propre
 modèle. Une modification dans un contexte n'affecte pas les autres.
 
-**Des règles métier dans le domaine** — les invariants (une campagne a exactement
-un OWNER, une session LIVE est unique par campagne) sont dans les entités et agrégats,
+**Des règles métier dans le domaine** — les invariants (un espace a exactement
+un OWNER, une session LIVE est unique par espace) sont dans les entités et agrégats,
 pas dans les services applicatifs ou les contrôleurs.
 
 ### Ce que DDD n'est pas
@@ -52,7 +52,7 @@ ont des identifiants différents.
 Sur ce projet, toutes les entités ont un **Id typé** (jamais un UUID nu) et embarquent
 un `AuditInfo` (qui a créé, qui a modifié, quand).
 
-Exemples : `Campaign`, `Session`, `Document`, `DocumentBlock`.
+Exemples : `Space`, `Session`, `Document`, `DocumentBlock`.
 
 ### Value Object
 
@@ -73,7 +73,7 @@ Un agrégat est un **groupe d'entités traitées comme une unité de cohérence*
 Il a une racine (l'agrégat racine) qui garantit les invariants de tout le groupe.
 On ne modifie jamais une entité enfant directement — on passe toujours par la racine.
 
-Exemples : `Campaign` garantit qu'il y a exactement un OWNER parmi ses membres.
+Exemples : `Space` garantit qu'il y a exactement un OWNER parmi ses membres.
 `Document` garantit l'ordre de ses `DocumentBlock` et la cohérence de leur visibilité.
 
 La règle de décision pour savoir si une entité mérite d'être agrégat racine
@@ -104,12 +104,12 @@ Le domaine ne sait pas comment ses entités sont persistées.
 
 ```
 // Mauvais — rien n'empêche de confondre les Id à la compilation
-void AssignOwner(Guid campaignId, Guid userId) { ... }
-AssignOwner(userId, campaignId); // compile, bug en production
+void AssignOwner(Guid spaceId, Guid userId) { ... }
+AssignOwner(userId, spaceId); // compile, bug en production
 
 // Bon — erreur de compilation si on inverse
-void AssignOwner(SpaceId campaignId, UserId userId) { ... }
-AssignOwner(userId, campaignId); // erreur de compilation
+void AssignOwner(SpaceId spaceId, UserId userId) { ... }
+AssignOwner(userId, spaceId); // erreur de compilation
 ```
 
 Chaque agrégat et entité avec repository a son propre type d'identifiant wrappant

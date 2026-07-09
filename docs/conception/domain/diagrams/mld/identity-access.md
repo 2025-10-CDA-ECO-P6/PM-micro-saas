@@ -35,3 +35,15 @@ Partage le même `id` (UUID) que la table `users`.
 - `users` est créée par le domaine immédiatement après la table du composant d'identité.
 - La suppression logique se fait via `users.status = 'DELETED'` — la table du composant d'identité peut être anonymisée en parallèle.
 - Aucune FK explicite entre les deux tables — la cohérence est garantie par la couche application. Cette absence de FK est **intentionnelle et légitime** : `users` (domaine I&A) et la table du composant d'identité (infrastructure) sont deux couches au sein du même bounded context Identity & Access, pas deux bounded contexts distincts. Il ne s'agit pas d'une frontière inter-module : la règle « toutes FK réelles » (ADR-009) ne s'applique pas ici. L'isolation est de nature technique (séparation domaine/infra), non DDD.
+
+---
+
+## Note — FK inter-modules (entrantes)
+
+Contrairement aux trois autres MLD (`content-library.md`, `space-management.md`, `session-conduct.md`), `users` ne porte **aucune FK cross-module sortante** — I&A ne référence aucune autre table de bounded context. Il est en revanche la **cible** de FK cross-module entrantes, portées par les tables d'autres modules :
+
+- `spaces.owner_id → users.id` (Space Management)
+- `space_memberships.user_id → users.id` (Space Management)
+- `scenario_library_entries.owner_id → users.id` (Space Management)
+
+Ces FK physiques réelles sont l'**exception assumée** du monolithe modulaire à base de données unique partagée : l'isolation des contextes est tenue au niveau du code (contrats, namespaces), pas par l'absence de FK. À l'extraction éventuelle d'un contexte en service dédié, ces FK deviendront des projections par events (`UserRegistered`, `UserAnonymized`). *(ADR-009)*

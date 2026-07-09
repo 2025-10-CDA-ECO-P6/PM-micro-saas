@@ -37,6 +37,8 @@ erDiagram
         texte slug
         booléen is_reusable
         identifiant source_document_id FK "nullable — self-ref"
+        identifiant character_id FK "nullable — ref documents.id (type: player_character)"
+        identifiant guest_access_id FK "nullable — ref Space Management"
         booléen is_deleted
         horodatage deleted_at "nullable"
         horodatage created_at

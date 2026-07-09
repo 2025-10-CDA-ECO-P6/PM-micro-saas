@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau de bord des espaces de jeu — Haversack</title>
+<link rel="stylesheet" href="../../site.css">
+<script defer src="../../overlay.js"></script>
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="app-header__brand">
+        <span class="app-header__logo">Haversack</span>
+        <span class="app-header__tagline">Outil d'assistance au MJ</span>
+      </div>
+      <div class="app-header__account">
+        <!-- Composant de châssis (S7) : même affordance sur toutes les
+             surfaces MJ. État "avec compte" (choix canonique retenu pour
+             cet écran, cf. data/sv2-entree-espace.js → CANONICAL_ARTBOARD.Tableau).
+             Déclencheur de menu déroulant (overlay.js) : le menu ne mène
+             qu'à Profil / accueil (MJ), jamais à la surface joueur (AR-03). -->
+        <span class="account-chip" data-menu="account-menu">
+          <span class="account-chip__avatar"></span>
+          Thomas
+          <span class="account-chip__caret">▾</span>
+          <span class="menu" id="account-menu">
+            <a href="../../sv1-transversaux/profil/profil.html" class="menu__item">Profil</a>
+            <a href="../../sv1-transversaux/accueil/accueil.html" class="menu__item">Se déconnecter</a>
+          </span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="app-content">
+
+      <!-- Invite contextuelle : quota d'espaces partagés atteint (3/3).
+           "Voir l'offre Pro" pointe vers le stub _stub/offre-pro.html (créé
+           en parallèle, chemin convenu — cf. brief de la vague). -->
+      <div class="banner banner--inline">
+        <span class="banner__eyebrow">invite contextuelle</span>
+        <p class="banner__text">Quota de 3 campagnes atteint — passez à l'offre Pro pour des espaces illimités.</p>
+        <a href="../../_stub/offre-pro.html" class="banner__action">Voir l'offre Pro</a>
+      </div>
+
+      <div class="section-header">
+        <h1 class="section-header__title">Mes espaces de jeu</h1>
+        <div class="section-header__actions">
+          <div class="stat-chip-group">
+            <span class="stat-chip-group__label">Espaces partagés</span>
+            <span class="stat-chip">3 <span class="stat-chip__sep">/</span> 3</span>
+          </div>
+          <div class="action-group">
+            <span class="action-group__label">Création — quota atteint</span>
+            <!-- Visuellement passif (quota atteint, AR-17) mais reste un lien
+                 réel navigable : NAV_MAP.Tableau documente explicitement que
+                 la désactivation n'est pas modélisée côté navigation. -->
+            <a href="../creation-espace/creation-espace.html" class="btn btn--primary btn--muted">+ Nouvelle campagne</a>
+          </div>
+        </div>
+      </div>
+
+      <span class="list-label">Liste des espaces de jeu</span>
+      <div class="grid-cards">
+
+        <article class="card card--dashed">
+          <div class="card__flag">
+            <span class="badge badge--outline">hors quota</span>
+          </div>
+          <span class="card__eyebrow">conteneur permanent</span>
+          <h2 class="card__title">Espace personnel</h2>
+          <p class="card__meta">Vos notes et contenus, hors campagne</p>
+          <a href="../../sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.html" class="card__link">Ouvrir ›</a>
+        </article>
+
+        <article class="card">
+          <div class="card__flag">
+            <span class="badge badge--solid"><span class="badge__dot"></span>Session en cours</span>
+          </div>
+          <span class="card__eyebrow">campagne</span>
+          <h2 class="card__title">Les Cendres de Kar-Thol</h2>
+          <p class="card__meta">4 joueurs · 12 sessions · D&amp;D 5e</p>
+          <a href="../../sv-session/vue-session-mj/vue-session-mj.html" class="btn btn--secondary card__action">Reprendre la session ›</a>
+        </article>
+
+        <article class="card">
+          <span class="card__eyebrow">campagne</span>
+          <h2 class="card__title">Le Murmure des Profondeurs</h2>
+          <p class="card__meta">5 joueurs · 7 sessions · Call of Cthulhu</p>
+          <a href="../../sv3-preparation/vue-campagne/vue-campagne.html" class="card__link">Ouvrir l'espace ›</a>
+        </article>
+
+        <article class="card">
+          <span class="card__eyebrow">one-shot</span>
+          <h2 class="card__title">La Nuit du Corbeau</h2>
+          <p class="card__meta">Session unique · non démarrée</p>
+          <a href="../../sv3-preparation/vue-campagne/vue-campagne.html" class="card__link">Ouvrir l'espace ›</a>
+        </article>
+
+      </div>
+
+      <p class="footnote">3/3 espaces partagés — création bloquée ; l'espace personnel reste accessible (AR-17)</p>
+
+    </div>
+  </main>
+
+</div>
+</body>
+</html>
