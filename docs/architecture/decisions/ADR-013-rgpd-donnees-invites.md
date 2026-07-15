@@ -80,7 +80,7 @@ L'obligation d'information de l'Art. 13 RGPD s'applique au moment de la collecte
 | Finalité du traitement | Identification en session, attribution des contributions dans l'espace |
 | Base légale | Intérêt légitime |
 | Durée de conservation | (i) La ligne `guest_accesses` (dont le `display_name` de référence) est purgée 90 jours après `expires_at`. (ii) Les occurrences du `display_name` dans les contenus de l'espace (notes, attributions) survivent tant que l'espace existe — leur sort suit le cycle de vie de l'espace (purge J+30 après soft-delete, saga `SpaceDeleted`). Les logs techniques (IP, timestamps) sont purgés à 30 jours après `expires_at`. |
-| Droits et modalités d'exercice (Art. 13§2(b)) | Accès, rectification, effacement, opposition — exercice par email à l'adresse support dédiée ([adresse à définir en implémentation]). Un invité sans compte peut exercer ses droits en contactant ce canal en mentionnant son `display_name` et l'espace concerné. |
+| Droits et modalités d'exercice (Art. 13§2(b)) | Accès, rectification, effacement, opposition — exercice par email à l'adresse support dédiée (`support@haversack.io` — **placeholder à confirmer au provisionnement (ops)**). Voir détails de procédure dans [`docs/juridique/procedure-droits-invites.md`](../../juridique/procedure-droits-invites.md). Un invité sans compte peut exercer ses droits en contactant ce canal en mentionnant son `display_name` et l'espace concerné. |
 | Durée de conservation — logs techniques (IP, timestamps) | 30 jours maximum après `expires_at` du `GuestAccess` (Art. 13§2(a)) |
 | Droit à l'opposition | L'invité peut s'opposer au traitement basé sur l'intérêt légitime |
 

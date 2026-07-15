@@ -59,10 +59,12 @@ Le MJ veut activer la sauvegarde cloud ou le partage joueurs. Le joueur veut acc
 
 ## Scénario nominal — Inscription sans données locales
 
+> Un nouvel inscrit sans données locales à migrer est redirigé **directement** vers l'écran de création de campagne — aucun écran de bienvenue ne s'intercale. UC-10 fait foi sur cette cible.
+
 1. L'utilisateur accède à la page d'inscription.
 2. Il renseigne email, nom d'affichage, mot de passe.
 3. Le système crée le compte.
-4. L'utilisateur est redirigé vers l'écran de création de campagne.
+4. L'utilisateur est redirigé directement vers l'écran de création de campagne (pas d'écran de bienvenue intercalé).
 
 ## Scénario nominal — Connexion
 
@@ -73,22 +75,29 @@ Le MJ veut activer la sauvegarde cloud ou le partage joueurs. Le joueur veut acc
 
 ## Scénario nominal — Connexion via un fournisseur d'identité externe
 
-1. L'utilisateur clique sur "Continuer avec [fournisseur d'identité externe]" depuis la page d'inscription ou de connexion.
+> **Fournisseurs MVP** : Google et Discord. La règle de confiance appliquée à l'email transmis par le fournisseur (email réputé vérifié ou non) est définie par [ADR-015](../../architecture/decisions/ADR-015-securite-authentification-mvp.md) §2.
+
+1. L'utilisateur clique sur "Continuer avec Google" ou "Continuer avec Discord" depuis la page d'inscription ou de connexion.
 2. Il s'authentifie via la connexion fédérée du fournisseur choisi.
-3. Si c'est un premier accès : le système crée automatiquement un compte (tier gratuit) avec l'email et le nom d'affichage fournis par le fournisseur. Aucun mot de passe n'est défini.
-4. Si un compte existe déjà avec cet email : le système connecte l'utilisateur à ce compte existant.
+3. Si c'est un premier accès : le système crée automatiquement un compte (tier gratuit) avec l'email et le nom d'affichage fournis par le fournisseur. Aucun mot de passe n'est défini (un mot de passe complémentaire peut être défini ultérieurement — voir Règles métier).
+4. Si un compte existe déjà avec cet email, le traitement se distingue selon l'état de vérification de l'adresse — trois branches exhaustives cohérentes avec RB-10-08 (la troisième, absence de compte, correspond à l'étape 3 ci-dessus) :
+   - **Adresse VÉRIFIÉE** : le système connecte l'utilisateur à ce compte existant (liaison de l'identité fédérée).
+   - **Adresse NON vérifiée** : le système ne lie pas automatiquement l'identité fédérée à ce compte (anti-hijacking, finding F-11 / CWE-287) et ne crée pas non plus de second compte pour la même adresse, ce qui violerait l'unicité de l'email (invariant 1, cf. Règles métier). La résolution de ce cas est `[À TRANCHER — sécurité/RGPD]` : une proposition documentée existe — Option A « reclaim-in-place » (la preuve de possession apportée par le fournisseur d'identité externe fait basculer la coquille non vérifiée en compte réclamé, avec neutralisation du mot de passe préexistant) — cf. [ADR-015](../../architecture/decisions/ADR-015-securite-authentification-mvp.md) §2.3, sur le précédent de neutralisation de credential établi par [ADR-007](../../architecture/decisions/ADR-007-rgpd-autorisation-api.md) §Compléments ; elle n'est pas ratifiée à ce stade. Le volet RGPD de la coquille non vérifiée est routé au Lot 14 ; l'opération de domaine (nom, signature, invariants précis) reste à spécifier au build B1.5. Tant que ce point n'est pas tranché, aucune implémentation ne doit présumer de l'issue de ce cas ni affirmer qu'un nouveau compte est créé.
+   - **Aucun compte existant pour cet email** : voir étape 3 (création automatique).
 5. Si des données locales existent, le gate de reconnaissance est présenté (titres, volume, date) et la migration ne démarre qu'après confirmation explicite — ADR-016 §4.
-6. L'utilisateur est redirigé vers son tableau de bord.
+6. L'utilisateur est redirigé selon son profil :
+   - **Nouvel utilisateur sans données locales** : redirection directe vers l'écran de création de campagne (pas d'écran de bienvenue intercalé) — cohérent avec le scénario « Inscription sans données locales ».
+   - **Nouvel utilisateur avec données locales migrées** ou **utilisateur récurrent** : redirection vers le tableau de bord.
 
 ## Scénarios alternatifs
 
 ### A1 — Réinitialisation du mot de passe
 
-L'utilisateur demande un lien de réinitialisation. Le système envoie un email avec un token temporaire. L'utilisateur choisit un nouveau mot de passe.
+L'utilisateur demande un lien de réinitialisation. Le système envoie un email avec un token temporaire. L'utilisateur choisit un nouveau mot de passe. Sans objet pour un compte fédéré-only n'ayant jamais défini de mot de passe complémentaire — il n'existe alors aucun mot de passe à réinitialiser (voir Règles métier — mot de passe complémentaire).
 
 ### A2 — Mise à jour du profil
 
-L'utilisateur modifie son nom d'affichage ou son mot de passe depuis la page profil.
+L'utilisateur modifie son nom d'affichage ou son mot de passe depuis la page profil. Pour un compte fédéré-only, cette action recouvre aussi la définition d'un premier mot de passe complémentaire — opération sensible (voir Règles métier — mot de passe complémentaire).
 
 ### A3 — Joueur créant un compte depuis un lien d'invitation
 
@@ -143,7 +152,8 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 ### Inscription / Connexion
 - L'utilisateur dispose d'un compte actif.
 - L'utilisateur est authentifié.
-- L'utilisateur peut accéder à son tableau de bord.
+- **Nouvel inscrit sans données locales à migrer** : l'utilisateur est redirigé directement vers l'écran de création de campagne (pas d'écran de bienvenue intercalé).
+- **Utilisateur récurrent, ou nouvel inscrit avec données locales migrées avec succès** : l'utilisateur accède à son tableau de bord.
 
 ### Suppression de compte
 - Le compte est marqué `status = DELETED`.
@@ -172,6 +182,10 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
   - La validation de l'adresse de messagerie est requise avant les opérations sensibles : modification de l'adresse de messagerie, modification du mot de passe, liaison d'un compte via connexion fédérée, demande d'effacement des données personnelles (A4).
   - Cette validation est une exigence du système : le système refuse toute opération sensible tant que l'adresse de messagerie n'est pas validée, quel que soit le moyen par lequel l'opération est déclenchée.
   - Un utilisateur qui s'inscrit via connexion fédérée n'a pas besoin de revalider son adresse de messagerie si elle est déjà tenue pour vérifiée par le fournisseur d'identité.
+- **Mot de passe complémentaire pour un compte fédéré-only** :
+  - Un compte authentifié uniquement via connexion fédérée (aucun mot de passe défini à la création) peut définir un mot de passe complémentaire, ouvrant ensuite la connexion par email/mot de passe en plus de la connexion fédérée existante.
+  - Cette définition est une opération sensible au sens de la règle de validation de l'adresse de messagerie ci-dessus : elle requiert `emailVerified = true` et une preuve d'identité alternative (ré-authentification récente auprès du fournisseur d'identité) — voir [ADR-015](../../architecture/decisions/ADR-015-securite-authentification-mvp.md) §1 et RB-10-10 (US-UC-10, amendée).
+  - Cette opération est distincte de la réinitialisation d'un mot de passe (A1) : un compte fédéré-only sans mot de passe complémentaire n'a aucun mot de passe existant à réinitialiser — la réinitialisation reste sans objet tant qu'aucun mot de passe complémentaire n'a été défini. La définition d'un premier mot de passe complémentaire est une opération distincte et autorisée.
 - **Migration des données locales vers le cloud** :
   - La migration d'un espace emporte tout son historique de session : sessions terminées, notes de session, documents épinglés et résumés. Rien de cet historique n'est perdu à la migration.
   - Une session en cours (statut LIVE) ne migre pas en l'état : elle doit être clôturée avant la migration. Le gate de reconnaissance signale au MJ toute session en cours et indique qu'elle doit être clôturée pour que l'espace puisse migrer.
@@ -190,11 +204,14 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 
 - Un utilisateur peut créer un compte avec email et mot de passe.
 - Un utilisateur peut se connecter avec ses identifiants.
+- Un utilisateur peut s'inscrire ou se connecter via un fournisseur d'identité externe — Google ou Discord (MVP).
 - Un utilisateur peut réinitialiser son mot de passe par email.
+- Un compte fédéré-only peut définir un mot de passe complémentaire ; cette définition est traitée comme une opération sensible (email vérifié + preuve d'identité alternative) et reste distincte de la réinitialisation, sans objet tant qu'aucun mot de passe complémentaire n'existe.
 - Un email déjà utilisé est refusé à l'inscription.
 - Un utilisateur peut mettre à jour son nom d'affichage.
 - Un joueur invité peut créer un compte et rejoindre la campagne en une action.
 - Un utilisateur nouvellement inscrit peut immédiatement créer une campagne ou rejoindre une campagne existante via invitation.
+- Un utilisateur nouvellement inscrit sans données locales à migrer est redirigé directement vers l'écran de création de campagne, sans écran de bienvenue intercalé.
 - Le gate de reconnaissance présente l'historique de session détecté par espace (sessions terminées, notes de session, documents épinglés, résumés) ; toute session en cours (LIVE) est signalée avec indication qu'elle doit être clôturée avant que l'espace puisse migrer.
 - Après migration réussie, l'historique de session des espaces migrés est retrouvé intact dans l'espace de travail cloud.
 - Un utilisateur peut demander la suppression de son compte depuis sa page profil.

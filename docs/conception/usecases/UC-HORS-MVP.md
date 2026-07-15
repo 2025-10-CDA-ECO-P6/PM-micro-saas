@@ -52,15 +52,18 @@ Le MJ crée un nouveau scénario template directement depuis son espace personne
 
 ### Gel de campagnes au downgrade de tier
 
-**Statut : post-MVP — spécification complète à définir ultérieurement. UC dédié à créer.**
+**Statut : spécifié dans [UC-15](UC-15-gel-campagnes-downgrade-tier.md).**
 
 Lorsqu'un MJ perd son tier premium (fin d'abonnement, non-renouvellement) et se retrouve alors au-delà de la limite de campagnes du tier gratuit, que se passe-t-il ?
 
-**Question ouverte** : quelles campagnes deviennent inaccessibles (les plus anciennes ? les moins récemment modifiées ? un choix laissé au MJ ?), selon quel mécanisme (immédiat à l'expiration, différé avec fenêtre de grâce ?), et la situation est-elle réversible (les campagnes redeviennent-elles accessibles au ré-upgrade, sans perte de données) ?
+**Questions initialement ouvertes** (désormais tranchées dans UC-15) : quelles campagnes deviennent inaccessibles, selon quel mécanisme, et la situation est-elle réversible ?
 
-Ce use case délimite le périmètre de la valeur `FROZEN` dans `SpaceStatus` et du comportement `Unfreeze()` mentionnés dans le domaine. Aucun comportement n'est conçu ici — la question doit être arbitrée avant d'écrire un UC dédié.
+**Réponses ratifiées dans UC-15** : les espaces excédentaires sont gelés automatiquement (les plus récents en premier) lors de l'événement `AccountTierChanged` ; la réversibilité est garantie par un dégel automatique au ré-upgrade, sans perte de données (accès en lecture seule pendant le gel, jamais de suppression).
+
+Ce use case délimite le périmètre de la valeur `FROZEN` dans `SpaceStatus` et du comportement `Unfreeze()` mentionnés dans le domaine.
 
 - Voir : `SpaceStatus` (`FROZEN`) dans le glossaire.
+- Voir aussi : [UC-15](UC-15-gel-campagnes-downgrade-tier.md) — décision complète et ratifiée.
 - Concerne : `AccountTier`, la limite d'espaces `CAMPAIGN`/`ONE_SHOT` `FREE`, `Space Management`.
 
 ---

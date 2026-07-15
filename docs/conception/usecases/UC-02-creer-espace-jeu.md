@@ -159,6 +159,11 @@ et conserve les données saisies.
   `ONE_SHOT`. Ils sont renommables et supprimables (`isSystem` est informatif, non restrictif).
   Seul le dossier virtuel « Non classés » (`isVirtual = true`) est non-renommable et
   non-supprimable.
+- Le renommage et la suppression des dossiers système interviennent après la création de
+  l'espace, dans l'espace lui-même (les dossiers naissent sur `SpaceCreated`, en même temps
+  que l'espace). Le formulaire de création reste minimal et ne comporte aucune
+  personnalisation des dossiers : ce parcours vise la friction minimale, cohérent avec le
+  champ `isSystem` qui rend les dossiers renommables/supprimables une fois l'espace créé.
 - Un espace one-shot peut être archivé manuellement par le MJ, comme une campagne.
 - Un espace peut être archivé sans être supprimé définitivement.
 

@@ -324,7 +324,7 @@ Scenario: Voir les backlinks depuis la fiche d'un PNJ
 - Option B : ajouter un champ statut au niveau du document — plus générique, applicable à d'autres types.
 - Recommandation : option A (propriétés structurées du type `SCENARIO`) pour le MVP.
 
-**Question ouverte** : les statuts doivent-ils être dans propriétés structurées du type SCENARIO, ou un champ statut de document serait-il utile pour d'autres types de documents ?
+**Option A arrêtée** : les statuts sont dans propriétés structurées du type `SCENARIO` (voir section Questions ouvertes, item 2, pour la rationale complète : choix aligné ADR-002 et content-library).
 
 **Critères d'acceptation** :
 
@@ -387,7 +387,7 @@ Scenario: Créer un document à la volée depuis l'éditeur de scénario
 | Story / Feature | Raison |
 |---|---|
 | Visibilité par bloc (privé MJ sur un bloc de contenu) | Non supportée en MVP — la visibilité est au niveau document. Décision prise : Option A (deux documents liés via bouton "Ajouter une révélation"). |
-| Réordonnancement par drag-and-drop des scènes | UX non définie. Fonctionnellement, l'ordre est dans ordre des scènes, la mécanique d'UI reste à spécifier. |
+| Réordonnancement par drag-and-drop des scènes | UX définie en wireframe (`editeur-scenario.md`). Mécanique retenue : **déplacement explicite** (annoncé assistivement, NFR-ACC-02 ; hérite du réordonnancement de blocs, NFR-ACC-01). L'ordre fonctionnel est porté par `DocumentLink.order`. |
 | Partage temporaire d'un contenu pendant une session | Couvert par UC-08 (révélation en session), hors périmètre UC-03. |
 | Duplication d'un scénario | Non défini dans UC-03, à envisager dans une version ultérieure. |
 
@@ -422,6 +422,6 @@ Scenario: Créer un document à la volée depuis l'éditeur de scénario
 ## Questions ouvertes
 
 1. **Visibilité par bloc** : DÉCIDÉ — Option A (deux documents liés). L'UX crée et lie le document de révélation automatiquement via un bouton dédié. La visibilité par bloc n'est pas supportée en MVP.
-2. **Statuts** : stockés dans propriétés structurées du type SCENARIO, ou nouveau champ statut de document dans le ? Option A recommandée pour le MVP.
-3. **Réordonnancement des scènes** : drag-and-drop prévu ? L'UX n'est pas définie.
-4. **Scène multi-scénarios** : une scène peut-elle être référencée par plusieurs scénarios ? La règle métier n'est pas définie.
+2. **Statuts** : DÉCIDÉ — Option A arrêtée. `scenarioStatus` (enum `DRAFT|READY|PLAYED|ARCHIVED`, défaut `DRAFT`) dans `Document.properties` du type `SCENARIO`. Rationale : propriétés structurées = seul chemin d'écriture validé (ADR-002) ; champ générique ne s'applique qu'aux scénarios, non aux autres types (NOTE, PNJ, LIEU).
+3. **Réordonnancement des scènes** : DÉCIDÉ — Mécanique = **déplacement explicite** (wireframe `editeur-scenario.md` ; NFR-ACC-02 annonce assistive, hérite NFR-ACC-01 ; drag-and-drop *pur* écarté). L'ordre fonctionnel est porté par `DocumentLink.order`.
+4. **Scène multi-scénarios** : DÉCIDÉ — multi-parent autorisé nativement. Une scène = `Document` type SCENE, liée via `DocumentLink` par plusieurs scénarios (cardinalité n↔n). Sémantique : « **Ajouter une scène** » (US-03-02) crée **toujours une scène fraîche possédée** (create+link) ; le **partage** n'est atteignable que via « **lier un document existant** » (US-03-05, où SCENE devient cible éligible) — ce chemin **expose l'intention** de liaison. Supprimer une scène d'un scénario = supprimer le **lien**, pas le document (la scène survit pour l'autre scénario). Le **backlink calculé** « référencée par N scénarios » doit être visible en lecture sur la fiche de la scène.

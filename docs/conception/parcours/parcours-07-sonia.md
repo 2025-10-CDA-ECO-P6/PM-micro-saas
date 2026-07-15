@@ -100,8 +100,8 @@ instanciation indépendante du source (glossaire §4 `Document réutilisable` et
 
 UC-13 est explicitement hors première livraison. Dans le MVP, Sonia doit manuellement recréer
 ou dupliquer son scénario à chaque nouvelle table — ou maintenir une campagne de référence et
-copier le contenu à la main. Aucun mécanisme d'instanciation ni de `ScenarioLibrary` n'est
-disponible (glossaire §3 `ScenarioLibrary` : couvert par UC-13, Should Have post-MVP).
+copier le contenu à la main. Aucun mécanisme d'instanciation de document réutilisable n'est
+disponible (UC-13 — scénario réutilisable, Should Have post-MVP ; voir glossaire `ScenarioLibrary`).
 
 ### État laissé par l'étape 2
 

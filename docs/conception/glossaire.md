@@ -152,7 +152,7 @@ Les différences entre `CAMPAIGN` et `ONE_SHOT` sont comportementales, pas struc
 
 État de l'espace : `ACTIVE` (opérationnel), `ARCHIVED` (archivé manuellement par le MJ, lecture seule, irréversible dans le MVP), `FROZEN` (gelé automatiquement lors d'un downgrade de tier, lecture seule jusqu'à `Unfreeze()`).
 
-> La valeur `FROZEN` et le mécanisme de downgrade de tier ne sont pas spécifiés dans le MVP. Voir **UC-HORS-MVP — Gel de campagnes au downgrade de tier (post-MVP)** pour la question ouverte délimitée.
+> La valeur `FROZEN` et le mécanisme de downgrade de tier ne sont pas activés au MVP (le downgrade suppose un tier payant) ; **spécifiés dans UC-15**. Voir **UC-15 — Gel de campagnes au downgrade de tier (post-MVP)** pour le mécanisme de gel automatique des espaces excédentaires et réversibilité par dégel au ré-upgrade.
 
 > **Résolution** : un espace `PERSONAL` est toujours `ACTIVE` : `ARCHIVED` et `FROZEN` ne lui sont pas applicables (`FROZEN` = gel des espaces excédentaires au downgrade, or `PERSONAL` est hors quota ; `ARCHIVED` contredirait l'invariant 14 — un `PERSONAL` actif à tout moment). Garde d'agrégat, cf. invariant 15 de Space Management.
 
@@ -377,7 +377,8 @@ Vue restreinte accessible aux joueurs (authentifiés ou invités) pendant une se
 ### Casse des identifiants de domaine
 
 - **`PascalCase`** pour les agrégats, entités et value objects : `Document`, `GuestAccess`, `SessionViewConfig`, `SpaceMembership`, `DocumentLink`.
-- **`SCREAMING_SNAKE_CASE`** pour les valeurs d'enum : `GM_ONLY`, `PLAYER_PRIVATE`, `PUBLIC`, `LIVE_NOTE`, `PLAYER_CHARACTER`, `ONE_SHOT`, `ACTIVE`, `FROZEN`.
+- **`SCREAMING_SNAKE_CASE`** pour les valeurs d'enum : `GM_ONLY`, `PLAYER_PRIVATE`, `PUBLIC`, `ONE_SHOT`, `ACTIVE`, `FROZEN`.
+- **`snake_case` minuscule** pour les **slugs de `DocumentType`** (identifiant technique, autorité `content-library.md` champ `slug`) : `scenario`, `scene`, `npc`, `location`, `note`, `player_character`, `live_note`, `reveal`. La désignation conceptuelle du même type en prose peut apparaître en capitales (`PLAYER_CHARACTER`, `LIVE_NOTE`) — ce n'est pas une valeur d'enum.
 - Les identifiants de domaine sont légitimes dans les artefacts de besoin quand ils désignent un concept précis du modèle. Ils ne sont pas de la technologie.
 
 ### Français vs anglais

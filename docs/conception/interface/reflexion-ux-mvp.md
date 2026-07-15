@@ -225,7 +225,7 @@ Un garde-fou est garanti par construction : un réceptacle pour le contenu non c
 
 ### Décision 3 — Export d'espace : entre au MVP en version minimale
 
-L'export d'un espace passe de Should Have (hors-MVP) à **Must Have, inclus dans la première livraison**, en version minimale. Cette décision est motivée par le critère de confiance et de portabilité du persona Thomas : un outil qui ne permet pas d'extraire ses données ne recueille pas la confiance d'un utilisateur qui y investit du temps. La version minimale de l'export (format et périmètre exacts à définir en fiche) suffit à répondre à ce besoin sans alourdir le scope de manière disproportionnée. Cette décision impacte : le MoSCoW, la fiche `parametres-campagne`, et UC-01 scénario alternatif A4a.
+L'export d'un espace passe de Should Have (hors-MVP) à **Must Have, inclus dans la première livraison**, en version minimale. Cette décision est motivée par le critère de confiance et de portabilité du persona Thomas : un outil qui ne permet pas d'extraire ses données ne recueille pas la confiance d'un utilisateur qui y investit du temps. La version minimale de l'export (format JSON ouvert avec `schemaVersion` per ADR-016 ; périmètre : documents, notes, structure (dossiers), historique session hors LIVE, espace personnel inclus, disponible local et compte, per moscow.md §Export d'espace ; réalisant ADR-001 « un seul format, deux usages ») suffit à répondre à ce besoin sans alourdir le scope de manière disproportionnée. Cette décision impacte : le MoSCoW, la fiche `parametres-campagne`, et UC-01 scénario alternatif A4a.
 
 ### Décision 4 — Aperçu « vue joueur » côté MJ : post-MVP
 
@@ -351,6 +351,7 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 | 10 | `vue-session-mj`, `creation-espace`, `panneau-creation-rapide` | Trois écrans manquants produits | Périmètre MVP | Résolu |
 | 11 | `vue-session-mj` | Plancher garanti (statut, partage, notes, recherche) co-présent | AR-19 volet a | Résolu |
 | 12 | Co-localisation générale | 20 wireframes co-localisés `<surface>/<slug>/` ; vérité terrain mécanique saine | Périmètre remaniement | Résolu |
+| 13 | `surface-joueur` + UC-09 A2 | Création de compte depuis surface joueur = **état contextualisé** (préserve contexte invité/notes ; migration sans perte). Non un simple formulaire d'inscription générique. Réalisation d'écran = HAND-OFF présentation. | UC-09 A2 | Résolu |
 
 ### Points ouverts après passe 2
 
@@ -358,7 +359,6 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 |---|---|---|
 | Tension épinglage conditionnel (UC-07) vs systématique (session-conduct Règle 7) | Tension corpus non tranchée | Remédiation corpus amont (UC/domaine) — hors périmètre interface |
 | Granularité globale gate-migration (sélection lot unique vs plusieurs lots) | ✓ Résolu (décision opérateur 2026-07-09) | Décisions opérateur actées — lot unique |
-| Navigation UC-09 A2 — cible « créer un compte » depuis surface joueur | Sous-spécification de parcours | Fiche `surface-joueur` + UC-09 |
 | Vue « Non classés » dédiée | Point de présentation ouvert | Décision de wireframe |
 | Famille C zoning §S9 — présentation espace personnel | Trou de corpus / interview | Non forcée (famille C) |
 

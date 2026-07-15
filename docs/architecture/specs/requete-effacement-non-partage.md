@@ -22,6 +22,12 @@ Ce critère se décompose en trois conditions cumulatives (ET), toutes évaluée
 | C2 | `d` n'est référencé — comme source ou cible — par aucun `document_links` **depuis un document d'un autre utilisateur** (`created_by_id != userId`) | `document_links.source_document_id` / `.target_document_id`, jointure sur `documents.created_by_id` |
 | C3 | `d` n'a pas été instancié par un autre document (`documents.source_document_id` d'un autre document ne pointe pas vers `d`) | `documents.source_document_id` |
 
+**Condition d'exclusion — visibilité `GM_ONLY` (correction ADR-012, 4.a)** : C1/C2/C3 ne testent que des relations (épinglage, liens, instanciation) et ne testent **pas** la visibilité du document. Or ADR-012 §3(c) conserve **inconditionnellement** tout document `visibility = 'GM_ONLY'`, quelle que soit par ailleurs la satisfaction de C1/C2/C3 — un document `GM_ONLY` non épinglé, non lié depuis un document d'un autre utilisateur et non instancié satisferait C1/C2/C3 et serait à tort sélectionné pour suppression si cette exclusion n'était pas posée explicitement. Le critère complet de sélection « non partagé » est donc :
+
+`d.created_by_id = userId` **ET** C1 **ET** C2 **ET** C3 **ET** `d.visibility <> 'GM_ONLY'`
+
+Cette dernière condition n'est pas une quatrième condition cumulative de même nature que C1/C2/C3 (elle ne teste pas une relation mais un attribut de visibilité) : elle est la retranscription, au niveau du critère opérationnel, de la primauté de la conservation ADR-012 §3(c) sur la sélection §3(b).
+
 **Périmètre d'application** : ce critère s'applique au contenu des **espaces partagés vivants** (CAMPAIGN, ONE_SHOT), par distinction explicite avec le contenu de l'espace `PERSONAL` qui relève d'un hard-delete inconditionnel séparé (ADR-012 §3, l.77 — hors périmètre de cette note).
 
 ---
@@ -32,9 +38,9 @@ Ce critère se décompose en trois conditions cumulatives (ET), toutes évaluée
 
 > Le critère de partage est évalué à `deletion_requested_at` (horodatage de la demande, enregistré conformément à §6), et non au moment de l'exécution effective de la saga. Cette précision prévient un risque de race TOCTOU de conformité : si l'état de partage d'un document évoluait entre la demande et l'exécution (ex. partage retiré par un tiers après la demande), l'évaluation à `deletion_requested_at` garantit la cohérence juridique de la sélection.
 
-**Conséquence pour la requête** : la sélection ne doit pas s'appuyer sur l'état courant des tables au moment de l'exécution de la saga, mais sur un instantané figé à `deletion_requested_at`. ADR-012 §6 (l.145-146) impose l'horodatage de la demande (`deletion_requested_at`) mais **ne fixe pas le mécanisme technique de figement** (snapshot des tables, table d'audit historisée, ou requête différée exécutée immédiatement à la réception de la demande plutôt qu'au traitement effectif).
+**Mécanisme de figement — tranché** (ADR-012 §7, décision item 1 du Lot 14) : à `deletion_requested_at`, le système matérialise un **jeu de sélection** — un ensemble de lignes `(document_id → action)`, `action ∈ {hard-delete, conserve}` — déterminé par l'appartenance d'espace et la visibilité de chaque document telles qu'elles sont à cet instant précis, et non par leur état au moment de l'exécution effective de la saga. Les deux sagas concernées — `UserAnonymized` étape 5 (documents des espaces partagés, §3(a/b/c)) et `SpaceDeleted`-PERSONAL (purge du contenu de l'espace personnel) — **consomment ce jeu matérialisé** comme source de vérité de leur périmètre d'action respectif, sans le recalculer depuis le `space_id` ou la `visibility` courants. Un **step de relocation**, exécuté avant la purge `SpaceDeleted`-PERSONAL, déplace hors de l'espace personnel tout document marqué `conserve` dans le jeu matérialisé mais physiquement présent dans cet espace au moment de l'exécution (déplacement survenu après `deletion_requested_at`).
 
-`[À TRANCHER — ticket]` : le mécanisme de figement de l'état à `deletion_requested_at` (snapshot vs exécution immédiate de la sélection à la réception de la demande) n'est pas arbitré par ADR-012 — la requête ci-dessous illustre le critère métier, pas ce mécanisme de figement.
+**Conséquence pour la requête** : la sélection ne doit pas s'appuyer sur l'état courant des tables au moment de l'exécution de la saga, mais sur le jeu de sélection matérialisé à `deletion_requested_at` décrit ci-dessus. Le mécanisme technique complet (matérialisation, consommation par les deux sagas, step de relocation) est spécifié dans ADR-012 §7 — la requête ci-dessous illustre le critère métier (C1/C2/C3), pas ce mécanisme de figement, qu'elle ne fait que présupposer. La question juridique sous-jacente (quel instant fait foi juridiquement en cas de déplacement d'un document entre espace personnel et espace partagé) reste un point distinct, non arbitré par ce mécanisme technique — cf. ADR-012 §7 FLAG JURISTE et *Conformité conçue, non certifiée* point 4.
 
 ---
 
@@ -44,11 +50,15 @@ Ce critère se décompose en trois conditions cumulatives (ET), toutes évaluée
 -- ILLUSTRATIF — non normatif (ADR-012:189 : la requête précise reste un point à trancher à l'implémentation).
 -- Sélection des documents "non partagés" au sens ADR-012 §3(b), pour un espace partagé vivant donné.
 -- Le mécanisme de figement à `deletion_requested_at` (§2 ci-dessus) n'est pas représenté ici : cette
--- requête illustre le critère métier des trois conditions C1/C2/C3, pas l'instantané temporel.
+-- requête illustre le critère métier des trois conditions C1/C2/C3 et l'exclusion GM_ONLY (§1),
+-- pas l'instantané temporel.
 
 SELECT d.id
 FROM documents d
 WHERE d.created_by_id = :userId
+  -- Exclusion GM_ONLY : ADR-012 §3(c) conserve inconditionnellement les documents GM_ONLY,
+  -- quelle que soit la satisfaction de C1/C2/C3 ci-dessous (C1/C2/C3 ne testent pas la visibilité).
+  AND d.visibility <> 'GM_ONLY'
   -- C1 : absent de tout session_pinned_documents
   AND NOT EXISTS (
         SELECT 1

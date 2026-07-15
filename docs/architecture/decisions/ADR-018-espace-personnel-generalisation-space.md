@@ -236,6 +236,10 @@ Les choix documentés dans cet ADR sont cohérents avec le RGPD tel que lu et in
 
 2. **Posture sous-traitant Art. 28 — périmètre du DPA** : ADR-013 §5 qualifie Haversack de sous-traitant pour les contenus créés par les MJ décrivant des tiers identifiables. Le DPA envisagé couvre les « contenus en campagne ». Un contenu personnel dans l'espace `PERSONAL` décrivant un tiers identifiable (PNJ inspiré d'une personne réelle, note personnelle sur un joueur) sort-il du périmètre DPA tel que formulé ? La posture sous-traitant doit être vérifiée pour les deux périmètres d'espace (partagé et personnel).
 
+### Consolidation — cadrage de validation pré-lancement EU
+
+**Les deux points de conformité ci-dessus** — qualification Art. 17 du hard-delete inconditionnel du contenu personnel ; périmètre DPA Art. 28 pour un contenu personnel décrivant des tiers — **sont consolidés dans le cadrage de validation pré-lancement EU** à `docs/juridique/cadrage-validation-pre-lancement-eu.md`. Ce cadrage énumère les 5 axes à valider juriste avant tout lancement EU. Voir aussi les points ouverts à la fin de la section « Points à trancher ».
+
 ---
 
 ## Compléments post-revue

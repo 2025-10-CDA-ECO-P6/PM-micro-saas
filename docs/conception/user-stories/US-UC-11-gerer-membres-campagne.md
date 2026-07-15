@@ -111,13 +111,15 @@ flowchart LR
 - L'accès est automatique sur lien valide — pas d'étape d'approbation MJ après que le joueur a cliqué.
 - La plateforme ne gère pas l'envoi du lien (pas d'email, pas de notification push). Le MJ copie et partage lui-même.
 - Options configurables (toutes optionnelles) : date d'expiration, nombre d'utilisations maximum.
+- Si le nombre d'utilisations maximum n'est pas renseigné, il est **illimité** (`maxUses` = `null`, non borné) — sert le cas d'un lien unique partagé pour tout le groupe (décision produit UC-11 Q#5).
+- Si un nombre d'utilisations maximum est configuré, le compteur d'usages restants (dérivé de `usedCount` / `maxUses`) est affichable au MJ dans la liste des invitations (décision produit UC-11 Q#1 ; ne couvre pas l'historique des utilisateurs — voir *Stories exclues ou repoussées*).
 - Si un joueur utilise un lien périmètre `CAMPAIGN` et n'a pas de compte, il est redirigé vers UC-10 (création de compte) avant d'être lié comme `Member`.
 - Si un joueur utilise un lien périmètre `SESSION` sans compte, il entre via `GuestAccess` (UC-09).
 - E1 : si le joueur est déjà `Member` (`ACTIVE`), le système l'indique sans créer de doublon.
 
 **Règles métier** :
 - RB-11-01 : Seul le MJ propriétaire (`OWNER`) d'une campagne peut générer une invitation.
-- RB-11-02 : Un lien d'invitation peut être limité en durée (date d'expiration) ou en nombre d'utilisations. Ces paramètres sont optionnels.
+- RB-11-02 : Un lien d'invitation peut être limité en durée (date d'expiration) ou en nombre d'utilisations. Ces paramètres sont optionnels. Par défaut, si le nombre d'utilisations n'est pas renseigné, il est **illimité** (`maxUses` = `null`).
 - RB-11-03 : L'accès est accordé automatiquement à réception d'un lien valide — aucune validation manuelle du MJ n'est requise.
 - RB-11-04 : La plateforme ne gère pas l'envoi du lien. Le MJ le partage via le canal de son choix.
 - RB-11-05 : Un lien dont le nombre d'utilisations maximum est atteint ou dont la date d'expiration est dépassée passe à l'état `REVOKED` et ne crée plus d'accès.
@@ -130,7 +132,9 @@ flowchart LR
 - [ ] Le lien est affiché avec un bouton "Copier" offrant un retour visuel immédiat.
 - [ ] Le MJ peut optionnellement configurer une date d'expiration.
 - [ ] Le MJ peut optionnellement configurer un nombre d'utilisations maximum.
+- [ ] Si le nombre d'utilisations n'est pas configuré, il est illimité par défaut (`maxUses` = `null`).
 - [ ] Le lien généré est visible dans la liste des invitations avec son statut (`PENDING`, `ACTIVE`, `REVOKED`).
+- [ ] Si un nombre d'utilisations maximum est configuré, le compteur d'usages restants est affiché au MJ dans la liste des invitations.
 - [ ] Si le joueur est déjà `Member` `ACTIVE`, le système l'indique sans créer de doublon (E1).
 - [ ] Une invitation expirée ne peut pas être réactivée — le MJ doit créer un nouveau lien (E2).
 
@@ -282,6 +286,7 @@ Scenario : Ancien lien d un membre retire
 
 **Notes de conception** :
 - L'association peut être faite dès qu'un joueur est `Member` `ACTIVE` ou `PENDING` (avant même qu'il utilise son lien).
+- Dès l'activation du lien (`Activate()`, `PENDING` → `ACTIVE`), une association déjà faite en `PENDING` devient visible immédiatement dans la vue joueur — aucune action MJ séparée n'est requise (cohérent avec RB-11-03 : l'accès est automatique sur lien valide, sans étape d'approbation).
 - L'association est gérée par `Space Management` (relation `Member` <-> `Document` de type `player_character`).
 - Un joueur peut être associé à zéro ou plusieurs personnages. Un personnage peut n'être associé qu'à un seul joueur à la fois.
 - Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE` depuis sa vue joueur.
@@ -291,7 +296,7 @@ Scenario : Ancien lien d un membre retire
 **Règles métier** :
 - RB-11-16 : Seul le MJ propriétaire (`OWNER`) peut associer ou dissocier un joueur et un personnage.
 - RB-11-17 : Un `Member` peut être associé à zéro ou plusieurs `Document` de type `player_character`.
-- RB-11-18 : Un personnage ne peut être associé qu'à un seul `SpaceMembership` actif à la fois.
+- RB-11-18 : Un personnage ne peut être associé qu'à un seul `SpaceMembership` actif à la fois. Cette exclusivité s'étend aux memberships en statut `PENDING` : un personnage associé à un membership PENDING est réservé et ne peut être réassocié à un autre membership tant que le PENDING n'est pas abandonné (revocation ou REMOVED).
 - RB-11-19 : Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE`.
 - RB-11-20 : Un nouveau lien vers le même personnage permet à un `GuestAccess` de récupérer la **fiche** (`Document` de type `player_character`). Les notes `PLAYER_PRIVATE` appartiennent à leur auteur — un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent (RB-09-19).
 - RB-11-21 : Dissocier un joueur de son personnage ne supprime pas le personnage ni ses notes.
@@ -301,6 +306,8 @@ Scenario : Ancien lien d un membre retire
 - [ ] Après association, le joueur voit la fiche du personnage et ses notes `PLAYER_PRIVATE` dans sa vue joueur.
 - [ ] Un personnage ne peut être associé qu'à un seul membre à la fois.
 - [ ] Le MJ peut dissocier un joueur de son personnage sans supprimer le personnage.
+- [ ] Une association faite pendant que le membre est `PENDING` devient visible dans sa vue joueur dès l'activation du lien, sans action MJ séparée.
+- [ ] Le MJ peut associer plusieurs personnages à un même membre (RB-11-17) ; le panneau membres permet et reflète cette association multiple (forme exacte du contrôle : renvoyée au wireframe).
 - [ ] Un `GuestAccess` vers un personnage déjà associé récupère la **fiche** du personnage (`Document` de type `player_character`) ; il n'hérite jamais des notes `PLAYER_PRIVATE` d'un invité précédent.
 
 ```gherkin
@@ -369,8 +376,8 @@ Scenario : Dissociation sans suppression
 
 ## Questions ouvertes
 
-1. Le MJ doit-il pouvoir voir la liste des personnes ayant utilisé une invitation (combien d'usages restants, qui a rejoint) ? Cela orienterait la gestion du quota d'utilisations.
-2. Le retrait d'un membre doit-il être visible par les autres membres de la campagne ? Faut-il un log d'activité dans le panneau membres ?
-3. Lorsque Thomas associe un joueur à un personnage avant que le joueur ait rejoint (`PENDING`), le personnage est-il visible dans la vue joueur dès l'activation du lien, ou seulement après une action explicite du MJ ?
-4. Peut-on associer plusieurs personnages à un même membre ? (Cas d'un joueur qui joue plusieurs PNJ ou alterne les personnages entre campagnes.) La règle actuelle autorise zéro à plusieurs, mais l'UI doit-elle le refléter clairement ?
-5. La limite de nombre d'utilisations par défaut (si non renseignée) est-elle 1 ou illimitée ? À préciser pour le comportement par défaut du formulaire de génération.
+1. **RÉSOLU (partiel)** — Le compteur d'usages restants est **dérivable** du domaine (`usedCount` / `maxUses`) et affichable au MJ dans la liste des invitations (voir US-11-01, *Notes de conception* et *Critères d'acceptation*). En revanche, « qui a rejoint / historique des actions » reste **Could Have** — déjà exclu du MVP (*Stories exclues ou repoussées*, « Historique des actions d'invitation »). Cette clôture ne rouvre pas cette exclusion.
+2. **RÉSOLU (partiel)** — Le « log d'activité / historique » dans le panneau membres reste **Could Have** — déjà exclu du MVP (*Stories exclues ou repoussées*, « Historique des actions d'invitation »), non recouvert par cette clôture. La visibilité du retrait d'un membre par les autres membres n'est pas tranchable sur pièces (posture UX/produit) — **différée à l'interview utilisateur** (voir UC-11, *Questions à valider en interview*).
+3. **RÉSOLU** — Dérivable du domaine : le personnage associé est visible dans la vue joueur **dès l'activation du lien** (`Activate()`, `PENDING` → `ACTIVE`), sans action MJ séparée. L'association peut déjà être faite en statut `PENDING` (US-11-04), et l'accès est automatique sur lien valide, sans étape d'approbation (RB-11-03, cohérent avec UC-09).
+4. **RÉSOLU** — Dérivable du domaine : la capacité est déjà décidée (RB-11-17 — un `Member` peut être associé à zéro ou plusieurs `Document` de type `player_character`, `characterIds: DocumentId[]`). L'UI MJ doit permettre et refléter l'association multiple (voir US-11-04, *Critères d'acceptation*). La forme exacte du contrôle (liste multi-sélection, tags, etc.) est renvoyée au wireframe — hand-off présentation.
+5. **[GATE tranché opérateur] RÉSOLU** — Par défaut (non renseigné), le nombre d'utilisations maximum est **illimité** (`maxUses` = `null`, non borné) — sert le cas d'un lien unique partagé pour tout le groupe. Ce défaut gouverne le formulaire de génération de lien (US-11-01, *Notes de conception* et RB-11-02). Le domaine porte déjà `maxUses: int?` ; RB-11-05 (passage à `REVOKED` quand la limite est atteinte) n'est pas modifié — une limite non renseignée ne peut jamais être « atteinte ».

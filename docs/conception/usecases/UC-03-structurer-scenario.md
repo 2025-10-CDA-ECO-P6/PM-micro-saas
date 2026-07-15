@@ -134,6 +134,7 @@ Le système conserve les données saisies localement si possible et affiche un m
 - Un scénario est un document d'espace spécialisé pour la préparation narrative.
 - Une scène est un document d'espace lié au scénario.
 - Un scénario peut référencer zéro, une ou plusieurs scènes.
+- Un document `SCENE` peut être lié depuis plusieurs scénarios (cardinalité n↔n via `DocumentLink`, aucune contrainte d'unicité sur `targetDocumentId`) — le même mécanisme qu'un PNJ partagé entre plusieurs scènes. « Ajouter une scène » crée toujours une scène fraîche possédée (create+link) ; le partage multi-parent n'est atteignable que via « lier un document existant » (SCENE est un type cible éligible de ce chemin). Retirer une scène d'un scénario supprime le lien, pas le document — la scène survit pour les autres scénarios qui la référencent ; pas de suppression en cascade. Le backlink calculé « référencée par N scénarios » est surfacé pour signaler le partage. Une scène partagée au niveau template n'affecte pas les instances (`Document.Instantiate`, UC-13) — chaque instance reste indépendante.
 - Une scène peut référencer plusieurs documents : PNJ, lieux, objets, révélations, notes ou aides de jeu.
 - Les notes privées d'un scénario restent dans des documents privés pour le MJ.
 - Un scénario peut porter un statut de préparation dans ses propriétés structurées.

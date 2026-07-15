@@ -13,7 +13,7 @@
 
 ## Contexte
 
-ADR-010 a acté le soft-delete + purge J+30 et introduit la saga `SpaceDeleted`, mais n'a pas spécifié le mécanisme de cascade ni l'ordre d'opérations. Le graphe de FK du MLD actuel compte **38 FK** (35 FK initiales + 3 ajoutées à l'occasion de cette décision — voir section Schéma/MLD ci-dessous) dont plusieurs forment des cycles ou traversent les frontières de bounded contexts.
+ADR-010 a acté le soft-delete + purge J+30 et introduit la saga `SpaceDeleted`, mais n'a pas spécifié le mécanisme de cascade ni l'ordre d'opérations. Le graphe de FK du MLD actuel compte **38 FK** (35 FK initiales + 3 FK **ajoutées nettes** à l'occasion de cette décision — voir §5 ci-dessous pour le détail ajoutées vs. reprécisées) dont plusieurs forment des cycles ou traversent les frontières de bounded contexts.
 
 Trois questions restaient ouvertes au terme d'ADR-010 :
 
@@ -21,7 +21,7 @@ Trois questions restaient ouvertes au terme d'ADR-010 :
 2. **Cycles** : le graphe contient deux cycles référentiels. Comment les casser sans violer les contraintes `NOT NULL` ?
 3. **Préséance** : la saga `UserAnonymized` (effacement de compte) et la saga `SpaceDeleted` (purge J+30) peuvent concerner les mêmes lignes. Laquelle prime ?
 
-Par ailleurs, l'ADR-009 affirmait que `spaces.owner_id` était « la seule FK cross-module » — affirmation corrigée ici (19 FK cross-module recensées au total).
+Par ailleurs, l'ADR-009 affirmait que `spaces.owner_id` était « la seule FK cross-module » — affirmation corrigée ici (17 FK cross-module recensées au total — 16 pures « Cross » + 1 mixte « Intra+Cross » —, voir §5 pour le détail de cette reprécision).
 
 ---
 
@@ -66,22 +66,27 @@ Un document peut être instancié depuis un document source appartenant à un au
 
 ### 5. FK ajoutées ou précisées au recensement
 
-À l'occasion de l'analyse du graphe, cinq FK non annotées ou incomplètes dans le MLD sont identifiées comme FK physiques réelles :
+À l'occasion de l'analyse du graphe, **cinq FK sont touchées par le recensement**, de deux natures distinctes qu'il convient de ne pas confondre :
 
-**FK cross-module (2) — portent la racine du graphe de cascade vers `spaces` :**
+- **3 FK ajoutées (net)** : elles n'existaient pas parmi les 35 FK initiales. Leur ajout porte le total du graphe de cascade de 35 à **38**.
+- **2 FK pré-existantes reprécisées** : elles faisaient déjà partie des 35 FK initiales et sont **déjà comptées** parmi les **17 FK cross-module** de la matrice (16 pures « Cross » + 1 mixte « Intra+Cross ») ; elles n'étaient simplement pas annotées comme cross-module dans le MLD avant cette décision. Leur reprécision corrige cette annotation MLD, sans créer de delta dans le décompte cross-module : ces deux FK sont déjà comprises dans les dix-sept, et n'augmente pas le total de 38, ces FK y étant déjà comptées depuis l'origine.
 
-- `session_view_configs.space_id` → `spaces.id` (NOT NULL)
-- `document_types.space_id` → `spaces.id` (NOT NULL, pour les types *custom* uniquement ; les types *système* sont globaux, `space_id` NULL)
-
-Ces deux FK cross-module font passer le décompte cross-module de **17 à 19** (ADR-009 en recensait 17 ; ces deux ajouts portent le total à 19, cohérent avec le compte de la matrice ci-dessous).
-
-**FK intra-module (3) — sans effet sur le décompte cross-module :**
+**FK ajoutées (3) — net-nouvelles, portent le total de 35 à 38 :**
 
 - `documents.document_type_id` → `document_types.id` (nullable, intra-module CL→CL) — content-library.md
 - `folders.default_document_type_id` → `document_types.id` (nullable, intra-module CL→CL) — content-library.md
 - `membership_characters.(space_id, user_id)` → `space_memberships.(space_id, user_id)` (composite NOT NULL, intra-module SM→SM) — space-management.md
 
-Ces trois FK intra-module ne modifient pas le décompte cross-module (reste 19). Le graphe de cascade total atteint **38 FK** (compte exact, vérifiable depuis la matrice).
+Ces trois FK sont intra-module : leur ajout est sans effet sur le décompte cross-module. Elles sont la seule source de la variation du total du graphe de cascade (35 → **38 FK**).
+
+**FK pré-existantes reprécisées (2) — cross-module, sans effet sur le total :**
+
+- `session_view_configs.space_id` → `spaces.id` (NOT NULL)
+- `document_types.space_id` → `spaces.id` (NOT NULL, pour les types *custom* uniquement ; les types *système* sont globaux, `space_id` NULL)
+
+Ces deux FK portent la racine du graphe de cascade vers `spaces` et existaient déjà parmi les 35 FK initiales : elles ne sont pas ajoutées au graphe, seulement **reprécisées** dans le MLD (elles n'y étaient pas annotées comme cross-module). Ces deux FK sont **déjà comptées** parmi les **17 FK cross-module** de la matrice ci-dessous (chacune y porte l'annotation `Cross`) : la reprécision corrige uniquement l'annotation du MLD, qui était en retard sur la matrice — sans créer de delta dans le décompte cross-module, et **sans augmenter le total de 38**, ces deux FK y étant déjà comptées depuis l'origine.
+
+**Bilan** : 3 FK ajoutées (net, → total 38) + 2 FK reprécisées (déjà comptées parmi les 17 FK cross-module, correction d'annotation MLD sans effet sur ce sous-total) = les cinq FK touchées par le recensement. Le graphe de cascade total atteint **38 FK** (35 initiales + 3 ajoutées ; les 2 reprécisées n'y contribuent pas, elles y étaient déjà comptées) — compte exact, vérifiable depuis la matrice ci-dessous, qui recense **17 FK cross-module** (16 pures « Cross » + 1 mixte « Intra+Cross » : `documents.source_document_id`).
 
 ---
 
@@ -226,7 +231,11 @@ spaces                    (racine)
 
 **MJ propriétaire effaçant son compte sur un espace vivant** : l'espace reste possédé par l'`id` anonymisé (`owner_id NOT NULL` satisfait). Le transfert de propriété forcé est post-MVP (renvoyé à B1.6/UC-11).
 
-**Exception — espace `PERSONAL` à `UserDeleted`** : l'espace `PERSONAL` du propriétaire qui s'efface est **purgé inconditionnellement** (hard-delete immédiat, sans attendre J+30). Il n'est **pas** conservé sous identité anonymisée — ce comportement déroge à la règle générale « espace conservé sous `id` anonymisé » car l'unique membre est le propriétaire lui-même. La saga `SpaceDeleted` s'applique intégralement à l'espace `PERSONAL` purgé (mêmes passes 1 et 2). La politique de sélection de la catégorie hard-delete PERSONAL est définie dans **ADR-012**.
+**Exception — espace `PERSONAL` à `UserDeleted`** : l'espace `PERSONAL` du propriétaire qui s'efface est **purgé inconditionnellement** (hard-delete immédiat, sans attendre J+30). Il n'est **pas** conservé sous identité anonymisée — ce comportement déroge à la règle générale « espace conservé sous `id` anonymisé » car l'unique membre est le propriétaire lui-même. La saga `SpaceDeleted` s'applique intégralement à l'espace `PERSONAL` purgé (mêmes passes 1 et 2).
+
+**Mécanisme additionnel — consommation du jeu matérialisé et relocation** : la purge du contenu PERSONAL consomme le **jeu de sélection matérialisé** capturé à `deletion_requested_at` (ADR-012 §7) comme source de périmètre — les passes 1 et 2 de `SpaceDeleted` ne recalculent pas depuis le `space_id` ou la `visibility` courants du document. Un **step de relocation obligatoire** s'exécute **avant** la purge physique : tout document marqué `conserve` dans le jeu matérialisé mais physiquement situé dans l'espace PERSONAL au moment de l'exécution est **réaffecté hors de cet espace** (réaffectation d'appartenance + réadressage des FK scopées à l'espace), prévenant ainsi une purge silencieuse d'un document devant être conservé. Mécanisme complet et justification en ADR-012 §7.
+
+La politique de sélection de la catégorie hard-delete PERSONAL est définie dans **ADR-012**.
 
 La purge immédiate de l'espace `PERSONAL` déclenchée par `UserDeleted` s'exécute **sous le même invariant de claim / idempotence / reprise** que la purge J+30 (le déclencheur change — `UserDeleted` au lieu du critère temporel — la garantie de reprise après crash ne change pas). Le sélecteur du Hosted Service inclut les espaces `PERSONAL` en attente de purge sur `UserDeleted`, sans la condition `deleted_at ≤ now()-30j` ; un claim posé est reclaimable à l'identique. Sans cet invariant, un crash en cours de purge personnelle laisserait un résidu au-delà du délai Art. 17. Le câblage exact (handler `UserDeleted` vs Hosted Service mutualisé, flag de sélection) est renvoyé à B1.
 
@@ -252,11 +261,19 @@ La règle générale : sur toute ligne appartenant à un espace dont `deleted_at
 
 ### Contenu LIVE_NOTE et médias externalisés
 
-Le contenu textuel des documents (y compris les LIVE_NOTE) est stocké dans `document_blocks` en base de données et est couvert par la purge passe 2 (`DELETE document_blocks WHERE document_id IN ...`). Si des médias ou blobs associés à des documents sont externalisés (chaîne média B1.9 — stockage objet S3 ou équivalent), leur purge doit être **câblée à la saga `SpaceDeleted`** : un step supplémentaire après la passe 2 SQL doit déclencher la suppression des objets dans le store externe. Ce câblage s'applique aux deux chemins de purge : la purge J+30 ordinaire et la purge immédiate de l'espace `PERSONAL` déclenchée par `UserDeleted`. Sans ce câblage sur l'un ou l'autre chemin, les blobs orphelins persistent indéfiniment après la purge des métadonnées. Voir **B1.9** pour la définition de la chaîne média.
+**Décision MVP : aucun blob/média externalisé**
+
+Le contenu textuel des documents (y compris les LIVE_NOTE) est stocké dans `document_blocks` en base de données **en tant que contenu inline** dans la colonne `jsonb` `content`, et est couvert par la purge passe 2 (`DELETE document_blocks WHERE document_id IN ...`). **Au MVP, aucun blob ou média (image, fichier, carte) n'est externalisé** : tout contenu média associé à un document est stocké inline dans `document_blocks.content`, supprimé en passe 2 avec la ligne parente. Aucun blob orphelin possible tant que le contenu reste inline.
+
+**Debt dormante (B1.9) — câblage média externalisé**
+
+Si des médias ou blobs associés à des documents sont externalisés dans une version future (chaîne média B1.9 — stockage objet S3 ou équivalent, uploads futurs : cartes, portraits PNJ), leur purge doit être **câblée à la saga `SpaceDeleted`** : un step supplémentaire après la passe 2 SQL doit déclencher la suppression des objets dans le store externe. Ce câblage s'applique aux deux chemins de purge : la purge J+30 ordinaire et la purge immédiate de l'espace `PERSONAL` déclenchée par `UserDeleted`. Sans ce câblage sur l'un ou l'autre chemin, les blobs orphelins persistent indéfiniment après la purge des métadonnées.
+
+> **Condition non réalisée au MVP — à réactiver (B1.9) si une chaîne média externalisée est introduite.** L'exigence de câblage de purge aux deux chemins (`SpaceDeleted` J+30 + purge PERSONAL immédiate) demeure explicite dans cet ADR et doit être implémentée dès l'introduction d'un store externe. Voir **B1.9** pour la définition de la chaîne média.
 
 ### Interaction avec les autres ADR
 
-**ADR-009 (FK `ownerId`)** : la FK `spaces.owner_id → users.id` est NOT NULL et n'est pas déliée lors de la purge. Elle est supprimée avec la ligne `spaces` en fin de passe 2. L'affirmation « seule FK cross-module » dans ADR-009 est corrigée : 19 FK cross-module sont recensées (voir matrice ci-dessus). ADR-009 reste un précédent de gouvernance valide ; la stratégie `ON DELETE` et le mécanisme de cascade sont définis dans le présent ADR.
+**ADR-009 (FK `ownerId`)** : la FK `spaces.owner_id → users.id` est NOT NULL et n'est pas déliée lors de la purge. Elle est supprimée avec la ligne `spaces` en fin de passe 2. L'affirmation « seule FK cross-module » dans ADR-009 est corrigée : 17 FK cross-module sont recensées (voir matrice ci-dessus). ADR-009 reste un précédent de gouvernance valide ; la stratégie `ON DELETE` et le mécanisme de cascade sont définis dans le présent ADR.
 
 **ADR-010 (soft-delete + purge + saga)** : cet ADR complète ADR-010 en spécifiant le mécanisme et l'ordre d'opérations. Les compensating transactions mentionnées dans ADR-010 s'appliquent uniquement à l'extraction future multi-service ; sur le MVP monolithe à base unique, la transaction de base de données joue ce rôle.
 

@@ -185,11 +185,12 @@ Scenario : Documents GM_ONLY invisibles pour le joueur
 **afin de** consulter la bonne fiche et prendre des notes liées au personnage que je joue ce soir.
 
 **Notes de conception** :
+- **Principe** : le personnage actif est un état de **focus / présentation éphémère** (quelle fiche et quelles notes sont mises en avant dans la vue joueur) — **jamais un droit d'accès**. Les droits sur les documents dérivent de l'**ensemble** des personnages associés au joueur (RB-11-17), pas du seul personnage actif.
 - Un joueur peut être associé à plusieurs personnages dans une même campagne (RB-11-17 dans UC-11). Cette story couvre la vue joueur de cette fonctionnalité.
 - Le choix du personnage actif est local à la session en cours. Il ne modifie pas l'association définie par le MJ (US-11-04) — il détermine seulement quel personnage est affiché en priorité dans la vue joueur.
 - Le personnage actif conditionne uniquement les actions qui dépendent d'une fiche précise : affichage de la fiche en tête, notes `PLAYER_PRIVATE` visibles et éditables, accès aux ressources liées au personnage.
 - Si le joueur n'a qu'un seul personnage associé, aucune sélection n'est requise — la fiche s'affiche directement (US-12-01).
-- `Space Management` gère la liste des personnages associés à un `Member`. La sélection du personnage actif est une préférence de vue, côté client ou stockée en session, sans modifier les données de `Space Management`.
+- `Space Management` gère la liste des personnages associés à un `Member`. La sélection du personnage actif est une **préférence client, non persistée au MVP** (formule volontairement décorrélée d'une éventuelle visibilité MJ future — voir Q#1/Q#4 en questions closes), sans modifier les données de `Space Management`.
 
 **Règles métier** :
 - RB-12-06 : Un joueur associé à plusieurs personnages doit choisir un personnage actif pour les actions dépendant d'une fiche précise (notes `PLAYER_PRIVATE`, affichage de fiche).
@@ -249,7 +250,8 @@ Scenario : Changement de personnage actif sans modifier les associations MJ
 | Notification au joueur quand le MJ partage un nouveau document | Could Have — fonctionnalité de notification non prioritaire. |
 | Accès joueur à l'historique des sessions passées via périmètre SESSION | Hors périmètre : le lien SESSION donne accès à la session courante uniquement. L'historique est couvert par US-09-03 (Member, périmètre CAMPAIGN). |
 | Partage sélectif de documents par joueur (un document PUBLIC pour ce joueur uniquement) | Hors MVP — RB-08-04 : le partage s'applique à tous les membres actifs. |
-| Personnage actif persisté entre les sessions | Could Have — à préciser selon les retours utilisateur. La story couvre uniquement la sélection en session courante. |
+| Personnage actif persisté entre les sessions | Could Have post-MVP — la sélection reste **préférence client, non persistée** au MVP (RB-12-07, Q#1) ; persistance à préciser selon les retours utilisateur. |
+| Notes libres non rattachées à un personnage (`Member` / `GuestAccess` sans `player_character`) | Could Have post-MVP — aucun slot de note libre au MVP ; RB-12-03 exige un personnage associé pour toute note `PLAYER_PRIVATE` (Q#3). |
 
 ---
 
@@ -273,10 +275,44 @@ Scenario : Changement de personnage actif sans modifier les associations MJ
 
 ---
 
-## Questions ouvertes
+## Décisions (ex-Questions ouvertes)
 
-1. Le personnage actif doit-il être mémorisé entre les sessions (préférence persistante) ou remis à zéro à chaque nouvelle connexion ? La story couvre uniquement la session en cours.
-2. Quand Thomas a deux personnages associés et que le MJ épingle un document lié à un seul personnage, ce document doit-il apparaître dans la vue joueur quel que soit le personnage actif, ou seulement quand le personnage concerné est actif ?
-3. Un joueur sans personnage associé peut-il prendre des notes "libres" non liées à un personnage ? Ces notes seraient rattachées à son `Member` ou `GuestAccess`, pas à un personnage joueur (`Document` de type `player_character`).
-4. La sélection du personnage actif doit-elle être visible par le MJ dans sa vue session ? Cela permettrait au MJ de savoir quel personnage Thomas joue ce soir sans lui poser la question.
-5. Si un joueur a un accès périmètre `SESSION` et un accès périmètre `CAMPAIGN` simultanément (par exemple après migration invité vers compte), quelle vue s'affiche en priorité ?
+**Principe unificateur** : le personnage actif est un état de **focus / présentation éphémère** (quelle fiche et quelles notes sont mises en avant dans la vue joueur) — **jamais un droit d'accès**. Les droits sur les documents dérivent de l'**ensemble** des personnages associés au joueur (RB-11-17), pas du seul personnage actif.
+
+### Q#1 — Le personnage actif doit-il être mémorisé entre les sessions ?
+
+**Décision** : **session-local au MVP** (RB-12-07). Le personnage actif est une **préférence client, non persistée au MVP** — la formule remplace le « stocké en session » sous-spécifié pour éviter tout couplage à une visibilité MJ future (cf. Q#4). La persistance inter-sessions reste *Could Have* post-MVP (voir « Stories exclues ou repoussées »).
+
+**Statut** : clos.
+
+### Q#2 — Un document épinglé lié à un personnage doit-il être toujours visible, ou seulement quand ce personnage est actif ?
+
+**Décision** : **toujours visible**, quel que soit le personnage actif. Les droits sur les documents dérivent de l'**ensemble des personnages associés** au joueur ; le personnage actif ne gouverne que le **focus** de présentation (fiche + notes mises en avant, RB-12-10).
+
+**Justification** : conditionner la visibilité au personnage actif (a) contredirait RB-08-04 (le partage s'applique à tous les membres actifs, pas de partage sélectif par personnage) et RB-12-01 / RB-12-05 (un document visible l'est pour l'ensemble du périmètre d'accès, indépendamment de la fiche affichée) ; (b) ferait disparaître un document déjà partagé au moindre changement de focus ou au reload de session, puisque le focus n'est pas persisté (Q#1) — un comportement instable non désiré.
+
+**Statut** : clos — « toujours visible ».
+
+### Q#3 — Un joueur sans personnage peut-il prendre des notes « libres » non liées à un personnage ?
+
+**Décision (notes libres)** : **non au MVP**. Le modèle ancre toute note `PLAYER_PRIVATE` à un personnage (`player_character`) : RB-12-02 les rattache au personnage pour l'affichage, RB-12-10 les fait correspondre au personnage actif, et RB-12-03 interdit une note liée à un personnage en l'absence de personnage associé. Il n'existe, au MVP, aucun slot de note qui ne soit pas rattaché à un `player_character`.
+
+**Distinction explicite** (lève l'ambiguïté de la question initiale) :
+- note **liée à un `player_character`** → requiert un personnage associé (RB-12-03) ;
+- note **libre, non rattachée à un personnage** (portée `Member` / `GuestAccess` seule, sans `player_character`) → aucun slot au MVP → **Could Have post-MVP**.
+
+**Ratification (MVP, inchangée — cycle de vie éphémère invité, Lot 6)** : Les notes `PLAYER_PRIVATE` d'un invité sans compte ne persistent **pas** inter-sessions au MVP. Elles sont supprimées à la fin définitive du `GuestAccess` (voir *space-management* règle métier 10, RGPD Art. 17). La persistance inter-sessions est *Could Have* post-MVP (voir zoning S8). Cette ratification porte sur un axe distinct (disponibilité au MVP d'un slot de note libre non rattachée à un personnage) et n'est pas contredite par la décision ci-dessus.
+
+**Statut** : clos (MVP — non) ; note libre post-MVP en *Could Have*.
+
+### Q#4 — La sélection du personnage actif doit-elle être visible par le MJ ?
+
+**Décision** : **différée** — hors MVP, à revisiter en interview / post-MVP. Si elle est retenue, elle relèvera d'un **état runtime de Session Conduct (UC-06)** — pas d'une donnée `SpaceMembership` — puisque le personnage actif reste une préférence côté client au MVP (Q#1), sans vocation à être répliqué dans `Space Management`.
+
+**Statut** : différé (interview / post-MVP) ; architecture cible pré-enregistrée si retenue plus tard.
+
+### Q#5 — Priorité si un joueur cumule un accès `SESSION` et un accès `CAMPAIGN` ?
+
+**Décision** : **`CAMPAIGN` prioritaire** — `CAMPAIGN` (RB-12-05) est un superset de `SESSION` (RB-12-04) : tout ce que `SESSION` donne, `CAMPAIGN` le donne aussi, en plus de l'historique complet. Le cas de cumul simultané est par ailleurs largement **précludé** par le modèle : l'invariant 8 (un `GuestAccess` `CONVERTED` devient inutilisable après migration vers un compte) et l'invariant 3 (un seul `SpaceMembership` actif par joueur et par campagne) empêchent la coexistence durable des deux accès sur le même joueur/campagne.
+
+**Statut** : clos — dérivable, `CAMPAIGN` prioritaire.

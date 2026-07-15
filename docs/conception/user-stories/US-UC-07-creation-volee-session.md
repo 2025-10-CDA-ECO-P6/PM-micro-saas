@@ -2,7 +2,7 @@
 
 ## Objectif utilisateur
 
-Permettre au MJ de créer instantanément un document durable dans la campagne depuis la vue session — note, PNJ, lieu, faction, personnage joueur, objet ou contenu libre — sans quitter le contexte de partie. Le titre seul suffit à valider la création. Le document est épinglé automatiquement dans la session et peut être enrichi après la partie.
+Permettre au MJ de créer instantanément un document durable dans la campagne depuis la vue session — note, PNJ, lieu, faction, personnage joueur, objet ou contenu libre — sans quitter le contexte de partie. Le titre seul suffit à valider la création. Un document durable est épinglé automatiquement par défaut dans la session (LIVE, désépinglable) ; une note de session est rattachée à la session via `AttachNote` (jamais épinglée). L'élément peut être enrichi après la partie.
 
 ---
 
@@ -22,7 +22,7 @@ Permettre au MJ de créer instantanément un document durable dans la campagne d
   - Nominal : création rapide depuis le panneau de création rapide
   - A1 : PNJ à la volée (nom seul, propriétés vides, épinglé)
   - A2 : Personnage joueur à la volée (nom seul, associable à un joueur plus tard)
-  - A3 : Note de session (`Document(type=NOTE)`, épinglée dans la session)
+  - A3 : Note de session (`Document(type=NOTE)`, rattachée à la session via `AttachNote`/`sessionNoteIds`)
   - A4 : Document générique (lieu, faction, objet, lore)
   - A5 : Session CLOSED — ajout rétroactif
   - E1 : Titre vide — création refusée
@@ -42,9 +42,9 @@ Permettre au MJ de créer instantanément un document durable dans la campagne d
 ## Bounded contexts pressentis
 
 - **Content Library** — création du document, liaison à la campagne, dossier d'accueil
-- **Session Conduct** — épinglage automatique dans `Session.pinnedDocumentIds`
+- **Session Conduct** — rattachement selon le type : `Session.AttachNote` (`sessionNoteIds`) pour une note de session, `Session.PinDocument` (`pinnedDocumentIds`, auto-épinglé par défaut en LIVE, désépinglable par le MJ) pour un document durable
 
-La création à la volée est une opération cross-context : `Document.Create(...)` dans Content Library, puis `Session.PinDocument(documentId)` dans Session Conduct.
+La création à la volée est une opération cross-context : `Document.Create(...)` dans Content Library, puis — selon le type — `Session.AttachNote(documentId)` (note de session) ou `Session.PinDocument(documentId)` (document durable) dans Session Conduct.
 
 ---
 
@@ -65,11 +65,14 @@ flowchart TD
     F --> H
     G --> H
 
-    H --> I{Session LIVE ?}
-    I -->|LIVE| J[Session.PinDocument\ndocumentId ajouté à pinnedDocumentIds]
+    H --> N{Type = NOTE ?}
+    N -->|NOTE| O[Session.AttachNote\ndocumentId ajouté à sessionNoteIds]
+    N -->|Document durable| I{Session LIVE ?}
+    I -->|LIVE| J[Session.PinDocument\ndocumentId ajouté à pinnedDocumentIds\nauto par défaut, désépinglable]
     I -->|CLOSED| K[Document créé — épinglage optionnel]
 
-    J --> L[Document disponible dans Épinglés\net dans son dossier de la bibliothèque]
+    O --> L[Document disponible dans son dossier de la bibliothèque\net dans Notes de session]
+    J --> L
     K --> L
 
     L --> M[MJ enrichit le document ultérieurement]
@@ -108,18 +111,18 @@ flowchart LR
 **Notes de conception** :
 - Opération cross-context :
   1. `Document.Create(campaignId, folderId, title, typeId?)` dans Content Library.
-  2. `Session.PinDocument(documentId)` dans Session Conduct.
+  2. Selon le type : `Session.AttachNote(documentId)` (note de session) ou `Session.PinDocument(documentId)` (document durable) dans Session Conduct.
 - Le dossier d'accueil est déterminé par le type : PNJ → dossier Personnages, NOTE → dossier Notes, PJ → dossier Personnages joueurs. Si aucun dossier typé n'existe ou si le type est indéterminé → dossier "Non classés".
 - Visibilité par défaut : `GM_ONLY`.
-- L'épinglage automatique s'applique aux sessions LIVE. Il déclenche `Session.PinDocument`.
+- L'auto-épinglage (par défaut, désépinglable par le MJ) ne concerne que les documents durables en session LIVE ; il déclenche `Session.PinDocument`. Une `LIVE_NOTE` ne s'épingle jamais : elle se rattache via `Session.AttachNote` (cf. RB-07-04, Bounded contexts pressentis).
 - Possible en mode local (sans compte) : document créé en IndexedDB.
-- Question ouverte : l'épinglage est-il automatique ou laissé au choix du MJ ?
+- Auto-épinglage vs choix manuel du MJ : voir Question #1 des Questions ouvertes — **Résolue**, décision reprise ci-dessus (par défaut en LIVE, désépinglable).
 
 **Règles métier** :
 - RB-07-01 : Le titre est le seul champ obligatoire. La création est refusée si le titre est vide ou composé uniquement d'espaces.
 - RB-07-02 : Le document créé est automatiquement lié à la campagne de la session en cours.
 - RB-07-03 : La visibilité par défaut est `GM_ONLY`.
-- RB-07-04 : Le document est épinglé automatiquement dans `Session.pinnedDocumentIds` (session LIVE).
+- RB-07-04 : Un document durable est auto-épinglé par défaut dans `Session.pinnedDocumentIds` en session LIVE ; le MJ peut le désépingler. En session CLOSED, l'épinglage reste optionnel. (Une note de session est rattachée via `Session.AttachNote` — cf. Bounded contexts pressentis.)
 - RB-07-05 : La création à la volée est impossible depuis une session ARCHIVED.
 
 **Critères d'acceptation** :
@@ -128,7 +131,7 @@ flowchart LR
 - [ ] La création est validée avec un titre seul.
 - [ ] Le document est créé avec `visibility = GM_ONLY` et lié à la campagne courante.
 - [ ] Le document est placé dans le dossier d'accueil correspondant à son type.
-- [ ] Le document est ajouté à `Session.pinnedDocumentIds` automatiquement (session LIVE).
+- [ ] Le document est ajouté à `Session.pinnedDocumentIds` automatiquement (session LIVE) — ceci ne vaut que pour un document durable ; une `LIVE_NOTE` est ajoutée à `sessionNoteIds` via `Session.AttachNote`.
 - [ ] La création est refusée si le titre est vide (E1).
 - [ ] La création est impossible depuis une session ARCHIVED (E2).
 - [ ] En mode local, le document reste accessible après fermeture et réouverture du navigateur.
@@ -145,7 +148,7 @@ Scénario : Le MJ crée une note de session à la volée (A3)
   Étant donné qu'une session est en status LIVE
   Quand le MJ ouvre le panneau de création rapide, choisit NOTE et saisit "Connexion faction Corbeau"
   Alors un document NOTE "Connexion faction Corbeau" est créé avec visibility = GM_ONLY
-  Et il est ajouté à Session.pinnedDocumentIds
+  Et il est ajouté à Session.sessionNoteIds via Session.AttachNote
   Et il est placé dans le dossier Notes
 
 Scénario : Le MJ crée un document générique à la volée (A4)
@@ -178,7 +181,7 @@ Scénario : Création impossible en ARCHIVED (E2)
 **Notes de conception** :
 - Session en statut `CLOSED` : `Session.pinnedDocumentIds` reste modifiable.
 - Le document est créé dans Content Library de la même façon qu'en LIVE.
-- L'épinglage automatique en CLOSED est optionnel — question ouverte (voir questions ouvertes).
+- L'épinglage automatique en CLOSED est optionnel — **décidé** (cf. Question #1 résolue).
 - Le document est durable : il ne disparaît pas à l'archivage de la session.
 - Impossible depuis une session ARCHIVED.
 
@@ -248,5 +251,5 @@ Scénario : Création impossible en ARCHIVED
 
 ## Questions ouvertes
 
-1. Le document créé à la volée est-il épinglé automatiquement, ou le MJ choisit de l'épingler manuellement ?
+1. ~~Le document créé à la volée est-il épinglé automatiquement, ou le MJ choisit de l'épingler manuellement ?~~ **Résolue** : un document durable est auto-épinglé par défaut en session LIVE, désépinglable par le MJ (aligné UC-07 amendé + AR-12) ; en session CLOSED, l'épinglage reste optionnel. Une note de session n'est jamais épinglée — elle est rattachée via `Session.AttachNote` (voir RB-07-04, Bounded contexts pressentis).
 2. Y a-t-il un raccourci clavier pour ouvrir le panneau de création rapide en session ?

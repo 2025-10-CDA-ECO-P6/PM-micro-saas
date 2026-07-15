@@ -61,9 +61,9 @@ Le MJ partage un lien d'accès à une session (lien ponctuel) ou à sa campagne 
 
 1. Le joueur a accédé comme invité à plusieurs sessions.
 2. Il veut conserver ses notes personnelles entre sessions.
-3. Il crée un compte depuis la page invité (UC-10).
-4. Ses notes et accès existants sont migrés vers son compte.
-5. Il peut ensuite rejoindre la campagne via un lien de campagne (scénario nominal B).
+3. Il crée un compte depuis la page invité (UC-10) : ce point d'entrée mène à un **état contextualisé**, pas à un formulaire d'inscription générique — le contexte invité (session en cours, notes déjà prises) est préservé et présenté comme le motif de la création de compte, pour une migration sans perte perçue par le joueur. *(Réalisation d'écran : HAND-OFF présentation — `docs/presentation/**`.)*
+4. Ses notes et accès existants sont migrés vers son compte : accès immédiat, sans attendre la validation de l'adresse de messagerie (cf. Règles métier).
+5. Il peut ensuite rejoindre la campagne via un lien de campagne (scénario nominal B) ; son admission comme `Member` reste soumise au consentement du MJ (RB-09-16), indépendamment de la validation de son email.
 
 ### A3 — Lien expiré ou révoqué
 
@@ -94,13 +94,13 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
 
 ## Règles métier
 
-- Un lien de session ponctuel est valable le temps de la session + une fenêtre de grâce (ex. : 24 h).
+- Un lien de session ponctuel est valable le temps de la session + une fenêtre de grâce de **24 h ferme** (RB-09-01).
 - Un lien de campagne permanent est valable jusqu'à révocation par le MJ.
 - Le joueur invité (sans compte) a les mêmes droits fonctionnels qu'un joueur authentifié
   dans le périmètre de son lien : il peut voir les contenus publics ou partagés avec lui,
   consulter sa fiche si un personnage lui est associé, et créer des notes personnelles.
   La seule différence est technique : il n'a pas de compte persistant.
-- La création d'un compte depuis l'accès invité migre l'accès sans perdre les notes déjà prises.
+- La création d'un compte depuis l'accès invité migre l'accès sans perdre les notes déjà prises. Cette migration **est** une inscription (UC-10) : elle en hérite la règle d'accès sans en ajouter — **accès immédiat**, **validation de l'adresse de messagerie non bloquante** (RB-10-05, ADR-015 §2.1, invariant 7 I&A). Aucun gate spécifique à la migration ne conditionne cet accès à `emailVerified`. En revanche, l'accès **Member** permanent à la campagne reste distinct et gouverné par le **consentement du MJ** (RB-09-16) — la validation de l'email ne s'y substitue pas.
 - Le MJ avec un compte gratuit peut inviter jusqu'à 4 joueurs par session. Le compte Pro lève cette limite.
 - **Distinction de consentement** : suivre un lien d'invitation **campagne** généré par le MJ (UC-11) vaut validation — le `SpaceMembership` est créé `PENDING` puis activé (`Activate()`), l'invitation préalable du MJ tenant lieu de validation au sens de RB-09-16. En revanche, un joueur invité ne peut pas **s'auto-promouvoir** membre sans lien d'invitation campagne du MJ — une telle demande crée un `SpaceMembership` `PENDING` en attente de validation explicite du MJ (RB-09-16, parcours-03). La validation se fait côté MJ (UC-11).
 - **Ownership `GuestAccess`** : UC-09 est le propriétaire des données et du cycle de vie des enregistrements `GuestAccess`. Leur création, expiration, révocation et conversion sont pilotées par les règles de cet UC ; les règles RGPD qui s'y appliquent (RB-09-18, RB-09-19) vivent ici par cohérence de responsabilité.

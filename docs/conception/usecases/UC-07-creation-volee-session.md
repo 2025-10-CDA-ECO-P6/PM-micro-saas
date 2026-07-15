@@ -52,7 +52,10 @@ Le MJ clique sur "Créer" ou utilise un raccourci depuis la vue session.
    - dossier d'accueil selon le point d'entrée ou le type ;
    - champs requis à leurs valeurs par défaut.
 
-6. Si le document est utile pendant la séance, le système l'épingle dans la session.
+6. Si la session est en statut `LIVE`, le système épingle automatiquement le document créé dans la session
+   (épinglage par défaut — même paradigme qu'AR-12/UC-08 pour le partage). Le MJ peut le désépingler
+   d'un geste si le document ne concerne pas la table. En session `CLOSED`, l'épinglage n'est pas
+   automatique : le MJ épingle manuellement s'il le souhaite.
 7. Le MJ peut l'enrichir plus tard en dehors de la session.
 
 ## Scénarios alternatifs
@@ -60,7 +63,9 @@ Le MJ clique sur "Créer" ou utilise un raccourci depuis la vue session.
 ### A1 — Création d'un PNJ à la volée
 
 Le MJ renseigne uniquement le nom. Le PNJ est créé comme un document typé PNJ
-avec des propriétés vides, puis épinglé dans la session.
+avec des propriétés vides. En session `LIVE`, il est épinglé automatiquement par défaut dans
+la session (le MJ peut le désépingler d'un geste) ; en session `CLOSED`, l'épinglage reste
+optionnel et non automatique.
 
 ### A2 — Création d'un personnage joueur à la volée
 
@@ -73,8 +78,10 @@ La note est créée comme note de session, puis rattachée à la session en cour
 
 ### A4 — Création d'un document générique
 
-Le MJ crée un document (lieu, faction, objet, lore) avec un titre. Le document est lié à la campagne
-et peut être épinglé dans la session s'il doit rester sous la main.
+Le MJ crée un document (lieu, faction, objet, lore) avec un titre. Le document est lié à la campagne.
+En session `LIVE`, il est épinglé automatiquement par défaut dans la session (le MJ peut le désépingler
+d'un geste s'il ne doit pas rester sous la main) ; en session `CLOSED`, l'épinglage reste optionnel et
+non automatique, à la main du MJ s'il doit rester accessible.
 
 ### A5 — Session CLOSED (ajout rétroactif)
 
@@ -95,7 +102,8 @@ La création à la volée est impossible depuis une session ARCHIVED (lecture se
 - Le document créé est lié à la campagne.
 - Il est immédiatement consultable dans la vue session.
 - Il peut être enrichi ultérieurement.
-- Pour un document utile en séance : il est ajouté à documents épinglés de la session.
+- En session `LIVE` : le document créé est épinglé par défaut dans la session (désépinglable par le MJ).
+  En session `CLOSED` : l'épinglage reste optionnel, non automatique.
 
 ## Données manipulées
 
@@ -110,7 +118,10 @@ La création à la volée est impossible depuis une session ARCHIVED (lecture se
 - Le titre est le seul champ obligatoire pour toute création à la volée.
 - Le document créé est automatiquement lié à la campagne de la session en cours.
 - Une note de session est rattachée à la session.
-- Un document durable utile à la séance peut être automatiquement ajouté aux documents épinglés.
+- En session `LIVE`, un document durable créé à la volée est automatiquement épinglé par défaut (même
+  paradigme qu'AR-12/UC-08 pour le partage) ; le MJ peut le désépingler d'un geste si le document n'est
+  pas pertinent pour la table. En session `CLOSED`, l'épinglage n'est pas automatique : il reste une
+  action manuelle optionnelle du MJ.
 - La création à la volée est possible sur une session LIVE ou CLOSED, mais pas ARCHIVED.
 - Les documents créés à la volée sont privés par défaut.
 

@@ -1,5 +1,3 @@
-> Fichier à renommer `space-management.md` — différé, voir plan W2
-
 # Space Management
 
 > **Responsabilité** : gérer les espaces de jeu (campagnes, one-shots et espace personnel), leur configuration,
@@ -64,7 +62,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `AssociateCharacter(userId, characterId)` | `CharacterAssociated` | Associe un personnage (référence Content Library) à un membre. Le paramètre `characterId` est un `DocumentId` pointant vers un `Document` de type `player_character`. |
 | `Archive()` | `SpaceArchived` | Archivage manuel par le MJ. Irréversible (MVP). Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). |
 | `Freeze()` | `SpaceFrozen` | Gel automatique lors d'un downgrade de tier. Passe en lecture seule. Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). |
-| `Unfreeze()` | `SpaceUnfrozen` | Dégel lors d'un upgrade de tier. |
+| `Unfreeze()` | `SpaceUnfrozen` | Dégel automatique lors d'une montée de tier, dans la limite du quota du tier cible (règle 11). |
 | `Delete()` | `SpaceDeleted` | Suppression d'un espace. Matérialise le contrat présupposé par ADR-010/011 (saga de suppression/purge) — absent du modèle domaine avant ADR-018. |
 
 ---
@@ -81,6 +79,10 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `status` | `MembershipStatus` | `PENDING` \| `ACTIVE` \| `REMOVED` |
 | `characterIds` | `DocumentId[]` | Références vers les personnages (Content Library) — alias sémantique vers des `Document` de type `player_character` ; la cohérence de type est garantie par validation runtime. |
 | `joinedAt` | `DateTime` | |
+
+> **NOTE — Personnage actif**
+>
+> La sélection du « personnage actif » (personnage actuellement joué par le membre) est une **préférence de vue côté client, non persistée au MVP** dans le modèle Space Management. Cette préférence n'introduit aucun attribut `activeCharacterId` persisté ni aucune modification de `SpaceMembership`. Elle relève entièrement de la présentation (couche client) et du contexte de session, cohérent avec US-12-02.
 
 **Méthodes**
 
@@ -113,7 +115,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `scope` | `InvitationScope` | `CAMPAIGN` \| `SESSION` |
 | `sessionId` | `SessionId?` | Renseigné si scope = SESSION |
 | `expiresAt` | `DateTime?` | |
-| `maxUses` | `int?` | |
+| `maxUses` | `int?` | Limite du nombre d'utilisations de l'invitation. **Défaut (non renseigné) : illimité** (`null` = non borné) — décision produit UC-11 Q#5. |
 | `usedCount` | `int` | |
 | `status` | `InvitationStatus` | `ACTIVE` \| `REVOKED` \| `EXPIRED` |
 | `createdAt` | `DateTime` | |
@@ -142,6 +144,14 @@ depuis Session Conduct par son lien d'accès.
 | `status` | `GuestAccessStatus` | `ACTIVE` \| `EXPIRED` \| `REVOKED` \| `CONVERTED` |
 | `expiresAt` | `DateTime?` | Calculé depuis la fermeture de session + 24h pour scope SESSION |
 | `createdAt` | `DateTime` | |
+
+> **NOTE — Identité et affichage de l'invité**
+> 
+> `displayName` est un **label d'affichage sans contrainte d'unicité** — le `GuestAccessId` (et son `token`) 
+> porte l'identité technique de l'invité. La désambiguïsation d'homonymes (deux invités portant le même 
+> `displayName` dans une session) relève de la **couche présentation** (p. ex. suffixe court dérivé de l'`id`), 
+> non du modèle de domaine. Cette conception est cohérente avec la décision d'identification joueur 
+> (nom d'affichage seul, sans pseudo/code unique obligatoire).
 
 **Méthodes**
 
@@ -220,8 +230,8 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 7. Un `Space` avec `status = FROZEN` refuse toute écriture (lecture seule). Seule `Unfreeze()` est autorisée.
 8. Un `GuestAccess` avec `status = CONVERTED` ne peut plus être utilisé pour accéder à l'espace.
 9. Un `GuestAccess` avec `status = EXPIRED` ou `REVOKED` ne donne plus accès.
-10. Un `DocumentId` référençant un personnage ne peut être associé qu'à un seul `SpaceMembership` actif à la fois dans un espace (RB-11-18). Le `DocumentId` associé doit référencer un `Document` de type `player_character` — cette validation est appliquée à l'écriture dans l'invariant de domaine de `SpaceMembership`. La même contrainte s'applique au champ `characterId` de `GuestAccess` : le `DocumentId` fourni doit également référencer un `Document` de type `player_character`.
-11. Pour un `Space` dont l'`ownerId` référence un utilisateur FREE, le propriétaire ne peut pas accorder l'accès à une session à plus de **4 joueurs distincts**, MJ non compté. Tout octroi d'accès supplémentaire — quelle qu'en soit la forme (`SpaceMembership` PLAYER/GM ou `GuestAccess`) — est refusé au moment de l'octroi dès que cette limite est atteinte. L'intention est d'éviter tout contournement par composition entre les types d'accès existants et futurs. **À préciser à la modélisation** : la sémantique exacte de comptage inter-types (un membre permanent compte-t-il une fois par espace ou par session ? extensibilité aux types d'accès futurs) est à affiner ; la règle de besoin est portée par UC-09 / RB-09-21, qui fait foi.
+10. Un `DocumentId` référençant un personnage ne peut être associé qu'à un seul `SpaceMembership` actif à la fois dans un espace (RB-11-18). Le `DocumentId` associé doit référencer un `Document` de type `player_character` — cette validation est appliquée à l'écriture dans l'invariant de domaine de `SpaceMembership`. La même contrainte s'applique au champ `characterId` de `GuestAccess` : le `DocumentId` fourni doit également référencer un `Document` de type `player_character`. **Clarification : une association de personnage effectuée sur un membership `PENDING` réserve ce personnage** — il ne peut pas être ré-associé à un autre membership (`PENDING` ou `ACTIVE`) tant que le membership `PENDING` initial n'est pas abandonné (p. ex. révocation de l'invitation associée, ou passage à `REMOVED`). Cette réservation prévient la double-association d'un même personnage en attente d'activation.
+11. Pour un `Space` dont l'`ownerId` référence un utilisateur FREE, le nombre de détenteurs d'accès distincts en capacité joueur ne peut pas dépasser **4**, comptés au moment de l'octroi (refus du 5e octroi) — ce n'est pas une mesure de présence temps réel. Le comptage est agnostique au type d'accès : il porte sur les identités-joueur distinctes disposant d'un accès atteignant la séance, quelle que soit la forme de cet accès (aujourd'hui `SpaceMembership PLAYER` ou `GuestAccess`, demain tout nouveau type d'accès) — l'objectif est d'empêcher tout contournement par composition entre types d'accès. Le MJ (`OWNER`/`GM`), quelle que soit sa forme d'accès, n'est jamais compté : le plafond ne porte que sur la capacité joueur. La sémantique de besoin est portée par **UC-09 / RB-09-21, qui fait foi**. (Note de modélisation : aucun agrégat d'accès unifié n'est introduit au MVP — deux types d'accès seulement, par choix de simplicité ; une projection unifiée « accès atteignant une séance » ne se justifierait qu'à l'arrivée d'un 3e type d'accès.)
 12. *(retiré — `ScenarioLibraryEntry` subsumé sous ADR-018 : la bibliothèque personnelle est une vue de l'espace `PERSONAL`, pas un agrégat de pont ; cf. Lot 10)*
 13. Un espace `PERSONAL` est mono-membre : seul le propriétaire (`role = OWNER`) y est membre. Les opérations `AddMember()`, `CreateInvitation()` et tout octroi de `GuestAccess` sont bloqués pour `type = PERSONAL`.
 14. Un compte actif possède toujours un et un seul espace `PERSONAL` **actif**. À la création du compte, le flux **applicatif** — à réception de l'événement `UserRegistered` — invoque de façon synchrone la commande `Space.Create(ownerId, type = PERSONAL)` dans Space Management. Identity & Access ne crée pas l'espace (frontière de contexte : I&A ne connaît pas la notion d'espace). En mode local, il n'y a ni `User` ni `ownerId` ; le conteneur par défaut local **est** l'espace `PERSONAL` (sans `ownerId`), lié à l'espace `PERSONAL` cloud à la création du compte / migration (mapping 1:1). L'invariant 14 est régi par le régime compte.
@@ -240,11 +250,13 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 3. Retirer un membre ne supprime pas ses données dans l'espace (personnages, notes partagées restent).
 4. Un membre retiré peut être réinvité.
 5. Un `GuestAccess SESSION` expire à la fermeture de la session + 24h de grâce.
-6. Quand `AccountTierChanged` (PRO → FREE) et que le MJ propriétaire a > 3 espaces `CAMPAIGN` ou `ONE_SHOT` à l'état `ACTIVE` (l'espace `PERSONAL` n'est pas compté) : les espaces excédentaires sont gelés dans l'ordre de création (les plus récents en premier).
+6. Quand `AccountTierChanged` (PRO → FREE) et que le MJ propriétaire a > 3 espaces `CAMPAIGN` ou `ONE_SHOT` à l'état `ACTIVE` (l'espace `PERSONAL` n'est pas compté) : les espaces excédentaires sont gelés dans l'ordre de création (les plus récents en premier). (le use case dédié **UC-15** ratifie et détaille ce comportement de gel/dégel)
+   > **NOTE — Valeur de référence du quota** : la limite `3` d'espaces actifs pour un utilisateur FREE est consolidée en CdC §12.4 ; cette valeur volatile doit être maintenue en source unique pour la cohérence métier/produit.
 7. L'archivage est manuel et définitif (MVP). Un espace archivé est en lecture seule.
 8. Un one-shot peut avoir simultanément des `SpaceMembership` (joueurs avec compte) et des `GuestAccess` (joueurs sans compte).
 9. Lors de la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) cessent immédiatement d'être utilisées et affichées — plus aucune finalité produit. Leur effacement effectif intervient au plus tard 90 jours après la fin d'accès, fenêtre bornée dont la seule finalité est l'exercice des droits de l'invité et le traitement des contestations (RGPD Art. 5(1)(e) — limitation de la conservation). Si l'invité a été converti en compte, ses données suivent les règles du compte.
 10. À la fin définitive d'un `GuestAccess` non converti, les notes `PLAYER_PRIVATE` créées par cet invité sont supprimées physiquement — uniquement les siennes, jamais celles d'autres participants. Cette suppression répond à la même obligation légale que l'effacement des notes à la suppression d'un compte (RGPD Art. 17 ; cohérence avec le domaine Identity & Access).
+11. Quand `AccountTierChanged` correspond à une montée de tier (p. ex. FREE → PRO), les espaces `FROZEN` du propriétaire sont dégelés automatiquement (`Unfreeze()`), dans la limite du quota d'espaces du tier cible. Le tier est binaire au MVP (PRO = illimité) ⇒ tous les espaces `FROZEN` sont dégelés ; la garde de `Unfreeze()` est exprimée relativement au quota du tier cible (et non de façon inconditionnelle), afin de rester correcte si un tier intermédiaire est introduit ultérieurement. Le dégel ne perd aucune donnée (`FROZEN` est un état de lecture seule, jamais une suppression). L'ordre de dégel lorsque le quota du tier cible est borné et inférieur au nombre d'espaces `FROZEN` (cas d'un futur tier intermédiaire) n'est pas fixé au MVP — le tier étant binaire (PRO illimité), tous les espaces `FROZEN` sont dégelés ; cet ordre sera arrêté à l'introduction éventuelle d'un tier intermédiaire.
 
 ---
 
@@ -277,7 +289,7 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 | Événement / Requête | Source | Action |
 |---|---|---|
 | `UserRegistered` | Identity & Access | Invoquer de façon synchrone `Space.Create(ownerId, type = PERSONAL)` (invariant 14) — création de l'espace `PERSONAL` du compte |
-| `AccountTierChanged` | Identity & Access | Geler les espaces excédentaires si downgrade |
+| `AccountTierChanged` | Identity & Access | Geler les espaces excédentaires si downgrade (règle 6) ; dégeler les espaces `FROZEN` dans la limite du quota du tier cible si montée de tier (règle 11). |
 | `UserDeleted` | Identity & Access | Routage de cascade par type d'espace (invariant 3 d'I&A) : hard-delete inconditionnel de l'espace `PERSONAL` via la saga `SpaceDeleted` ; anonymisation de l'`ownerId` et des données de membership pour `CAMPAIGN`/`ONE_SHOT` (conservation sous identité anonymisée) |
 | `DisplayNameUpdated` | Identity & Access | Mettre à jour le nom d'affichage dans les vues membres |
 

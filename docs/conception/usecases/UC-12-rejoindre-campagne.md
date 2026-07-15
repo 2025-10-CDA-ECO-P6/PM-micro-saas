@@ -99,10 +99,15 @@ UC-06 enrichit cette vue **pendant une session `LIVE`** en autorisant la prise d
 - **UC-11** — Administration côté MJ : génération des invitations, association joueur-personnage, gestion des membres.
 - **UC-06** — Vue en session LIVE : enrichit UC-12 pendant une session active.
 
-## Questions à valider en interview
+## Décisions (issues des questions ouvertes — détail dans US-12-02)
 
-- Le personnage actif doit-il être mémorisé entre les sessions ou remis à zéro à chaque connexion ?
-- Quand un joueur a deux personnages et que le MJ épingle un document lié à un seul, ce document apparaît-il quelle que soit la sélection active ?
-- Un joueur sans personnage associé peut-il prendre des notes « libres » non liées à un personnage ?
-- La sélection du personnage actif doit-elle être visible par le MJ dans sa vue session ?
-- Si un joueur cumule un accès `SESSION` et un accès `CAMPAIGN` simultanément, quelle vue s'affiche en priorité ?
+**Principe unificateur** : le personnage actif est un état de **focus / présentation éphémère**, jamais un droit d'accès ; les droits sur les documents dérivent de l'**ensemble des personnages associés** au joueur, pas du seul personnage actif.
+
+- **Personnage actif mémorisé entre sessions** : **session-local au MVP** (RB-12-07) — préférence client, non persistée au MVP ; persistance inter-sessions = *Could Have* post-MVP.
+- **Document épinglé lié à un personnage** : **toujours visible**, quel que soit le personnage actif (RB-12-01, RB-08-04, RB-12-10) — le personnage actif ne gouverne que le focus de présentation.
+- **Notes « libres » sans personnage associé** : **non au MVP** — toute note `PLAYER_PRIVATE` requiert un `player_character` (RB-12-02, RB-12-03, RB-12-10) ; note libre non rattachée = *Could Have* post-MVP. Le cycle de vie éphémère des notes d'un invité sans compte (règle métier 10 de *space-management*, RGPD Art. 17) est inchangé.
+- **Priorité `SESSION` + `CAMPAIGN` simultanés** : **`CAMPAIGN` prioritaire** (superset — RB-12-05 ⊃ RB-12-04) ; cas largement précludé par les invariants 3 et 8 du domaine.
+
+## Question différée (post-MVP / interview)
+
+- La sélection du personnage actif doit-elle être visible par le MJ dans sa vue session ? Différée — hors MVP. Si retenue, relèverait d'un **état runtime de Session Conduct (UC-06)**, pas d'une donnée `SpaceMembership` (le personnage actif restant préférence client au MVP).

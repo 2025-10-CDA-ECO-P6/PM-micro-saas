@@ -413,15 +413,15 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 ---
 
-### AR-11 — Navigation contenu : dossier épine dorsale + recherche + backlink — arbitrage du 2026-06-12
+### AR-11 — Navigation contenu : dossier épine dorsale + recherche + backlink — arbitrage du 2026-06-12 (retouché 2026-07-15 — placement backlinks figé)
 
-**Décision** : la navigation par dossiers est l'épine dorsale (un document appartient à **exactement un dossier** ; le dossier virtuel « Non classés » fait office de repli) ; la recherche est un **accélérateur omniprésent** (MVP : titre seul) ; les backlinks sont **consultables depuis la fiche cible** — le **placement « Référencé par » est une recommandation, non une décision figée**. Dans l'espace personnel, l'arborescence démarre **sans dossiers nommés** — seul « Non classés » à la création ; le propriétaire organise librement (voir AR-16 pour le détail). En session, les résultats de recherche s'ouvrent dans un **panneau latéral sans interrompre le contexte** de la vue session.
+**Décision** : la navigation par dossiers est l'épine dorsale (un document appartient à **exactement un dossier** ; le dossier virtuel « Non classés » fait office de repli) ; la recherche est un **accélérateur omniprésent** (MVP : titre seul) ; les backlinks sont **consultables depuis la fiche cible**. **Le placement « Référencé par » est désormais figé** : zone latérale secondaire, sous la zone des documents liés, repliée par défaut (divulgation progressive — AR-19c). Dans l'espace personnel, l'arborescence démarre **sans dossiers nommés** — seul « Non classés » à la création ; le propriétaire organise librement (voir AR-16 pour le détail). En session, les résultats de recherche s'ouvrent dans un **panneau latéral sans interrompre le contexte** de la vue session.
 
-**Raison d'être produit** : UC-05 prescrit qu'un document appartient toujours à exactement un dossier (`dossier associé` non-nullable) — ce qui fonde l'unicité d'appartenance. UC-05 A4 mentionne le dossier virtuel « Non classés » comme repli pour les documents sans dossier explicite. UC-14 prescrit la recherche par titre seul au MVP, omniprésente (préparation et session). La vision produit §2.2 mentionne les backlinks comme élément du système documentaire. UJ-UC-04 utilise le label « Référencé par » dans la description des opportunités UX, mais US-UC-04 reste plus souple sur ce point — ce qui justifie de traiter le placement comme recommandation révisable. Le rendu non disruptif des résultats de recherche en session est sourcé par UJ-UC-06 §Opportunités UX (*« résultats de recherche ouverts dans un panneau latéral sans interrompre le contexte de session »*) et NFR-PERF-04.
+**Raison d'être produit** : UC-05 prescrit qu'un document appartient toujours à exactement un dossier (`dossier associé` non-nullable) — ce qui fonde l'unicité d'appartenance. UC-05 A4 mentionne le dossier virtuel « Non classés » comme repli pour les documents sans dossier explicite. UC-14 prescrit la recherche par titre seul au MVP, omniprésente (préparation et session). La vision produit §2.2 mentionne les backlinks comme élément du système documentaire. UJ-UC-04 utilise le label « Référencé par » dans la description des opportunités UX, mais US-UC-04 restait plus souple sur ce point — ce qui avait initialement justifié de traiter le placement comme recommandation révisable. **Ratification** : le wireframe `editeur-document` a rendu et livré un placement précis (zone latérale secondaire, sous les documents liés, repliée par défaut), audité **CONFORME** (AUDIT §3.16 — « les backlinks « référencé par » sont correctement rendus »). Le zoning ratifie ce rendu plutôt que de maintenir une recommandation ouverte sans bénéfice — aucune source n'entre en tension avec ce placement. Le rendu non disruptif des résultats de recherche en session est sourcé par UJ-UC-06 §Opportunités UX (*« résultats de recherche ouverts dans un panneau latéral sans interrompre le contexte de session »*) et NFR-PERF-04.
 
-**Alternatives considérées** : multi-dossiers par document — écartée, car UC-05 prescrit explicitement l'unicité d'appartenance.
+**Alternatives considérées** : multi-dossiers par document — écartée, car UC-05 prescrit explicitement l'unicité d'appartenance. Maintenir le placement « révisable » sans le figer — écarté : le wireframe conforme donne un rendu stable et sans tension corpus, prolonger l'ouverture n'aurait plus de justification.
 
-**Condition de retour** : le placement du bloc « Référencé par » est révisable (recommandation d'UJ).
+**Condition de retour** : aucune sur le placement — figé par ratification du rendu conforme (`editeur-document`, AUDIT §3.16). Renvoi : `docs/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »).
 
 ---
 
@@ -473,7 +473,7 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 ---
 
-### AR-16 — Dossiers de l'espace personnel — arbitrage du 2026-06-18
+### AR-16 — Dossiers de l'espace personnel — arbitrage du 2026-06-18 (retouché 2026-07-15 — visibilité de « Non classés »)
 
 **Décision** : un espace personnel est créé avec **uniquement le dossier virtuel « Non classés »** ; aucun des quatre dossiers système nommés (Personnages, Joueurs, Scénarios, Notes) ; le propriétaire crée ses propres dossiers selon son organisation.
 
@@ -482,6 +482,10 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 **Alternatives considérées** : doter l'espace personnel des quatre dossiers système — sémantiquement vide (pas de joueurs, pas de groupe) et contraire aux sources. Aucun dossier du tout — « Non classés » virtuel est obligatoire : il garantit qu'un document créé sans dossier explicite dispose toujours d'un rattachement.
 
 **Condition de retour** : aucune (contraint par le domaine — `content-library.md`).
+
+**Précision dérivée (2026-07-15) — visibilité de « Non classés » quand il est vide** : la règle générale rendue par les wireframes (`navigation-dossiers`, `vue-espace-personnel`) est que le dossier « Non classés » est **masqué s'il est vide, affiché dès qu'il contient des documents** — règle générale sourcée par l'**AUDIT §3.7** (rendu wireframe, CONFORME), et non par `content-library.md` : `Folder.isVirtual = true` garantit uniquement l'existence d'un réceptacle unique par espace, pas cette nuance de visibilité conditionnelle. Cette règle générale s'applique telle quelle aux espaces partagés (`CAMPAIGN`/`ONE_SHOT`). **En espace `PERSONAL`, elle se dérive différemment** : « Non classés » y est la **seule vue de départ** (ci-dessus — aucun dossier système nommé n'existe pour occuper la zone de navigation) ; masquer ce dossier vide laisserait un espace personnel fraîchement créé sans aucun repère de navigation. « Non classés » **reste donc visible même vide, tant qu'il est le seul dossier de l'espace** — dérivation directe d'AR-16 (seul dossier existant à la création) et de `content-library.md` (`isVirtual`, un seul réceptacle garanti par espace). **Dès que le propriétaire crée d'autres dossiers dans l'espace personnel, « Non classés » suit la règle générale** (masqué si vide, affiché si non vide — AUDIT §3.7) : la visibilité inconditionnelle ne vaut que pour l'espace personnel qui n'a encore aucun autre dossier. Cette distinction n'introduit pas de nouvelle règle métier : elle explicite, pour l'espace `PERSONAL`, la conséquence structurelle d'AR-16 sur une règle de rendu déjà tranchée ailleurs.
+
+**Condition de retour (précision)** : aucune — dérivation structurelle, pas un point ouvert.
 
 ---
 
@@ -493,7 +497,7 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 **Alternatives considérées** : espace personnel dans le compteur — induirait en erreur sur le quota restant. Même liste sans badge de décompte — ambigu sur ce qui compte et ce qui ne compte pas.
 
-**Condition de retour** : l'expression exacte (badge, section, libellé) relève du wireframe ; l'arbitrage fixe l'invariant « PERSONAL hors quota, jamais bloqué ».
+**Condition de retour** : l'expression exacte (badge, section, libellé) **`[À TRANCHER — wireframe]`** — **HAND-OFF vers la session `docs/presentation/` (wireframes), zone lecture seule ici** ; l'arbitrage AR-17 fixe l'invariant « PERSONAL hors quota, jamais bloqué », pas la forme de surface.
 
 ---
 
@@ -536,6 +540,18 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 **Alternatives considérées** : dossiers système non supprimables (renommables seulement) — écarté par décision opérateur ; la rigidité ne bénéficie pas aux personas qui ont une organisation naturelle différente. Aucun dossier par défaut — écarté, car le coût de démarrage augmente pour les MJ qui n'ont pas d'organisation établie. Garantir plusieurs réceptacles intouchables — écarté, car un seul réceptacle nommé « Non classés » (ou son renommage) suffit à garantir que tout document dispose d'un rattachement.
 
 **Condition de retour** : aucune sur le principe. La liste exacte des dossiers système proposés à la création d'un espace partagé (Personnages, Joueurs, Scénarios, Notes) et leur libellé de surface relèvent du wireframe Création d'espace.
+
+---
+
+### AR-21 — Libellé de surface « Pro » — arbitrage du 2026-07-15
+
+**Décision** : le tier payant (`AccountTier.PRO`) est nommé **« Pro »** en surface (profil utilisateur, tout affichage du niveau de compte) — ni « Premium », ni « Payant », ni l'énoncé technique `PRO` tel quel. Ce libellé clôt la veille terminologique ouverte par l'audit des wireframes (AUDIT §3.10 — « le libellé « Pro » en surface est à surveiller »).
+
+**Raison d'être produit** : le glossaire §AccountTier nomme la valeur d'énumération `PRO` (« abonnement payant — espaces illimités, joueurs illimités, 5 Go+ ») ; `moscow.md` emploie déjà « Pro » en langage produit dans la trajectoire de conversion (*« local gratuit → compte gratuit (cloud + partage) → Pro (illimité) »*). Le libellé de surface « Pro » est donc directement dérivé du vocabulaire déjà en usage dans le corpus de conception — pas une invention de ce zoning. Fixer ce libellé respecte la discipline de langage de surface (S1 §Discipline).
+
+**Alternatives considérées** : « Premium » — écarté, absent du corpus, introduirait un second terme pour le même tier. « Payant » — écarté, moins engageant et absent du vocabulaire déjà employé par moscow. Énoncé technique `PRO` tel quel en surface — écarté, casse la discipline de langage de besoin (aucun nom technique en interface).
+
+**Condition de retour** : aucune sur le libellé. **Hand-off** : la répercussion de ce libellé dans le wireframe `profil` (et tout autre écran mentionnant le niveau de compte) relève de la session `docs/presentation/` — hors périmètre d'écriture de ce document (zone lecture seule).
 
 ---
 
@@ -656,12 +672,13 @@ Les éléments suivants relèvent d'un entretien utilisateur ou d'une session de
 
 | Point | Nature |
 |---|---|
-| **Vue mobile joueur** | Angle mort d'interview — NFR-ACC-04 §Raison d'être signale l'usage potentiellement sur smartphone ; INTERVIEW_GUIDE Q8 liste la question. Non prescrit comme exigence MVP. Relève d'interview. |
-| **Éditeur de document non spécifié visuellement** | UC-04 décrit la structure du modèle documentaire mais ne précise pas l'interface de l'éditeur (disposition des blocs, affordances de type, gestion des liens). La conception de l'éditeur sera définie en wireframe. |
-| **Écran de consultation des backlinks non décrit** | La vision §2.2 mentionne les backlinks ; UJ-UC-04 utilise le label « Référencé par » ; mais aucun UC ni US ne décrit l'interface de consultation des backlinks. Le zoning réserve un emplacement sans le spécifier. |
-| **Vue « Non classés »** | UC-05 A4 mentionne une *« vue 'Non classés' dédiée »* accessible une seule fois dans le corpus. L'interface de cette vue n'est pas décrite — particulièrement centrale pour l'espace personnel où elle est la seule vue de départ. Relève de wireframe. |
+| **Vue mobile joueur — DIFFÉRÉ (vague suivante)** | AR-07 pose le mobile comme pensé dans la structure (non bloqué) mais non implémenté au MVP — aucun wireframe mobile produit. Ce report n'est pas un trou de corpus : c'est une décision opérateur explicite (AR-07), non forcée au MVP. Angle d'interview maintenu (NFR-ACC-04 §Raison d'être ; INTERVIEW_GUIDE Q8) pour arbitrer la priorité de la vague suivante si les entretiens révèlent un accès joueur majoritairement mobile. |
+| **Interface de l'éditeur de document (blocs, types, liens) — RÉSOLU** | **RÉSOLU** — spécifié et rendu par le wireframe `editeur-document` (AUDIT §3.16, CONFORME). Renvoi : `docs/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md`. |
+| **Comportement de l'éditeur de document en perte de connexion / reprise (préparation cloud) — DIFFÉRÉ ET ROUTÉ** | NFR-OFF-04 couvre le fonctionnement partiel en perte de réseau **en session** (vue session, saisie de notes) ; il ne couvre pas l'éditeur de document en préparation cloud (sauvegarde locale automatique, indicateur de brouillon, reprise). Le wireframe `editeur-document` (et `editeur-scenario`) signale ce point `[SOUS-SPÉCIFIÉ]` sans le trancher, au-delà d'UC-03 E2 (conserve les données localement si possible) ; l'AUDIT confirme l'absence de spécification (« l'état d'erreur perte de connexion cloud n'est pas montré »). **Aucune exigence n'est créée ici** (hors autorité interface) : le comportement de l'éditeur cloud-préparation hors-ligne est un **trou corpus AMONT** → remédiation NFR requise (étendre NFR-OFF-04 ou nouvel NFR-OFF-05) avant tout wireframe d'état synchro sur cet écran. |
+| **Écran de consultation des backlinks « Référencé par » — RÉSOLU** | **RÉSOLU** — placement figé en AR-11 (§S6), rendu par le wireframe `editeur-document`. Renvoi : `docs/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »). |
+| **Vue « Non classés » — RÉSOLUE** | Décision : « Non classés » n'est pas une vue dédiée séparée — c'est un dossier ordinaire de l'arborescence (filtre du dossier virtuel), rendu par le wireframe `navigation-dossiers`, audité **CONFORME** (AUDIT §3.7). La tension UC-05 A4 (« vue 'Non classés' dédiée ») est close par ce rendu. Précision de visibilité (masqué si vide en espace partagé ; en `PERSONAL`, visible même vide car seule vue de départ) figée en §S6 (retouche AR-16). Renvoi : `docs/presentation/wireframes/sv3-preparation/navigation-dossiers/navigation-dossiers.md`. |
 | **Interface de l'espace personnel — RÉSOLU** | Décision : mix assumé — entrée distincte hors-quota au tableau de bord (AR-17), atterrissage capture-first (AR-15), conteneur de transit. Libellé « Espace personnel » confirmé (AR-05). Micro-copy d'intention neutre retenue : « Vos notes et contenus, hors campagne » — sert les deux modèles mentaux (capture-first et foyer réutilisable) sans les nommer. L'espace personnel ne se présente pas par un texte d'explication, il se découvre par l'usage. Points d'interview restants (perçu comme naturel ou à expliquer, libellé de surface) : relèvent d'interview et ne bloquent pas le wireframe. Renvoi : réflexion-ux-mvp.md. |
 | **Notification active côté joueur** | US-06 §Questions ouvertes — *« non décidé pour le MVP »*. Angle d'interview (Famille C). Laissé ouvert. |
 | **Persistance des notes invité inter-sessions sans compte** | La mécanique de récupération des notes `PLAYER_PRIVATE` d'un invité via un nouveau lien vers le même personnage est évoquée dans UC-06 §Règles métier mais non entièrement spécifiée. Parcours-03 §Couture C5 identifie ce point comme zone muette. Angle d'interview (Famille C). Laissé ouvert — relève de remédiation corpus. |
 | **Sémantique `ARCHIVED PERSONAL` — RÉSOLUE** | Le glossaire §SpaceStatus et `space-management.md` invariant 14 tranchent : un espace `PERSONAL` est toujours `ACTIVE` — `ARCHIVED` et `FROZEN` ne lui sont pas applicables (`FROZEN` = gel des espaces excédentaires au downgrade, `PERSONAL` est hors quota ; `ARCHIVED` contredirait l'invariant 14). Cohérent avec l'absence d'UI d'archivage pour l'espace personnel déjà en place dans ce zoning (§Paramètres de campagne, réservé aux espaces partagés). |
-| **Fournisseurs d'identité** | La liste exacte des fournisseurs d'identité externes proposés à l'inscription et à la connexion n'est pas tranchée dans le corpus. Angle d'interview (Famille C). Laissé ouvert — relève d'une décision produit/technique hors périmètre zoning. |
+| **Fournisseurs d'identité — RÉSOLU** | MVP : Google et Discord. Règle de confiance par fournisseur : ADR-015 (Sécurité authentification MVP). Surface : les éléments interactifs (boutons, libellés) relèvent du wireframe présentation (hors périmètre zoning). |

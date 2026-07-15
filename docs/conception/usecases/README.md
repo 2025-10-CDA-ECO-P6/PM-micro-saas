@@ -41,6 +41,14 @@
 
 ---
 
+## Post-MVP (spécifiés) — UC-15
+
+| ID | Use Case | Résumé |
+|---|---|---|
+| [UC-15](UC-15-gel-campagnes-downgrade-tier.md) | Gel de campagnes au downgrade de tier | Espaces excédentaires gelés automatiquement (lecture seule) au downgrade ; dégel automatique au ré-upgrade, sans perte de données. |
+
+---
+
 ## Vision long terme
 
 - [Use Cases hors MVP](UC-HORS-MVP.md) — fonctionnalités exclues, deprioritisées, et vision produit

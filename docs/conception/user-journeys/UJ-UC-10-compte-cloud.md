@@ -59,8 +59,9 @@ flowchart TD
 
     K --> N{Donnees locales\nexistantes ?}
     N -->|Oui| O[Gate de reconnaissance\nCampagnes + historique de session\nsessions, notes, epingles\nConfirmation requise\nRB-10-04 / ADR-016 §4]
-    N -->|Non| P[Evenement publie\nSpace Management\ninitialise tableau de bord]
-    O --> P
+    N -->|Non| RCC[Ecran creation de campagne\nFormulaire de creation premiere campagne]
+    O --> P[Evenement publie\nSpace Management\ninitialise tableau de bord]
+    RCC --> P
 
     M --> P
 

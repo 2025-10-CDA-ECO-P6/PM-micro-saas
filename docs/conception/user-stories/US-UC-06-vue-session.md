@@ -634,6 +634,10 @@ Scénario : Création impossible en ARCHIVED
 
 ## Questions ouvertes
 
-1. **Non décidé.** Le MJ reçoit-il une notification visuelle quand un joueur se connecte à la session ? À valider en entretien utilisateur.
+1. **Repoussé post-MVP, ancré au registre AR-06.** Le MJ reçoit-il une notification visuelle quand un joueur se connecte à la session ?
+   - **MVP (statut quo)**: Aucune notification active dédiée à la connexion joueur. Le paradigme appliqué demeure celui d'**AR-06** — notification ambiant, non-active. Seule une **annonce assistive orthogonale (NFR-ACC-02)** s'applique au MVP.
+   - **Post-MVP (question ouverte)**: Une notification **active** sur la connexion joueur emprunterait le registre d'**AR-06** (paradigme de notification ambiant) étendu au versant MJ — (gated-interview, non bloquante) — et non un second paradigme de notification.
+   - Voir **AR-06** pour la cohérence du modèle de notification globale (joueur ↔ MJ).
+   - **Substance reportée**: les modalités concrètes de la notification future sont reportées à l'interview post-MVP — non tranchées à ce stade.
 2. **DÉCIDÉ.** Les LiveNotes des sessions précédentes sont accessibles via la recherche globale (UC-14) comme tout document. Elles ne sont pas affichées dans le panneau de notes de la session courante.
 3. **DÉCIDÉ.** Auto-save à chaque changement. Pas de panneau paramètres séparé. Mode édition de la vue session accessible sans lancer de session. Templates de vue session = Could Have post-MVP.

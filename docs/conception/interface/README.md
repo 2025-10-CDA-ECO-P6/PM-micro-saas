@@ -19,7 +19,7 @@ La sous-couche interface est en aval. Elle traduit le besoin en descriptions de 
 
 | Fichier | Rôle | Statut |
 |---|---|---|
-| [`zoning.md`](zoning.md) | Ossature de navigation, inventaire des écrans (S4), couverture UC (S5), 17 arbitrages AR-01..AR-17 (S6), châssis applicatif (S7), exclusions (S8), trous de corpus (S9) | Validé — à lire en premier |
+| [`zoning.md`](zoning.md) | Ossature de navigation, inventaire des écrans (S4), couverture UC (S5), 21 arbitrages AR-01..AR-21 (S6), châssis applicatif (S7), exclusions (S8), trous de corpus (S9) | Validé — à lire en premier |
 | [`conventions-wireframe.md`](conventions-wireframe.md) | Conventions de notation et de nommage pour les fiches d'écran : deux registres (domaine / région d'interface), légende de 10 familles de marqueurs | Produit — vague 2 |
 | [`gabarit-ecran.md`](gabarit-ecran.md) | Structure de toute fiche de description d'écran basse-fidélité + exemple-pilote sur la vue session MJ | Produit — vague 2 |
 | Wireframes (à venir) | Une fiche par écran de l'inventaire S4, instanciant le gabarit | Vague 3 |
@@ -37,7 +37,7 @@ La sous-couche interface est en aval. Elle traduit le besoin en descriptions de 
 
 ## Ce que ce dossier ne fait pas
 
-- Il ne re-prescrit pas les arbitrages AR-01..AR-17 — il les référence.
+- Il ne re-prescrit pas les arbitrages AR-01..AR-21 — il les référence.
 - Il n'invente pas de règles métier — celles-ci viennent des use cases.
 - Il ne contient pas de wireframes finaux ni de maquettes visuelles.
 - Il ne modifie pas `docs/conception/README.md` (index racine — réservé à une mise à jour ultérieure).

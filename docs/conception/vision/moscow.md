@@ -278,8 +278,11 @@ section correspondante).
 
 L'application permet de constater, de façon anonyme et sans capter le contenu narratif :
 
-1. **Activation préparation** : le MJ a créé un espace (ou utilisé son espace personnel) ET y
-   a créé ses premiers documents. Ce constat mesure si le pilier 1 (organisation et préparation)
+1. **Activation préparation** : le MJ a créé un espace (campagne) ET y a créé ses premiers
+   documents ; ou, en l'absence de campagne, a produit dans son espace personnel un contenu qui
+   traduit un **geste structurant** (au-delà d'une capture triviale — organisation, structuration,
+   franchissement d'un seuil ; seuil/critère exact non fixé, `[À TRANCHER — métrique produit]` —
+   voir vision-produit.md §2.3). Ce constat mesure si le pilier 1 (organisation et préparation)
    a engagé l'utilisateur au-delà de la création d'un conteneur.
 
 2. **Activation vue session** : une session a été ouverte ET réellement utilisée pendant une partie — interaction avec du contenu, création de notes, navigation dans les panneaux. Ce constat mesure si le pilier 2 (pilotage en direct) crée une valeur immédiate.
@@ -380,8 +383,7 @@ reste post-MVP ; l'infrastructure (l'espace `PERSONAL` lui-même) est Must Have.
 
 **Pourquoi Should Have** : fonctionnalité de survie en session pour les MJ avec du volume.
 Thomas (400 notes dans son vault) et Émilie (retrouver un PNJ inventé il y a trois séances)
-en font une nécessité dès que l'espace a quelques semaines d'existence. Inclut le filtrage
-par tags — les tags sont un mécanisme au service de la recherche, pas un use case distinct.
+en font une nécessité dès que l'espace a quelques semaines d'existence. La recherche par mot-clé est Should Have MVP ; le filtrage par tags (A3) est Could Have / hors MVP — les tags comme mécanisme au service de la recherche seront évalués en phase suivante selon les usages réels.
 
 **Critère de sortie** : un MJ retrouve n'importe quel document de son espace par mot-clé
 depuis la vue session en moins de cinq secondes.

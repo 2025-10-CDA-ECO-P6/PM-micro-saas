@@ -221,8 +221,9 @@ Scénario : Retirer le filtre de type
 
 **Règles métier** :
 - RB-14-07 : Depuis la vue session, les résultats de recherche s'ouvrent dans un panneau latéral — la vue session reste active.
-- RB-14-08 : Les documents liés à la session active sont pondérés en tête des résultats.
+- RB-14-08 : Les documents liés à la session active (épinglés, `LIVE_NOTE` de la session en cours, documents du scénario associé) sont pondérés en tête des résultats.
 - RB-14-09 : Les règles de visibilité s'appliquent identiquement depuis la vue session.
+- RB-14-10 : L'affichage des résultats de recherche depuis la vue session (et depuis la bibliothèque) est limité à un **top N avec pagination/chargement progressif**, optimisant le périmètre d'affichage pour l'espace disponible et les performances.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut accéder à la barre de recherche depuis la vue session.
@@ -297,6 +298,6 @@ Scénario : Recherche joueur depuis la vue session (A4, E1)
 
 ## Questions ouvertes
 
-- **Seuil de pondération session active** : quels critères précis déterminent qu'un document est "lié à la session active" pour la pondération (épinglé uniquement, ou aussi documents du scénario associé, LIVE_NOTE de la session en cours) ? A valider avec Conduite de session.
-- **Nombre de résultats affichés** : faut-il limiter le nombre de résultats affichés par défaut (ex. top 10 avec pagination) ou afficher tous les résultats ? A arbitrer selon les performances attendues.
+- **Seuil de pondération session active** — **FERMÉE** : l'ensemble des documents liés à la session active est explicitement énuméré en RB-14-08 (épinglés, `LIVE_NOTE` de session en cours, documents du scénario associé). Le poids relatif fin relève du wireframe/implémentation, hors conception.
+- **Nombre de résultats affichés** — **FERMÉE** : décision prise = **top N + pagination (chargement progressif)**. Inscrite en RB-14-10. Justification : optimisation du périmètre d'affichage selon l'espace disponible et les performances.
 - **Filtre par tag (A3)** : confirmer si le filtre par tag est inclus dans le MVP ou repoussé en Could Have — décision conditionnée par la complexité d'implémentation.

@@ -36,6 +36,8 @@ Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmè
 | UC-13 | Scénario réutilisable | Should Have — hors première livraison | [US-UC-13](US-UC-13-scenario-reutilisable.md) | [UJ-UC-13](../user-journeys/UJ-UC-13-scenario-reutilisable.md) |
 | UC-14 | Recherche | Should Have | [US-UC-14](US-UC-14-recherche.md) | [UJ-UC-14](../user-journeys/UJ-UC-14-recherche.md) |
 
+**Convention de traçabilité** : chaque user story renvoie à son UC source (autorité domaine) ; chaque UC peut renvoyer à ses US dérivées pour montrer les scénarios métier (bidirectionnalité navigationnelle — l'UC reste source de vérité).
+
 ---
 
 ## Vue MoSCoW globale
@@ -108,7 +110,7 @@ flowchart LR
 | Suppression de compte RGPD **dans le MVP** ; transfert de propriété de campagnes à membres actifs = post-MVP | Stories exclues UC-10 |
 | Invitation par lien uniquement (pas d'email par la plateforme) | US-11-01 |
 | Recherche titre + type uniquement (full-text post-MVP) | US-14-XX |
-| Catalogue scénarios au niveau compte (cross-campagne) | US-13-XX, extension domaine ScenarioLibrary |
+| Catalogue scénarios au niveau compte (cross-campagne) | US-13-XX, scénarios réutilisables (Document.isReusable) au niveau du compte |
 | SessionViewConfig : auto-save, mode édition sans session active | US-06-02 |
 
 ---

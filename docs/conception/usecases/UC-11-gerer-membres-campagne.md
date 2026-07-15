@@ -129,6 +129,6 @@ UC-11 est le **propriétaire unique** des données `Invitation` et `Membre d'esp
 
 - **[Hors MVP — à valider post-MVP]** L'invitation par email : les MJ en ont-ils besoin en complément du lien ? Quelle est la valeur ajoutée par rapport à copier-coller le lien dans un email manuel ?
 - Les MJ invitent-ils principalement par lien, email ou les deux ?
-- Ont-ils besoin de voir qui a ouvert une invitation sans encore rejoindre ?
-- Le retrait d'un joueur doit-il être visible par les autres joueurs ?
+- Ont-ils besoin de voir qui a ouvert une invitation sans encore rejoindre ? *(distinct du compteur d'usages restants — résolu, dérivable du domaine ; voir US-UC-11, Questions ouvertes Q1. Ce point-ci porte sur le suivi d'ouverture, non tranché.)*
+- Le retrait d'un joueur doit-il être visible par les autres joueurs ? *(le log d'activité associé reste Could Have, déjà exclu ; voir US-UC-11, Questions ouvertes Q2. Seule cette visibilité-ci reste ouverte.)*
 - Les MJ veulent-ils une validation manuelle avant que le joueur accède à la campagne ?

@@ -117,6 +117,7 @@ flowchart LR
 **Notes de conception** :
 - Identity & Access valide le token `GuestAccess` à réception du lien.
 - La saisie du nom d'affichage est le seul prérequis à l'accès — pas d'email, pas de mot de passe.
+- Le nom d'affichage seul suffit ; aucun pseudo ni code court n'est requis à la saisie. L'identité technique du joueur invité est portée par le `GuestAccessId` (généré à l'octroi de l'accès, jamais saisi par le joueur) — le nom d'affichage (`displayName`) est un simple label, sans garantie d'unicité. Deux joueurs peuvent saisir le même nom (deux « Marc ») sans que cela pose un problème de modèle : la désambiguïsation en cas d'homonymie relève de la **présentation** (par exemple un court suffixe dérivé du `GuestAccessId`, affiché dans la vue session du MJ), pas d'une contrainte d'unicité du modèle ni d'un identifiant obligatoire à la saisie — l'imposer sur-modéliserait un besoin de confort d'affichage.
 - Si le joueur est déjà connecté à un compte Haversack (A1), l'étape de saisie du nom est sautée : il accède directement avec son identité de compte et son historique de session.
 - Le `GuestAccess` est valide pendant la durée de la session + une fenêtre de grâce de 24 heures.
 - Le joueur invité voit les documents `PUBLIC`, les `documents épinglés` de la session (uniquement ceux `PUBLIC`) et peut prendre des notes personnelles (`PLAYER_PRIVATE`) accessibles à lui seul. Il a accès à sa fiche de personnage si un personnage lui est associé. Les documents `PLAYER_PRIVATE` d'autres joueurs, et ceux d'un éventuel compte MJ, ne lui sont jamais visibles — la visibilité est respectée indépendamment de l'épinglage.
@@ -283,6 +284,7 @@ Scénario : MJ revoque l acces permanent d un membre
 - Les notes personnelles prises en mode invité (`PLAYER_PRIVATE`) sont migrées vers le compte.
 - L'accès existant (sessions rejointes, documents consultés) est préservé.
 - Après migration, le joueur peut être proposé comme `Member` permanent de la campagne — la validation reste à la main du MJ.
+- L'accès du compte créé depuis la migration est immédiat ; la validation de l'adresse de messagerie n'est pas bloquante (RB-10-05, ADR-015 §2.1 — UC-10). La promotion en `Member` permanent (RB-09-16) dépend uniquement du consentement du MJ, jamais de l'état `emailVerified` du compte : ce sont deux gates indépendants, l'un ne conditionne pas l'autre.
 - La migration ne doit générer aucune perte de données.
 
 **Règles métier** :
@@ -323,7 +325,7 @@ Scénario : MJ peut promouvoir le joueur migre en Member
 | Partage sélectif de documents par joueur | Hors MVP — RB-08-04 définit que le partage s'applique à tous les membres et GuestAccess actifs. |
 | Notification joueur (email, push) à l'expiration du lien | Hors périmètre UC-09. Traité dans les fonctionnalités de notification. |
 | Récapitulatif post-session envoyé par email au joueur sans compte | Could Have — nécessite une adresse email, hors scope MVP pour les invités. |
-| Gestion d'un nom d'affichage en collision (deux joueurs avec le même nom) | Question ouverte — voir section dédiée. |
+| Identifiant ou pseudo dédié pour désambiguïser les homonymes (nom d'affichage en collision) | **Clos (Q#1)** — le nom d'affichage seul suffit ; l'identité technique est le `GuestAccessId`. La désambiguïsation d'homonymes est un traitement de présentation (suffixe dérivé du `GuestAccessId`), pas un identifiant de modèle. |
 
 ---
 
@@ -351,7 +353,7 @@ Scénario : MJ peut promouvoir le joueur migre en Member
 
 ## Questions ouvertes
 
-1. Le nom d'affichage seul est-il suffisant, ou faut-il un identifiant léger (pseudo ou code court) pour éviter les collisions lorsque deux joueurs saisissent le même nom ?
-2. La durée de grâce de 24 heures après la fin de session est-elle la bonne valeur ? À valider en interview utilisateur.
-3. Le joueur invité reçoit-il une notification (in-app ou email) lorsque le MJ lui partage un nouveau document pendant la session, ou la vue joueur se met-elle à jour en temps réel sans notification ?
-4. Lorsqu'un joueur invité migre vers un compte, doit-il valider son email avant d'obtenir l'accès permanent, ou l'accès est-il immédiat et l'email est validé en arrière-plan ?
+1. **RÉSOLU** — Le nom d'affichage seul suffit ; aucun identifiant léger (pseudo, code court) n'est requis à la saisie. L'identité technique du joueur invité est le `GuestAccessId` (généré à l'octroi de l'accès, jamais saisi) — le nom d'affichage est un label sans garantie d'unicité. La désambiguïsation en cas d'homonymie (deux « Marc ») est traitée en **présentation** (suffixe court dérivé du `GuestAccessId`, affiché dans la vue session du MJ), pas par une contrainte de modèle : imposer un pseudo ou un code obligatoire sur-modéliserait un besoin de confort d'affichage.
+2. **RÉSOLU** — La durée de grâce est ratifiée à **24 h ferme** après la fin de session, alignée avec RB-09-01 et la règle 5 du domaine Space Management (`GuestAccess SESSION` expire à la fermeture de la session + 24h de grâce). Pas de variation par offre ni d'interview complémentaire requise.
+3. **RÉSOLU** — Le joueur invité reçoit une mise à jour **ambiante et temps réel** du partage de documents sans notification active au MVP (voir zoning **AR-06**). L'annonce assistive est couverte orthogonalement par **NFR-ACC-02**.
+4. **RÉSOLU** — L'accès est **immédiat** après migration invité→compte ; la validation de l'adresse de messagerie n'est **pas bloquante** (RB-10-05, ADR-015 §2.1 — cf. UC-10). L'accès `Member` permanent de la campagne reste gouverné par le consentement explicite du MJ (RB-09-16), jamais par l'état `emailVerified` du compte — ces deux gates sont indépendants. *(Cette question re-litigeait une règle déjà tranchée par UC-10/RB-10-05 ; clôture par renvoi vers la source.)*

@@ -118,11 +118,18 @@ Mettre les données en corbeille indéfiniment sans jamais les purger physiqueme
 - **Suppression accidentelle** : un utilisateur peut **restaurer** son espace depuis la corbeille pendant 30 jours après la suppression (interface à déterminer). Passé ce délai, l'espace est irrécupérable.
 - **Confiance** : la fenêtre de 30 jours offre un point d'équilibre entre sécurité (l'utilisateur ne perd pas définitivement ses données immédiatement) et conformité (la purge effective honore le droit à l'oubli).
 
+### Notification de suppression (MVP)
+
+**Décision opérateur — validée au MVP** : aucune notification email n'est envoyée au propriétaire au moment de la suppression. La confirmation UI à l'action de suppression tient lieu d'information — c'est suffisant pour signaler à l'utilisateur que le changement a eu lieu. La fenêtre de rétention de 30 jours et la possibilité de restauration restent inchangées, mais ne sont pas relancées par email.
+
+**Justification** : simplifier le MVP en évitant une dépendance de la saga vers un service d'email broker. La rétroaction UI est immédiate et fiable. L'utilisateur peut explorer sa corbeille et procéder à une restauration s'il le souhaite, sans attendre une notification asynchrone.
+
+**Réévaluation post-MVP** : ce choix peut être revisité si les métriques d'utilisation ou les retours utilisateur indiquent qu'une notification proactive améliore significativement la compréhension de la fenêtre de 30 jours ou réduit les tickets de support (« Comment récupérer mon espace supprimé ? »). À évaluer lors de la planification de Vague 2.
+
 ---
 
 ## Points à trancher en Vague 1
 
 - **Interface de restauration** : comment l'utilisateur accède-t-il à sa corbeille et restaure-t-il un espace ? (Un onglet spécifique ? Une endpoint API dédiée ?)
-- **Notification lors de la suppression** : envoyer un email au propriétaire pour confirmer la suppression et lui signaler la fenêtre de 30 jours de récupération ?
 - **Détail de la cascade** : **Statué dans [ADR-011](ADR-011-cascade-integrite-referentielle.md)** — mécanisme saga applicative, toutes FK en `ON DELETE RESTRICT`, séquences de déliaison et ordre topologique de DELETE complets (matrice ~30 FK, deux cycles traités, `source_document_id` cross-espace, préséance des sagas `SpaceDeleted` et `UserAnonymized`).
 - **Mécanisme du job de purge** : **Statué dans ADR-011** — Hosted Service .NET, claim exclusif par espace, transaction unique par espace, idempotence garantie.

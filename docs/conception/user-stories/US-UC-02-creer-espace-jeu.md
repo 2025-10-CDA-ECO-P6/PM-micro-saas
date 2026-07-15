@@ -471,8 +471,22 @@ Feature: One-shot depuis un scénario de bibliothèque
 
 ---
 
-## Questions ouvertes
+## Questions ouvertes — CLOSES
 
-1. **Séparation visuelle campagnes / one-shots dans le tableau de bord** — Le tableau de bord doit-il distinguer visuellement les espaces de type "campagne" et "one-shot", ou afficher tous les espaces ensemble avec un simple indicateur de type ? Impact sur l'UX et la lisibilité pour des MJ comme Sonia (5 one-shots/mois).
+1. **Séparation visuelle campagnes / one-shots dans le tableau de bord**
 
-2. **Renommage des dossiers système à la création** — Les dossiers système (Personnages, Joueurs, Scénarios, Notes) peuvent-ils être renommés par le MJ dès le formulaire de création, ou uniquement après que l'espace est créé ?
+**Résolution** : Liste/grille unifiée de cartes-espaces avec **indicateur de type par carte** (CAMPAIGN/ONE_SHOT). L'espace personnel préexiste en tête, distinct du quota (hors quota). Cohérent avec la persona Sonia qui pense en scénarios, pas en catégories d'espaces.
+
+**Renvoi** : wireframe `tableau-de-bord.md` §S9 (prototype affiché) ; UC-02 Postconditions pour les règles métier (RB-02-19 : PERSONAL hors quota).
+
+**Validation terrain (DIFFÉRÉE)** : La validation du terrain — le MJ perçoit-il bien la distinction visuelle entre campagnes et one-shots ? — reste reportée en interview utilisateur (UC-02 §Questions à valider). Non bloquante MVP.
+
+---
+
+2. **Renommage des dossiers système à la création**
+
+**Résolution** : Les dossiers système ne sont renommables que **après création de l'espace**, non dès le formulaire.
+
+**Justification** : Les dossiers système (Personnages, Joueurs, Scénarios, Notes) naissent sur l'événement `SpaceCreated` (ils n'existent pas au moment du formulaire). Le formulaire de création reste minimal — 1 champ obligatoire (nom) — pour friction nulle et parcours express. Les renommer dès le formulaire impliquerait une couche de configuration prématurée, contraire au design. Le renommage intervient après création, dans l'espace créé (par ailleurs autorisé : RB-02-03, `isSystem` informatif).
+
+**Règle métier afférente** : RB-02-03 — Dossiers système renommables et supprimables (post-création).

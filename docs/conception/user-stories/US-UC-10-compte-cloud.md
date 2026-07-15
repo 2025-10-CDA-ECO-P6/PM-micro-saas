@@ -74,13 +74,12 @@ flowchart TD
     F -->|Connexion federee| H[Connexion via fournisseur\nd identite externe]
 
     G --> I{Donnees locales\nexistantes ?}
+    H --> I
     I -->|Oui| J[Gate de reconnaissance\npuis migration vers le cloud]
-    I -->|Non| K[Compte cree\nTableau de bord vide]
+    I -->|Non| K[Compte cree\nCreation de campagne]
     J --> L[Compte cree\nDonnees locales migrees]
-    H --> K
 
     L --> M[Utilisateur authentifie\nTableau de bord accessible]
-    K --> M
 
     N[Utilisateur avec compte] --> O{Methode de connexion}
     O -->|Email et mot de passe| P[Saisit identifiants]
@@ -167,7 +166,7 @@ flowchart LR
 - [ ] L'utilisateur retrouve son espace de travail intact pour les campagnes migrées avec succès, avec tout leur historique de session (sessions passées consultables, notes et documents épinglés en place).
 - [ ] Un email déjà utilisé déclenche l'erreur E1 avec un message explicite.
 - [ ] Aucune validation de l'adresse de messagerie ne bloque la connexion. La validation de l'adresse de messagerie est requise avant les opérations sensibles (modification de l'adresse de messagerie, modification du mot de passe, liaison d'un compte via connexion fédérée, effacement RGPD). Le système refuse ces opérations tant que l'adresse de messagerie n'est pas validée, quel que soit le moyen de déclenchement.
-- [ ] L'utilisateur est redirigé vers son tableau de bord après inscription.
+- [ ] Un nouvel inscrit sans données locales à migrer est redirigé directement vers l'écran de création de campagne, sans écran de bienvenue intercalé (UC-10 fait foi sur cette cible). Un utilisateur dont des données locales ont été migrées retrouve son espace de travail synchronisé et est redirigé vers son tableau de bord.
 
 ```gherkin
 Scénario : Inscription depuis le mode local avec donnees locales (nominal 1)
@@ -265,28 +264,36 @@ Scénario : Connexion avec un compte suspendu
 
 **Notes de conception** :
 - La connexion fédérée est incluse dans le MVP comme méthode d'authentification aux côtés de l'adresse de messagerie et du mot de passe. Le choix du ou des fournisseurs est tracé dans ADR-015.
-- Si l'adresse de messagerie fournie par le fournisseur d'identité correspond à un compte existant créé par adresse de messagerie et mot de passe, les deux méthodes de connexion ne sont liées au même `User` que si l'adresse de messagerie de ce compte préexistant est vérifiée. Si l'adresse n'est pas vérifiée, la liaison est rejetée silencieusement (non-révélation d'existence) — voir RB-10-08.
+- Si l'adresse de messagerie fournie par le fournisseur d'identité correspond à un compte existant créé par adresse de messagerie et mot de passe, le traitement se distingue en trois branches selon l'état de ce compte préexistant — voir RB-10-08 : (a) adresse **vérifiée** → liaison au compte existant ; (b) adresse **non vérifiée** → ni liaison automatique (anti-hijacking, CWE-287), ni création d'un doublon (violerait l'invariant 1 email-unique) — **point ouvert, résolution non ratifiée** ; (c) aucun compte existant → création normale.
 - Si des données locales existent au moment de la première connexion fédérée (création de compte), le même gate de reconnaissance s'applique : l'application présente les campagnes détectées (titre, volume estimé, date de création) et demande une confirmation explicite avant l'import. La migration ne démarre qu'après cette confirmation, qui est une exigence du système quel que soit le moyen par lequel elle est déclenchée. En cas de rejet de certaines campagnes, un rapport détaille la raison du refus pour chacune, les données locales correspondantes restent intactes, et les campagnes acceptées sont migrées.
 
 **Règles métier** :
-- RB-10-08 : Quand un utilisateur tente de se connecter ou s'inscrire via connexion fédérée avec une adresse de messagerie déjà associée à un compte créé par adresse de messagerie et mot de passe, les deux méthodes de connexion ne sont rattachées au même compte que si l'adresse de messagerie de ce compte existant a été préalablement vérifiée par son détenteur. Si l'adresse n'a pas été vérifiée, le rattachement est refusé sans aucune indication révélant l'existence du compte, et sans fusion automatique. Justification : une adresse de messagerie jamais confirmée peut avoir été renseignée par n'importe qui ; autoriser automatiquement une connexion fédérée à se rattacher à ce compte permettrait à un tiers d'en prendre le contrôle sans avoir prouvé qu'il détient réellement l'adresse.
+- RB-10-08 : Quand un utilisateur tente de se connecter ou s'inscrire via connexion fédérée, le traitement se distingue selon l'état du compte associé à l'adresse de messagerie fournie par le fournisseur d'identité, en **trois branches exhaustives** :
+  - **(a) Email correspondant à un compte existant dont l'adresse est VÉRIFIÉE** : la connexion fédérée est rattachée au compte existant (`LinkFederatedIdentity()`, précondition `emailVerified = true` satisfaite — invariant 7, cf. [Identity & Access](../domain/identity-access.md)). Aucun doublon n'est créé.
+  - **(b) Email correspondant à un compte existant dont l'adresse N'EST PAS VÉRIFIÉE** : le rattachement automatique est refusé — **anti-hijacking (finding F-11, CWE-287 — Improper Authentication)** : une adresse jamais confirmée par son détenteur peut avoir été renseignée par n'importe qui ; autoriser le rattachement automatique permettrait à un tiers connaissant cette adresse d'en prendre le contrôle via un fournisseur d'identité externe sans avoir prouvé qu'il la détient réellement. **Symétriquement, la création d'un nouveau compte est exclue** : elle produirait deux comptes actifs pour la même adresse, ce qui violerait l'invariant 1 (email unique, cf. [Identity & Access](../domain/identity-access.md)). Aucune des deux issues classiques (liaison automatique, doublon silencieux) n'étant admissible, la résolution exacte de ce cas est **[À TRANCHER — sécurité/RGPD]**, non ratifiée à ce stade :
+    - **Proposition documentée (non retenue par défaut) : Option A « reclaim-in-place »** — la preuve de possession apportée par le fournisseur d'identité externe fait basculer la coquille non vérifiée en compte réclamé : `emailVerified` passe à `true`, la connexion fédérée est liée à ce compte, et le credential mot de passe préexistant est neutralisé (réécriture du hash et invalidation, sur le précédent déjà établi par [ADR-007](../../architecture/decisions/ADR-007-rgpd-autorisation-api.md) §Compléments post-revue pour la neutralisation de credential). Le résultat est observationnellement identique à une création de compte OAuth ordinaire côté utilisateur — aucun canal d'énumération n'est ouvert (CWE-204 — Observable Response Discrepancy, déjà fermé par le refus silencieux de ce cas).
+    - **Explicitement écartés de la discussion** : le refus non-silencieux de la tentative (rouvrirait le canal d'énumération CWE-204) et l'attribution d'un email synthétique/technique à la nouvelle identité (mécanisme de repli terminal, inadapté à une identité vivante appelée à être utilisée normalement).
+    - **Répartition du travail restant, à router explicitement** : la ratification de la posture sécurité (Option A ou alternative) reste à trancher côté sécurité ; le sort de la coquille non vérifiée et de son contenu éventuel relève d'une facette RGPD distincte et est routé au **Lot 14 (juridique)** ; l'opération de domaine elle-même (nom, signature, invariants precis) reste à spécifier au **build (B1.5)**, une fois la posture ratifiée.
+    - Tant que ce point n'est pas tranché, aucune implémentation ne doit présumer de l'une ou l'autre issue, et aucun scénario ne doit affirmer la création d'un compte supplémentaire pour ce cas (cela violerait l'invariant 1).
+  - **(c) Email ne correspondant à aucun compte existant** : création normale d'un compte fédéré (cf. RB-10-09).
 - RB-10-09 : La création de compte via connexion fédérée suit les mêmes règles de gate de reconnaissance avant migration que l'inscription par adresse de messagerie et mot de passe (RB-10-04) : l'application présente les campagnes locales détectées (titre, volume estimé, date de création) ainsi que pour chaque campagne son historique de session (sessions terminées, notes de session, documents épinglés, résumés), signale toute session en cours (LIVE) à clôturer avant migration, requiert une confirmation explicite de l'utilisateur avant l'import, et cette confirmation est une exigence du système quel que soit le moyen de déclenchement. En cas de rejet de certaines campagnes, un rapport détaille la raison du refus pour chacune, les données locales correspondantes restent intactes, et les campagnes acceptées sont migrées avec tout leur historique de session.
-- RB-10-10 : Un `User` authentifié uniquement via connexion fédérée ne dispose pas d'un mot de passe dans le système. La réinitialisation de mot de passe ne s'applique pas à ce compte.
+- RB-10-10 : Un `User` authentifié uniquement via connexion fédérée ne dispose pas d'un mot de passe dans le système. Deux opérations distinctes s'appliquent à ce compte : (a) la **réinitialisation** d'un mot de passe (A1, US-10-04) reste **sans objet (N/A)** — il n'existe aucun mot de passe à réinitialiser ; (b) la **définition d'un premier mot de passe complémentaire** est en revanche **autorisée** et fait de ce compte un compte hybride (identité fédérée + mot de passe), permettant d'éviter un verrouillage permanent si l'accès au fournisseur d'identité est perdu. Cette définition est une **opération sensible** : elle exige `emailVerified = true` (comme les autres opérations sensibles, cf. RB-10-05) et, faute de mot de passe existant à faire saisir, une **preuve d'identité alternative** — une ré-authentification récente et complète auprès du fournisseur d'identité fédéré (CWE-620 — Unverified Password Change). Raisonnement détaillé et garanties : [ADR-015](../../architecture/decisions/ADR-015-securite-authentification-mvp.md) §1.4 et le modèle de domaine [Identity & Access](../domain/identity-access.md) (`SetInitialPassword()`, invariant 7, règle métier n°6).
 
 **Critères d'acceptation** :
 - [ ] Le bouton de connexion fédérée est disponible sur les pages de connexion et d'inscription.
 - [ ] Un premier accès via connexion fédérée crée automatiquement un compte.
-- [ ] Un accès fédéré avec une adresse de messagerie déjà présente dans le système est lié au compte existant uniquement si l'adresse de messagerie de ce compte est vérifiée. Si non vérifiée, la liaison est rejetée silencieusement.
+- [ ] Un accès fédéré avec une adresse de messagerie déjà présente dans le système est lié au compte existant uniquement si l'adresse de messagerie de ce compte est vérifiée (branche a, RB-10-08). Si non vérifiée (branche b), la liaison automatique est refusée et **aucun doublon n'est créé** ; la résolution exacte de ce cas reste `[À TRANCHER — sécurité/RGPD]` (RB-10-08) et ne peut donc pas encore faire l'objet d'un critère d'acceptation testable — voir la proposition Option A et son routage (sécurité / Lot 14 RGPD / build B1.5).
 - [ ] Si des données locales existent, le gate de reconnaissance est présenté avec les campagnes détectées (titre, volume estimé, date de création), et la migration ne démarre qu'après confirmation explicite de l'utilisateur. Aucune migration ne peut démarrer sans cette confirmation, même si elle est déclenchée par un autre moyen que l'interface utilisateur.
-- [ ] L'utilisateur est redirigé vers son tableau de bord après authentification via connexion fédérée.
+- [ ] Un premier accès fédéré sans données locales à migrer est redirigé directement vers l'écran de création de campagne, sans écran de bienvenue intercalé (cohérent avec le scénario « Inscription sans données locales », UC-10 fait foi). Un premier accès fédéré avec données locales migrées, ou un utilisateur récurrent authentifié via connexion fédérée, est redirigé vers son tableau de bord.
 
 ```gherkin
-Scénario : Premiere connexion federee — creation de compte (nominal 4)
+Scénario : Premiere connexion federee sans donnees locales — creation de compte (nominal 4)
   Etant donne que Thomas n a pas de compte Haversack
+  Et qu il n a pas de donnees locales
   Quand il clique sur le bouton de connexion via fournisseur d identite externe
   Et qu il autorise l acces via son fournisseur
   Alors un compte User est cree avec son adresse de messagerie
-  Et il est redirige vers son tableau de bord
+  Et il est redirige vers l ecran de creation de campagne
 
 Scénario : Connexion federee avec adresse de messagerie deja presente — adresse verifiee
   Etant donne qu Émilie a un compte existant avec l adresse "emilie@exemple.fr" et que cette adresse est verifiee
@@ -294,11 +301,13 @@ Scénario : Connexion federee avec adresse de messagerie deja presente — adres
   Alors la connexion federee est liee a son compte existant
   Et elle accede a son tableau de bord sans creer un doublon
 
-Scénario : Connexion federee avec adresse de messagerie deja presente — adresse non verifiee
+Scénario : Connexion federee avec adresse de messagerie deja presente — adresse non verifiee (branche b, RB-10-08 — resolution ouverte)
   Etant donne qu un compte existe avec l adresse "emilie@exemple.fr" mais que cette adresse n est pas verifiee
   Quand elle se connecte via son fournisseur d identite avec cette meme adresse
-  Alors la liaison est rejetee silencieusement
-  Et un nouveau compte est cree sans doublon revele ni fusion automatique
+  Alors la liaison automatique au compte existant est refusee (anti-hijacking, CWE-287)
+  Et aucun nouveau compte n est cree pour cette meme adresse (invariant 1, email unique)
+  Et aucune indication ne revele l existence du compte preexistant (non-revelation, CWE-204)
+  Et le traitement exact de la coquille non verifiee reste [A TRANCHER - securite/RGPD] (RB-10-08 branche b) : ce scenario ne prejuge pas de l issue (proposition Option A "reclaim-in-place" documentee mais non ratifiee)
 
 Scénario : Connexion federee avec donnees locales existantes
   Etant donne qu un utilisateur a des donnees locales
@@ -503,6 +512,7 @@ Scénario : Suppression bloquee — adresse de messagerie non validee
 
 ## Questions ouvertes
 
-1. Faut-il un écran de bienvenue spécifique pour un nouvel inscrit sans données locales, ou la redirection directe vers la création de campagne est-elle suffisante ?
-4. La modification du mot de passe pour un compte lié via connexion fédérée doit-elle créer un mot de passe en complément, ou rester bloquée ?
+1. ~~Faut-il un écran de bienvenue spécifique pour un nouvel inscrit sans données locales, ou la redirection directe vers la création de campagne est-elle suffisante ?~~ **Clos (Q#1)** — pas d'écran de bienvenue : redirection directe vers l'écran de création de campagne (UC-10 fait foi). Critère d'acceptation US-10-01 aligné en conséquence (la mention antérieure de « tableau de bord » comme cible du nouvel inscrit sans données locales était une dérive vis-à-vis d'UC-10).
+2. ~~La modification du mot de passe pour un compte lié via connexion fédérée doit-elle créer un mot de passe en complément, ou rester bloquée ?~~ **Clos (Q#4)** — le mot de passe complémentaire est autorisé. RB-10-10 amendée pour distinguer la réinitialisation d'un mot de passe inexistant (N/A, inchangé) de la définition d'un premier mot de passe (autorisée, opération sensible — `emailVerified` + ré-authentification récente auprès du fournisseur d'identité, cf. ADR-015 §1.4).
+3. **Ouverte (Q#5) — [À TRANCHER — sécurité/RGPD]** : quel traitement pour une connexion fédérée dont l'email correspond à un compte existant **non vérifié** (RB-10-08 branche b) ? Ni liaison automatique (anti-hijacking, CWE-287) ni création de doublon (invariant 1) ne sont admissibles. Proposition documentée non ratifiée : Option A « reclaim-in-place » (bascule de la coquille non vérifiée en compte réclamé, neutralisation du credential existant, cf. précédent ADR-007 §Compléments post-revue). Écartés : refus non-silencieux (rouvre CWE-204) et email synthétique. Répartition à router : ratification sécurité de l'option retenue ; facette RGPD (sort de la coquille et de son contenu éventuel) → Lot 14 juridique ; opération de domaine à spécifier → build B1.5. Tant que ce point reste ouvert, aucun scénario ni critère d'acceptation ne doit présumer de l'issue.
 
