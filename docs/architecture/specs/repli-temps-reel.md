@@ -1,6 +1,6 @@
 # Spec — Seuil de coût session concurrente → repli SSE → polling adaptatif
 
-> **Nature** : spec pré-build (approche cadre fidèle). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucune formule de coût non explicitement actée dans le corpus n'est introduite ici. Les extraits de configuration ci-dessous sont **illustratifs et non normatifs** — ils balisent la forme du livrable de configuration attendu, pas son contenu.
+> **Nature** : spec pré-build (approche de report fidèle au corpus). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucune formule de coût non explicitement actée dans le corpus n'est introduite ici. Les extraits de configuration ci-dessous sont **illustratifs et non normatifs** — ils balisent la forme du livrable de configuration attendu, pas son contenu.
 >
 > **Source normative** : [ADR-004 — Transport temps réel : SignalR](../decisions/ADR-004-transport-temps-reel.md), notamment les lignes 36 et 47 (« Compléments post-revue »).
 >

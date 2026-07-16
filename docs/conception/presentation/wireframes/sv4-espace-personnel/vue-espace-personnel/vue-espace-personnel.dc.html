@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#2b2620;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<!-- TITRE -->
+<div style="position:absolute;left:40px;top:0;width:1100px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Espace personnel</span>
+    <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">foyer de capture hors campagne · surface réduite (AR-14)</span>
+  </div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">Sources : UC-01 · UC-04 · UC-05 · AR-14 · AR-15 · AR-16   ·   vue session / partage / membres = <b>absents par nature</b> (jamais grisés)</div>
+</div>
+
+<!-- ============ BANDE LAPTOP ============ -->
+<div style="position:absolute;left:40px;top:150px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Laptop · grand écran</div>
+
+<!-- ---------- état chargé ---------- -->
+<div style="position:absolute;left:40px;top:200px;width:1180px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Espace personnel — état chargé</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">dossiers libres + « Non classés »</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:620px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:9px 16px 11px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">‹ tableau de bord</span>
+          <div style="display:flex;align-items:center;gap:9px"><span style="font:700 15px 'Hanken Grotesk';color:#2b2620">Espace personnel</span><span style="display:inline-flex;align-items:center;height:19px;padding:0 8px;border:1px solid #c9c2b4;border-radius:10px;font:500 9.5px 'Hanken Grotesk';color:#6b6456">hors quota</span></div>
+          <span style="font:400 11px 'Hanken Grotesk';color:#8a8275">Vos notes et contenus, hors campagne</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;max-width:360px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">barre de recherche</span>
+          <div style="display:flex;align-items:center;gap:8px;height:32px;padding:0 11px;background:#fff;border:1px solid #d3ccbe;border-radius:6px">
+            <span style="width:12px;height:12px;border:1.5px solid #a39a86;border-radius:50%"></span>
+            <span style="font:400 12px 'Hanken Grotesk';color:#a8a08e">Rechercher un titre…</span>
+          </div>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px;background:#fff;border:1px solid #cdc6b8;border-radius:15px;font:600 11.5px 'Hanken Grotesk';color:#5c554a"><span style="width:14px;height:14px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
+      </div>
+      <div style="flex:1;display:flex;gap:12px;padding:14px">
+        <div style="width:280px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de navigation par dossiers</span>
+            <span style="font:500 10px 'Hanken Grotesk';color:#8a8275">+ dossier</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:8px;padding:10px 13px;border-bottom:1px solid #f1ece1;background:#efe9de;box-shadow:inset 3px 0 0 #2b2620"><span style="font:600 13px 'Hanken Grotesk';color:#2b2620;flex:1">Idées de campagne</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">7</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:10px 13px;border-bottom:1px solid #f1ece1"><span style="font:500 13px 'Hanken Grotesk';color:#46403a;flex:1">PNJ réutilisables</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">5</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:10px 13px;border-bottom:1px solid #f1ece1"><span style="font:500 13px 'Hanken Grotesk';color:#46403a;flex:1">Maisons & règles</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">3</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:10px 13px"><span style="font:500 13px 'Hanken Grotesk';color:#8a8275;flex:1;font-style:italic">Non classés</span><span style="font:400 10px 'Spline Sans Mono',monospace;color:#9a917f">2</span></div>
+            <div style="margin-top:auto;padding:10px 13px;border-top:1px dashed #e4ded0;font:400 9.5px/1.5 'Spline Sans Mono',monospace;color:#a39a86">aucun dossier système nommé — « Non classés » seul à la création (AR-16) · visible même vide tant qu'il est le seul dossier (exception PERSONAL — AR-16 Précision 2026-07-15) ; dès qu'un autre dossier existe, suit la règle générale (masqué si vide, affiché si non vide — UC-05 A4)</div>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone de contenu / liste des documents</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 12px;background:#2b2620;color:#fbfaf6;border-radius:6px;font:600 11px 'Hanken Grotesk'">+ Nouveau document</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 13px;border-bottom:1px solid #ece6d9"><span style="font:600 13.5px 'Hanken Grotesk';color:#2b2620">Idées de campagne</span><span style="font:400 10.5px 'Spline Sans Mono',monospace;color:#9a917f">7 documents</span></div>
+            <div style="display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">SCÉN</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">La cité engloutie</span><span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">déplacer ›</span></div>
+            <div style="display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">L'Oracle aveugle</span><span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">déplacer ›</span></div>
+            <div style="display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:18px;padding:0 5px;border:1px dashed #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;background:#f7f4ee">—</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">Twist : le mentor est le traître</span><span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">déplacer ›</span></div>
+            <div style="display:flex;align-items:center;gap:9px;padding:11px 13px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:18px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">LIEU</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">Taverne du Pendu</span><span style="display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px solid #cdc6b8;border-radius:11px;font:500 10px 'Hanken Grotesk';color:#6b6456">déplacer ›</span></div>
+            <div style="margin-top:auto;padding:10px 13px;border-top:1px dashed #e4ded0;font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">surface = préparation seule (navigation · éditeur · recherche) — clic → éditeur · affordance « déplacer » présente sur chaque ligne ; déplacer un document → un seul dossier à la fois (AR-11)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- état vide / capture-first ---------- -->
+<div style="position:absolute;left:1300px;top:200px;width:600px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;font:600 13px 'Hanken Grotesk';color:#4a443a">État vide — première ouverture (capture-first · AR-15)</div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:440px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 15px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span style="font:700 14px 'Hanken Grotesk';color:#2b2620">Espace personnel</span>
+          <span style="font:400 10.5px 'Hanken Grotesk';color:#8a8275">Vos notes et contenus, hors campagne</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 12px;border:1px dashed #c9c2b4;border-radius:13px;font:500 10.5px 'Hanken Grotesk';color:#6b6456">● Mode local</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;background:#fff;border:1px dashed #c9c2b4;border-radius:14px;font:600 11px 'Hanken Grotesk';color:#5c554a"><span style="width:13px;height:13px;border:1.5px solid #a39a86;border-radius:50%"></span>Créer un compte</span>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;padding:34px;text-align:center">
+        <div style="width:62px;height:62px;border:2px dashed #cdc6b8;border-radius:14px;display:flex;align-items:center;justify-content:center;font:300 30px 'Hanken Grotesk';color:#c9c2b4">+</div>
+        <span style="font:700 17px 'Hanken Grotesk';color:#2b2620">Capturez votre première idée</span>
+        <span style="font:400 12.5px/1.55 'Hanken Grotesk';color:#8a8275;max-width:340px">Un PNJ, un lieu, un twist… un titre suffit. Pas besoin de créer une campagne d'abord — tout atterrit dans « Non classés ».</span>
+        <span style="display:inline-flex;align-items:center;height:38px;padding:0 18px;background:#2b2620;color:#fbfaf6;border-radius:7px;font:600 13px 'Hanken Grotesk'">+ Nouveau document</span>
+      </div>
+      <div style="padding:10px 15px;border-top:1px dashed #e4ded0;font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">arborescence à la création : « Non classés » uniquement (AR-16) · écran d'atterrissage de la 1ʳᵉ ouverture (AR-15)</div>
+    </div>
+  </div>
+</div>
+
+<!-- POST-ITS -->
+<div style="position:absolute;left:1960px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi</div>
+<div style="position:absolute;left:1960px;top:202px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-14</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Surface <b>réduite</b> : vue session, partage et membres sont <b>absents par nature</b> — pas grisés. Un espace mono-membre n'a pas de session.</div>
+</div>
+<div style="position:absolute;left:1960px;top:372px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-15 · AR-16</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Capture-first : on crée immédiatement, sans étape de campagne. À la création, seul « Non classés » — aucun dossier système nommé.</div>
+</div>
+<div style="position:absolute;left:1960px;top:540px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">cohérence</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Même grammaire que la vue campagne (navigation + liste + éditeur + recherche), <b>moins</b> ce qui suppose un groupe. Hors quota au tableau de bord (AR-17).</div>
+</div>
+
+<div style="position:absolute;left:1960px;top:708px;width:248px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.6deg)">
+  <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-11 · unicité</div>
+  <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Un document appartient à <b>un seul dossier</b>. L'affordance <b>« déplacer »</b> est visible sur <b>chaque ligne</b> — déplacer, pas dupliquer. Micro-copy d'intention : « Vos notes et contenus, hors campagne » (reflexion-ux §2 — libellé discret, pas de texte d'accueil).</div>
+</div>
+
+<!-- ============ BANDE TABLETTE ============ -->
+<div style="position:absolute;left:40px;top:910px;font:600 12px 'Spline Sans Mono',monospace;letter-spacing:.09em;color:#8a8275;text-transform:uppercase">Tablette · forme repliée (AR-07)</div>
+
+<div style="position:absolute;left:40px;top:960px;width:720px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Tablette — espace personnel</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">768px</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:740px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span style="font:500 13px 'Spline Sans Mono',monospace;color:#bdb4a1">‹</span>
+          <span style="font:700 13.5px 'Hanken Grotesk';color:#3a342c">Espace personnel</span>
+          <span style="display:inline-flex;align-items:center;height:18px;padding:0 7px;border:1px solid #c9c2b4;border-radius:9px;font:500 9px 'Hanken Grotesk';color:#6b6456">hors quota</span>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;background:#fff;border:1px solid #cdc6b8;border-radius:14px;font:600 11px 'Hanken Grotesk';color:#5c554a"><span style="width:13px;height:13px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
+      </div>
+      <div style="padding:8px 14px 0;font:400 10.5px 'Hanken Grotesk';color:#8a8275">Vos notes et contenus, hors campagne</div>
+      <div style="padding:13px 14px 0;display:flex;flex-direction:column;gap:7px">
+        <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">dossiers — sélection</span>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <span style="display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 12px;background:#2b2620;color:#fbfaf6;border-radius:14px;font:600 11.5px 'Hanken Grotesk'">Idées 7</span>
+          <span style="display:inline-flex;align-items:center;height:28px;padding:0 12px;border:1px solid #cdc6b8;color:#5c554a;border-radius:14px;font:500 11.5px 'Hanken Grotesk'">PNJ réutil. 5</span>
+          <span style="display:inline-flex;align-items:center;height:28px;padding:0 12px;border:1px solid #cdc6b8;color:#5c554a;border-radius:14px;font:500 11.5px 'Hanken Grotesk'">Maisons 3</span>
+          <span style="display:inline-flex;align-items:center;height:28px;padding:0 12px;border:1px solid #cdc6b8;color:#8a8275;border-radius:14px;font:500 11.5px 'Hanken Grotesk';font-style:italic">Non classés 2</span>
+        </div>
+      </div>
+      <div style="flex:1;padding:13px 14px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">liste · Idées de campagne</span>
+          <span style="display:inline-flex;align-items:center;height:28px;padding:0 12px;background:#2b2620;color:#fbfaf6;border-radius:6px;font:600 11px 'Hanken Grotesk'">+ Document</span>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:7px;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:9px;padding:12px 13px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:19px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">SCÉN</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">La cité engloutie</span></div>
+          <div style="display:flex;align-items:center;gap:9px;padding:12px 13px;border-bottom:1px solid #f1ece1"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:19px;padding:0 5px;border:1px solid #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#7a7264;background:#f7f4ee">PNJ</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">L'Oracle aveugle</span></div>
+          <div style="display:flex;align-items:center;gap:9px;padding:12px 13px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:19px;padding:0 5px;border:1px dashed #cdc6b8;border-radius:4px;font:500 9px 'Spline Sans Mono',monospace;color:#a39a86;background:#f7f4ee">—</span><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#46403a">Twist : le mentor est le traître</span></div>
+        </div>
+        <div style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">pas de vue session ni de partage (absents par nature — AR-14)</div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 700 }
+}"></script>
+</body>
+</html>

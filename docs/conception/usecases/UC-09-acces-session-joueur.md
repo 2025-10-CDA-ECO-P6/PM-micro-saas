@@ -61,7 +61,7 @@ Le MJ partage un lien d'accès à une session (lien ponctuel) ou à sa campagne 
 
 1. Le joueur a accédé comme invité à plusieurs sessions.
 2. Il veut conserver ses notes personnelles entre sessions.
-3. Il crée un compte depuis la page invité (UC-10) : ce point d'entrée mène à un **état contextualisé**, pas à un formulaire d'inscription générique — le contexte invité (session en cours, notes déjà prises) est préservé et présenté comme le motif de la création de compte, pour une migration sans perte perçue par le joueur. *(Réalisation d'écran : HAND-OFF présentation — `docs/presentation/**`.)*
+3. Il crée un compte depuis la page invité (UC-10) : ce point d'entrée mène à un **état contextualisé**, pas à un formulaire d'inscription générique — le contexte invité (session en cours, notes déjà prises) est préservé et présenté comme le motif de la création de compte, pour une migration sans perte perçue par le joueur. *(Réalisation d'écran : HAND-OFF présentation — `docs/conception/presentation/**`.)*
 4. Ses notes et accès existants sont migrés vers son compte : accès immédiat, sans attendre la validation de l'adresse de messagerie (cf. Règles métier).
 5. Il peut ensuite rejoindre la campagne via un lien de campagne (scénario nominal B) ; son admission comme `Member` reste soumise au consentement du MJ (RB-09-16), indépendamment de la validation de son email.
 

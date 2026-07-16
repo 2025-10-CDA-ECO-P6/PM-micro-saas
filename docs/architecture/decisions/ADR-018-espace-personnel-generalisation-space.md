@@ -17,10 +17,10 @@ Cet ADR acte la généralisation de l'agrégat `Campaign` en `Space` pour permet
 - Analyse d'impact invariant par invariant sur le corpus de conception existant.
 - Impact sur les sagas RGPD (ADR-011, ADR-012) et le mode local (ADR-017).
 - Recommandations MoSCoW (propriété vs activation vs bibliothèque de réutilisation).
-- Description de la chaîne d'artefacts de remédiation à produire dans un Build-out séparé.
+- Description de la chaîne d'artefacts de remédiation à produire dans un chantier de conception séparé.
 
 **Hors périmètre de cet ADR** :
-- Réécriture effective du corpus de domaine (renommage `Campaign` → `Space` dans les quatre fichiers domaine, le glossaire et les diagrammes) — **propriété de la session de remédiation Build-out `+conception`**.
+- Réécriture effective du corpus de domaine (renommage `Campaign` → `Space` dans les quatre fichiers domaine, le glossaire et les diagrammes) — **propriété de la session de remédiation de conception dédiée**.
 - Modification des use cases existants (UC-01, UC-02, UC-13).
 - Implémentation du store IndexedDB réécrit — renvoyé à ADR-016/017 au moment de la réécriture.
 - Résolution des incohérences de corpus listées en fin de document.
@@ -198,7 +198,7 @@ La fonctionnalité de promotion, catalogue, et instanciation inter-espaces reste
 
 ## Chaîne d'artefacts à construire ensuite
 
-La remédiation effective du corpus relève d'un **Build-out `+conception` séparé**, coordonné avec la session de remédiation en cours. Le présent ADR la décrit ; il ne l'exécute pas.
+La remédiation effective du corpus relève d'un **chantier de conception séparé**, coordonné avec la session de remédiation en cours. Le présent ADR la décrit ; il ne l'exécute pas.
 
 **Persona** : pas de nouveau persona. Ajout d'une facette aux personas Sonia (persona-07) et Antoine (persona-05) : « le contenu m'appartient, la campagne en organise une partie ». Thomas (persona-01) porte l'argument de possession autonome.
 

@@ -1,6 +1,6 @@
 # 07 — Architecture détaillée : vue transverse par préoccupation
 
-> Ce document est une **synthèse transverse** qui regroupe les décisions d'architecture déjà actées, organisées par préoccupation technique plutôt que par ordre chronologique ou par ordre de lecture. Il **consolide et renvoie** — la source de vérité de chaque décision reste l'ADR ou le fichier de fondations cité en regard de chaque affirmation.
+> Ce document est la **vue par préoccupation technique transverse**, complémentaire de la carte structurelle du système : il regroupe les décisions d'architecture déjà actées, organisées par axe technique (persistance, sécurité, RGPD, temps réel, mode local) plutôt que par ordre chronologique ou par ordre de lecture. Il **consolide et renvoie** — la source de vérité de chaque décision reste l'ADR ou le fichier de fondations cité en regard de chaque affirmation. Pour la carte structurelle du système (vues C4, choix de structure), voir le [Dossier d'Architecture Technique](../dossier-architecture.md).
 >
 > Ce document n'est **ni une nouvelle décision d'architecture, ni la conception détaillée en avant du build** : il ne tranche rien qui ne soit déjà tranché ailleurs, et il ne prépare pas de travail d'implémentation — cela reste un travail dédié différé, propre à l'entrée en build. Pour l'historique et le statut de chaque décision, voir le [registre ADR](decisions/README.md) ; pour une découverte dans l'ordre pédagogique, voir l'[index d'architecture](ArchitectureIndex.md).
 
@@ -8,13 +8,7 @@
 
 ## 1 — Fondations & découpage
 
-Le projet est structuré selon les principes de la Clean Architecture (inversion de dépendances, domaine au centre) appliqués à quatre bounded contexts DDD — Identity & Access, Space Management, Content Library, Session Conduct. Au MVP, ces contextes sont des frontières logiques (namespaces, contrats internes) plutôt que des assemblies séparées ; la granularité physique des projets .NET et la promotion ultérieure des contextes en projets isolés sont décrites dans [06-structure-projets.md](06-structure-projets.md), qui s'appuie lui-même sur [ADR-008](decisions/ADR-008-structure-solution.md).
-
-Le pattern central du domaine est « tout est Document » : tout contenu éditorial est un `Document` composé de `DocumentBlock`, avec un identifiant unique `DocumentId` et un champ `properties` gouverné par un value object validé contre un schéma déclaré par type. Ce choix, ses alternatives écartées et sa gouvernance sont actés dans [ADR-002](decisions/ADR-002-tout-est-document-gouvernance.md). Le vocabulaire et les concepts DDD sous-jacents (entité, value object, agrégat, domain event, repository, Id typés) sont introduits dans [01-ddd-fondations.md](01-ddd-fondations.md).
-
-La racine de l'espace applicatif a été généralisée : l'agrégat autrefois nommé `Campaign` est devenu `Space`, avec un type `PERSONAL` permettant au contenu documentaire d'exister indépendamment de toute campagne partagée. Cette généralisation, sa justification et son analyse d'impact invariant par invariant sont actées dans [ADR-018](decisions/ADR-018-espace-personnel-generalisation-space.md).
-
-Le pont côté .NET (structure des projets, Clean Architecture) a son symétrique côté client : l'architecture applicative front retient un mono-écosystème Angular (SPA principale + SSR/prerender pour la landing), documentée dans [stack.md](stack.md) et actée dans [ADR-003](decisions/ADR-003-stack-front.md).
+La structure du système (Clean Architecture, découpage en bounded contexts DDD, architecture applicative front) est cartographiée par le [Dossier d'Architecture Technique](../dossier-architecture.md) — voir [§1 Choix structurants](../dossier-architecture.md) pour l'argumentaire de structure et [§4 Vue composants](../dossier-architecture.md) pour la vue par bounded context. Les sections qui suivent s'appuient sur deux concepts de domaine que la carte structurelle nomme sans les développer ici : le pattern « tout est Document » ([ADR-002](decisions/ADR-002-tout-est-document-gouvernance.md)) et la racine applicative généralisée `Space` ([ADR-018](decisions/ADR-018-espace-personnel-generalisation-space.md)).
 
 ---
 

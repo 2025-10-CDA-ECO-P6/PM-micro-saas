@@ -421,7 +421,7 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 **Alternatives considérées** : multi-dossiers par document — écartée, car UC-05 prescrit explicitement l'unicité d'appartenance. Maintenir le placement « révisable » sans le figer — écarté : le wireframe conforme donne un rendu stable et sans tension corpus, prolonger l'ouverture n'aurait plus de justification.
 
-**Condition de retour** : aucune sur le placement — figé par ratification du rendu conforme (`editeur-document`, AUDIT §3.16). Renvoi : `docs/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »).
+**Condition de retour** : aucune sur le placement — figé par ratification du rendu conforme (`editeur-document`, AUDIT §3.16). Renvoi : `docs/conception/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »).
 
 ---
 
@@ -497,7 +497,7 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 **Alternatives considérées** : espace personnel dans le compteur — induirait en erreur sur le quota restant. Même liste sans badge de décompte — ambigu sur ce qui compte et ce qui ne compte pas.
 
-**Condition de retour** : l'expression exacte (badge, section, libellé) **`[À TRANCHER — wireframe]`** — **HAND-OFF vers la session `docs/presentation/` (wireframes), zone lecture seule ici** ; l'arbitrage AR-17 fixe l'invariant « PERSONAL hors quota, jamais bloqué », pas la forme de surface.
+**Condition de retour** : l'expression exacte (badge, section, libellé) **`[À TRANCHER — wireframe]`** — **HAND-OFF vers la session `docs/conception/presentation/` (wireframes), zone lecture seule ici** ; l'arbitrage AR-17 fixe l'invariant « PERSONAL hors quota, jamais bloqué », pas la forme de surface.
 
 ---
 
@@ -551,7 +551,7 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 **Alternatives considérées** : « Premium » — écarté, absent du corpus, introduirait un second terme pour le même tier. « Payant » — écarté, moins engageant et absent du vocabulaire déjà employé par moscow. Énoncé technique `PRO` tel quel en surface — écarté, casse la discipline de langage de besoin (aucun nom technique en interface).
 
-**Condition de retour** : aucune sur le libellé. **Hand-off** : la répercussion de ce libellé dans le wireframe `profil` (et tout autre écran mentionnant le niveau de compte) relève de la session `docs/presentation/` — hors périmètre d'écriture de ce document (zone lecture seule).
+**Condition de retour** : aucune sur le libellé. **Hand-off** : la répercussion de ce libellé dans le wireframe `profil` (et tout autre écran mentionnant le niveau de compte) relève de la session `docs/conception/presentation/` — hors périmètre d'écriture de ce document (zone lecture seule).
 
 ---
 
@@ -673,10 +673,10 @@ Les éléments suivants relèvent d'un entretien utilisateur ou d'une session de
 | Point | Nature |
 |---|---|
 | **Vue mobile joueur — DIFFÉRÉ (vague suivante)** | AR-07 pose le mobile comme pensé dans la structure (non bloqué) mais non implémenté au MVP — aucun wireframe mobile produit. Ce report n'est pas un trou de corpus : c'est une décision opérateur explicite (AR-07), non forcée au MVP. Angle d'interview maintenu (NFR-ACC-04 §Raison d'être ; INTERVIEW_GUIDE Q8) pour arbitrer la priorité de la vague suivante si les entretiens révèlent un accès joueur majoritairement mobile. |
-| **Interface de l'éditeur de document (blocs, types, liens) — RÉSOLU** | **RÉSOLU** — spécifié et rendu par le wireframe `editeur-document` (AUDIT §3.16, CONFORME). Renvoi : `docs/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md`. |
+| **Interface de l'éditeur de document (blocs, types, liens) — RÉSOLU** | **RÉSOLU** — spécifié et rendu par le wireframe `editeur-document` (AUDIT §3.16, CONFORME). Renvoi : `docs/conception/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md`. |
 | **Comportement de l'éditeur de document en perte de connexion / reprise (préparation cloud) — DIFFÉRÉ ET ROUTÉ** | NFR-OFF-04 couvre le fonctionnement partiel en perte de réseau **en session** (vue session, saisie de notes) ; il ne couvre pas l'éditeur de document en préparation cloud (sauvegarde locale automatique, indicateur de brouillon, reprise). Le wireframe `editeur-document` (et `editeur-scenario`) signale ce point `[SOUS-SPÉCIFIÉ]` sans le trancher, au-delà d'UC-03 E2 (conserve les données localement si possible) ; l'AUDIT confirme l'absence de spécification (« l'état d'erreur perte de connexion cloud n'est pas montré »). **Aucune exigence n'est créée ici** (hors autorité interface) : le comportement de l'éditeur cloud-préparation hors-ligne est un **trou corpus AMONT** → remédiation NFR requise (étendre NFR-OFF-04 ou nouvel NFR-OFF-05) avant tout wireframe d'état synchro sur cet écran. |
-| **Écran de consultation des backlinks « Référencé par » — RÉSOLU** | **RÉSOLU** — placement figé en AR-11 (§S6), rendu par le wireframe `editeur-document`. Renvoi : `docs/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »). |
-| **Vue « Non classés » — RÉSOLUE** | Décision : « Non classés » n'est pas une vue dédiée séparée — c'est un dossier ordinaire de l'arborescence (filtre du dossier virtuel), rendu par le wireframe `navigation-dossiers`, audité **CONFORME** (AUDIT §3.7). La tension UC-05 A4 (« vue 'Non classés' dédiée ») est close par ce rendu. Précision de visibilité (masqué si vide en espace partagé ; en `PERSONAL`, visible même vide car seule vue de départ) figée en §S6 (retouche AR-16). Renvoi : `docs/presentation/wireframes/sv3-preparation/navigation-dossiers/navigation-dossiers.md`. |
+| **Écran de consultation des backlinks « Référencé par » — RÉSOLU** | **RÉSOLU** — placement figé en AR-11 (§S6), rendu par le wireframe `editeur-document`. Renvoi : `docs/conception/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »). |
+| **Vue « Non classés » — RÉSOLUE** | Décision : « Non classés » n'est pas une vue dédiée séparée — c'est un dossier ordinaire de l'arborescence (filtre du dossier virtuel), rendu par le wireframe `navigation-dossiers`, audité **CONFORME** (AUDIT §3.7). La tension UC-05 A4 (« vue 'Non classés' dédiée ») est close par ce rendu. Précision de visibilité (masqué si vide en espace partagé ; en `PERSONAL`, visible même vide car seule vue de départ) figée en §S6 (retouche AR-16). Renvoi : `docs/conception/presentation/wireframes/sv3-preparation/navigation-dossiers/navigation-dossiers.md`. |
 | **Interface de l'espace personnel — RÉSOLU** | Décision : mix assumé — entrée distincte hors-quota au tableau de bord (AR-17), atterrissage capture-first (AR-15), conteneur de transit. Libellé « Espace personnel » confirmé (AR-05). Micro-copy d'intention neutre retenue : « Vos notes et contenus, hors campagne » — sert les deux modèles mentaux (capture-first et foyer réutilisable) sans les nommer. L'espace personnel ne se présente pas par un texte d'explication, il se découvre par l'usage. Points d'interview restants (perçu comme naturel ou à expliquer, libellé de surface) : relèvent d'interview et ne bloquent pas le wireframe. Renvoi : réflexion-ux-mvp.md. |
 | **Notification active côté joueur** | US-06 §Questions ouvertes — *« non décidé pour le MVP »*. Angle d'interview (Famille C). Laissé ouvert. |
 | **Persistance des notes invité inter-sessions sans compte** | La mécanique de récupération des notes `PLAYER_PRIVATE` d'un invité via un nouveau lien vers le même personnage est évoquée dans UC-06 §Règles métier mais non entièrement spécifiée. Parcours-03 §Couture C5 identifie ce point comme zone muette. Angle d'interview (Famille C). Laissé ouvert — relève de remédiation corpus. |

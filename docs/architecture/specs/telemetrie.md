@@ -1,6 +1,6 @@
 # Spec — Instrumentation par pilier, capture email, analytics RGPD
 
-> **Nature** : spec pré-build (approche cadre fidèle). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucun nom d'outil, aucun mécanisme non explicitement acté dans le corpus n'est introduit ici.
+> **Nature** : spec pré-build (approche de report fidèle au corpus). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucun nom d'outil, aucun mécanisme non explicitement acté dans le corpus n'est introduit ici.
 >
 > **Source normative** : [ADR-006 — Périmètre MVP](../decisions/ADR-006-perimetre-mvp.md), section « Compléments post-revue » (lignes 57-63). Contrainte RGPD de cohérence : [`cahier-des-charges.md` §7.4](../../cahier-des-charges.md#74-conformité-rgpd--protection-des-données) (ligne 808) et [NFR-CONF-02](../../conception/nfr/NFR-CONF-02-isolation-donnees-mode-local.md).
 >

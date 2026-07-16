@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haversack — Hub wireframes MVP</title>
+<style>
+/* ─── Reset minimal ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+/* ─── Tokens ────────────────────────────────────────────────────── */
+:root {
+  --ink:       #1A1F2E;
+  --ink-soft:  #4A5268;
+  --ground:    #F7F6F3;
+  --surface:   #EDECEA;
+  --surface-2: #E3E0DB;
+  --rule:      #D4D1CB;
+  --accent:    #3D6B8E;
+  --accent-lt: #D4E4F0;
+  --todo:      #B85C2A;
+  --todo-lt:   #F5E0D5;
+  --ok:        #2E7148;
+  --ok-lt:     #D3EBD9;
+
+  --mono: ui-monospace, 'Cascadia Code', 'Fira Mono', 'Consolas', monospace;
+  --sans: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+
+  --sidebar-w: 220px;
+  --r: 4px;
+}
+
+/* ─── Page shell ────────────────────────────────────────────────── */
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+}
+
+/* ─── Header ────────────────────────────────────────────────────── */
+header {
+  grid-column: 1 / -1;
+  border-bottom: 1px solid var(--rule);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  background: var(--ground);
+}
+.header-title {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.header-title strong {
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  display: block;
+  margin-top: 0.1rem;
+}
+.header-desc {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  max-width: 52ch;
+  line-height: 1.45;
+}
+.header-links {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+.header-links a {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--r);
+  padding: 0.25rem 0.6rem;
+  transition: background 0.15s, color 0.15s;
+}
+.header-links a:hover, .header-links a:focus-visible {
+  background: var(--accent);
+  color: #fff;
+  outline: none;
+}
+
+/* ─── Sidebar ───────────────────────────────────────────────────── */
+nav.sidebar {
+  grid-row: 2;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 72px);
+  overflow-y: auto;
+  border-right: 1px solid var(--rule);
+  padding: 1.5rem 1.25rem;
+  background: var(--ground);
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+.nav-section {
+  margin-bottom: 1.5rem;
+}
+.nav-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.45rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--rule);
+}
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.nav-list a {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 0.22rem 0.4rem;
+  border-radius: var(--r);
+  transition: background 0.1s, color 0.1s;
+}
+.nav-list a:hover, .nav-list a:focus-visible {
+  background: var(--surface-2);
+  color: var(--ink);
+  outline: none;
+}
+.nav-list a.todo-link {
+  color: var(--todo);
+}
+.nav-list a.todo-link:hover {
+  background: var(--todo-lt);
+}
+
+/* Legend */
+.legend {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.badge-ok      { background: var(--ok-lt);   color: var(--ok);   }
+.badge-todo    { background: var(--todo-lt); color: var(--todo); }
+.badge-pending { background: #FEF3E2;        color: #8A5A00;     }
+
+/* ─── Main content ──────────────────────────────────────────────── */
+main {
+  grid-row: 2;
+  padding: 2rem 2.5rem 4rem;
+  overflow-x: hidden;
+}
+
+/* ─── Surface sections ──────────────────────────────────────────── */
+.surface {
+  margin-bottom: 3rem;
+}
+.surface-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--accent);
+}
+.surface-code {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-lt);
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+}
+.surface-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.surface-note {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* Card grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  padding: 0.9rem 1rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.card:hover, .card:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-lt);
+  outline: none;
+}
+.card.card-todo {
+  border-color: var(--rule);
+  background: var(--surface);
+}
+.card.card-todo:hover, .card.card-todo:focus-visible {
+  border-color: var(--todo);
+  box-shadow: 0 0 0 2px var(--todo-lt);
+}
+.card-badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+}
+.card-slug {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+.card-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  text-wrap: balance;
+  padding-right: 3rem; /* avoid badge overlap */
+}
+.card-note {
+  font-size: 0.72rem;
+  color: var(--todo);
+  font-style: italic;
+}
+
+/* ─── Flow map ──────────────────────────────────────────────────── */
+#parcours {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--rule);
+}
+.flowmap-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.flowmap-subtitle {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-bottom: 2rem;
+}
+
+.flow-group {
+  margin-bottom: 2rem;
+}
+.flow-group-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.7rem;
+}
+.flow-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.flow-lane {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+}
+.flow-node {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.7rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.12s;
+}
+.flow-node:hover, .flow-node:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+.flow-node.todo-node {
+  border-style: dashed;
+  border-color: var(--todo);
+  color: var(--todo);
+  background: var(--todo-lt);
+}
+.flow-node.start-node {
+  background: var(--accent-lt);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.flow-node.isolated {
+  background: #EBF0F5;
+  border-color: #7A9EB5;
+  color: #2C5470;
+}
+.flow-arrow {
+  font-size: 0.8rem;
+  color: var(--rule);
+  padding: 0 0.35rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.flow-arrow.todo-arrow {
+  color: var(--todo);
+  opacity: 0.6;
+}
+.flow-label {
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+  padding: 0 0.25rem;
+  font-style: italic;
+}
+.flow-separator {
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  margin: 0.4rem 0;
+  opacity: 0.4;
+}
+.etanche-notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: #2C5470;
+  background: #EBF0F5;
+  border: 1px solid #7A9EB5;
+  border-radius: var(--r);
+  padding: 0.2rem 0.6rem;
+  margin-bottom: 0.8rem;
+}
+.etanche-notice::before {
+  content: "AR-03";
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  background: #7A9EB5;
+  color: #fff;
+  padding: 0.1rem 0.3rem;
+  border-radius: 2px;
+}
+
+/* ─── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+  nav.sidebar {
+    grid-row: auto;
+    height: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  main { padding: 1.25rem 1rem 3rem; }
+  header { flex-wrap: wrap; }
+  .header-links { margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
+
+/* Focus visible global */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ══════════════════════════════════════════════════════ -->
+<header>
+  <div class="header-title">
+    Haversack
+    <strong>Hub wireframes MVP</strong>
+  </div>
+  <p class="header-desc">
+    20 écrans répartis en 6 surfaces. Les 20 wireframes sont produits — cliquer une carte ouvre le wireframe interactif.
+  </p>
+  <div class="header-links">
+    <a href="./README.md">README</a>
+  </div>
+</header>
+
+<!-- ═══ SIDEBAR ═════════════════════════════════════════════════════ -->
+<nav class="sidebar" aria-label="Surfaces et écrans">
+
+  <div class="nav-section">
+    <div class="nav-label">SV1 — Transversaux</div>
+    <ul class="nav-list">
+      <li><a href="#sv1">Accueil non authentifié</a></li>
+      <li><a href="#sv1">Inscription</a></li>
+      <li><a href="#sv1">Connexion</a></li>
+      <li><a href="#sv1">Profil utilisateur</a></li>
+      <li><a href="#sv1">Suppression de compte</a></li>
+      <li><a href="#sv1">Gate de migration</a></li>
+    </ul>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">SV2 — MJ Entrée espace</div>
+    <ul class="nav-list">
+      <li><a href="#sv2">Tableau de bord</a></li>
+      <li><a href="#sv2">Création d'un espace</a></li>
+    </ul>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">SV3 — MJ Préparation</div>
+    <ul class="nav-list">
+      <li><a href="#sv3">Vue campagne</a></li>
+      <li><a href="#sv3">Navigation par dossiers</a></li>
+      <li><a href="#sv3">Recherche en préparation</a></li>
+      <li><a href="#sv3">Éditeur de document</a></li>
+      <li><a href="#sv3">Éditeur de scénario</a></li>
+      <li><a href="#sv3">Paramètres de campagne</a></li>
+    </ul>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">SV-session — MJ Session</div>
+    <ul class="nav-list">
+      <li><a href="#sv-session">Vue session MJ</a></li>
+      <li><a href="#sv-session">Panneau création rapide</a></li>
+    </ul>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">SV4 — Préparation (déclinaison PERSONAL)</div>
+    <ul class="nav-list">
+      <li><a href="#sv4">Vue espace personnel</a></li>
+    </ul>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">SV5 — Joueur (étanche)</div>
+    <ul class="nav-list">
+      <li><a href="#sv5">Accès par lien</a></li>
+      <li><a href="#sv5">Vue joueur</a></li>
+      <li><a href="#sv5">Page d'erreur d'accès</a></li>
+    </ul>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Carte de parcours</div>
+    <ul class="nav-list">
+      <li><a href="#parcours">Flux utilisateurs MVP</a></li>
+    </ul>
+  </div>
+
+  <div class="legend">
+    <div class="nav-label">Légende</div>
+    <div class="legend-item">
+      <span class="badge badge-ok">présent</span>
+      wireframe disponible
+    </div>
+    <div class="legend-item">
+      <span class="badge badge-pending">présent · récupéré</span>
+      wireframe présent, substance à revérifier
+    </div>
+  </div>
+
+</nav>
+
+<!-- ═══ MAIN ═════════════════════════════════════════════════════════ -->
+<main>
+
+  <!-- ── SV1 : Transversaux ──────────────────────────────────────── -->
+  <section class="surface" id="sv1" aria-labelledby="sv1-title">
+    <div class="surface-header">
+      <span class="surface-code">SV1</span>
+      <span class="surface-name" id="sv1-title">Transversaux</span>
+      <span class="surface-note">Authentification · Compte · Migration</span>
+    </div>
+    <div class="card-grid">
+
+      <a class="card" href="./sv1-transversaux/accueil/accueil.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">accueil</span>
+        <span class="card-name">Accueil non authentifié</span>
+      </a>
+
+      <a class="card" href="./sv1-transversaux/inscription/inscription.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">inscription</span>
+        <span class="card-name">Inscription</span>
+      </a>
+
+      <a class="card" href="./sv1-transversaux/connexion/connexion.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">connexion</span>
+        <span class="card-name">Connexion</span>
+      </a>
+
+      <a class="card" href="./sv1-transversaux/profil/profil.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">profil</span>
+        <span class="card-name">Profil utilisateur</span>
+      </a>
+
+      <a class="card" href="./sv1-transversaux/suppression-compte-rgpd/suppression-compte-rgpd.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">suppression-compte-rgpd</span>
+        <span class="card-name">Suppression de compte (RGPD)</span>
+      </a>
+
+      <a class="card" href="./sv1-transversaux/gate-migration/gate-migration.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">gate-migration</span>
+        <span class="card-name">Gate de migration local→cloud</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SV2 : MJ Entrée espace ─────────────────────────────────── -->
+  <section class="surface" id="sv2" aria-labelledby="sv2-title">
+    <div class="surface-header">
+      <span class="surface-code">SV2</span>
+      <span class="surface-name" id="sv2-title">MJ — Entrée espace</span>
+    </div>
+    <div class="card-grid">
+
+      <a class="card" href="./sv2-entree-espace/tableau-de-bord/tableau-de-bord.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">tableau-de-bord</span>
+        <span class="card-name">Tableau de bord des espaces de jeu</span>
+      </a>
+
+      <a class="card" href="./sv2-entree-espace/creation-espace/creation-espace.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">creation-espace</span>
+        <span class="card-name">Création d'un espace de jeu</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SV3 : MJ Préparation ───────────────────────────────────── -->
+  <section class="surface" id="sv3" aria-labelledby="sv3-title">
+    <div class="surface-header">
+      <span class="surface-code">SV3</span>
+      <span class="surface-name" id="sv3-title">MJ — Préparation</span>
+      <span class="surface-note">Espace de travail campagne</span>
+    </div>
+    <div class="card-grid">
+
+      <a class="card" href="./sv3-preparation/vue-campagne/vue-campagne.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">vue-campagne</span>
+        <span class="card-name">Vue campagne (espace de travail)</span>
+      </a>
+
+      <a class="card" href="./sv3-preparation/navigation-dossiers/navigation-dossiers.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">navigation-dossiers</span>
+        <span class="card-name">Navigation par dossiers</span>
+      </a>
+
+      <a class="card" href="./sv3-preparation/recherche-preparation/recherche-preparation.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">recherche-preparation</span>
+        <span class="card-name">Recherche en préparation</span>
+      </a>
+
+      <a class="card" href="./sv3-preparation/editeur-document/editeur-document.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">editeur-document</span>
+        <span class="card-name">Éditeur de document</span>
+      </a>
+
+      <a class="card" href="./sv3-preparation/editeur-scenario/editeur-scenario.dc.html">
+        <span class="card-badge"><span class="badge badge-pending">présent · récupéré</span></span>
+        <span class="card-slug">editeur-scenario</span>
+        <span class="card-name">Éditeur de scénario</span>
+        <span class="card-note" style="color:#8A5A00;">Wireframe récupéré — substance à revérifier</span>
+      </a>
+
+      <a class="card" href="./sv3-preparation/parametres-campagne/parametres-campagne.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">parametres-campagne</span>
+        <span class="card-name">Paramètres de campagne</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SV-session : MJ Session ───────────────────────────────── -->
+  <section class="surface" id="sv-session" aria-labelledby="svs-title">
+    <div class="surface-header">
+      <span class="surface-code">SV-session</span>
+      <span class="surface-name" id="svs-title">MJ — Session</span>
+      <span class="surface-note">Configuration · LIVE · CLOSED · Création à la volée</span>
+    </div>
+    <div class="card-grid">
+
+      <a class="card" href="./sv-session/vue-session-mj/vue-session-mj.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">vue-session-mj</span>
+        <span class="card-name">Vue session MJ — 3 modes : configuration / LIVE / CLOSED</span>
+        <span class="card-note" style="color:var(--ok);">Écran prioritaire MVP (hypothèse H2)</span>
+      </a>
+
+      <a class="card" href="./sv-session/panneau-creation-rapide/panneau-creation-rapide.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">panneau-creation-rapide</span>
+        <span class="card-name">Panneau de création rapide à la volée (sur-couche)</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SV4 : Préparation (déclinaison PERSONAL) ─────────────────────── -->
+  <section class="surface" id="sv4" aria-labelledby="sv4-title">
+    <div class="surface-header">
+      <span class="surface-code">SV4</span>
+      <span class="surface-name" id="sv4-title">MJ — Préparation, déclinaison espace personnel</span>
+      <span class="surface-note">déclinaison PERSONAL de la surface Préparation — pas une surface-UC distincte</span>
+    </div>
+    <div class="card-grid">
+
+      <a class="card" href="./sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">vue-espace-personnel</span>
+        <span class="card-name">Vue de l'espace personnel</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SV5 : Joueur ───────────────────────────────────────────── -->
+  <section class="surface" id="sv5" aria-labelledby="sv5-title">
+    <div class="surface-header">
+      <span class="surface-code">SV5</span>
+      <span class="surface-name" id="sv5-title">Joueur</span>
+      <span class="surface-note">Surface étanche (AR-03)</span>
+    </div>
+    <div class="card-grid">
+
+      <a class="card" href="./sv5-joueur/acces-lien-saisie-nom/acces-lien-saisie-nom.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">acces-lien-saisie-nom</span>
+        <span class="card-name">Accès par lien + saisie du nom</span>
+      </a>
+
+      <a class="card" href="./sv5-joueur/vue-joueur-base/vue-joueur-base.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">vue-joueur-base</span>
+        <span class="card-name">Vue joueur post-accès</span>
+      </a>
+
+      <a class="card" href="./sv5-joueur/erreur-acces/erreur-acces.dc.html">
+        <span class="card-badge"><span class="badge badge-ok">présent</span></span>
+        <span class="card-slug">erreur-acces</span>
+        <span class="card-name">Page d'erreur d'accès</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CARTE DE PARCOURS
+       ════════════════════════════════════════════════════════════ -->
+  <section id="parcours" aria-labelledby="parcours-title">
+    <h2 class="flowmap-title" id="parcours-title">Carte de parcours — flux MVP</h2>
+    <p class="flowmap-subtitle">
+      Les flux principaux issus des user journeys et du zoning §S3.
+    </p>
+
+    <!-- FLUX 1 : Entrée depuis l'accueil -->
+    <div class="flow-group">
+      <div class="flow-group-label">Entrée — accueil</div>
+      <div class="flow-lanes">
+
+        <div class="flow-lane">
+          <a class="flow-node start-node" href="./sv1-transversaux/accueil/accueil.dc.html">Accueil</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">sans compte</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.dc.html">Espace personnel</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node start-node" href="./sv1-transversaux/accueil/accueil.dc.html">Accueil</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">créer un compte</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv1-transversaux/inscription/inscription.dc.html">Inscription</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node start-node" href="./sv1-transversaux/accueil/accueil.dc.html">Accueil</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">se connecter</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv1-transversaux/connexion/connexion.dc.html">Connexion</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FLUX 2 : Compte / onboarding -->
+    <div class="flow-group">
+      <div class="flow-group-label">Compte — onboarding &amp; gestion</div>
+      <div class="flow-lanes">
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv1-transversaux/inscription/inscription.dc.html">Inscription</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">sans données locales</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv2-entree-espace/creation-espace/creation-espace.dc.html">Création espace</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv1-transversaux/inscription/inscription.dc.html">Inscription</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">données locales présentes</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv1-transversaux/gate-migration/gate-migration.dc.html">Gate de migration</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv2-entree-espace/tableau-de-bord/tableau-de-bord.dc.html">Tableau de bord</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv1-transversaux/connexion/connexion.dc.html">Connexion</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv2-entree-espace/tableau-de-bord/tableau-de-bord.dc.html">Tableau de bord</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv1-transversaux/profil/profil.dc.html">Profil</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv1-transversaux/suppression-compte-rgpd/suppression-compte-rgpd.dc.html">Suppression compte (RGPD)</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FLUX 3 : MJ — Entrée espace -->
+    <div class="flow-group">
+      <div class="flow-group-label">MJ — Entrée espace</div>
+      <div class="flow-lanes">
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv2-entree-espace/tableau-de-bord/tableau-de-bord.dc.html">Tableau de bord</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv3-preparation/vue-campagne/vue-campagne.dc.html">Vue campagne</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv2-entree-espace/tableau-de-bord/tableau-de-bord.dc.html">Tableau de bord</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.dc.html">Espace personnel</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv2-entree-espace/tableau-de-bord/tableau-de-bord.dc.html">Tableau de bord</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv2-entree-espace/creation-espace/creation-espace.dc.html">Création espace</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv2-entree-espace/tableau-de-bord/tableau-de-bord.dc.html">Tableau de bord</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">reprise LIVE</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv-session/vue-session-mj/vue-session-mj.dc.html">Vue session MJ</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv2-entree-espace/tableau-de-bord/tableau-de-bord.dc.html">Tableau de bord</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv1-transversaux/profil/profil.dc.html">Profil</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FLUX 4 : MJ — Préparation -->
+    <div class="flow-group">
+      <div class="flow-group-label">MJ — Préparation campagne</div>
+      <div class="flow-lanes">
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv3-preparation/vue-campagne/vue-campagne.dc.html">Vue campagne</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv3-preparation/navigation-dossiers/navigation-dossiers.dc.html">Navigation dossiers</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv3-preparation/editeur-document/editeur-document.dc.html">Éditeur document</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv3-preparation/vue-campagne/vue-campagne.dc.html">Vue campagne</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv3-preparation/editeur-scenario/editeur-scenario.dc.html">Éditeur scénario</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv3-preparation/vue-campagne/vue-campagne.dc.html">Vue campagne</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv3-preparation/parametres-campagne/parametres-campagne.dc.html">Paramètres campagne</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv3-preparation/vue-campagne/vue-campagne.dc.html">Vue campagne</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv3-preparation/recherche-preparation/recherche-preparation.dc.html">Recherche</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv3-preparation/vue-campagne/vue-campagne.dc.html">Vue campagne</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">lancer session</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv-session/vue-session-mj/vue-session-mj.dc.html">Vue session MJ</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FLUX 5 : MJ — Session -->
+    <div class="flow-group">
+      <div class="flow-group-label">MJ — Session (transitions de mode)</div>
+      <div class="flow-lanes">
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv-session/vue-session-mj/vue-session-mj.dc.html">Vue session MJ · configuration</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv-session/vue-session-mj/vue-session-mj.dc.html">· LIVE</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv-session/vue-session-mj/vue-session-mj.dc.html">· CLOSED</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv-session/vue-session-mj/vue-session-mj.dc.html">Vue session MJ</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">création à la volée</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv-session/panneau-creation-rapide/panneau-creation-rapide.dc.html">Panneau création rapide</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FLUX 6 : Surface Joueur — étanche -->
+    <div class="flow-group">
+      <div class="flow-group-label">Joueur — surface étanche</div>
+      <div class="etanche-notice">
+        Surface joueur isolée de la surface MJ (AR-03) — aucun lien vers les écrans MJ sauf vers Inscription.
+      </div>
+      <div class="flow-lanes">
+
+        <div class="flow-lane">
+          <span class="flow-node isolated" style="cursor:default;">[lien d'invitation reçu]</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv5-joueur/acces-lien-saisie-nom/acces-lien-saisie-nom.dc.html">Accès par lien + nom</a>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv5-joueur/vue-joueur-base/vue-joueur-base.dc.html">Vue joueur</a>
+        </div>
+
+        <div class="flow-lane">
+          <span class="flow-node isolated" style="cursor:default;">[lien invalide / expiré]</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv5-joueur/erreur-acces/erreur-acces.dc.html">Erreur d'accès</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv5-joueur/acces-lien-saisie-nom/acces-lien-saisie-nom.dc.html">Accès par lien + nom</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">créer un compte</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv1-transversaux/inscription/inscription.dc.html">Inscription</a>
+        </div>
+
+        <div class="flow-lane">
+          <a class="flow-node" href="./sv5-joueur/vue-joueur-base/vue-joueur-base.dc.html">Vue joueur</a>
+          <span class="flow-arrow">→</span>
+          <span class="flow-label">créer un compte</span>
+          <span class="flow-arrow">→</span>
+          <a class="flow-node" href="./sv1-transversaux/inscription/inscription.dc.html">Inscription</a>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+</body>
+</html>

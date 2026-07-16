@@ -4,6 +4,21 @@ Outil d'assistance au Maître du Jeu pour la préparation et la conduite de part
 
 ---
 
+## Documents maîtres
+
+Livrables autoportants de premier rang, à la racine de `docs/` (qualité professionnelle, présentables en entreprise).
+
+- [note-cadrage-projet.md](note-cadrage-projet.md) — Note de cadrage du projet : intention, périmètre, jalons
+- [cahier-des-charges.md](cahier-des-charges.md) — Cahier des charges (MVP) : le **quoi fonctionnel**
+- [cahier-specifications-techniques.md](cahier-specifications-techniques.md) — Cahier de spécifications techniques : le **quoi technique** (stack, contraintes, NFR, sécurité, modèle de données, contrats/API, migration)
+- [dossier-architecture.md](dossier-architecture.md) — Dossier d'Architecture Technique (DAT) : la **carte du système** (vues C4, choix de structure)
+- [dossier-conception-detaillee.md](dossier-conception-detaillee.md) — Dossier de conception détaillée (SDD) : le **comment** (séquences, règles, relations entre décisions)
+- [dossier-securite.md](dossier-securite.md) — Dossier de sécurité
+- [cahier-strategie-test-et-recette.md](cahier-strategie-test-et-recette.md) — Cahier de stratégie de test et de recette
+- [guide-conventions-et-dod.md](guide-conventions-et-dod.md) — Guide de conventions et Definition of Done
+
+---
+
 ## Conception
 
 Documentation produit et fonctionnelle.

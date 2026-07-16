@@ -173,4 +173,4 @@ Couche de conception d'interface : arbitrages figés, conventions de notation, g
 | [interface/zoning.md](interface/zoning.md) | Zoning d'interface MVP — colonne vertébrale, modèle de navigation, inventaire des 20 écrans (S4), table de couverture UC→écran (S5), 17 arbitrages figés (S6), châssis applicatif (S7), exclusions nommées (S8), trous de corpus (S9) |
 | [interface/conventions-wireframe.md](interface/conventions-wireframe.md) | Conventions de notation basse-fidélité — familles de marqueurs (C3), deux registres de nommage (termes de domaine / termes de région d'interface) |
 | [interface/gabarit-ecran.md](interface/gabarit-ecran.md) | Gabarit de fiche — structure que chaque wireframe instancie |
-| [../presentation/wireframes/](../presentation/wireframes/) | Les 20 fiches basse-fidélité — index par surface et table de couverture finale UC→fiche dans `wireframes/README.md` |
+| [presentation/wireframes/](presentation/wireframes/) | Les 20 fiches basse-fidélité — index par surface et table de couverture finale UC→fiche dans `wireframes/README.md` |

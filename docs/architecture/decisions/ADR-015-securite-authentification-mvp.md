@@ -137,7 +137,7 @@ Le rejet silencieux ci-dessus répond à « la liaison automatique est-elle auto
 - *Email synthétique* (sur le modèle `deleted-{id}@haversack.invalid`, ADR-007 §Compléments) — ce motif répond à un effacement terminal (compte mort, email libéré) ; une coquille reprise par reclaim reste une identité **vivante**, l'usage d'un email synthétique est inadapté ici.
 - *Suppression ou déplacement de la coquille* (cascade `UserDeleted`, ADR-012) — écartée comme résolution par défaut : cette cascade est dimensionnée pour un effacement RGPD délibéré, pas pour un conflit d'email au moment d'une connexion OAuth. Conservée uniquement comme repli (*fallback*) si le reclaim-in-place s'avère techniquement impossible en build.
 
-**Statut** : `[À TRANCHER — à ratifier opérateur]`. Résolution de posture sécurité issue de l'audit sécurité et de la revue critic, **non encore validée par l'opérateur** — même registre de traçabilité que le §Résidu CWE-204 ci-dessous, sans en partager le statut : celui-ci est déjà tranché, celui-ci reste à ratifier.
+**Statut** : `[À TRANCHER — à ratifier opérateur]`. Résolution de posture sécurité issue de l'audit sécurité et de la revue d'architecture, **non encore validée par l'opérateur** — même registre de traçabilité que le §Résidu CWE-204 ci-dessous, sans en partager le statut : celui-ci est déjà tranché, celui-ci reste à ratifier.
 
 **Routage.**
 - **Facette RGPD** (sort du contenu éventuel — notes, documents — rattaché à la coquille non vérifiée évincée par le reclaim) : hors périmètre sécurité de cet ADR → **Lot 14 juridique**.

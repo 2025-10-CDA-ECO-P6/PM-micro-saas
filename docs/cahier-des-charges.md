@@ -1048,20 +1048,20 @@ Vingt arbitrages de conception d'interface (AR-01 à AR-20) ont été tranchés 
 
 ### 9.4 Renvoi wireframes
 
-Les vingt fiches de spécification basse fidélité correspondant à cet inventaire d'écrans, leurs wireframes associés, ainsi que la table de couverture reliant chaque use case à son ou ses écrans porteurs, sont conservés dans `docs/presentation/wireframes/`. Ce document n'en reproduit ni le détail ni le contenu visuel : il n'en constitue qu'un renvoi de traçabilité.
+Les vingt fiches de spécification basse fidélité correspondant à cet inventaire d'écrans, leurs wireframes associés, ainsi que la table de couverture reliant chaque use case à son ou ses écrans porteurs, sont conservés dans `docs/conception/presentation/wireframes/`. Ce document n'en reproduit ni le détail ni le contenu visuel : il n'en constitue qu'un renvoi de traçabilité.
 
 Pour une entrée directe dans la conception d'interface, les écrans les plus représentatifs du produit sont :
 
 | Écran | Rôle | Emplacement |
 |---|---|---|
-| Vue de session MJ | Écran prioritaire du MVP, support de démonstration de l'hypothèse centrale H2 | `docs/presentation/wireframes/sv-session/vue-session-mj/` |
-| Tableau de bord d'espace | Point d'entrée dans un espace de travail | `docs/presentation/wireframes/sv2-entree-espace/tableau-de-bord/` |
-| Éditeur de scénario | Structuration d'un scénario en scènes | `docs/presentation/wireframes/sv3-preparation/editeur-scenario/` |
-| Accès joueur par lien | Entrée joueur sans compte | `docs/presentation/wireframes/sv5-joueur/acces-lien-saisie-nom/` |
+| Vue de session MJ | Écran prioritaire du MVP, support de démonstration de l'hypothèse centrale H2 | `docs/conception/presentation/wireframes/sv-session/vue-session-mj/` |
+| Tableau de bord d'espace | Point d'entrée dans un espace de travail | `docs/conception/presentation/wireframes/sv2-entree-espace/tableau-de-bord/` |
+| Éditeur de scénario | Structuration d'un scénario en scènes | `docs/conception/presentation/wireframes/sv3-preparation/editeur-scenario/` |
+| Accès joueur par lien | Entrée joueur sans compte | `docs/conception/presentation/wireframes/sv5-joueur/acces-lien-saisie-nom/` |
 
-Un prototype de navigation cliquable reliant l'ensemble des fiches est également disponible dans `docs/presentation/wireframes/` (voir le README du dossier).
+Un prototype de navigation cliquable reliant l'ensemble des fiches est également disponible dans `docs/conception/presentation/wireframes/` (voir le README du dossier).
 
-> Sources : docs/conception/interface/zoning.md, docs/presentation/wireframes/README.md
+> Sources : docs/conception/interface/zoning.md, docs/conception/presentation/wireframes/README.md
 
 ---
 
@@ -1121,7 +1121,7 @@ Les décisions d'architecture ([§12.3](#123-index-des-décisions-darchitecture-
 
 **Ancrage documenté** (le seul établi à ce jour) :
 
-- **Vague 1 ⊇ Build-out B1.x** — ADR-011, §Points à trancher : « Les éléments suivants sont explicitement renvoyés à la Vague 1 (Build-out B1.x) » (`ADR-011-cascade-integrite-referentielle.md:271`).
+- **Vague 1 ⊇ lot B1.x** — ADR-011, §Points à trancher : « Les éléments suivants sont explicitement renvoyés à la Vague 1 (lot B1.x) » (`ADR-011-cascade-integrite-referentielle.md:271`).
 
 **Ancrage inféré, à confirmer** — distinct de l'ancrage documenté ci-dessus : ADR-010, §Conséquences, écrit seulement que « l'implémentation complète est prévue en Vague 1 (hors périmètre du lot P0.5) » (`ADR-010-suppression-campagne.md:95`). Cette phrase établit une **antériorité** de P0.5 par rapport à la Vague 1 — elle n'établit pas littéralement que P0.5 = Vague 0. Le rapprochement **Vague 0 ≈ lot P0.5** n'est donc qu'une **inférence** de cette antériorité (hors-périmètre P0.5 ⇒ antérieur à la Vague 1 ⇒ situé au niveau de la Vague 0), pas un ancrage documentaire au même titre que le précédent — à confirmer explicitement dans l'artefact de planification dédié.
 
@@ -1180,7 +1180,7 @@ Le tableau suivant relie chaque section de ce cahier des charges à ses sources 
 | 6. Exigences non-fonctionnelles | `docs/conception/nfr/README.md`, `docs/conception/nfr/` (NFR-PERF, NFR-OFF, NFR-CONF, NFR-ACC, NFR-I18N) |
 | 7. Contraintes techniques, RGPD & sécurité | `docs/architecture/stack.md`, `docs/architecture/ArchitectureIndex.md`, `docs/architecture/01-ddd-fondations.md`, `docs/architecture/06-structure-projets.md`, `docs/architecture/decisions/` (ADR-001, 002, 003, 004, 007, 008, 012, 013, 014, 015, 016, 017) |
 | 8. Modèle de données & domaine | `docs/conception/domain/README.md`, `docs/conception/domain/core.md`, `docs/conception/domain/identity-access.md`, `docs/conception/domain/space-management.md`, `docs/conception/domain/content-library.md`, `docs/conception/domain/session-conduct.md`, `docs/architecture/decisions/ADR-018-espace-personnel-generalisation-space.md` |
-| 9. Conception d'interface | `docs/conception/interface/zoning.md`, `docs/presentation/wireframes/README.md` |
+| 9. Conception d'interface | `docs/conception/interface/zoning.md`, `docs/conception/presentation/wireframes/README.md` |
 | 10. Glossaire | `docs/conception/glossaire.md` |
 
 ### 12.3 Index des décisions d'architecture (ADR)
