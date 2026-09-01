@@ -18,7 +18,7 @@ Cette lacune impacte plusieurs couches :
 - **RGPD** : l'utilisateur a le droit à l'effacement de ses données ; la suppression d'espace est un cas majeur (cf. ADR-007 pseudonymisation et ADR-009 FK `ownerId`).
 - **Cascade** : les données possédées par l'espace doivent être traitées de manière cohérente lors de sa suppression.
 
-La distinction entre `Archive()` (mettre de côté, réversible) et `Delete()` (suppression, éventuellement irréversible) doit être clarifiée avant la Vague 1.
+La distinction entre `Archive()` (mettre de côté, réversible) et `Delete()` (suppression, éventuellement irréversible) doit être clarifiée avant l'entrée en construction.
 
 > **Périmètre de suppression par l'utilisateur** : seuls les espaces de types `CAMPAIGN` et `ONE_SHOT` sont supprimables par le MJ. L'espace `PERSONAL` est le conteneur par défaut de l'utilisateur — il ne peut pas être supprimé par l'utilisateur (de même qu'on ne supprime pas sa bibliothèque personnelle). Il est purgé uniquement à la suppression du **compte** via l'événement `UserDeleted` (inconditionnel — voir ADR-011/012). Les deux chemins sont distincts et ne se substituent pas l'un à l'autre.
 
@@ -92,7 +92,7 @@ Mettre les données en corbeille indéfiniment sans jamais les purger physiqueme
 - La décision implique que le modèle de domaine doit exposer une méthode `Space.Delete()` qui émet l'événement `SpaceDeleted`. Cette méthode est applicable aux types `CAMPAIGN` et `ONE_SHOT` ; elle n'est pas exposée pour le type `PERSONAL`.
 - Elle nécessite l'ajout d'un attribut `deleted_at : DateTime?` (nullable) ou d'un statut `Status` avec valeur `Deleted` au modèle `Space`. Les requêtes de lecture par défaut filtreront `WHERE deleted_at IS NULL` (ou statut ≠ `Deleted`).
 - Dissociation claire entre `Archive()` et `Delete()` dans les contrats et la documentation du domaine.
-- **L'implémentation complète est prévue en Vague 1** (hors périmètre du lot P0.5).
+- **L'implémentation complète est prévue en J2** (hors périmètre du lot P0.5).
 
 ### Schéma et MLD
 
@@ -124,11 +124,11 @@ Mettre les données en corbeille indéfiniment sans jamais les purger physiqueme
 
 **Justification** : simplifier le MVP en évitant une dépendance de la saga vers un service d'email broker. La rétroaction UI est immédiate et fiable. L'utilisateur peut explorer sa corbeille et procéder à une restauration s'il le souhaite, sans attendre une notification asynchrone.
 
-**Réévaluation post-MVP** : ce choix peut être revisité si les métriques d'utilisation ou les retours utilisateur indiquent qu'une notification proactive améliore significativement la compréhension de la fenêtre de 30 jours ou réduit les tickets de support (« Comment récupérer mon espace supprimé ? »). À évaluer lors de la planification de Vague 2.
+**Réévaluation post-MVP** : ce choix peut être revisité si les métriques d'utilisation ou les retours utilisateur indiquent qu'une notification proactive améliore significativement la compréhension de la fenêtre de 30 jours ou réduit les tickets de support (« Comment récupérer mon espace supprimé ? »). À évaluer lors d'une planification post-MVP.
 
 ---
 
-## Points à trancher en Vague 1
+## Points à trancher en J2
 
 - **Interface de restauration** : comment l'utilisateur accède-t-il à sa corbeille et restaure-t-il un espace ? (Un onglet spécifique ? Une endpoint API dédiée ?)
 - **Détail de la cascade** : **Statué dans [ADR-011](ADR-011-cascade-integrite-referentielle.md)** — mécanisme saga applicative, toutes FK en `ON DELETE RESTRICT`, séquences de déliaison et ordre topologique de DELETE complets (matrice ~30 FK, deux cycles traités, `source_document_id` cross-espace, préséance des sagas `SpaceDeleted` et `UserAnonymized`).

@@ -4,72 +4,28 @@ Outil d'assistance au Maître du Jeu pour la préparation et la conduite de part
 
 ---
 
-## Documents maîtres
+## Comment ce corpus est organisé
 
-Livrables autoportants de premier rang, à la racine de `docs/` (qualité professionnelle, présentables en entreprise).
+Ce corpus distingue deux paliers. [`context/`](context/README.md) rassemble les documents
+**de référence** — autoportants, lisibles seuls, exportables hors de ce dépôt (on peut en
+remettre un à un prestataire ou dans un dossier de due diligence sans joindre le reste). Les
+autres dossiers portent le **corpus de traçabilité détaillé** dont ces documents de référence
+sont la consolidation : c'est là que vivent les décisions, leur justification et leur détail.
 
-- [note-cadrage-projet.md](note-cadrage-projet.md) — Note de cadrage du projet : intention, périmètre, jalons
-- [cahier-des-charges.md](cahier-des-charges.md) — Cahier des charges (MVP) : le **quoi fonctionnel**
-- [cahier-specifications-techniques.md](cahier-specifications-techniques.md) — Cahier de spécifications techniques : le **quoi technique** (stack, contraintes, NFR, sécurité, modèle de données, contrats/API, migration)
-- [dossier-architecture.md](dossier-architecture.md) — Dossier d'Architecture Technique (DAT) : la **carte du système** (vues C4, choix de structure)
-- [dossier-conception-detaillee.md](dossier-conception-detaillee.md) — Dossier de conception détaillée (SDD) : le **comment** (séquences, règles, relations entre décisions)
-- [dossier-securite.md](dossier-securite.md) — Dossier de sécurité
-- [cahier-strategie-test-et-recette.md](cahier-strategie-test-et-recette.md) — Cahier de stratégie de test et de recette
-- [guide-conventions-et-dod.md](guide-conventions-et-dod.md) — Guide de conventions et Definition of Done
+Chaque dossier ci-dessous est propriétaire de son propre index ; ce document n'en recopie pas
+le contenu.
 
 ---
 
-## Conception
+## Les dossiers
 
-Documentation produit et fonctionnelle.
-
-- [conception/README.md](conception/README.md) — Index de toute la documentation de conception
-
-### Vision & Produit
-
-- [conception/vision/vision-produit.md](conception/vision/vision-produit.md) — Positionnement produit, acteurs, choix assumés, modèle de monétisation
-- [conception/vision/moscow.md](conception/vision/moscow.md) — Matrice MoSCoW complète (Must / Should / Could / Won't Have)
-
-### Use Cases
-
-- [conception/usecases/README.md](conception/usecases/README.md) — Index des 14 use cases MVP avec résumés
-- [conception/usecases/use-cases.md](conception/usecases/use-cases.md) — Diagrammes de cas d'utilisation (5 vues)
-- [conception/usecases/UC-HORS-MVP.md](conception/usecases/UC-HORS-MVP.md) — Fonctionnalités exclues et vision long terme
-
-### User Stories
-
-Epics de user stories avec critères d'acceptation et règles métier (RB-XX) pour chaque use case.
-
-→ [Index user stories](conception/user-stories/README.md)
-
-### User Journeys
-
-Parcours utilisateur pas à pas pour chaque use case, du point de vue des personas.
-
-→ [Index user journeys](conception/user-journeys/README.md)
-
-### Personas
-
-- [conception/persona/README.md](conception/persona/README.md) — 7 personas : Thomas, Émilie, Lucas, Nadia, Antoine, Rémi, Sonia
-
-### Exigences non fonctionnelles (NFR)
-
-Performance perçue, hors connexion, confidentialité, accessibilité, internationalisation — exigences produit en langage besoin.
-
-→ [Index NFR](conception/nfr/README.md)
-
-### Parcours bout-en-bout
-
-Fil narratif de bout en bout pour chaque persona : couture transverse des use cases, vérification des transitions inter-UC.
-
-→ [Index parcours](conception/parcours/README.md)
-
-### Domaine DDD
-
-- [conception/domain/README.md](conception/domain/README.md) — Index des 4 bounded contexts
-- [conception/domain/core.md](conception/domain/core.md) — Shared Kernel : abstractions, IDs typés, value objects transverses
-- [conception/domain/identity-access.md](conception/domain/identity-access.md) — Comptes, authentification, tiers, RGPD
-- [conception/domain/space-management.md](conception/domain/space-management.md) — Campagnes, membres, invitations, accès invités
-- [conception/domain/content-library.md](conception/domain/content-library.md) — Documents, dossiers, types, références entre documents
-- [conception/domain/session-conduct.md](conception/domain/session-conduct.md) — Cycle de vie de session, tableau de bord, notes de session
-
+| Dossier | Nature | Index |
+|---|---|---|
+| `context/` | Documents de référence de premier rang — le quoi fonctionnel, le quoi technique, la carte du système, le comment, le cadrage business | [context/README.md](context/README.md) |
+| `gestion-projet/` | Pilotage du projet — cadrage, planification, organisation, risques, conventions de travail | [gestion-projet/README.md](gestion-projet/README.md) |
+| `securite/` | Sécurité technique consolidée, distincte des cadrages de conformité légale (RGPD) internes en attente de validation juriste | [securite/README.md](securite/README.md) |
+| `test/` | Stratégie de test et de recette | [test/README.md](test/README.md) |
+| `deploiement/` | Environnements, pipelines et procédures de déploiement — dossier réservé, à remplir pendant le développement | [deploiement/README.md](deploiement/README.md) |
+| `ecoconception/` | Démarche d'écoconception — dossier réservé, sujet non engagé à ce jour | [ecoconception/README.md](ecoconception/README.md) |
+| `architecture/` | Corpus détaillé de traçabilité technique — décisions d'architecture (ADR), structure des projets, spécifications pré-build | [architecture/README.md](architecture/README.md) |
+| `conception/` | Corpus détaillé de traçabilité produit et domaine, organisé selon l'ordre d'autorité besoin → domaine → interface | [conception/README.md](conception/README.md) |

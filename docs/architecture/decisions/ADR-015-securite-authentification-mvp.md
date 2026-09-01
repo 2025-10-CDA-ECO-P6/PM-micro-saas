@@ -26,7 +26,7 @@ Contrairement aux ADR de la flotte RGPD (ADR-007, ADR-012, ADR-013), cet ADR ne 
 
 ## Contexte
 
-ADR-007 §Compléments (2026-06-09) a reclassé les findings F-02, F-06, F-10, F-11 de « Vague 2 » en bloquants-MVP, sans définir les mécanismes précis. Ces quatre findings forment un ensemble cohérent : ils couvrent toutes les surfaces d'attaque de la couche d'authentification (credentials, tokens, accès OAuth, énumération).
+ADR-007 §Compléments (2026-06-09) a reclassé les findings F-02, F-06, F-10, F-11, jusque-là classés en J2 sans être bloquants, en bloquants-MVP, sans définir les mécanismes précis. Ces quatre findings forment un ensemble cohérent : ils couvrent toutes les surfaces d'attaque de la couche d'authentification (credentials, tokens, accès OAuth, énumération).
 
 **F-02** (CWE-521) identifie l'absence de toute politique de mot de passe : aucune longueur minimale, aucune règle de hachage documentée, validation email absente de facto.
 
@@ -78,7 +78,7 @@ Un compte créé et authentifié uniquement via un fournisseur fédéré (Google
 
 **CWE-620 — gap de preuve d'identité.** Le mécanisme standard d'une opération sensible sur le mot de passe (« saisissez votre mot de passe actuel ») **ne s'applique pas ici** : un compte fédéré-only n'a, par construction, aucun mot de passe existant à faire saisir. S'appuyer sur la seule session applicative Haversack active pour autoriser la définition ouvrirait un gap CWE-620 (preuve d'identité insuffisante avant une opération sensible sur les credentials du compte). La définition du premier mot de passe **exige donc une preuve d'identité alternative : une ré-authentification récente et complète auprès du fournisseur d'identité fédéré** (nouveau flux OAuth avec le fournisseur, pas la seule présence d'un cookie de session Haversack), immédiatement avant l'opération. La fraîcheur maximale tolérée de cette ré-authentification et son mécanisme de déclenchement exact sont renvoyés à B1.5.
 
-**Amendement RB-10-10 — Résolu (US-UC-10 amendée).** RB-10-10, définie dans US-UC-10 (`docs/conception/user-stories/US-UC-10-compte-cloud.md`), énonçait qu'un `User` authentifié uniquement via connexion fédérée n'a pas de mot de passe et que la réinitialisation de mot de passe ne s'applique pas à ce compte. Cette règle reste exacte **au sens strict de la réinitialisation** (il n'existe rien à réinitialiser) mais ne couvrait pas — et ne devait pas être lue comme excluant — la **définition d'un premier mot de passe**, opération distincte autorisée par le présent ADR sous les conditions ci-dessus. La distinction est désormais portée dans le texte de RB-10-10 : « réinitialisation d'un mot de passe inexistant » reste **N/A** (inchangé) ; « définition d'un premier mot de passe sur compte fédéré » est **autorisée**, opération sensible avec ré-authentification IdP (ce paragraphe) — mesure restant **préventive**, sans capacité de récupération si l'accès IdP est déjà perdu (précision ci-dessus). Ce point est résolu sur le même modèle que le renvoi ADR-012 (§Conséquences, également résolu) : ADR-015 définit la règle, US-UC-10 §RB-10-10 porte désormais le texte amendé.
+**Amendement RB-10-10 — Résolu (US-UC-10 amendée).** RB-10-10, définie dans US-UC-10 (`docs/conception/besoin/user-stories/US-UC-10-compte-cloud.md`), énonçait qu'un `User` authentifié uniquement via connexion fédérée n'a pas de mot de passe et que la réinitialisation de mot de passe ne s'applique pas à ce compte. Cette règle reste exacte **au sens strict de la réinitialisation** (il n'existe rien à réinitialiser) mais ne couvrait pas — et ne devait pas être lue comme excluant — la **définition d'un premier mot de passe**, opération distincte autorisée par le présent ADR sous les conditions ci-dessus. La distinction est désormais portée dans le texte de RB-10-10 : « réinitialisation d'un mot de passe inexistant » reste **N/A** (inchangé) ; « définition d'un premier mot de passe sur compte fédéré » est **autorisée**, opération sensible avec ré-authentification IdP (ce paragraphe) — mesure restant **préventive**, sans capacité de récupération si l'accès IdP est déjà perdu (précision ci-dessus). Ce point est résolu sur le même modèle que le renvoi ADR-012 (§Conséquences, également résolu) : ADR-015 définit la règle, US-UC-10 §RB-10-10 porte désormais le texte amendé.
 
 ---
 
@@ -140,7 +140,7 @@ Le rejet silencieux ci-dessus répond à « la liaison automatique est-elle auto
 **Statut** : `[À TRANCHER — à ratifier opérateur]`. Résolution de posture sécurité issue de l'audit sécurité et de la revue d'architecture, **non encore validée par l'opérateur** — même registre de traçabilité que le §Résidu CWE-204 ci-dessous, sans en partager le statut : celui-ci est déjà tranché, celui-ci reste à ratifier.
 
 **Routage.**
-- **Facette RGPD** (sort du contenu éventuel — notes, documents — rattaché à la coquille non vérifiée évincée par le reclaim) : hors périmètre sécurité de cet ADR → **Lot 14 juridique**.
+- **Facette RGPD** (sort du contenu éventuel — notes, documents — rattaché à la coquille non vérifiée évincée par le reclaim) : hors périmètre sécurité de cet ADR → **cadrage juridique interne**.
 - **Opération de domaine dédiée** (bascule `emailVerified` + neutralisation du credential + liaison fédérée — `ReclaimViaFederatedProof()` ou équivalent, distincte de `LinkFederatedIdentity()` seule) : **B1.5**, même jalon que les autres volets d'implémentation de cette section.
 - **Dépendance non vérifiable** : la fiabilité du claim d'email vérifié de l'IdP reste **NON VÉRIFIABLE IN BUILD**, au même titre que pour §2.2/§2.3 ci-dessus. Le gate applicatif (bascule `emailVerified` + neutralisation + liaison, conditionné à la preuve IdP) reste, lui, testable en CI via provider OAuth mocké.
 
@@ -314,7 +314,7 @@ La révocation des tokens actifs à l'effacement de compte doit figurer comme é
 
 ### Croisement US-UC-10 (RB-10-10 — définition d'un premier mot de passe sur compte fédéré) — Résolu
 
-Le §1.4 amende la portée de RB-10-10 : la réinitialisation d'un mot de passe inexistant reste N/A (inchangé), mais la définition d'un premier mot de passe sur compte fédéré est désormais autorisée, sous condition de ré-authentification IdP — mesure **préventive**, sans capacité de récupération si l'accès IdP est déjà perdu (§1.4). Le texte de RB-10-10 dans US-UC-10 (`docs/conception/user-stories/US-UC-10-compte-cloud.md`) a été mis à jour pour porter cette distinction. Ce point, du même ordre que le croisement ADR-012 ci-dessus, est **résolu** : ADR-015 définit la règle, US-UC-10 §RB-10-10 la référence désormais.
+Le §1.4 amende la portée de RB-10-10 : la réinitialisation d'un mot de passe inexistant reste N/A (inchangé), mais la définition d'un premier mot de passe sur compte fédéré est désormais autorisée, sous condition de ré-authentification IdP — mesure **préventive**, sans capacité de récupération si l'accès IdP est déjà perdu (§1.4). Le texte de RB-10-10 dans US-UC-10 (`docs/conception/besoin/user-stories/US-UC-10-compte-cloud.md`) a été mis à jour pour porter cette distinction. Ce point, du même ordre que le croisement ADR-012 ci-dessus, est **résolu** : ADR-015 définit la règle, US-UC-10 §RB-10-10 la référence désormais.
 
 ### Dettes nommées (non silencieuses)
 
@@ -329,7 +329,7 @@ Le §1.4 amende la portée de RB-10-10 : la réinitialisation d'un mot de passe 
 | ~~Mise à jour du texte de RB-10-10 dans US-UC-10 (distinction réinitialisation N/A / premier mot de passe autorisé)~~ | Cohérence documentaire | **Résolu — US-UC-10 amendée** |
 | Récupération post-perte d'accès IdP (flux *account-recovery* pour compte fédéré-only ayant perdu l'accès IdP sans mot de passe complémentaire déjà défini — §1.4) | Fonctionnelle — flux distinct de la mesure préventive du mot de passe complémentaire | hors MVP |
 | Reclaim-in-place (§2.3) — opération de domaine dédiée (bascule `emailVerified`, neutralisation credential préexistant, liaison fédérée) | Fonctionnelle — complète §2.3, résolution `[À TRANCHER — à ratifier opérateur]` | B1.5 |
-| Reclaim-in-place (§2.3) — facette RGPD (sort du contenu éventuel de la coquille non vérifiée évincée) | RGPD | Lot 14 |
+| Reclaim-in-place (§2.3) — facette RGPD (sort du contenu éventuel de la coquille non vérifiée évincée) | RGPD | cadrage juridique interne |
 
 ### Résidu CWE-204 — Énumération de comptes (décision opérateur tracée)
 
@@ -352,7 +352,7 @@ La fiabilité du claim d'email vérifié exposé par chaque fournisseur retenu (
 - ~~**ADR-012 §Conséquences** — Renvoi de cohérence : ajouter la révocation des tokens actifs (`ITokenDenylist.RevokeFamilyAsync`) comme étape de la saga `UserAnonymized`.~~ *(Résolu — ADR-012 §Conséquences contient déjà ce câblage.)*
 - ~~**US-UC-10 §RB-10-10** — Renvoi de cohérence : mettre à jour le texte de RB-10-10 pour distinguer réinitialisation d'un mot de passe inexistant (N/A, inchangé) et définition d'un premier mot de passe sur compte fédéré (autorisée, §1.4).~~ *(Résolu — US-UC-10 §RB-10-10 porte désormais cette distinction.)*
 - **Ajout futur d'un fournisseur OAuth à email de relais/non canonique** (ex. Apple Hide My Email) — imposerait de revisiter la règle de liaison par email (RB-10-08, §2.2). Dette nommée, non déclenchée par le périmètre MVP.
-- **[À TRANCHER — à ratifier opérateur]** — Résolution du cas « email OAuth = compte préexistant non vérifié » (§2.3, *reclaim-in-place*) : reprise de la coquille non vérifiée par la preuve IdP (bascule `emailVerified` + neutralisation du credential préexistant + liaison fédérée) plutôt que création d'un doublon — le doublon n'est pas implémentable (invariant 1, email unique). Alternatives écartées : refus non-silencieux (réouvre CWE-204), email synthétique (motif ADR-007, inadapté à une identité vivante), suppression/déplacement de la coquille (cascade `UserDeleted` surdimensionnée, repli seulement). Facette RGPD → Lot 14 ; opération de domaine dédiée → B1.5.
+- **[À TRANCHER — à ratifier opérateur]** — Résolution du cas « email OAuth = compte préexistant non vérifié » (§2.3, *reclaim-in-place*) : reprise de la coquille non vérifiée par la preuve IdP (bascule `emailVerified` + neutralisation du credential préexistant + liaison fédérée) plutôt que création d'un doublon — le doublon n'est pas implémentable (invariant 1, email unique). Alternatives écartées : refus non-silencieux (réouvre CWE-204), email synthétique (motif ADR-007, inadapté à une identité vivante), suppression/déplacement de la coquille (cascade `UserDeleted` surdimensionnée, repli seulement). Facette RGPD → cadrage juridique interne ; opération de domaine dédiée → B1.5.
 
 ---
 

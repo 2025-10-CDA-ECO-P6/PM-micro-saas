@@ -366,7 +366,7 @@ flowchart TD
 
 **Alternatives considérées** : vue joueur mobile critique dès le MVP — écartée par décision opérateur, le corpus la signalait comme angle d'interview non tranché ; ne rien présupposer sur la forme (wireframes uniquement desktop) — écartée, car la structure doit rester compatible avec le mobile pour ne pas créer de dette.
 
-**Condition de retour** : si les entretiens révèlent un accès joueur majoritairement par smartphone (INTERVIEW_GUIDE Q8), les wireframes mobiles seront produits en priorité de la vague suivante.
+**Condition de retour** : si les entretiens révèlent un accès joueur majoritairement par smartphone (INTERVIEW_GUIDE Q8), les wireframes mobiles seront produits en priorité lors d'une version ultérieure.
 
 ---
 
@@ -417,11 +417,11 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 **Décision** : la navigation par dossiers est l'épine dorsale (un document appartient à **exactement un dossier** ; le dossier virtuel « Non classés » fait office de repli) ; la recherche est un **accélérateur omniprésent** (MVP : titre seul) ; les backlinks sont **consultables depuis la fiche cible**. **Le placement « Référencé par » est désormais figé** : zone latérale secondaire, sous la zone des documents liés, repliée par défaut (divulgation progressive — AR-19c). Dans l'espace personnel, l'arborescence démarre **sans dossiers nommés** — seul « Non classés » à la création ; le propriétaire organise librement (voir AR-16 pour le détail). En session, les résultats de recherche s'ouvrent dans un **panneau latéral sans interrompre le contexte** de la vue session.
 
-**Raison d'être produit** : UC-05 prescrit qu'un document appartient toujours à exactement un dossier (`dossier associé` non-nullable) — ce qui fonde l'unicité d'appartenance. UC-05 A4 mentionne le dossier virtuel « Non classés » comme repli pour les documents sans dossier explicite. UC-14 prescrit la recherche par titre seul au MVP, omniprésente (préparation et session). La vision produit §2.2 mentionne les backlinks comme élément du système documentaire. UJ-UC-04 utilise le label « Référencé par » dans la description des opportunités UX, mais US-UC-04 restait plus souple sur ce point — ce qui avait initialement justifié de traiter le placement comme recommandation révisable. **Ratification** : le wireframe `editeur-document` a rendu et livré un placement précis (zone latérale secondaire, sous les documents liés, repliée par défaut), audité **CONFORME** (AUDIT §3.16 — « les backlinks « référencé par » sont correctement rendus »). Le zoning ratifie ce rendu plutôt que de maintenir une recommandation ouverte sans bénéfice — aucune source n'entre en tension avec ce placement. Le rendu non disruptif des résultats de recherche en session est sourcé par UJ-UC-06 §Opportunités UX (*« résultats de recherche ouverts dans un panneau latéral sans interrompre le contexte de session »*) et NFR-PERF-04.
+**Raison d'être produit** : UC-05 prescrit qu'un document appartient toujours à exactement un dossier (`dossier associé` non-nullable) — ce qui fonde l'unicité d'appartenance. UC-05 A4 mentionne le dossier virtuel « Non classés » comme repli pour les documents sans dossier explicite. UC-14 prescrit la recherche par titre seul au MVP, omniprésente (préparation et session). La vision produit §2.2 mentionne les backlinks comme élément du système documentaire. UJ-UC-04 utilise le label « Référencé par » dans la description des opportunités UX, mais US-UC-04 restait plus souple sur ce point — ce qui avait initialement justifié de traiter le placement comme recommandation révisable. **Ratification** : le wireframe [editeur-document](wireframes/sv3-preparation/editeur-document/editeur-document.md) a rendu et livré un placement précis (zone latérale secondaire, sous les documents liés, repliée par défaut), conforme à cette prescription. Le zoning ratifie ce rendu plutôt que de maintenir une recommandation ouverte sans bénéfice — aucune source n'entre en tension avec ce placement. Le rendu non disruptif des résultats de recherche en session est sourcé par UJ-UC-06 §Opportunités UX (*« résultats de recherche ouverts dans un panneau latéral sans interrompre le contexte de session »*) et NFR-PERF-04.
 
 **Alternatives considérées** : multi-dossiers par document — écartée, car UC-05 prescrit explicitement l'unicité d'appartenance. Maintenir le placement « révisable » sans le figer — écarté : le wireframe conforme donne un rendu stable et sans tension corpus, prolonger l'ouverture n'aurait plus de justification.
 
-**Condition de retour** : aucune sur le placement — figé par ratification du rendu conforme (`editeur-document`, AUDIT §3.16). Renvoi : `docs/conception/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »).
+**Condition de retour** : aucune sur le placement — figé par ratification du rendu conforme (`editeur-document`). Renvoi : `docs/conception/interface/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »).
 
 ---
 
@@ -483,7 +483,7 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 **Condition de retour** : aucune (contraint par le domaine — `content-library.md`).
 
-**Précision dérivée (2026-07-15) — visibilité de « Non classés » quand il est vide** : la règle générale rendue par les wireframes (`navigation-dossiers`, `vue-espace-personnel`) est que le dossier « Non classés » est **masqué s'il est vide, affiché dès qu'il contient des documents** — règle générale sourcée par l'**AUDIT §3.7** (rendu wireframe, CONFORME), et non par `content-library.md` : `Folder.isVirtual = true` garantit uniquement l'existence d'un réceptacle unique par espace, pas cette nuance de visibilité conditionnelle. Cette règle générale s'applique telle quelle aux espaces partagés (`CAMPAIGN`/`ONE_SHOT`). **En espace `PERSONAL`, elle se dérive différemment** : « Non classés » y est la **seule vue de départ** (ci-dessus — aucun dossier système nommé n'existe pour occuper la zone de navigation) ; masquer ce dossier vide laisserait un espace personnel fraîchement créé sans aucun repère de navigation. « Non classés » **reste donc visible même vide, tant qu'il est le seul dossier de l'espace** — dérivation directe d'AR-16 (seul dossier existant à la création) et de `content-library.md` (`isVirtual`, un seul réceptacle garanti par espace). **Dès que le propriétaire crée d'autres dossiers dans l'espace personnel, « Non classés » suit la règle générale** (masqué si vide, affiché si non vide — AUDIT §3.7) : la visibilité inconditionnelle ne vaut que pour l'espace personnel qui n'a encore aucun autre dossier. Cette distinction n'introduit pas de nouvelle règle métier : elle explicite, pour l'espace `PERSONAL`, la conséquence structurelle d'AR-16 sur une règle de rendu déjà tranchée ailleurs.
+**Précision dérivée (2026-07-15) — visibilité de « Non classés » quand il est vide** : la règle générale rendue par les wireframes ([navigation-dossiers](wireframes/sv3-preparation/navigation-dossiers/navigation-dossiers.md), [vue-espace-personnel](wireframes/sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md)) est que le dossier « Non classés » est **masqué s'il est vide, affiché dès qu'il contient des documents** — règle générale sourcée par le rendu conforme de ces wireframes, et non par `content-library.md` : `Folder.isVirtual = true` garantit uniquement l'existence d'un réceptacle unique par espace, pas cette nuance de visibilité conditionnelle. Cette règle générale s'applique telle quelle aux espaces partagés (`CAMPAIGN`/`ONE_SHOT`). **En espace `PERSONAL`, elle se dérive différemment** : « Non classés » y est la **seule vue de départ** (ci-dessus — aucun dossier système nommé n'existe pour occuper la zone de navigation) ; masquer ce dossier vide laisserait un espace personnel fraîchement créé sans aucun repère de navigation. « Non classés » **reste donc visible même vide, tant qu'il est le seul dossier de l'espace** — dérivation directe d'AR-16 (seul dossier existant à la création) et de `content-library.md` (`isVirtual`, un seul réceptacle garanti par espace). **Dès que le propriétaire crée d'autres dossiers dans l'espace personnel, « Non classés » suit la règle générale** (masqué si vide, affiché si non vide) : la visibilité inconditionnelle ne vaut que pour l'espace personnel qui n'a encore aucun autre dossier. Cette distinction n'introduit pas de nouvelle règle métier : elle explicite, pour l'espace `PERSONAL`, la conséquence structurelle d'AR-16 sur une règle de rendu déjà tranchée ailleurs.
 
 **Condition de retour (précision)** : aucune — dérivation structurelle, pas un point ouvert.
 
@@ -545,7 +545,7 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 ### AR-21 — Libellé de surface « Pro » — arbitrage du 2026-07-15
 
-**Décision** : le tier payant (`AccountTier.PRO`) est nommé **« Pro »** en surface (profil utilisateur, tout affichage du niveau de compte) — ni « Premium », ni « Payant », ni l'énoncé technique `PRO` tel quel. Ce libellé clôt la veille terminologique ouverte par l'audit des wireframes (AUDIT §3.10 — « le libellé « Pro » en surface est à surveiller »).
+**Décision** : le tier payant (`AccountTier.PRO`) est nommé **« Pro »** en surface (profil utilisateur, tout affichage du niveau de compte) — ni « Premium », ni « Payant », ni l'énoncé technique `PRO` tel quel. Ce libellé clôt la veille terminologique restée ouverte depuis le rendu du wireframe [profil](wireframes/sv1-transversaux/profil/profil.md), qui employait déjà le libellé « Pro » en surface sans que ce choix soit encore figé comme définitif.
 
 **Raison d'être produit** : le glossaire §AccountTier nomme la valeur d'énumération `PRO` (« abonnement payant — espaces illimités, joueurs illimités, 5 Go+ ») ; `moscow.md` emploie déjà « Pro » en langage produit dans la trajectoire de conversion (*« local gratuit → compte gratuit (cloud + partage) → Pro (illimité) »*). Le libellé de surface « Pro » est donc directement dérivé du vocabulaire déjà en usage dans le corpus de conception — pas une invention de ce zoning. Fixer ce libellé respecte la discipline de langage de surface (S1 §Discipline).
 
@@ -672,13 +672,73 @@ Les éléments suivants relèvent d'un entretien utilisateur ou d'une session de
 
 | Point | Nature |
 |---|---|
-| **Vue mobile joueur — DIFFÉRÉ (vague suivante)** | AR-07 pose le mobile comme pensé dans la structure (non bloqué) mais non implémenté au MVP — aucun wireframe mobile produit. Ce report n'est pas un trou de corpus : c'est une décision opérateur explicite (AR-07), non forcée au MVP. Angle d'interview maintenu (NFR-ACC-04 §Raison d'être ; INTERVIEW_GUIDE Q8) pour arbitrer la priorité de la vague suivante si les entretiens révèlent un accès joueur majoritairement mobile. |
-| **Interface de l'éditeur de document (blocs, types, liens) — RÉSOLU** | **RÉSOLU** — spécifié et rendu par le wireframe `editeur-document` (AUDIT §3.16, CONFORME). Renvoi : `docs/conception/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md`. |
-| **Comportement de l'éditeur de document en perte de connexion / reprise (préparation cloud) — DIFFÉRÉ ET ROUTÉ** | NFR-OFF-04 couvre le fonctionnement partiel en perte de réseau **en session** (vue session, saisie de notes) ; il ne couvre pas l'éditeur de document en préparation cloud (sauvegarde locale automatique, indicateur de brouillon, reprise). Le wireframe `editeur-document` (et `editeur-scenario`) signale ce point `[SOUS-SPÉCIFIÉ]` sans le trancher, au-delà d'UC-03 E2 (conserve les données localement si possible) ; l'AUDIT confirme l'absence de spécification (« l'état d'erreur perte de connexion cloud n'est pas montré »). **Aucune exigence n'est créée ici** (hors autorité interface) : le comportement de l'éditeur cloud-préparation hors-ligne est un **trou corpus AMONT** → remédiation NFR requise (étendre NFR-OFF-04 ou nouvel NFR-OFF-05) avant tout wireframe d'état synchro sur cet écran. |
-| **Écran de consultation des backlinks « Référencé par » — RÉSOLU** | **RÉSOLU** — placement figé en AR-11 (§S6), rendu par le wireframe `editeur-document`. Renvoi : `docs/conception/presentation/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »). |
-| **Vue « Non classés » — RÉSOLUE** | Décision : « Non classés » n'est pas une vue dédiée séparée — c'est un dossier ordinaire de l'arborescence (filtre du dossier virtuel), rendu par le wireframe `navigation-dossiers`, audité **CONFORME** (AUDIT §3.7). La tension UC-05 A4 (« vue 'Non classés' dédiée ») est close par ce rendu. Précision de visibilité (masqué si vide en espace partagé ; en `PERSONAL`, visible même vide car seule vue de départ) figée en §S6 (retouche AR-16). Renvoi : `docs/conception/presentation/wireframes/sv3-preparation/navigation-dossiers/navigation-dossiers.md`. |
+| **Surface de présentation de l'offre payante — [À TRANCHER]** | Le palier payant est documenté ([ADR-005](../../architecture/decisions/ADR-005-modele-monetisation.md), vision §3), mais aucune surface ne le présente à l'utilisateur : l'écran « Voir l'offre Pro » n'est ni dans l'inventaire S4, ni dans les exclusions S8. À trancher — surface MVP à wireframer, ou exclusion à nommer explicitement. |
+| **Vue mobile joueur — DIFFÉRÉ (version ultérieure)** | AR-07 pose le mobile comme pensé dans la structure (non bloqué) mais non implémenté au MVP — aucun wireframe mobile produit. Ce report n'est pas un trou de corpus : c'est une décision opérateur explicite (AR-07), non forcée au MVP. Angle d'interview maintenu (NFR-ACC-04 §Raison d'être ; INTERVIEW_GUIDE Q8) pour arbitrer la priorité d'une version ultérieure si les entretiens révèlent un accès joueur majoritairement mobile. |
+| **Interface de l'éditeur de document (blocs, types, liens) — RÉSOLU** | **RÉSOLU** — spécifié et rendu par le wireframe `editeur-document`. Renvoi : `docs/conception/interface/wireframes/sv3-preparation/editeur-document/editeur-document.md`. |
+| **Comportement de l'éditeur de document en perte de connexion / reprise (préparation cloud) — RÉSOLU** | NFR-OFF-04 couvre le fonctionnement partiel en perte de réseau **en session** (vue session, saisie de notes) ; il ne couvrait pas l'éditeur de document en préparation cloud (sauvegarde locale automatique, indicateur de brouillon, reprise). Le wireframe `editeur-document` (et `editeur-scenario`) signalait ce point `[SOUS-SPÉCIFIÉ]` sans le trancher, au-delà d'UC-03 E2 (conserve les données localement si possible). **Le trou corpus amont est comblé** : [`NFR-OFF-05`](../besoin/nfr/NFR-OFF-05-continuite-edition-preparation-cloud.md) porte désormais la continuité d'édition en préparation cloud. Le wireframe d'état de synchronisation sur cet écran est débloqué. |
+| **Écran de consultation des backlinks « Référencé par » — RÉSOLU** | **RÉSOLU** — placement figé en AR-11 (§S6), rendu par le wireframe `editeur-document`. Renvoi : `docs/conception/interface/wireframes/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »). |
+| **Vue « Non classés » — RÉSOLUE** | Décision : « Non classés » n'est pas une vue dédiée séparée — c'est un dossier ordinaire de l'arborescence (filtre du dossier virtuel), rendu par le wireframe `navigation-dossiers`. La tension UC-05 A4 (« vue 'Non classés' dédiée ») est close par ce rendu. Précision de visibilité (masqué si vide en espace partagé ; en `PERSONAL`, visible même vide car seule vue de départ) figée en §S6 (retouche AR-16). Renvoi : `docs/conception/interface/wireframes/sv3-preparation/navigation-dossiers/navigation-dossiers.md`. |
 | **Interface de l'espace personnel — RÉSOLU** | Décision : mix assumé — entrée distincte hors-quota au tableau de bord (AR-17), atterrissage capture-first (AR-15), conteneur de transit. Libellé « Espace personnel » confirmé (AR-05). Micro-copy d'intention neutre retenue : « Vos notes et contenus, hors campagne » — sert les deux modèles mentaux (capture-first et foyer réutilisable) sans les nommer. L'espace personnel ne se présente pas par un texte d'explication, il se découvre par l'usage. Points d'interview restants (perçu comme naturel ou à expliquer, libellé de surface) : relèvent d'interview et ne bloquent pas le wireframe. Renvoi : réflexion-ux-mvp.md. |
 | **Notification active côté joueur** | US-06 §Questions ouvertes — *« non décidé pour le MVP »*. Angle d'interview (Famille C). Laissé ouvert. |
 | **Persistance des notes invité inter-sessions sans compte** | La mécanique de récupération des notes `PLAYER_PRIVATE` d'un invité via un nouveau lien vers le même personnage est évoquée dans UC-06 §Règles métier mais non entièrement spécifiée. Parcours-03 §Couture C5 identifie ce point comme zone muette. Angle d'interview (Famille C). Laissé ouvert — relève de remédiation corpus. |
 | **Sémantique `ARCHIVED PERSONAL` — RÉSOLUE** | Le glossaire §SpaceStatus et `space-management.md` invariant 14 tranchent : un espace `PERSONAL` est toujours `ACTIVE` — `ARCHIVED` et `FROZEN` ne lui sont pas applicables (`FROZEN` = gel des espaces excédentaires au downgrade, `PERSONAL` est hors quota ; `ARCHIVED` contredirait l'invariant 14). Cohérent avec l'absence d'UI d'archivage pour l'espace personnel déjà en place dans ce zoning (§Paramètres de campagne, réservé aux espaces partagés). |
 | **Fournisseurs d'identité — RÉSOLU** | MVP : Google et Discord. Règle de confiance par fournisseur : ADR-015 (Sécurité authentification MVP). Surface : les éléments interactifs (boutons, libellés) relèvent du wireframe présentation (hors périmètre zoning). |
+
+---
+
+## S10 — Points ouverts sur le modèle de navigation (graphe S3)
+
+Les points suivants sont des arbitrages sur le graphe de navigation lui-même (§S3) — distincts des trous de corpus et points d'interview de S9. Ils ne portent pas sur le besoin mais sur la fidélité du modèle `NODES`/`EDGES` à ce que S4 et S6 décrivent déjà par ailleurs. Aucun n'est tranché ici ; chacun reste `[À TRANCHER — graphe S3]`.
+
+### Transitions non modélisées dans le graphe
+
+Les transitions suivantes ne figurent pas comme arêtes du graphe S3, alors qu'elles paraissent nécessaires au fonctionnement des écrans déjà inventoriés en S4 (retour d'un écran de détail, résultat de recherche ouvrant un document, etc.) :
+
+- `Recherche → EditeurDoc`, `RecherchePerso → EditeurDocPerso` (un résultat de recherche ouvre le document ciblé — cf. S7 §Recherche)
+- retour `Inscription ↔ Connexion`
+- retour `Profil ↔ Tableau`
+- retour `SuppressionRGPD ↔ Profil`
+- retour `VSConfig / VSLIVE / VSClosed ↔ Campagne`
+- `SuppressionRGPD → Accueil`
+- retour `NouvelEspace → Tableau`
+- `ParamsCampagne → VSConfig` (renvoi vers le mode configuration de la vue session — cf. AR-18)
+
+`[À TRANCHER — graphe S3]` : faut-il ajouter ces arêtes au graphe pour qu'il reflète l'ensemble des transitions nécessaires, ou certaines relèvent-elles d'un niveau de détail que le graphe ne cherche pas à représenter (par exemple les retours contextuels génériques déjà couverts par la règle de S7 §Règle de retour contextuel) ?
+
+### Granularité de deux arêtes à préciser
+
+`GateMigration → Tableau` et `Campagne → ParamsCampagne` recouvrent chacune, dans l'inventaire S4, deux actions distinctes de nature différente (migrer vers le cloud vs différer la migration ; inviter des joueurs vs paramétrer l'espace) sous une seule arête du graphe.
+
+`[À TRANCHER — graphe S3]` : faut-il scinder chacune de ces arêtes en deux arêtes distinctes portant chacune son action, ou une arête unique suffit-elle à la granularité que ce graphe cherche à représenter ?
+
+### `Tableau → SuppressionRGPD` : arête directe ou atteinte par composition ?
+
+Le graphe S3 modélise aujourd'hui `Tableau → SuppressionRGPD` comme une arête directe. Rien dans l'inventaire S4 ni dans le châssis S7 ne précise si la suppression de compte doit rester une action directement accessible depuis le tableau de bord, ou si elle n'est atteinte que par composition, en passant par le Profil utilisateur (`Tableau → Profil → SuppressionRGPD`) — auquel cas l'arête directe du graphe serait à retirer ou à requalifier.
+
+`[À TRANCHER — graphe S3]` : conserver l'arête directe, ou la requalifier en chemin de composition via Profil ?
+
+### `NavDossiers` / `NavDossiersPerso` : écran distinct ou interaction in-page ?
+
+Le graphe S3 modélise `Campagne → NavDossiers` et `EspacePerso → NavDossiersPerso` comme des transitions vers un écran distinct ; S4 les inventorie de même, sous « Navigation par dossiers ».
+
+`[À TRANCHER — graphe S3]` : ces deux nœuds doivent-ils rester des écrans à part entière du graphe et de l'inventaire S4, ou être requalifiés en interaction in-page (navigation embarquée dans l'écran hôte, sans changement de surface) ? Une requalification impliquerait de retirer ces deux arêtes du graphe et d'ajuster l'entrée correspondante de S4.
+
+### Libellés à harmoniser entre le graphe et les wireframes
+
+Les libellés portés par le graphe S3 (nom de nœud ou d'arête) divergent, pour les transitions suivantes, du libellé retenu par le wireframe correspondant :
+
+| Arête | Libellé porté par le graphe S3 | Libellé porté par le wireframe |
+|---|---|---|
+| `Accueil → ModeLocal` | « Démarrer sans compte » (libellé du nœud `ModeLocal`) | « Commencer › » (`wireframes/sv1-transversaux/accueil/`) |
+| `Tableau → VSLIVE` | « Reprendre session en cours » | « Reprendre la session › » (`wireframes/sv2-entree-espace/tableau-de-bord/`) |
+| `Campagne → VSConfig` | « Accéder à la vue session » | « Configurer la vue » (`wireframes/sv3-preparation/vue-campagne/`) |
+| `Campagne → VSLIVE` | « Lancer la session » | « Reprendre la session › » (`wireframes/sv3-preparation/vue-campagne/` — bouton distinct de « Configurer la vue » sur le même écran) |
+| `VSLIVE → PanneauCreation` | « Panneau création rapide à la volée (UC-07) » (libellé du nœud) | « + créer à la volée » (`wireframes/sv-session/vue-session-mj/`) |
+
+`[À TRANCHER — graphe S3]` : harmoniser le libellé du graphe sur celui du wireframe pour chacune de ces arêtes, ou l'inverse si le graphe porte l'intitulé de référence à répercuter vers le wireframe.
+
+### Second point de passage joueur → MJ (`SaisieNom → Inscription`)
+
+AR-03 (§S6) pose la séparation radicale entre surface MJ et surface joueur, sans figer le nombre de points de passage autorisés d'une surface à l'autre. Le graphe S3 ne modélise aujourd'hui aucune arête joueur → MJ depuis l'écran de saisie du nom d'affichage (`SaisieNom`).
+
+`[À TRANCHER — graphe S3]` : `SaisieNom → Inscription` (permettre de créer un compte pour conserver ses notes, avant même d'entrer en vue joueur) relève-t-il de la même exception à AR-03 que celle qui couvre `VueJoueur → Inscription`, et doit-il être ajouté au graphe comme second point de passage joueur → MJ ?

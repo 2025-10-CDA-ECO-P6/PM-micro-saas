@@ -221,7 +221,7 @@ La traçabilité descend à la maille **zone** uniquement lorsqu'une zone matér
 
 > Cet exemple instancie le gabarit sur l'écran le plus riche du MVP.
 > Il démontre que le gabarit tient sur un écran à trois modes, avec partage, avec châssis mode local.
-> Il ne constitue pas un wireframe (vague 3) — aucune décision nouvelle par rapport au corpus.
+> Il ne constitue pas un wireframe (fiche dédiée) — aucune décision nouvelle par rapport au corpus.
 > Sources : UC-06 ; UC-07 ; UC-08 ; UC-14 ; US-06-01 à US-06-10 ; UJ-UC-06 ; AR-04 ; AR-09 ; AR-11 ; AR-12 ; NFR-ACC-02 ; NFR-ACC-04 ; châssis S7.
 
 ---

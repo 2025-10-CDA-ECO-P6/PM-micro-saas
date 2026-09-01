@@ -39,17 +39,17 @@ Le pattern central « tout contenu éditorial est un `Document` composé de `Doc
 
 ## Conséquences
 
-- Les diagrammes de classes du Core et les trois fichiers où `CharacterId`, `ScenarioId`, `SceneId` subsistent doivent être nettoyés et alignés sur `DocumentId` (Vague 1, finding A-03, B-04, C-06).
+- Les diagrammes de classes du Core et les trois fichiers où `CharacterId`, `ScenarioId`, `SceneId` subsistent doivent être nettoyés et alignés sur `DocumentId` (J0, finding A-03, B-04, C-06).
 - L'EAV libre devient un EAV gouverné : toute écriture dans `properties` passe par `Document.SetProperties()` avec validation contre le schéma.
 - La recherche full-text sur `properties` n'est pas indexée au MVP — la recherche reste titre-seul (finding CR-5). Cette limite est assumée.
 - La migration future vers des relations typées (post-MVP, si le besoin émerge) est sécurisée par la présence d'un schéma déclaré par type.
-- La conception du VO `DocumentProperties` et des schémas seedés est un livrable de la phase de cadrage (Vague 2, finding C-03).
+- La conception du VO `DocumentProperties` et des schémas seedés est un livrable de la phase de conception (finding C-03).
 
 ---
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue Vague 0, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
 
 - **Changement de signature d'agrégat.** La suppression de `CharacterId` n'est pas un nettoyage cosmétique : elle modifie la signature de `SpaceMembership.characterIds`, de `GuestAccess.characterId`, de la méthode `AssociateCharacter`, des événements associés et de l'invariant RB-11-18. Les diagrammes `classes/core.md`, `classes/space-management.md` et la prose `space-management.md` sont également affectés — environ 6 emplacements distincts, pas 3.
 

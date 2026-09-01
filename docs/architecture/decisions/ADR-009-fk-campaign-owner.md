@@ -50,12 +50,12 @@ Rejetée. Le Core ne contient jamais d'entités — introduire une entité de li
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue Vague 0, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
 
 - **Statué (cadrage P1, 2026-06-09).** Toutes les FK cross-module sont réelles (option a). Le recensement complet (19 FK cross-module) et la stratégie `ON DELETE`/cascade sont dans [ADR-011](ADR-011-cascade-integrite-referentielle.md). L'affirmation « la seule FK cross-module documentée et assumée » dans les sections Décision et Conséquences ci-dessus est corrigée en conséquence.
 
 - **Corriger la FK `membership_characters`.** La FK composite `(space_id, user_id)` définie dans `membership_characters` est invalide car elle cible une colonne non-unique. Correction mécanique C-13 : cibler la clé primaire de `space_memberships`.
 
-- **Annoter les blocs « Note FK inter-modules » des 4 MLD.** Chaque MLD doit indiquer explicitement les FK cross-module retenues et leur exception assumée (Vague 1).
+- **Annoter les blocs « Note FK inter-modules » des 4 MLD.** Chaque MLD doit indiquer explicitement les FK cross-module retenues et leur exception assumée (J2).
 
 - **Cohérence avec ADR-007 — pseudonymisation.** La FK `ownerId NOT NULL` sur `spaces` implique qu'on ne peut jamais supprimer la ligne `users` tant qu'un espace la référence. Ce comportement est cohérent avec la posture de pseudonymisation actée dans ADR-007 (pas de hard-delete, anonymisation par réécriture).

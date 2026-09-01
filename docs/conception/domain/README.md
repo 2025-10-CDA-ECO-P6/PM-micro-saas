@@ -4,8 +4,8 @@
 > Chaque bounded context est documenté séparément avec ses règles métier, ses agrégats,
 > ses événements domaine et ses diagrammes.
 >
-> Sources de vérité produit → [vision-produit.md](../vision/vision-produit.md)
-> Use cases détaillés → [usecases/README.md](../usecases/README.md)
+> Sources de vérité produit → [vision-produit.md](../besoin/vision/vision-produit.md)
+> Use cases détaillés → [usecases/README.md](../besoin/usecases/README.md)
 
 ---
 

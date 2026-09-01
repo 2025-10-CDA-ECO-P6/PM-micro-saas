@@ -46,7 +46,7 @@ Par ailleurs, Blazor WASM n'avait jamais été évalué formellement alors que l
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue Vague 0, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
 
 - **La landing MVP utilise SSG / prerender statique**, déployable sur CDN, pas SSR dynamique. Le SSR dynamique est réservé à une éventuelle évolution future si du contenu dynamique est nécessaire.
 

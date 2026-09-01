@@ -14,9 +14,9 @@
 
 [ADR-004](../decisions/ADR-004-transport-temps-reel.md) acte SignalR comme transport temps réel dès le MVP, avec fallback natif WebSocket → SSE → long-polling. Cette décision a une conséquence de coût assumée mais non chiffrée :
 
-> « Coût d'infrastructure temps réel dès le MVP : connexions persistantes, sticky sessions à prévoir côté hébergement. Ce coût est à chiffrer explicitement, en particulier l'impact sur le tier gratuit d'hébergement (Vague 2). » (ADR-004, section Conséquences, ligne 36)
+> « Coût d'infrastructure temps réel dès le MVP : connexions persistantes, sticky sessions à prévoir côté hébergement. Ce coût est à chiffrer explicitement, en particulier l'impact sur le tier gratuit d'hébergement (J3). » (ADR-004, section Conséquences, ligne 36)
 
-**Les données de coût d'hébergement sont absentes du corpus.** Aucun chiffrage n'existe à date dans les documents accessibles ; ADR-004:36 renvoie lui-même ce chiffrage à un travail ultérieur (« Vague 2 »). Cette spec ne peut donc pas fixer de métrique de coût ni de seuil — elle ne fait que cadrer la forme du mécanisme de repli attendu.
+**Les données de coût d'hébergement sont absentes du corpus.** Aucun chiffrage n'existe à date dans les documents accessibles ; ADR-004:36 renvoie lui-même ce chiffrage à un travail ultérieur (« J3 »). Cette spec ne peut donc pas fixer de métrique de coût ni de seuil — elle ne fait que cadrer la forme du mécanisme de repli attendu.
 
 La revue adversariale post-ADR ajoute, dans le même mouvement, un mécanisme de repli explicitement requis comme livrable de configuration :
 
@@ -84,7 +84,7 @@ Le comportement de coût et de repli réel sous charge **n'est pas reproductible
 | # | Point ouvert | Référence corpus |
 |---|---|---|
 | 1 | Valeur du seuil de coût par session concurrente | ADR-004:47 |
-| 2 | Définition de la métrique de coût | ADR-004:36 (chiffrage absent du corpus, renvoyé à Vague 2) |
+| 2 | Définition de la métrique de coût | ADR-004:36 (chiffrage absent du corpus, renvoyé à J3) |
 | 3 | Cadence cible du polling adaptatif | ADR-004:47 (cible qualitative seulement, ADR-004:27) |
 | 4 | Mécanisme de détection du dépassement de seuil | Absent du corpus |
 

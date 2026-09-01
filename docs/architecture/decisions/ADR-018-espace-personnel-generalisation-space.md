@@ -238,13 +238,13 @@ Les choix documentés dans cet ADR sont cohérents avec le RGPD tel que lu et in
 
 ### Consolidation — cadrage de validation pré-lancement EU
 
-**Les deux points de conformité ci-dessus** — qualification Art. 17 du hard-delete inconditionnel du contenu personnel ; périmètre DPA Art. 28 pour un contenu personnel décrivant des tiers — **sont consolidés dans le cadrage de validation pré-lancement EU** à `docs/juridique/cadrage-validation-pre-lancement-eu.md`. Ce cadrage énumère les 5 axes à valider juriste avant tout lancement EU. Voir aussi les points ouverts à la fin de la section « Points à trancher ».
+**Les deux points de conformité ci-dessus** — qualification Art. 17 du hard-delete inconditionnel du contenu personnel ; périmètre DPA Art. 28 pour un contenu personnel décrivant des tiers — **sont consolidés dans le cadrage de validation pré-lancement EU** à `docs/securite/conformite/cadrage-validation-pre-lancement-eu.md`. Ce cadrage énumère les 5 axes à valider juriste avant tout lancement EU. Voir aussi les points ouverts à la fin de la section « Points à trancher ».
 
 ---
 
 ## Compléments post-revue
 
-**Exécution du renommage (plan `20260612-reecriture-domaine-space`, vagues W1–W8 — 2026-06-12).** La décision (Voie 3) a été propagée sur l'ensemble du corpus : domaine (5 bounded contexts), glossaire, 14 use cases, user-stories, user-journeys, parcours, vision / moscow / personas / NFR, ADR RGPD-autorisation-migration (ADR-009/010/011/012/013/014/016/017) et diagrammes. Le fichier `campaign-management.md` (domaine + 4 diagrammes) est renommé `space-management.md`. L'incohérence `ScenarioLibraryEntry` `ownerId`/`userId` est résolue (alignée sur `ownerId`).
+**Exécution du renommage (plan `20260612-reecriture-domaine-space` — 2026-06-12).** La décision (Voie 3) a été propagée sur l'ensemble du corpus : domaine (5 bounded contexts), glossaire, 14 use cases, user-stories, user-journeys, parcours, vision / moscow / personas / NFR, ADR RGPD-autorisation-migration (ADR-009/010/011/012/013/014/016/017) et diagrammes. Le fichier `campaign-management.md` (domaine + 4 diagrammes) est renommé `space-management.md`. L'incohérence `ScenarioLibraryEntry` `ownerId`/`userId` est résolue (alignée sur `ownerId`).
 
 Décisions tranchées en cours de propagation (réversibles, à confirmer à l'entrée en build) :
 - quota FREE = espaces `CAMPAIGN`/`ONE_SHOT` (l'espace `PERSONAL` par défaut **n'est pas décompté**) ;

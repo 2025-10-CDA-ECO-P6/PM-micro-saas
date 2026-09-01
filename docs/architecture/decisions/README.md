@@ -3,8 +3,7 @@
 Ce registre consigne les décisions d'architecture retenues pour le projet Haversack.
 Il repart à neuf après plusieurs remises à zéro de la conception (voir note ci-dessous).
 
-Retour vers l'index d'architecture : [ArchitectureIndex.md](../ArchitectureIndex.md)  
-Rapport d'audit et plan de remédiation : [docs/audit/](../../audit/)
+Retour vers l'index d'architecture : [architecture/README.md](../README.md)
 
 ---
 

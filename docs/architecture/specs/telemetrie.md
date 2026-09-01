@@ -2,7 +2,7 @@
 
 > **Nature** : spec pré-build (approche de report fidèle au corpus). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucun nom d'outil, aucun mécanisme non explicitement acté dans le corpus n'est introduit ici.
 >
-> **Source normative** : [ADR-006 — Périmètre MVP](../decisions/ADR-006-perimetre-mvp.md), section « Compléments post-revue » (lignes 57-63). Contrainte RGPD de cohérence : [`cahier-des-charges.md` §7.4](../../cahier-des-charges.md#74-conformité-rgpd--protection-des-données) (ligne 808) et [NFR-CONF-02](../../conception/nfr/NFR-CONF-02-isolation-donnees-mode-local.md).
+> **Source normative** : [ADR-006 — Périmètre MVP](../decisions/ADR-006-perimetre-mvp.md), section « Compléments post-revue » (lignes 57-63). Contrainte RGPD de cohérence : [`cahier-des-charges.md` §7.4](../../context/cahier-des-charges.md#74-conformité-rgpd--protection-des-données) (ligne 808) et [NFR-CONF-02](../../conception/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md).
 >
 > **Lecteur visé** : l'équipe de build qui opérationnalisera l'instrumentation en entrée des jalons J1/J2/J3 (ADR-006:46), et le porteur produit qui devra trancher les points `[À TRANCHER]` avant que cette instrumentation puisse être implémentée.
 >
@@ -12,13 +12,13 @@
 
 ## 1. Pourquoi cette instrumentation existe
 
-[ADR-006](../decisions/ADR-006-perimetre-mvp.md) acte un MVP unique, sans découpage en deux vagues produit (préparation vs vue session). Cette décision a une conséquence assumée par l'opérateur : *« L'apprentissage produit n'est pas isolé : en cas d'adoption faible du MVP, il ne sera pas possible de distinguer l'échec de la préparation de celui de la vue session. »* (ADR-006, section Conséquences, ligne 44).
+[ADR-006](../decisions/ADR-006-perimetre-mvp.md) acte un MVP unique, sans découpage en deux temps de livraison (préparation vs vue session). Cette décision a une conséquence assumée par l'opérateur : *« L'apprentissage produit n'est pas isolé : en cas d'adoption faible du MVP, il ne sera pas possible de distinguer l'échec de la préparation de celui de la vue session. »* (ADR-006, section Conséquences, ligne 44).
 
 Pour compenser cette perte de signal, la revue adversariale post-ADR ajoute une exigence dans le périmètre MVP (ADR-006:57) :
 
 > « Puisque le MVP unique ne sépare pas les hypothèses d'apprentissage, une télémétrie séparée par pilier est ajoutée dans le périmètre MVP […]. Cette instrumentation récupère l'essentiel de l'apprentissage que la décision de MVP unique assume de perdre. » (ADR-006:57,61)
 
-Cette instrumentation n'est donc pas un ajout optionnel : elle est le mécanisme compensatoire explicitement chargé de reconstituer, après coup, ce que le découpage en deux vagues aurait offert nativement.
+Cette instrumentation n'est donc pas un ajout optionnel : elle est le mécanisme compensatoire explicitement chargé de reconstituer, après coup, ce que le découpage en deux temps de livraison aurait offert nativement.
 
 ---
 
@@ -78,7 +78,7 @@ ADR-006 ajoute, dans le même paragraphe de compléments post-revue, une exigenc
 
 Deux éléments à retenir fidèlement :
 
-- **Champ d'application** : « dès le mode local » — cette exigence s'applique donc avant même la création d'un compte cloud, dans le contexte du MVP unique où le mode local et le mode cloud ne sont plus séparés en deux vagues produit (ADR-006:24-28).
+- **Champ d'application** : « dès le mode local » — cette exigence s'applique donc avant même la création d'un compte cloud, dans le contexte du MVP unique où le mode local et le mode cloud ne sont plus séparés en deux temps de livraison (ADR-006:24-28).
 - **Deux volets distincts** : une capture d'email qui doit être « non bloquante » (le MJ n'est pas empêché de progresser s'il ne fournit pas d'email), et un dispositif d'analytics qualifié d'« anonyme RGPD ».
 
 ### 4.1 Ce qui est fixé
@@ -98,7 +98,7 @@ Cette instrumentation n'est pas conçue en dehors du cadre de confidentialité d
 
 > « L'instrumentation de validation du MVP — activation préparation, activation vue de session, activation partage […] — est conçue pour mesurer l'occurrence d'un usage sans capter le contenu narratif créé ou partagé par le MJ, cohérent avec l'isolation des données en mode local (NFR-CONF-02). » (`cahier-des-charges.md`:808)
 
-[NFR-CONF-02](../../conception/nfr/NFR-CONF-02-isolation-donnees-mode-local.md) confirme ce même principe côté portée de l'exigence : *« Les mesures d'usage anonymes éventuelles : si de telles mesures sont mises en place, elles font l'objet d'un traitement distinct, sans lien avec le contenu local du MJ. »* (NFR-CONF-02, §Portée et hors-portée, ligne 39).
+[NFR-CONF-02](../../conception/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md) confirme ce même principe côté portée de l'exigence : *« Les mesures d'usage anonymes éventuelles : si de telles mesures sont mises en place, elles font l'objet d'un traitement distinct, sans lien avec le contenu local du MJ. »* (NFR-CONF-02, §Portée et hors-portée, ligne 39).
 
 **Principe à reporter tel quel, non renégociable dans cette spec** : chaque événement décrit en §3 mesure une **occurrence** (un fait binaire ou un comptage — campagne créée, document créé, session ouverte, document ouvert) et ne capture à aucun moment le **contenu narratif** produit ou partagé par le MJ (texte des documents, notes, contenu de session). Toute implémentation qui ferait transiter du contenu narratif dans un événement de télémétrie contredirait NFR-CONF-02 et le principe déjà acté au cahier des charges.
 
@@ -126,5 +126,5 @@ Ces six points bloquent le passage de cette spec à un ticket de développement.
 | Artefact | Nature du lien |
 |---|---|
 | [ADR-006 — Périmètre MVP](../decisions/ADR-006-perimetre-mvp.md) | Source normative des trois piliers et de l'exigence email/analytics (lignes 57-63) |
-| [`cahier-des-charges.md` §7.4](../../cahier-des-charges.md#74-conformité-rgpd--protection-des-données) | Reformulation synthèse du principe « occurrence sans contenu narratif » (ligne 808) |
-| [NFR-CONF-02](../../conception/nfr/NFR-CONF-02-isolation-donnees-mode-local.md) | Exigence d'isolation des données en mode local ; place explicitement les « mesures d'usage anonymes » hors de sa propre portée, comme traitement distinct |
+| [`cahier-des-charges.md` §7.4](../../context/cahier-des-charges.md#74-conformité-rgpd--protection-des-données) | Reformulation synthèse du principe « occurrence sans contenu narratif » (ligne 808) |
+| [NFR-CONF-02](../../conception/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md) | Exigence d'isolation des données en mode local ; place explicitement les « mesures d'usage anonymes » hors de sa propre portée, comme traitement distinct |

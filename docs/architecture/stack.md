@@ -23,7 +23,7 @@ Haversack.Infrastructure.Persistence
 Haversack.Infrastructure.Notifications
 Haversack.Api
 ```
-> [Détail complet de la structure des projets](06-structure-projets.md)
+> [Détail complet de la structure des projets](structure-projets.md)
 
 ---
 
@@ -176,7 +176,7 @@ Pour un Micro-SaaS avec un seul développeur en phase MVP, un monolithe modulair
 
 **Remplacement d'infrastructure** — changer de provider email, migrer vers Elasticsearch, ajouter un cache Redis : aucune modification du domaine ou de l'application.
 
-> Détail complet : [06-structure-projets.md](06-structure-projets.md)
+> Détail complet : [structure-projets.md](structure-projets.md)
 
 ### Limitations
 

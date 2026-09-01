@@ -18,7 +18,7 @@ Cet ADR formalise deux items bloquants du jalon M1 qui constituent ensemble le *
 - **B1.1a — Format de sérialisation** : structure du payload, champs gouvernés, enveloppe versionnée, couture de projection locale.
 - **B1.1b — Parcours d'échec de revalidation** : stratégie de validation à l'import, rapport de rejets, idempotence, préservation des données locales.
 
-Les fondations de ces deux items sont actées dans ADR-001 §Compléments (format = payload, invariant `validation locale ⊆ validation serveur`, payload non fiable revalidé par les VO) et dans 06-structure-projets.md §7. Cet ADR formalise et détaille ces fondations sans les re-décider.
+Les fondations de ces deux items sont actées dans ADR-001 §Compléments (format = payload, invariant `validation locale ⊆ validation serveur`, payload non fiable revalidé par les VO) et dans structure-projets.md §7. Cet ADR formalise et détaille ces fondations sans les re-décider.
 
 **Dans le périmètre de cet ADR** : format du payload versionné, enveloppe et métadonnées, champs gouvernés vs libres, frontière de confiance, liste des champs jamais honorés depuis le payload, parcours d'échec transactionnel par espace, ordre topologique à l'import, idempotence, gate de confirmation anti-appropriation.
 

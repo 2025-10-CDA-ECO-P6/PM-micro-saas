@@ -46,7 +46,7 @@ Le store local projette le périmètre sérialisé défini dans ADR-016 §1.2. L
 
 | Object store | Clé primaire | Description |
 |---|---|---|
-| `campaigns` | `id` (UUID local) | Racine de l'agrégat |
+| `spaces` | `id` (UUID local) | Racine de l'agrégat |
 | `folders` | `id` (UUID local) | Arborescence rattachée à la campagne |
 | `documents` | `id` (UUID local) | Documents avec leurs champs scalaires |
 | `document_blocks` | `id` (UUID local) | Blocs de contenu rattachés à un document |
@@ -102,7 +102,7 @@ Les validations locales sont minimales, conformément à ADR-001 §Décision et 
 
 #### 1.6 Règle métier RB-01-03 : plafond de 3 campagnes en mode local
 
-La règle d'interface RB-01-03 — maximum 3 campagnes en mode local — est appliquée par le store. Avant toute écriture d'une nouvelle campagne dans l'object store `campaigns`, le code vérifie le nombre de campagnes existantes. Si le plafond est atteint, l'écriture est rejetée avant d'atteindre IndexedDB, avec un message orientant vers la création de compte ou la suppression d'une campagne existante.
+La règle d'interface RB-01-03 — maximum 3 campagnes en mode local — est appliquée par le store. Avant toute écriture d'une nouvelle campagne dans l'object store `spaces`, le code vérifie le nombre de campagnes existantes. Si le plafond est atteint, l'écriture est rejetée avant d'atteindre IndexedDB, avec un message orientant vers la création de compte ou la suppression d'une campagne existante.
 
 ---
 
@@ -211,7 +211,7 @@ En mode local, aucun JWT d'accès, aucun refresh token, aucun token de session n
 
 **Structure miroir des tables serveur**
 
-Reproduire la structure relationnelle des tables serveur (campaigns, folders, documents, etc., avec leurs FK et contraintes d'unicité) dans IndexedDB. Écarté : IndexedDB n'est pas une base relationnelle et n'implémente pas les contraintes FK. Réimporter ces contraintes côté client imposerait une logique d'intégrité référentielle TS sans outillage adapté, contraire à ADR-001 §Décision. L'aggregate-rooted est la structure cohérente avec la posture CRUD du mode local.
+Reproduire la structure relationnelle des tables serveur (spaces, folders, documents, etc., avec leurs FK et contraintes d'unicité) dans IndexedDB. Écarté : IndexedDB n'est pas une base relationnelle et n'implémente pas les contraintes FK. Réimporter ces contraintes côté client imposerait une logique d'intégrité référentielle TS sans outillage adapté, contraire à ADR-001 §Décision. L'aggregate-rooted est la structure cohérente avec la posture CRUD du mode local.
 
 **Versionner le store à la même version que le payload**
 

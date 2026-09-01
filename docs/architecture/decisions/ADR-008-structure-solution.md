@@ -41,20 +41,20 @@ Non retenu. Perd la séparation Clean Architecture et les garanties de sens de d
 
 ## Conséquences
 
-- Un fichier `06-structure-projets.md` est à produire comme source de vérité de la structure concrète des projets .NET (noms, responsabilités, références inter-projets). Ce fichier est un livrable de Vague 1 (finding A-01, B-07).
-- Le nommage du projet noyau partagé (`SharedKernel` vs `Domain.Kernel`) est à trancher et à uniformiser dans toute la documentation (finding B-07). Ce point est délibérément laissé à Vague 1.
+- Un fichier `structure-projets.md` est à produire comme source de vérité de la structure concrète des projets .NET (noms, responsabilités, références inter-projets). Ce fichier est un livrable de J0 (finding A-01, B-07).
+- Le nommage du projet noyau partagé (`SharedKernel` vs `Domain.Kernel`) est à trancher et à uniformiser dans toute la documentation (finding B-07). Ce point est délibérément laissé à J0.
 - La frontière entre bounded contexts repose sur la discipline de revue de code tant qu'ils ne sont pas extraits en projets séparés. Il n'y a pas de garantie du compilateur sur le respect des frontières logiques.
 - Le module `Infrastructure.Notifications` est isolé dès J0 (cohérent avec ADR-004 — SignalR).
-- Une note de mapping EF Core est à produire en Vague 2 : converters d'IDs typés, owned types, `HasColumnType("jsonb")` pour `properties`, discriminant de bloc, query filters (finding C-15).
+- Une note de mapping EF Core est à produire en J2 : converters d'IDs typés, owned types, `HasColumnType("jsonb")` pour `properties`, discriminant de bloc, query filters (finding C-15).
 
 ---
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue Vague 0, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
 
 - **Test d'architecture en CI = livrable J0.** Un test d'architecture automatisé (ex. NetArchTest, ou vérification de convention de namespace en CI) garantissant les frontières de bounded context est un livrable J0. Il remplace la « discipline de revue de code » — mécanisme insuffisant en contexte solo — par une contrainte outillée vérifiable à chaque commit.
 
-- **Périmètre de `06-structure-projets.md` étendu.** Le fichier de structure projets doit couvrir le périmètre TypeScript/front du mode local (ADR-001), pas seulement la solution .NET.
+- **Périmètre de `structure-projets.md` étendu.** Le fichier de structure projets doit couvrir le périmètre TypeScript/front du mode local (ADR-001), pas seulement la solution .NET.
 
 - **Ordre C#-first (ADR-001).** La solution .NET est échafaudée en premier. La structure des projets .NET est donc le premier livrable de structure, avant tout projet Angular ou TypeScript.

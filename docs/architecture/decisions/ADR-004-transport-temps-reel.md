@@ -33,8 +33,8 @@ Non viable : le partage temps réel MJ→joueurs est une fonctionnalité central
 
 ## Conséquences
 
-- Coût d'infrastructure temps réel dès le MVP : connexions persistantes, sticky sessions à prévoir côté hébergement. Ce coût est à chiffrer explicitement, en particulier l'impact sur le tier gratuit d'hébergement (Vague 2).
-- L'authentification du canal invité sans compte (token `GuestAccess` porté sur le canal SignalR) est à concevoir, avec propagation des révocations et expirations en cours de session active (Vague 2, finding H-06).
+- Coût d'infrastructure temps réel dès le MVP : connexions persistantes, sticky sessions à prévoir côté hébergement. Ce coût est à chiffrer explicitement, en particulier l'impact sur le tier gratuit d'hébergement (J3).
+- L'authentification du canal invité sans compte (token `GuestAccess` porté sur le canal SignalR) est à concevoir, avec propagation des révocations et expirations en cours de session active (J3, finding H-06).
 - L'empreinte des sessions longues (sessions de jeu de plusieurs heures) sur les connexions persistantes est un point de surveillance opérationnelle (finding I-01).
 - Le module `Infrastructure.Notifications` est isolé dès J0 (structure décidée dans ADR-008).
 
@@ -42,7 +42,7 @@ Non viable : le partage temps réel MJ→joueurs est une fonctionnalité central
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue Vague 0, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
 
 - **Configuration sobre obligatoire.** Le transport est forcé en SSE tant que la communication reste unidirectionnelle (MJ→joueurs). La connexion est fermée sur fin de session LIVE. Le heartbeat/keep-alive est allongé (événements rares en session de jeu). Un seuil de coût par session concurrente est à définir comme critère de réversibilité déclenchant le repli vers polling adaptatif — ce seuil est un livrable de configuration, pas un commentaire de documentation.
 

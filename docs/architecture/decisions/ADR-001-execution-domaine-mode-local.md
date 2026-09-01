@@ -37,23 +37,23 @@ Le format de sérialisation utilisé pour l'export local est le même que le pay
 
 ## Conséquences
 
-- Le mode local est volontairement plus pauvre que le domaine serveur : les invariants métier riches ne sont pas garantis hors ligne. Ce point doit être documenté honnêtement dans UC-01 et dans la vision produit (Vague 1).
-- Le modèle de données local (object stores IndexedDB) est à concevoir comme une projection du schéma serveur, avec un sous-ensemble des validations. Ce travail est en Vague 2 (finding C-11).
+- Le mode local est volontairement plus pauvre que le domaine serveur : les invariants métier riches ne sont pas garantis hors ligne. Ce point doit être documenté honnêtement dans UC-01 et dans la vision produit.
+- Le modèle de données local (object stores IndexedDB) est à concevoir comme une projection du schéma serveur, avec un sous-ensemble des validations. Ce travail est en J1 (finding C-11).
 - La migration locale→cloud doit inclure une étape de confirmation anti-appropriation : l'utilisateur doit prouver que les données lui appartiennent avant import (finding F-01). **Statué dans [ADR-016](ADR-016-serialisation-locale-migration.md)** : gate de reconnaissance par présentation des données détectées, pas de preuve formelle d'appartenance possible.
 - Le format de sérialisation de l'export local devient un livrable de conception à part entière — il doit être spécifié explicitement. **Statué dans [ADR-016](ADR-016-serialisation-locale-migration.md)** : format JSON avec `schemaVersion` obligatoire, rejet propre des versions inconnues.
-- La stratégie de synchronisation (granularité lot ou delta) est à décider en Vague 2 (finding I-05).
-- La capture d'audience (analytics) est structurellement limitée par le mode local (finding E-06) — point à adresser en Vague 2.
+- La stratégie de synchronisation (granularité lot ou delta) est à décider en J2 (finding I-05).
+- La capture d'audience (analytics) est structurellement limitée par le mode local (finding E-06) — point à adresser en J2.
 
 ---
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue Vague 0, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
 
 - **Ordre de build acté : C#-first.** Le domaine C# serveur est construit en premier (source de vérité). Le modèle local est une projection dérivée du domaine serveur. Le « walking skeleton local-only » n'est plus un jalon isolé.
 
 - **Invariant ajouté : « validation locale ⊆ validation serveur ».** Le mode local peut être plus permissif en lecture mais ne doit jamais accepter en écriture un état que le serveur rejettera à l'import.
 
-- **Préalables bloquants (pas Vague 2) :** spécification du format de sérialisation (payload de migration) et parcours d'échec de revalidation à la migration (quarantaine / correction guidée). Le payload est traité comme non fiable et revalidé par les Value Objects à l'import. **Ces deux points sont désormais statués dans [ADR-016 — Sérialisation locale et contrat de migration local→cloud](ADR-016-serialisation-locale-migration.md)** : format `schemaVersion`, gate de reconnaissance anti-appropriation, parcours tout-ou-rien par campagne, rapport de rejets et conservation des données locales en cas de rejet.
+- **Préalables bloquants (non différés) :** spécification du format de sérialisation (payload de migration) et parcours d'échec de revalidation à la migration (quarantaine / correction guidée). Le payload est traité comme non fiable et revalidé par les Value Objects à l'import. **Ces deux points sont désormais statués dans [ADR-016 — Sérialisation locale et contrat de migration local→cloud](ADR-016-serialisation-locale-migration.md)** : format `schemaVersion`, gate de reconnaissance anti-appropriation, parcours tout-ou-rien par campagne, rapport de rejets et conservation des données locales en cas de rejet.
 
 - **G-08 :** appeler `navigator.storage.persist()` dès l'entrée en mode local, à traiter avant J1 — risque de perte des données du premier contact utilisateur.

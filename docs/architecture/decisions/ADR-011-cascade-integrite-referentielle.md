@@ -285,7 +285,7 @@ Si des médias ou blobs associés à des documents sont externalisés dans une v
 
 ## Points à trancher
 
-Les éléments suivants sont explicitement renvoyés à la Vague 1 (lot B1.x) :
+Les éléments suivants sont explicitement renvoyés à J2 (lot B1.x) :
 
 - **B1.4 — Périmètre RGPD de l'effacement étendu (option Art. 17)** : **Statué dans [ADR-012](ADR-012-rgpd-effacement-compte.md).** Politique de sélection des documents supprimables (`PLAYER_PRIVATE` et non partagés) et des documents conservés (partagés / `GM_ONLY` sous intérêt légitime Art. 17§3(e)), règle anti-résidu F-08, purge des logs de corrélation UUID↔email, et obligations Art. 12§3 (délai 1 mois, horodatage, notification).
 - **B1.6 — Données invité sur espace vivant** : **Statué dans [ADR-013](ADR-013-rgpd-donnees-invites.md).** Base légale retenue pour `guest_accesses.display_name` (intérêt légitime), information Art. 13 au formulaire invité, rétention autonome à 90 jours après `expires_at`, posture mineurs (service non destiné aux enfants, attestation 16+), posture sous-traitant F-13 et DPA, UC-11 (espace conservé sous `id` anonymisé au MVP, transfert de propriété forcé post-MVP — exception : un espace `PERSONAL` n'est pas conservé — purgé inconditionnellement à `UserDeleted`, voir §Exception PERSONAL dans `UserAnonymized`).

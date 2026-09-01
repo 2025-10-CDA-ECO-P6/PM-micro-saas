@@ -333,7 +333,7 @@ La passe 1 avait posé le socle (châssis, frontière MJ/joueur, reprise session
 
 La planche appliquait à la création la restriction du partage en citant UC-08 A3 comme autorité — ce qui était incorrect. Corrigé : l'épinglage de création est possible en mode LIVE comme en mode CLOSED.
 
-**Tension corpus résiduelle (illustrée sans la trancher — remédiation corpus à conduire en amont).** Une tension entre UC-07 (« si le document est utile » — conditionnel) et session-conduct Règle 7 (épinglage systématique) demeure dans le corpus. La planche l'illustre sans la trancher : elle rend co-présents l'affordance « peut être épinglé » (UC-07 conditionnel) et l'état « auto-épinglé » (Règle 7 systématique), exprimant ainsi l'absence de réconciliation corpus. La résolution appartient au corpus amont (UC/domaine), pas à l'interface — ce qui est la bonne manière de ne pas trancher une tension ouverte côté interface.
+**Tension corpus résiduelle refermée.** La tension entre UC-07 (« si le document est utile » — conditionnel) et session-conduct Règle 7 (épinglage systématique) est refermée : UC-07 fait désormais autorité et porte la règle tranchée. En session `LIVE`, un document créé à la volée est épinglé automatiquement par défaut — le MJ peut le désépingler d'un geste. En session `CLOSED`, l'épinglage n'est pas automatique : il reste manuel et optionnel. La planche rend co-présents l'affordance « peut être épinglé » et l'état « auto-épinglé » — ce qui est désormais conforme à la règle tranchée par UC-07, et non plus l'illustration d'une tension ouverte.
 
 ### Tableau synthétique des résolutions
 
@@ -357,7 +357,7 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 
 | Point ouvert | Nature | Où résoudre |
 |---|---|---|
-| Tension épinglage conditionnel (UC-07) vs systématique (session-conduct Règle 7) | Tension corpus non tranchée | Remédiation corpus amont (UC/domaine) — hors périmètre interface |
+| Tension épinglage conditionnel (UC-07) vs systématique (session-conduct Règle 7) | ✓ Résolu (UC-07 amendé) | UC-07 fait autorité : épinglage automatique par défaut en session LIVE (désépinglage d'un geste), manuel et optionnel en session CLOSED |
 | Granularité globale gate-migration (sélection lot unique vs plusieurs lots) | ✓ Résolu (décision opérateur 2026-07-09) | Décisions opérateur actées — lot unique |
 | Vue « Non classés » dédiée | Point de présentation ouvert | Décision de wireframe |
 | Famille C zoning §S9 — présentation espace personnel | Trou de corpus / interview | Non forcée (famille C) |

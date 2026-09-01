@@ -2,7 +2,7 @@
 
 > Document de référence pour la conduite des interviews utilisateurs pré-développement et pré-lancement MVP.
 >
-> Use cases source : [usecases/README.md](usecases/README.md) — Vision produit : [vision/vision-produit.md](vision/vision-produit.md)
+> Use cases source : [besoin/usecases/README.md](besoin/usecases/README.md) — Vision produit : [besoin/vision/vision-produit.md](besoin/vision/vision-produit.md)
 
 ---
 
@@ -291,7 +291,7 @@ Cette section centralise les résultats de la campagne de validation des hypoth�
 
 ### 8.2 Synthèse des hypothèses de la vision
 
-Évaluation du statut des 5 hypothèses du MVP ([vision/vision-produit.md §2.3](vision/vision-produit.md)).
+Évaluation du statut des 5 hypothèses du MVP ([besoin/vision/vision-produit.md §2.3](besoin/vision/vision-produit.md)).
 
 *(à remplir en terrain)*
 

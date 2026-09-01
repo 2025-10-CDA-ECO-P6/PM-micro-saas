@@ -196,7 +196,7 @@ Entité (enfant de `Space`) représentant la participation d'un `User` à un esp
 
 Mécanisme d'entrée dans un espace. Peut être de type `LINK` (lien partageable) ou `EMAIL` (hors MVP). De portée `CAMPAIGN` (accès permanent à l'espace de campagne) ou `SESSION` (accès ponctuel à une session). L'utilisation d'une invitation par un utilisateur authentifié crée un `SpaceMembership` ; par un utilisateur anonyme, crée un `GuestAccess`.
 
-> **Note** : la valeur `CAMPAIGN` de `InvitationScope` (et `GuestAccessScope`) désigne spécifiquement les espaces de type `CAMPAIGN` ou `ONE_SHOT` — elle n'a pas été renommée dans cette vague. Sa renomination éventuelle fait l'objet d'une décision séparée.
+> **Note** : la valeur `CAMPAIGN` de `InvitationScope` (et `GuestAccessScope`) désigne spécifiquement les espaces de type `CAMPAIGN` ou `ONE_SHOT` — elle n'a pas été renommée à cette occasion. Sa renomination éventuelle fait l'objet d'une décision séparée.
 
 ---
 

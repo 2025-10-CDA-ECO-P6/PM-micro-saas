@@ -1,7 +1,7 @@
 # Conventions de description basse-fidélité — Haversack MVP
 
 > Couche réflexive de la sous-couche interface.
-> Ce fichier définit les conventions de notation et de nommage utilisées dans toutes les fiches de description d'écran (wireframes basse-fidélité, vague 3).
+> Ce fichier définit les conventions de notation et de nommage utilisées dans toutes les fiches de description d'écran (wireframes basse-fidélité).
 > Il ne contient pas de contenu d'écran et ne dicte pas le besoin — il documente la forme que prend la description de ce besoin.
 > Source d'autorité pour la cohérence inter-fiches : toute fiche de description d'écran suit ces conventions sans les redéfinir.
 

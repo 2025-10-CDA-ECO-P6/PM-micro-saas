@@ -45,7 +45,7 @@ Toute requête portant sur une ressource vérifie que cette ressource appartient
 - Le modèle d'anonymisation est à concevoir en cohérence avec la FK `ownerId` (ADR-009) : un `USER` ne peut pas être hard-deleted tant qu'une campagne le référence — d'où l'anonymisation par réécriture comme seule option. Ce couplage est documenté dans ADR-009.
 - La base légale et la durée de conservation des données des joueurs invités (GuestAccess, sans compte) sont documentées dans **[ADR-013](ADR-013-rgpd-donnees-invites.md)** (finding F-04 — résolu).
 - Les éléments suivants ont été spécifiés dans **[ADR-015](ADR-015-securite-authentification-mvp.md)** (résolu) : politique de mot de passe (finding F-02), validation email asynchrone / opérations sensibles (finding F-10 et F-11), durée et révocation des JWT (finding F-10), liaison OAuth sécurisée (finding F-11). Rate limiting endpoint de validation de token (finding F-06) → **ADR-015** (résolu).
-- L'invariant d'autorisation API (point 3) doit être intégré dans les contrats de la couche Application avant le début du jalon J1 (Vague 3). Le modèle d'autorisation concret — principal (membre/invité), composition des quatre prédicats, matrice ressource↔campagne, systématisation pipeline behavior et droits invité — est défini dans **[ADR-014](ADR-014-modele-autorisation-api.md)**.
+- L'invariant d'autorisation API (point 3) doit être intégré dans les contrats de la couche Application avant le début du jalon J1 ; son application effective relève de J2. Le modèle d'autorisation concret — principal (membre/invité), composition des quatre prédicats, matrice ressource↔campagne, systématisation pipeline behavior et droits invité — est défini dans **[ADR-014](ADR-014-modele-autorisation-api.md)**.
 - Une note sur les notes `PLAYER_PRIVATE` d'un compte supprimé : ces documents sont **supprimés physiquement** à la suppression du compte (ADR-012 §3(a), règle F-08) — ils ne sont pas conservés ni rattachés au personnage. La continuité de campagne concerne les contenus partagés conservés sous intérêt légitime (`PUBLIC`, `GM_ONLY`), pas les notes auteur-seul. **Statué dans [ADR-012](ADR-012-rgpd-effacement-compte.md) §4 (règle F-08).**
 - **Périmètre Art. 17 et procédure d'effacement étendu** : la politique de sélection des documents supprimables à la demande d'un utilisateur (notes `PLAYER_PRIVATE`, documents non partagés, conservation sous intérêt légitime), la procédure d'anonymisation complète et les obligations Art. 12§3 sont définis dans **[ADR-012](ADR-012-rgpd-effacement-compte.md)**.
 - **Base légale invités F-04** : la base légale retenue pour les données des joueurs invités (`GuestAccess.display_name`), l'obligation d'information Art. 13, la rétention autonome des `guest_accesses` expirés et la posture sur les mineurs sont définis dans **[ADR-013](ADR-013-rgpd-donnees-invites.md)**.
@@ -54,7 +54,7 @@ Toute requête portant sur une ressource vérifie que cette ressource appartient
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue Vague 0, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
 
 - **Posture RGPD actée : pseudonymisation documentée.** L'`UserId` est conservé pour la continuité de campagne. Base légale = intérêt légitime. Les limites de cette posture sont documentées dans la politique de confidentialité.
 
@@ -64,7 +64,7 @@ Suite à la revue adversariale (revue Vague 0, artefact purgé du corpus — his
 
 - **Dépendance vers ADR-002.** L'invariant d'autorisation exige que `characterId` et `guestAccessId` soient des colonnes indexées de premier niveau (ADR-002). Sans cette promotion, l'invariant s'exécute sur du jsonb non indexé.
 
-- **Bloquants MVP reclassés.** Les items suivants étaient en Vague 2 ; ils sont reclassés bloquants MVP et **résolus dans [ADR-015](ADR-015-securite-authentification-mvp.md)** :
+- **Bloquants MVP reclassés.** Les items suivants étaient classés en J2 sans être bloquants ; ils sont reclassés bloquants MVP et **résolus dans [ADR-015](ADR-015-securite-authentification-mvp.md)** :
   - F-11 + F-02 : validation email avant liaison OAuth + politique mot de passe (longueur ≥ 8 via `ASP.NET Identity PasswordOptions`) → **ADR-015 (résolu)**.
   - F-10 : access token ≤ 15 min, refresh token ≤ 7 jours avec rotation, denylist JTI → **ADR-015 (résolu)**.
   - F-04 : base légale + durée de conservation + information Art. 13 RGPD pour les données des joueurs invités, avant tout lancement EU → **ADR-013 (résolu)**.

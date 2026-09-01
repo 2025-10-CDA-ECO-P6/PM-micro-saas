@@ -62,14 +62,14 @@ Cette fragmentation casse le rythme de jeu, génère une charge mentale élevée
 
 Table virtuelle visuelle, moteur de règles, gestion de combat, IA générative, desktop natif, templates communautaires.
 
-> Détail des choix → [vision produit](docs/conception/vision/vision-produit.md) · [MoSCoW complet](docs/conception/vision/moscow.md)
+> Détail des choix → [vision produit](docs/conception/besoin/vision/vision-produit.md) · [MoSCoW complet](docs/conception/besoin/vision/moscow.md)
 
 ### Zoning / wireframes
 
 Le zoning d'interface MVP (arbitrages AR-01..17, inventaire des 20 écrans, châssis, exclusions) et les 20 wireframes basse-fidélité couvrant l'ensemble des surfaces MVP sont produits.
 
 - Zoning complet : [`docs/conception/interface/zoning.md`](docs/conception/interface/zoning.md)
-- Index des fiches et table de couverture UC→écran : [`docs/presentation/wireframes/`](docs/presentation/wireframes/)
+- Index des fiches et table de couverture UC→écran : [`docs/conception/interface/wireframes/`](docs/conception/interface/wireframes/)
 
 ---
 
@@ -77,7 +77,7 @@ Le zoning d'interface MVP (arbitrages AR-01..17, inventaire des 20 écrans, châ
 
 | Couche | Technologie |
 |---|---|
-| **Landing page** | Next.js (React, SSR/SSG) |
+| **Landing page** | Angular (SSR / prerender statique) |
 | **Application web** | Angular (SPA) |
 | **Backend** | .NET / ASP.NET Core (C#) |
 | **Base de données** | PostgreSQL |
@@ -106,13 +106,13 @@ Haversack.Api
 | iOS / Android stores | Capacitor (wrape Angular) | Modéré |
 | .NET natif multi-plateforme | MAUI (projet séparé, UI propre) | Élevé |
 
-> [Détail des choix techniques, justifications, points forts/faibles et évolutions](docs/conception/stack.md)
+> [Détail des choix techniques, justifications, points forts/faibles et évolutions](docs/architecture/stack.md)
 
 ---
 
 ## Diagramme de cas d'utilisation
 
-> Vue simplifiée — [voir le détail complet](docs/conception/usecases/use-cases.md)
+> Vue simplifiée — [voir le détail complet](docs/conception/besoin/usecases/use-cases.md)
 
 
 ---
@@ -121,5 +121,11 @@ Haversack.Api
 
 | Dossier | Contenu |
 |---|---|
+| [docs/context/](docs/context/README.md) | Documents de référence de premier rang : cahier des charges, spécifications techniques, dossier d'architecture, dossier de conception détaillée, note business |
+| [docs/gestion-projet/](docs/gestion-projet/README.md) | Cadrage, planification, organisation, risques, conventions de travail |
+| [docs/securite/](docs/securite/README.md) | Sécurité technique et conformité légale (RGPD) |
+| [docs/test/](docs/test/README.md) | Stratégie de test et de recette |
+| [docs/deploiement/](docs/deploiement/README.md) | Environnements, pipelines et procédures de déploiement (dossier réservé) |
+| [docs/ecoconception/](docs/ecoconception/README.md) | Démarche d'écoconception (dossier réservé, sujet non engagé) |
 | [docs/conception/](docs/conception/README.md) | Vision produit, personas, use cases, user stories, user journeys, domaine DDD |
-| [docs/architecture/](docs/architecture/ArchitectureIndex.md) | Décisions d'architecture (ADR), structure des projets |
+| [docs/architecture/](docs/architecture/README.md) | Décisions d'architecture (ADR), structure des projets |
