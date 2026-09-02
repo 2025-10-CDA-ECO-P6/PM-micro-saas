@@ -8,7 +8,7 @@
 | Date | 2026-07-16 |
 | Statut | Version de travail — consolidation dérivée du corpus de conception ; ne tranche aucune décision. Points ouverts et limites de vérifiabilité recensés en §8, à traiter à l'entrée en build. |
 | Porteur / responsable du document | Pierre-Marie Marchio |
-| Validation / approbation | Pierre-Marie Marchio (opérateur) |
+| Validation / approbation | Pierre-Marie Marchio |
 
 ### Historique des révisions
 
@@ -29,7 +29,7 @@ Ce document n'est **ni une nouvelle décision de conception, ni une décision d'
   - [Ordre d'autorité applicable à ce document](#ordre-dautorité-applicable-à-ce-document)
   - [Critère de lecture et de relecture — consolidation, pas catalogue](#critère-de-lecture-et-de-relecture--consolidation-pas-catalogue)
   - [Fidélité de consolidation — pas de re-décision](#fidélité-de-consolidation--pas-de-re-décision)
-  - [Agnosticisme d'outillage et de phasage](#agnosticisme-doutillage-et-de-phasage)
+  - [Nommage des jalons dans ce dossier](#nommage-des-jalons-dans-ce-dossier)
   - [Comment lire ce document](#comment-lire-ce-document)
 - [1 — Socle transverse](#1--socle-transverse)
   - [1.1 — Clean Architecture et quatre bounded contexts](#11--clean-architecture-et-quatre-bounded-contexts)
@@ -84,7 +84,7 @@ Les points non tranchés rencontrés au fil du dossier, ainsi que les limites de
 
 ## Conventions de lecture
 
-Les cinq sous-sections qui suivent posent le cadre de lecture et de relecture de ce dossier — ordre d'autorité, critère d'admission d'un contenu, discipline de fidélité aux sources, agnosticisme d'outillage, et mode de lecture recommandé.
+Les cinq sous-sections qui suivent posent le cadre de lecture et de relecture de ce dossier — ordre d'autorité, critère d'admission d'un contenu, discipline de fidélité aux sources, nommage des jalons, et mode de lecture recommandé.
 
 ### Ordre d'autorité applicable à ce document
 
@@ -111,9 +111,9 @@ Ce test est un outil de relecture réutilisable : tout contributeur qui amende u
 - Aucune borne normative fixée par une source (seuil, cardinalité, énumération de valeurs, délai) n'est **affaiblie**, ni **recopiée comme si ce dossier la possédait en propre**. Ce dossier renvoie à la borne ; il ne la réénonce pas comme sienne.
 - **Distinction opérationnelle** : *reporter un trou existant* consiste à citer l'axe déjà nommé dans la source et à le faire figurer tel quel dans la synthèse relationnelle ; *créer un trou* consisterait à inventer un axe non nommé ailleurs — c'est strictement exclu.
 
-### Agnosticisme d'outillage et de phasage
+### Nommage des jalons dans ce dossier
 
-Ce document ne contient aucun vocabulaire d'outil d'orchestration ni de nomenclature de phasage interne (pas de jalon numéroté indépendamment de son contenu, pas de jalon numéroté hors contexte). Un jalon éventuellement mentionné se nomme par son **contenu observable** — par exemple « local-only » ou « cloud + migration » — jamais par un identifiant numéroté indépendant du contenu, ni par un identifiant de session de travail.
+Ce dossier nomme les jalons qu'il mentionne par leur **contenu observable** — par exemple « local-only » ou « cloud + migration » — jamais par un identifiant numéroté ou arbitraire indépendant du contenu.
 
 ### Comment lire ce document
 
@@ -317,7 +317,7 @@ sequenceDiagram
 
 **Règles de gestion consolidées.** `IResourceAccessPolicy.CanAccess` (ADR-014 §3) est le point unique où se composent, en ET, le prédicat d'appartenance P1 (ADR-014 §1) et le prédicat de visibilité domaine P4 — ce dernier n'est pas re-spécifié par ADR-014 mais délégué à `Document.CanBeReadBy` (content-library.md invariant 6 / règle métier 3 ; session-conduct.md invariant 4) : masquer ce renvoi viderait la phrase d'ADR-014 sur `PLAYER_PRIVATE` auteur-seul de son contenu, puisque la règle elle-même vit dans le domaine. Les prédicats P2/P3, indépendants de l'appelant, sont portés par des query filters EF Core globaux (ADR-014 §2, câblage repris dans mapping-ef-core.md §5) — la même paire de filtres que celle qui garantit l'invisibilité de l'espace en corbeille dans la chaîne 2.1. La non-divergence entre REST et SignalR est le produit d'une composition en trois temps : ADR-007 §Compléments pose le principe (« l'invariant d'autorisation défini dans ADR-007 s'applique intégralement au canal SignalR ») avant que le transport ne soit choisi ; ADR-004 §Compléments l'instancie concrètement sur SignalR (filtrage par message, pas de diffusion par groupe indifférenciée, coupure sur révocation) ; ADR-014 §3/§6 le referme en un seul service partagé (`IResourceAccessPolicy`), point d'appel unique aux deux extrémités REST et SignalR. La sémantique 403/404 qui en résulte (contrat-openapi.md §2-§4) compose les huit scénarios déjà tranchés par ADR-014 §Conséquences avec une proposition dérivée du principe de non-révélation pour le seul scénario que l'ADR laisse ouvert.
 
-**`[À TRANCHER — B1.10]` reporté** : le choix entre 403 et 404 pour un appelant non-membre accédant à une ressource d'un autre espace est explicitement laissé ouvert par ADR-014 §Conséquences (l.240) et renvoyé à B1.10 ; contrat-openapi.md §4 fournit une proposition dérivée du principe de non-révélation, non tranchée par l'opérateur.
+**`[À TRANCHER — B1.10]` reporté** : le choix entre 403 et 404 pour un appelant non-membre accédant à une ressource d'un autre espace est explicitement laissé ouvert par ADR-014 §Conséquences (l.240) et renvoyé à B1.10 ; contrat-openapi.md §4 fournit une proposition dérivée du principe de non-révélation, non tranchée en décision produit.
 
 | Maillon | Source (fichier + section) | Rôle dans la chaîne |
 |---|---|---|
@@ -465,7 +465,7 @@ sequenceDiagram
     else Compte préexistant, email NON vérifié
         Note over IA: liaison automatique refusée — anti-hijacking (CWE-287)
         IA-->>IA: rejet silencieux (pas de message révélant l'existence du compte)
-        Note over IA: [À TRANCHER — à ratifier opérateur] reclaim-in-place (ADR-015 §2.3) — non implémenté en l'état
+        Note over IA: [À TRANCHER — à ratifier produit] reclaim-in-place (ADR-015 §2.3) — non implémenté en l'état
     end
 ```
 
@@ -473,7 +473,7 @@ sequenceDiagram
 
 **Règles de gestion consolidées.** `LinkFederatedIdentity()` (identity-access.md § Méthodes, invariant 7 : exige `emailVerified = true`) est le point d'ancrage domaine ; ADR-015 §2.2 le raffine par une règle de confiance généralisée par fournisseur (claim d'email vérifié jugé fiable + email canonique — condition satisfaite par Google et Discord au MVP, dette nommée pour un futur fournisseur à email de relais) et §2.3 pose la règle de liaison à un compte préexistant : autorisée seulement si l'email de ce compte est prouvé vérifié, matching par email canonique (RB-10-08), rejet silencieux sinon — cohérent avec le principe de non-révélation d'ADR-014 §Conséquences.
 
-**`[À TRANCHER — à ratifier opérateur]` reporté** : la résolution du cas « email OAuth face à un compte préexistant non vérifié » — *reclaim-in-place*, ADR-015 §2.3 (bascule `emailVerified`, neutralisation obligatoire du credential préexistant, liaison fédérée) — est une proposition documentée, **non ratifiée par l'opérateur**. Le « nouveau compte » évoqué ailleurs dans le corpus (RB-10-08 (b)) est explicitement écarté comme non implémentable (violerait l'invariant 1, email unique) mais la résolution de repli n'est pas tranchée. Non comblé ici.
+**`[À TRANCHER — à ratifier produit]` reporté** : la résolution du cas « email OAuth face à un compte préexistant non vérifié » — *reclaim-in-place*, ADR-015 §2.3 (bascule `emailVerified`, neutralisation obligatoire du credential préexistant, liaison fédérée) — est une proposition documentée, **non ratifiée**. Le « nouveau compte » évoqué ailleurs dans le corpus (RB-10-08 (b)) est explicitement écarté comme non implémentable (violerait l'invariant 1, email unique) mais la résolution de repli n'est pas tranchée. Non comblé ici.
 
 **Renvoi API** : `contrat-openapi.md` §6 — « Liaison OAuth rejetée silencieusement » : aucun code ou corps de réponse distinctif ne doit permettre à l'appelant de déduire la cause du rejet ; le code HTTP exact reste `[À TRANCHER — B1.10]` (contrat-openapi.md §6, § Récapitulatif).
 
@@ -482,7 +482,7 @@ sequenceDiagram
 | `LinkFederatedIdentity()`, invariant 7 | identity-access.md § Méthodes ; § Invariants métier | Ancrage domaine — la liaison exige `emailVerified` |
 | Règle de confiance par fournisseur (email vérifié + canonique) | ADR-015 §2.2 | Condition d'éligibilité d'un fournisseur à la liaison |
 | Règle de liaison à un compte préexistant + rejet silencieux | ADR-015 §2.3 ; UC-10 (RB-10-08) | Anti-hijacking CWE-287, cohérent non-révélation (ADR-014) |
-| *Reclaim-in-place* — proposition non ratifiée | ADR-015 §2.3 (Résolution proposée) ; UC-10 RB-10-08(b) | `[À TRANCHER — à ratifier opérateur]` |
+| *Reclaim-in-place* — proposition non ratifiée | ADR-015 §2.3 (Résolution proposée) ; UC-10 RB-10-08(b) | `[À TRANCHER — à ratifier produit]` |
 | Code HTTP du rejet silencieux | contrat-openapi.md §6 | `[À TRANCHER — B1.10]` |
 
 ### 3.3 — UC-11 (facette Identity & Access) : création de compte à la conversion d'un invité
@@ -525,7 +525,7 @@ sequenceDiagram
 
 **Règles de gestion consolidées.** `Space.Create()` (space-management.md § Space, méthode `Create()`) satisfait, pour les types `CAMPAIGN`/`ONE_SHOT`, le parcours décrit par UC-02 (nom obligatoire, quatre dossiers système créés à `SpaceCreated` — composition déjà posée en §1.3 avec content-library.md § Dossiers créés à `SpaceCreated`, non répétée ici). Pour le type `PERSONAL`, l'invariant 14 (space-management.md) compose un déclencheur applicatif synchrone sur `UserRegistered` (événement Identity & Access, §3.a) avec une garde d'agrégat distincte (invariant 15 : toujours `ACTIVE`, jamais archivable ni gelable) et une création de dossier restreinte au seul virtuel « Non classés » (§1.3) — la même mécanique de dossier système, appliquée à un espace structurellement hors quota. ADR-018 acte cette généralisation (Voie 3 retenue, § Décision) ; ce dossier n'en reprend pas l'analyse d'impact invariant par invariant, déjà propre à cet ADR — seule la composition UC-02/invariant 14/dossiers est portée ici.
 
-**`[À TRANCHER]` reporté** : l'activation de l'espace `PERSONAL` comme zone d'atterrissage par défaut en **mode local** (sans `ownerId` assigné) reste une recommandation non validée par l'opérateur — ADR-018 § Points à trancher : « sa validation explicite est requise par l'opérateur au gate UC-01/UC-02 ». Non comblé ici.
+**`[À TRANCHER]` reporté** : l'activation de l'espace `PERSONAL` comme zone d'atterrissage par défaut en **mode local** (sans `ownerId` assigné) reste une recommandation non validée — ADR-018 § Points à trancher : sa validation explicite reste requise avant d'engager `UC-01` et `UC-02`. Non comblé ici.
 
 **Renvoi API** : `contrat-openapi.md` ne consacre pas de section aux endpoints d'écriture (création d'espace) — la spec elle-même signale que « la liste exhaustive et littérale des endpoints … n'est pas fixée par ADR-014 ni ADR-015 » (§4) et renvoie ce point à `[À TRANCHER — B1.10]`. Seule l'annotation de sécurité de traçabilité du pipeline behavior (contrat-openapi.md §7) s'applique structurellement à tout endpoint scopé à un espace, y compris la création.
 
@@ -1015,7 +1015,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant J as Joueur / GuestAccess
-    participant Hub as Infrastructure.Notifications (SignalR)
+    participant Hub as Haversack.Infrastructure.Notifications (SignalR)
     participant Acces as IResourceAccessPolicy (§2.3)
 
     J->>Hub: négociation de connexion
@@ -1027,9 +1027,9 @@ sequenceDiagram
     Note over Hub: seuil de coût par session concurrente [À TRANCHER — ticket] → déclencherait un repli vers polling adaptatif [À TRANCHER — ticket]
 ```
 
-> Vue de consolidation. Diagramme de flux détaillé : non désigné par le corpus au-delà d'ADR-004 lui-même — le module `Infrastructure.Notifications` (isolé dès J0, ADR-008) ne dispose pas encore de diagramme de flux dédié dans `docs/conception/domain/diagrams/flows/`. Le filtrage par visibilité renvoie à [flows/content-library.md](../conception/domain/diagrams/flows/content-library.md) (visibilité document, composé en §2.3).
+> Vue de consolidation. Diagramme de flux détaillé : non désigné par le corpus au-delà d'ADR-004 lui-même — le module `Haversack.Infrastructure.Notifications` (isolé dès J0, ADR-008) ne dispose pas encore de diagramme de flux dédié dans `docs/conception/domain/diagrams/flows/`. Le filtrage par visibilité renvoie à [flows/content-library.md](../conception/domain/diagrams/flows/content-library.md) (visibilité document, composé en §2.3).
 
-**Règles de gestion consolidées.** SignalR est retenu comme transport dès le MVP (ADR-004 §Décision), isolé dans le module `Infrastructure.Notifications` (ADR-008), avec repli natif WebSocket → Server-Sent Events → long-polling. La revue adversariale post-ADR (ADR-004 §Compléments post-revue) précise ce choix par une configuration sobre obligatoire — SSE forcé tant que la communication reste unidirectionnelle MJ→joueurs, connexion fermée en fin de session `LIVE`, heartbeat/keep-alive allongé (justifié par la rareté des événements en session de jeu) — que `specs/repli-temps-reel.md` §2 reporte telle quelle sans l'affaiblir. Le filtrage par visibilité qui conditionne chaque message diffusé (`PUBLIC`/`GM_ONLY`/`PLAYER_PRIVATE`, pas de diffusion par groupe indifférenciée) est déjà composé en **§2.3** — ce paragraphe ne le redéveloppe pas.
+**Règles de gestion consolidées.** SignalR est retenu comme transport dès le MVP (ADR-004 §Décision), isolé dans le module `Haversack.Infrastructure.Notifications` (ADR-008), avec repli natif WebSocket → Server-Sent Events → long-polling. La revue adversariale post-ADR (ADR-004 §Compléments post-revue) précise ce choix par une configuration sobre obligatoire — SSE forcé tant que la communication reste unidirectionnelle MJ→joueurs, connexion fermée en fin de session `LIVE`, heartbeat/keep-alive allongé (justifié par la rareté des événements en session de jeu) — que `specs/repli-temps-reel.md` §2 reporte telle quelle sans l'affaiblir. Le filtrage par visibilité qui conditionne chaque message diffusé (`PUBLIC`/`GM_ONLY`/`PLAYER_PRIVATE`, pas de diffusion par groupe indifférenciée) est déjà composé en **§2.3** — ce paragraphe ne le redéveloppe pas.
 
 **`[À TRANCHER]` reportés** — quatre points, tous nommés par `specs/repli-temps-reel.md` comme bloquant le passage de cette spec à un ticket de développement, aucun comblé ici ni par ce dossier :
 - **valeur du seuil de coût par session concurrente** déclenchant le repli (ADR-004 §Compléments — « un seuil de coût par session concurrente est à définir comme critère de réversibilité … livrable de configuration, pas un commentaire de documentation ») ;
@@ -1057,7 +1057,7 @@ Cette section consolide, en un registre unique, les points non tranchés déjà 
 | Point | Axe | Source | Statut |
 |---|---|---|---|
 | Références nullable entrantes non couvertes par le critère §3(b) (`documents.character_id` d'un autre document, `guest_accesses.character_id`, `folders.default_template_document_id`) | RGPD — cascade de suppression | ADR-012 §4 ; `requete-effacement-non-partage.md` §5 | Non tranché (déjà en §2.1) |
-| Posture *reclaim-in-place* OAuth (email préexistant non vérifié face à une preuve IdP fraîche) | Sécurité — authentification | ADR-015 §2.3 | `[À TRANCHER — à ratifier opérateur]` (déjà en §3.4) |
+| Posture *reclaim-in-place* OAuth (email préexistant non vérifié face à une preuve IdP fraîche) | Sécurité — authentification | ADR-015 §2.3 | `[À TRANCHER — à ratifier produit]` (déjà en §3.4) |
 | 403 vs 404 pour un appelant non-membre, cross-espace | Contrat API — non-révélation | `contrat-openapi.md` §4 ; ADR-014 §Conséquences | `[À TRANCHER — B1.10]` (déjà en §2.3) |
 | Sémantique de `Visibility` (`GM_ONLY`/`PLAYER_PRIVATE`) sur un espace `PERSONAL` mono-membre | Modélisation domaine | ADR-018 § Points à trancher | Non tranché |
 | Modélisation domaine du `propertiesSchema` pour six des huit types système seedés (`scene`, `npc`, `location`, `note`, `player_character`, `reveal`) | Modélisation domaine | `specs/document-properties-schemas.md` §5 | Non tranché (déjà en §5.5) |
@@ -1067,7 +1067,7 @@ Cette section consolide, en un registre unique, les points non tranchés déjà 
 | Seuil d'expiration du claim `purge_claimed_at` | Configuration — purge RGPD | ADR-011 §Points à trancher (`ex. 1 heure`, non retenu comme valeur) | `[À TRANCHER — B1]` |
 | Dette dormante — câblage de la purge des médias externalisés à la saga `SpaceDeleted` (si une chaîne média est introduite post-MVP) | Dette architecture — condition non réalisée au MVP | ADR-011 §Points à trancher (B1.9) | Dette nommée, non déclenchée au MVP |
 | Instanciation cross-espace `PERSONAL` → partagé : comportement du document source à la purge de l'espace `PERSONAL` d'origine | Modélisation domaine | ADR-018 § Points à trancher | Non tranché |
-| Activation de l'espace `PERSONAL` comme zone d'atterrissage par défaut en mode local (redéfinit H1) ; posture capture-first recommandée en MVP | Gate opérateur — décision produit, **à ratifier, jamais actée** | ADR-018 § Recommandations (Geste capture-first) ; § Points à trancher | `[À TRANCHER]` — recommandation non validée par l'opérateur |
+| Activation de l'espace `PERSONAL` comme zone d'atterrissage par défaut en mode local (redéfinit H1) ; posture capture-first recommandée en MVP | Point de décision produit, **à ratifier, jamais acté** | ADR-018 § Recommandations (Geste capture-first) ; § Points à trancher | `[À TRANCHER]` — recommandation non validée |
 
 **Réconciliation de cohérence corpus — désormais actée, plus une divergence.** [UC-10](../conception/besoin/usecases/UC-10-compte-cloud.md) §A4/§E4 pose le principe : la suppression de compte est **bloquée** tant que le titulaire est propriétaire d'espaces partagés avec des membres actifs (« le système bloque la suppression »). `identity-access.md` § Invariants métier, invariant 3, réconcilie ce principe avec le routage par type d'espace : **bloquant** pour `CAMPAIGN`/`ONE_SHOT` à membre actif (conforme UC-10), **jamais bloquant** pour `PERSONAL` (mono-membre, hors champ). UC-10 reste la source du principe de blocage, le domaine en donne le routage exact — l'articulation, déjà développée en **§2.2**, n'est plus une divergence ouverte.
 

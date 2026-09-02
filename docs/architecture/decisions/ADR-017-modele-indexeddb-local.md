@@ -2,10 +2,8 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-10
-- **Décideur** : opérateur (cadrage P1 — dernier item du lot L1/B1.2, jalon M1)
-- **Findings liés** : F-09 (CWE-79/312 — XSS mode local, poste partagé) — résolution partielle STRUCTURAL (sanitisation client)
 
-> **Nature : mixte — à dominante pré-implémentation** — modèle de stockage et politique de sécurité client à confirmer à l'entrée en build ; parts de conception qui contraignent le modèle dès maintenant : l'invariant migration-only (aucune synchronisation continue au MVP), les bandeaux de durabilité et de confidentialité du mode local, et le non-chiffrement at-rest assumé. *(Annotation du 2026-06-10 — qualification postérieure à l'arbitrage T-03, audit conception pure 2026-06.)*
+> **Nature : mixte — à dominante pré-implémentation** — modèle de stockage et politique de sécurité client à confirmer à l'entrée en build ; parts de conception qui contraignent le modèle dès maintenant : l'invariant migration-only (aucune synchronisation continue au MVP), les bandeaux de durabilité et de confidentialité du mode local, et le non-chiffrement at-rest assumé. *(Annotation du 2026-06-10 — qualification postérieure à l'arbitrage T-03.)*
 
 ---
 
@@ -26,13 +24,13 @@ Cet ADR est le dernier item du lot L1 (B1.2) du jalon M1. Il formalise ce qu'ADR
 
 ## Contexte
 
-ADR-016 a formalisé le contrat de sérialisation et la frontière de confiance local→cloud. Il a renvoyé à B1.2 deux blocs non spécifiés : le schéma IndexedDB local (finding C-11 d'ADR-001) et le détail de la sécurité du mode local (finding F-09). Ces deux blocs sont indissociables : le modèle de stockage conditionne la surface d'attaque ; la sanitisation XSS et la politique CSP ne peuvent pas être conçues sans connaître la structure du store et les chemins de lecture.
+ADR-016 a formalisé le contrat de sérialisation et la frontière de confiance local→cloud. Il a renvoyé à B1.2 deux blocs non spécifiés : le schéma IndexedDB local (C-11 d'ADR-001) et le détail de la sécurité du mode local (F-09). Ces deux blocs sont indissociables : le modèle de stockage conditionne la surface d'attaque ; la sanitisation XSS et la politique CSP ne peuvent pas être conçues sans connaître la structure du store et les chemins de lecture.
 
 Deux points de contexte méritent d'être nommés explicitement.
 
 **Posture de synchronisation.** Au moment de cadrer ce document, une question restait ouverte : le store local doit-il prévoir un moteur de synchronisation continue (delta par entité, suivi de révision, journal de modifications) ? La réponse est non, et elle est décidée ici. Le mode local au MVP est un store CRUD hors-ligne mono-navigateur, sans aucune synchronisation cloud en cours de session. Le seul croisement local→cloud est la migration one-shot décrite dans ADR-016. Cette décision est posée comme invariant, pas comme simplification temporaire : toute infrastructure de sync continue serait architecturalement différente de ce qu'UC-01 spécifie (l.134 — aucune donnée envoyée au serveur en mode local) et relève de UC-F04, architecture offline-first complète, qui est un projet à part entière post-MVP.
 
-**Résolution STRUCTURAL.** L'audit F-09 signalait « XSS Angular exfiltre le local (CWE-79/312) ». En mode local pur, il n'existe pas de serveur pour absorber le vecteur : le plancher de sanitisation côté serveur (ADR-016 §2.4) ne couvre pas le rendu local. Ce point avait été escaladé en finding STRUCTURAL lors de la revue : un payload XSS persisté en IndexedDB n'est pas seulement dangereux à la lecture locale, il traverse la frontière vers le cloud à la migration, ce qui annulerait partiellement la protection serveur. Cet ADR ferme ce vecteur en imposant une sanitisation équivalente côté client Angular.
+**Résolution STRUCTURAL.** F-09 signale un risque XSS Angular exfiltrant le contenu local (CWE-79/312). En mode local pur, il n'existe pas de serveur pour absorber le vecteur : le plancher de sanitisation côté serveur (ADR-016 §2.4) ne couvre pas le rendu local. Ce point est classé STRUCTURAL : un payload XSS persisté en IndexedDB n'est pas seulement dangereux à la lecture locale, il traverse la frontière vers le cloud à la migration, ce qui annulerait partiellement la protection serveur. Cet ADR ferme ce vecteur en imposant une sanitisation équivalente côté client Angular.
 
 ---
 
@@ -164,7 +162,7 @@ Si un payload contenant du contenu XSS (balises `<script>`, attributs `on*`, vec
 
 Ce plancher est identique en posture à celui d'ADR-016 §2.4 (côté serveur) : même politique de liste blanche positive, mêmes interdictions absolues. La liste exacte des balises autorisées et la bibliothèque de sanitisation (ex. DOMPurify côté client ou `DomSanitizer` Angular natif) sont des points d'implémentation renvoyés à P6, mais la posture et les règles minimales sont actées ici.
 
-Ce point ferme le vecteur escaladé STRUCTURAL par l'audit. La conformité conçue est non certifiée jusqu'à l'implémentation P6 (§Conséquences).
+Ce point ferme le vecteur classé STRUCTURAL (§Contexte). La conformité conçue est non certifiée jusqu'à l'implémentation P6 (§Conséquences).
 
 #### 4.2 CSP stricte
 
@@ -293,8 +291,8 @@ Le non-chiffrement at-rest (§4.4) est une limitation conçue, communiquée via 
 
 ## Compléments post-revue
 
-**§1.6 — absence de plafond de création en mode local (2026-09-01).** La décision initialement inscrite au §1.6 appliquait RB-01-03 comme plafond de *création* en mode local : blocage de l'écriture au-delà de 3 espaces dans l'object store `spaces`, avec un message orientant vers la création de compte. Cette décision portait un point ouvert `[À TRANCHER — OPÉRATEUR]` signalant que cette application de RB-01-03 n'avait pas de source dans UC-01, lequel emploie cet identifiant pour le plafond de synchronisation cloud, espace personnel exclu.
+**§1.6 — absence de plafond de création en mode local (2026-09-01).** La décision initialement inscrite au §1.6 appliquait RB-01-03 comme plafond de *création* en mode local : blocage de l'écriture au-delà de 3 espaces dans l'object store `spaces`, avec un message orientant vers la création de compte. Cette décision portait un point ouvert `[À TRANCHER — PRODUIT]` signalant que cette application de RB-01-03 n'avait pas de source dans UC-01, lequel emploie cet identifiant pour le plafond de synchronisation cloud, espace personnel exclu.
 
-Ce point est tranché par l'opérateur : **il n'existe aucun plafond de création en mode local.** UC-01 a été amendé pour l'énoncer explicitement — la seule contrainte de création en mode local est la capacité de stockage du navigateur. RB-01-03 est confirmé comme portant exclusivement sur la synchronisation cloud d'un compte gratuit (3 espaces `CAMPAIGN`/`ONE_SHOT`, espace `PERSONAL` exclu) — pas sur la création locale. Le §1.6 est réécrit en conséquence : aucun compteur de plafond n'est implémenté dans le store local décrit par cet ADR.
+Ce point est tranché : **il n'existe aucun plafond de création en mode local.** UC-01 a été amendé pour l'énoncer explicitement — la seule contrainte de création en mode local est la capacité de stockage du navigateur. RB-01-03 est confirmé comme portant exclusivement sur la synchronisation cloud d'un compte gratuit (3 espaces `CAMPAIGN`/`ONE_SHOT`, espace `PERSONAL` exclu) — pas sur la création locale. Le §1.6 est réécrit en conséquence : aucun compteur de plafond n'est implémenté dans le store local décrit par cet ADR.
 
 Cette révision ne touche à aucune autre décision de cet ADR — object stores, versionnement du store, `navigator.storage.persist()`, posture migration-only et sécurité du mode local restent inchangés.

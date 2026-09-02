@@ -6,7 +6,7 @@
 | Date | 2026-07-16 |
 | Statut | Version de référence — consolidation du corpus |
 | Périmètre | MVP — trajectoire technique actée pour UC-01 à UC-12, UC-14 ; post-MVP signalé où il apparaît |
-| Audiences | équipe de build, architecte, opérateur (arbitrage des points non tranchés) |
+| Audiences | équipe de build, architecte, responsable produit (arbitrage des points non tranchés) |
 | Sources | `docs/architecture/decisions/**` (registre ADR), `docs/architecture/*.md` (fondations, structure, stack), `docs/architecture/specs/**` (spécifications pré-build), `docs/conception/domain/**` (modèle de domaine), `docs/context/cahier-des-charges.md` §7/§8 |
 
 > Document dérivé du corpus, zéro décision technique neuve.
@@ -98,11 +98,11 @@ Le backend est construit en **ASP.NET Core / C#**, avec **PostgreSQL** comme bas
 
 ### Structure de la solution
 
-La solution est structurée en six projets : `SharedKernel`, `Domain`, `Application`, `Infrastructure.Persistence`, `Infrastructure.Notifications`, `Api` — complétés par `Presentation.Landing` pour la landing Angular. Domaine et Application restent des projets uniques pour le MVP (les quatre frontières logiques y sont des namespaces, pas des assemblies séparées) ; la granularité multi-projets est conservée sur l'infrastructure et la présentation, qui reflètent des préoccupations techniques distinctes du découpage DDD. Le détail des responsabilités et de la structure interne de chaque projet est renvoyé à `docs/architecture/structure-projets.md`.
+La solution est structurée en six projets .NET/Angular, nommés et détaillés dans `docs/architecture/structure-projets.md` (source de vérité). Domaine et Application restent des projets uniques pour le MVP (les quatre bounded contexts DDD y sont des namespaces, pas des assemblies séparées — `SharedKernel` est lui aussi un namespace interne au projet Domaine, pas un projet à part) ; la granularité multi-projets est conservée sur l'infrastructure et la présentation, qui reflètent des préoccupations techniques distinctes du découpage DDD. Le détail des responsabilités et de la structure interne de chaque projet est renvoyé à `docs/architecture/structure-projets.md`.
 
 ### Temps réel : SignalR
 
-Le partage d'informations en temps réel du MJ vers les joueurs s'appuie sur **SignalR**, natif à ASP.NET Core, avec **repli automatique** (WebSocket → Server-Sent Events → long-polling) selon les capacités du réseau. Le module est isolé dans `Infrastructure.Notifications` dès le démarrage. La visibilité de la ressource concernée conditionne systématiquement ce qui est poussé : aucune information diffusée ne contourne les règles de partage fixées par le MJ, la même politique d'autorisation s'appliquant identiquement au canal REST et au canal SignalR (voir §3).
+Le partage d'informations en temps réel du MJ vers les joueurs s'appuie sur **SignalR**, natif à ASP.NET Core, avec **repli automatique** (WebSocket → Server-Sent Events → long-polling) selon les capacités du réseau. Le module est isolé dans `Haversack.Infrastructure.Notifications` dès le démarrage. La visibilité de la ressource concernée conditionne systématiquement ce qui est poussé : aucune information diffusée ne contourne les règles de partage fixées par le MJ, la même politique d'autorisation s'appliquant identiquement au canal REST et au canal SignalR (voir §3).
 
 ### Frontière d'exécution local / cloud
 
@@ -117,7 +117,7 @@ L'algorithme de hachage des mots de passe retenu est **Argon2id**, avec un repli
 | Source | Nature | Statut | Ce qu'elle porte |
 |---|---|---|---|
 | ADR-003 — Stack front : mono-écosystème Angular | pré-implémentation | Accepté | Angular SPA + Angular SSR/prerender landing ; Blazor WASM et Next.js écartés |
-| ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | SignalR natif, repli automatique, isolation `Infrastructure.Notifications` |
+| ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | SignalR natif, repli automatique, isolation `Haversack.Infrastructure.Notifications` |
 | ADR-008 — Structure physique de la solution | pré-implémentation | Accepté | 6 projets, domaine/application uniques, infrastructure/présentation multi-projets |
 | ADR-015 — Sécurité authentification MVP | pré-implémentation | Accepté | Argon2id (repli bcrypt), signature asymétrique RS256/ES256, `alg: none` interdit |
 | `docs/architecture/stack.md` | sélection technologique | — | Vue d'ensemble de la stack, alternatives évaluées par couche |
@@ -257,7 +257,7 @@ Le token de réinitialisation de mot de passe est à usage unique, invalidant to
 
 Les fournisseurs retenus pour le MVP sont **Google et Discord**, chacun satisfaisant deux conditions cumulatives : un claim d'email vérifié jugé fiable, et une adresse email canonique (non un alias de relais). La fiabilité de ce claim est une dépendance externe non vérifiable par la validation continue Haversack, quel que soit le fournisseur ; le gate applicatif qui l'encadre reste, lui, testable par un fournisseur simulé.
 
-La liaison d'un compte OAuth à un compte préexistant est **interdite si l'email de ce compte n'est pas prouvé vérifié**, avec rejet silencieux (aucun message ne révèle l'existence du compte). Le cas d'un compte préexistant non vérifié portant la même adresse email qu'une preuve OAuth fraîche est résolu par une reprise de la coquille (bascule de son statut de vérification, neutralisation obligatoire du mot de passe préexistant, liaison à l'identité fédérée) plutôt que par la création d'un doublon — un doublon sur la même adresse n'étant pas implémentable au regard de l'unicité de l'email dans le système. Cette résolution reste `[À TRANCHER — à ratifier opérateur]` ; le sort du contenu éventuel déjà rattaché à la coquille reprise est une facette distincte, renvoyée au dossier juridique. L'ajout futur d'un fournisseur à email de relais non canonique (ex. masquage d'adresse) est une dette nommée : il imposerait de revisiter la règle de liaison par email, non déclenchée par le périmètre MVP (Google et Discord, tous deux à email canonique).
+La liaison d'un compte OAuth à un compte préexistant est **interdite si l'email de ce compte n'est pas prouvé vérifié**, avec rejet silencieux (aucun message ne révèle l'existence du compte). Le cas d'un compte préexistant non vérifié portant la même adresse email qu'une preuve OAuth fraîche est résolu par une reprise de la coquille (bascule de son statut de vérification, neutralisation obligatoire du mot de passe préexistant, liaison à l'identité fédérée) plutôt que par la création d'un doublon — un doublon sur la même adresse n'étant pas implémentable au regard de l'unicité de l'email dans le système. Cette résolution reste `[À TRANCHER — à ratifier produit]` ; le sort du contenu éventuel déjà rattaché à la coquille reprise est une facette distincte, renvoyée au dossier juridique. L'ajout futur d'un fournisseur à email de relais non canonique (ex. masquage d'adresse) est une dette nommée : il imposerait de revisiter la règle de liaison par email, non déclenchée par le périmètre MVP (Google et Discord, tous deux à email canonique).
 
 ### Invariant d'autorisation
 
@@ -265,7 +265,7 @@ Toute lecture d'une ressource d'un espace compose, **en ET**, une vérification 
 
 ### Non-révélation d'existence
 
-Un principe transverse, énoncé une seule fois ici : l'accès à un document non partagé, une tentative de reconnexion après suppression de compte, et une liaison OAuth échouée ne révèlent jamais l'existence ou l'état de la ressource ou du compte visés. Un résidu assumé à ce principe est conservé par choix produit : le message d'inscription confirmant qu'une adresse email est déjà associée à un compte, mitigé par le rate limiting hybride ci-dessus — décision opérateur tracée, pas un oubli.
+Un principe transverse, énoncé une seule fois ici : l'accès à un document non partagé, une tentative de reconnexion après suppression de compte, et une liaison OAuth échouée ne révèlent jamais l'existence ou l'état de la ressource ou du compte visés. Un résidu assumé à ce principe est conservé par choix produit : le message d'inscription confirmant qu'une adresse email est déjà associée à un compte, mitigé par le rate limiting hybride ci-dessus — décision produit tracée, pas un oubli.
 
 ### Plancher de sanitisation et CSP
 
@@ -281,7 +281,7 @@ Le stockage local IndexedDB n'est pas chiffré at-rest — aucun secret utilisat
 |---|---|---|---|
 | ADR-015 — Sécurité authentification MVP | pré-implémentation | Accepté | Politique mot de passe, Argon2id/bcrypt, cycle de vie des jetons, rotation/denylist, rate limiting, OAuth Google/Discord, reclaim-in-place, résidu CWE-204 |
 | ADR-014 — Modèle d'autorisation API | conception | Accepté | Invariant d'autorisation composé (appartenance + visibilité), mécanisme unique REST/temps réel, non-révélation d'existence |
-| ADR-007 — RGPD et modèle d'autorisation API | conception | Accepté | Invariant d'autorisation fondateur, formalisé par ADR-014 ; reclassement des findings bloquants MVP formalisés par ADR-015 |
+| ADR-007 — RGPD et modèle d'autorisation API | conception | Accepté | Invariant d'autorisation fondateur, formalisé par ADR-014 ; reclassement des constats bloquants MVP formalisés par ADR-015 |
 | `docs/architecture/specs/config-securite-migration.md` | spec pré-build | cadre à compléter | Registre des seuils (longueur mdp, Argon2id, durées de jetons, rate limiting, TTL reset) — bornes fixées vs valeurs renvoyées à B1.5 |
 | `docs/architecture/specs/contrat-openapi.md` | spec pré-build | cadre à compléter | Principe de non-révélation d'existence, cas 403 tranchés, 403 vs 404 renvoyé B1.10 |
 | `docs/architecture/specs/sanitisation-csp.md` | spec pré-build | cadre à compléter | Plancher de sanitisation liste blanche, posture CSP, ordre validation puis sanitisation |
@@ -555,7 +555,7 @@ Le corpus technique consolidé dans ce cahier est de nature pré-implémentation
 - Valeurs exactes des seuils de rate limiting (par-IP, par-compte, borne supérieure) — `[À TRANCHER — B1.5]`.
 - Valeur exacte du TTL du token de réinitialisation dans la plage 10-15 min — `[À TRANCHER — B1.5]`.
 - Fraîcheur maximale et déclenchement de la ré-authentification IdP pour la définition d'un premier mot de passe sur compte fédéré — `[À TRANCHER — B1.5]`.
-- Résolution reclaim-in-place du cas email OAuth = compte préexistant non vérifié — `[À TRANCHER — à ratifier opérateur]`.
+- Résolution reclaim-in-place du cas email OAuth = compte préexistant non vérifié — `[À TRANCHER — à ratifier produit]`.
 - Ajout futur d'un fournisseur OAuth à email de relais non canonique — dette nommée, non déclenchée par le périmètre MVP.
 - Listes blanches exhaustives de balises de sanitisation (serveur et client) et directives CSP complètes — `[À TRANCHER — B1.2 serveur / P6 client]`.
 
@@ -566,7 +566,7 @@ Le corpus technique consolidé dans ce cahier est de nature pré-implémentation
 - Qualification juridique de l'instant de référence figé en cas de déplacement d'un document entre espace personnel et espace partagé, dans les deux sens — non arbitrée par le mécanisme technique de figement.
 - Trou nommé sur les références nullable entrantes non couvertes par le critère de sélection (colonnes portées par d'autres documents ou par des accès invités pointant vers un document sélectionné pour suppression).
 - Les 5 axes du dossier juridique — `[À TRANCHER — FLAG JURISTE]` : qualification Art. 8 (mineurs), qualification sous-traitant Art. 28 et périmètre du contrat associé (y compris l'espace personnel), mise en balance de l'intérêt légitime (documents conservés + nom d'affichage invité), suffisance Art. 17 du hard-delete inconditionnel de l'espace personnel, sort du contenu d'une coquille reprise par reclaim-in-place.
-- Activation de l'espace personnel comme zone d'atterrissage par défaut et redéfinition de l'hypothèse H1 associée — gate opérateur explicitement requis par ADR-018, non tranché dans ce cahier.
+- Activation de l'espace personnel comme zone d'atterrissage par défaut et redéfinition de l'hypothèse H1 associée — point de décision produit explicitement requis par ADR-018, non tranché dans ce cahier.
 
 ### §7 — Contrats d'API
 
@@ -647,4 +647,4 @@ Cette matrice prouve que chaque spec pré-build, chaque section technique du cah
 | ADR-017 — Modèle IndexedDB local | §3, §5, §8 | mixte, dominante pré-implémentation, Accepté |
 | ADR-018 — Généralisation de `Campaign` en `Space` | §4, §6, §11 | conception, Accepté |
 
-*Fin de la présente version. Ce cahier consolide §0 à §12 du corpus technique. Toute évolution ultérieure du corpus (nouvelle décision, levée d'un point `[À TRANCHER]`, ADR post-MVP) est répercutée dans ce cahier par une passe dédiée, jamais anticipée ici.*
+*Fin de la présente version. Ce cahier consolide §0 à §12 du corpus technique. Toute évolution ultérieure du corpus (nouvelle décision, levée d'un point `[À TRANCHER]`, ADR post-MVP) est répercutée dans ce cahier lors de sa prochaine mise à jour, jamais anticipée ici.*

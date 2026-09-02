@@ -2,16 +2,14 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
-- **Findings liés** : G-03, G-04, H-07
 
-> **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03, audit conception pure 2026-06.)*
+> **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03.)*
 
 ---
 
 ## Contexte
 
-La conception prévoyait initialement deux écosystèmes front distincts : Next.js pour la landing page (SSR/SEO) et Angular pour l'application principale (SPA). L'audit a identifié cette dualité comme une dette structurelle pour une équipe solo : deux pipelines de build, deux ensembles de dépendances, deux styles de composants à maintenir.
+La conception prévoyait initialement deux écosystèmes front distincts : Next.js pour la landing page (SSR/SEO) et Angular pour l'application principale (SPA). Cette dualité constitue une dette structurelle pour une équipe solo : deux pipelines de build, deux ensembles de dépendances, deux styles de composants à maintenir.
 
 Par ailleurs, Blazor WASM n'avait jamais été évalué formellement alors que le backend est .NET/C#. Son évaluation était pertinente au regard de la question de l'exécution du domaine en mode local (ADR-001).
 

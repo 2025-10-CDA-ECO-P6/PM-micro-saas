@@ -2,14 +2,12 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
-- **Findings liés** : CR-1, B-01, G-01, H-01, C-11, F-01
 
 ---
 
 ## Contexte
 
-Le mode local — démarrer et travailler sans compte, avec persistance dans le navigateur (IndexedDB) — est un pilier non négociable du produit (UC-01, statut Must). Or le domaine métier est implémenté en C#/.NET côté serveur. Six angles de l'audit avaient signalé la même question non tranchée : où s'exécute la logique métier lorsque l'utilisateur travaille hors ligne, sans compte ?
+Le mode local — démarrer et travailler sans compte, avec persistance dans le navigateur (IndexedDB) — est un pilier non négociable du produit (UC-01, statut Must). Or le domaine métier est implémenté en C#/.NET côté serveur. Cette question restait non tranchée dans la documentation existante : où s'exécute la logique métier lorsque l'utilisateur travaille hors ligne, sans compte ?
 
 Sans décision explicite, deux chemins implicites coexistaient dans la documentation : soit réimplémenter le domaine côté navigateur en TypeScript, soit traiter le mode local comme une simple couche de persistance sans validation métier. La documentation ne tranchait pas, ce qui rendait la conception du modèle local IndexedDB et la procédure de migration impossibles à spécifier.
 

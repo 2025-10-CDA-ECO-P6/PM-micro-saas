@@ -8,7 +8,7 @@
 | Date | 2026-07-02 |
 | Statut | Version de travail — périmètre produit stabilisé ; volet architecture technique à confirmer, cf. [§7](#7-contraintes-techniques-rgpd--sécurité) |
 | Porteur / responsable du document | Pierre-Marie Marchio |
-| Validation / approbation | Pierre-Marie Marchio (opérateur) — validé en conception ; volet architecture technique ([§7](#7-contraintes-techniques-rgpd--sécurité)) à re-confirmer à l'entrée en build |
+| Validation / approbation | Pierre-Marie Marchio — validé en conception ; volet architecture technique ([§7](#7-contraintes-techniques-rgpd--sécurité)) à re-confirmer à l'entrée en build |
 
 ### Historique des révisions
 
@@ -885,7 +885,7 @@ flowchart TB
 - Une adresse email est unique dans l'ensemble du système ; un compte suspendu ou supprimé ne peut plus s'authentifier.
 - La suppression d'un compte est irréversible ; le blocage qu'elle peut subir dépend du **type** de l'espace possédé par le titulaire — une divergence que le corpus signalait entre UC-10 et le domaine (voir le dossier de conception détaillée, §2.2/§3.c/§8.1), désormais réconciliée par le domaine : un espace personnel (`PERSONAL`), mono-membre par construction, n'est **jamais** bloquant et subit un hard-delete inconditionnel à la suppression du compte ; un espace campagne ou one-shot (`CAMPAIGN`/`ONE_SHOT`) **bloque** la suppression tant qu'il comporte au moins un membre actif autre que le propriétaire, conformément à UC-10 — le titulaire doit d'abord exclure ces membres. Une fois la suppression exécutée pour les espaces éligibles, elle anonymise les données nominatives tout en conservant l'identifiant technique comme référence dans les autres contextes.
 - Les opérations sensibles sur le compte — changement d'adresse de messagerie, liaison d'une identité externe, demande d'effacement — exigent que l'adresse de messagerie ait été préalablement vérifiée.
-- À la suppression d'un compte, l'effacement physique au titre du droit à l'effacement (RGPD article 17) porte sur la confidentialité du document et non sur son type : tout `Document` dont la confidentialité (`visibility`) est `PLAYER_PRIVATE` et qui a été créé par l'utilisateur supprimé est effacé physiquement, quel qu'en soit le type — portée arbitrée par l'opérateur, ratifiée dans UC-10 et portée par la règle F-08 du domaine (identity-access.md § Règles métier). Les contenus partagés qu'il a produits dans un espace campagne ou one-shot restent, eux, rattachés à l'espace sous identité anonymisée, au titre de la continuité. Le contenu d'un espace personnel ne connaît pas cette continuité : l'espace entier, mono-membre, est supprimé physiquement et sans exception avec la suppression du compte.
+- À la suppression d'un compte, l'effacement physique au titre du droit à l'effacement (RGPD article 17) porte sur la confidentialité du document et non sur son type : tout `Document` dont la confidentialité (`visibility`) est `PLAYER_PRIVATE` et qui a été créé par l'utilisateur supprimé est effacé physiquement, quel qu'en soit le type — portée décidée en conception, ratifiée dans UC-10 et portée par la règle F-08 du domaine (identity-access.md § Règles métier). Les contenus partagés qu'il a produits dans un espace campagne ou one-shot restent, eux, rattachés à l'espace sous identité anonymisée, au titre de la continuité. Le contenu d'un espace personnel ne connaît pas cette continuité : l'espace entier, mono-membre, est supprimé physiquement et sans exception avec la suppression du compte.
 
 ### Space Management
 
@@ -1113,7 +1113,7 @@ Le corpus retient un axe **J0 → J1 → J2 → J3** comme repère macro de séq
 - **J2** — cloud + migration.
 - **J3** — partage + temps réel.
 
-Un gate de validation marché s'intercale avant l'engagement du build lourd cloud (entre J1 et J2) ; un gate juriste conditionne le lancement EU, hors séquence technique. Cet axe est ratifié pour l'ensemble du corpus (2026-09-01) — détail et justification dans l'artefact de planification dédié ([`roadmap-entree-build.md` §5](../gestion-projet/roadmap-entree-build.md)).
+Une décision marché s'intercale avant l'engagement du build lourd cloud (entre J1 et J2) ; une validation juridique conditionne le lancement EU, hors séquence technique. Cet axe est ratifié pour l'ensemble du corpus (2026-09-01) — détail et justification dans l'artefact de planification dédié ([`roadmap-entree-build.md` §5](../gestion-projet/roadmap-entree-build.md)).
 
 Ce macro-ordonnancement reste indicatif : le contenu précis affecté à chaque jalon, ses dates et ses critères d'entrée/sortie relèvent de l'artefact de planification dédié mentionné ci-dessus, non de la présente section.
 
@@ -1160,13 +1160,13 @@ Les points listés dans cette annexe sont explicitement **non tranchés** : ils 
 
 **Fournisseurs d'identité — RÉSOLU.** MVP : Google et Discord. Règle de confiance par fournisseur : cf. ADR-015 (Sécurité authentification MVP).
 
-**Granularité du gate de migration — résolu.** Le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§5](#5-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration a été tranchée par décision opérateur du 2026-07-09 : **lot unique** — tous les espaces éligibles migrent en un seul passage, avec une confirmation unique et les espaces éligibles cochés par défaut, décochables individuellement. Cette granularité globale ne modifie pas le tout-ou-rien par espace ci-dessus, qui reste en place. Décision tracée dans `docs/conception/interface/reflexion-ux-mvp.md` (§ Décisions opérateur actées, point 5).
+**Granularité du gate de migration — résolu.** Le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§5](#5-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration a été tranchée par décision produit du 2026-07-09 : **lot unique** — tous les espaces éligibles migrent en un seul passage, avec une confirmation unique et les espaces éligibles cochés par défaut, décochables individuellement. Cette granularité globale ne modifie pas le tout-ou-rien par espace ci-dessus, qui reste en place. Décision tracée dans `docs/conception/interface/reflexion-ux-mvp.md` (§ Décisions produit actées, point 5).
 
 **Sémantique de comptage du quota du palier gratuit — résolu.** L'invariant limitant l'accès à une session à 4 joueurs distincts pour un espace dont le propriétaire est au palier gratuit (`docs/conception/domain/space-management.md`, invariant 11) est désormais tranché : la sémantique de comptage est portée par **RB-09-21 (UC-09), qui fait foi** — le comptage a lieu **au moment de l'octroi** de l'accès, de manière **agnostique au type d'accès** (identités-joueur distinctes comptées en capacité joueur, MJ non compté). L'invariant 11 de `space-management.md` a été réaligné en conséquence.
 
 **Autres trous de conception** (recensés au zoning d'interface §S9, à spécifier) : la vue mobile du joueur, la spécification visuelle de l'éditeur de document (disposition des blocs, affordances de type, gestion des liens), l'écran de consultation des backlinks, et la vue « Non classés » — particulièrement centrale pour l'espace personnel, où elle constitue la seule vue de départ.
 
-**Rapports d'audit — supprimés comme périmés.** Les deux rapports d'audit de conception menés en juin 2026 (`audit-conception-2026-06.md` et `audit-conception-pure-2026-06.md`) ont été supprimés car périmés — la conception a suffisamment évolué depuis pour que leurs findings ne soient plus fiables. Ils ne sont **pas destinés à être restaurés**. Le suivi des points de conception restant à trancher se fait désormais via cette annexe ([§12.1](#121-points-à-arbitrer-et-questions-ouvertes)).
+**Suivi des points de conception à trancher.** Le suivi des points de conception restant à trancher se fait via cette annexe ([§12.1](#121-points-à-arbitrer-et-questions-ouvertes)).
 
 ### 12.2 Matrice de traçabilité
 
@@ -1225,7 +1225,7 @@ Les valeurs consolidées dans cette annexe sont **volatiles** : elles sont susce
 | Stockage — palier gratuit | 500 Mo | `docs/conception/besoin/vision/vision-produit.md §3` |
 | Stockage — palier Pro | 5 Go et plus | `docs/conception/besoin/vision/vision-produit.md §3` |
 | Tarif — palier Pro | Environ 7 €/mois | `docs/conception/besoin/vision/vision-produit.md §3` |
-| H1 — seuil et délai | Seuil : ≥ 60 % des MJ de la cohorte pilote atteignent l'activation préparation. *Nuance (décision opérateur du 2026-07-09) : le contenu d'un espace personnel sans campagne n'est comptabilisé que **partiellement** dans cette activation, lorsqu'il traduit un **geste structurant** (au-delà d'une capture triviale) ; seuil exact du geste structurant `[À TRANCHER — métrique produit]`.* Délai : 14 jours après le premier usage. | `docs/conception/besoin/vision/vision-produit.md §2.3` |
+| H1 — seuil et délai | Seuil : ≥ 60 % des MJ de la cohorte pilote atteignent l'activation préparation. *Nuance (décision produit du 2026-07-09) : le contenu d'un espace personnel sans campagne n'est comptabilisé que **partiellement** dans cette activation, lorsqu'il traduit un **geste structurant** (au-delà d'une capture triviale) ; seuil exact du geste structurant `[À TRANCHER — métrique produit]`.* Délai : 14 jours après le premier usage. | `docs/conception/besoin/vision/vision-produit.md §2.3` |
 | H2 (centrale) — seuil et délai | Seuil : ≥ 50 % des MJ ayant atteint l'activation préparation atteignent l'activation vue session ; signal de répétabilité si ≥ 50 % d'entre eux l'utilisent sur deux sessions ou plus. Délai : 30 jours pour la première activation, 60 jours pour le signal de répétabilité. | `docs/conception/besoin/vision/vision-produit.md §2.3` |
 | H3 — seuil et délai | Seuil : ≥ 40 % des MJ ayant animé une session avec joueurs atteignent l'activation partage ; perception de fluidité supérieure confirmée par au moins 3 MJ interrogés sur 5. Délai : 60 jours pour l'activation partage. | `docs/conception/besoin/vision/vision-produit.md §2.3` |
 | H4 — seuil et délai | Seuil : sur les sessions avec partage, ≥ 70 % comptent au moins un joueur ayant consulté le contenu partagé ; moins de 2 joueurs sur 10 interrogés rapportent avoir renoncé à l'étape d'entrée. Délai : 60 jours. | `docs/conception/besoin/vision/vision-produit.md §2.3` |

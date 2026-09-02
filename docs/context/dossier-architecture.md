@@ -97,7 +97,7 @@ graph TD
 | Persistance locale | IndexedDB, store aggregate-rooté | [ADR-001](../architecture/decisions/ADR-001-execution-domaine-mode-local.md), [ADR-017 §1](../architecture/decisions/ADR-017-modele-indexeddb-local.md) |
 | API | ASP.NET Core (Kestrel), MediatR | [stack.md](../architecture/stack.md), [06 §3](../architecture/structure-projets.md), [ADR-014 §3](../architecture/decisions/ADR-014-modele-autorisation-api.md) |
 | Persistance serveur | EF Core → PostgreSQL (FTS, JSONB, UUID) | [stack.md](../architecture/stack.md), [06 §3](../architecture/structure-projets.md), [ADR-008](../architecture/decisions/ADR-008-structure-solution.md) |
-| Notifications temps réel | SignalR (`Infrastructure.Notifications`) | [ADR-004](../architecture/decisions/ADR-004-transport-temps-reel.md), [06 §3](../architecture/structure-projets.md) |
+| Notifications temps réel | SignalR (`Haversack.Infrastructure.Notifications`) | [ADR-004](../architecture/decisions/ADR-004-transport-temps-reel.md), [06 §3](../architecture/structure-projets.md) |
 | Denylist tokens | Store externe (Redis ou table SQL) | [ADR-015 §3.4](../architecture/decisions/ADR-015-securite-authentification-mvp.md) |
 
 **Frontières et protocoles** :
@@ -246,7 +246,7 @@ graph TD
 **Statut pré-implémentation généralisé.** C'est le point le plus structurant de ce document : à l'exception des rares cas explicitement marqués autrement, chaque choix cartographié est une décision de conception à confirmer à l'entrée en build — voir la légende de statut en §0.
 
 **Points ouverts, non tranchés dans ce document** :
-- [ADR-015](../architecture/decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[à ratifier]` par l'opérateur.
+- [ADR-015](../architecture/decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[à ratifier]` en décision produit.
 - [ADR-018](../architecture/decisions/ADR-018-espace-personnel-generalisation-space.md) — deux validations juridiques ouvertes avant tout lancement EU, consolidées dans [`cadrage-validation-pre-lancement-eu.md`](../securite/conformite/cadrage-validation-pre-lancement-eu.md) : la qualification au regard de l'Art. 17 du hard-delete inconditionnel du contenu personnel, et le périmètre du DPA (Art. 28) pour un contenu personnel décrivant des tiers identifiables. Ces deux points sont des items de conformité ouverts, non des décisions d'architecture ; ils ne sont pas tranchés ici.
 
 ---

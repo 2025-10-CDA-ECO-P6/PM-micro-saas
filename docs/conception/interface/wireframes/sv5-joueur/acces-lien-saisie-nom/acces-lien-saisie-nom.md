@@ -182,7 +182,7 @@ Affordances de partage et d'épinglage :
   [SOUS-SPÉCIFIÉ — S9 §Persistance des notes invité inter-sessions sans compte]
     la mécanique de récupération des notes PLAYER_PRIVATE d'un invité via un nouveau
     lien vers le même personnage est évoquée dans UC-06 §Règles métier mais non
-    entièrement spécifiée — relève de remédiation corpus
+    entièrement spécifiée — trou de corpus
   [SOUS-SPÉCIFIÉ — UC-09 §Questions à valider en interview] le nom d'affichage seul
     est-il suffisant ou faut-il un identifiant léger pour éviter les collisions —
     point d'interview

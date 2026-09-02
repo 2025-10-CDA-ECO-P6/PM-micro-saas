@@ -2,14 +2,12 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
-- **Findings liés** : CR-4, A-03, B-02, B-04, C-03, C-04, C-06
 
 ---
 
 ## Contexte
 
-Le pattern central « tout contenu éditorial est un `Document` composé de `DocumentBlock` » est retenu dans la conception. Cependant, l'audit a relevé trois problèmes non résolus qui rendaient ce pattern incohérent en pratique.
+Le pattern central « tout contenu éditorial est un `Document` composé de `DocumentBlock` » est retenu dans la conception. Cependant, ce pattern restait incohérent en pratique du fait de trois problèmes non résolus.
 
 **Identifiants contradictoires.** Les diagrammes de classes utilisaient des types forts `ScenarioId`, `SceneId`, `CharacterId`, alors que la prose et d'autres parties de la conception utilisaient `DocumentId` pour les mêmes entités. Ces trois types d'ID ne correspondaient à aucune entité distincte — ils étaient des artefacts résiduels d'une modélisation antérieure à « tout est Document ».
 

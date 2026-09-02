@@ -2,16 +2,14 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
-- **Findings liés** : G-05, B-06, B-07, C-15
 
-> **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03, audit conception pure 2026-06.)*
+> **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03.)*
 
 ---
 
 ## Contexte
 
-La conception décrivait une structure cible avec 6 assemblies isolées dès le démarrage : un projet par bounded context, plus des projets d'infrastructure séparés. L'audit a identifié cette granularité comme sur-dimensionnée pour une phase MVP en validation d'hypothèses avec une équipe solo. La cérémonie de configuration (références inter-projets, contrats d'interface explicites dès J0, overhead de build) est disproportionnée au stade de conception actuel.
+La conception décrivait une structure cible avec 6 assemblies isolées dès le démarrage : un projet par bounded context, plus des projets d'infrastructure séparés. Cette granularité est sur-dimensionnée pour une phase MVP en validation d'hypothèses avec une équipe solo. La cérémonie de configuration (références inter-projets, contrats d'interface explicites dès J0, overhead de build) est disproportionnée au stade de conception actuel.
 
 La tension à résoudre était entre la rigueur architecturale DDD (isolation des bounded contexts) et la praticité d'un démarrage solo en validation.
 
@@ -21,7 +19,7 @@ La tension à résoudre était entre la rigueur architecturale DDD (isolation de
 
 **Domaine et Application en projets uniques.** Les 4 bounded contexts sont des frontières logiques — namespaces et contrats internes — pas une assembly par contexte. La séparation physique (un projet .NET par contexte) est différée jusqu'à ce qu'un besoin réel émerge.
 
-**Granularité multi-projets conservée sur Infrastructure et Présentation.** Par exemple : `Infrastructure.Persistence`, `Infrastructure.Notifications` (SignalR, ADR-004), `Presentation.Api`, `Presentation.Landing` (SSR Angular, ADR-003). Ces séparations reflètent des préoccupations techniques distinctes, pas le découpage DDD.
+**Granularité multi-projets conservée sur Infrastructure et Présentation.** Par exemple : `Haversack.Infrastructure.Persistence`, `Haversack.Infrastructure.Notifications` (SignalR, ADR-004), `Haversack.Presentation.Api`, `Haversack.Presentation.Landing` (SSR Angular, ADR-003). Ces séparations reflètent des préoccupations techniques distinctes, pas le découpage DDD.
 
 **Promotion autorisée à tout moment.** Un bounded context peut être extrait en projet dédié dans n'importe quelle couche si un besoin réel émerge (extraction pour montée en équipe, dépendances incompatibles, performance de build).
 
@@ -44,7 +42,7 @@ Non retenu. Perd la séparation Clean Architecture et les garanties de sens de d
 - Un fichier `structure-projets.md` est à produire comme source de vérité de la structure concrète des projets .NET (noms, responsabilités, références inter-projets). Ce fichier est un livrable de J0.
 - Le nommage du projet noyau partagé (`SharedKernel` vs `Domain.Kernel`) est à trancher et à uniformiser dans toute la documentation. Ce point est délibérément laissé à J0.
 - La frontière entre bounded contexts repose sur la discipline de revue de code tant qu'ils ne sont pas extraits en projets séparés. Il n'y a pas de garantie du compilateur sur le respect des frontières logiques.
-- Le module `Infrastructure.Notifications` est isolé dès J0 (cohérent avec ADR-004 — SignalR).
+- Le module `Haversack.Infrastructure.Notifications` est isolé dès J0 (cohérent avec ADR-004 — SignalR).
 - Une note de mapping EF Core est à produire en J2 : converters d'IDs typés, owned types, `HasColumnType("jsonb")` pour `properties`, discriminant de bloc, query filters.
 
 ---

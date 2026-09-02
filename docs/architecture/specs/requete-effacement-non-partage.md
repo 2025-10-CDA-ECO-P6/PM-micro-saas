@@ -1,6 +1,6 @@
 # Requête « document non partagé » — RGPD effacement de compte, §3(b)
 
-- **Statut** : Spec pré-build — illustrative, non normative. ADR-012 renvoie explicitement l'écriture précise de cette requête à l'implémentation (« la définition donnée ici est fonctionnelle ; la requête SQL précise est à écrire lors de l'implémentation », ADR-012:226, section *Points à trancher*). Cette note produit une première formulation fidèle au critère fixé, sans le clore.
+- **Statut** : Spec pré-build — illustrative, non normative. ADR-012 renvoie explicitement l'écriture précise de cette requête à l'implémentation (« la définition donnée ici est fonctionnelle ; la requête SQL précise est à écrire lors de l'implémentation », ADR-012:224, section *Points à trancher*). Cette note produit une première formulation fidèle au critère fixé, sans le clore.
 - **Sources** : [ADR-012](../decisions/ADR-012-rgpd-effacement-compte.md) (l.92, 94, 118-124, 189) ; matrice FK [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md) (§Schéma et MLD).
 - **Périmètre** : la sélection des documents « non partagés » au sens de l'étape 5 de la saga `UserAnonymized` (ADR-012 §3(b)), l'instant de référence de l'évaluation, et le séquençage déliaison-puis-DELETE aligné sur le mécanisme de saga ADR-011.
 
@@ -8,7 +8,7 @@
 
 ## 1. Critère métier — document non partagé (ADR-012 §3(b))
 
-**Décision reportée** (ADR-012:88-92) :
+**Décision reportée** (ADR-012:86-90) :
 
 > Les documents créés par l'utilisateur (`created_by_id = userId`) qui ne sont visibles que par lui (non partagés avec d'autres membres, non utilisés comme modèle par d'autres documents) sont supprimés.
 >
@@ -34,7 +34,7 @@ Cette dernière condition n'est pas une quatrième condition cumulative de même
 
 ## 2. Instant de référence
 
-**Décision reportée** (ADR-012:94) :
+**Décision reportée** (ADR-012:92) :
 
 > Le critère de partage est évalué à `deletion_requested_at` (horodatage de la demande, enregistré conformément à §6), et non au moment de l'exécution effective de la saga. Cette précision prévient un risque de race TOCTOU de conformité : si l'état de partage d'un document évoluait entre la demande et l'exécution (ex. partage retiré par un tiers après la demande), l'évaluation à `deletion_requested_at` garantit la cohérence juridique de la sélection.
 
@@ -47,7 +47,7 @@ Cette dernière condition n'est pas une quatrième condition cumulative de même
 ## 3. Requête SQL — illustrative, balisée
 
 ```sql
--- ILLUSTRATIF — non normatif (ADR-012:226 : la requête précise reste un point à trancher à l'implémentation).
+-- ILLUSTRATIF — non normatif (ADR-012:224 : la requête précise reste un point à trancher à l'implémentation).
 -- Sélection des documents "non partagés" au sens ADR-012 §3(b), pour un espace partagé vivant donné.
 -- Le mécanisme de figement à `deletion_requested_at` (§2 ci-dessus) n'est pas représenté ici : cette
 -- requête illustre le critère métier des trois conditions C1/C2/C3 et l'exclusion GM_ONLY (§1),
@@ -91,12 +91,12 @@ WHERE d.created_by_id = :userId
 
 **Décision reportée** — ADR-012 §4 (l.118-124) décrit ce séquençage pour la sélection §3(a) (`PLAYER_PRIVATE`) et le qualifie de « conforme au mécanisme de saga de déliaison-puis-delete défini dans ADR-011 ». Le mandat de cette note applique le même mécanisme à la sélection §3(b) :
 
-1. **Déliaison** des FK nullable portées par les documents sélectionnés eux-mêmes : `source_document_id`, `character_id`, `guest_access_id` (colonnes nullable de `documents`, ADR-011 matrice l.129-131).
+1. **Déliaison** des FK nullable portées par les documents sélectionnés eux-mêmes : `source_document_id`, `character_id`, `guest_access_id` (colonnes nullable de `documents`, ADR-011 matrice l.127-129).
 2. **DELETE des tables feuilles NOT NULL** qui référencent les documents sélectionnés : `document_links` (source ou cible), `document_tags`, `document_blocks` — conformément à l'ordre topologique passe 2 d'ADR-011 (feuilles avant racines).
 3. **DELETE des documents** eux-mêmes.
 
 ```sql
--- ILLUSTRATIF — non normatif (ADR-012:226 : la requête précise reste un point à trancher à l'implémentation).
+-- ILLUSTRATIF — non normatif (ADR-012:224 : la requête précise reste un point à trancher à l'implémentation).
 -- Étape 1 — déliaison des FK nullable portées par les documents sélectionnés
 UPDATE documents SET source_document_id = NULL WHERE id = ANY(:selectedIds);
 UPDATE documents SET character_id       = NULL WHERE id = ANY(:selectedIds);

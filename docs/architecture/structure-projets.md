@@ -68,20 +68,20 @@ il peut être extrait en projet `.Domain.<ContextName>` sans rupture architectur
 Les préoccupations techniques transversales restent isolées dès J0 :
 
 ```
-Infrastructure.Persistence/    [À TRANCHER — J0]
+Haversack.Infrastructure.Persistence/    [À TRANCHER — J0]
 
-Infrastructure.Notifications/  [À TRANCHER — J0] (ADR-004, § Compléments)
+Haversack.Infrastructure.Notifications/  [À TRANCHER — J0] (ADR-004, § Compléments)
 
-Presentation.Api/              [À TRANCHER — J0]
+Haversack.Presentation.Api/              [À TRANCHER — J0]
 
-Presentation.Landing/          [À TRANCHER — J0] (Angular SSR/prerender, voir § 7)
+Haversack.Presentation.Landing/          [À TRANCHER — J0] (Angular SSR/prerender, voir § 7)
 ```
 
 ADR-008 — la source citée pour cette section — décide seulement les quatre noms de projets. Le contenu de
 chacun — dossiers, fichiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document ;
 il relève du build (`[À TRANCHER — J0]`).
 
-L'isolation de `Infrastructure.Notifications` est explicitement validée pour supporter le transport SignalR temps réel (ADR-004).
+L'isolation de `Haversack.Infrastructure.Notifications` est explicitement validée pour supporter le transport SignalR temps réel (ADR-004).
 
 *Source : [ADR-008, § Décision](decisions/ADR-008-structure-solution.md)*
 
@@ -89,8 +89,7 @@ L'isolation de `Infrastructure.Notifications` est explicitement validée pour su
 
 ## 4 — Nommage du noyau partagé : `SharedKernel`
 
-Le dossier/namespace partagé s'appelle **`SharedKernel`** — convention DDD classique, déjà adoptée dans `stack.md`
-(`Haversack.SharedKernel`). Ce choix clôt le report ADR-008.
+Le dossier/namespace partagé s'appelle **`SharedKernel`** — convention DDD classique. Ce choix clôt le report ADR-008.
 
 Le `SharedKernel` héberge les abstractions métier communes :
 - classes de base (`Entity`, `AggregateRoot`, `DomainEvent`)

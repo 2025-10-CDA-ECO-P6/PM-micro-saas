@@ -9,7 +9,7 @@
 
 ## 1. Contrat du value object `DocumentProperties`
 
-**Décision reportée** (ADR-002:24) :
+**Décision reportée** (ADR-002:22) :
 
 > `Document.SetProperties()` accepte uniquement un `DocumentProperties` validé contre le `propertiesSchema` du type de document concerné. Les écritures directes dans le JSON sans passer par ce VO sont interdites.
 
@@ -23,10 +23,10 @@ Conséquences directes du contrat, reportées fidèlement :
 
 ## 2. Deux régimes de validation
 
-**Décision reportée** (ADR-002:26, 62) :
+**Décision reportée** (ADR-002:24, 62) :
 
 - **Types système** (MVP) : « schéma figé seedé en base ». Pas de `properties` libre non validé au démarrage — chaque type système dispose d'un schéma déclaré qui contraint les valeurs acceptables. Le schéma figé s'applique **aux types système non modifiés**.
-- **Types custom ou modifiés** : « la validation est permissive par défaut — choix délibéré pour ne pas bloquer l'extensibilité » (ADR-002:62).
+- **Types custom ou modifiés** : « la validation est permissive par défaut — choix délibéré pour ne pas bloquer l'extensibilité » (ADR-002:60).
 
 Ces deux régimes sont des décisions distinctes et déjà tranchées — il n'y a pas de point ouvert sur *le principe* de la distinction. Le contenu exact de la validation « permissive par défaut » (ex. accepte tout JSON valide sans contrainte de forme, ou applique un schéma minimal générique) n'est pas détaillé par ADR-002 : `[À TRANCHER — modélisation domaine]`.
 
@@ -34,7 +34,7 @@ Ces deux régimes sont des décisions distinctes et déjà tranchées — il n'y
 
 ## 3. `DocumentBlock.content` : hors périmètre du VO
 
-**Décision reportée** (ADR-002:60) :
+**Décision reportée** (ADR-002:58) :
 
 > `DocumentBlock.content` est du contenu éditeur, sans enjeu d'intégrité référentielle. Ce choix est explicite et distinct de `properties` (gouverné par `DocumentProperties`).
 
@@ -105,4 +105,4 @@ Ces 6 types système ne font l'objet d'aucune section « Propriétés structuré
 Points ouverts additionnels :
 
 - Comportement de `SetProperties()` sur un `Document` sans `documentTypeId` — non fixé par ADR-002.
-- Contenu exact de la validation « permissive par défaut » pour les types custom/modifiés — le principe est acté (ADR-002:62), sa forme précise ne l'est pas.
+- Contenu exact de la validation « permissive par défaut » pour les types custom/modifiés — le principe est acté (ADR-002:60), sa forme précise ne l'est pas.

@@ -6,7 +6,7 @@
 | Date | 2026-07-16 |
 | Statut | Version de référence — consolidation du corpus |
 | Périmètre | MVP (UC-01 à UC-12, UC-14) + post-MVP signalé où il apparaît (UC-13, UC-15, stories repoussées) |
-| Audiences | équipe de build (développeur·se solo ou équipe restreinte), opérateur (arbitrage des points non tranchés), expert QA en revue |
+| Audiences | équipe de build (développeur·se solo ou équipe restreinte), responsable produit (arbitrage des points non tranchés), expert QA en revue |
 | Sources | `docs/conception/besoin/usecases/**`, `docs/conception/besoin/user-stories/**` (Gherkin, source unique des critères d'acceptation), `docs/conception/besoin/nfr/**`, `docs/gestion-projet/roadmap-entree-build.md` |
 
 > Document dérivé du corpus, zéro décision produit neuve.
@@ -224,7 +224,7 @@ Table calibrée pour une équipe restreinte (développeur·se solo ou équipe r�
 | Test d'architecture (CI) | dev | CI (automatisé) | CI (bloquant si rouge) |
 | Sécurité (adversarial) | dev | dev (checklist B5.2/B8.2/B3.2) | dev, revue dédiée avant jalon Cloud/Partage |
 | Accessibilité / Réactivité perçue | dev | dev (observation manuelle) | dev |
-| Gates humains (`[GATE MARCHÉ]`, `[GATE JURISTE EU]`) | opérateur | opérateur (télémétrie) / juriste externe | opérateur |
+| Points de décision, non vérifiables en CI (`[DÉCISION MARCHÉ]`, `[VALIDATION JURIDIQUE EU]`) | responsable produit | responsable produit (télémétrie) / juriste externe | responsable produit |
 
 Cette table reste factuelle : elle ne présuppose ni rôle QA dédié ni outillage de gestion de test spécifique — dev désigne la personne en charge de l'implémentation, seule ou en équipe réduite.
 
@@ -277,7 +277,7 @@ Cette table reste factuelle : elle ne présuppose ni rôle QA dédié ni outilla
 
 ## 9. Critères de sortie par jalon
 
-Quatre jalons de build et deux gates humains hors-CI, nommés par leur contenu (Socle / Local-only / Cloud + migration / Partage + temps réel) — reprise fidèle des critères de sortie factuels de `docs/gestion-projet/roadmap-entree-build.md §3`.
+Quatre jalons de build et deux points de décision non vérifiables en CI, nommés par leur contenu (Socle / Local-only / Cloud + migration / Partage + temps réel) — reprise fidèle des critères de sortie factuels de `docs/gestion-projet/roadmap-entree-build.md §3`.
 
 ### Jalon « Socle »
 
@@ -293,9 +293,9 @@ Quatre jalons de build et deux gates humains hors-CI, nommés par leur contenu (
 - Un export au format `schemaVersion` peut être produit depuis le store local et est structurellement rejouable (dry-run sans serveur cloud actif).
 - Aucun appel réseau vers l'API n'existe dans le périmètre mode local livré — observable via la CSP `connect-src 'self'`.
 
-### [GATE MARCHÉ] — hors-CI, ne pas convertir en dette de test
+### [DÉCISION MARCHÉ] — hors-CI, ne pas convertir en dette de test
 
-Décision go/no-go de l'opérateur sur la télémétrie des trois piliers d'activation (préparation, vue session, partage), croisée avec les hypothèses de validation H1-H4. Les seuils de décision ne sont pas fixés par la roadmap — ils relèvent de l'instrumentation produit. **Critère de sortie = décision opérateur tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce gate.
+Décision go/no-go du responsable produit sur la télémétrie des trois piliers d'activation (préparation, vue session, partage), croisée avec les hypothèses de validation H1-H4. Les seuils de décision ne sont pas fixés par la roadmap — ils relèvent de l'instrumentation produit. **Critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
 
 ### Jalon « Cloud + migration »
 
@@ -305,9 +305,9 @@ Décision go/no-go de l'opérateur sur la télémétrie des trois piliers d'acti
 - `AccountSuspended` et `UserAnonymized` déclenchent effectivement `ITokenDenylist.RevokeFamilyAsync`.
 - La saga `SpaceDeleted` s'exécute sans erreur de cycle FK sur un espace de test couvrant les deux cycles documentés.
 
-### [GATE JURISTE EU] — hors-CI, ne pas convertir en dette de test
+### [VALIDATION JURIDIQUE EU] — hors-CI, ne pas convertir en dette de test
 
-Bloque le lancement commercial EU — pas le build technique, qui peut être instruit en parallèle. Cinq axes RGPD, chacun devant porter un statut distinct de « à valider juriste » (nature binaire par axe) : article 8 (mineurs) ; article 28 + DPA sous-traitant ; intérêt légitime post-effacement et `display_name` invité ; article 17 (hard-delete `PERSONAL`) ; facette RGPD « reclaim-in-place ». Ce gate n'est pas converti en dette de test.
+Bloque le lancement commercial EU — pas le build technique, qui peut être instruit en parallèle. Cinq axes RGPD, chacun devant porter un statut distinct de « à valider juriste » (nature binaire par axe) : article 8 (mineurs) ; article 28 + DPA sous-traitant ; intérêt légitime post-effacement et `display_name` invité ; article 17 (hard-delete `PERSONAL`) ; facette RGPD « reclaim-in-place ». Cette validation n'est pas convertie en dette de test.
 
 ### Jalon « Partage + temps réel »
 
@@ -346,7 +346,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 | CR-UC01-01 | [nominal] Commencer sans compte | Le MJ ouvre l'application pour la première fois | Il choisit « Commencer sans compte » | L'application affiche un message court sur le stockage local ; un lien FAQ est disponible ; le MJ est redirigé vers l'écran de création de campagne | US-01-01 §"Le MJ choisit de commencer sans compte" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC01-02 | [nominal] Message informatif au 1er démarrage | Le MJ ouvre l'application pour la première fois | Il choisit de commencer sans compte | Le MJ reçoit un message informatif court sur le stockage local lors du premier démarrage | US-01-01 §"Le MJ reçoit un message informatif au premier démarrage" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC01-03 | [nominal] Créer une campagne en mode local | Le MJ est en mode local sans compte | Il crée une campagne et y ajoute du contenu | Aucune donnée n'est envoyée au serveur ; le contenu est disponible dans la session courante | US-01-01 §"Le MJ crée une campagne en mode local" | ☐ OK ☐ KO ☐ N/A |
-| CR-UC01-04 | *(retiré)* — aucun plafond de création n'existe en mode local (décision opérateur, `RB-01-03` retirée) ; la seule contrainte du mode local est la capacité de stockage du navigateur, couverte par CR-UC01-14 | — | — | — | US-01-01 §RB-01-03 (retirée) | — |
+| CR-UC01-04 | *(retiré)* — aucun plafond de création n'existe en mode local (décision produit, `RB-01-03` retirée) ; la seule contrainte du mode local est la capacité de stockage du navigateur, couverte par CR-UC01-14 | — | — | — | US-01-01 §RB-01-03 (retirée) | — |
 | CR-UC01-05 | [nominal] Retour après fermeture du navigateur | Le MJ a créé du contenu en mode local et a fermé le navigateur | Il rouvre l'application | Ses campagnes et contenus sont disponibles | US-01-02 §"Retour après fermeture du navigateur" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC01-06 | [alternatif] Partage visible mais désactivé | Le MJ est en mode local sans compte | Il accède à une fonctionnalité de partage (UC-08) ou d'accès joueur (UC-09) | La fonctionnalité est visible et désactivée ; un CTA invite à créer un compte | US-01-04 §"Fonctionnalité de partage visible mais désactivée" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC01-07 | [alternatif] Fonctions cloud distinguables, aucune masquée | Le MJ est en mode local sans compte | Il navigue dans l'application | Les fonctionnalités locales sont pleinement accessibles ; les fonctionnalités cloud sont distinguables visuellement (cadenas/label) ; aucune n'est masquée | US-01-04 §"Le MJ comprend ce qui est accessible sans compte" | ☐ OK ☐ KO ☐ N/A |
@@ -366,7 +366,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 
 **Trou traité (b) — non comblé** : US-01-08 (réimport de fichier de sauvegarde) est post-MVP — sa recette est différée, aucun cas n'est produit ici (§12).
 
-**CR-UC01-04 retiré** : ce cas présumait un plafond de création en mode local (« limite de 3 campagnes en mode local »). Cette présomption est écartée par décision opérateur — `RB-01-03` dans sa formulation « blocage de création en mode local » est retirée, faute de source amont (US-01-01 §RB-01-03). La seule contrainte réelle du mode local, la capacité de stockage du navigateur, reste couverte par CR-UC01-14.
+**CR-UC01-04 retiré** : ce cas présumait un plafond de création en mode local (« limite de 3 campagnes en mode local »). Cette présomption est écartée par décision produit — `RB-01-03` dans sa formulation « blocage de création en mode local » est retirée, faute de source amont (US-01-01 §RB-01-03). La seule contrainte réelle du mode local, la capacité de stockage du navigateur, reste couverte par CR-UC01-14.
 
 ---
 
@@ -387,13 +387,13 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 | CR-UC02-08 | [nominal] Création en mode local | Le MJ utilise l'application en mode local sans compte | Il crée une campagne avec un nom | L'espace est créé et pleinement fonctionnel ; dossiers système + « Non classés » créés | US-02-01 §"Le MJ est en mode local et crée une campagne" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC02-09 | [erreur] FREE 4e espace actif refusé | Le MJ possède un compte gratuit et a déjà 3 espaces CAMPAIGN/ONE_SHOT actifs | Il tente de créer une nouvelle campagne ou lancer un one-shot | La création est bloquée ; message de limite de 3 espaces ; CTA vers PRO ; PERSONAL non mentionné dans le décompte | US-02-03 §"Le MJ gratuit tente de créer un 4e espace CAMPAIGN ou ONE_SHOT actif" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC02-10 | [alternatif] FREE débloqué après archivage | Le MJ possède un compte gratuit avec 3 espaces actifs | Il archive l'un de ses espaces puis tente une création | La création est autorisée | US-02-03 §"Le MJ gratuit peut créer un nouvel espace après avoir archivé une campagne" | ☐ OK ☐ KO ☐ N/A |
-| CR-UC02-11 | *(retiré)* — aucun plafond de création n'existe en mode local (décision opérateur, `RB-01-03` retirée) ; noter que le scénario Gherkin US-02-03 §"Le MJ en mode local tente de créer un 4e espace CAMPAIGN ou ONE_SHOT" n'est, à ce jour, pas encore réaligné sur cette décision | — | — | — | US-01-01 §RB-01-03 (retirée) | — |
+| CR-UC02-11 | *(retiré)* — aucun plafond de création n'existe en mode local (décision produit, `RB-01-03` et `RB-02-11` retirées) | — | — | — | US-01-01 §RB-01-03 (retirée) | — |
 | CR-UC02-12 | [alternatif] PRO jamais bloqué | Le MJ possède un compte PRO avec 3 espaces actifs ou plus | Il tente de créer une nouvelle campagne | La création est autorisée sans restriction | US-02-03 §"Le MJ PRO n'est jamais bloqué" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC02-13 | [erreur, dérivé] Erreur de sauvegarde à la création | Le MJ soumet un formulaire de création d'espace valide | Une erreur survient lors de la sauvegarde | Le système affiche un message d'erreur et conserve les données saisies ; aucun espace partiel n'est créé | UC-02 fiche §Exceptions E2 (dérivé, pas de Gherkin) | ☐ OK ☐ KO ☐ N/A |
 
 **Trous traités** : US-02-02 et US-02-04 sont post-MVP (dépendent UC-13) — non recettées ici. UC-02 exception E2 (« erreur de création ») a été traitée en case dérivée (CR-UC02-13) plutôt qu'en point ouvert, la fiche UC-02 la spécifiant explicitement (message d'erreur + conservation des données saisies).
 
-**CR-UC02-11 retiré** : ce cas présumait un plafond de création en mode local. Cette présomption est écartée par décision opérateur — `RB-01-03` dans sa formulation « blocage de création en mode local » est retirée, faute de source amont (US-01-01 §RB-01-03). Le scénario Gherkin US-02-03 §"Le MJ en mode local tente de créer un 4e espace CAMPAIGN ou ONE_SHOT" et la règle `RB-02-11` qui le porte n'étaient, au moment de cette passe, pas encore réalignés sur cette décision.
+**CR-UC02-11 retiré** : ce cas présumait un plafond de création en mode local. Cette présomption est écartée : `RB-01-03` (qui prétendait plafonner à 3 le nombre d'espaces `CAMPAIGN`/`ONE_SHOT` créables en mode local) et `RB-02-11` (qui reprenait ce plafond côté UC-02) sont toutes deux retirées, faute de source amont — UC-01 ne porte aucun plafond de comptage en mode local, seule la capacité de stockage du navigateur limitant la création (US-01-01 §RB-01-03 ; US-UC-02 §RB-02-11).
 
 ---
 
@@ -628,7 +628,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 | CR-UC10-14 | [nominal] Réinitialisation réussie, ancien mdp invalidé | Un utilisateur utilise un lien de réinitialisation valide | Il saisit et confirme un nouveau mot de passe | Le mot de passe est mis à jour ; l'ancien est immédiatement invalide ; redirection vers la connexion | US-10-04 §"Réinitialisation réussie" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-15 | [nominal] Mise à jour du nom d'affichage | Un utilisateur est connecté à son compte | Il modifie son nom d'affichage et sauvegarde | Le nouveau nom est appliqué immédiatement et visible dans toutes ses campagnes | US-10-05 §"Mise à jour du nom d'affichage (A2)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-16 | [nominal] Modification du mot de passe (mdp actuel requis) | Un utilisateur est connecté à son compte | Il saisit son mot de passe actuel et un nouveau, sauvegarde | Le mot de passe est mis à jour ; confirmation visuelle reçue | US-10-05 §"Modification du mot de passe" | ☐ OK ☐ KO ☐ N/A |
-| CR-UC10-17 | [irréversible] Suppression de compte | Un utilisateur est authentifié, son email est validé, aucune campagne à membres actifs | Il demande la suppression, prend connaissance des conséquences, confirme | L'effacement physique porte sur tout `Document` `PLAYER_PRIVATE` créé par l'utilisateur, quel qu'en soit le type — portée décidée par l'opérateur, voir UC-10 §A4 ; les données nominatives sont anonymisées ; le compte passe au statut DELETED ; l'utilisateur est déconnecté | UC-10 §A4 ; US-10-06 §"Suppression de compte (A4 nominal)" — noter que ce scénario Gherkin n'est, à ce jour, pas encore réaligné sur cette portée | ☐ OK ☐ KO ☐ N/A |
+| CR-UC10-17 | [irréversible] Suppression de compte | Un utilisateur est authentifié, son email est validé, aucune campagne à membres actifs | Il demande la suppression, prend connaissance des conséquences, confirme | L'effacement physique porte sur tout `Document` `PLAYER_PRIVATE` créé par l'utilisateur, quel qu'en soit le type (portée UC-10 §A4) ; les données nominatives sont anonymisées ; le compte passe au statut DELETED ; l'utilisateur est déconnecté | UC-10 §A4 ; US-10-06 §"Suppression de compte (A4 nominal)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-18 | [erreur] Bloquée si propriétaire de campagne à membres actifs | Un utilisateur est propriétaire d'une campagne avec des membres actifs | Il demande la suppression de son compte | Le système bloque la suppression et indique les campagnes concernées | US-10-06 §"Suppression bloquée — propriétaire de campagne active (E4)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-19 | [erreur] Bloquée si email non validé | Un utilisateur est authentifié mais son email n'est pas validé | Il tente de demander la suppression de son compte | Le système refuse la demande et indique que la validation de l'email est requise | US-10-06 §"Suppression bloquée — adresse de messagerie non validée" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-20 | [sécurité, dérivé] SetInitialPassword fédéré refusé sans emailVerified + ré-authentification | Un compte est fédéré-only (aucun mot de passe existant) | L'utilisateur tente de définir un premier mot de passe complémentaire sans `emailVerified = true`, ou sans preuve de ré-authentification récente auprès du fournisseur d'identité | L'opération est refusée — `SetInitialPassword()` exige `emailVerified = true` ET une ré-authentification récente auprès du fournisseur d'identité fédéré (anti CWE-620) ; cette même exigence d'`emailVerified` s'applique à d'autres opérations sensibles (cf. suppression de compte, CR-UC10-19) | RB-10-10(b) (dérivé, pas de Gherkin), CWE-620 | ☐ OK ☐ KO ☐ N/A |
@@ -808,17 +808,17 @@ Suite de la sous-section « Cas transverses » ci-dessus (CR-TRANS-01 à 06). Ca
 
 | ID | Point | Nature | Source | Propriétaire de décision | Impact |
 |---|---|---|---|---|---|
-| PO-01 | Seuils de réactivité perçue non chiffrés (NFR-PERF-01→04) | Seuil chiffré non dérivable | `NFR-PERF-01→04` (aucune valeur de décision fixée) | Opérateur / instrumentation produit | La recette perf reste une observation qualitative (§3.7) tant que ce point n'est pas tranché |
-| PO-02 | Seuil de repli SSE → polling adaptatif | Seuil chiffré non dérivable | `roadmap-entree-build.md §3.6`, ADR-004 | Opérateur / build | Bloque la clôture opérationnelle du jalon « Partage + temps réel », pas son entrée (§9) |
-| PO-03 | Branche fédérée email non vérifié (RB-10-08 branche b) | Résolution de sécurité/RGPD non ratifiée | ADR-015 §2.3, RB-10-08 | Opérateur (ratification sécurité) + cadrage juridique interne (facette RGPD) | Aucun cas de recette (CR-UC10-10) ne présume de l'issue ; Option A « reclaim-in-place » documentée mais non actée |
-| PO-04 | Réconciliation de nomenclature « J1 » — **RÉSOLU** | Ratifié par l'opérateur (2026-09-01) | `roadmap-entree-build.md §5` | Opérateur | Toute référence de ce document à un jalon nomme le contenu (Socle/Local-only/Cloud+migration/Partage+temps réel), jamais une numérotation de jalon antérieure, retirée du corpus |
-| PO-05 | Délai de purge RGPD compte (« J+30 ») | Critère de recette à confirmer | `roadmap-entree-build.md`, corpus RGPD | Opérateur | Le délai est dérivable de la roadmap mais sa formulation en critère de recette produit reste ouverte |
+| PO-01 | Seuils de réactivité perçue non chiffrés (NFR-PERF-01→04) | Seuil chiffré non dérivable | `NFR-PERF-01→04` (aucune valeur de décision fixée) | Responsable produit / instrumentation produit | La recette perf reste une observation qualitative (§3.7) tant que ce point n'est pas tranché |
+| PO-02 | Seuil de repli SSE → polling adaptatif | Seuil chiffré non dérivable | `roadmap-entree-build.md §3.6`, ADR-004 | Responsable produit / build | Bloque la clôture opérationnelle du jalon « Partage + temps réel », pas son entrée (§9) |
+| PO-03 | Branche fédérée email non vérifié (RB-10-08 branche b) | Résolution de sécurité/RGPD non ratifiée | ADR-015 §2.3, RB-10-08 | Responsable produit (ratification sécurité) + cadrage juridique interne (facette RGPD) | Aucun cas de recette (CR-UC10-10) ne présume de l'issue ; Option A « reclaim-in-place » documentée mais non actée |
+| PO-04 | Réconciliation de nomenclature « J1 » — **RÉSOLU** | Décision produit ratifiée (2026-09-01) | `roadmap-entree-build.md §5` | Responsable produit | Toute référence de ce document à un jalon nomme le contenu (Socle/Local-only/Cloud+migration/Partage+temps réel), jamais une numérotation de jalon antérieure, retirée du corpus |
+| PO-05 | Délai de purge RGPD compte (« J+30 ») | Critère de recette à confirmer | `roadmap-entree-build.md`, corpus RGPD | Responsable produit | Le délai est dérivable de la roadmap mais sa formulation en critère de recette produit reste ouverte |
 | PO-06 | Nom de l'object store racine (`campaigns` vs `spaces`) | Watch point de build | ADR-017 §1.1, ADR-018 | Équipe de build | Ne pas figer ce nom dans un critère de recette (§5) |
-| PO-07 | Ordre de dégel UC-15 pour un tier intermédiaire borné | Non fixé, post-MVP | UC-15, RB-15-04 | Opérateur / build (à l'introduction d'un tier intermédiaire) | Sans impact MVP — le tier binaire actuel implique un dégel total |
-| PO-08 | Réimport de fichier de sauvegarde (UC-01, US-01-08) | Post-MVP, recette différée | US-01-08 | Opérateur (roadmap produit) | Aucun cas de recette MVP ; règles de validation tracées pour reprise ultérieure |
+| PO-07 | Ordre de dégel UC-15 pour un tier intermédiaire borné | Non fixé, post-MVP | UC-15, RB-15-04 | Responsable produit / build (à l'introduction d'un tier intermédiaire) | Sans impact MVP — le tier binaire actuel implique un dégel total |
+| PO-08 | Réimport de fichier de sauvegarde (UC-01, US-01-08) | Post-MVP, recette différée | US-01-08 | Responsable produit (roadmap produit) | Aucun cas de recette MVP ; règles de validation tracées pour reprise ultérieure |
 | PO-09 | UC-03 exception E2 — perte de connexion ou erreur de sauvegarde | Non dérivable d'un Gherkin ni d'une RB ferme | UC-03 fiche §Exceptions E2 | Équipe de build (spécification à affiner) | Non recetté ; couvert au mieux par le principe général de résilience réseau (NFR-OFF) |
 | PO-10 | UC-06 exception E3 — MJ consulte une session CLOSED en lecture seule | Nuance non spécifiable au-delà de l'existant | UC-06 fiche §Exceptions E3 | Équipe de build | Substantiellement déjà couvert par CR-UC06-15/16/18/26/27 ; la nuance additionnelle n'est pas dupliquée en case redondante |
-| PO-11 | Deux gates humains (`[GATE MARCHÉ]`, `[GATE JURISTE EU]`) | Rappel structurel | `roadmap-entree-build.md §3.3/3.5` | Opérateur | Hors-CI par nature — ne jamais convertir en dette de test (§9) |
+| PO-11 | Deux points de décision non vérifiables en CI (`[DÉCISION MARCHÉ]`, `[VALIDATION JURIDIQUE EU]`) | Rappel structurel | `roadmap-entree-build.md §3.3/3.5` | Responsable produit | Hors-CI par nature — ne jamais convertir en dette de test (§9) |
 | PO-12 | Seuil de tentatives (N) du rate limiting brute-force | Seuil chiffré non dérivable | ADR-015 (rate limiting hybride par-IP/par-compte, valeur non fixée) | Équipe de build | CR-UC10-21 ne chiffre pas N ; aucune valeur inventée dans ce document |
 | PO-13 | Sous-points B1.10 non tranchés (403 vs 404 sur ressource non autorisée, schéma exact du code 429) | Détail de contrat à trancher | roadmap Annexe A, B1.10 | Équipe de build | Le contrat OpenAPI des endpoints d'authentification reste à compléter sur ces deux points avant clôture du jalon Cloud + migration |
 
@@ -831,10 +831,10 @@ Les métriques ci-dessous sont définies **qualitativement** — tout seuil chif
 - **Couverture des cas Must exécutés** : proportion des cas de recette de priorité Must, par UC et globale, ayant reçu un verdict (`OK`/`KO`/`N/A` justifié) sur le total des cas Must tracés.
 - **Taux de réussite** : proportion de cas exécutés avec verdict `OK` sur le total des cas exécutés, par niveau de test et par UC.
 - **Densité d'anomalies par sévérité** : nombre d'anomalies ouvertes, réparties selon l'échelle de sévérité (§7), rapporté au périmètre recetté (par jalon).
-- **Nombre de points ouverts résiduels** : décompte des entrées actives du registre (§12), à surveiller pour tendance décroissante à l'approche de chaque gate.
-- **Contrôle d'intégrité des citations** : à chaque jalon, une passe de relecture bornée vérifie que chaque ligne `CR-` cite un scénario Gherkin (par titre) ou une règle métier (RB) réel et à jour dans le corpus source — mécanisme concret de la clause de re-dérivation (§1), pas seulement une politique déclarée.
+- **Nombre de points ouverts résiduels** : décompte des entrées actives du registre (§12), à surveiller pour tendance décroissante à l'approche de chaque point de décision.
+- **Contrôle d'intégrité des citations** : à chaque jalon, un contrôle borné vérifie que chaque ligne `CR-` cite un scénario Gherkin (par titre) ou une règle métier (RB) réel et à jour dans le corpus source — mécanisme concret de la clause de re-dérivation (§1), pas seulement une politique déclarée.
 
-**Cadence de reporting** : à chaque jalon de build (Socle, Local-only, Cloud + migration, Partage + temps réel) et avant chaque gate humain (`[GATE MARCHÉ]`, `[GATE JURISTE EU]`), un état des quatre métriques ci-dessus est produit pour éclairer la décision de sortie de jalon ou de gate.
+**Cadence de reporting** : à chaque jalon de build (Socle, Local-only, Cloud + migration, Partage + temps réel) et avant chaque point de décision (`[DÉCISION MARCHÉ]`, `[VALIDATION JURIDIQUE EU]`), un état des quatre métriques ci-dessus est produit pour éclairer la décision de sortie de jalon ou de point de décision.
 
 ---
 
@@ -852,9 +852,9 @@ Les métriques ci-dessous sont définies **qualitativement** — tout seuil chif
 - `docs/conception/besoin/usecases/**` — use cases, source de vérité.
 - `docs/conception/besoin/user-stories/**` — user stories, Gherkin source unique des critères d'acceptation.
 - `docs/conception/besoin/nfr/**` — exigences non fonctionnelles.
-- `docs/gestion-projet/roadmap-entree-build.md` — jalons, critères de sortie factuels, gates humains.
+- `docs/gestion-projet/roadmap-entree-build.md` — jalons, critères de sortie factuels, points de décision.
 
 ## Annexe C — Historique des versions
 
 - **v1.0** — consolidation initiale (192 lignes) : stratégie de test synthétique et cahier de recette agrégé par UC (une ligne par UC, critères d'acceptation groupés).
-- **v2.0** (ce document) — version de référence, produite en 2 passes : structure professionnelle complète (contrôle documentaire, 10 sections de stratégie, cahier de recette pas à pas), cas de recette dérivés un par un des scénarios Gherkin des User Stories avec traçabilité explicite, matrice de traçabilité des 15 UC, registre des points ouverts consolidé, métriques qualitatives et annexes.
+- **v2.0** (ce document) — version de référence : structure professionnelle complète (contrôle documentaire, 10 sections de stratégie, cahier de recette pas à pas), cas de recette dérivés un par un des scénarios Gherkin des User Stories avec traçabilité explicite, matrice de traçabilité des 15 UC, registre des points ouverts consolidé, métriques qualitatives et annexes.

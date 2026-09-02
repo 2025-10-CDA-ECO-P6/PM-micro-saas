@@ -4,8 +4,6 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
-- **Findings liés** : C-09, C-10 (connexe)
 
 ---
 
@@ -111,7 +109,7 @@ Mettre les données en corbeille indéfiniment sans jamais les purger physiqueme
 - **ADR-007 (Pseudonymisation RGPD)** : la suppression d'un espace est un cas d'usage majeur du droit à l'effacement. La saga garantit que toutes les données associées à l'espace et au propriétaire sont traitées de manière cohérente (suppression ou pseudonymisation selon le contexte).
 - **ADR-009 (FK `ownerId`)** : la suppression d'un espace ne supprime pas le compte utilisateur du propriétaire. Les deux cycles de vie sont distincts : un espace peut être supprimé sans que le compte soit supprimé, et réciproquement. La FK `spaces.owner_id` reste valide pendant la fenêtre de soft-delete (30 j) et est supprimée avec la ligne `spaces` lors de la purge physique. Le mécanisme et l'ordre topologique complet de la purge sont définis dans **[ADR-011](ADR-011-cascade-integrite-referentielle.md)**.
 - **ADR-011/012 (cascade `UserDeleted`)** : la purge de l'espace `PERSONAL` est un sous-cas de la suppression de compte, géré par la saga `UserDeleted`. Elle n'est pas couverte par le présent ADR, qui ne traite que la suppression volontaire d'un espace par son propriétaire.
-- **Politique de rétention** : la corbeille 30 jours pour les espaces supprimables s'aligne avec la fenêtre de rétention générale pour les données supprimées, cohérente avec les findings C-09 et C-10.
+- **Politique de rétention** : la corbeille 30 jours pour les espaces supprimables s'aligne avec la fenêtre de rétention générale retenue pour les données supprimées.
 
 ### Observation d'un utilisateur
 
@@ -120,7 +118,7 @@ Mettre les données en corbeille indéfiniment sans jamais les purger physiqueme
 
 ### Notification de suppression (MVP)
 
-**Décision opérateur — validée au MVP** : aucune notification email n'est envoyée au propriétaire au moment de la suppression. La confirmation UI à l'action de suppression tient lieu d'information — c'est suffisant pour signaler à l'utilisateur que le changement a eu lieu. La fenêtre de rétention de 30 jours et la possibilité de restauration restent inchangées, mais ne sont pas relancées par email.
+**Décision produit — validée au MVP** : aucune notification email n'est envoyée au propriétaire au moment de la suppression. La confirmation UI à l'action de suppression tient lieu d'information — c'est suffisant pour signaler à l'utilisateur que le changement a eu lieu. La fenêtre de rétention de 30 jours et la possibilité de restauration restent inchangées, mais ne sont pas relancées par email.
 
 **Justification** : simplifier le MVP en évitant une dépendance de la saga vers un service d'email broker. La rétroaction UI est immédiate et fiable. L'utilisateur peut explorer sa corbeille et procéder à une restauration s'il le souhaite, sans attendre une notification asynchrone.
 

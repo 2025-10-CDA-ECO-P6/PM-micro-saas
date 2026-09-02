@@ -342,7 +342,7 @@ Feature: Blocage à la limite d'espaces CAMPAIGN/ONE_SHOT actifs
 **Règles métier**
 
 - RB-02-10 : Un utilisateur gratuit ne peut pas avoir plus de 3 espaces `CAMPAIGN`/`ONE_SHOT` actifs simultanément. L'espace `PERSONAL` n'est pas décompté. Cette règle stable est vérifiée côté serveur dans Space Management.
-- RB-02-11 : **Retirée** (arbitrage opérateur, cf. US-UC-01 RB-01-03). Cette règle prétendait qu'un cap à 3 espaces `CAMPAIGN`/`ONE_SHOT` s'appliquait aussi en mode local, comme règle d'interface. UC-01 ne porte aucun plafond de comptage en mode local : la seule contrainte du mode local est la capacité de stockage du navigateur. L'identifiant `RB-02-11` n'est pas réattribué.
+- RB-02-11 : **Retirée** (arbitrage produit, cf. US-UC-01 RB-01-03). Cette règle prétendait qu'un cap à 3 espaces `CAMPAIGN`/`ONE_SHOT` s'appliquait aussi en mode local, comme règle d'interface. UC-01 ne porte aucun plafond de comptage en mode local : la seule contrainte du mode local est la capacité de stockage du navigateur. L'identifiant `RB-02-11` n'est pas réattribué.
 - RB-02-12 : Le message de blocage informe le MJ gratuit qu'il a atteint la limite de 3 espaces `CAMPAIGN`/`ONE_SHOT` actifs et l'invite à passer en PRO. Ce blocage ne concerne que le compte gratuit — le mode local n'est jamais bloqué par un quota d'espaces (RB-01-03 retirée, US-UC-01).
 - RB-02-13 : Les espaces archivés ne comptent pas dans le quota actif.
 - RB-02-14 : Un utilisateur PRO ne rencontre jamais ce blocage.
@@ -350,7 +350,7 @@ Feature: Blocage à la limite d'espaces CAMPAIGN/ONE_SHOT actifs
 **Notes de conception**
 
 - La limite du compte gratuit (3 espaces `CAMPAIGN`/`ONE_SHOT` actifs maximum) est vérifiée à la création côté serveur. Le rejet est une règle fonctionnelle, pas seulement une validation d'écran.
-- Le mode local n'est soumis à aucun quota d'espaces : il n'y a pas de compte utilisateur côté serveur en mode local, et aucun plafond de création n'y existe (arbitrage opérateur, RB-01-03 retirée dans US-UC-01). Cette story ne couvre donc que le blocage du compte gratuit face au plan PRO.
+- Le mode local n'est soumis à aucun quota d'espaces : il n'y a pas de compte utilisateur côté serveur en mode local, et aucun plafond de création n'y existe (arbitrage produit, RB-01-03 retirée dans US-UC-01). Cette story ne couvre donc que le blocage du compte gratuit face au plan PRO.
 
 ---
 

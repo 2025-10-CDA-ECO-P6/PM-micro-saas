@@ -10,18 +10,18 @@
 
 | Paramètre | Borne normative ADR (fichier:ligne) | Valeur retenue / ouverte | Ticket |
 |---|---|---|---|
-| Longueur minimale du mot de passe | ADR-015:53-55 | **Retenue : ≥ 12 caractères** | — (tranché) |
-| Complexité du mot de passe (chiffres/symboles/casse) | ADR-015:53-55 | **Retenue : désactivée explicitement** (`RequireDigit`/`RequireNonAlphanumeric`/`RequireUppercase`/`RequireLowercase` positionnés à `false` dans le code, pas laissés par défaut) | — (tranché) |
-| Algorithme de hachage du mot de passe | ADR-015:59, 63 | **Retenue : Argon2id**, avec **repli bcrypt cost ≥ 12** si Argon2id non intégrable dans la contrainte de dépendances MVP | `[À TRANCHER — B1.5]` pour les paramètres exacts (mémoire, itérations, parallélisme) — les valeurs de l'Annexe ADR-015 (bloc 2) sont illustratives, pas autoritaires |
-| Durée de vie de l'access token (JWT) | ADR-015:155 | **Retenue : ≤ 15 min**, aucune prolongation — renouvellement via refresh uniquement | — (tranché) |
-| Durée de vie du refresh token | ADR-015:156 | **Retenue : ≤ 7 jours ABSOLUS**, borne dure, aucune prolongation glissante | — (tranché) |
-| Dimension du rate limiting | ADR-015:234 | **Retenue : hybride par-IP ET par-compte**, seuils indépendants et cumulatifs (les deux dimensions combinées, pas l'une ou l'autre) | — (principe tranché) |
-| Valeurs exactes des seuils rate limiting (par-IP, par-compte) | ADR-015:238 | `[À TRANCHER — B1.5]` | B1.5 |
-| Borne supérieure de sécurité par seuil de rate limiting | ADR-015:240 | **Retenue : une borne supérieure de sécurité est obligatoire pour chaque seuil** (principe — une valeur arbitrairement élevée neutraliserait la protection) ; valeur exacte `[À TRANCHER — B1.5]` | B1.5 |
-| TTL du token de reset de mot de passe | ADR-015:250 | **Retenue : borne dure ≤ 15 min**, valeur exacte dans la plage cible **10-15 min** | `[À TRANCHER — B1.5]` pour la valeur exacte dans la plage |
-| `schemaVersion` minimale maintenue côté serveur | ADR-016:238, 254 | `[À TRANCHER — P7]` | P7 |
-| Rétention du registre `migration_batch_id` | ADR-016:183 | `[À TRANCHER — P7]` | P7 |
-| Timeout d'expiration du claim `purge_claimed_at` | ADR-011:171, 294 | `[À TRANCHER — B1]` — l'ADR mentionne « ex. 1 heure » à titre d'exemple, non retenu comme valeur | B1 |
+| Longueur minimale du mot de passe | ADR-015:51-53 | **Retenue : ≥ 12 caractères** | — (tranché) |
+| Complexité du mot de passe (chiffres/symboles/casse) | ADR-015:51-53 | **Retenue : désactivée explicitement** (`RequireDigit`/`RequireNonAlphanumeric`/`RequireUppercase`/`RequireLowercase` positionnés à `false` dans le code, pas laissés par défaut) | — (tranché) |
+| Algorithme de hachage du mot de passe | ADR-015:57, 63 | **Retenue : Argon2id**, avec **repli bcrypt cost ≥ 12** si Argon2id non intégrable dans la contrainte de dépendances MVP | `[À TRANCHER — B1.5]` pour les paramètres exacts (mémoire, itérations, parallélisme) — les valeurs de l'Annexe ADR-015 (bloc 2) sont illustratives, pas autoritaires |
+| Durée de vie de l'access token (JWT) | ADR-015:153 | **Retenue : ≤ 15 min**, aucune prolongation — renouvellement via refresh uniquement | — (tranché) |
+| Durée de vie du refresh token | ADR-015:154 | **Retenue : ≤ 7 jours ABSOLUS**, borne dure, aucune prolongation glissante | — (tranché) |
+| Dimension du rate limiting | ADR-015:232 | **Retenue : hybride par-IP ET par-compte**, seuils indépendants et cumulatifs (les deux dimensions combinées, pas l'une ou l'autre) | — (principe tranché) |
+| Valeurs exactes des seuils rate limiting (par-IP, par-compte) | ADR-015:236 | `[À TRANCHER — B1.5]` | B1.5 |
+| Borne supérieure de sécurité par seuil de rate limiting | ADR-015:238 | **Retenue : une borne supérieure de sécurité est obligatoire pour chaque seuil** (principe — une valeur arbitrairement élevée neutraliserait la protection) ; valeur exacte `[À TRANCHER — B1.5]` | B1.5 |
+| TTL du token de reset de mot de passe | ADR-015:248 | **Retenue : borne dure ≤ 15 min**, valeur exacte dans la plage cible **10-15 min** | `[À TRANCHER — B1.5]` pour la valeur exacte dans la plage |
+| `schemaVersion` minimale maintenue côté serveur | ADR-016:236, 254 | `[À TRANCHER — P7]` | P7 |
+| Rétention du registre `migration_batch_id` | ADR-016:181 | `[À TRANCHER — P7]` | P7 |
+| Timeout d'expiration du claim `purge_claimed_at` | ADR-011:169, 294 | `[À TRANCHER — B1]` — l'ADR mentionne « ex. 1 heure » à titre d'exemple, non retenu comme valeur | B1 |
 
 ---
 
@@ -29,20 +29,20 @@
 
 ### Politique mot de passe (ADR-015 §1.1)
 
-> ADR-015:53-55 — « La longueur minimale est 12 caractères (…). Les règles de complexité (chiffres, symboles, casse) sont **désactivées explicitement**. (…) Les options `RequireDigit`, `RequireNonAlphanumeric`, `RequireUppercase`, `RequireLowercase` sont **positionnées à `false`** dans le code, pas simplement commentées. »
+> ADR-015:51-53 — « La longueur minimale est 12 caractères (…). Les règles de complexité (chiffres, symboles, casse) sont **désactivées explicitement**. (…) Les options `RequireDigit`, `RequireNonAlphanumeric`, `RequireUppercase`, `RequireLowercase` sont **positionnées à `false`** dans le code, pas simplement commentées. »
 
 Ces deux valeurs (longueur ≥ 12, complexité désactivée) sont des bornes fixées par l'ADR, pas des valeurs d'exemple : elles sont reportées ici comme **retenues**.
 
 ### Algorithme de hachage (ADR-015 §1.2)
 
-> ADR-015:59 — « L'implémentation `IPasswordHasher<User>` utilisée est **Argon2id** (…) »
-> ADR-015:63 — « Si Argon2id n'est pas intégrable dans la contrainte de dépendances MVP, **bcrypt avec cost factor ≥ 12** constitue le repli acceptable. »
+> ADR-015:57 — « L'implémentation `IPasswordHasher<User>` utilisée est **Argon2id** (…) »
+> ADR-015:61 — « Si Argon2id n'est pas intégrable dans la contrainte de dépendances MVP, **bcrypt avec cost factor ≥ 12** constitue le repli acceptable. »
 
 Le choix d'algorithme (Argon2id, ou repli bcrypt ≥ 12) est **tranché** par l'ADR. Les paramètres numériques d'Argon2id (mémoire, itérations, parallélisme) figurent dans l'Annexe ADR-015 (bloc 2) comme esquisse pré-implémentation — l'ADR précise explicitement (en-tête d'Annexe) que ces esquisses « illustrent les décisions d'architecture (…) ne font pas autorité sur le besoin ». Cette spec ne les reprend donc pas comme valeur retenue.
 
 ### Cycle de vie des tokens (ADR-015 §3.1)
 
-> ADR-015:155-156 (table) :
+> ADR-015:153-154 (table) :
 > | Token | Durée | Mode de prolongation |
 > |---|---|---|
 > | Access token (JWT) | ≤ 15 min | Aucune — renouvellement via refresh uniquement |
@@ -52,30 +52,30 @@ Ces deux bornes sont des valeurs fixées, pas des illustrations — reportées t
 
 ### Rate limiting (ADR-015 §4.2)
 
-> ADR-015:234 — « Le rate limiting est **hybride : par-IP ET par-compte**. (…) Les deux dimensions doivent être combinées avec un seuil indépendant pour chaque. »
-> ADR-015:238 — « Les valeurs exactes sont renvoyées à **B1.5** (implémentation). Le principe — deux dimensions, seuils indépendants, cumulatifs — est arrêté ici. »
-> ADR-015:240 — « **Note sécurité** : B1.5 doit déclarer une borne supérieure de sécurité pour chaque seuil — des valeurs arbitrairement élevées (ex. 10 000 tentatives/min) neutraliseraient la protection. La justification des seuils retenus (…) est exigée à l'implémentation. »
+> ADR-015:232 — « Le rate limiting est **hybride : par-IP ET par-compte**. (…) Les deux dimensions doivent être combinées avec un seuil indépendant pour chaque. »
+> ADR-015:236 — « Les valeurs exactes sont renvoyées à **B1.5** (implémentation). Le principe — deux dimensions, seuils indépendants, cumulatifs — est arrêté ici. »
+> ADR-015:238 — « **Note sécurité** : B1.5 doit déclarer une borne supérieure de sécurité pour chaque seuil — des valeurs arbitrairement élevées (ex. 10 000 tentatives/min) neutraliseraient la protection. La justification des seuils retenus (…) est exigée à l'implémentation. »
 
 Le principe hybride et l'obligation d'une borne supérieure de sécurité sont **tranchés**. Les valeurs numériques (seuils par-IP, par-compte, et la borne supérieure elle-même) sont explicitement renvoyées à B1.5. L'exemple « 20/10 tentatives/min » de l'Annexe ADR-015 (bloc 7) est illustratif et n'est pas repris comme valeur retenue.
 
 ### TTL du token de reset de mot de passe (ADR-015 §4.3)
 
-> ADR-015:250 — « **TTL court** : durée de validité ≤ 15 min (borne dure normative) ; valeur exacte à fixer en B1.5 dans la plage 10-15 min. »
+> ADR-015:248 — « **TTL court** : durée de validité ≤ 15 min (borne dure normative) ; valeur exacte à fixer en B1.5 dans la plage 10-15 min. »
 
 La borne dure (≤ 15 min) et la plage cible (10-15 min) sont fixées par l'ADR — ce ne sont pas des valeurs illustratives. La valeur exacte à l'intérieur de cette plage reste ouverte.
 
 ### `schemaVersion` minimale et rétention `migration_batch_id` (ADR-016)
 
-> ADR-016:238 (table des dettes) — « Seuil de `schemaVersion` minimale maintenue | Configuration — à fixer à l'implémentation | **P7** »
-> ADR-016:254 (points à trancher) — « **Seuil `schemaVersion` minimale** — à fixer à l'implémentation P7 en fonction des versions du client déployées. »
-> ADR-016:183 — « **Dette — horizon de rétention du registre `migration_batch_id`** : la durée de conservation des `migration_batch_id` en base (pour garantir l'idempotence) n'est pas fixée. À trancher en **P7** lors de l'implémentation du handler d'import. »
+> ADR-016:236 (table des dettes) — « Seuil de `schemaVersion` minimale maintenue | Configuration — à fixer à l'implémentation | **P7** »
+> ADR-016:252 (points à trancher) — « **Seuil `schemaVersion` minimale** — à fixer à l'implémentation P7 en fonction des versions du client déployées. »
+> ADR-016:181 — « **Dette — horizon de rétention du registre `migration_batch_id`** : la durée de conservation des `migration_batch_id` en base (pour garantir l'idempotence) n'est pas fixée. À trancher en **P7** lors de l'implémentation du handler d'import. »
 
 Ces deux paramètres sont explicitement non fixés par l'ADR — reportés comme ouverts, sans valeur proposée.
 
 ### Timeout d'expiration du claim `purge_claimed_at` (ADR-011)
 
-> ADR-011:171 — « **Expiration du claim** : un claim posé (`purge_claimed_at IS NOT NULL`) est considéré **expiré** si la purge n'est pas terminée dans un délai maximal (à définir en **B1** — ex. 1 heure). »
-> ADR-011:294 (points à trancher) — « **Seuil d'expiration du claim** : valeur concrète du timeout de `purge_claimed_at` (ex. 1 heure) à fixer en B1 lors de l'implémentation du Hosted Service. »
+> ADR-011:169 — « **Expiration du claim** : un claim posé (`purge_claimed_at IS NOT NULL`) est considéré **expiré** si la purge n'est pas terminée dans un délai maximal (à définir en **B1** — ex. 1 heure). »
+> ADR-011:292 (points à trancher) — « **Seuil d'expiration du claim** : valeur concrète du timeout de `purge_claimed_at` (ex. 1 heure) à fixer en B1 lors de l'implémentation du Hosted Service. »
 
 Le mécanisme (claim expirable, purge reclaimable après expiration) est tranché ; la valeur numérique du délai est explicitement un exemple (« ex. 1 heure »), non une décision — reportée ici comme ouverte.
 

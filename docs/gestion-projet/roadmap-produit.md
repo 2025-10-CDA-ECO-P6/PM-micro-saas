@@ -460,7 +460,7 @@ valeur, pas vers l'outillage de conception.
 
 | Élément (roadmap) | Référence conception | Nature |
 |---|---|---|
-| Cinq hypothèses de validation (H1 à H5) | vision-produit.md §2.3 | Gate GO/NO-GO, non un use case |
+| Cinq hypothèses de validation (H1 à H5) | vision-produit.md §2.3 | Point de décision go/no-go, non un use case |
 | Progression local → compte gratuit → palier payant | vision-produit.md §3 | Modèle économique, valeurs volatiles |
 
 ### Approfondissement du cœur

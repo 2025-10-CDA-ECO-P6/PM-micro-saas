@@ -2,7 +2,6 @@
 
 - **Statut** : Accepté — décision de conception pré-implémentation, à confirmer à l'entrée en build
 - **Date** : 2026-06-12
-- **Décideur** : opérateur (validation explicite, session d'exploration de conception)
 - **Décisions liées** : ADR-011 (cascade `CampaignDeleted` / `UserAnonymized`), ADR-012 (RGPD effacement de compte), ADR-013 (données invités), ADR-017 §1.1 (modèle IndexedDB, store campaign-rooté)
 
 ---
@@ -17,10 +16,10 @@ Cet ADR acte la généralisation de l'agrégat `Campaign` en `Space` pour permet
 - Analyse d'impact invariant par invariant sur le corpus de conception existant.
 - Impact sur les sagas RGPD (ADR-011, ADR-012) et le mode local (ADR-017).
 - Recommandations MoSCoW (propriété vs activation vs bibliothèque de réutilisation).
-- Description de la chaîne d'artefacts de remédiation à produire dans un chantier de conception séparé.
+- Description de la chaîne d'artefacts à produire par une propagation de corpus séparée.
 
 **Hors périmètre de cet ADR** :
-- Réécriture effective du corpus de domaine (renommage `Campaign` → `Space` dans les quatre fichiers domaine, le glossaire et les diagrammes) — **propriété de la session de remédiation de conception dédiée**.
+- Réécriture effective du corpus de domaine (renommage `Campaign` → `Space` dans les quatre fichiers domaine, le glossaire et les diagrammes) — **hors périmètre du présent ADR, réalisée par une propagation de corpus dédiée**.
 - Modification des use cases existants (UC-01, UC-02, UC-13).
 - Implémentation du store IndexedDB réécrit — renvoyé à ADR-016/017 au moment de la réécriture.
 - Résolution des incohérences de corpus listées en fin de document.
@@ -62,7 +61,7 @@ Tous les Documents du domaine Content Library portent un `campaignId: CampaignId
 - `Document.spaceId` (renommé depuis `campaignId`) reste **non-nullable** — l'espace personnel est le conteneur par défaut pour tout document créé sans espace explicite.
 - L'espace personnel est **mono-membre** : le propriétaire est son seul membre. La question de la gestion des membres (`memberships`) d'un espace `PERSONAL` est résolue par la règle : un espace `PERSONAL` ne peut avoir qu'un membre (`OWNER` = le propriétaire). À préciser à la modélisation.
 
-**Renommage ubiquitaire** : toute occurrence de `Campaign`, `CampaignId`, `CampaignType`, `CampaignCreated`, `CampaignDeleted`, etc. est renommée en `Space`, `SpaceId`, `SpaceType`, `SpaceCreated`, `SpaceDeleted`, etc. Ce renommage s'applique au domaine (quatre fichiers), au glossaire, aux diagrammes, aux use cases concernés, et à la chaîne RGPD (ADR-011/012 sont annotés au moment de la réécriture). **Ce renommage est le chantier de la session de remédiation — le présent ADR le décrit, il ne l'exécute pas.**
+**Renommage ubiquitaire** : toute occurrence de `Campaign`, `CampaignId`, `CampaignType`, `CampaignCreated`, `CampaignDeleted`, etc. est renommée en `Space`, `SpaceId`, `SpaceType`, `SpaceCreated`, `SpaceDeleted`, etc. Ce renommage s'applique au domaine (quatre fichiers), au glossaire, aux diagrammes, aux use cases concernés, et à la chaîne RGPD (ADR-011/012 sont annotés au moment de la réécriture). **Ce renommage relève d'une propagation de corpus dédiée — le présent ADR le décrit, il ne l'exécute pas.**
 
 ---
 
@@ -188,7 +187,7 @@ L'ontologie `Space + SpaceType.PERSONAL + espace personnel par défaut` est act�
 
 **Recommandation** : rendre l'espace personnel opérationnel en MVP — notamment comme zone d'atterrissage par défaut pour les documents créés sans espace explicite, y compris depuis le mode local.
 
-**Caveat — DÉCISION PRODUIT à confirmer par l'opérateur au gate** : cette recommandation redéfinit H1 (vision-produit.md §2.3 — « activation préparation » doit-elle compter le contenu de l'espace personnel ?). Elle change également l'onboarding UC-01/UC-02 : le MJ en mode local peut créer du contenu sans créer de campagne. Ce changement de posture est substantiel et doit être validé explicitement avant d'être inscrit dans les user stories.
+**Caveat — DÉCISION PRODUIT à confirmer au gate** : cette recommandation redéfinit H1 (vision-produit.md §2.3 — « activation préparation » doit-elle compter le contenu de l'espace personnel ?). Elle change également l'onboarding UC-01/UC-02 : le MJ en mode local peut créer du contenu sans créer de campagne. Ce changement de posture est substantiel et doit être validé explicitement avant d'être inscrit dans les user stories.
 
 ### Bibliothèque de réutilisation inter-espaces — POST-MVP
 
@@ -198,7 +197,7 @@ La fonctionnalité de promotion, catalogue, et instanciation inter-espaces reste
 
 ## Chaîne d'artefacts à construire ensuite
 
-La remédiation effective du corpus relève d'un **chantier de conception séparé**, coordonné avec la session de remédiation en cours. Le présent ADR la décrit ; il ne l'exécute pas.
+La mise à jour effective du corpus relève d'un travail de conception séparé. Le présent ADR la décrit ; il ne l'exécute pas.
 
 **Persona** : pas de nouveau persona. Ajout d'une facette aux personas Sonia (persona-07) et Antoine (persona-05) : « le contenu m'appartient, la campagne en organise une partie ». Thomas (persona-01) porte l'argument de possession autonome.
 
@@ -214,14 +213,14 @@ La remédiation effective du corpus relève d'un **chantier de conception sépar
 
 - **Sémantique de `Visibility` sur un espace `PERSONAL`** : `GM_ONLY` et `PLAYER_PRIVATE` n'ont pas de sens naturel sur un espace mono-membre. Valider à la modélisation si ces valeurs sont interdites à l'interface (validation applicative) ou simplement équivalentes à « visible du propriétaire uniquement ».
 - **Instanciation dans un espace `PERSONAL` vs espace partagé** : `Document.Instantiate(spaceId, folderId)` crée une copie indépendante. Préciser si une instance dans un espace partagé peut pointer vers un document source dans un espace personnel d'un autre utilisateur — et si oui, quel est le comportement à la purge de l'espace source (ADR-011 §4 — `source_document_id` cross-espace).
-- **Activation de l'espace personnel en mode local** : l'espace personnel comme zone d'atterrissage par défaut en mode local (sans `ownerId` assigné) est une recommandation — sa validation explicite est requise par l'opérateur au gate UC-01/UC-02.
+- **Activation de l'espace personnel en mode local** : l'espace personnel comme zone d'atterrissage par défaut en mode local (sans `ownerId` assigné) est une recommandation — sa validation explicite reste requise avant que `UC-01` et `UC-02` ne soient arrêtés.
 - **Qualification juridique du contenu personnel au regard de l'Art. 17** : voir section « Conformité conçue, non certifiée ».
 
 ---
 
-## Incohérences signalées — hors périmètre, pour la remédiation
+## Incohérences signalées — hors périmètre
 
-Ces incohérences de corpus sont signalées pour la session de remédiation. **Elles ne sont pas corrigées dans cet ADR.**
+Ces incohérences de corpus sont signalées pour correction ultérieure. **Elles ne sont pas corrigées dans cet ADR.**
 
 - `ScenarioLibraryEntry` porte un champ nommé `ownerId` dans campaign-management.md l.174 mais `userId` dans le glossaire l.204 — incohérence de nommage à résoudre lors de la réécriture du domaine.
 - L'attribution de la `ScenarioLibrary` à Campaign Management est à réexaminer : dans le nouveau paradigme, la bibliothèque personnelle est l'espace `PERSONAL` lui-même, dont la responsabilité relève davantage d'un nouveau contexte ou du domaine Content Library réécrit.
@@ -244,13 +243,13 @@ Les choix documentés dans cet ADR sont cohérents avec le RGPD tel que lu et in
 
 ## Compléments post-revue
 
-**Renommage engagé (2026-06-12).** La décision (Voie 3) a fait l'objet d'un chantier de propagation portant sur le corpus : domaine (4 bounded contexts + Core/shared kernel), glossaire, use cases, user-stories, user-journeys, parcours, vision / moscow / personas / NFR, ADR RGPD-autorisation-migration (ADR-009/010/011/012/013/014/016/017) et diagrammes. Le fichier `campaign-management.md` (domaine + 4 diagrammes) est renommé `space-management.md`. L'incohérence `ScenarioLibraryEntry` `ownerId`/`userId` est résolue (alignée sur `ownerId`). Ce chantier ne certifie pas à lui seul une propagation exhaustive et vérifiée sur chaque artefact du corpus — voir la Note de lecture ci-dessous pour les résidus connus.
+**Renommage engagé (2026-06-12).** La décision (Voie 3) a fait l'objet d'une propagation sur le corpus : domaine (4 bounded contexts + Core/shared kernel), glossaire, use cases, user-stories, user-journeys, parcours, vision / moscow / personas / NFR, ADR RGPD-autorisation-migration (ADR-009/010/011/012/013/014/016/017) et diagrammes. Le fichier `campaign-management.md` (domaine + 4 diagrammes) est renommé `space-management.md`. L'incohérence `ScenarioLibraryEntry` `ownerId`/`userId` est résolue (alignée sur `ownerId`). Cette propagation ne certifie pas à elle seule une couverture exhaustive et vérifiée sur chaque artefact du corpus — voir la Note de lecture ci-dessous pour les résidus connus.
 
 Décisions tranchées en cours de propagation (réversibles, à confirmer à l'entrée en build) :
 - quota FREE = espaces `CAMPAIGN`/`ONE_SHOT` (l'espace `PERSONAL` par défaut **n'est pas décompté**) ;
 - un espace `PERSONAL` est créé avec le **seul dossier virtuel « Non classés »** (les 4 dossiers système nommés restent réservés aux espaces partagés) ;
 - purge **inconditionnelle** de l'espace `PERSONAL` à `UserDeleted`, **sous le même invariant de claim/reprise** que la purge J+30 (garantie Art.17, ADR-011).
 
-> **Note de lecture** : les références de ce document à `campaign-management.md` et aux numéros de ligne reflètent l'état du corpus **au moment de la décision (2026-06-12)** ; elles ne sont pas réactualisées post-renommage. Se reporter aux fichiers `space-management.md` et au domaine courant pour l'état effectif. La session de zoning (`interface/**`, suspendue) réalignera ses propres références à sa reprise.
+> **Note de lecture** : les références de ce document à `campaign-management.md` et aux numéros de ligne reflètent l'état du corpus **au moment de la décision (2026-06-12)** ; elles ne sont pas réactualisées post-renommage. Se reporter aux fichiers `space-management.md` et au domaine courant pour l'état effectif. Le travail de zoning (`interface/**`, suspendu) réalignera ses propres références à sa reprise.
 
 **Points de validation juridique toujours ouverts** (avant lancement EU) : qualification Art.17 du hard-delete inconditionnel du contenu personnel ; périmètre DPA Art.28 pour un contenu personnel décrivant des tiers. Non tranchés ici — flaggés pour un juriste.

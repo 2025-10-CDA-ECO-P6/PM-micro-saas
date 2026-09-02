@@ -4,8 +4,6 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session de cadrage P1)
-- **Findings liés** : F-04, F-12, F-13, B1.6 (renvoi ADR-011 *Points à trancher*)
 
 ---
 
@@ -28,7 +26,7 @@ Les `GuestAccess` n'existent que dans les **espaces partagés** (types `CAMPAIGN
 
 Un joueur invité participe à un espace partagé (type `CAMPAIGN` ou `ONE_SHOT`) sans créer de compte. Son seul identifiant collecté au point d'entrée est un `display_name` saisi librement. À ce `GuestAccess` peuvent être associés : un `character_id` (personnage joué), des notes `PLAYER_PRIVATE` créées pendant la session, et des métadonnées techniques (IP de connexion, timestamps, logs d'accès).
 
-ADR-007 avait identifié la base légale et la durée de conservation des données invitées comme un item bloquant avant lancement EU (finding F-04, reclassé bloquant dans les Compléments post-revue ADR-007). ADR-011 a défini que les `guest_accesses` sont hard-deletés en passe 2 de la saga `SpaceDeleted` — mais cette purge ne suffit pas pour un espace partagé vivant de longue durée.
+ADR-007 avait identifié la base légale et la durée de conservation des données invitées comme un item bloquant avant lancement EU (F-04, reclassé bloquant dans les Compléments post-revue ADR-007). ADR-011 a défini que les `guest_accesses` sont hard-deletés en passe 2 de la saga `SpaceDeleted` — mais cette purge ne suffit pas pour un espace partagé vivant de longue durée.
 
 Deux questions restaient ouvertes :
 

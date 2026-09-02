@@ -4,8 +4,6 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (cadrage P1)
-- **Findings liés** : F-05 (IDOR), F-07 (conversion invité→User), H-06 (anti-fuite SignalR)
 
 ---
 
@@ -26,7 +24,7 @@ Cet ADR spécifie le modèle d'autorisation au niveau de la couche Application :
 
 ## Contexte
 
-ADR-007 a posé le principe : « toute requête portant sur une ressource vérifie que cette ressource appartient à un espace accessible à l'appelant ». Ce principe n'avait pas été développé en un modèle concret. Finding F-05 identifie l'IDOR (Insecure Direct Object Reference) comme risque réel dans un contexte solo : sans mécanisme centralisé, chaque handler doit individuellement vérifier l'appartenance — précisément la discipline que F-05 juge insuffisante à l'échelle.
+ADR-007 a posé le principe : « toute requête portant sur une ressource vérifie que cette ressource appartient à un espace accessible à l'appelant ». Ce principe n'avait pas été développé en un modèle concret. F-05 identifie l'IDOR (Insecure Direct Object Reference) comme risque réel dans un contexte solo : sans mécanisme centralisé, chaque handler doit individuellement vérifier l'appartenance — précisément la discipline que F-05 juge insuffisante à l'échelle.
 
 Ce constat appelle deux décisions complémentaires : (1) un modèle complet du principal et de la composition des prédicats d'accès, (2) une systématisation centralisée qui rende la vérification non contournable par discipline.
 
@@ -42,7 +40,7 @@ La couche Application répond à la question : « L'appelant a-t-il accès à l'
 **Couche Domaine — visibilité document** (hors périmètre de cet ADR)
 Le domaine répond à la question : « Ce document précis est-il *visible* pour cet appelant ? » Les règles sont encodées dans `Document.CanBeReadBy(userId, memberRole, documentType)` (Content Library — signature domaine souveraine sur sa propre forme). ADR-014 délègue la visibilité à cette méthode ; il ne la ré-exprime pas.
 
-Règles `CanBeReadBy` actées (décision opérateur, alignée Content Library) :
+Règles `CanBeReadBy` actées (décision produit, alignée Content Library) :
 - `PUBLIC` : lisible par tous les membres actifs et les invités selon leur scope.
 - `GM_ONLY` : lisible par `OWNER` et `GM` uniquement.
 - `PLAYER_PRIVATE` : lisible par l'auteur seul (`createdById` / `guest_access_id`) — `OWNER` et `GM` exclus, **pour tout type de document** (il n'y a pas d'exception par type ; la règle est uniforme).

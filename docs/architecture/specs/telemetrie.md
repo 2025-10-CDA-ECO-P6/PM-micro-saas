@@ -2,9 +2,9 @@
 
 > **Nature** : spec pré-build (approche de report fidèle au corpus). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucun nom d'outil, aucun mécanisme non explicitement acté dans le corpus n'est introduit ici.
 >
-> **Source normative** : [ADR-006 — Périmètre MVP](../decisions/ADR-006-perimetre-mvp.md), section « Compléments post-revue » (lignes 57-63). Contrainte RGPD de cohérence : [`cahier-des-charges.md` §7.4](../../context/cahier-des-charges.md#74-conformité-rgpd--protection-des-données) (ligne 808) et [NFR-CONF-02](../../conception/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md).
+> **Source normative** : [ADR-006 — Périmètre MVP](../decisions/ADR-006-perimetre-mvp.md), section « Compléments post-revue » (lignes 55-61). Contrainte RGPD de cohérence : [`cahier-des-charges.md` §7.4](../../context/cahier-des-charges.md#74-conformité-rgpd--protection-des-données) (ligne 808) et [NFR-CONF-02](../../conception/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md).
 >
-> **Lecteur visé** : l'équipe de build qui opérationnalisera l'instrumentation en entrée des jalons J1/J2/J3 (ADR-006:46), et le porteur produit qui devra trancher les points `[À TRANCHER]` avant que cette instrumentation puisse être implémentée.
+> **Lecteur visé** : l'équipe de build qui opérationnalisera l'instrumentation en entrée des jalons J1/J2/J3 (ADR-006:44), et le porteur produit qui devra trancher les points `[À TRANCHER]` avant que cette instrumentation puisse être implémentée.
 >
 > **Statut** : cadre à compléter — non implémentable en l'état, les trous nommés ci-dessous bloquent le passage en développement.
 
@@ -12,25 +12,25 @@
 
 ## 1. Pourquoi cette instrumentation existe
 
-[ADR-006](../decisions/ADR-006-perimetre-mvp.md) acte un MVP unique, sans découpage en deux temps de livraison (préparation vs vue session). Cette décision a une conséquence assumée par l'opérateur : *« L'apprentissage produit n'est pas isolé : en cas d'adoption faible du MVP, il ne sera pas possible de distinguer l'échec de la préparation de celui de la vue session. »* (ADR-006, section Conséquences, ligne 44).
+[ADR-006](../decisions/ADR-006-perimetre-mvp.md) acte un MVP unique, sans découpage en deux temps de livraison (préparation vs vue session). Cette décision a une conséquence assumée par le porteur produit : *« L'apprentissage produit n'est pas isolé : en cas d'adoption faible du MVP, il ne sera pas possible de distinguer l'échec de la préparation de celui de la vue session. »* (ADR-006, section Conséquences, ligne 42).
 
-Pour compenser cette perte de signal, la revue adversariale post-ADR ajoute une exigence dans le périmètre MVP (ADR-006:57) :
+Pour compenser cette perte de signal, la revue adversariale post-ADR ajoute une exigence dans le périmètre MVP (ADR-006:55) :
 
-> « Puisque le MVP unique ne sépare pas les hypothèses d'apprentissage, une télémétrie séparée par pilier est ajoutée dans le périmètre MVP […]. Cette instrumentation récupère l'essentiel de l'apprentissage que la décision de MVP unique assume de perdre. » (ADR-006:57,61)
+> « Puisque le MVP unique ne sépare pas les hypothèses d'apprentissage, une télémétrie séparée par pilier est ajoutée dans le périmètre MVP […]. Cette instrumentation récupère l'essentiel de l'apprentissage que la décision de MVP unique assume de perdre. » (ADR-006:55,59)
 
 Cette instrumentation n'est donc pas un ajout optionnel : elle est le mécanisme compensatoire explicitement chargé de reconstituer, après coup, ce que le découpage en deux temps de livraison aurait offert nativement.
 
 ---
 
-## 2. Les trois piliers d'activation (verbatim ADR-006:59-61)
+## 2. Les trois piliers d'activation (verbatim ADR-006:57-59)
 
 Le corpus définit exactement trois piliers, chacun avec son critère d'activation composite :
 
 | Pilier | Critère d'activation (verbatim ADR-006) |
 |---|---|
-| **Préparation** | « Activation préparation : campagne créée + N documents créés. » (ADR-006:59) |
-| **Vue session** | « Activation vue session : session ouverte + usage réel constaté. » (ADR-006:60) |
-| **Partage** | « Activation partage : document partagé + au moins 1 joueur l'ayant ouvert. » (ADR-006:61) |
+| **Préparation** | « Activation préparation : campagne créée + N documents créés. » (ADR-006:57) |
+| **Vue session** | « Activation vue session : session ouverte + usage réel constaté. » (ADR-006:58) |
+| **Partage** | « Activation partage : document partagé + au moins 1 joueur l'ayant ouvert. » (ADR-006:59) |
 
 Chaque pilier est composite : la seule création (campagne créée / session ouverte / document partagé) ne suffit pas à qualifier l'activation. Un second événement, propre au pilier, doit survenir pour que le pilier soit considéré comme « activé ». C'est cette composition à deux temps que la spec d'instrumentation ci-dessous doit capturer événement par événement.
 
@@ -46,25 +46,25 @@ Le tableau ci-dessous décompose chaque pilier en événements discrets. Les col
 |---|---|---|---|
 | Campagne créée | Point de sortie de la création de campagne (couche Application) | `[À TRANCHER — ticket]` | `space_id` (probable, non acté) — reste à confirmer |
 | N documents créés | Point de sortie de la création de document, cumulé par campagne | `[À TRANCHER — ticket]` | `space_id`, compteur de documents — reste à confirmer |
-| Seuil N | — | — | **`[À TRANCHER — ticket]` : valeur de N non fixée (ADR-006:59 ne donne aucun chiffre)** |
+| Seuil N | — | — | **`[À TRANCHER — ticket]` : valeur de N non fixée (ADR-006:57 ne donne aucun chiffre)** |
 
 ### 3.2 Pilier Vue session
 
 | Étape du critère | Point de capture | Événement (nom technique) | Propriétés |
 |---|---|---|---|
 | Session ouverte | Point d'entrée en session (couche Application ou Presentation) | `[À TRANCHER — ticket]` | `session_id`, `space_id` — reste à confirmer |
-| Usage réel constaté | — | `[À TRANCHER — ticket]` | **`[À TRANCHER — ticket]` : « usage réel constaté » n'est pas opérationnalisé dans le corpus (ADR-006:60 pose le critère sans le définir en signal observable — durée minimale ? action MJ pendant la session ? interaction joueur ? aucun de ces choix n'est tranché)** |
+| Usage réel constaté | — | `[À TRANCHER — ticket]` | **`[À TRANCHER — ticket]` : « usage réel constaté » n'est pas opérationnalisé dans le corpus (ADR-006:58 pose le critère sans le définir en signal observable — durée minimale ? action MJ pendant la session ? interaction joueur ? aucun de ces choix n'est tranché)** |
 
 ### 3.3 Pilier Partage
 
 | Étape du critère | Point de capture | Événement (nom technique) | Propriétés |
 |---|---|---|---|
-| Document partagé | Point de sortie de l'action de partage (couche Application) | `[À TRANCHER — ticket]` | `document_id`, `space_id`, visibilité de la ressource (cf. ADR-004:49) — reste à confirmer |
+| Document partagé | Point de sortie de l'action de partage (couche Application) | `[À TRANCHER — ticket]` | `document_id`, `space_id`, visibilité de la ressource (cf. ADR-004:47) — reste à confirmer |
 | ≥ 1 joueur l'ayant ouvert | Point d'ouverture du document partagé côté joueur/invité | `[À TRANCHER — ticket]` | `document_id`, identifiant de session invité (sans donnée identifiante au-delà de ce que permet NFR-CONF-02) — reste à confirmer |
 
 ### 3.4 Ce que la spec ne fixe pas
 
-- **L'outil analytics** support de la collecte n'est pas nommé dans le corpus (ADR-006:63 mentionne « analytics anonyme RGPD » sans désigner de solution). `[À TRANCHER — ticket]`
+- **L'outil analytics** support de la collecte n'est pas nommé dans le corpus (ADR-006:61 mentionne « analytics anonyme RGPD » sans désigner de solution). `[À TRANCHER — ticket]`
 - **La liste concrète des événements/propriétés** au sens d'un schéma d'événements formalisé (noms exacts, typage des propriétés) n'existe pas au-delà des trois critères d'activation ci-dessus. `[À TRANCHER — ticket]`
 - **La technique d'anonymisation RGPD** appliquée à ces événements (pseudonymisation, agrégation, durée de rétention) n'est pas définie. `[À TRANCHER — ticket]`
 
@@ -74,11 +74,11 @@ Le tableau ci-dessous décompose chaque pilier en événements discrets. Les col
 
 ADR-006 ajoute, dans le même paragraphe de compléments post-revue, une exigence distincte des trois piliers d'activation :
 
-> « Capture email non bloquante + analytics anonyme RGPD dès le mode local (aggravé par le MVP unique local-first) — dans le périmètre MVP. » (ADR-006:63)
+> « Capture email non bloquante + analytics anonyme RGPD dès le mode local (aggravé par le MVP unique local-first) — dans le périmètre MVP. » (ADR-006:61)
 
 Deux éléments à retenir fidèlement :
 
-- **Champ d'application** : « dès le mode local » — cette exigence s'applique donc avant même la création d'un compte cloud, dans le contexte du MVP unique où le mode local et le mode cloud ne sont plus séparés en deux temps de livraison (ADR-006:24-28).
+- **Champ d'application** : « dès le mode local » — cette exigence s'applique donc avant même la création d'un compte cloud, dans le contexte du MVP unique où le mode local et le mode cloud ne sont plus séparés en deux temps de livraison (ADR-006:22-26).
 - **Deux volets distincts** : une capture d'email qui doit être « non bloquante » (le MJ n'est pas empêché de progresser s'il ne fournit pas d'email), et un dispositif d'analytics qualifié d'« anonyme RGPD ».
 
 ### 4.1 Ce qui est fixé
@@ -87,8 +87,8 @@ Rien au-delà du champ d'application et de la qualification (« non bloquante »
 
 ### 4.2 Ce qui reste ouvert
 
-- **Mécanisme de capture email non bloquante** : point de sollicitation dans le parcours, comportement si le MJ refuse ou ignore, traitement de la donnée collectée. `[À TRANCHER — ticket]` (ADR-006:63)
-- **Outil et technique d'anonymisation RGPD** pour l'analytics — même trou que §3.4, seule l'exigence de résultat (« anonyme RGPD ») est actée, pas le moyen. `[À TRANCHER — ticket]` (ADR-006:63)
+- **Mécanisme de capture email non bloquante** : point de sollicitation dans le parcours, comportement si le MJ refuse ou ignore, traitement de la donnée collectée. `[À TRANCHER — ticket]` (ADR-006:61)
+- **Outil et technique d'anonymisation RGPD** pour l'analytics — même trou que §3.4, seule l'exigence de résultat (« anonyme RGPD ») est actée, pas le moyen. `[À TRANCHER — ticket]` (ADR-006:61)
 
 ---
 
@@ -110,12 +110,12 @@ Ce principe **contraint** la résolution des trous du §3 et du §4 — en parti
 
 | # | Point ouvert | Référence corpus |
 |---|---|---|
-| 1 | Valeur de N (pilier préparation) | ADR-006:59 |
-| 2 | Opérationnalisation de « usage réel constaté » (pilier vue session) | ADR-006:60 |
-| 3 | Outil analytics | ADR-006:63 |
-| 4 | Liste concrète des événements/propriétés (schéma formalisé) | ADR-006:57-63 (absent) |
-| 5 | Technique d'anonymisation RGPD | ADR-006:63 |
-| 6 | Mécanisme de capture email non bloquante | ADR-006:63 |
+| 1 | Valeur de N (pilier préparation) | ADR-006:57 |
+| 2 | Opérationnalisation de « usage réel constaté » (pilier vue session) | ADR-006:58 |
+| 3 | Outil analytics | ADR-006:61 |
+| 4 | Liste concrète des événements/propriétés (schéma formalisé) | ADR-006:55-61 (absent) |
+| 5 | Technique d'anonymisation RGPD | ADR-006:61 |
+| 6 | Mécanisme de capture email non bloquante | ADR-006:61 |
 
 Ces six points bloquent le passage de cette spec à un ticket de développement. Aucun n'est tranché dans ce document.
 
@@ -125,6 +125,6 @@ Ces six points bloquent le passage de cette spec à un ticket de développement.
 
 | Artefact | Nature du lien |
 |---|---|
-| [ADR-006 — Périmètre MVP](../decisions/ADR-006-perimetre-mvp.md) | Source normative des trois piliers et de l'exigence email/analytics (lignes 57-63) |
+| [ADR-006 — Périmètre MVP](../decisions/ADR-006-perimetre-mvp.md) | Source normative des trois piliers et de l'exigence email/analytics (lignes 55-61) |
 | [`cahier-des-charges.md` §7.4](../../context/cahier-des-charges.md#74-conformité-rgpd--protection-des-données) | Reformulation synthèse du principe « occurrence sans contenu narratif » (ligne 808) |
 | [NFR-CONF-02](../../conception/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md) | Exigence d'isolation des données en mode local ; place explicitement les « mesures d'usage anonymes » hors de sa propre portée, comme traitement distinct |

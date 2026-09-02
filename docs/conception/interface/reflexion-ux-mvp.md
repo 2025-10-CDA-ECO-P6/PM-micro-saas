@@ -209,9 +209,9 @@ Aucun écran n'est surchargé pour un persona donné. La séparation des surface
 
 ---
 
-## 7. Décisions opérateur actées
+## 7. Décisions actées
 
-Les quatre décisions suivantes ont été prises lors de cette réflexion. Elles font partie du rationale et sont à porter dans les documents amont concernés (voir §8).
+Les quatre décisions suivantes sont issues de cette réflexion. Elles font partie du rationale et sont à porter dans les documents amont concernés (voir §8).
 
 ### Décision 1 — Espace personnel : mix assumé + micro-copy neutre
 
@@ -272,23 +272,23 @@ Les résolutions ci-dessous sont portées (ou à porter) dans `zoning.md` comme 
 |---|---|
 | Export d'espace : passage de Should Have à Must Have | `vision/moscow.md` |
 
-Les résolutions de la passe 1 ont été appliquées au corpus. Les résolutions de la passe 2 (§9) sont appliquées aux wireframes et aux fiches concernées.
+Les résolutions de l'analyse initiale (§2 à §7) ont été appliquées au corpus. Les résolutions complémentaires (§9) sont appliquées aux wireframes et aux fiches concernées.
 
 ---
 
-## 9. Passe 2 — re-audit post-remaniement (2026-06-25)
+## 9. Alignement wireframes ↔ corpus (2026-06-25)
 
-### Contexte de la passe
+### Contexte
 
-Les 20 wireframes ont été remaniés et co-localisés selon la structure `<surface>/<slug>/`. Les 3 écrans manquants identifiés en passe 1 — `vue-session-mj`, `creation-espace`, `panneau-creation-rapide` — ont été produits. La vérité terrain mécanique est saine : identité par contenu, support.js, liens index.html et autonomie des planches vérifiés.
+Les 20 wireframes sont réorganisés et co-localisés selon la structure `<surface>/<slug>/`. Les 3 écrans qui restaient à produire — `vue-session-mj`, `creation-espace`, `panneau-creation-rapide` — le sont désormais. La vérité terrain mécanique est saine : identité par contenu, support.js, liens index.html et autonomie des planches vérifiés.
 
-Le mode de défaut dominant détecté dans cette passe n'est pas mécanique. C'est un **décalage corpus ↔ planche** : plusieurs arbitrages datés du 2026-06-25 (AR-18, AR-19, AR-20, AR-10 révisé) et décisions opérateur n'étaient pas redescendus dans le HTML des wireframes. C'est sur ce périmètre que les 4 lentilles ont été rejouées.
+Le mode de défaut dominant n'est pas mécanique. C'est un **décalage corpus ↔ planche** : plusieurs arbitrages datés du 2026-06-25 (AR-18, AR-19, AR-20, AR-10 révisé) et décisions produit n'étaient pas redescendus dans le HTML des wireframes. Les 4 lentilles d'analyse (§1) s'appliquent ci-dessous à ce décalage.
 
-### Ce qui a changé depuis la passe 1
+### Évolutions par rapport à l'analyse initiale (§3, §4)
 
-La passe 1 avait posé le socle (châssis, frontière MJ/joueur, reprise session, principes de densité, lien d'invitation). Elle avait aussi identifié trois faiblesses à corriger et trois écrans à alléger. La passe 2 constate que :
+L'analyse initiale (§3, §4) a posé le socle (châssis, frontière MJ/joueur, reprise session, principes de densité, lien d'invitation), et identifié trois faiblesses à corriger ainsi que trois écrans à alléger. État constaté :
 
-- Les **trois faiblesses de passe 1 sont résolues** (voir lentille 1).
+- Les **trois faiblesses identifiées en §3 sont résolues** (voir Lentille 1).
 - Les **principes de densité** (lentille 2, AR-19) n'étaient pas redescendus dans les planches — ils le sont désormais.
 - Deux **régressions ponctuelles** ont été détectées et corrigées : règle d'éviction absente de la planche vue-session-mj, export marqué « post-MVP » alors que la décision §7.3 le place au MVP.
 - Un **défaut de fond** a été identifié et tranché sur `panneau-creation-rapide` (confusion de deux épinglages — voir lentille 4).
@@ -296,9 +296,9 @@ La passe 1 avait posé le socle (châssis, frontière MJ/joueur, reprise session
 
 ### Lentille 1 — Architecture de l'information & navigation
 
-**Socle confirmé sain.** Les trois forces identifiées en passe 1 sont toutes rendues : châssis mode local (RB-01 à RB-14 présent sur toutes les surfaces MJ sans exception), frontière MJ/joueur étanche bout-en-bout (AR-03, NFR-CONF-01), reprise session doublement câblée (AR-09 — tableau de bord + vue campagne).
+**Socle confirmé sain.** Les trois forces identifiées en §3 sont toutes rendues : châssis mode local (RB-01 à RB-14 présent sur toutes les surfaces MJ sans exception), frontière MJ/joueur étanche bout-en-bout (AR-03, NFR-CONF-01), reprise session doublement câblée (AR-09 — tableau de bord + vue campagne).
 
-**Faiblesses résiduelles résolues dans cette passe.**
+**Faiblesses résiduelles, désormais résolues.**
 
 *(a) Configuration vue session — AR-18.* La configuration de vue session était rendue autonome dans `parametres-campagne` au lieu d'un renvoi vers la surface session. Corrigé conformément à AR-18 : `parametres-campagne` propose un renvoi + récapitulatif lecture seule ; la configuration effective s'effectue dans la surface session.
 
@@ -308,7 +308,7 @@ La passe 1 avait posé le socle (châssis, frontière MJ/joueur, reprise session
 
 ### Lentille 2 — Questions de design
 
-**Gate-migration — granularité de sélection.** La granularité de sélection est rendue par espace (case à cocher par espace), conformément à la fiche alignée lors de cette passe. La granularité **globale** (sélection d'un lot unique vs plusieurs lots) est **tranchée : lot unique** (cf. Décisions opérateur actées, point 5 — décision opérateur 2026-07-09).
+**Gate-migration — granularité de sélection.** La granularité de sélection est rendue par espace (case à cocher par espace), conformément à la fiche désormais alignée. La granularité **globale** (sélection d'un lot unique vs plusieurs lots) est **tranchée : lot unique** (cf. Décisions actées — alignement wireframes, point 5 — décision produit du 2026-07-09).
 
 ### Lentille 3 — Charge informationnelle (grille AR-19)
 
@@ -346,26 +346,26 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 | 5 | `editeur-document`, `editeur-scenario` (laptop) | Backlinks repliés par défaut | AR-19c | Résolu |
 | 6 | `parametres-campagne` | Export rétabli actif au MVP (section dédiée, non proéminente) | Décision §7.3 | Résolu |
 | 7 | `vue-espace-personnel` | Micro-copy rendue comme micro-label discret sous le titre | §2 (micro-copy neutre) + §76 corpus (pas de paragraphe d'accueil) | Résolu |
-| 8 | `gate-migration` | Granularité par espace (case par espace) ; fiche alignée | Décision opérateur passe 2 (4) | Résolu |
+| 8 | `gate-migration` | Granularité par espace (case par espace) ; fiche alignée | Décisions actées — alignement wireframes, point 4 | Résolu |
 | 9 | `panneau-creation-rapide` | Épinglage création possible LIVE et CLOSED (confusion UC-08 A3 corrigée) | UC-07, session-conduct Règle 7, PinDocument | Résolu |
 | 10 | `vue-session-mj`, `creation-espace`, `panneau-creation-rapide` | Trois écrans manquants produits | Périmètre MVP | Résolu |
 | 11 | `vue-session-mj` | Plancher garanti (statut, partage, notes, recherche) co-présent | AR-19 volet a | Résolu |
 | 12 | Co-localisation générale | 20 wireframes co-localisés `<surface>/<slug>/` ; vérité terrain mécanique saine | Périmètre remaniement | Résolu |
-| 13 | `surface-joueur` + UC-09 A2 | Création de compte depuis surface joueur = **état contextualisé** (préserve contexte invité/notes ; migration sans perte). Non un simple formulaire d'inscription générique. Réalisation d'écran = HAND-OFF présentation. | UC-09 A2 | Résolu |
+| 13 | `surface-joueur` + UC-09 A2 | Création de compte depuis surface joueur = **état contextualisé** (préserve contexte invité/notes ; migration sans perte). Non un simple formulaire d'inscription générique. Réalisation d'écran = relève de la couche interface. | UC-09 A2 | Résolu |
 
-### Points ouverts après passe 2
+### Points ouverts restants
 
 | Point ouvert | Nature | Où résoudre |
 |---|---|---|
 | Tension épinglage conditionnel (UC-07) vs systématique (session-conduct Règle 7) | ✓ Résolu (UC-07 amendé) | UC-07 fait autorité : épinglage automatique par défaut en session LIVE (désépinglage d'un geste), manuel et optionnel en session CLOSED |
-| Granularité globale gate-migration (sélection lot unique vs plusieurs lots) | ✓ Résolu (décision opérateur 2026-07-09) | Décisions opérateur actées — lot unique |
+| Granularité globale gate-migration (sélection lot unique vs plusieurs lots) | ✓ Résolu (décision produit du 2026-07-09) | Décisions actées — alignement wireframes — lot unique |
 | Vue « Non classés » dédiée | Point de présentation ouvert | Décision de wireframe |
 | Famille C zoning §S9 — présentation espace personnel | Trou de corpus / interview | Non forcée (famille C) |
 
-### Décisions opérateur actées dans cette passe
+### Décisions actées — alignement wireframes
 
 1. **Périmètre** : documenter les décalages corpus ↔ planche et corriger ; pas de nouvel arbitrage AR.
 2. **AR-18** : renvoi + récapitulatif lecture seule dans `parametres-campagne`.
 3. **Micro-copy** : micro-label discret sous le titre (réconciliation fiche / §76 corpus).
 4. **Gate-migration** : granularité par espace (case par espace) ; fiche alignée.
-5. **Gate-migration — granularité globale (décision opérateur 2026-07-09)** : **lot unique**. Tous les espaces éligibles migrent en un seul passage (une confirmation unique ; les espaces éligibles cochés par défaut, décochables individuellement). Périmètre : granularité **globale** seulement — le tout-ou-rien **par espace** (déjà acté, inchangé) reste en place. Justification : le contrat serveur (ADR-016 §3.1) est indifférent à la granularité globale ; l'option A privilégie la simplicité du récit d'onboarding. L'exclusion ponctuelle d'un espace n'est pas promue comme parcours de reprise nominal — elle relève du chemin d'échec/reprise E5 d'UC-10.
+5. **Gate-migration — granularité globale (décision produit du 2026-07-09)** : **lot unique**. Tous les espaces éligibles migrent en un seul passage (une confirmation unique ; les espaces éligibles cochés par défaut, décochables individuellement). Périmètre : granularité **globale** seulement — le tout-ou-rien **par espace** (déjà acté, inchangé) reste en place. Justification : le contrat serveur (ADR-016 §3.1) est indifférent à la granularité globale ; l'option A privilégie la simplicité du récit d'onboarding. L'exclusion ponctuelle d'un espace n'est pas promue comme parcours de reprise nominal — elle relève du chemin d'échec/reprise E5 d'UC-10.

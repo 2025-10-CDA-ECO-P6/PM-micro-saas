@@ -220,9 +220,9 @@ du tier FREE (voir ci-dessous). Tout document créé sans espace explicite y att
   sur UC-13 et reste hors première livraison.
 
 **Signal d'élargissement Must Have** : l'introduction de l'espace personnel étend le périmètre
-Must Have au-delà des dix use cases initiaux. L'opérateur a tranché : comportement opérationnel
-en MVP. Ce point a été arbitré explicitement (ADR-018 — recommandation « capture-first »,
-validation session 2026-06-12).
+Must Have au-delà des dix use cases initiaux. Ce point est tranché : comportement opérationnel
+en MVP. Il a été arbitré explicitement (ADR-018 — recommandation « capture-first »,
+décision du 2026-06-12).
 
 **Critère de sortie** : un MJ en mode local peut créer et retrouver un document sans avoir
 créé d'espace `CAMPAIGN` ou `ONE_SHOT`. L'espace personnel est provisonné automatiquement.
@@ -245,7 +245,7 @@ personnel est une propriété permanente du compte, non une fonctionnalité soum
 
 ### Export d'espace (Must Have — version minimale)
 
-**Pourquoi Must Have** (promu de Should Have par décision opérateur du 2026-06-25) :
+**Pourquoi Must Have** (promu de Should Have par décision produit du 2026-06-25) :
 l'export matérialise le différenciant n°1 de la vision — la possession des données, qui doit être
 actionnable et non simplement affirmée. Sans export accessible, la promesse de possession des données
 reste une déclaration sans preuve. L'export répond aussi à la douleur de confiance de Thomas (crainte

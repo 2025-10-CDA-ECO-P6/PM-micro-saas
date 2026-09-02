@@ -14,16 +14,7 @@
 | Authentification | ASP.NET Identity |
 | Architecture | Monolithe modulaire, DDD, Clean Architecture |
 
-**Structure de la solution :**
-```
-Haversack.SharedKernel
-Haversack.Domain
-Haversack.Application
-Haversack.Infrastructure.Persistence
-Haversack.Infrastructure.Notifications
-Haversack.Api
-```
-> [Détail complet de la structure des projets](structure-projets.md)
+**Structure de la solution** : voir [structure-projets.md](structure-projets.md), source de vérité de la granularité des projets .NET — Domaine et Application en projets uniques (les bounded contexts et le noyau partagé y sont des namespaces internes, pas des assemblies séparées), Infrastructure et Présentation en multi-projets.
 
 ---
 
@@ -170,7 +161,7 @@ Pour un Micro-SaaS avec un seul développeur en phase MVP, un monolithe modulair
 | Mobile / Desktop installable | PWA (`@angular/pwa`) | Oui (identique) | Quasi nul |
 | Desktop natif Win/Linux/macOS | Tauri | Oui (webview) | Faible |
 | iOS / Android stores | Capacitor | Oui (webview) | Modéré |
-| .NET natif multi-plateforme | MAUI (projet `Presentation.Maui`) | Non | Élevé |
+| .NET natif multi-plateforme | MAUI (projet `Haversack.Presentation.Maui`) | Non | Élevé |
 
 **Extraction de contextes** — l'isolation au niveau code est la précondition à extraire un Bounded Context en microservice indépendant sans réécriture majeure.
 

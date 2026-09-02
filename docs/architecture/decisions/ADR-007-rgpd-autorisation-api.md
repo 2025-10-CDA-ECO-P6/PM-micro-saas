@@ -4,14 +4,12 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
-- **Findings liés** : F-03, F-04, F-05, F-12, C-10, F-02, F-06, F-10, F-11
 
 ---
 
 ## Contexte
 
-L'audit a relevé plusieurs lacunes dans deux domaines distincts mais liés.
+Plusieurs lacunes affectaient deux domaines distincts mais liés.
 
 **RGPD.** Le droit à l'effacement était repoussé post-MVP sans procédure documentée. Les données des joueurs sans compte (GuestAccess) n'étaient pas couvertes par une base légale explicite. La question de l'âge minimal (Art. 8 RGPD) n'était pas adressée.
 
@@ -35,7 +33,7 @@ Toute requête portant sur une ressource vérifie que cette ressource appartient
 ## Alternatives considérées
 
 **Effacement RGPD post-MVP avec procédure manuelle + lancement restreint géographiquement.**
-Écartée. L'opérateur veut un lancement public EU dès le MVP. Un lancement public en Union Européenne sans procédure d'effacement documentée et fonctionnelle expose l'éditeur à des obligations réglementaires non couvertes.
+Écartée : un lancement public EU dès le MVP est requis. Un lancement public en Union Européenne sans procédure d'effacement documentée et fonctionnelle expose l'éditeur à des obligations réglementaires non couvertes.
 
 **Âge minimal 13 ans avec consentement parental (Art. 8 RGPD option membre).**
 Écartée. Le mécanisme de consentement parental vérifiable est complexe à implémenter de manière conforme et à maintenir. La limite à 16 ans est plus stricte et évite ce mécanisme.

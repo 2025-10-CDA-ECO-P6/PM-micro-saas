@@ -2,7 +2,7 @@
 
 > ## ⚠ BROUILLON — NON VALIDÉ JURIDIQUEMENT
 >
-> Ce document est un **projet de mentions légales**, obligation d'information prévue par le droit français pour tout service en ligne. Il n'est **pas opposable** en l'état. La grande majorité des informations attendues ici (identité de l'éditeur, structure juridique, hébergeur) ne sont **pas encore arrêtées** dans le corpus de conception d'Haversack — le produit n'est pas encore développé et l'entité éditrice n'est pas encore constituée ou documentée. Chaque rubrique manquante est marquée `[À COMPLÉTER — ...]` plutôt que remplie par une valeur inventée. Ce document est directement exploitable par l'opérateur pour être complété dès que ces informations existent, puis doit être revu par un professionnel du droit avant publication.
+> Ce document est un **projet de mentions légales**, obligation d'information prévue par le droit français pour tout service en ligne. Il n'est **pas opposable** en l'état. La grande majorité des informations attendues ici (identité de l'éditeur, structure juridique, hébergeur) ne sont **pas encore arrêtées** dans le corpus de conception d'Haversack — le produit n'est pas encore développé et l'entité éditrice n'est pas encore constituée ou documentée. Chaque rubrique manquante est marquée `[À COMPLÉTER — ...]` plutôt que remplie par une valeur inventée. Ce document est directement exploitable pour être complété dès que ces informations existent, puis doit être revu par un professionnel du droit avant publication.
 
 - **Statut** : Brouillon — à compléter puis à valider juriste
 - **Document lié** : [`cgu.md`](./cgu.md), [`politique-confidentialite.md`](./politique-confidentialite.md)

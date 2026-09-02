@@ -4,8 +4,6 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
-- **Findings liés** : CR-3, A-01, A-02
 - **Reformalisation de** : décision antérieure connue sous « CRIT-04 » / « ADR-12 » (fichier supprimé lors des remises à zéro)
 
 ---

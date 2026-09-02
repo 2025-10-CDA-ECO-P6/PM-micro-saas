@@ -183,7 +183,7 @@ Forme de prose du même référent qu'`Espace partagé` : un `Espace` de type `C
 
 Rôle dans un espace de jeu partagé (campagne ou one-shot). Dans le modèle de domaine, le MJ est le membre avec le rôle `OWNER` ou `GM` dans l'espace. Ce rôle est contextuel : un même `User` peut être MJ dans un espace et Joueur dans un autre. Le terme « MJ » est employé dans les UC et US comme raccourci de la combinaison `OWNER | GM`.
 
-> **Résolution** : MJ est le rôle orienté-jeu des espaces **partagés** (`CAMPAIGN`/`ONE_SHOT`), où des joueurs existent — raccourci de `OWNER`|`GM`. Sur un espace `PERSONAL` mono-membre (sans joueurs), l'acteur est le **propriétaire** (`MemberRole.OWNER`), **pas** un « MJ ». Le même humain est *propriétaire* de son espace `PERSONAL` et devient *MJ* lorsqu'il anime un espace de jeu.
+> **Résolution** : MJ est le rôle orienté-jeu des espaces **partagés** (`CAMPAIGN`/`ONE_SHOT`), où des joueurs existent — raccourci de `OWNER`|`GM`. Sur un espace `PERSONAL` mono-membre (sans joueurs), l'acteur est le **propriétaire** (`MemberRole.OWNER`), **pas** un « MJ ». La même personne est *propriétaire* de son espace `PERSONAL` et devient *MJ* lorsqu'il anime un espace de jeu.
 
 - Voir aussi : `MemberRole`.
 
@@ -339,7 +339,7 @@ Dossiers créés automatiquement à `SpaceCreated`, selon le type d'espace :
 
 Capacité permettant au MJ d'exporter l'ensemble d'un espace — documents, notes, structure de dossiers — dans un format ouvert, lisible et réutilisable hors de l'application. Couvre tout type d'espace : campagne, one-shot ou personnel. Disponible en mode local comme avec un compte. Matérialise la promesse de possession des données : la possession n'est actionnable que si elle est exportable.
 
-- Priorité : **Must Have** (version minimale — promu de Should Have par décision opérateur du
+- Priorité : **Must Have** (version minimale — promu de Should Have par décision produit du
   2026-06-25 — voir `vision/moscow.md` §« Export d'espace (Must Have — version minimale) » et
   `vision/vision-produit.md` §5bis « Possession des données »).
 - Distinct de la migration locale→cloud (qui importe des données vers un compte) : l'export produit un fichier autonome indépendant du compte.

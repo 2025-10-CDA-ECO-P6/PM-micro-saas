@@ -53,7 +53,7 @@ Intention : au moment de la création de compte depuis le mode local, l'utilisat
              par défaut) est un choix de maquette — le corpus ne prescrit que
              le tout-ou-rien par espace, pas la modalité de sélection ;
              la granularité globale de la migration est « lot unique »
-             (décision opérateur 2026-07-09 — tous les espaces éligibles
+             (décision produit du 2026-07-09 — tous les espaces éligibles
              migrent en un seul passage, confirmation unique) ; l'exclusion
              ponctuelle d'un espace n'est pas un parcours nominal — elle
              relève du chemin d'échec/reprise E5 ;

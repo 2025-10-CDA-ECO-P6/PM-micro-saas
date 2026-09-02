@@ -2,8 +2,6 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
-- **Findings liés** : CR-6, E-01, E-02, D-03, A-09
 
 > **Nature : décision produit — fusionnée** — la substance de cette décision a été fusionnée dans la couche vision (`docs/conception/besoin/vision/moscow.md` et `vision-produit.md`) le 2026-06-10. Ce document est une trace historique ; le raisonnement et les alternatives écartées restent lisibles ici.
 
@@ -11,7 +9,7 @@
 
 ## Contexte
 
-L'audit a identifié que le tier Gratuit précédent offrait la quasi-totalité de la valeur perçue du produit (cloud sync, partage joueurs, multi-device, jusqu'à 3 campagnes), laissant le tier Pro sans différenciateur réel. La « value metric » retenue (nombre de campagnes) ne croît pas avec la valeur perçue : la majorité des MJ actifs ne dépassent pas 3 campagnes simultanées, rendant la conversion Pro structurellement proche de zéro.
+Le tier Gratuit précédent offrait la quasi-totalité de la valeur perçue du produit (cloud sync, partage joueurs, multi-device, jusqu'à 3 campagnes), laissant le tier Pro sans différenciateur réel. La « value metric » retenue (nombre de campagnes) ne croît pas avec la valeur perçue : la majorité des MJ actifs ne dépassent pas 3 campagnes simultanées, rendant la conversion Pro structurellement proche de zéro.
 
 ---
 
@@ -49,7 +47,7 @@ L'audit a identifié que le tier Gratuit précédent offrait la quasi-totalité 
 
 Suite à une revue critique postérieure à cette décision, celle-ci est complétée comme suit, sans changer sa direction.
 
-- **Levier Pro révisé (arbitrage opérateur).** Le tier Pro donne accès à : campagnes illimitées + multi-device + stockage étendu. Le levier « table plus large » est retiré : aucune persona ne demande davantage de joueurs, les tables sont fixes entre 3 et 6 participants — ce levier était mort.
+- **Levier Pro révisé (arbitrage produit).** Le tier Pro donne accès à : campagnes illimitées + multi-device + stockage étendu. Le levier « table plus large » est retiré : aucune persona ne demande davantage de joueurs, les tables sont fixes entre 3 et 6 participants — ce levier était mort.
 
 - **A-09 à trancher avant l'entrée en construction.** Décider si la limite « 4 joueurs/session » pour le tier FREE existe. Si oui, l'inscrire dans la table de monétisation de la vision produit. Si non, la retirer des invariants de domaine. Ce point ne peut pas rester non tranché au démarrage du build. *[A-09 résolu : la limite « 4 joueurs/session » FREE existe et est inscrite (vision §3, CdC §12.4, invariant 11 de `space-management.md` réaligné, RB-09-21 fait foi pour la sémantique de comptage).]*
 

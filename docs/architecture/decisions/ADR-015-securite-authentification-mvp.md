@@ -2,16 +2,14 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-10
-- **Décideur** : opérateur (cadrage P1 — findings reclassés bloquants MVP par ADR-007 §Compléments)
-- **Findings liés** : F-02 (CWE-521), F-06 (CWE-307), F-10 (CWE-613/294/347), F-11 (CWE-287)
 
-> **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03, audit conception pure 2026-06.)*
+> **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03.)*
 
 ---
 
 ## Périmètre de cet ADR
 
-Cet ADR couvre les quatre findings sécurité reclassés bloquants-MVP par ADR-007 §Compléments : politique de mot de passe, cycle de vie des tokens JWT, rate limiting des endpoints d'auth, et sécurisation de la liaison OAuth. Ces décisions s'appliquent au **mode cloud uniquement** : ADR-001 acte que le mode local n'a aucune authentification — pas de compte, pas de JWT, pas de mot de passe côté navigateur.
+Cet ADR couvre quatre points de sécurité reclassés bloquants-MVP par ADR-007 §Compléments : politique de mot de passe, cycle de vie des tokens JWT, rate limiting des endpoints d'auth, et sécurisation de la liaison OAuth. Ces décisions s'appliquent au **mode cloud uniquement** : ADR-001 acte que le mode local n'a aucune authentification — pas de compte, pas de JWT, pas de mot de passe côté navigateur.
 
 Contrairement aux ADR de la flotte RGPD (ADR-007, ADR-012, ADR-013), cet ADR ne définit pas de nouvelles politiques de fond : les seuils ont été actés dans ADR-007 §Compléments. Il formalise ces seuils, précise les mécanismes de raccordement qui manquaient, et pose les contrats applicatifs observables nécessaires au test d'archi CI.
 
@@ -26,11 +24,11 @@ Contrairement aux ADR de la flotte RGPD (ADR-007, ADR-012, ADR-013), cet ADR ne 
 
 ## Contexte
 
-ADR-007 §Compléments (2026-06-09) a reclassé les findings F-02, F-06, F-10, F-11, jusque-là classés en J2 sans être bloquants, en bloquants-MVP, sans définir les mécanismes précis. Ces quatre findings forment un ensemble cohérent : ils couvrent toutes les surfaces d'attaque de la couche d'authentification (credentials, tokens, accès OAuth, énumération).
+ADR-007 §Compléments (2026-06-09) a reclassé F-02, F-06, F-10 et F-11, jusque-là classés en J2 sans être bloquants, en bloquants-MVP, sans définir les mécanismes précis. Ces quatre points forment un ensemble cohérent : ils couvrent toutes les surfaces d'attaque de la couche d'authentification (credentials, tokens, accès OAuth, énumération).
 
 **F-02** (CWE-521) identifie l'absence de toute politique de mot de passe : aucune longueur minimale, aucune règle de hachage documentée, validation email absente de facto.
 
-**F-06** (CWE-307) identifie l'absence de rate limiting sur l'endpoint de validation de token GuestAccess. L'audit se limitait à cet endpoint, mais le risque s'étend à tous les endpoints d'auth (login, refresh, reset de mot de passe).
+**F-06** (CWE-307) identifie l'absence de rate limiting sur l'endpoint de validation de token GuestAccess. Ce périmètre initial se limitait à cet endpoint, mais le risque s'étend à tous les endpoints d'auth (login, refresh, reset de mot de passe).
 
 **F-10** (CWE-613/294/347) identifie des tokens de durée indéfinie et l'absence de mécanisme de révocation : un `AccountSuspended` n'a pas de prise sur un token existant. Une fenêtre d'exploitation longue durée et un accès résiduel post-effacement RGPD sont les conséquences directes.
 
@@ -68,7 +66,7 @@ La vérification du mot de passe contre une liste de mots de passe compromis (AP
 
 #### 1.4 Mot de passe complémentaire sur compte fédéré (compte hybride)
 
-> **Note** : CWE-620 (voir ci-dessous) n'a pas de finding F-xx d'origine dans l'audit — cette section est une décision PROACTIVE, au même titre que §4.3 (CWE-640), motivée par la décision opérateur (5) autorisant le mot de passe complémentaire sur compte fédéré.
+> **Note** : CWE-620 (voir ci-dessous) ne fait pas partie des quatre points cités en §Périmètre (F-02/F-06/F-10/F-11) — cette section est une décision PROACTIVE, au même titre que §4.3 (CWE-640), motivée par la décision produit (5) autorisant le mot de passe complémentaire sur compte fédéré.
 
 Un compte créé et authentifié uniquement via un fournisseur fédéré (Google, Discord — §2.2) peut définir un **mot de passe complémentaire**, devenant ainsi un compte **hybride** (authentifiable par le fournisseur fédéré OU par email/mot de passe). Ce mécanisme est une mesure **préventive** : il permet d'anticiper un verrouillage permanent du compte (lockout) si l'accès au fournisseur d'identité venait à être perdu ultérieurement (compte fournisseur suspendu, supprimé, ou temporairement inaccessible).
 
@@ -137,7 +135,7 @@ Le rejet silencieux ci-dessus répond à « la liaison automatique est-elle auto
 - *Email synthétique* (sur le modèle `deleted-{id}@haversack.invalid`, ADR-007 §Compléments) — ce motif répond à un effacement terminal (compte mort, email libéré) ; une coquille reprise par reclaim reste une identité **vivante**, l'usage d'un email synthétique est inadapté ici.
 - *Suppression ou déplacement de la coquille* (cascade `UserDeleted`, ADR-012) — écartée comme résolution par défaut : cette cascade est dimensionnée pour un effacement RGPD délibéré, pas pour un conflit d'email au moment d'une connexion OAuth. Conservée uniquement comme repli (*fallback*) si le reclaim-in-place s'avère techniquement impossible en build.
 
-**Statut** : `[À TRANCHER — à ratifier opérateur]`. Résolution de posture sécurité issue de l'audit sécurité et de la revue d'architecture, **non encore validée par l'opérateur** — même registre de traçabilité que le §Résidu CWE-204 ci-dessous, sans en partager le statut : celui-ci est déjà tranché, celui-ci reste à ratifier.
+**Statut** : `[À TRANCHER — PRODUIT]`. Résolution de posture sécurité, **non encore validée** — même registre de traçabilité que le §Résidu CWE-204 ci-dessous, sans en partager le statut : celui-ci est déjà tranché, celui-ci reste à ratifier.
 
 **Routage.**
 - **Facette RGPD** (sort du contenu éventuel — notes, documents — rattaché à la coquille non vérifiée évincée par le reclaim) : hors périmètre sécurité de cet ADR → **cadrage juridique interne**.
@@ -245,7 +243,7 @@ L'implémentation utilise le middleware `RateLimiter` d'ASP.NET Core (disponible
 
 En complément du rate limiting, les tokens de reset de mot de passe respectent les contraintes suivantes.
 
-> **Note** : CWE-640 n'a pas de finding F-xx d'origine dans l'audit — cette section est une décision PROACTIVE au-delà des quatre findings listés dans le header (F-02/F-06/F-10/F-11). Elle est incluse ici pour clore un vecteur d'attaque adjacent au périmètre audité.
+> **Note** : CWE-640 ne fait pas partie des quatre points cités en §Périmètre (F-02/F-06/F-10/F-11) — cette section est une décision PROACTIVE. Elle est incluse ici pour clore un vecteur d'attaque adjacent au périmètre couvert par cet ADR.
 
 - **TTL court** : durée de validité ≤ 15 min (borne dure normative) ; valeur exacte à fixer en B1.5 dans la plage 10–15 min.
 - **Usage unique** : un token de reset est invalidé après son premier usage, qu'il ait abouti ou non.
@@ -328,12 +326,12 @@ Le §1.4 amende la portée de RB-10-10 : la réinitialisation d'un mot de passe 
 | Fraîcheur maximale et déclenchement exact de la ré-authentification IdP (§1.4, CWE-620) | Configuration — à fixer en implémentation | B1.5 |
 | ~~Mise à jour du texte de RB-10-10 dans US-UC-10 (distinction réinitialisation N/A / premier mot de passe autorisé)~~ | Cohérence documentaire | **Résolu — US-UC-10 amendée** |
 | Récupération post-perte d'accès IdP (flux *account-recovery* pour compte fédéré-only ayant perdu l'accès IdP sans mot de passe complémentaire déjà défini — §1.4) | Fonctionnelle — flux distinct de la mesure préventive du mot de passe complémentaire | hors MVP |
-| Reclaim-in-place (§2.3) — opération de domaine dédiée (bascule `emailVerified`, neutralisation credential préexistant, liaison fédérée) | Fonctionnelle — complète §2.3, résolution `[À TRANCHER — à ratifier opérateur]` | B1.5 |
+| Reclaim-in-place (§2.3) — opération de domaine dédiée (bascule `emailVerified`, neutralisation credential préexistant, liaison fédérée) | Fonctionnelle — complète §2.3, résolution `[À TRANCHER — PRODUIT]` | B1.5 |
 | Reclaim-in-place (§2.3) — facette RGPD (sort du contenu éventuel de la coquille non vérifiée évincée) | RGPD | cadrage juridique interne |
 
-### Résidu CWE-204 — Énumération de comptes (décision opérateur tracée)
+### Résidu CWE-204 — Énumération de comptes (décision produit tracée)
 
-Le message explicite d'inscription « adresse déjà associée à un compte » (US-UC-10 E1 — scénario E1 de US-10-01) est **conservé par choix produit** : il améliore l'UX en orientant l'utilisateur vers la connexion ou la réinitialisation de mot de passe. Ce choix crée un résidu d'énumération de comptes (CWE-204) : un observateur peut confirmer l'existence d'un email dans le système via ce message. Ce résidu est accepté et mitigé par le rate limiting (§4.1 — double dimension par-IP et par-compte) qui borne le volume d'énumération possible. Décision d'opérateur tracée, pas un oubli.
+Le message explicite d'inscription « adresse déjà associée à un compte » (US-UC-10 E1 — scénario E1 de US-10-01) est **conservé par choix produit** : il améliore l'UX en orientant l'utilisateur vers la connexion ou la réinitialisation de mot de passe. Ce choix crée un résidu d'énumération de comptes (CWE-204) : un observateur peut confirmer l'existence d'un email dans le système via ce message. Ce résidu est accepté et mitigé par le rate limiting (§4.1 — double dimension par-IP et par-compte) qui borne le volume d'énumération possible. Décision produit tracée, pas un oubli.
 
 ### Conformité conçue, non certifiée
 
@@ -352,7 +350,7 @@ La fiabilité du claim d'email vérifié exposé par chaque fournisseur retenu (
 - ~~**ADR-012 §Conséquences** — Renvoi de cohérence : ajouter la révocation des tokens actifs (`ITokenDenylist.RevokeFamilyAsync`) comme étape de la saga `UserAnonymized`.~~ *(Résolu — ADR-012 §Conséquences contient déjà ce câblage.)*
 - ~~**US-UC-10 §RB-10-10** — Renvoi de cohérence : mettre à jour le texte de RB-10-10 pour distinguer réinitialisation d'un mot de passe inexistant (N/A, inchangé) et définition d'un premier mot de passe sur compte fédéré (autorisée, §1.4).~~ *(Résolu — US-UC-10 §RB-10-10 porte désormais cette distinction.)*
 - **Ajout futur d'un fournisseur OAuth à email de relais/non canonique** (ex. Apple Hide My Email) — imposerait de revisiter la règle de liaison par email (RB-10-08, §2.2). Dette nommée, non déclenchée par le périmètre MVP.
-- **[À TRANCHER — à ratifier opérateur]** — Résolution du cas « email OAuth = compte préexistant non vérifié » (§2.3, *reclaim-in-place*) : reprise de la coquille non vérifiée par la preuve IdP (bascule `emailVerified` + neutralisation du credential préexistant + liaison fédérée) plutôt que création d'un doublon — le doublon n'est pas implémentable (invariant 1, email unique). Alternatives écartées : refus non-silencieux (réouvre CWE-204), email synthétique (motif ADR-007, inadapté à une identité vivante), suppression/déplacement de la coquille (cascade `UserDeleted` surdimensionnée, repli seulement). Facette RGPD → cadrage juridique interne ; opération de domaine dédiée → B1.5.
+- **[À TRANCHER — PRODUIT]** — Résolution du cas « email OAuth = compte préexistant non vérifié » (§2.3, *reclaim-in-place*) : reprise de la coquille non vérifiée par la preuve IdP (bascule `emailVerified` + neutralisation du credential préexistant + liaison fédérée) plutôt que création d'un doublon — le doublon n'est pas implémentable (invariant 1, email unique). Alternatives écartées : refus non-silencieux (réouvre CWE-204), email synthétique (motif ADR-007, inadapté à une identité vivante), suppression/déplacement de la coquille (cascade `UserDeleted` surdimensionnée, repli seulement). Facette RGPD → cadrage juridique interne ; opération de domaine dédiée → B1.5.
 
 ---
 
@@ -378,7 +376,7 @@ La fiabilité du claim d'email vérifié exposé par chaque fournisseur retenu (
 
 ## Annexe — Esquisses pré-implémentation *(hors corps décisionnel)*
 
-Les esquisses suivantes sont extraites du corps décisionnel conformément au finding CP-03 de l'audit conception (2026-06). Elles illustrent les décisions d'architecture, à confirmer à l'entrée en build. Elles ne font pas autorité sur le besoin — elles sont des illustrations pré-implémentation.
+Les esquisses suivantes sont extraites du corps décisionnel : elles illustrent les décisions d'architecture, à confirmer à l'entrée en build. Elles ne font pas autorité sur le besoin — elles sont des illustrations pré-implémentation.
 
 ### Bloc 1 — §1.1 Configuration `PasswordOptions`
 

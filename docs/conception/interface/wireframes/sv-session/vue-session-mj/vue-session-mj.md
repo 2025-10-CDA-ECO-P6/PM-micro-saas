@@ -473,5 +473,5 @@ Fonctions disponibles localement (non désactivées) :
   [SOUS-SPÉCIFIÉ — S9 §Persistance des notes invité inter-sessions] la mécanique
     de récupération des notes personnelles joueur d'un invité via un nouveau lien
     est évoquée dans UC-06 §Règles métier mais non entièrement spécifiée —
-    relève de remédiation corpus
+    trou de corpus
 ```

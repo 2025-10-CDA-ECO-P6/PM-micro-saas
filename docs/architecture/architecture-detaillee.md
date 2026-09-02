@@ -14,7 +14,7 @@ La structure du système (Clean Architecture, découpage en bounded contexts DDD
 
 ## 2 — Persistance & mapping
 
-La persistance serveur repose sur EF Core. Les conventions de mapping (converters d'Id typés, owned types, query filters globaux) sont un livrable de conception rattaché à la structure des projets .NET et à la couche `Infrastructure.Persistence` — voir [structure-projets.md §3](structure-projets.md) et [ADR-008 § Conséquences](decisions/ADR-008-structure-solution.md), qui identifie ce mapping comme point de conception à part entière.
+La persistance serveur repose sur EF Core. Les conventions de mapping (converters d'Id typés, owned types, query filters globaux) sont un livrable de conception rattaché à la structure des projets .NET et à la couche `Haversack.Infrastructure.Persistence` — voir [structure-projets.md §3](structure-projets.md) et [ADR-008 § Conséquences](decisions/ADR-008-structure-solution.md), qui identifie ce mapping comme point de conception à part entière.
 
 Côté navigateur, le mode local persiste dans un store IndexedDB structuré en aggregate-rooted (racine `Space`, plutôt qu'un miroir relationnel des tables serveur), avec un jeu d'index restreint aux chemins de lecture effectivement requis et un versionnement de store découplé du contrat de sérialisation. Ce modèle est spécifié dans [ADR-017](decisions/ADR-017-modele-indexeddb-local.md), qui s'articule avec le contrat de sérialisation défini dans [ADR-016](decisions/ADR-016-serialisation-locale-migration.md).
 
@@ -38,7 +38,7 @@ La politique RGPD de l'effacement de compte (Art. 17) — catégorisation des do
 
 ## 5 — Temps réel
 
-Le transport temps réel (partage MJ → joueurs) retient SignalR dès le départ, avec repli automatique (WebSocket → Server-Sent Events → long-polling) et isolation dans le module `Infrastructure.Notifications`. Le choix, les alternatives écartées (polling, différé post-MVP) et les compléments de configuration (configuration sobre, sécurité du canal invité, filtrage par visibilité de ressource) sont actés dans [ADR-004](decisions/ADR-004-transport-temps-reel.md).
+Le transport temps réel (partage MJ → joueurs) retient SignalR dès le départ, avec repli automatique (WebSocket → Server-Sent Events → long-polling) et isolation dans le module `Haversack.Infrastructure.Notifications`. Le choix, les alternatives écartées (polling, différé post-MVP) et les compléments de configuration (configuration sobre, sécurité du canal invité, filtrage par visibilité de ressource) sont actés dans [ADR-004](decisions/ADR-004-transport-temps-reel.md).
 
 ---
 

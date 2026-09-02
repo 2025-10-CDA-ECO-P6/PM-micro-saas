@@ -179,7 +179,7 @@ Les quarante-cinq contre-mesures documentées dans le corpus sont regroupées ci
 | 13 | Confiance accordée par fournisseur, conditionnée à la déclaration de vérification d'email (`email_verified` Google, `verified` Discord) et à la correspondance canonique | S2 / Spoofing | ADR-015 §2.2 |
 | 14 | Preuve d'identité alternative (ré-authentification récente auprès du fournisseur d'identité) exigée pour la définition d'un premier mot de passe sur un compte fédéré uniquement | S2 / Elevation of Privilege | ADR-015 §1.4 ; `docs/conception/domain/identity-access.md` (règle métier n°6) |
 | 15 | Rejet silencieux d'une liaison déjà existante, sans révélation d'existence | S2 / Information disclosure | ADR-015 §2.3 ; `contrat-openapi.md` §6 |
-| 16 | Mécanisme de reprise en place (« reclaim-in-place ») : bascule de l'indicateur de vérification d'email et neutralisation obligatoire du mot de passe préexistant avant liaison fédérée — **statut `[À TRANCHER — à ratifier opérateur]`, non acquis** | S2 / Elevation of Privilege | ADR-015 §2.3 |
+| 16 | Mécanisme de reprise en place (« reclaim-in-place ») : bascule de l'indicateur de vérification d'email et neutralisation obligatoire du mot de passe préexistant avant liaison fédérée — **statut `[À TRANCHER — à ratifier produit]`, non acquis** | S2 / Elevation of Privilege | ADR-015 §2.3 |
 
 ### 4.3 Autorisation API et anti-fuite par visibilité (surfaces S3, S4)
 
@@ -272,10 +272,10 @@ La topologie scale-out multi-instances actée par ADR-004 (§Compléments post-r
 
 ### 5.2 Postures non ratifiées et arbitrages assumés
 
-- **Reprise en place (« reclaim-in-place »)** — mécanisme proposé pour résoudre le cas d'une liaison OAuth sur un compte préexistant non vérifié. **Statut : `[À TRANCHER — à ratifier opérateur]`. Ce mécanisme n'est pas une mesure acquise** tant qu'il n'a pas été ratifié. Ancre : ADR-015 §2.3.
-- **Résidu d'énumération d'email (CWE-204)** — le message d'erreur « adresse déjà associée » constitue un résidu d'énumération assumé. Il s'agit d'une décision opérateur tracée, **acceptée** et mitigée par la limitation de débit — ce n'est pas un point ouvert mais un arbitrage clos. Ancre : ADR-015 §Résidu CWE-204.
+- **Reprise en place (« reclaim-in-place »)** — mécanisme proposé pour résoudre le cas d'une liaison OAuth sur un compte préexistant non vérifié. **Statut : `[À TRANCHER — à ratifier produit]`. Ce mécanisme n'est pas une mesure acquise** tant qu'il n'a pas été ratifié. Ancre : ADR-015 §2.3.
+- **Résidu d'énumération d'email (CWE-204)** — le message d'erreur « adresse déjà associée » constitue un résidu d'énumération assumé. Il s'agit d'une décision produit tracée, **acceptée** et mitigée par la limitation de débit — ce n'est pas un point ouvert mais un arbitrage clos. Ancre : ADR-015 §Résidu CWE-204.
 
-### 5.3 Gates humains hors CI — validations juridiques préalables au lancement dans l'Union européenne
+### 5.3 Contrôles non vérifiables en CI — validations juridiques préalables au lancement dans l'Union européenne
 
 Cinq axes de validation juridique conditionnent le lancement dans l'Union européenne. Ces validations ne sont, par nature, pas vérifiables par un dispositif d'intégration continue.
 
@@ -299,7 +299,7 @@ Les éléments suivants sont des **limites structurelles nommées**, non des det
 | Octroi ou refus de `navigator.storage.persist()` et éviction réelle d'IndexedDB par le navigateur | Comportement navigateur réel | ADR-017 §3.3 ; `sanitisation-csp.md` §6 |
 | Migration IndexedDB multi-versions en navigateur réel | Comportement navigateur réel (test de bout en bout) | ADR-016 §Maillon ; `sanitisation-csp.md` §6 |
 | Coût et repli réels du canal temps réel sous charge | Charge réelle | `repli-temps-reel.md` §4 |
-| Les cinq axes de validation juridique | Jugement humain, hors CI par nature | `cadrage-validation-pre-lancement-eu.md` §Gate humain hors CI |
+| Les cinq axes de validation juridique | Non vérifiable en CI par nature | `cadrage-validation-pre-lancement-eu.md` §Non vérifiable en CI |
 
 ### 5.5 Lacunes signalées
 
@@ -307,7 +307,7 @@ Cette sous-section distingue deux natures de lacunes STRIDE : l'une nommée comm
 
 **L1 — Notification de violation de données (articles 33 et 34 du RGPD).** Le corpus nomme lui-même ce sujet comme point ouvert : aucune procédure de notification de violation n'est encore arrêtée. Ancre : `dpa-skeleton.md §4(f)`.
 
-**L2 — Journalisation d'audit de sécurité à visée positive (catégorie STRIDE-Repudiation).** *Observation* : le corpus n'aborde les journaux d'événements que sous l'angle de leur purge (ADR-012 §5) ; aucune contre-mesure positive de traçabilité des événements de sécurité n'est spécifiée par ailleurs. **Le corpus ne pose pas cette question — aucune posture n'est actée sur ce point.** Cette observation est à confirmer par l'opérateur avant l'ouverture d'un ticket ; elle n'est ni un `[À TRANCHER]` du corpus, ni une exigence de ce dossier.
+**L2 — Journalisation d'audit de sécurité à visée positive (catégorie STRIDE-Repudiation).** *Observation* : le corpus n'aborde les journaux d'événements que sous l'angle de leur purge (ADR-012 §5) ; aucune contre-mesure positive de traçabilité des événements de sécurité n'est spécifiée par ailleurs. **Le corpus ne pose pas cette question — aucune posture n'est actée sur ce point.** Cette observation est à confirmer par le responsable produit avant l'ouverture d'un ticket ; elle n'est ni un `[À TRANCHER]` du corpus, ni une exigence de ce dossier.
 
 ---
 
@@ -331,4 +331,4 @@ Trois précisions ferment ce document :
 
 1. Les valeurs numériques figurant en annexe des décisions sources (paramètres Argon2id « 64 Mio / 3 itérations », seuils de limitation de débit « par-IP : 20 tentatives/min ; par-compte : 10 tentatives/min », durée de réservation de purge « 1 heure ») sont **illustratives dans leurs documents d'origine** et n'ont pas été reprises comme valeurs retenues dans ce dossier. Seule la borne normative décidée est reproduite (par exemple : jeton d'accès ≤ 15 minutes) ; la valeur numérique fine reste renvoyée à son ticket d'implémentation (section 5.1).
 2. Le mécanisme de reprise en place (« reclaim-in-place ») est présenté partout dans ce dossier avec son statut **non ratifié** ; il ne doit pas être lu comme une mesure acquise.
-3. Les lacunes signalées en section 5.5 ne sont pas des mesures acquises : L1 est un point ouvert que le corpus nomme lui-même ; L2 est une observation formulée à partir d'une absence de traitement, non une décision du corpus, et reste à confirmer par l'opérateur avant toute ouverture de ticket.
+3. Les lacunes signalées en section 5.5 ne sont pas des mesures acquises : L1 est un point ouvert que le corpus nomme lui-même ; L2 est une observation formulée à partir d'une absence de traitement, non une décision du corpus, et reste à confirmer par le responsable produit avant toute ouverture de ticket.

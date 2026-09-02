@@ -206,8 +206,8 @@ Affordances de partage et d'épinglage :
     n'est pas décidée pour le MVP — angle d'interview (US-06 §Questions ouvertes)
   [SOUS-SPÉCIFIÉ — S9 §Persistance des notes invité inter-sessions sans compte]
     la mécanique de récupération des notes PLAYER_PRIVATE d'un invité via un nouveau
-    lien vers le même personnage n'est pas entièrement spécifiée — relève de
-    remédiation corpus
+    lien vers le même personnage n'est pas entièrement spécifiée — trou
+    de corpus
   [SOUS-SPÉCIFIÉ — UC-12 §Questions à valider en interview] le personnage actif
     doit-il être mémorisé entre sessions ou remis à zéro à chaque connexion —
     point d'interview

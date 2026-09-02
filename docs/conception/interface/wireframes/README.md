@@ -2,9 +2,9 @@
 
 > Index complet des 20 écrans du MVP. Chaque écran a son **dossier** (`<slug>/`) regroupant
 > sa fiche de spécification `.md` et son wireframe HTML basse-fidélité (`<slug>.dc.html`).
-> Périmètre : ensemble des surfaces MVP (zoning complet — décision opérateur du 2026-06-12).
+> Périmètre : ensemble des surfaces MVP (zoning complet — décision produit du 2026-06-12).
 > Statut : 20 fiches déposées ; **20 wireframes HTML co-localisés (20/20)**.
-> Passe de corrections UI/UX **D1..D13** appliquée le 2026-07-02 (épinglage création vs partage,
+> Corrections UI/UX intégrées le 2026-07-02 (épinglage création vs partage,
 > aperçu non modifiable des paramètres, lien de session ponctuel en vue session, règle de densité AR-19,
 > export MVP, accès compte = composant de châssis sur toute surface MJ, sélection par espace au gate,
 > micro-copy espace personnel, liens/backlinks repliés, règle « Non classés » unifiée).

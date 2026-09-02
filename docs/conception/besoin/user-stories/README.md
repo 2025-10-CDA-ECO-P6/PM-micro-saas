@@ -98,7 +98,7 @@ flowchart LR
 |---|---|
 | Mode local = point d'entrée (pas d'inscription obligatoire) | UC-01 Must Have, UC-10 Must Have (le partage joueurs exige un compte — voir MoSCoW) |
 | Migration locale vers cloud avec gate de reconnaissance | US-01-05, US-10-01 |
-| Aucun plafond de création en **mode local** — seule la capacité de stockage du navigateur limite la création (arbitrage opérateur ; `RB-01-03` retirée, `RB-02-11` retirée) ; cap 3 espaces `CAMPAIGN`/`ONE_SHOT` en **cloud tier gratuit** uniquement (règle stable — RB-02-10, espace personnel exclu) | [US-01](US-UC-01-mode-local-sans-compte.md) / RB-01-03 (retirée) ; [US-02](US-UC-02-creer-espace-jeu.md) / RB-02-10 (cloud, en vigueur) et RB-02-11 (retirée) |
+| Aucun plafond de création en **mode local** — seule la capacité de stockage du navigateur limite la création (arbitrage produit ; `RB-01-03` retirée, `RB-02-11` retirée) ; cap 3 espaces `CAMPAIGN`/`ONE_SHOT` en **cloud tier gratuit** uniquement (règle stable — RB-02-10, espace personnel exclu) | [US-01](US-UC-01-mode-local-sans-compte.md) / RB-01-03 (retirée) ; [US-02](US-UC-02-creer-espace-jeu.md) / RB-02-10 (cloud, en vigueur) et RB-02-11 (retirée) |
 | Archivage uniquement manuel (pas d'auto-archivage) | UC-02, UC-13 A3 |
 | Tout est Document (bibliothèque de contenu) | Architecture transversale |
 | Type REVEAL pour partage scène vers joueurs | US-03-04, UC-08 |

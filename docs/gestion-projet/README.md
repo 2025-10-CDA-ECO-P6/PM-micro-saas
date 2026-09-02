@@ -20,7 +20,7 @@
 
 Ce dossier porte deux documents nommés « roadmap », à ne pas confondre :
 
-- [roadmap-entree-build.md](roadmap-entree-build.md) ordonnance la séquence technique du build (jalons J0 → J3, gates go/no-go), à destination de l'équipe de build et de l'opérateur.
+- [roadmap-entree-build.md](roadmap-entree-build.md) ordonnance la séquence technique du build (jalons J0 → J3, points de décision go/no-go), à destination de l'équipe de build et du responsable produit.
 - [roadmap-produit.md](roadmap-produit.md) décrit la trajectoire de valeur du produit, palier après palier, à destination d'une communication externe (investisseurs, partenaires, parties prenantes non techniques) ; elle ne porte pas de calendrier d'exécution.
 
 ## Guide de conventions — vocation de sortie du repo documentaire

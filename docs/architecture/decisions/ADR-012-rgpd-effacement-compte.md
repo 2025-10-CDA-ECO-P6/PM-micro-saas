@@ -2,8 +2,6 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session de cadrage P1)
-- **Findings liés** : F-03, F-08, B1.4 (renvoi ADR-011 *Points à trancher*)
 
 > *Annotation du 2026-06-12 — ADR-018 : ajout de la catégorie contenu d'espace `PERSONAL` (hard-delete inconditionnel) ; override du défaut de conservation pour les espaces partagés.*
 

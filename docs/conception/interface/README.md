@@ -22,7 +22,7 @@ La sous-couche interface est en aval. Elle traduit le besoin en descriptions de 
 
 | Fichier | Rôle | Statut |
 |---|---|---|
-| [`zoning.md`](zoning.md) | Ossature de navigation, inventaire des écrans (S4), couverture UC (S5), 21 arbitrages AR-01..AR-21 (S6), châssis applicatif (S7), exclusions (S8), trous de corpus (S9) | Produit — source de vérité des décisions d'interface |
+| [`zoning.md`](zoning.md) | Ossature de navigation, inventaire des écrans (S4), couverture UC (S5), arbitrages d'ossature (S6), châssis applicatif (S7), exclusions (S8), trous de corpus (S9) | Produit — source de vérité des décisions d'interface |
 | [`conventions-wireframe.md`](conventions-wireframe.md) | Conventions de notation et de nommage pour les fiches d'écran : deux registres (domaine / région d'interface), légende de 10 familles de marqueurs | Produit |
 | [`gabarit-ecran.md`](gabarit-ecran.md) | Structure de toute fiche de description d'écran basse-fidélité + exemple-pilote sur la vue session MJ | Produit |
 | [`reflexion-ux-mvp.md`](reflexion-ux-mvp.md) | Rationale de conception d'interface : 4 lentilles d'analyse appliquées à l'ensemble des écrans du MVP (liste propriétaire : [`wireframes/README.md`](wireframes/README.md)), points ouverts et décisions actées | Produit |
@@ -56,6 +56,6 @@ Logo, charte graphique (couleurs, typographie, grille) et ressources d'interface
 
 ## Ce que ce dossier ne fait pas
 
-- Il ne re-prescrit pas les arbitrages AR-01..AR-21 — il les référence.
+- Il ne re-prescrit pas les arbitrages d'ossature — il les référence.
 - Il n'invente pas de règles métier — celles-ci viennent des use cases.
 - Il ne contient aucun asset d'identité visuelle final (logo, charte graphique, ressources d'interface) — ceux-ci relèvent d'une phase de design postérieure à la conception.

@@ -24,7 +24,7 @@ pour une première découverte, ou aller directement au fichier pertinent.
 
 | Document | Contenu |
 |---|---|
-| [../gestion-projet/roadmap-entree-build.md](../gestion-projet/roadmap-entree-build.md) | Roadmap d'ordonnancement du build (jalons J0→J3, gates marché/juriste) — **distinct de l'architecture** : explique le *quand* et le *dans quel ordre construire*, pas le *comment c'est construit* |
+| [../gestion-projet/roadmap-entree-build.md](../gestion-projet/roadmap-entree-build.md) | Roadmap d'ordonnancement du build (jalons J0→J3, décision marché et validation juridique EU) — **distinct de l'architecture** : explique le *quand* et le *dans quel ordre construire*, pas le *comment c'est construit* |
 
 ---
 

@@ -23,7 +23,7 @@ Ce document ne tranche aucune décision nouvelle et n'introduit aucune donnée n
 6. [Organisation & gouvernance](#6-organisation--gouvernance)
 7. [Hypothèses de validation](#7-hypothèses-de-validation)
 8. [Critères de succès](#8-critères-de-succès)
-9. [Gates go/no-go](#9-gates-gono-go)
+9. [Points de décision go/no-go](#9-points-de-décision-gono-go)
 10. [Éléments à compléter](#10-éléments-à-compléter)
 11. [Documents de référence](#11-documents-de-référence)
 
@@ -77,9 +77,9 @@ Le détail complet des arbitrages de périmètre — critères de sortie, risque
 | **Maître du Jeu (MJ)** | Utilisateur principal — seul habilité à créer du contenu, administrer un espace et partager une information avec les joueurs. Compte optionnel. Porte l'intégralité de la charge de préparation et est le décideur d'achat. |
 | **Joueur** | Accède à une campagne sur invitation du MJ. Compte optionnel — accès possible en mode invité via un lien de session. |
 | **Joueur invité** | Accès temporaire par lien, sans compte, limité à la durée de la session (fenêtre de grâce de 24h). Peut convertir son accès en accès membre permanent à tout moment. |
-| **Opérateur / porteur du projet** | Pierre-Marie Marchio — validateur, décideur des arbitrages de périmètre et des gates go/no-go. |
+| **Porteur du projet** | Pierre-Marie Marchio — validateur, décideur des arbitrages de périmètre et des points de décision go/no-go. |
 | **Équipe de build** | Solo ou équipe restreinte ; le contexte solo est pris en compte dans le dispositif qualité (le test d'architecture en intégration continue remplace la discipline de revue de code). |
-| **Juriste / conformité EU** | Instance du gate juridique préalable au lancement commercial en Europe (voir [section 9](#9-gates-gono-go)). |
+| **Juriste / conformité EU** | Instance de la validation juridique préalable au lancement commercial en Europe (voir [section 9](#9-points-de-décision-gono-go)). |
 | **Partenaires techniques** | Fournisseurs d'identité externes retenus pour le MVP : Google et Discord. |
 | **Audiences externes** | Investisseurs, partenaires, parties prenantes non techniques. |
 
@@ -106,15 +106,15 @@ L'ordre interne privilégie le socle métier avant toute projection technique (d
 
 En miroir de l'axe technique, la trajectoire produit se décompose en paliers de valeur : le **socle** (livré en un bloc unique et indivisible) → un **jalon de validation** (décision go/no-go) → l'**approfondissement du cœur** (renforcement de l'existant) → des **extensions déclenchées par signal** (priorité conditionnée à un usage réel observé) → une **vision long terme** (horizon produit).
 
-### 5.3 Gates intercalés
+### 5.3 Points de décision intercalés
 
-Deux gates humains s'intercalent dans la séquence technique — détaillés en [section 9](#9-gates-gono-go) :
-- le **GATE MARCHÉ**, positionné entre J1 et J2 ;
-- le **GATE JURISTE EU**, positionné avant le lancement commercial (il n'ordonnance pas le build de J3, instructible en parallèle).
+Deux points de décision s'intercalent dans la séquence technique — détaillés en [section 9](#9-points-de-décision-gono-go) :
+- la **DÉCISION MARCHÉ**, positionnée entre J1 et J2 ;
+- la **VALIDATION JURIDIQUE EU**, positionnée avant le lancement commercial (elle n'ordonnance pas le build de J3, instructible en parallèle).
 
 ### 5.4 Point résolu — double référent du symbole « J1 »
 
-Le corpus portait une incohérence apparente : le symbole « J1 » avait deux référents distincts selon la source. La décision d'architecture actant le périmètre du MVP nomme J1 le jalon **local-only** (le jalon décrit en 5.1 ci-dessus). Une autre décision d'architecture, portant sur la conformité RGPD et le modèle d'autorisation, mentionnait dans sa rédaction d'origine un « jalon J1 » assorti d'un repère de jalon numéroté distinct (nomenclature aujourd'hui retirée du corpus), associé à une préoccupation **cloud**. **Ratifié par l'opérateur le 2026-09-01** ([`roadmap-entree-build.md` §5](roadmap-entree-build.md)) : J1 = local-only, conformément à l'usage le plus densément documenté dans le corpus ; l'ADR source a été clarifié en conséquence (son invariant est intégré aux contrats Application avant J1, son application effective relevant de J2).
+Le corpus portait une incohérence apparente : le symbole « J1 » avait deux référents distincts selon la source. La décision d'architecture actant le périmètre du MVP nomme J1 le jalon **local-only** (le jalon décrit en 5.1 ci-dessus). Une autre décision d'architecture, portant sur la conformité RGPD et le modèle d'autorisation, mentionnait dans sa rédaction d'origine un « jalon J1 » assorti d'un repère de jalon numéroté distinct (nomenclature aujourd'hui retirée du corpus), associé à une préoccupation **cloud**. **Ratifié en décision produit le 2026-09-01** ([`roadmap-entree-build.md` §5](roadmap-entree-build.md)) : J1 = local-only, conformément à l'usage le plus densément documenté dans le corpus ; l'ADR source a été clarifié en conséquence (son invariant est intégré aux contrats Application avant J1, son application effective relevant de J2).
 
 ### 5.5 Absence de dates calendaires
 
@@ -122,19 +122,19 @@ Le corpus qualifie explicitement ce phasage d'**indicatif et non figé** : ni l'
 
 ## 6. Organisation & gouvernance
 
-**Instances de décision.** Deux gates go/no-go structurent la gouvernance de la trajectoire (détail en [section 9](#9-gates-gono-go)) : le GATE MARCHÉ (décision de l'opérateur sur la télémétrie du jalon J1) et le GATE JURISTE EU (avis d'un juriste sur cinq axes RGPD).
+**Instances de décision.** Deux points de décision go/no-go structurent la gouvernance de la trajectoire (détail en [section 9](#9-points-de-décision-gono-go)) : la DÉCISION MARCHÉ (décision produit sur la télémétrie du jalon J1) et la VALIDATION JURIDIQUE EU (avis d'un juriste sur cinq axes RGPD).
 
 **Point de décision produit.** Le jalon de validation (5.2) constitue un go/no-go conditionnant l'engagement des paliers de valeur suivants : un résultat positif ouvre l'approfondissement du cœur, un résultat partiel ou négatif oriente vers la consolidation.
 
-**Autorité de validation.** L'opérateur valide les arbitrages de périmètre et de gate. Le volet d'architecture technique, acté en conception, est re-confirmé formellement à l'entrée en build.
+**Autorité de validation.** Le porteur du projet valide les arbitrages de périmètre et de point de décision. Le volet d'architecture technique, acté en conception, est re-confirmé formellement à l'entrée en build.
 
 **Corps de décisions d'architecture.** Dix-huit décisions d'architecture (ADR) sont actées en conception pour le MVP, indexées dans le corpus de conception. Leur confirmation formelle à l'entrée en build (jalon J0) reste un acte à venir, portant sur les huit ADR de nature pré-implémentation ou mixte (structure de solution, stack front, transport temps réel, cascade RGPD, sécurité de l'authentification, sérialisation locale/migration, modèle IndexedDB, généralisation de l'espace) — voir `docs/gestion-projet/roadmap-entree-build.md` §3.1.
 
-**Principaux risques.** Le corpus porte, sans qu'un registre dédié ne soit ici dupliqué, quatre risques de gouvernance déjà identifiés : l'hypothèse H2 comme risque produit existentiel (si la valeur de la vue de session n'est pas confirmée, la proposition de valeur globale est invalidée) ; le segment one-shot/convention délibérément non servi en première livraison, avec condition de retour tracée ; le GATE JURISTE EU, bloquant pour le lancement commercial en Europe ; et l'économie du produit non chiffrée à ce stade (valeurs volatiles). Le registre complet — quatre axes, matrice de criticité, vue par hypothèse et par gate — fait foi dans `docs/gestion-projet/registre-risques.md`.
+**Principaux risques.** Le corpus porte, sans qu'un registre dédié ne soit ici dupliqué, quatre risques de gouvernance déjà identifiés : l'hypothèse H2 comme risque produit existentiel (si la valeur de la vue de session n'est pas confirmée, la proposition de valeur globale est invalidée) ; le segment one-shot/convention délibérément non servi en première livraison, avec condition de retour tracée ; la VALIDATION JURIDIQUE EU, bloquante pour le lancement commercial en Europe ; et l'économie du produit non chiffrée à ce stade (valeurs volatiles). Le registre complet — quatre axes, matrice de criticité, vue par hypothèse et par point de décision — fait foi dans `docs/gestion-projet/registre-risques.md`.
 
 **Dispositif qualité.** Le contexte d'équipe solo ou restreinte est pris en compte explicitement : un test d'architecture en intégration continue est érigé en garde-fou structurel, remplaçant la discipline de revue de code jugée insuffisante dans ce contexte.
 
-**Mécanisme de gouvernance des points ouverts.** Les points non tranchés du corpus sont portés par des marqueurs explicites (`[À TRANCHER]`, `[À RATIFIER — opérateur]`) plutôt que résolus par défaut ou masqués.
+**Mécanisme de gouvernance des points ouverts.** Les points non tranchés du corpus sont portés par des marqueurs explicites (`[À TRANCHER]`, `[À RATIFIER — produit]`) plutôt que résolus par défaut ou masqués.
 
 **Règle d'autorité documentaire.** Le corpus de conception fait foi sur tout document dérivé (dont le cahier des charges) ; les artefacts de planification (roadmaps) ordonnancent un périmètre déjà arrêté, sans détenir d'autorité de corpus propre. En cas de conflit de lecture, la source citée prime.
 
@@ -144,11 +144,11 @@ Le corpus qualifie explicitement ce phasage d'**indicatif et non figé** : ni l'
 
 Le MVP doit démontrer cinq hypothèses (H1 à H5) auprès d'une cohorte pilote d'utilisateurs réels (early adopters recrutés). Chaque hypothèse est assortie d'un seuil chiffré et d'un délai d'observation, constituant un critère de décision objectif — un seuil non atteint impose un constat explicite (réussite partielle, échec de pilier, hypothèse invalidée), jamais une réinterprétation a posteriori.
 
-**H2 est l'hypothèse centrale du produit** : elle porte sur la valeur réelle de la vue de session en pleine partie ; si elle n'est pas confirmée, la proposition de valeur du produit dans son ensemble est invalidée. H1 à H4 forment les piliers croisés par le GATE MARCHÉ (voir [section 9](#9-gates-gono-go)). H5, distincte des quatre premières, porte spécifiquement sur la conversion et alimente le lien avec le modèle économique.
+**H2 est l'hypothèse centrale du produit** : elle porte sur la valeur réelle de la vue de session en pleine partie ; si elle n'est pas confirmée, la proposition de valeur du produit dans son ensemble est invalidée. H1 à H4 forment les piliers croisés par la DÉCISION MARCHÉ (voir [section 9](#9-points-de-décision-gono-go)). H5, distincte des quatre premières, porte spécifiquement sur la conversion et alimente le lien avec le modèle économique.
 
 | # | Hypothèse | Seuil chiffré | Délai |
 |---|---|---|---|
-| **H1** | Un MJ crée un espace structuré et retrouve ses informations sans friction d'onboarding. | ≥ 60 % de la cohorte pilote atteignent l'activation préparation. *Nuance (décision opérateur du 2026-07-09) : le contenu d'un espace personnel sans campagne n'est comptabilisé que **partiellement** s'il traduit un geste structurant ; seuil exact `[À TRANCHER — métrique produit]`.* | 14 jours après le premier usage |
+| **H1** | Un MJ crée un espace structuré et retrouve ses informations sans friction d'onboarding. | ≥ 60 % de la cohorte pilote atteignent l'activation préparation. *Nuance (décision produit du 2026-07-09) : le contenu d'un espace personnel sans campagne n'est comptabilisé que **partiellement** s'il traduit un geste structurant ; seuil exact `[À TRANCHER — métrique produit]`.* | 14 jours après le premier usage |
 | **H2 (centrale)** | La vue de session apporte une valeur réelle pendant une partie. | ≥ 50 % des MJ ayant atteint l'activation préparation atteignent l'activation vue session ; répétabilité si ≥ 50 % l'utilisent sur ≥ 2 sessions. | 30 jours (première activation) / 60 jours (répétabilité) |
 | **H3** | Le partage aux joueurs est perçu comme plus fluide que les solutions actuelles. | ≥ 40 % des MJ ayant animé une session avec joueurs atteignent l'activation partage ; ≥ 3 MJ sur 5 interrogés confirment en entretien. | 60 jours |
 | **H4** | L'accès joueur sans compte n'est pas un frein à l'adoption du groupe entier. | ≥ 70 % des sessions partagées comptent au moins un joueur ayant consulté le contenu ; moins de 2 joueurs sur 10 interrogés rapportent avoir renoncé. | 60 jours |
@@ -170,30 +170,30 @@ Seuils et délais indiqués au 2026-07-02 ; valeurs volatiles, ajustables avant 
 
 Les critères produit (hypothèses de validation, section 7) et les critères techniques (jalons de build, section 5) restent de nature distincte : les premiers conditionnent une décision d'investissement produit, les seconds une progression technique vérifiable en intégration continue ou par revue.
 
-## 9. Gates go/no-go
+## 9. Points de décision go/no-go
 
-| Gate | Nature | Ce qu'il conditionne | Critère de décision |
+| Point de décision | Nature | Ce qu'il conditionne | Critère de décision |
 |---|---|---|---|
-| **GATE MARCHÉ** | Décision d'opérateur, non automatisable | Positionné entre J1 et J2 ; conditionne l'engagement du build cloud + temps réel (J2/J3) | Télémétrie du jalon J1 (activations des trois piliers) croisée avec les hypothèses H1 à H4. Les seuils de décision du gate lui-même restent `[À TRANCHER]`. |
-| **GATE JURISTE EU** | Avis juridique, non automatisable | Bloque le **lancement commercial en Europe**, pas le build technique de J3 (instructible en parallèle) | Statut binaire sur cinq axes RGPD : qualification service destiné aux mineurs, posture sous-traitance / DPA, mise en balance de l'intérêt légitime et conservation, droit à l'effacement de l'espace personnel, facette RGPD de la ré-appropriation de compte en place. |
-| **Jalon de validation produit** | Décision d'opérateur sur les hypothèses H1-H5 | Conditionne l'engagement de l'approfondissement du cœur produit et des paliers suivants | Résultat positif, partiel ou négatif sur les cinq hypothèses de validation (section 7) |
-| **Gates techniques cumulatifs** | Vérifiables en intégration continue ou par revue | Préalables bloquants entre jalons de build successifs | J0 stabilisé avant J1 ; stockage persistant et invariant d'autorisation câblés avant J1 ; J1 stable **et** GATE MARCHÉ = go avant J2 ; J2 achevé avant J3 |
+| **DÉCISION MARCHÉ** | Décision produit, non automatisable | Positionnée entre J1 et J2 ; conditionne l'engagement du build cloud + temps réel (J2/J3) | Télémétrie du jalon J1 (activations des trois piliers) croisée avec les hypothèses H1 à H4. Les seuils de décision de la décision marché elle-même restent `[À TRANCHER]`. |
+| **VALIDATION JURIDIQUE EU** | Avis juridique, non automatisable | Bloque le **lancement commercial en Europe**, pas le build technique de J3 (instructible en parallèle) | Statut binaire sur cinq axes RGPD : qualification service destiné aux mineurs, posture sous-traitance / DPA, mise en balance de l'intérêt légitime et conservation, droit à l'effacement de l'espace personnel, facette RGPD de la ré-appropriation de compte en place. |
+| **Jalon de validation produit** | Décision produit sur les hypothèses H1-H5 | Conditionne l'engagement de l'approfondissement du cœur produit et des paliers suivants | Résultat positif, partiel ou négatif sur les cinq hypothèses de validation (section 7) |
+| **Gates techniques cumulatifs** | Vérifiables en intégration continue ou par revue | Préalables bloquants entre jalons de build successifs | J0 stabilisé avant J1 ; stockage persistant et invariant d'autorisation câblés avant J1 ; J1 stable **et** DÉCISION MARCHÉ = go avant J2 ; J2 achevé avant J3 |
 
-Le GATE MARCHÉ et le GATE JURISTE EU se distinguent structurellement des gates techniques : ils dépendent d'une décision humaine (télémétrie interprétée par l'opérateur, avis d'un juriste) et ne peuvent être tranchés par aucun test automatisé, linter ou build.
+La DÉCISION MARCHÉ et la VALIDATION JURIDIQUE EU se distinguent structurellement des gates techniques : l'une dépend d'une télémétrie interprétée par le porteur du projet, l'autre d'un avis juriste, et ni l'une ni l'autre ne peuvent être tranchées par un test automatisé, un linter ou un build.
 
 ## 10. Éléments à compléter
 
 Les éléments suivants sont absents du corpus de conception, de planification ou de business actuel et ne sont donc pas renseignés dans cette note :
 
-- `[À COMPLÉTER — opérateur]` Budget et coûts d'infrastructure, seuil de rentabilité (break-even).
-- `[À COMPLÉTER — opérateur]` Dimensionnement de marché (TAM/SAM) et ARPU cible.
-- `[À COMPLÉTER — opérateur]` Équipe nominale, affectation, organigramme.
-- `[À COMPLÉTER — opérateur]` Matrice RACI détaillée.
-- `[À COMPLÉTER — opérateur]` Dates fermes et calendrier d'exécution.
-- `[À COMPLÉTER — opérateur]` Plan de canaux et tactiques d'acquisition (go-to-market).
-- `[À COMPLÉTER — opérateur]` Périmètre géographique de lancement (l'hypothèse « francophone puis élargissement UE » n'est pas tranchée par le corpus).
-- `[À COMPLÉTER — opérateur]` Procédure et calendrier de saisine juridique pour le GATE JURISTE EU.
-- `[À COMPLÉTER — opérateur]` Seuils de décision chiffrés du GATE MARCHÉ.
+- `[À COMPLÉTER — produit]` Budget et coûts d'infrastructure, seuil de rentabilité (break-even).
+- `[À COMPLÉTER — produit]` Dimensionnement de marché (TAM/SAM) et ARPU cible.
+- `[À COMPLÉTER — produit]` Équipe nominale, affectation, organigramme.
+- `[À COMPLÉTER — produit]` Matrice RACI détaillée.
+- `[À COMPLÉTER — produit]` Dates fermes et calendrier d'exécution.
+- `[À COMPLÉTER — produit]` Plan de canaux et tactiques d'acquisition (go-to-market).
+- `[À COMPLÉTER — produit]` Périmètre géographique de lancement (l'hypothèse « francophone puis élargissement UE » n'est pas tranchée par le corpus).
+- `[À COMPLÉTER — produit]` Procédure et calendrier de saisine juridique pour la VALIDATION JURIDIQUE EU.
+- `[À COMPLÉTER — produit]` Seuils de décision chiffrés de la DÉCISION MARCHÉ.
 
 ## 11. Documents de référence
 
@@ -205,9 +205,9 @@ Les éléments suivants sont absents du corpus de conception, de planification o
 - `../context/cahier-des-charges.md` — document officiel de référence pour la construction du MVP, consolidant le corpus de conception.
 
 **Planning**
-- `roadmap-entree-build.md` — séquence technique d'entrée en build (jalons J0-J3, gates, préalables bloquants).
+- `roadmap-entree-build.md` — séquence technique d'entrée en build (jalons J0-J3, points de décision, préalables bloquants).
 - `roadmap-produit.md` — trajectoire de valeur produit (paliers, jalon de validation, extensions par signal).
-- `registre-risques.md` — registre de risques consolidé (quatre axes technique/produit/juridique/délai-coût, matrice de criticité, vue par hypothèse H1-H5, vue par gate).
+- `registre-risques.md` — registre de risques consolidé (quatre axes technique/produit/juridique/délai-coût, matrice de criticité, vue par hypothèse H1-H5, vue par point de décision).
 
 **Business**
 - `../context/note-business-gtm.md` — méthode de calcul du coût d'infrastructure, du dimensionnement de marché et de la stratégie go-to-market.

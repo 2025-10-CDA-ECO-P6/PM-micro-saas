@@ -2,12 +2,10 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-10
-- **Décideur** : opérateur (cadrage P1 — items B1.1a et B1.1b reclassés bloquants M1)
-- **Findings liés** : F-01 (CWE-284 — reformulé §Contexte), F-09 (XSS/poste partagé — délégué B1.2 pour le détail)
 
 > **Annotation du 2026-06-12** — Renommage `campaign_id`→`space_id`, racine `campaigns`→`spaces`, saga `CampaignDeleted`→`SpaceDeleted`, granularité transactionnelle « par campagne »→« par espace » (ADR-018). Précision : l'espace `PERSONAL` est inclus dans le périmètre sérialisé et soumis aux mêmes règles transactionnelles que les autres espaces. Voir §1.2, §3.1 et §4.
 
-> **Nature : mixte — à dominante pré-implémentation** — contrat de format et mécanique d'import à confirmer à l'entrée en build ; parts de conception qui contraignent le modèle dès maintenant : la frontière de confiance, le gate de reconnaissance, la transactionnalité par espace et le périmètre de séance du contrat de migration. *(Annotation du 2026-06-10 — qualification postérieure à l'arbitrage T-03, audit conception pure 2026-06.)*
+> **Nature : mixte — à dominante pré-implémentation** — contrat de format et mécanique d'import à confirmer à l'entrée en build ; parts de conception qui contraignent le modèle dès maintenant : la frontière de confiance, le gate de reconnaissance, la transactionnalité par espace et le périmètre de séance du contrat de migration. *(Annotation du 2026-06-10 — qualification postérieure à l'arbitrage T-03.)*
 
 ---
 
@@ -38,7 +36,7 @@ Trois points restaient ouverts au terme d'ADR-001 :
 
 1. **Format** : la structure concrète du payload (enveloppe, versionnement, périmètre des entités sérialisées, séparation des champs gouvernés et libres) n'était pas définie.
 
-2. **Frontière de confiance** : le finding F-01 de l'audit avait identifié le risque sous le libellé « migration silencieuse sans preuve d'appartenance (CWE-284) ». Ce cadrage est **partiellement inexact**. Le mode local n'a pas de compte : l'utilisateur qui migre ne peut pas prouver que les données lui « appartiennent » au sens de la possession — elles n'ont pas de propriétaire avant la migration. Ce que le finding signale en réalité est un risque d'**appropriation sur poste partagé** : si la migration est silencieuse, un second utilisateur du même poste peut importer sous son compte les données créées par quelqu'un d'autre. La réponse correcte n'est pas une preuve d'appartenance (impossible sans compte préalable) mais un **gate de confirmation** présentant les données détectées. Ce recadrage est acté dans cet ADR (§4 ci-dessous) ; le libellé CWE-284 est conservé comme référence d'audit mais son interprétation est précisée.
+2. **Frontière de confiance** : F-01 avait initialement formulé le risque sous le libellé « migration silencieuse sans preuve d'appartenance (CWE-284) ». Ce cadrage est **partiellement inexact**. Le mode local n'a pas de compte : l'utilisateur qui migre ne peut pas prouver que les données lui « appartiennent » au sens de la possession — elles n'ont pas de propriétaire avant la migration. Ce que ce risque désigne en réalité est un risque d'**appropriation sur poste partagé** : si la migration est silencieuse, un second utilisateur du même poste peut importer sous son compte les données créées par quelqu'un d'autre. La réponse correcte n'est pas une preuve d'appartenance (impossible sans compte préalable) mais un **gate de confirmation** présentant les données détectées. Ce recadrage est acté dans cet ADR (§4 ci-dessous) ; le libellé CWE-284 est conservé comme référence, mais son interprétation est précisée.
 
 3. **Parcours d'échec** : la stratégie de granularité (tout-ou-rien par payload, par espace, par document), le rapport de rejets, et la préservation des données locales n'avaient pas été spécifiés.
 
@@ -253,7 +251,7 @@ Le gate de confirmation (§4) borne le risque d'appropriation sur poste partagé
 - **P7** — Implémentation complète du handler d'import côté serveur : résolution des références internes du payload, création topologique des entités, rapport de rejets structuré, `migration_batch_id` idempotent. Tests e2e navigateur multi-versions IndexedDB.
 - **Seuil `schemaVersion` minimale** — à fixer à l'implémentation P7 en fonction des versions du client déployées.
 - ~~**Réalignement RB-10-04**~~ — **Effectué** : US-UC-10 RB-10-04 est conforme à la décision §4 (gate de confirmation, non silencieux).
-- ~~**F-01 fermé comme finding d'audit**~~ — le cadrage est reformulé (§Contexte + §2), le gate de confirmation (§4) est acté. Le libellé original « preuve d'appartenance » est archivé avec la note de reformulation ci-dessus.
+- ~~**F-01 — cadrage initial reformulé**~~ — le cadrage est reformulé (§Contexte + §2), le gate de confirmation (§4) est acté. Le libellé original « preuve d'appartenance » est archivé avec la note de reformulation ci-dessus.
 
 ---
 

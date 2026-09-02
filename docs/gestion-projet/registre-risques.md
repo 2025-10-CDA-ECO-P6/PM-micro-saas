@@ -17,7 +17,7 @@ Ce document ne tranche aucun seuil non fixé par le corpus source. Les valeurs d
 
 **En cas de conflit entre ce registre et une source citée, la source citée fait foi.**
 
-**Réserve de méthode** (détail en Annexe B) : une partie des risques de l'axe délai-coût est tracée principalement au document qui les cite plutôt que par réouverture systématique de chaque décision source ; de même, la provenance de certains points juridiques n'a pas été recoupée à une source primaire au-delà de la mention documentée dans le calendrier juridique. Ces traçabilités sont légitimes pour un exercice de consolidation mais sont de force de preuve moindre qu'une citation directe à la décision d'origine — elles doivent être rouvertes à la source avant toute décision engageante (arbitrage financier, ratification opérateur, engagement contractuel).
+**Réserve de méthode** (détail en Annexe B) : une partie des risques de l'axe délai-coût est tracée principalement au document qui les cite plutôt que par réouverture systématique de chaque décision source ; de même, la provenance de certains points juridiques n'a pas été recoupée à une source primaire au-delà de la mention documentée dans le calendrier juridique. Ces traçabilités sont légitimes pour un exercice de consolidation mais sont de force de preuve moindre qu'une citation directe à la décision d'origine — elles doivent être rouvertes à la source avant toute décision engageante (arbitrage financier, ratification produit, engagement contractuel).
 
 ---
 
@@ -32,20 +32,20 @@ socle
   │
 local-only
   │
-[gate marché]
+[décision marché]
   │
 cloud + migration
   │
-[gate juriste EU]
+[validation juridique EU]
   │
 partage temps réel
 ```
 
 - **Socle** : confirmation datée des décisions d'architecture pré-implémentation, squelette du domaine applicatif, test d'architecture en intégration continue.
 - **Local-only** : projection du domaine dans le mode de fonctionnement local (stockage navigateur, interface minimale), sans aucune brique cloud.
-- **[Gate marché]** : décision d'opérateur go/no-go sur la télémétrie du jalon local, avant d'engager le build lourd cloud et temps réel — gate humain, non vérifiable en build.
+- **[Décision marché]** : décision produit go/no-go sur la télémétrie du jalon local, avant d'engager le build lourd cloud et temps réel — non vérifiable en build.
 - **Cloud + migration** : mapping vers le stockage serveur, authentification, migration des données locales, cascade d'effacement RGPD.
-- **[Gate juriste EU]** : validation par avis juriste sur les axes RGPD, condition du lancement commercial dans l'Union européenne — gate humain, non vérifiable en build ; ne bloque pas le build du jalon suivant, qui peut être construit en parallèle de l'instruction juridique.
+- **[Validation juridique EU]** : validation par avis juriste sur les axes RGPD, condition du lancement commercial dans l'Union européenne — non vérifiable en build ; ne bloque pas le build du jalon suivant, qui peut être construit en parallèle de l'instruction juridique.
 - **Partage temps réel** : diffusion en temps réel, accès joueur invité, protection contre la fuite de contenu entre espaces.
 - **Post-MVP** : fonctionnalités et dettes explicitement reportées après la première livraison, hors séquence des jalons ci-dessus.
 
@@ -57,8 +57,8 @@ Chaque entrée du registre porte un **type**, qui détermine la nature de sa cot
 |---|---|---|
 | **Risque** | Aléa incertain | Probabilité × Impact → criticité inhérente et résiduelle. Seul type porté sur la matrice de criticité et le classement des risques prioritaires. |
 | **Hypothèse** | Pari de validation produit, à confirmer par la mesure | Aucune probabilité cotée. Porte une classe de conséquence si elle n'est pas confirmée, ainsi que le dispositif de suivi (instrumentation, entretiens). Vue dédiée, hors matrice. |
-| **Gate / décision** | Point de contrôle go/no-go | Hors échelle. Porte une classe de conséquence et le dispositif de décision. Vue dédiée, hors matrice. |
-| **Dette / arbitrage accepté** | Choix délibérément assumé par l'opérateur ou l'équipe de conception | La probabilité n'est pas pertinente (le choix est acté, pas aléatoire) : seul l'impact conditionnel, le risque résiduel et la condition de réactivation sont cotés. Hors matrice des risques actifs. |
+| **Point de décision** | Point de contrôle go/no-go | Hors échelle. Porte une classe de conséquence et le dispositif de décision. Vue dédiée, hors matrice. |
+| **Dette / arbitrage accepté** | Choix délibérément assumé par le responsable produit ou l'équipe de conception | La probabilité n'est pas pertinente (le choix est acté, pas aléatoire) : seul l'impact conditionnel, le risque résiduel et la condition de réactivation sont cotés. Hors matrice des risques actifs. |
 | **Question ouverte** | Point de conformité ou de viabilité non tranché, non maîtrisable en interne (dépend d'un avis juriste ou d'une donnée de marché) | Aucune probabilité inventée. Porte l'impact sous forme de **classe de conséquence factuelle** et le traitement — c'est-à-dire le dispositif qui doit lever le point. Vue dédiée. |
 
 Cette typologie est appliquée strictement à chacune des 69 entrées du registre (section 3). Pour les entrées non typées `risque`, aucune probabilité n'est cotée même lorsque le corpus source portait initialement une valeur chiffrée : seule la classe de conséquence et le dispositif de traitement sont retenus, conformément au principe de zéro cotation inventée.
@@ -130,7 +130,7 @@ Chaque entrée de type `risque` porte **deux valeurs de criticité** :
 - **Statut de validation** : toutes les entrées de cette version portent le statut **« brouillon expert — à valider en comité des risques »**. Aucune entrée n'a fait l'objet d'une ratification formelle à la date de production.
 - **Tendance** : toutes les entrées portent la valeur **« nouveau (baseline v1) »** — cette colonne existe pour être peuplée aux revues suivantes ; aucune tendance n'est fabriquée à ce stade faute d'historique.
 - **Confiance** : deux valeurs possibles. **Ferme** (la cotation est directement dérivable du corpus, sans dépendance à un jugement externe) ou **sous réserve — à confirmer par [rôle]** (la cotation dépend d'un jugement que le projet ne maîtrise pas seul : avis juriste, réaction du marché, comportement d'un fournisseur d'identité tiers, coût d'hébergement réel, comportement d'un navigateur). Pour les entrées de type `question ouverte`, la confiance "sous réserve" est la norme : l'impact y est une classe de conséquence, non une probabilité.
-- **`[NON-VÉRIFIABLE-EN-BUILD]`** : tag distinct du champ Confiance, jamais fusionné dans sa valeur. Porté sur toute entrée dont la résolution dépend d'un jugement humain externe (décision d'investissement, avis juriste, comportement d'un tiers) et qu'aucun test automatisé, aucune revue de code, aucune exécution de la solution ne peut donc trancher. Affiché sous ce rendu uniforme sur toutes les entrées concernées (T-03, T-25, T-26, P-01, J-01, axe juridique — voir §3.3).
+- **`[NON-VÉRIFIABLE-EN-BUILD]`** : tag distinct du champ Confiance, jamais fusionné dans sa valeur. Porté sur toute entrée dont la résolution dépend d'un jugement externe (décision d'investissement, avis juriste, comportement d'un tiers) et qu'aucun test automatisé, aucune revue de code, aucune exécution de la solution ne peut donc trancher. Affiché sous ce rendu uniforme sur toutes les entrées concernées (T-03, T-25, T-26, P-01, J-01, axe juridique — voir §3.3).
 
 ### 1.6 Appétence au risque et seuil d'escalade
 
@@ -141,7 +141,7 @@ L'appétence au risque proposée pour ce projet, cohérente avec un produit en p
 | Faible | Suivi de routine, revue à la prochaine échéance de jalon | Propriétaire de l'entrée |
 | Moyenne | Suivi actif, mention au point d'avancement de jalon | Propriétaire de l'entrée + direction de projet |
 | Élevée | Escalade immédiate, plan de traitement daté requis avant la clôture du jalon concerné | Direction de projet ; DPO si dimension dominante = conformité RGPD |
-| Très élevée | Escalade immédiate à l'opérateur, blocage de facto du jalon tant que le traitement n'est pas engagé | Opérateur |
+| Très élevée | Escalade immédiate au responsable produit, blocage de facto du jalon tant que le traitement n'est pas engagé | Responsable produit |
 
 Ce cadre d'appétence et ces seuils sont une proposition méthodologique de cette version, à valider par le comité des risques (voir section 4).
 
@@ -149,7 +149,7 @@ Ce cadre d'appétence et ces seuils sont une proposition méthodologique de cett
 
 Pour une entrée `risque` : identifiant, intitulé, type, description, probabilité, impact et dimension dominante, criticité inhérente, criticité résiduelle, traitement, mitigation, propriétaire, échéance, statut de validation, tendance, confiance, source, recoupements (le cas échéant).
 
-Pour une entrée `hypothèse` / `gate-décision` / `question ouverte` / `dette-arbitrage accepté` : identifiant, intitulé, type, description, classe de conséquence, dispositif / traitement, propriétaire, échéance, statut de validation, confiance, source, recoupements (le cas échéant).
+Pour une entrée `hypothèse` / `point-de-décision` / `question ouverte` / `dette-arbitrage accepté` : identifiant, intitulé, type, description, classe de conséquence, dispositif / traitement, propriétaire, échéance, statut de validation, confiance, source, recoupements (le cas échéant).
 
 Le tag `[NON-VÉRIFIABLE-EN-BUILD]` (§1.5), lorsqu'il s'applique, est affiché distinctement du champ Confiance — jamais comme valeur de ce champ.
 
@@ -159,7 +159,7 @@ Le tag `[NON-VÉRIFIABLE-EN-BUILD]` (§1.5), lorsqu'il s'applique, est affiché 
 
 ### 2.1 Matrice de criticité inhérente (risques uniquement)
 
-Seules les 32 entrées de type `risque` figurent sur cette matrice. Les 37 autres entrées (hypothèses, gates, dettes, questions ouvertes) sont présentées dans leurs vues dédiées ci-dessous.
+Seules les 32 entrées de type `risque` figurent sur cette matrice. Les 37 autres entrées (hypothèses, points de décision, dettes, questions ouvertes) sont présentées dans leurs vues dédiées ci-dessous.
 
 | Probabilité \ Impact | Mineur | Modéré | Majeur | Critique |
 |---|---|---|---|---|
@@ -184,9 +184,9 @@ Table exhaustive : les 13 entrées de type `risque` dont la criticité inhérent
 | 3 | T-16 | Filtres de requête (soft-delete par jointure) non arbitrés | Conformité RGPD | Élevée | Moyenne |
 | 3 | P-08 | Instrumentation d'activation non opérationnalisable en l'état | Valeur produit | Élevée | Moyenne |
 | 3 | P-14 | Dépendance à la cohorte pilote non traitée | Valeur produit | Élevée | Moyenne |
-| 3 | D-03 | Dépendance cumulative socle local stable et gate marché favorable | Coût & délai | Élevée | Moyenne |
+| 3 | D-03 | Dépendance cumulative socle local stable et décision marché favorable | Coût & délai | Élevée | Moyenne |
 | 10 | D-01 | Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel) | Coût & délai | Élevée | Moyenne |
-| 11 | T-04 | Reclaim-in-place non ratifié `[À RATIFIER OPÉRATEUR]` | Sécurité & données personnelles | Élevée | Moyenne |
+| 11 | T-04 | Reclaim-in-place non ratifié `[À RATIFIER PRODUIT]` | Sécurité & données personnelles | Élevée | Moyenne |
 | 11 | T-10 | Valeurs de seuils de limitation de débit non fixées | Sécurité & données personnelles | Élevée | Moyenne |
 | 11 | T-14 | Schéma de propriétés des types de document système non modélisé | Coût & délai | Élevée | Élevée (aucune mitigation actée) |
 
@@ -194,31 +194,31 @@ T-14 n'est pas un cas isolé : 15 autres entrées de type `risque` partagent la 
 
 ### 2.3 Vue Hypothèses de validation
 
-Cinq hypothèses de validation produit (H1 à H5), aucune n'est cotée en probabilité — voir typologie §1.1. Toutes portent l'échéance "gate marché" et le propriétaire "responsable produit".
+Cinq hypothèses de validation produit (H1 à H5), aucune n'est cotée en probabilité — voir typologie §1.1. Toutes portent l'échéance "décision marché" et le propriétaire "responsable produit".
 
 | Identifiant | Hypothèse | Seuil et délai | Classe de conséquence si infirmée |
 |---|---|---|---|
-| P-02 | H1 — activation (préparation) | ≥ 60 % de la cohorte, 14 jours. *Nuance (décision opérateur du 2026-07-09) : le contenu d'un espace personnel sans campagne ne compte que **partiellement** dans cette activation, s'il traduit un **geste structurant** ; seuil exact `[À TRANCHER — métrique produit]`.* | Activation de base compromise |
+| P-02 | H1 — activation (préparation) | ≥ 60 % de la cohorte, 14 jours. *Nuance (décision produit du 2026-07-09) : le contenu d'un espace personnel sans campagne ne compte que **partiellement** dans cette activation, s'il traduit un **geste structurant** ; seuil exact `[À TRANCHER — métrique produit]`.* | Activation de base compromise |
 | P-03 | **H2 — vue de session (hypothèse centrale)** | ≥ 50 % à l'activation, répétabilité ≥ 50 % sur deux sessions ou plus, 30 et 60 jours | **Invalidation de la proposition de valeur du produit dans son ensemble** — seule classe de conséquence de niveau "critique" de ce registre |
 | P-04 | H3 — fluidité du partage | ≥ 40 %, 60 jours | Affaiblissement du vecteur de croissance et de différenciation |
 | P-05 | H4 — accès joueur sans compte | ≥ 70 %, 60 jours | Un frein à l'entrée du joueur invité compromet l'adoption du groupe entier |
 | P-06 | H5 — conversion local vers compte | ≥ 10 %, 90 jours | Limite l'échelle de conversion, sans remettre en cause la valeur en usage local |
 
-### 2.4 Vue Gates (points de décision go/no-go)
+### 2.4 Vue des points de décision (go/no-go)
 
-| Identifiant | Gate | Classe de conséquence | Vérifiabilité |
+| Identifiant | Point de décision | Classe de conséquence | Vérifiabilité |
 |---|---|---|---|
-| P-01 | Gate marché — avant le build lourd (cloud, migration, partage temps réel) | Engage le capital du build lourd ; un no-go arrête la phase cloud, pas le socle local | `[NON-VÉRIFIABLE-EN-BUILD]` — décision d'opérateur sur interprétation de télémétrie |
-| J-01 | Gate juriste EU — validation pré-lancement sur 5 axes RGPD | Bloque le lancement commercial dans l'Union européenne, pas le build technique | `[NON-VÉRIFIABLE-EN-BUILD]` — dépend d'un avis juriste externe |
+| P-01 | Décision marché — avant le build lourd (cloud, migration, partage temps réel) | Engage le capital du build lourd ; un no-go arrête la phase cloud, pas le socle local | `[NON-VÉRIFIABLE-EN-BUILD]` — décision produit sur interprétation de télémétrie |
+| J-01 | Validation juridique EU — validation pré-lancement sur 5 axes RGPD | Bloque le lancement commercial dans l'Union européenne, pas le build technique | `[NON-VÉRIFIABLE-EN-BUILD]` — dépend d'un avis juriste externe |
 
-Le gate juriste EU est un **indicateur agrégé** des questions ouvertes J-02 à J-05 et de la facette RGPD du risque de reprise de compte fédérée (voir T-04) — il ne s'additionne pas à ces entrées dans une synthèse de criticité, il les enveloppe.
+La validation juridique EU est un **indicateur agrégé** des questions ouvertes J-02 à J-05 et de la facette RGPD du risque de reprise de compte fédérée (voir T-04) — il ne s'additionne pas à ces entrées dans une synthèse de criticité, il les enveloppe.
 
 ### 2.5 Points à ratifier, dettes majeures et questions ouvertes à lacune réelle
 
 | Catégorie | Identifiant | Point |
 |---|---|---|
-| À ratifier par l'opérateur | T-04 | Reclaim-in-place (identité fédérée reprenant une coquille de compte non vérifiée) |
-| Résolu, résiduel à confirmer | D-01 | Double référent de nomenclature de jalon — **résolu** (axe canonique J0-J3 ratifié par l'opérateur, 2026-09-01) ; ancrage inféré `P0.5` résiduel, à confirmer |
+| À ratifier par le responsable produit | T-04 | Reclaim-in-place (identité fédérée reprenant une coquille de compte non vérifiée) |
+| Résolu, résiduel à confirmer | D-01 | Double référent de nomenclature de jalon — **résolu** (axe canonique J0-J3 ratifié — décision produit, 2026-09-01) ; ancrage inféré `P0.5` résiduel, à confirmer |
 | Dette majeure (résiduel non abaissé) | D-07 | Compression du calendrier de build, charge concentrée en amont |
 | Dette majeure (résiduel non abaissé) | P-07 | Apprentissage produit non isolé, couplé à P-08 |
 | Question ouverte à lacune réelle | J-15 | Catégories particulières de données (article 9 RGPD) incidentes, non évaluées |
@@ -281,9 +281,9 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Confiance** : sous réserve — à confirmer par le coût d'hébergement réel et le comportement du fournisseur d'infrastructure. `[NON-VÉRIFIABLE-EN-BUILD]`
 - **Source** : spécification du repli temps réel ; décision d'architecture sur le transport temps réel ; roadmap d'entrée en build.
 
-**T-04 — Reclaim-in-place non ratifié (identité fédérée reprenant une coquille de compte non vérifiée)** `[À RATIFIER OPÉRATEUR]`
+**T-04 — Reclaim-in-place non ratifié (identité fédérée reprenant une coquille de compte non vérifiée)** `[À RATIFIER PRODUIT]`
 *Type : risque.*
-- **Description** : lorsqu'un utilisateur s'authentifie via un fournisseur d'identité externe avec un email correspondant à un compte préexistant non vérifié, une opération de reprise de cette coquille est proposée mais non encore ratifiée par l'opérateur. Une résolution mal bornée serait apparentée à une prise de contrôle de compte anticipée.
+- **Description** : lorsqu'un utilisateur s'authentifie via un fournisseur d'identité externe avec un email correspondant à un compte préexistant non vérifié, une opération de reprise de cette coquille est proposée mais non encore ratifiée. Une résolution mal bornée serait apparentée à une prise de contrôle de compte anticipée.
 - **Probabilité** : Modérée — la résolution proposée n'est pas encore ratifiée.
 - **Impact** : Majeur — dimension dominante : sécurité & données personnelles.
 - **Criticité inhérente** : Élevée.
@@ -292,13 +292,13 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Mitigation** : gate applicatif proposé avec bascule de l'indicateur d'email vérifié, neutralisation du justificatif préexistant, liaison fédérée ; des alternatives ont été écartées et documentées (refus non-silencieux, email synthétique, suppression de la coquille).
 - **Propriétaire** : Architecte / Lead technique.
 - **Échéance** : cloud + migration, si la résolution proposée est retenue.
-- **Confiance** : sous réserve — à confirmer par ratification opérateur.
+- **Confiance** : sous réserve — à confirmer par ratification produit.
 - **Source** : décision d'architecture sur la sécurité de l'authentification ; roadmap d'entrée en build.
-- **Recoupements** : cette entrée porte trois faces distinctes, nommées ici plutôt que dupliquées en trois risques — la résolution technique elle-même (ci-dessus), le sort du contenu de la coquille non vérifiée évincée par la reprise, qui relève du périmètre juridique et est enveloppé par le gate juriste EU (J-01), et son statut de point à ratifier par l'opérateur dans le pilotage de l'entrée en build.
+- **Recoupements** : cette entrée porte trois faces distinctes, nommées ici plutôt que dupliquées en trois risques — la résolution technique elle-même (ci-dessus), le sort du contenu de la coquille non vérifiée évincée par la reprise, qui relève du périmètre juridique et est enveloppé par la validation juridique EU (J-01), et son statut de point à ratifier (décision produit) dans le pilotage de l'entrée en build.
 
 **T-05 — Câblage de l'autorisation, test d'architecture et frontières logiques de contexte**
 *Type : risque.*
-- **Description** : l'autorisation doit être centralisée dans un contrat applicatif unique, appelé identiquement par le pipeline REST et par le filtre de diffusion temps réel. Un test d'architecture en intégration continue est prévu comme garde-fou, remplaçant une discipline de revue de code jugée insuffisante ; sa définition exhaustive (couverture complète des gestionnaires de requêtes et des jetons) reste renvoyée à une passe ultérieure. Une alternative d'isolation physique par module a été écartée au profit de frontières logiques.
+- **Description** : l'autorisation doit être centralisée dans un contrat applicatif unique, appelé identiquement par le pipeline REST et par le filtre de diffusion temps réel. Un test d'architecture en intégration continue est prévu comme garde-fou, remplaçant une discipline de revue de code jugée insuffisante ; sa définition exhaustive (couverture complète des gestionnaires de requêtes et des jetons) n'est pas encore fixée. Une alternative d'isolation physique par module a été écartée au profit de frontières logiques.
 - **Probabilité** : Élevée — câblage préalable, test d'architecture à définir exhaustivement (→ B3.2).
 - **Impact** : Majeur — dimension dominante : sécurité & données personnelles (un gestionnaire de requête oublié constituerait une référence directe non protégée à un objet).
 - **Criticité inhérente** : Élevée.
@@ -306,7 +306,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Traitement** : Réduire.
 - **Mitigation** : centralisation de l'autorisation dans un contrat applicatif unique ; test d'architecture en intégration continue prévu comme livrable du socle.
 - **Propriétaire** : Architecte / Lead technique.
-- **Échéance** : socle, puis local-only pour le câblage ; définition exhaustive du test d'architecture renvoyée à une passe ultérieure.
+- **Échéance** : socle, puis local-only pour le câblage ; définition exhaustive du test d'architecture non encore fixée.
 - **Confiance** : ferme.
 - **Source** : décision d'architecture sur le modèle d'autorisation API ; décision d'architecture sur l'autorisation RGPD ; décision d'architecture sur la structure de la solution ; roadmap d'entrée en build.
 
@@ -481,7 +481,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 
 **T-18 — Chaîne média externalisée et purge des blobs orphelins**
 *Type : dette / arbitrage accepté.*
-- **Description** : le MVP conserve tout contenu média en ligne (inline) ; le câblage de purge des blobs orphelins pour une chaîne média externalisée est différé à une passe ultérieure.
+- **Description** : le MVP conserve tout contenu média en ligne (inline) ; le câblage de purge des blobs orphelins pour une chaîne média externalisée reste à faire.
 - **Impact conditionnel** : Majeur — dimension dominante : conformité RGPD — si un média externalisé est introduit sans que la purge soit câblée.
 - **Résiduel** : Faible tant que le MVP reste sans média externalisé.
 - **Traitement** : Accepter, avec déclencheur de réactivation explicite.
@@ -571,7 +571,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 
 **T-25 — Migration du stockage local multi-versions non prouvable en intégration continue**
 *Type : risque.*
-- **Description** : un contrat de format est testable en intégration continue, mais la validation de bout en bout sur plusieurs navigateurs est reportée à une passe de test dédiée, hors périmètre du build lui-même.
+- **Description** : un contrat de format est testable en intégration continue, mais la validation de bout en bout sur plusieurs navigateurs reste hors périmètre du build lui-même, à couvrir séparément.
 - **Probabilité** : Modérée — contrat testable, validation multi-navigateurs reportée.
 - **Impact** : Modéré — dimension dominante : coût & délai.
 - **Criticité inhérente** : Moyenne.
@@ -641,14 +641,14 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 
 ### 3.2 Axe produit (P-01 à P-14)
 
-**P-01 — Gate marché : décision go/no-go non vérifiable en build**
-*Type : gate / décision.*
-- **Description** : un gate de validation marché doit être posé avant d'engager le build lourd cloud et temps réel. Il engage le capital d'investissement de cette phase ; ses seuils de décision ne sont pas fixés.
+**P-01 — Décision marché : décision go/no-go non vérifiable en build**
+*Type : point de décision.*
+- **Description** : une décision marché doit être posée avant d'engager le build lourd cloud et temps réel. Elle engage le capital d'investissement de cette phase ; ses seuils de décision ne sont pas fixés.
 - **Classe de conséquence** : engage le capital du build lourd cloud et temps réel ; un no-go arrête l'entrée dans cette phase, pas le socle local déjà livré.
-- **Dispositif de décision** : gate go/no-go sur télémétrie interprétée par l'opérateur ; seuils de décision non fixés.
+- **Dispositif de décision** : point de décision go/no-go sur télémétrie interprétée par le responsable produit ; seuils de décision non fixés.
 - **Propriétaire** : Direction de projet, en appui du responsable produit.
 - **Échéance** : après le jalon local, avant le jalon cloud + migration.
-- **Confiance** : sous réserve — dépend d'une interprétation opérateur de la télémétrie, non automatisable par un critère de build. `[NON-VÉRIFIABLE-EN-BUILD]`
+- **Confiance** : sous réserve — dépend d'une interprétation produit de la télémétrie, non automatisable par un critère de build. `[NON-VÉRIFIABLE-EN-BUILD]`
 - **Source** : roadmap d'entrée en build ; décision d'architecture sur le périmètre du MVP.
 - **Recoupements** : dépend de P-08 (instrumentation) et de P-14 (cohorte pilote) ; voir aussi D-03 (même dépendance lue sous l'angle délai-coût).
 
@@ -658,7 +658,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Classe de conséquence si infirmée** : activation de base compromise.
 - **Dispositif de suivi** : activation instrumentée avec un critère de falsifiabilité explicite — un seuil non atteint impose un constat, jamais une réinterprétation a posteriori.
 - **Propriétaire** : Responsable produit.
-- **Échéance** : gate marché.
+- **Échéance** : décision marché.
 - **Confiance** : sous réserve — dépend de l'adoption réelle par la cohorte.
 - **Source** : cahier des charges — hypothèses de validation.
 
@@ -668,7 +668,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Classe de conséquence si infirmée** : invalidation de la proposition de valeur du produit dans son ensemble, pas seulement d'un pilier — seule classe de conséquence de niveau "critique" de ce registre.
 - **Dispositif de suivi** : activation instrumentée, complétée par des entretiens sur les motifs de non-adoption en cas d'échec du seuil.
 - **Propriétaire** : Responsable produit.
-- **Échéance** : gate marché.
+- **Échéance** : décision marché.
 - **Confiance** : l'impact est ferme (thèse produit explicitement qualifiée par le cahier des charges) ; l'issue de l'hypothèse elle-même est sous réserve de la mesure.
 - **Source** : cahier des charges — hypothèses de validation.
 
@@ -678,7 +678,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Classe de conséquence si infirmée** : affaiblit le vecteur de croissance et de différenciation du produit.
 - **Dispositif de suivi** : activation du partage instrumentée, complétée par des entretiens.
 - **Propriétaire** : Responsable produit.
-- **Échéance** : gate marché.
+- **Échéance** : décision marché.
 - **Confiance** : sous réserve.
 - **Source** : cahier des charges — hypothèses de validation.
 
@@ -688,7 +688,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Classe de conséquence si infirmée** : un frein à l'entrée du joueur invité compromet l'adoption du groupe entier autour de la table.
 - **Dispositif de suivi** : taux de consultation instrumenté, complété par des entretiens sur les motifs d'abandon.
 - **Propriétaire** : Responsable produit.
-- **Échéance** : gate marché.
+- **Échéance** : décision marché.
 - **Confiance** : sous réserve.
 - **Source** : cahier des charges — hypothèses de validation ; décision d'architecture sur le périmètre du MVP.
 
@@ -698,26 +698,26 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Classe de conséquence si infirmée** : limite l'échelle de conversion (croissance), sans remettre en cause la valeur en usage local.
 - **Dispositif de suivi** : mesure d'usage, complétée par des entretiens.
 - **Propriétaire** : Responsable produit.
-- **Échéance** : gate marché.
+- **Échéance** : décision marché.
 - **Confiance** : sous réserve.
 - **Source** : cahier des charges — hypothèses de validation ; décision d'architecture sur le modèle de monétisation.
 
 **P-07 — Apprentissage produit non isolé (MVP unique, sans test A/B)**
 *Type : dette / arbitrage accepté.*
-- **Description** : le MVP unique n'isole pas expérimentalement l'apprentissage par pilier — un choix de conception délibéré, assumé par l'opérateur, et non un aléa à réduire. Un échec d'une hypothèse (H1 à H4) ne peut donc pas être attribué avec certitude à un pilier précis du produit.
+- **Description** : le MVP unique n'isole pas expérimentalement l'apprentissage par pilier — un choix de conception délibéré, assumé par le responsable produit, et non un aléa à réduire. Un échec d'une hypothèse (H1 à H4) ne peut donc pas être attribué avec certitude à un pilier précis du produit.
 - **Impact conditionnel** : Majeur (modéré à élevé) — dimension dominante : valeur produit.
 - **Résiduel** : Élevé, non abaissable en l'état — la mitigation envisagée (télémétrie isolant la mesure par pilier) est précisément ce que P-08 documente comme non implémentable en l'état.
 - **Traitement** : Accepter, avec une réduction partielle attendue via P-08.
 - **Condition de réactivation** : n/a — risque assumé au moment de l'arbitrage du périmètre du MVP.
 - **Propriétaire** : Responsable produit.
-- **Échéance** : gate marché.
+- **Échéance** : décision marché.
 - **Confiance** : ferme — le choix est assumé, sa conséquence sur l'attribution des causes est certaine par construction, sans dépendance à un jugement externe.
 - **Source** : décision d'architecture sur le périmètre du MVP ; spécification de télémétrie.
 - **Recoupements** : couplé directement à P-08 — la mitigation prévue pour ce risque est précisément ce que P-08 documente comme non implémentable en l'état. Les deux entrées ne se neutralisent pas : l'une cause un besoin de mitigation que l'autre empêche de satisfaire.
 
 **P-08 — Instrumentation d'activation non opérationnalisable en l'état (télémétrie par pilier)**
 *Type : risque.*
-- **Description** : sans cette instrumentation, les hypothèses H1 à H4 et le gate marché reposent sur une mesure incomplète ou absente. Une contrainte RGPD est posée (mesure d'occurrence sans contenu narratif), mais celle-ci contraint la conception de l'instrumentation sans fournir le cadre technique nécessaire à sa mise en œuvre : six points bloquants restent ouverts dans la spécification.
+- **Description** : sans cette instrumentation, les hypothèses H1 à H4 et la décision marché reposent sur une mesure incomplète ou absente. Une contrainte RGPD est posée (mesure d'occurrence sans contenu narratif), mais celle-ci contraint la conception de l'instrumentation sans fournir le cadre technique nécessaire à sa mise en œuvre : six points bloquants restent ouverts dans la spécification.
 - **Probabilité** : Élevée — non implémentable en l'état, six points bloquants.
 - **Impact** : Majeur — dimension dominante : valeur produit.
 - **Criticité inhérente** : Élevée.
@@ -745,10 +745,10 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 **P-10 — Dimensionnement de marché et stratégie de mise sur le marché non instruits**
 *Type : question ouverte.*
 - **Description** : le dimensionnement du marché adressable et le revenu moyen par utilisateur, ainsi que la stratégie de mise sur le marché, ne sont pas instruits à l'entrée en build.
-- **Classe de conséquence** : le modèle économique et la décision d'investissement post-gate risquent d'être mal calibrés sans cette instruction.
-- **Traitement** : instruire avant tout engagement lourd — positionné après le gate marché.
+- **Classe de conséquence** : le modèle économique et la décision d'investissement suivant la décision marché risquent d'être mal calibrés sans cette instruction.
+- **Traitement** : instruire avant tout engagement lourd — positionné après la décision marché.
 - **Propriétaire** : Responsable produit ; direction de projet pour le volet mise sur le marché.
-- **Échéance** : après le gate marché.
+- **Échéance** : après la décision marché.
 - **Confiance** : sous réserve — dépend de données de marché externes.
 - **Source** : décision d'architecture sur le modèle de monétisation ; décision d'architecture sur le périmètre du MVP.
 
@@ -790,13 +790,13 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 *Type : risque.*
 - **Description** : le recrutement des premiers utilisateurs (cohorte pilote d'utilisateurs réels) n'est pas traité, alors qu'il constitue un prérequis de fait pour la validation de toutes les hypothèses produit.
 - **Probabilité** : Élevée — recrutement non traité, prérequis ouvert sans plan.
-- **Impact** : Majeur — dimension dominante : valeur produit (précondition de mesure de toutes les hypothèses et intrant du gate marché).
+- **Impact** : Majeur — dimension dominante : valeur produit (précondition de mesure de toutes les hypothèses et intrant de la décision marché).
 - **Criticité inhérente** : Élevée.
 - **Criticité résiduelle cible** : Moyenne — établir un plan de recrutement en amont.
 - **Traitement** : Réduire.
 - **Mitigation** : aucune actée à ce stade.
 - **Propriétaire** : Responsable produit, direction de projet.
-- **Échéance** : en amont du gate marché.
+- **Échéance** : en amont de la décision marché.
 - **Confiance** : sous réserve — dépend du recrutement effectif.
 - **Source** : cahier des charges — hypothèses de validation.
 - **Recoupements** : précondition dure des cinq hypothèses de validation (P-02 à P-06) — sans cohorte recrutée, aucune hypothèse n'est mesurable, y compris l'hypothèse centrale (P-03), quel que soit l'état de son instrumentation propre.
@@ -807,14 +807,14 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 
 Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à valider juriste », le tag `[NON-VÉRIFIABLE-EN-BUILD]`, et dépendent d'un avis juriste externe. Cette caractéristique commune n'est pas répétée à chaque entrée.
 
-**J-01 — Gate juriste EU : validation pré-lancement sur 5 axes**
-*Type : gate / décision.*
-- **Description** : validation juridique pré-lancement portant sur cinq axes RGPD, gate humain externe au build technique.
+**J-01 — Validation juridique EU : validation pré-lancement sur 5 axes**
+*Type : point de décision.*
+- **Description** : validation juridique pré-lancement portant sur cinq axes RGPD, non vérifiable en CI, externe au build technique.
 - **Classe de conséquence** : bloque le lancement commercial dans l'Union européenne, pas le build technique.
 - **Dispositif de décision** : avis juriste sur les cinq axes, consolidation actée, séquencement proposé, instruction parallélisable au build technique, critère de sortie binaire par axe.
 - **Propriétaire** : Direction de projet, en appui du conseil juridique et du délégué à la protection des données.
 - **Échéance** : avant le lancement commercial dans l'Union européenne.
-- **Confiance** : sous réserve — dépend d'un avis juriste externe sur les cinq axes. `[NON-VÉRIFIABLE-EN-BUILD]` Ce gate est un **indicateur agrégé** des axes J-02, J-03, J-04, J-05 et de la facette RGPD de T-04 — il ne s'additionne pas à ces entrées, il les enveloppe.
+- **Confiance** : sous réserve — dépend d'un avis juriste externe sur les cinq axes. `[NON-VÉRIFIABLE-EN-BUILD]` Cette validation juridique EU est un **indicateur agrégé** des axes J-02, J-03, J-04, J-05 et de la facette RGPD de T-04 — il ne s'additionne pas à ces entrées, il les enveloppe.
 - **Source** : roadmap d'entrée en build ; cadrage juridique de validation pré-lancement EU.
 
 **J-02 — Qualification « service destiné aux mineurs » (article 8 du RGPD)**
@@ -823,7 +823,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Classe de conséquence** : nécessité potentielle d'une vérification d'âge ou d'un consentement parental si la qualification est retenue.
 - **Traitement** : transférer à la qualification juriste ; une attestation d'âge est déjà actée comme mesure provisoire, sans vérification active.
 - **Propriétaire** : Conseil juridique / délégué à la protection des données.
-- **Échéance** : gate juriste EU (axe 1).
+- **Échéance** : validation juridique EU (axe 1).
 - **Source** : cadrage juridique de validation pré-lancement EU ; décision d'architecture sur l'effacement de compte ; décision d'architecture sur les données des invités.
 
 **J-03 — Périmètre du contrat de sous-traitance, y compris l'espace personnel (article 28 du RGPD)**
@@ -832,7 +832,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Classe de conséquence** : une qualification erronée constitue une non-conformité structurelle ; conditionne directement le périmètre du contrat de sous-traitance (voir J-08).
 - **Traitement** : transférer à la qualification juriste.
 - **Propriétaire** : Conseil juridique / délégué à la protection des données.
-- **Échéance** : gate juriste EU (axe 2).
+- **Échéance** : validation juridique EU (axe 2).
 - **Source** : décision d'architecture sur les données des invités ; décision d'architecture sur la généralisation de l'espace personnel ; cadrage juridique de validation pré-lancement EU.
 
 **J-04 — Mise en balance de l'intérêt légitime (conservation post-effacement, base légale du nom affiché invité)**
@@ -841,7 +841,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Classe de conséquence** : la base légale de conservation ou du nom affiché serait invalidée si la mise en balance s'avère défaillante.
 - **Traitement** : transférer — test de mise en balance à conduire.
 - **Propriétaire** : Conseil juridique / délégué à la protection des données.
-- **Échéance** : gate juriste EU (axe 3).
+- **Échéance** : validation juridique EU (axe 3).
 - **Source** : cadrage juridique de validation pré-lancement EU ; décision d'architecture sur l'effacement de compte ; décision d'architecture sur les données des invités.
 
 **J-05 — Hard-delete inconditionnel de l'espace personnel, y compris l'instant de référence (article 17 du RGPD)**
@@ -850,13 +850,13 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Classe de conséquence** : suffisance du mécanisme d'effacement au regard de l'article 17 à confirmer.
 - **Traitement** : transférer — la posture technique est conçue, elle ne doit pas être sur-cotée en l'absence de validation juridique.
 - **Propriétaire** : Conseil juridique / délégué à la protection des données ; Architecte pour l'instant de référence.
-- **Échéance** : gate juriste EU (axe 4).
+- **Échéance** : validation juridique EU (axe 4).
 - **Source** : cadrage juridique de validation pré-lancement EU ; décision d'architecture sur l'effacement de compte ; décision d'architecture sur la généralisation de l'espace personnel.
 - **Recoupements** : voir T-07 (mécanisme technique de la cascade d'effacement portant le même sujet) — face juridique, l'une qualifie, l'autre implémente. Décision réversible : ne préjuge pas irréversiblement du mécanisme technique sous-jacent.
 
 **J-06 — Base légale des invités, bloquante avant le lancement EU**
 *Type : question ouverte.*
-- **Description** : la base légale retenue pour le traitement des données des invités (intérêt légitime) est proposée, sous réserve de confirmation par le gate juriste EU. Ce point est bloquant avant tout lancement dans l'Union européenne, pas nécessairement avant le début technique du jalon cloud.
+- **Description** : la base légale retenue pour le traitement des données des invités (intérêt légitime) est proposée, sous réserve de confirmation par la validation juridique EU. Ce point est bloquant avant tout lancement dans l'Union européenne, pas nécessairement avant le début technique du jalon cloud.
 - **Classe de conséquence** : bloque le lancement dans l'Union européenne ; base proposée standard, confirmable.
 - **Traitement** : transférer — validation attendue lors du premier jalon du calendrier juridique.
 - **Propriétaire** : Conseil juridique / délégué à la protection des données.
@@ -869,7 +869,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Classe de conséquence** : portée limitée, cas de bord étroit.
 - **Traitement** : transférer à la qualification juriste.
 - **Propriétaire** : Conseil juridique / délégué à la protection des données.
-- **Échéance** : gate juriste EU.
+- **Échéance** : validation juridique EU.
 - **Source** : décision d'architecture sur l'effacement de compte ; procédure des droits des invités.
 
 **J-08 — Contrat de sous-traitance non rédigé (article 28 du RGPD)**
@@ -941,7 +941,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Classe de conséquence** : traitement incident de données sensibles sans base légale ni évaluation — exposition non mitigée la plus forte de l'axe juridique.
 - **Traitement** : réduire (faire évaluer le point et décider), puis transférer — ce point ne doit pas être accepté par défaut.
 - **Propriétaire** : Conseil juridique / délégué à la protection des données, en appui du responsable produit et de l'architecte.
-- **Échéance** : gate juriste EU, avant le lancement dans l'Union européenne.
+- **Échéance** : validation juridique EU, avant le lancement dans l'Union européenne.
 - **Source** : squelette de contrat de sous-traitance.
 
 **J-16 — Procédure de notification de violation de données non actée (articles 28 §3(f), 33 et 34 du RGPD)**
@@ -968,7 +968,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Classe de conséquence** : base sécurité et débogage répandue et généralement défendable, à confirmer par mise en balance.
 - **Traitement** : transférer — mise en balance à conduire.
 - **Propriétaire** : Conseil juridique / délégué à la protection des données.
-- **Échéance** : gate juriste EU.
+- **Échéance** : validation juridique EU.
 - **Source** : roadmap juridique ; décision d'architecture sur les données des invités.
 
 ---
@@ -977,7 +977,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 
 **D-01 — Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel)**
 *Type : risque.*
-- **Description** : le corpus portait deux usages distincts d'un même symbole de jalon selon la décision d'architecture consultée — l'une l'assimilait au jalon local, l'autre à une préoccupation cloud. **Ce point est résolu** : l'axe canonique J0-J3, nommé par contenu, est ratifié par l'opérateur (2026-09-01, `roadmap-entree-build.md` §5) et la décision d'architecture source a été clarifiée en conséquence. Le point résiduel, distinct et non couvert par cette ratification : certains rattachements entre codes de renvoi d'ADR et jalons de build restent des **ancrages inférés plutôt que documentés littéralement** — notamment le rapprochement du lot `P0.5` avec la phase de conception (CdC §11), qui n'établit qu'une antériorité déduite, pas un ancrage littéral, et reste à confirmer explicitement dans l'artefact de planification dédié.
+- **Description** : le corpus portait deux usages distincts d'un même symbole de jalon selon la décision d'architecture consultée — l'une l'assimilait au jalon local, l'autre à une préoccupation cloud. **Ce point est résolu** : l'axe canonique J0-J3, nommé par contenu, est ratifié (décision produit, 2026-09-01, `roadmap-entree-build.md` §5) et la décision d'architecture source a été clarifiée en conséquence. Le point résiduel, distinct et non couvert par cette ratification : certains rattachements entre codes de renvoi d'ADR et jalons de build restent des **ancrages inférés plutôt que documentés littéralement** — notamment le rapprochement du lot `P0.5` avec la phase de conception (CdC §11), qui n'établit qu'une antériorité déduite, pas un ancrage littéral, et reste à confirmer explicitement dans l'artefact de planification dédié.
 - **Probabilité** : Quasi-certaine — incohérence de nomenclature déjà présente dans le corpus *(cotation portée à la prochaine revue du comité des risques : le facteur dominant — le double référent — est désormais résolu ; seul l'ancrage inféré résiduel subsiste)*.
 - **Impact** : Modéré — dimension dominante : coût & délai (erreur d'ordonnancement si l'ancrage inféré est traité comme confirmé sans vérification).
 - **Criticité inhérente** : Élevée.
@@ -1004,20 +1004,20 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Confiance** : ferme.
 - **Source** : roadmap d'entrée en build ; décision d'architecture sur le périmètre du MVP.
 
-**D-03 — Dépendance cumulative : socle local stable et gate marché favorable**
+**D-03 — Dépendance cumulative : socle local stable et décision marché favorable**
 *Type : risque.*
-- **Description** : l'entrée dans le jalon cloud dépend de deux conditions cumulatives, non alternatives — la stabilité du jalon local et une décision favorable du gate marché.
+- **Description** : l'entrée dans le jalon cloud dépend de deux conditions cumulatives, non alternatives — la stabilité du jalon local et une décision marché favorable.
 - **Probabilité** : Élevée — dépendance cumulative non levée.
-- **Impact** : Majeur — dimension dominante : coût & délai (engager le build lourd sans le gate serait une erreur coûteuse).
+- **Impact** : Majeur — dimension dominante : coût & délai (engager le build lourd sans la décision marché serait une erreur coûteuse).
 - **Criticité inhérente** : Élevée.
 - **Criticité résiduelle cible** : Moyenne.
 - **Traitement** : Réduire.
-- **Mitigation** : le gate est posé dans son principe (voir P-01).
+- **Mitigation** : la décision marché est posée dans son principe (voir P-01).
 - **Propriétaire** : Direction de projet.
-- **Échéance** : entre le gate marché et le jalon cloud + migration.
-- **Confiance** : ferme. `[NON-VÉRIFIABLE-EN-BUILD]` sur le volet gate, celui-ci étant humain.
+- **Échéance** : entre la décision marché et le jalon cloud + migration.
+- **Confiance** : ferme. `[NON-VÉRIFIABLE-EN-BUILD]` sur le volet décision marché.
 - **Source** : roadmap d'entrée en build ; décision d'architecture sur le périmètre du MVP.
-- **Recoupements** : même contrainte que P-01 (gate marché), lue ici sous l'angle de la condition d'entrée dans le jalon suivant plutôt que sous l'angle de la décision elle-même.
+- **Recoupements** : même contrainte que P-01 (décision marché), lue ici sous l'angle de la condition d'entrée dans le jalon suivant plutôt que sous l'angle de la décision elle-même.
 
 **D-04 — Code de renvoi à cheval entre le jalon local et le jalon cloud**
 *Type : risque.*
@@ -1063,16 +1063,16 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 
 **D-07 — Compression du calendrier de build (jalons enchaînés sans découplage produit)**
 *Type : dette / arbitrage accepté.*
-- **Description** : les jalons de build sont enchaînés sans découplage produit entre eux, ce qui concentre la charge de travail en amont sur une équipe restreinte — un choix assumé par l'opérateur au moment de l'arbitrage du périmètre du MVP.
+- **Description** : les jalons de build sont enchaînés sans découplage produit entre eux, ce qui concentre la charge de travail en amont sur une équipe restreinte — un choix assumé par le responsable produit au moment de l'arbitrage du périmètre du MVP.
 - **Impact conditionnel** : Majeur — dimension dominante : coût & délai (charge concentrée en amont sur une équipe restreinte).
-- **Résiduel** : Élevé, non réductible sans redécoupler la séquence (option refusée) ; le gate marché borne le capital engagé en aval, pas la charge de travail en amont.
+- **Résiduel** : Élevé, non réductible sans redécoupler la séquence (option refusée) ; la décision marché borne le capital engagé en aval, pas la charge de travail en amont.
 - **Traitement** : Accepter.
 - **Condition de réactivation** : n/a — compression actée.
 - **Propriétaire** : Direction de projet.
 - **Échéance** : en amont du jalon cloud + migration.
 - **Confiance** : ferme.
 - **Source** : décision d'architecture sur le périmètre du MVP ; roadmap d'entrée en build.
-- **Recoupements** : contrepartie assumée de l'absence d'isolement de l'apprentissage produit (voir P-07) ; le gate marché (P-01) arbitre l'engagement du build lourd qui suit cette compression.
+- **Recoupements** : contrepartie assumée de l'absence d'isolement de l'apprentissage produit (voir P-07) ; la décision marché (P-01) arbitre l'engagement du build lourd qui suit cette compression.
 
 **D-08 — Assets d'identité visuelle, préalable hors jalon de build**
 *Type : risque.*
@@ -1092,9 +1092,9 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 
 ## 4. Gouvernance du registre
 
-**Rôle du comité des risques** : instance de revue périodique chargée de valider ou d'amender chaque cotation portée par ce registre, de statuer sur les points marqués `[À RATIFIER OPÉRATEUR]`, et de suivre l'évolution de la criticité résiduelle entre deux revues.
+**Rôle du comité des risques** : instance de revue périodique chargée de valider ou d'amender chaque cotation portée par ce registre, de statuer sur les points marqués `[À RATIFIER PRODUIT]`, et de suivre l'évolution de la criticité résiduelle entre deux revues.
 
-**Fréquence de revue proposée** : une revue complète à chaque franchissement de gate (gate marché, gate juriste EU) et à l'entrée de chaque jalon de build ; une revue allégée (statut des entrées "Élevée" et "Très élevée" uniquement) à cadence mensuelle entre deux jalons.
+**Fréquence de revue proposée** : une revue complète à chaque franchissement de point de décision (décision marché, validation juridique EU) et à l'entrée de chaque jalon de build ; une revue allégée (statut des entrées "Élevée" et "Très élevée" uniquement) à cadence mensuelle entre deux jalons.
 
 **Cycle de mise à jour** : toute nouvelle information issue du corpus de conception (décision d'architecture amendée, spécification complétée) qui modifie une cotation doit être répercutée dans ce registre à l'occasion de la prochaine revue, jamais rétroactivement sans trace de la modification. La colonne "tendance" (section 1.5) est destinée à porter cette évolution aux revues suivantes.
 
@@ -1102,7 +1102,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 
 **Appétence au risque** : voir section 1.6. Cette appétence est une proposition méthodologique de cette version, soumise à validation du comité des risques comme l'ensemble des cotations du registre.
 
-**Source de vérité unique** : la section 3 (registre détaillé par axe) est la source de vérité unique des cotations de ce registre (probabilité, impact, criticité, classe de conséquence, statut, confiance). Les vues de synthèse de la section 2 (matrice §2.1, top risques §2.2, vue Hypothèses §2.3, vue Gates §2.4, points à ratifier et dettes §2.5) ainsi que les seuils d'escalade (§1.6) sont des **vues dérivées, à régénérer intégralement depuis la section 3 à chaque revue** — jamais à éditer ponctuellement de manière isolée. Une édition ponctuelle d'une vue de synthèse sans réouverture de la section 3 est la cause type d'une désynchronisation entre la matrice et le registre détaillé.
+**Source de vérité unique** : la section 3 (registre détaillé par axe) est la source de vérité unique des cotations de ce registre (probabilité, impact, criticité, classe de conséquence, statut, confiance). Les vues de synthèse de la section 2 (matrice §2.1, top risques §2.2, vue Hypothèses §2.3, vue des points de décision §2.4, points à ratifier et dettes §2.5) ainsi que les seuils d'escalade (§1.6) sont des **vues dérivées, à régénérer intégralement depuis la section 3 à chaque revue** — jamais à éditer ponctuellement de manière isolée. Une édition ponctuelle d'une vue de synthèse sans réouverture de la section 3 est la cause type d'une désynchronisation entre la matrice et le registre détaillé.
 
 ---
 
@@ -1110,14 +1110,14 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 
 Cette section porte les relations entre entrées qui touchent plusieurs axes ou se conditionnent mutuellement. Chaque entrée reste inscrite une seule fois dans la section 3, sous l'axe où elle est classée ; ce qui suit ne duplique aucune entrée.
 
-- **P-07 ↔ P-08** — le MVP unique n'isole pas l'apprentissage produit par pilier (P-07, risque assumé par l'opérateur), et la télémétrie censée compenser cet effet en mesurant chaque pilier séparément n'est pas opérationnalisable en l'état documenté (P-08). La mitigation prévue pour l'un est précisément ce que l'autre empêche de fonctionner : une dépendance de mitigation non satisfaite, pas un doublon.
-- **T-04 (reclaim-in-place)** porte trois faces distinctes sur trois axes : la résolution de sécurité elle-même (axe technique), le sort RGPD du contenu de la coquille reprise (enveloppé par le gate juriste EU, J-01), et son statut de point à ratifier par l'opérateur (gouvernance de build). Les trois faces sont nommées dans l'entrée T-04 ; elles ne constituent pas trois risques séparés.
+- **P-07 ↔ P-08** — le MVP unique n'isole pas l'apprentissage produit par pilier (P-07, risque assumé par le responsable produit), et la télémétrie censée compenser cet effet en mesurant chaque pilier séparément n'est pas opérationnalisable en l'état documenté (P-08). La mitigation prévue pour l'un est précisément ce que l'autre empêche de fonctionner : une dépendance de mitigation non satisfaite, pas un doublon.
+- **T-04 (reclaim-in-place)** porte trois faces distinctes sur trois axes : la résolution de sécurité elle-même (axe technique), le sort RGPD du contenu de la coquille reprise (enveloppé par la validation juridique EU, J-01), et son statut de point à ratifier (décision produit, gouvernance de build). Les trois faces sont nommées dans l'entrée T-04 ; elles ne constituent pas trois risques séparés.
 - **T-07 ↔ J-05** — la complexité du mécanisme de cascade d'effacement et la qualification juridique du hard-delete inconditionnel de l'espace personnel portent sur le même sujet (article 17 du RGPD) sous deux angles distincts : l'un implémente, l'autre qualifie. Une clarification sur l'un peut modifier les contraintes de l'autre.
 - **D-01 (nomenclature)** est la face délai-coût d'une incohérence documentée directement par la roadmap d'entrée en build — ce registre n'ajoute rien à ce constat, il le reprend comme point de pilotage.
-- **P-01 (gate marché) ↔ D-03** — la dépendance cumulative du jalon cloud (socle local stable et gate marché favorable) est la même contrainte lue depuis l'angle produit (la décision elle-même) et depuis l'angle délai-coût (la condition d'entrée dans le jalon suivant).
+- **P-01 (décision marché) ↔ D-03** — la dépendance cumulative du jalon cloud (socle local stable et décision marché favorable) est la même contrainte lue depuis l'angle produit (la décision elle-même) et depuis l'angle délai-coût (la condition d'entrée dans le jalon suivant).
 - **D-04 / D-05 (codes à cheval)** renvoient, sur l'axe technique, aux mêmes réalités que celles couvertes par T-05 (câblage de l'autorisation) et T-19 / T-25 (invariants et migration multi-versions) : la double assignation calendaire documentée par la roadmap ne crée pas de risque technique supplémentaire, elle en complique seulement le suivi de planning.
 - **P-14 → P-02 / P-03 / P-04 / P-05 / P-06** — la dépendance à la cohorte pilote est une précondition dure de la mesure des cinq hypothèses produit : le cahier des charges pose que les cinq hypothèses se démontrent auprès d'une cohorte pilote d'utilisateurs réels recrutés. Sans cohorte recrutée, aucune des hypothèses H1 à H5 n'est mesurable, qu'il s'agisse de l'hypothèse centrale (P-03, impact critique) ou des autres, quel que soit l'état de son instrumentation propre.
-- **Chaîne de dépendance dominante de l'axe produit** : P-14 (cohorte) → P-08 (instrumentation) → P-02 à P-06 (hypothèses) → P-01 (gate marché). P-14 et P-08 sont les deux préconditions maîtrisables en interne à traiter en priorité.
+- **Chaîne de dépendance dominante de l'axe produit** : P-14 (cohorte) → P-08 (instrumentation) → P-02 à P-06 (hypothèses) → P-01 (décision marché). P-14 et P-08 sont les deux préconditions maîtrisables en interne à traiter en priorité.
 
 ---
 
@@ -1160,7 +1160,7 @@ Le corps de ce registre cite les sources ci-dessous par leur identifiant ou leur
 - Procédure des droits des invités
 
 **Artefacts de planification** :
-- Roadmap d'entrée en build — séquence de jalons, gates, préalables bloquants, réconciliation de nomenclature
+- Roadmap d'entrée en build — séquence de jalons, points de décision, préalables bloquants, réconciliation de nomenclature
 - Cahier des charges — périmètre fonctionnel, hypothèses de validation (H1 à H5), phasage, modèle de prix
 
 ---
@@ -1171,7 +1171,7 @@ Une partie des risques de l'axe délai-coût est tracée principalement au docum
 
 De même, la provenance de certains points juridiques n'a pas été recoupée à une source primaire au-delà de la mention documentée dans le calendrier juridique.
 
-Ces traçabilités doivent être rouvertes à la source avant toute décision engageante : arbitrage financier, ratification opérateur, engagement contractuel.
+Ces traçabilités doivent être rouvertes à la source avant toute décision engageante : arbitrage financier, ratification produit, engagement contractuel.
 
 **Statut de cette version** : v1 — baseline d'évaluation. Toutes les cotations portées par ce registre sont au statut "brouillon expert — à valider en comité des risques" (voir section 1.5) et doivent être confirmées avant tout usage comme fondement d'une décision engageante.
 

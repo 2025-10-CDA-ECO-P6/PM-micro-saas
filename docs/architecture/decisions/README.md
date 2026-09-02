@@ -16,14 +16,6 @@ sous **ADR-009**.
 
 ---
 
-## Note sur le champ « Findings liés »
-
-Chaque ADR de ce registre porte en en-tête un champ **Findings liés**, qui liste des codes (par exemple `CR-1`, `F-09`, `A-03`) issus des deux rapports d'audit de conception menés en juin 2026. Ces rapports ont été **supprimés du corpus comme périmés** (`docs/context/cahier-des-charges.md`, §12.1 : « leurs findings ne sont plus fiables », « ils ne sont pas destinés à être restaurés »).
-
-**Ces codes ne sont donc plus résolubles dans le corpus courant.** Le champ conserve une valeur de trace historique — il documente que la décision a une origine d'audit — mais ne constitue plus un renvoi actionnable : aucun document du corpus ne définit plus ce que chaque code désignait. Un identifiant public standard cité aux côtés d'un finding (par exemple `CWE-79/312`) reste, lui, résoluble — seuls les codes internes de la forme `X-NN` sont concernés par cette note.
-
----
-
 ## Index
 
 | Numéro | Titre | Nature | Statut | Date |
@@ -54,7 +46,7 @@ Chaque ADR de ce registre porte en en-tête un champ **Findings liés**, qui lis
 | Statut | Signification |
 |--------|---------------|
 | **Accepté** | Décision validée et appliquée à la conception courante |
-| **Proposé** | Décision soumise, en attente de validation par l'opérateur |
+| **Proposé** | Décision soumise, en attente de validation |
 | **Remplacé** | Décision remplacée par un ADR ultérieur (lien vers le successeur) |
 | **Déprécié** | Décision obsolète sans successeur direct |
 

@@ -2,10 +2,8 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
-- **Décideur** : opérateur (validation explicite, session de cadrage P1)
-- **Findings liés** : finding STRUCTURAL (2026-06-09 — graphe de cascade non spécifié), C-09, C-04, F-08, B-05
 
-> **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03, audit conception pure 2026-06.)*
+> **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03.)*
 
 > *Annotation du 2026-06-12 — deux natures distinctes : (1) renommage `Campaign→Space` (à confirmer à l'entrée en build, ADR-018) ; (2) règle nouvelle : purge inconditionnelle de l'espace `PERSONAL` à `UserDeleted` sous invariant de reprise (claim/idempotence/reclaim — voir §Exception PERSONAL dans `UserAnonymized` et §Saga-événements).*
 

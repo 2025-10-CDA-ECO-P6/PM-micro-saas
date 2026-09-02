@@ -6,7 +6,7 @@
 
 ## Lecteur cible et usage de ce document
 
-Ce document s'adresse à l'**opérateur / pilote produit** de Haversack — celui qui arbitre la trajectoire business (post-MVP, levée éventuelle, priorisation du plan d'étude marché). Il ne s'adresse pas à un exécutant technique : aucun artefact de code n'y figure, conformément à la phase de conception du repo.
+Ce document s'adresse au **responsable produit** de Haversack — celui qui arbitre la trajectoire business (post-MVP, levée éventuelle, priorisation du plan d'étude marché). Il ne s'adresse pas à un exécutant technique : aucun artefact de code n'y figure, conformément à la phase de conception du repo.
 
 **Ce que ce document fait** : décomposer la méthode de calcul du coût infra, du dimensionnement de marché et de la stratégie go-to-market (GTM), en s'appuyant strictement sur le corpus de conception existant (ADR-005, cahier des charges §12.4/§2.4, vision produit, MoSCoW).
 

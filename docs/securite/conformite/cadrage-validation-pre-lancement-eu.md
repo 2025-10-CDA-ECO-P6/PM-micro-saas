@@ -23,9 +23,9 @@ Ce cadrage consolide ces points épars en **une liste unique**, énumérée une 
 | 2 | Art. 28 + périmètre DPA (contenu `PERSONAL` décrivant des tiers inclus) | ADR-012 (pt 2) · ADR-013 §5 + (pt 2) · ADR-018 (Conformité conçue, non certifiée, pt 2, l.237) | à valider juriste |
 | 3 | Mise en balance de l'intérêt légitime (§3(c) + `display_name` invité) | ADR-012 (pt 3, §3(c)) · ADR-013 (pt 3) | à valider juriste |
 | 4 | Art. 17 — hard-delete inconditionnel de l'espace `PERSONAL` | ADR-012 (pt 4) · ADR-018 (pt 1, l.233-237 et complément l.252) | à valider juriste |
-| 5 | Facette RGPD — Option A « reclaim-in-place » (coquille non vérifiée évincée) | ADR-015 §2.3 (l.121-145, 331-332, 355) — routé depuis les travaux d'identité et d'accès joueur | à valider juriste |
+| 5 | Facette RGPD — Option A « reclaim-in-place » (coquille non vérifiée évincée) | ADR-015 §2.3 — routé depuis les travaux d'identité et d'accès joueur | à valider juriste |
 
-Les 5 axes sont chacun un **gate humain hors CI** : aucun ne peut être vérifié par un test automatisé, un linter ou une build Haversack — la dépendance est externe (avis juriste), au même titre que les dépendances **NON VÉRIFIABLE IN BUILD** déjà nommées dans ADR-015/016/017 pour la confiance aux fournisseurs d'identité. Voir section *Gate humain hors CI* en fin de document.
+Les 5 axes sont chacun **non vérifiables en CI** : aucun ne peut être vérifié par un test automatisé, un linter ou une build Haversack — la dépendance est externe (avis juriste), au même titre que les dépendances **NON VÉRIFIABLE IN BUILD** déjà nommées dans ADR-015/016/017 pour la confiance aux fournisseurs d'identité. Voir section *Non vérifiable en CI* en fin de document.
 
 ---
 
@@ -99,9 +99,9 @@ Les 5 axes sont chacun un **gate humain hors CI** : aucun ne peut être vérifi�
 **Énoncé** : lorsqu'une preuve OAuth (email réputé vérifié par le fournisseur d'identité) reprend une **coquille de compte non vérifiée préexistante** portant la même adresse email (Option A « reclaim-in-place » — bascule `emailVerified`, neutralisation du credential préexistant, liaison fédérée), que devient le **contenu éventuel** (notes, documents) déjà rattaché à cette coquille au moment de la reprise ? Ce point est une facette RGPD distincte de la ratification sécurité de l'Option A elle-même (anti-hijacking, CWE-287, invariant 1 email-unique) — celle-ci n'est pas rouverte ici.
 
 **Corpus source** :
-- ADR-015 §2.3 (*Résolution — email OAuth face à un compte préexistant NON vérifié*), l.121-145 : pose l'Option A, explicite le découpage du routage (facette RGPD hors périmètre sécurité de l'ADR).
-- ADR-015, tableau de synthèse, l.331-332 : « Reclaim-in-place (§2.3) — facette RGPD (sort du contenu éventuel de la coquille non vérifiée évincée) | RGPD | cadrage juridique interne ».
-- ADR-015, l.355 (*[À TRANCHER — à ratifier opérateur]*) : résume la résolution proposée et le double routage (facette RGPD → cadrage juridique interne ; opération de domaine dédiée → build B1.5).
+- ADR-015 §2.3 (*Résolution — email OAuth face à un compte préexistant NON vérifié*) : pose l'Option A, explicite le découpage du routage (facette RGPD hors périmètre sécurité de l'ADR).
+- ADR-015 § Dettes nommées (non silencieuses) : recense la facette RGPD du reclaim-in-place (sort du contenu éventuel de la coquille non vérifiée évincée) comme renvoyée au cadrage juridique interne, distincte de l'opération de domaine dédiée renvoyée à B1.5.
+- ADR-015 § Points à trancher (*[À TRANCHER — PRODUIT]*) : résume la résolution proposée et le double routage (facette RGPD → cadrage juridique interne ; opération de domaine dédiée → build B1.5).
 
 **Dépendance de build** : ce point ne peut être qualifié indépendamment de l'opération de domaine dédiée `ReclaimViaFederatedProof()` (ou équivalent), qui reste à spécifier au build **B1.5** — nom, signature, invariants précis non encore fixés en conception. La validation juridique de la facette RGPD peut porter sur le principe (neutralisation d'un contenu rattaché à une coquille non prouvée) indépendamment du détail d'implémentation de B1.5, mais la mise en œuvre technique du traitement retenu (conservation, suppression, ou anonymisation du contenu de la coquille évincée) dépend de cette opération.
 
@@ -111,11 +111,11 @@ Les 5 axes sont chacun un **gate humain hors CI** : aucun ne peut être vérifi�
 
 ---
 
-## Gate humain hors CI
+## Non vérifiable en CI
 
-Les 5 axes ci-dessus partagent une propriété : aucun n'est vérifiable par la CI Haversack, quelle que soit la maturité du build. Il ne s'agit pas d'un cas de test manquant ou d'une dette technique — c'est une dépendance structurelle à un avis externe (juriste), de même nature que les dépendances déjà nommées **NON VÉRIFIABLE IN BUILD** dans ADR-015 (§2.2, fiabilité du claim d'email vérifié d'un fournisseur OAuth), ADR-016 et ADR-017 (maillons de confiance externes à la migration/sérialisation locale). Dans ces trois ADR, le gate applicatif qui *encadre* la dépendance externe reste testable en CI (via un provider mocké) — mais la dépendance elle-même ne l'est pas. Le parallèle ici est le même : un mécanisme technique peut encadrer chacun des 5 axes (attestation d'âge, DPA signé, test de mise en balance documenté, invariant de figement `deletion_requested_at`, opération `ReclaimViaFederatedProof`), mais la **qualification légale** sous-jacente à chaque axe reste, par nature, un gate humain hors CI.
+Les 5 axes ci-dessus partagent une propriété : aucun n'est vérifiable par la CI Haversack, quelle que soit la maturité du build. Il ne s'agit pas d'un cas de test manquant ou d'une dette technique — c'est une dépendance structurelle à un avis externe (juriste), de même nature que les dépendances déjà nommées **NON VÉRIFIABLE IN BUILD** dans ADR-015 (§2.2, fiabilité du claim d'email vérifié d'un fournisseur OAuth), ADR-016 et ADR-017 (maillons de confiance externes à la migration/sérialisation locale). Dans ces trois ADR, le gate applicatif qui *encadre* la dépendance externe reste testable en CI (via un provider mocké) — mais la dépendance elle-même ne l'est pas. Le parallèle ici est le même : un mécanisme technique peut encadrer chacun des 5 axes (attestation d'âge, DPA signé, test de mise en balance documenté, invariant de figement `deletion_requested_at`, opération `ReclaimViaFederatedProof`), mais la **qualification légale** sous-jacente à chaque axe reste, par nature, non vérifiable en CI.
 
-Ce cadrage constitue, au même titre que les autres préalables non réalisables dans un repo documentaire (confirmation des 8 ADR pré-implémentation, ordre de build C#-first, gate de validation marché, etc.), un jalon de suivi porté hors de ce repo. Ce document en est le contenu détaillé — c'est ici que les 5 axes sont énoncés et sourcés, un renvoi de suivi externe ne ferait que les recopier.
+Ce cadrage constitue, au même titre que les autres préalables non réalisables dans un repo documentaire (confirmation des 8 ADR pré-implémentation, ordre de build C#-first, décision marché, etc.), un jalon de suivi porté hors de ce repo. Ce document en est le contenu détaillé — c'est ici que les 5 axes sont énoncés et sourcés, un renvoi de suivi externe ne ferait que les recopier.
 
 ---
 

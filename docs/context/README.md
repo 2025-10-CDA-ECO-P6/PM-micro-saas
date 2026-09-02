@@ -28,7 +28,7 @@ divergence.
 
 ## Autre document du dossier
 
-- [note-business-gtm.md](note-business-gtm.md) — cadrage du coût d'infrastructure, du dimensionnement de marché et de la stratégie go-to-market, à destination de l'opérateur / pilote produit.
+- [note-business-gtm.md](note-business-gtm.md) — cadrage du coût d'infrastructure, du dimensionnement de marché et de la stratégie go-to-market, à destination du responsable produit.
 
 ---
 

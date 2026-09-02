@@ -257,14 +257,14 @@ Scénario : Un joueur ne voit pas un document privé
 
 ### US-04-04 — Taguer un document
 
-**Priorité** : Should Have — **confirmée** (arbitrage opérateur, cf. UC-04 § Tags)
+**Priorité** : Should Have — **confirmée** (arbitrage produit, cf. UC-04 § Tags)
 
 **En tant que** MJ,  
 **je veux** associer librement des tags à mes documents pour les organiser selon mes propres catégories,  
 **afin de** structurer mon contenu comme je l'entends, indépendamment de tout dossier, type ou lien — et, une fois la recherche par tag disponible, de les retrouver par thème.
 
 **Notes de conception** :
-- **Résolution de l'arbitrage opérateur** : la fonction tag répond à un besoin propre d'organisation du MJ, indépendant de la recherche — le MJ en fait ce qu'il veut. Ce n'est pas une fonction subordonnée au filtrage en recherche : elle a sa propre valeur d'usage, même sans recherche par tag disponible. La priorité `Should Have` est confirmée sur cette base (UC-04 § Tags, § Règles métier).
+- **Résolution de l'arbitrage** : la fonction tag répond à un besoin propre d'organisation du MJ, indépendant de la recherche — le MJ en fait ce qu'il veut. Ce n'est pas une fonction subordonnée au filtrage en recherche : elle a sa propre valeur d'usage, même sans recherche par tag disponible. La priorité `Should Have` est confirmée sur cette base (UC-04 § Tags, § Règles métier).
 - Les tags sont associés directement au document. Un document peut en porter zéro, un ou plusieurs.
 - Le MJ crée librement de nouveaux tags à la volée depuis l'éditeur de document et les retire à tout moment ; aucune taxonomie, hiérarchie ou structure n'est imposée par l'application.
 - Le filtrage par tag en recherche (UC-14 A3) reste `Could Have — hors MVP` : il constitue un usage complémentaire et différé des tags, pas leur justification. Un document sans tags reste pleinement utilisable.

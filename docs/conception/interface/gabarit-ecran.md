@@ -573,7 +573,7 @@ Fonctions disponibles localement (non désactivées) :
     (US-06 §Questions ouvertes)
   [SOUS-SPÉCIFIÉ — S9 §Persistance des notes invité inter-sessions] la mécanique de récupération
     des notes PLAYER_PRIVATE d'un invité via un nouveau lien est évoquée dans UC-06 §Règles métier
-    mais non entièrement spécifiée — relève de remédiation corpus
+    mais non entièrement spécifiée — trou de corpus
 ```
 
 *Contre-exemple d'absence au niveau section — pour un écran d'espace personnel : les sections conditionnelles « Modes » et « Partage / visibilité » ne se déclenchent pas (ni modes de session, ni frontière joueur) ; elles n'apparaissent donc pas dans la fiche — on ne les note jamais « S.O. » (AR-14).*
