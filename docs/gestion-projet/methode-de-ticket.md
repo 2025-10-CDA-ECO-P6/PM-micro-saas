@@ -69,7 +69,7 @@ Trois axes orthogonaux, à valeurs fermées, chacun ancré sur une source du cor
 
 Les deux points de décision qui séparent ces jalons — `[DÉCISION MARCHÉ]` et `[VALIDATION JURIDIQUE EU]` — ne sont pas des valeurs de cet axe : `roadmap-entree-build.md §1` les qualifie de `NON-VERIFIABLE-IN-BUILD`, donc par construction non vérifiables par une tâche de code, donc par aucun ticket de cette taxonomie.
 
-**Par couche** — dérivée des projets .NET nommés par [`structure-projets.md §3`](../architecture/structure-projets.md) et de la couche mode local décrite par [`structure-projets.md §7`](../architecture/structure-projets.md) :
+**Par couche** — dérivée des projets .NET nommés par [`structure-projets.md §3`](../architecture/structure-projets.md), de la couche mode local décrite par [`structure-projets.md §7`](../architecture/structure-projets.md), et du frontend Angular décrit par sa sous-section nommée [`structure-projets.md, § Frontend : Angular SPA + Angular SSR/prerender`](../architecture/structure-projets.md) — nommée plutôt que renvoyée à `§7`, dont le titre parle du mode local seul quand l'interface qu'elle décrit déborde ce périmètre dès J2 (dérogation structurelle de [`guide-conventions-et-dod.md §8.2`](guide-conventions-et-dod.md)) :
 
 | Valeur | Ancrage |
 |---|---|
@@ -80,8 +80,11 @@ Les deux points de décision qui séparent ces jalons — `[DÉCISION MARCHÉ]` 
 | Haversack.Presentation.Api | `structure-projets.md §3` |
 | Haversack.Presentation.Landing | `structure-projets.md §3` |
 | Mode local TypeScript | `structure-projets.md §7` |
+| Interface | `structure-projets.md, § Frontend : Angular SPA + Angular SSR/prerender` |
 
-Cet axe s'arrête au grain du projet .NET, pas à celui du namespace de bounded context (`IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct`, `SharedKernel`). Ce grain plus fin vit déjà dans le champ `Périmètre d'écriture` de chaque tâche du plan — le reproduire ici en valeurs de libellé recopierait une information que le ticket pointe déjà par son champ `Tâche de plan`, plutôt que de la compléter.
+La valeur `Interface` couvre les tâches dont le `Périmètre d'écriture` est composé uniquement de fiches d'écran de wireframe — le frontend Angular partagé par l'application et la landing page, seule couche du plan qui ne se rattache à aucun des six projets .NET ci-dessus.
+
+Cet axe s'arrête, côté serveur, au grain du projet .NET, pas à celui du namespace de bounded context (`IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct`, `SharedKernel`) ; côté client, il s'arrête de même au grain de la couche Interface, pas à celui de la fiche d'écran. Dans les deux cas, ce grain plus fin vit déjà dans le champ `Périmètre d'écriture` de chaque tâche du plan — le reproduire ici en valeurs de libellé recopierait une information que le ticket pointe déjà par son champ `Tâche de plan`, plutôt que de la compléter.
 
 **Par nature** — dérivée des niveaux et des axes transverses de [`cahier-strategie-test-et-recette.md §3`](../test/cahier-strategie-test-et-recette.md) :
 
