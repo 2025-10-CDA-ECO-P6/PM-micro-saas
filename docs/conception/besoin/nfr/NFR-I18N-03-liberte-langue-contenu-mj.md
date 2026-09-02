@@ -104,7 +104,7 @@ une langue fictive doit être aussi cherchable qu'un titre en français.
 
 - [UC-03 — Structurer un scénario](../usecases/UC-03-structurer-scenario.md) — saisie
   de contenu narratif pouvant être rédigé dans n'importe quelle langue.
-- [UC-04 — Gérer les documents d'une campagne](../usecases/UC-04-gerer-documents-campagne.md)
+- [UC-04 — Gérer les documents d'une campagne](../usecases/UC-04-gerer-documents-espace.md)
   — création, nommage et organisation de documents sans contrainte de langue.
 - [UC-06 — Vue session](../usecases/UC-06-vue-session.md) — affichage du contenu du MJ
   en cours de partie, y compris les titres et notes en langue étrangère ou fictive.
@@ -119,7 +119,7 @@ une langue fictive doit être aussi cherchable qu'un titre en français.
 **User stories servies :**
 
 - [US-UC-03 — Structurer un scénario](../user-stories/US-UC-03-structurer-scenario.md)
-- [US-UC-04 — Gérer les documents d'une campagne](../user-stories/US-UC-04-gerer-documents-campagne.md)
+- [US-UC-04 — Gérer les documents d'une campagne](../user-stories/US-UC-04-gerer-documents-espace.md)
 - [US-UC-06 — Vue session](../user-stories/US-UC-06-vue-session.md)
 - [US-UC-07 — Création à la volée en session](../user-stories/US-UC-07-creation-volee-session.md)
 - [US-UC-08 — Partager une information aux joueurs](../user-stories/US-UC-08-partager-information.md)

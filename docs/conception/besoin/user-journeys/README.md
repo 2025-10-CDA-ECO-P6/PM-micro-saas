@@ -24,6 +24,7 @@ Chaque fichier contient quatre sections :
 | Nadia | MJ occasionnelle | Score bas sur tout ce qui demande une mémoire de l'outil |
 | Sonia | MJ convention, one-shots | Score bas sur les flux de création de campagne |
 | Antoine | MJ avancé, multi-campagnes | Score bas sur l'absence de structure typée |
+| Rémi | MJ papier, résistant au numérique | Score bas sur toute reconstruction complète de son organisation dans l'app |
 | Lucas | Joueur, pas d'outil supplémentaire | Score bas sur toute demande de compte ou d'inscription |
 
 ---
@@ -35,15 +36,15 @@ Chaque fichier contient quatre sections :
 | UC-01 | Mode local sans compte | Must Have | [UJ-UC-01](UJ-UC-01-mode-local-sans-compte.md) | [US-UC-01](../user-stories/US-UC-01-mode-local-sans-compte.md) |
 | UC-02 | Créer un espace de jeu | Must Have | [UJ-UC-02](UJ-UC-02-creer-espace-jeu.md) | [US-UC-02](../user-stories/US-UC-02-creer-espace-jeu.md) |
 | UC-03 | Structurer un scénario | Must Have | [UJ-UC-03](UJ-UC-03-structurer-scenario.md) | [US-UC-03](../user-stories/US-UC-03-structurer-scenario.md) |
-| UC-04 | Gérer les documents | Must Have | [UJ-UC-04](UJ-UC-04-gerer-documents-campagne.md) | [US-UC-04](../user-stories/US-UC-04-gerer-documents-campagne.md) |
+| UC-04 | Gérer les documents | Must Have | [UJ-UC-04](UJ-UC-04-gerer-documents-espace.md) | [US-UC-04](../user-stories/US-UC-04-gerer-documents-espace.md) |
 | UC-05 | Organiser les dossiers | Must Have | [UJ-UC-05](UJ-UC-05-organiser-contenu-dossiers.md) | [US-UC-05](../user-stories/US-UC-05-organiser-contenu-dossiers.md) |
 | UC-06 | Vue session | Must Have | [UJ-UC-06](UJ-UC-06-vue-session.md) | [US-UC-06](../user-stories/US-UC-06-vue-session.md) |
 | UC-07 | Création à la volée | Must Have | [UJ-UC-07](UJ-UC-07-creation-volee-session.md) | [US-UC-07](../user-stories/US-UC-07-creation-volee-session.md) |
 | UC-08 | Partager une information | Must Have | [UJ-UC-08](UJ-UC-08-partager-information.md) | [US-UC-08](../user-stories/US-UC-08-partager-information.md) |
 | UC-09 | Accès session joueur | Must Have | [UJ-UC-09](UJ-UC-09-acces-session-joueur.md) | [US-UC-09](../user-stories/US-UC-09-acces-session-joueur.md) |
 | UC-10 | Compte cloud | Must Have | [UJ-UC-10](UJ-UC-10-compte-cloud.md) | [US-UC-10](../user-stories/US-UC-10-compte-cloud.md) |
-| UC-11 | Gérer les membres | Should Have | [UJ-UC-11](UJ-UC-11-gerer-membres-campagne.md) | [US-UC-11](../user-stories/US-UC-11-gerer-membres-campagne.md) |
-| UC-12 | Consulter sa campagne en tant que joueur (vue post-accès) | Should Have | [UJ-UC-12](UJ-UC-12-rejoindre-campagne.md) | [US-UC-12](../user-stories/US-UC-12-rejoindre-campagne.md) |
+| UC-11 | Gérer les membres | Should Have | [UJ-UC-11](UJ-UC-11-gerer-membres-espace-partage.md) | [US-UC-11](../user-stories/US-UC-11-gerer-membres-espace-partage.md) |
+| UC-12 | Consulter sa campagne en tant que joueur (vue post-accès) | Should Have | [UJ-UC-12](UJ-UC-12-consulter-espace-joueur.md) | [US-UC-12](../user-stories/US-UC-12-consulter-espace-joueur.md) |
 | UC-13 | Scénario réutilisable | Should Have — hors première livraison | [UJ-UC-13](UJ-UC-13-scenario-reutilisable.md) | [US-UC-13](../user-stories/US-UC-13-scenario-reutilisable.md) |
 | UC-14 | Recherche | Should Have | [UJ-UC-14](UJ-UC-14-recherche.md) | [US-UC-14](../user-stories/US-UC-14-recherche.md) |
 

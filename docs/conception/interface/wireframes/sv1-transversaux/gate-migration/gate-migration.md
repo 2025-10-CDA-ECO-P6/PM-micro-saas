@@ -165,7 +165,11 @@ hiérarchie de lecture à distance :
   priorité 2 — zone d'avertissement sur la configuration de vue session
                (information non bloquante mais structurante)
   priorité 3 — zone de confirmation explicite
-  source : NFR-ACC-04
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -177,8 +181,9 @@ Sources : UC-01 A1 ; UC-10 §Scénario nominal (inscription depuis le mode local
           UC-10 E5 (échec ou interruption de migration) ;
           UC-10 §Règles métier (migration des données locales — espace par espace,
           tout-ou-rien par espace, session LIVE à clôturer, config vue session recréée) ;
-          S4 §Gate de migration local→cloud ; S3 §Gate de migration local→cloud ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          S4 §Gate de migration local→cloud ;
+          S3 (nœud « Gate de migration local→cloud » du graphe de navigation) ;
+          NFR-ACC-02 ;
           châssis S7 (zoning.md §S7)
 ```
 

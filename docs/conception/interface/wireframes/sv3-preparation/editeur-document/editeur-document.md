@@ -89,8 +89,8 @@ Intention : le MJ crée ou modifie un document dans son espace — en lui donnan
 [ ZONE DE VISIBILITÉ ET MÉTADONNÉES ]
   type     : formulaire
   rôle     : configuration de la visibilité du document (privé MJ par défaut,
-             visible par les joueurs, ou personnelle joueur) ; dossier de rattachement ;
-             tags optionnels
+             visible par les joueurs, ou note de session personnelle joueur) ; dossier
+             de rattachement ; tags optionnels
   priorité : secondaire-configurable
   visibilité : MJ seul
   ancrage  : UC-04 §Scénario nominal (étape 5 — visibilité, tags) ; UC-04 §Règles métier
@@ -183,10 +183,11 @@ Intention : le MJ crée ou modifie un document dans son espace — en lui donnan
   la visibilité et les documents liés s'affichent selon ce qui a été enregistré
 
 état erreur (perte de connexion en mode cloud) :
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document ; NFR-OFF-04] le comportement de l'éditeur en cas de
-  perte de connexion (sauvegarde automatique locale, indicateur de brouillon, reprise)
-  n'est pas décrit dans le corpus au-delà de UC-03 E2 (conserve les données localement
-  si possible) ; cette fiche ne le précise pas davantage
+  le contenu en cours d'édition est conservé dans l'interface ; une notification non
+  bloquante indique que la synchronisation est en attente ; le MJ peut continuer à
+  saisir et à modifier le contenu ; dès le retour de la connexion, les modifications
+  en attente sont synchronisées sans action du MJ, dans l'ordre de leur saisie
+  (NFR-OFF-05 — continuité d'édition en préparation cloud)
 ```
 
 ---
@@ -207,7 +208,11 @@ hiérarchie de lecture à distance :
   priorité 2 — zone de contenu libre (corps du document)
   priorité 3 — zone de propriétés structurées (si un type est sélectionné)
   priorité 4 — zone de visibilité et métadonnées
-  source : NFR-ACC-04
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -217,7 +222,7 @@ hiérarchie de lecture à distance :
 ```
 Sources : UC-04 ; UC-07 (création à la volée depuis la vue session) ;
           AR-11 (backlinks — recommandation révisable) ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ; NFR-OFF-05 ;
           châssis S7 (zoning.md §S7)
 ```
 
@@ -249,12 +254,11 @@ Fonctions cloud désactivées sur l'éditeur de document en mode local :
 ```
 Éléments différés (S8) :
   [HORS-MVP — moscow.md §Could Have] types de document personnalisés
-  [HORS-MVP — UC-13 §Statut] instanciation d'un scénario depuis la bibliothèque
+  [HORS-MVP — UC-13 en-tête] instanciation d'un scénario depuis la bibliothèque
     « Mes scénarios » (post-MVP — AR-08 révisé)
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document ; NFR-OFF-04] comportement de l'éditeur
-    en cas de perte de connexion (sauvegarde automatique locale, indicateur de brouillon,
-    reprise) — non décrit dans le corpus au-delà de UC-03 E2 ; point d'interview
-    produit non couvert par les décisions actuelles
+  RÉSOLU — le comportement de l'éditeur en cas de perte de connexion en préparation
+    cloud est désormais couvert par NFR-OFF-05 (continuité d'édition en préparation
+    cloud) ; voir §États §état erreur ci-dessus.
 ```

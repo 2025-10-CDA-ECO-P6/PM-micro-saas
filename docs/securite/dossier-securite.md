@@ -16,7 +16,7 @@
 
 Haversack fonctionne selon deux régimes d'exécution dont la frontière de sécurité est structurante :
 
-- **Régime local** : exécution dans le navigateur, persistance IndexedDB, **sans compte, sans entité `User`, sans jeton** (JWT ou autre). Aucune authentification n'existe dans ce régime (`identity-access.md`, agrégat / périmètre ; ADR-017 §4.5). La protection repose exclusivement sur la sanitisation côté client, la politique CSP et une information explicite de l'utilisateur (bandeaux), **sans chiffrement au repos**.
+- **Régime local** : exécution dans le navigateur, persistance IndexedDB, **sans compte, sans entité `User`, sans jeton** (JWT ou autre). Aucune authentification n'existe dans ce régime (`docs/conception/domain/identity-access.md`, agrégat / périmètre ; ADR-017 §4.5). La protection repose exclusivement sur la sanitisation côté client, la politique CSP et une information explicite de l'utilisateur (bandeaux), **sans chiffrement au repos**.
 - **Régime cloud** : serveur autoritaire, authentification, autorisation par jeton, base de données partagée (ADR-015).
 
 Le seul point de croisement entre les deux régimes est une **migration ponctuelle (« one-shot »)** du local vers le cloud (ADR-016) : il ne s'agit pas d'une synchronisation continue, ce qui borne strictement la surface d'attaque de la frontière de confiance à un seul mécanisme d'import.
@@ -29,9 +29,9 @@ Le régime local n'a **aucune authentification** (ADR-015 §Périmètre) : les m
 
 | Actif | Description | Ancre |
 |---|---|---|
-| Comptes utilisateurs | Email, hachage de mot de passe, `security_stamp`, jetons d'accès et de rafraîchissement | `identity-access.md` (agrégat `User`) ; ADR-015 |
-| Données joueur | Documents `PLAYER_PRIVATE`, personnages, notes | `content-library` / `session-conduct.md` |
-| Données invité | `GuestAccess.display_name`, `character_id`, adresse IP et journaux techniques | `space-management.md` (agrégat `GuestAccess`) ; ADR-013 |
+| Comptes utilisateurs | Email, hachage de mot de passe, `security_stamp`, jetons d'accès et de rafraîchissement | `docs/conception/domain/identity-access.md` (agrégat `User`) ; ADR-015 |
+| Données joueur | Documents `PLAYER_PRIVATE`, personnages, notes | `docs/conception/domain/content-library.md` / `docs/conception/domain/session-conduct.md` |
+| Données invité | `GuestAccess.display_name`, `character_id`, adresse IP et journaux techniques | `docs/conception/domain/space-management.md` (agrégat `GuestAccess`) ; ADR-013 |
 | Visibilité et partage | Niveaux `PUBLIC` / `GM_ONLY` / `PLAYER_PRIVATE` | ADR-014 |
 | Canal temps réel | Flux SignalR entre le meneur de jeu et les joueurs invités | ADR-004 |
 | Contenu narratif décrivant des tiers | Contenu pouvant qualifier Haversack de sous-traitant au sens de l'article 28 du RGPD | ADR-013 §5 |
@@ -47,7 +47,7 @@ Neuf surfaces d'attaque sont identifiées dans le corpus de conception.
 | **S1** — Authentification cloud | Identifiants, jetons JWT / rafraîchissement, réinitialisation de mot de passe | ADR-015 ; `config-securite-migration.md` |
 | **S2** — Liaison OAuth / fournisseurs fédérés | Google, Discord ; risque de préemption de compte (« pre-account-hijacking ») | ADR-015 §2 |
 | **S3** — API / autorisation | Référence directe non protégée (IDOR), appartenance ressource ↔ espace, fuite par lien retour | ADR-014 ; `contrat-openapi.md` |
-| **S4** — Canal temps réel invité | Anti-fuite SignalR, révocation en session | ADR-004 §Compléments post-revue ; ADR-014 §3 / §6 ; `session-conduct.md` (invariant 4, garde-fou n°3) |
+| **S4** — Canal temps réel invité | Anti-fuite SignalR, révocation en session | ADR-004 §Compléments post-revue ; ADR-014 §3 / §6 ; `docs/conception/domain/session-conduct.md` (invariant 4, règle métier n°3) |
 | **S5** — Stockage local | IndexedDB, XSS persistant, absence de chiffrement au repos, poste partagé | ADR-017 §4 ; `sanitisation-csp.md` |
 | **S6** — Migration et import local → cloud | Frontière de confiance, appropriation de poste partagé, revalidation | ADR-016 §2 / §3 / §4 |
 | **S7** — Import JSON local | Fichier externe non fiable importé en régime local | ADR-017 §4.3 ; `sanitisation-csp.md` §2 |
@@ -109,7 +109,7 @@ Les cases « — » signifient hors-périmètre du corpus consolidé pour cette 
 |---|---|---|
 | Information disclosure | Filtrage par message via la même politique d'accès aux ressources que l'API ; aucune diffusion de groupe indifférenciée | ADR-004 §Compléments post-revue ; ADR-014 §6 |
 | Spoofing | Jeton d'accès invité transmis hors chaîne de requête (« query-string ») | ADR-004 §Compléments post-revue |
-| Elevation of Privilege (révocation) | Déconnexion forcée du canal sur révocation ou expiration de l'accès invité | ADR-004 §Compléments post-revue ; `session-conduct.md` |
+| Elevation of Privilege (révocation) | Déconnexion forcée du canal sur révocation ou expiration de l'accès invité | ADR-004 §Compléments post-revue ; `docs/conception/domain/session-conduct.md` |
 
 ### S5 — Stockage local
 
@@ -177,7 +177,7 @@ Les quarante-cinq contre-mesures documentées dans le corpus sont regroupées ci
 |---|---|---|---|
 | 12 | Verrou anti-préemption de compte : liaison OAuth autorisée uniquement si l'email préexistant est prouvé vérifié, avec correspondance canonique | S2 / Spoofing | ADR-015 §2.3 |
 | 13 | Confiance accordée par fournisseur, conditionnée à la déclaration de vérification d'email (`email_verified` Google, `verified` Discord) et à la correspondance canonique | S2 / Spoofing | ADR-015 §2.2 |
-| 14 | Preuve d'identité alternative (ré-authentification récente auprès du fournisseur d'identité) exigée pour la définition d'un premier mot de passe sur un compte fédéré uniquement | S2 / Elevation of Privilege | ADR-015 §1.4 ; `identity-access.md` (règle métier n°6) |
+| 14 | Preuve d'identité alternative (ré-authentification récente auprès du fournisseur d'identité) exigée pour la définition d'un premier mot de passe sur un compte fédéré uniquement | S2 / Elevation of Privilege | ADR-015 §1.4 ; `docs/conception/domain/identity-access.md` (règle métier n°6) |
 | 15 | Rejet silencieux d'une liaison déjà existante, sans révélation d'existence | S2 / Information disclosure | ADR-015 §2.3 ; `contrat-openapi.md` §6 |
 | 16 | Mécanisme de reprise en place (« reclaim-in-place ») : bascule de l'indicateur de vérification d'email et neutralisation obligatoire du mot de passe préexistant avant liaison fédérée — **statut `[À TRANCHER — à ratifier opérateur]`, non acquis** | S2 / Elevation of Privilege | ADR-015 §2.3 |
 
@@ -188,7 +188,7 @@ Les quarante-cinq contre-mesures documentées dans le corpus sont regroupées ci
 | 17 | Point d'autorisation unique (`IResourceAccessPolicy.CanAccess`) composant appartenance et visibilité (`Document.CanBeReadBy`) | S3 / Elevation of Privilege | ADR-014 §3 |
 | 18 | Comportement de pipeline appliqué systématiquement sur toute requête portée par un espace, court-circuit 403/404 avant exécution du gestionnaire métier, sans vérification dupliquée | S3 / Elevation of Privilege | ADR-014 §3 |
 | 19 | Anti-fuite par visibilité sur le canal temps réel : le filtre de diffusion SignalR invoque la même politique d'autorisation par message ; un contenu `GM_ONLY` ou `PLAYER_PRIVATE` n'est jamais transmis à un tiers ; tests anti-fuite SignalR référencés sous le code de test **B8.2** | S4 / Information disclosure | ADR-014 §6 ; §Points à trancher ; ADR-004 §Compléments post-revue |
-| 20 | Règle uniforme de confidentialité `PLAYER_PRIVATE` réservée à l'auteur seul (meneur de jeu exclu, tous types de contenu confondus), appliquée sur tous les chemins y compris la résolution via une session | S3 / S4 Information disclosure | ADR-014 §7 ; `session-conduct.md` |
+| 20 | Règle uniforme de confidentialité `PLAYER_PRIVATE` réservée à l'auteur seul (meneur de jeu exclu, tous types de contenu confondus), appliquée sur tous les chemins y compris la résolution via une session | S3 / S4 Information disclosure | ADR-014 §7 ; `docs/conception/domain/session-conduct.md` |
 | 21 | Exclusion silencieuse des liens retour non lisibles par l'appelant | S3 / Information disclosure | ADR-014 §Fuite d'existence par backlink ; `contrat-openapi.md` §3.2 |
 | 22 | Filtres de requête globaux (dates de suppression et de purge, indicateur de suppression) appliqués sur tous les chemins de lecture, y compris la lecture par identifiant direct | S3 / Information disclosure | ADR-014 §2 ; ADR-011 §Invariant de visibilité du soft-delete |
 | 23 | Verrou anti-saut de privilège invité → utilisateur enregistré : la conversion conserve le périmètre de l'accès invité d'origine | S3 / Elevation of Privilege | ADR-014 §1 / §5 |
@@ -227,8 +227,8 @@ Les quarante-cinq contre-mesures documentées dans le corpus sont regroupées ci
 |---|---|---|---|
 | 37 | Toutes les clés étrangères en suppression restreinte (`RESTRICT`) ; la cascade est pilotée exclusivement par saga applicative, jamais par une cascade SQL silencieuse | S9 / Intégrité | ADR-011 §1 |
 | 38 | Sagas de suppression d'espace et d'anonymisation de compte : réservation exclusive, expiration récupérable, transaction unique, idempotence | S9 / Intégrité, garantie article 17 | ADR-011 §Séquences de saga |
-| 39 | Suppression physique définitive des documents `PLAYER_PRIVATE` (créés par l'utilisateur et rattachés à ses personnages incarnés) | S9 / Information disclosure (résidu) | ADR-012 §3(a) / §4 ; `identity-access.md` (garde-fou n°4) ; `session-conduct.md` (garde-fou n°8) |
-| 40 | Suppression physique inconditionnelle du contenu de l'espace personnel à la suppression de compte | S9 / Information disclosure | ADR-012 §2 / §Conséquences ; ADR-018 §Effacement de compte ; `identity-access.md` (invariant 3) |
+| 39 | Suppression physique définitive des documents `PLAYER_PRIVATE` (créés par l'utilisateur et rattachés à ses personnages incarnés) | S9 / Information disclosure (résidu) | ADR-012 §3(a) / §4 ; `docs/conception/domain/identity-access.md` (règle métier n°4, Règle F-08) ; `docs/conception/domain/session-conduct.md` (règle métier n°8, Règle F-08) |
+| 40 | Suppression physique inconditionnelle du contenu de l'espace personnel à la suppression de compte | S9 / Information disclosure | ADR-012 §2 / §Conséquences ; ADR-018 §Effacement de compte ; `docs/conception/domain/identity-access.md` (invariant 3) |
 | 41 | Purge des journaux de corrélation identifiant technique ↔ email au sein de la saga d'anonymisation, y compris sur la rétention de sauvegardes à 30 jours | S9 / Information disclosure | ADR-012 §5 |
 | 42 | Révocation des jetons actifs comme étape de la saga, sur anonymisation et sur suspension de compte | S9 / Elevation of Privilege (accès résiduel) | ADR-015 §3.6 ; ADR-012 §Conséquences |
 | 43 | Figement de la sélection des données à l'instant de la demande d'effacement, jeu de données matérialisé consommé sans recalcul, étape de relocation obligatoire | S9 / Tampering (cohérence temporelle) | ADR-012 §7 ; `requete-effacement-non-partage.md` §2 |
@@ -329,6 +329,6 @@ Ce dossier est une consolidation : il ne substitue son jugement à aucune décis
 
 Trois précisions ferment ce document :
 
-1. Les valeurs numériques figurant en annexe des décisions sources (paramètres Argon2id « 64 Mio / 3 itérations », seuils de limitation de débit « 20 requêtes pour 10 minutes », durée de réservation de purge « 1 heure ») sont **illustratives dans leurs documents d'origine** et n'ont pas été reprises comme valeurs retenues dans ce dossier. Seule la borne normative décidée est reproduite (par exemple : jeton d'accès ≤ 15 minutes) ; la valeur numérique fine reste renvoyée à son ticket d'implémentation (section 5.1).
+1. Les valeurs numériques figurant en annexe des décisions sources (paramètres Argon2id « 64 Mio / 3 itérations », seuils de limitation de débit « par-IP : 20 tentatives/min ; par-compte : 10 tentatives/min », durée de réservation de purge « 1 heure ») sont **illustratives dans leurs documents d'origine** et n'ont pas été reprises comme valeurs retenues dans ce dossier. Seule la borne normative décidée est reproduite (par exemple : jeton d'accès ≤ 15 minutes) ; la valeur numérique fine reste renvoyée à son ticket d'implémentation (section 5.1).
 2. Le mécanisme de reprise en place (« reclaim-in-place ») est présenté partout dans ce dossier avec son statut **non ratifié** ; il ne doit pas être lu comme une mesure acquise.
 3. Les lacunes signalées en section 5.5 ne sont pas des mesures acquises : L1 est un point ouvert que le corpus nomme lui-même ; L2 est une observation formulée à partir d'une absence de traitement, non une décision du corpus, et reste à confirmer par l'opérateur avant toute ouverture de ticket.

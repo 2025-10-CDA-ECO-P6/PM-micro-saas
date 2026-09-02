@@ -11,9 +11,9 @@
 
 ## Contexte
 
-La conception prévoyait initialement deux écosystèmes front distincts : Next.js pour la landing page (SSR/SEO) et Angular pour l'application principale (SPA). L'audit a identifié cette dualité comme une dette structurelle pour une équipe solo (finding G-04, H-07) : deux pipelines de build, deux ensembles de dépendances, deux styles de composants à maintenir.
+La conception prévoyait initialement deux écosystèmes front distincts : Next.js pour la landing page (SSR/SEO) et Angular pour l'application principale (SPA). L'audit a identifié cette dualité comme une dette structurelle pour une équipe solo : deux pipelines de build, deux ensembles de dépendances, deux styles de composants à maintenir.
 
-Par ailleurs, Blazor WASM n'avait jamais été évalué formellement alors que le backend est .NET/C#. Son évaluation était pertinente au regard du finding G-03 et de la question de l'exécution du domaine en mode local (ADR-001).
+Par ailleurs, Blazor WASM n'avait jamais été évalué formellement alors que le backend est .NET/C#. Son évaluation était pertinente au regard de la question de l'exécution du domaine en mode local (ADR-001).
 
 ---
 
@@ -40,13 +40,13 @@ Par ailleurs, Blazor WASM n'avait jamais été évalué formellement alors que l
 - Un seul écosystème front à maintenir : Angular pour les deux surfaces.
 - La mise en place du rendu SSR/prerender pour la landing Angular représente un effort de configuration (frameworks, routes statiques, hydratation).
 - Le mode local (ADR-001) reste à implémenter en TypeScript côté navigateur. Angular ne partage pas le domaine C# — cette conséquence du rejet de Blazor est explicitement assumée.
-- Le finding H-07 (dette double front dès J0) est résolu par cette décision.
+- La dette d'un double écosystème front dès J0 est résolue par cette décision.
 
 ---
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à une revue critique postérieure à cette décision, celle-ci est complétée comme suit, sans changer sa direction.
 
 - **La landing MVP utilise SSG / prerender statique**, déployable sur CDN, pas SSR dynamique. Le SSR dynamique est réservé à une éventuelle évolution future si du contenu dynamique est nécessaire.
 

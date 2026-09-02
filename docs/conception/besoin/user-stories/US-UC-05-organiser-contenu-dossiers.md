@@ -2,7 +2,7 @@
 
 ## Objectif utilisateur
 
-Permettre au MJ de structurer librement le contenu de sa campagne en dossiers nommés, d'associer un template par défaut pour accélérer la création de documents, et de déplacer des documents d'un dossier à l'autre. Les dossiers système créés automatiquement à la création de la campagne constituent le point de départ — ils sont renommables et supprimables comme n'importe quel dossier.
+Permettre au MJ de structurer librement le contenu de son espace en dossiers nommés, d'associer un template par défaut pour accélérer la création de documents, et de déplacer des documents d'un dossier à l'autre. Les dossiers système créés automatiquement à la création de l'espace constituent le point de départ — ils sont renommables et supprimables comme n'importe quel dossier.
 
 ---
 
@@ -28,7 +28,7 @@ Permettre au MJ de structurer librement le contenu de sa campagne en dossiers no
   - A3 : créer un document depuis un dossier (auto-placé + template appliqué)
   - A4 : document "non classé" → dossier virtuel invisible
   - A5 : dossier sans template → document créé vide
-  - A6 : dossiers système créés à création de campagne
+  - A6 : dossiers système créés à création d'espace
 
 ---
 
@@ -52,7 +52,7 @@ Permettre au MJ de structurer librement le contenu de sa campagne en dossiers no
 
 ```mermaid
 flowchart TD
-    A[Campagne créée] --> B[Dossiers système créés\nPersonnages, Joueurs, Scénarios, Notes\n+ dossier virtuel Non classés]
+    A[Espace créé] --> B[Dossiers système créés\nPersonnages, Joueurs, Scénarios, Notes\n+ dossier virtuel Non classés]
     B --> C{Action MJ}
 
     C -->|Créer un dossier| D[Saisit un nom\nchoisit un template optionnel]
@@ -62,7 +62,7 @@ flowchart TD
     C -->|Renommer un dossier| G[Saisit le nouveau nom\ny compris dossiers système]
     G --> H[renommage du dossier\nname]
 
-    C -->|Associer un template| I[Sélectionne un document marqué comme modèle réutilisable\nparmi les documents de la campagne]
+    C -->|Associer un template| I[Sélectionne un document marqué comme modèle réutilisable\nparmi les documents de l'espace]
     I --> J[Modèle associé au dossier]
 
     C -->|Supprimer un dossier| K{Dossier vide ?}
@@ -94,7 +94,7 @@ flowchart LR
     US0504[US-05-04\nSupprimer un dossier]
     US0505[US-05-05\nRéordonner les dossiers]
 
-    UC04[UC-04\nDocuments de campagne]
+    UC04[UC-04\nDocuments d'espace]
     UC13[UC-13\nGérer les templates]
 
     US0501 --> US0502
@@ -109,12 +109,12 @@ flowchart LR
 
 ## User stories
 
-### US-05-01 — Créer un dossier dans une campagne
+### US-05-01 — Créer un dossier dans un espace
 
 **Priorité** : Must Have
 
 **En tant que** MJ,  
-**je veux** créer un dossier nommé dans ma campagne,  
+**je veux** créer un dossier nommé dans mon espace,  
 **afin de** regrouper mes documents par thème ou catégorie.
 
 **Notes de conception** :
@@ -138,13 +138,13 @@ flowchart LR
 
 ```gherkin
 Scénario : Le MJ crée un dossier avec un nom valide
-  Étant donné que le MJ dispose d'une campagne
+  Étant donné que le MJ dispose d'un espace
   Quand il crée un dossier avec le nom "Factions"
-  Alors le dossier "Factions" est créé dans la campagne
+  Alors le dossier "Factions" est créé dans l'espace
   Et il apparaît en navigation
 
 Scénario : Le MJ tente de créer un dossier avec un nom vide
-  Étant donné que le MJ dispose d'une campagne
+  Étant donné que le MJ dispose d'un espace
   Quand il soumet la création d'un dossier avec un nom vide
   Alors la création est refusée
   Et un message d'erreur est affiché (E1)
@@ -157,7 +157,7 @@ Scénario : Le MJ tente de créer un dossier avec un nom vide
 **Priorité** : Must Have
 
 **En tant que** MJ,  
-**je veux** renommer n'importe quel dossier de ma campagne, y compris les dossiers système,  
+**je veux** renommer n'importe quel dossier de mon espace, y compris les dossiers système,  
 **afin d'** adapter les intitulés à mon système de jeu ou ma logique d'organisation.
 
 **Notes de conception** :
@@ -179,7 +179,7 @@ Scénario : Le MJ tente de créer un dossier avec un nom vide
 
 ```gherkin
 Scénario : Le MJ renomme un dossier système
-  Étant donné que la campagne dispose du dossier système "Personnages"
+  Étant donné que l'espace dispose du dossier système "Personnages"
   Quand le MJ le renomme en "Factions"
   Alors le dossier s'appelle "Factions" en navigation
   Et son flag isSystem reste true
@@ -249,7 +249,7 @@ Scénario : Template supprimé après association
 
 **En tant que** MJ,  
 **je veux** supprimer un dossier dont je n'ai plus besoin,  
-**afin de** garder une structure propre et lisible dans ma campagne.
+**afin de** garder une structure propre et lisible dans mon espace.
 
 **Notes de conception** :
 - E2 : suppression d'un dossier non vide → le MJ choisit entre (a) déplacer les documents vers un autre dossier, ou (b) laisser les documents dans "Non classés" (dossier virtuel).
@@ -307,19 +307,19 @@ Scénario : Le MJ supprime un dossier système
 **Notes de conception** :
 - Le mécanisme de classement conserve l'ordre des dossiers.
 - Question UX ouverte : drag-and-drop ou interface d'ordre numérique ? Voir questions ouvertes.
-- L'ordre est propre à la campagne — pas partagé entre campagnes.
+- L'ordre est propre à l'espace — pas partagé entre espaces.
 
 **Règles métier** :
-- RB-05-12 : L'ordre des dossiers est persisté par campagne.
+- RB-05-12 : L'ordre des dossiers est persisté par espace.
 
 **Critères d'acceptation** :
-- [ ] Le MJ peut modifier l'ordre des dossiers de sa campagne.
-- [ ] L'ordre modifié est persisté et restauré à la prochaine ouverture de la campagne.
+- [ ] Le MJ peut modifier l'ordre des dossiers de son espace.
+- [ ] L'ordre modifié est persisté et restauré à la prochaine ouverture de l'espace.
 - [ ] Le dossier virtuel "Non classés" n'apparaît pas dans la liste ordonnée (invisible en navigation).
 
 ```gherkin
 Scénario : Le MJ réordonne ses dossiers
-  Étant donné que la campagne dispose de dossiers dans un ordre initial
+  Étant donné que l'espace dispose de dossiers dans un ordre initial
   Quand le MJ modifie l'ordre des dossiers
   Alors le nouvel ordre est persisté
   Et la navigation reflète le nouvel ordre à la prochaine ouverture
@@ -359,7 +359,7 @@ Scénario : Le MJ réordonne ses dossiers
 | A3 — créer un document depuis un dossier avec template | US-05-03 |
 | A4 — document non classé → dossier virtuel | US-05-04 (E2/traitement) |
 | A5 — dossier sans template → document vide | US-05-03 (critères) |
-| A6 — dossiers système à la création de campagne | Initialisation automatique (hors stories MJ) |
+| A6 — dossiers système à la création d'espace | Initialisation automatique (hors stories MJ) |
 | E1 — nom vide refusé | US-05-01, US-05-02 |
 | E2 — suppression dossier non vide | US-05-04 |
 | E3 — suppression dossier système | US-05-04 |

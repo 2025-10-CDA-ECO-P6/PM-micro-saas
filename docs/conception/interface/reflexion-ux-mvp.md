@@ -19,7 +19,7 @@ La réflexion a été conduite en 4 lentilles successives, appliquées à chaque
 1. **Architecture de l'information & navigation** — cohérence de l'ossature, des transitions, des retours ; détection des tensions entre surfaces.
 2. **Questions de design** — questions ouvertes non résolues par le corpus, points de présentation (pas de structure) à trancher avant de wireframer.
 3. **Charge informationnelle** — densité réelle de chaque écran ; risques de surcharge ; identification des zones qui s'accumulent parce qu'on les a, pas parce qu'elles servent.
-4. **Résolution des zones sous-spécifiées & adéquation personas** — inventaire des marqueurs `<!-- TODO -->`, répartition par famille, priorisation, adéquation de l'ensemble aux 7 personas.
+4. **Résolution des zones sous-spécifiées & adéquation personas** — inventaire des points sous-spécifiés (marqueurs `[SOUS-SPÉCIFIÉ]`, Famille 8 de `conventions-wireframe.md`), répartition par famille, priorisation, adéquation de l'ensemble aux 7 personas.
 
 ### Grille de lecture appliquée partout
 

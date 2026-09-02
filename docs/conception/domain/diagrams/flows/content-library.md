@@ -98,7 +98,7 @@ sequenceDiagram
     App->>CL: Document.Share()
     CL-->>App: DocumentVisibilityChanged(GM_ONLY → PUBLIC)
     App->>SC: Notifier les joueurs connectés (temps réel)
-    App-->>MJ: Document visible par les joueurs
+    App-->>MJ: Document PUBLIC
     Note over App: Permanent — le joueur peut y accéder<br/>entre les sessions
 ```
 

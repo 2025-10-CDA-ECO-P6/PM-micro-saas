@@ -63,6 +63,18 @@ Intention : le MJ pilote sa session depuis un tableau de bord configurable qui l
   ancrage  : AR-04 ; UJ-UC-06 §friction (« Zone de saisie non visible sans scroll
              si les panneaux occupent tout l'espace »)
 
+[ ZONE DE RÉSUMÉ DE SESSION ]
+  type     : formulaire
+  rôle     : permet au MJ de rédiger ou modifier le résumé narratif libre de la séance
+             (`Session.summary`) ; distinct des notes de session (rattachées via
+             `AttachNote`) — porté par un champ dédié de la session ; éditable
+             uniquement quand la session est terminée (CLOSED)
+  priorité : secondaire-configurable (accessible uniquement en mode consultation CLOSED)
+  visibilité : MJ seul
+  ancrage  : UC-06 E3 (« le MJ peut encore ajouter des notes de session rétroactives
+             et modifier le résumé ») ; domaine session-conduct.md (`Session.summary` ;
+             `UpdateSummary(text)`, autorisé uniquement en état CLOSED)
+
 [ PANNEAUX DE DOSSIERS ]
   type     : principal
   rôle     : affiche le contenu des dossiers mis en avant par le MJ dans sa
@@ -178,7 +190,7 @@ Intention : le MJ pilote sa session depuis un tableau de bord configurable qui l
 
 - [UC-07] créer un document ou une note à la volée → le panneau de création rapide
   s'ouvre (titre seul obligatoire) ; voir fiche dédiée
-  `docs/conception/interface/wireframes/panneau-creation-rapide.md`
+  `docs/conception/interface/wireframes/sv-session/panneau-creation-rapide/panneau-creation-rapide.md`
 
 - [UC-14 ; AR-11] rechercher dans le contenu de l'espace → titre seul au MVP ;
   résultats affichés dans le panneau latéral sans interrompre le contexte
@@ -253,11 +265,13 @@ hiérarchie de lecture à distance :
 ### Sources
 
 ```
-Sources : UC-06 ; UC-07 ; UC-08 ; UC-11 ; UC-14 ;
+Sources : UC-06 ; UC-06 E3 (résumé et notes rétroactives en CLOSED) ; UC-07 ; UC-08 ;
+          UC-11 ; UC-14 ;
           US-06-01 à US-06-10 ; UJ-UC-06 ;
           AR-04 ; AR-06 ; AR-07 ; AR-09 ; AR-10 ; AR-11 ; AR-12 ; AR-18 ; AR-19 ;
           NFR-ACC-02 ; NFR-ACC-04 ; NFR-OFF-04 ; NFR-PERF-04 ;
           RB-06-14 ; RB-06-21 ;
+          domaine session-conduct.md (`Session.summary` ; `UpdateSummary(text)`) ;
           châssis S7 (zoning.md §S7)
 ```
 
@@ -290,6 +304,8 @@ Zones désactivées :
 Zones absentes par nature :
   [ABSENT PAR NATURE] affordance « Terminer la session » — il n'y a pas de session
     en cours à terminer
+  [ABSENT PAR NATURE] zone de résumé de session — `Session.summary` n'est modifiable
+    qu'en état CLOSED (`UpdateSummary(text)`, domaine session-conduct.md)
 
 Affordances spécifiques :
   - [AR-09 ; UC-06 §Déclencheur] lancer la session → basculement en mode LIVE
@@ -309,6 +325,10 @@ Zones actives : toutes les zones listées dans « Zones et hiérarchie »
   (y compris indicateur de partage et toutes affordances de partage) ;
   les règles de densité AR-19 s'appliquent (plancher garanti, plafond d'éviction,
   priorité d'éviction — voir zone RÈGLES DE DENSITÉ ci-dessus)
+
+Zones absentes par nature :
+  [ABSENT PAR NATURE] zone de résumé de session — `Session.summary` n'est modifiable
+    qu'en état CLOSED (`UpdateSummary(text)`, domaine session-conduct.md)
 
 Affordances spécifiques :
   - [AR-12 ; UC-08] partager un document → visible par les joueurs (PUBLIC) +
@@ -342,6 +362,8 @@ Déclencheur : le MJ a terminé la session ; la session est au statut terminée 
 Zones actives :
   - indicateur de statut de session (affiche : « session terminée »)
   - zone de notes (annotations rétroactives MJ possibles en CLOSED)
+  - zone de résumé de session (modification du résumé narratif de la séance —
+    `Session.summary`, `UpdateSummary(text)` — UC-06 E3)
   - panneaux de dossiers (navigation possible, consultation uniquement)
   - panneau des documents épinglés (consultation uniquement)
   - barre de recherche
@@ -367,6 +389,9 @@ Affordances spécifiques :
   - [UC-08 A3 ; AR-12] partager un document rétroactivement → le document devient
     visible par les joueurs (PUBLIC) SANS auto-épinglage (l'auto-épinglage est
     réservé au mode LIVE — UC-08 A3)
+  - [UC-06 E3 ; domaine session-conduct.md] modifier le résumé de la session →
+    le MJ rédige ou modifie le résumé narratif libre de la séance (`Session.summary`,
+    via `UpdateSummary(text)`) ; distinct des notes de session rétroactives
   - [UC-06 ; glossaire §Session] archiver la session → la session passe au statut
     archivée, lecture seule complète (aucune modification possible)
 

@@ -15,7 +15,7 @@ privés.
 
 ## Contexte
 
-Dans une campagne, certaines informations doivent être transmises aux joueurs : indices, aides
+Dans un espace, certaines informations doivent être transmises aux joueurs : indices, aides
 de jeu, lore, rappels, révélations ou résumés. D'autres informations doivent rester secrètes.
 Dans le MVP, le partage durable d'un document passe par sa visibilité : privé pour le MJ
 ou visible par les joueurs.
@@ -31,15 +31,15 @@ Le MJ souhaite transmettre une information au groupe.
 
 ## Préconditions
 
-- Une campagne existe.
-- Des joueurs ou des accès invités peuvent accéder à la campagne ou à la session.
+- Un espace existe.
+- Des joueurs ou des accès invités peuvent accéder à l'espace ou à la session.
 - Le contenu à partager existe ou est créé par le MJ.
 
 ## Scénario nominal
 
 1. Le MJ ouvre un document partageable.
 2. Il choisit l'action "Partager".
-3. Le système indique que le document deviendra visible pour tous les membres de la campagne
+3. Le système indique que le document deviendra visible pour tous les membres de l'espace
    et les accès invités actifs.
 4. Le MJ valide le partage.
 5. Le système rend le document visible par les joueurs.
@@ -94,7 +94,7 @@ Un joueur dont l'accès invité a expiré ou été révoqué ne peut plus consul
 ## Règles métier
 
 - Tout document créé par le MJ est privé par défaut.
-- Seul le MJ peut partager une information de campagne durable.
+- Seul le MJ peut partager une information durable de l'espace.
 - Un joueur ne peut consulter que les documents partagés et ses propres notes de session personnelles joueur.
 - Le MJ peut retirer un partage via l’action de retrait du partage.
 - Le partage est durable : le document reste accessible entre les sessions jusqu’à retrait explicite.

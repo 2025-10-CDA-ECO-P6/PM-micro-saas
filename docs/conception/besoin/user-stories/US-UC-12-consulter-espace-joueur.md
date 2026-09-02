@@ -1,8 +1,8 @@
-# Epic — Consulter sa campagne en tant que joueur (vue post-accès) (UC-12)
+# Epic — Consulter son espace en tant que joueur (vue post-accès) (UC-12)
 
 ## Objectif utilisateur
 
-Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11), une vue cohérente de sa fiche de personnage et des informations partagées. UC-12 couvre spécifiquement la perspective joueur post-accès : accès à la fiche, consultation des documents `PUBLIC`, et choix du personnage actif quand le joueur est associé à plusieurs personnages dans une même campagne.
+Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11), une vue cohérente de sa fiche de personnage et des informations partagées. UC-12 couvre spécifiquement la perspective joueur post-accès : accès à la fiche, consultation des documents `PUBLIC`, et choix du personnage actif quand le joueur est associé à plusieurs personnages dans un même espace.
 
 ---
 
@@ -11,16 +11,16 @@ Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11
 | Persona | Motivation principale |
 |---|---|
 | Lucas | Accéder sans friction à sa fiche de personnage et aux informations partagées après avoir cliqué sur un lien |
-| Thomas | Jouer en tant que joueur dans une campagne avec deux personnages alternés, choisir lequel est actif selon la session |
+| Thomas | Jouer en tant que joueur dans un espace avec deux personnages alternés, choisir lequel est actif selon la session |
 
 ---
 
 ## Use cases couverts
 
-- **UC-12** — Consulter sa campagne en tant que joueur (vue post-accès)
+- **UC-12** — Consulter son espace en tant que joueur (vue post-accès)
   - Nominal : vue joueur post-accès — fiche personnage + documents `PUBLIC`
   - A1 : joueur associé à plusieurs personnages — choix du personnage actif
-  - A2 : accès limité à la session seulement (périmètre `SESSION`, sans accès campagne complet)
+  - A2 : accès limité à la session seulement (périmètre `SESSION`, sans accès complet à l'espace)
   - E1 : joueur sans personnage associé — consultation des documents `PUBLIC` uniquement
 
 ---
@@ -49,7 +49,7 @@ Les flux d'accès (clic sur le lien, validation du token, création du `GuestAcc
 |---|---|
 | Accès via lien session ponctuel sans compte | US-09-01 |
 | Lien expiré ou révoqué | US-09-02 |
-| Accès via lien campagne permanent avec compte | US-09-03 |
+| Accès via lien périmètre SPACE (permanent) avec compte | US-09-03 |
 | Migration invité vers compte | US-09-04 |
 | Génération du lien d'invitation par le MJ | US-11-01 |
 | Association joueur-personnage par le MJ | US-11-04 |
@@ -77,7 +77,7 @@ flowchart TD
 
     UnPerso --> VueJoueur[Vue joueur complete\nFiche du personnage\nDocuments PUBLIC\nNotes PLAYER_PRIVATE]
 
-    PersonnageAssocie -->|Acces SESSION uniquement| SessionSeul[Perimetre session\nDocuments epingles\nDocuments PUBLIC\nPas d acces au lore campagne]
+    PersonnageAssocie -->|Acces SESSION uniquement| SessionSeul[Perimetre session\nDocuments epingles\nDocuments PUBLIC\nPas d acces au lore complet]
 ```
 
 ---
@@ -91,7 +91,7 @@ flowchart LR
 
     UC12[UC-12\nConsulter / vue joueur]
     UC09[UC-09\nAcces session joueur]
-    UC11[UC-11\nGerer membres campagne]
+    UC11[UC-11\nGerer membres espace]
     UC08[UC-08\nPartager information]
 
     UC09 --> US1201
@@ -119,24 +119,24 @@ flowchart LR
 - La vue joueur est rendue disponible dès que le `GuestAccess` ou le `Member` est actif (UC-09).
 - La fiche de personnage n'est visible que si le MJ a associé un personnage à ce joueur (US-11-04). Sans association, le joueur consulte uniquement les documents `PUBLIC`.
 - Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, rattachées au personnage pour l'affichage. Un `GuestAccess` récupère la **fiche** du personnage associé — les notes `PLAYER_PRIVATE` ne sont visibles que si le même auteur y accède de nouveau (compte stable) ; un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent (RB-12-02, RB-09-19).
-- Les documents `PUBLIC` sont fournis par la Bibliothèque de contenu et filtrés selon le périmètre d'accès (`SESSION` ou `CAMPAIGN`).
-- Un accès périmètre `SESSION` donne accès aux documents épinglés de la session et aux documents `PUBLIC` de la campagne, mais pas à l'historique complet du lore campagne (couvert par US-09-03).
-- Un accès périmètre `CAMPAIGN` (`Member`) donne accès à l'ensemble des documents `PUBLIC` de la campagne et à l'historique des sessions.
+- Les documents `PUBLIC` sont fournis par la Bibliothèque de contenu et filtrés selon le périmètre d'accès (`SESSION` ou `SPACE`).
+- Un accès périmètre `SESSION` donne accès aux documents épinglés de la session et aux documents `PUBLIC` de l'espace, mais pas à l'historique complet ni au lore de l'espace (couvert par US-09-03).
+- Un accès périmètre `SPACE` (`Member`) donne accès à l'ensemble des documents `PUBLIC` de l'espace et à l'historique des sessions.
 
 **Règles métier** :
 - RB-12-01 : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` et les documents `PLAYER_PRIVATE` d'autres personnages sont invisibles.
 - RB-12-02 : Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, **rattachées au personnage pour l'affichage** ; elles persistent entre les sessions pour le **même auteur** (compte stable). Elles ne sont pas propriété du personnage — un joueur (invité ou membre) qui accède à un personnage déjà joué par quelqu'un d'autre ne récupère jamais les notes de son prédécesseur (RB-09-19).
 - RB-12-03 : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
-- RB-12-04 : Un accès périmètre `SESSION` ne donne pas accès à l'historique complet des sessions et du lore de la campagne. Seuls les documents `PUBLIC` et les documents épinglés de la session sont visibles.
-- RB-12-05 : Un accès périmètre `CAMPAIGN` (`Member`) donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions passées.
+- RB-12-04 : Un accès périmètre `SESSION` ne donne pas accès à l'historique complet des sessions et du lore de l'espace. Seuls les documents `PUBLIC` et les documents épinglés de la session sont visibles.
+- RB-12-05 : Un accès périmètre `SPACE` (`Member`) donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions passées.
 
 **Critères d'acceptation** :
 - [ ] Le joueur avec un personnage associé voit la fiche du personnage dès l'accès à la session.
-- [ ] Le joueur voit les documents `PUBLIC` de la campagne et les documents épinglés de la session.
+- [ ] Le joueur voit les documents `PUBLIC` de l'espace et les documents épinglés de la session.
 - [ ] Les notes `PLAYER_PRIVATE` du personnage associé sont accessibles et éditables.
 - [ ] Un joueur sans personnage associé voit les documents `PUBLIC` mais ne peut pas créer de notes liées à un personnage.
-- [ ] Un accès périmètre `SESSION` ne donne pas accès à l'historique des sessions précédentes ni au lore complet de la campagne.
-- [ ] Un accès périmètre `CAMPAIGN` donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions.
+- [ ] Un accès périmètre `SESSION` ne donne pas accès à l'historique des sessions précédentes ni au lore complet de l'espace.
+- [ ] Un accès périmètre `SPACE` donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions.
 - [ ] Les documents dont la visibilité n'est pas `PUBLIC` ne sont pas visibles par le joueur.
 
 ```gherkin
@@ -145,22 +145,22 @@ Scenario : Joueur avec personnage associe accede a sa fiche et aux documents par
   Et que le MJ a associe le personnage "Aldric" a Lucas
   Quand la vue joueur s affiche
   Alors Lucas voit la fiche du personnage "Aldric"
-  Et Lucas voit les documents PUBLIC de la campagne
+  Et Lucas voit les documents PUBLIC de l espace
   Et Lucas peut consulter et modifier ses notes PLAYER_PRIVATE liees a Aldric
 
 Scenario : Joueur sans personnage associe - consultation uniquement
   Etant donne que Lucas a rejoint la session via un lien valide
   Et qu aucun personnage n a ete associe a Lucas par le MJ
   Quand la vue joueur s affiche
-  Alors Lucas voit les documents PUBLIC de la campagne
+  Alors Lucas voit les documents PUBLIC de l espace
   Et Lucas ne voit pas de fiche de personnage
   Et Lucas ne peut pas creer de notes PLAYER_PRIVATE liees a un personnage
 
-Scenario : Acces perimetre SESSION - pas d acces au lore campagne complet
+Scenario : Acces perimetre SESSION - pas d acces au lore complet de l espace
   Etant donne que Lucas a rejoint via un lien perimetre SESSION
   Quand la vue joueur s affiche
   Alors Lucas voit les documents epingles de la session et les documents PUBLIC
-  Et Lucas ne voit pas l historique des sessions precedentes ni le lore complet de la campagne
+  Et Lucas ne voit pas l historique des sessions precedentes ni le lore complet de l espace
 
 Scenario : Notes PLAYER_PRIVATE preservees entre les sessions pour le meme auteur
   Etant donne que Lucas a pris des notes PLAYER_PRIVATE sur Aldric lors d une session precedente
@@ -169,7 +169,7 @@ Scenario : Notes PLAYER_PRIVATE preservees entre les sessions pour le meme auteu
   Alors les notes PLAYER_PRIVATE ecrites par Lucas sur Aldric sont disponibles
 
 Scenario : Documents GM_ONLY invisibles pour le joueur
-  Etant donne que la campagne contient un document avec la visibilite GM_ONLY
+  Etant donne que l espace contient un document avec la visibilite GM_ONLY
   Quand Lucas consulte la vue joueur
   Alors ce document n apparait pas dans sa liste de documents
 ```
@@ -186,7 +186,7 @@ Scenario : Documents GM_ONLY invisibles pour le joueur
 
 **Notes de conception** :
 - **Principe** : le personnage actif est un état de **focus / présentation éphémère** (quelle fiche et quelles notes sont mises en avant dans la vue joueur) — **jamais un droit d'accès**. Les droits sur les documents dérivent de l'**ensemble** des personnages associés au joueur (RB-11-17), pas du seul personnage actif.
-- Un joueur peut être associé à plusieurs personnages dans une même campagne (RB-11-17 dans UC-11). Cette story couvre la vue joueur de cette fonctionnalité.
+- Un joueur peut être associé à plusieurs personnages dans un même espace (RB-11-17 dans UC-11). Cette story couvre la vue joueur de cette fonctionnalité.
 - Le choix du personnage actif est local à la session en cours. Il ne modifie pas l'association définie par le MJ (US-11-04) — il détermine seulement quel personnage est affiché en priorité dans la vue joueur.
 - Le personnage actif conditionne uniquement les actions qui dépendent d'une fiche précise : affichage de la fiche en tête, notes `PLAYER_PRIVATE` visibles et éditables, accès aux ressources liées au personnage.
 - Si le joueur n'a qu'un seul personnage associé, aucune sélection n'est requise — la fiche s'affiche directement (US-12-01).
@@ -209,7 +209,7 @@ Scenario : Documents GM_ONLY invisibles pour le joueur
 
 ```gherkin
 Scenario : Joueur avec plusieurs personnages - choix du personnage actif a l entree
-  Etant donne que Thomas est Member de la campagne
+  Etant donne que Thomas est Member de l espace
   Et que le MJ a associe Thomas aux personnages "Veran" et "Kael"
   Quand Thomas accede a la vue joueur
   Alors une interface de selection lui propose de choisir entre "Veran" et "Kael"
@@ -229,7 +229,7 @@ Scenario : Changement de personnage actif en cours de session
   Et les notes PLAYER_PRIVATE de "Kael" remplacent celles de "Veran" dans la vue
 
 Scenario : Joueur avec un seul personnage - pas de selection requise
-  Etant donne que Lucas est Member de la campagne
+  Etant donne que Lucas est Member de l espace
   Et que le MJ a associe Lucas a un seul personnage "Aldric"
   Quand Lucas accede a la vue joueur
   Alors la fiche d Aldric s affiche directement sans etape de selection
@@ -248,7 +248,7 @@ Scenario : Changement de personnage actif sans modifier les associations MJ
 |---|---|
 | A2 — Validation manuelle du MJ avant l'accès joueur | Hors MVP (cohérent avec UC-11 et UC-09 : l'accès est automatique sur lien valide). |
 | Notification au joueur quand le MJ partage un nouveau document | Could Have — fonctionnalité de notification non prioritaire. |
-| Accès joueur à l'historique des sessions passées via périmètre SESSION | Hors périmètre : le lien SESSION donne accès à la session courante uniquement. L'historique est couvert par US-09-03 (Member, périmètre CAMPAIGN). |
+| Accès joueur à l'historique des sessions passées via périmètre SESSION | Hors périmètre : le lien SESSION donne accès à la session courante uniquement. L'historique est couvert par US-09-03 (Member, périmètre SPACE). |
 | Partage sélectif de documents par joueur (un document PUBLIC pour ce joueur uniquement) | Hors MVP — RB-08-04 : le partage s'applique à tous les membres actifs. |
 | Personnage actif persisté entre les sessions | Could Have post-MVP — la sélection reste **préférence client, non persistée** au MVP (RB-12-07, Q#1) ; persistance à préciser selon les retours utilisateur. |
 | Notes libres non rattachées à un personnage (`Member` / `GuestAccess` sans `player_character`) | Could Have post-MVP — aucun slot de note libre au MVP ; RB-12-03 exige un personnage associé pour toute note `PLAYER_PRIVATE` (Q#3). |
@@ -268,7 +268,7 @@ Scenario : Changement de personnage actif sans modifier les associations MJ
 |---|---|
 | Nominal — vue joueur post-accès, fiche + documents PUBLIC | US-12-01 |
 | A1 — joueur associé à plusieurs personnages, choix du personnage actif | US-12-02 |
-| A2 — accès périmètre SESSION uniquement (sans accès campagne complet) | US-12-01 |
+| A2 — accès périmètre SESSION uniquement (sans accès complet à l'espace) | US-12-01 |
 | E1 — joueur sans personnage associé, consultation documents PUBLIC uniquement | US-12-01 |
 | Flux d'accès (lien, token, GuestAccess, Member) | UC-09 (US-09-01 à US-09-04) |
 | Génération du lien et association joueur-personnage | UC-11 (US-11-01, US-11-04) |
@@ -311,8 +311,8 @@ Scenario : Changement de personnage actif sans modifier les associations MJ
 
 **Statut** : différé (interview / post-MVP) ; architecture cible pré-enregistrée si retenue plus tard.
 
-### Q#5 — Priorité si un joueur cumule un accès `SESSION` et un accès `CAMPAIGN` ?
+### Q#5 — Priorité si un joueur cumule un accès `SESSION` et un accès `SPACE` ?
 
-**Décision** : **`CAMPAIGN` prioritaire** — `CAMPAIGN` (RB-12-05) est un superset de `SESSION` (RB-12-04) : tout ce que `SESSION` donne, `CAMPAIGN` le donne aussi, en plus de l'historique complet. Le cas de cumul simultané est par ailleurs largement **précludé** par le modèle : l'invariant 8 (un `GuestAccess` `CONVERTED` devient inutilisable après migration vers un compte) et l'invariant 3 (un seul `SpaceMembership` actif par joueur et par campagne) empêchent la coexistence durable des deux accès sur le même joueur/campagne.
+**Décision** : **`SPACE` prioritaire** — `SPACE` (RB-12-05) est un superset de `SESSION` (RB-12-04) : tout ce que `SESSION` donne, `SPACE` le donne aussi, en plus de l'historique complet. Le cas de cumul simultané est par ailleurs largement **précludé** par le modèle : l'invariant 8 (un `GuestAccess` `CONVERTED` devient inutilisable après migration vers un compte) et l'invariant 3 (un seul `SpaceMembership` actif par joueur et par espace) empêchent la coexistence durable des deux accès sur le même joueur/espace.
 
-**Statut** : clos — dérivable, `CAMPAIGN` prioritaire.
+**Statut** : clos — dérivable, `SPACE` prioritaire.

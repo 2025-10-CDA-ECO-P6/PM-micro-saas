@@ -5,13 +5,13 @@
 - **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
 - **Findings liés** : CR-6, E-01, E-02, D-03, A-09
 
-> **Nature : décision produit — fusionnée** — la substance de cette décision a été fusionnée dans la couche vision (`docs/conception/besoin/vision/moscow.md` et `vision-produit.md`) le 2026-06-10. Ce document est une trace historique ; le raisonnement et les alternatives écartées restent lisibles ici. *(Annotation du 2026-06-10 — arbitrage T-06, audit conception pure 2026-06.)*
+> **Nature : décision produit — fusionnée** — la substance de cette décision a été fusionnée dans la couche vision (`docs/conception/besoin/vision/moscow.md` et `vision-produit.md`) le 2026-06-10. Ce document est une trace historique ; le raisonnement et les alternatives écartées restent lisibles ici.
 
 ---
 
 ## Contexte
 
-L'audit a identifié que le tier Gratuit précédent offrait la quasi-totalité de la valeur perçue du produit (cloud sync, partage joueurs, multi-device, jusqu'à 3 campagnes), laissant le tier Pro sans différenciateur réel. La « value metric » retenue (nombre de campagnes) ne croît pas avec la valeur perçue : la majorité des MJ actifs ne dépassent pas 3 campagnes simultanées, rendant la conversion Pro structurellement proche de zéro (finding CR-6, E-01).
+L'audit a identifié que le tier Gratuit précédent offrait la quasi-totalité de la valeur perçue du produit (cloud sync, partage joueurs, multi-device, jusqu'à 3 campagnes), laissant le tier Pro sans différenciateur réel. La « value metric » retenue (nombre de campagnes) ne croît pas avec la valeur perçue : la majorité des MJ actifs ne dépassent pas 3 campagnes simultanées, rendant la conversion Pro structurellement proche de zéro.
 
 ---
 
@@ -38,19 +38,19 @@ L'audit a identifié que le tier Gratuit précédent offrait la quasi-totalité 
 ## Conséquences
 
 - La table de monétisation dans la section §3 de la vision produit doit être révisée pour refléter la nouvelle structure (valeurs chiffrées différées post-MVP, voir ci-dessous).
-- Une note de coût d'infrastructure est à produire : coût d'un utilisateur gratuit, revenu net d'un utilisateur Pro, ratio de break-even (post-MVP, finding E-02).
-- Le dimensionnement du marché (TAM/SAM, ARPU cible) et la stratégie d'acquisition (GTM) sont à instruire post-MVP (finding E-04, E-05).
-- La limite du tier Gratuit (1 campagne cloud) implique une révision des invariants de domaine sur `Campaign` (finding A-09 sur la limite « 4 joueurs FREE » également à aligner).
-  *[Mise à jour : valeur consolidée = **3 espaces** `CAMPAIGN`/`ONE_SHOT` (vision §3 / CdC §12.4) ; le finding A-09 (« 4 joueurs FREE ») est **résolu** — la limite existe et est inscrite (invariant 11 réaligné, RB-09-21 fait foi). Cette ligne de Conséquences reflète l'état historique du 2026-06-10.]*
+- Une note de coût d'infrastructure est à produire : coût d'un utilisateur gratuit, revenu net d'un utilisateur Pro, ratio de break-even (post-MVP).
+- Le dimensionnement du marché (TAM/SAM, ARPU cible) et la stratégie d'acquisition (GTM) sont à instruire post-MVP.
+- La limite du tier Gratuit (1 campagne cloud) implique une révision des invariants de domaine sur `Campaign` (la limite « 4 joueurs FREE » également à aligner).
+  *[Mise à jour : valeur consolidée = **3 espaces** `CAMPAIGN`/`ONE_SHOT` (vision §3 / CdC §12.4) ; le point « 4 joueurs FREE » est **résolu** — la limite existe et est inscrite (invariant 11 réaligné, RB-09-21 fait foi). Cette ligne de Conséquences reflète l'état historique du 2026-06-10.]*
 
 ---
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à une revue critique postérieure à cette décision, celle-ci est complétée comme suit, sans changer sa direction.
 
 - **Levier Pro révisé (arbitrage opérateur).** Le tier Pro donne accès à : campagnes illimitées + multi-device + stockage étendu. Le levier « table plus large » est retiré : aucune persona ne demande davantage de joueurs, les tables sont fixes entre 3 et 6 participants — ce levier était mort.
 
 - **A-09 à trancher avant l'entrée en construction.** Décider si la limite « 4 joueurs/session » pour le tier FREE existe. Si oui, l'inscrire dans la table de monétisation de la vision produit. Si non, la retirer des invariants de domaine. Ce point ne peut pas rester non tranché au démarrage du build. *[A-09 résolu : la limite « 4 joueurs/session » FREE existe et est inscrite (vision §3, CdC §12.4, invariant 11 de `space-management.md` réaligné, RB-09-21 fait foi pour la sémantique de comptage).]*
 
-- **Périmètre de conversion testé par le MVP.** La conversion testée par le MVP est local→gratuit (hypothèse 5a). La conversion payante (hypothèse 5b) n'est pas testée par le MVP : le seul déclencheur Pro atteignable est le passage au-delà d'une campagne cloud.
+- **Périmètre de conversion testé par le MVP.** La conversion testée par le MVP est local→gratuit (hypothèse 5a). La conversion payante (hypothèse 5b) n'est pas testée par le MVP : le seul déclencheur Pro atteignable est le passage au-delà d'une campagne cloud. *[Valeur consolidée postérieure : le seuil correspond au-delà de **3 espaces** `CAMPAIGN`/`ONE_SHOT` — voir vision §3 / CdC §12.4. Cette ligne reflète l'état historique du 2026-06-10.]*

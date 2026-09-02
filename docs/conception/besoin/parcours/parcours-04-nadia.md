@@ -22,7 +22,7 @@ Le parcours s'arrête au moment où Nadia décide — ou non — de créer un co
 
 ## Étape 1 — Démarrage sans compte, création d'une campagne en mode local
 
-**UC porteur :** [UC-01](../usecases/UC-01-mode-local-sans-compte.md) | **UJ porteur :** [UJ-UC-01](../user-journeys/UJ-UC-01-mode-local-sans-compte.md)
+**UC porteurs :** [UC-01](../usecases/UC-01-mode-local-sans-compte.md), [UC-02](../usecases/UC-02-creer-espace-jeu.md) | **UJ porteur :** [UJ-UC-01](../user-journeys/UJ-UC-01-mode-local-sans-compte.md)
 
 ### Ce que Nadia cherche à faire
 
@@ -31,14 +31,15 @@ Ouvrir l'application, ne pas remplir de formulaire d'inscription, créer une cam
 ### Comportements observables
 
 - L'écran d'accueil présente deux options équivalentes sans hiérarchie culpabilisante : "Commencer sans compte" et "Créer un compte / Se connecter".
-- Nadia choisit "Commencer sans compte". Un message court — non bloquant — explique que les données seront stockées dans ce navigateur. Elle est redirigée vers la création de campagne.
-- Elle saisit un nom, la campagne est créée. Les quatre dossiers système sont présents (`Personnages`, `Joueurs`, `Scénarios`, `Notes`) — point de départ neutre, aucun contenu à remplir pour que la campagne soit créée.
+- Nadia choisit "Commencer sans compte". Un message court — non bloquant — explique que les données seront stockées dans ce navigateur. Elle atterrit dans son **espace personnel** — le conteneur par défaut disponible dès le mode local (UC-01 scénario nominal étape 5), sans qu'aucune campagne n'existe encore.
+- Elle décide de créer un espace de jeu pour sa session, un acte distinct et optionnel (UC-01 §Contexte, UC-02) : elle saisit un nom, la campagne est créée. Les quatre dossiers système sont présents (`Personnages`, `Joueurs`, `Scénarios`, `Notes`) — point de départ neutre, aucun contenu à remplir pour que la campagne soit créée.
 - Deux bandeaux distincts et non bloquants apparaissent selon les conditions : bandeau de durabilité (si le navigateur ne garantit pas la conservation permanente des données) et bandeau de confidentialité (systématique — données lisibles par toute personne ayant accès à ce navigateur).
 - Les fonctionnalités de partage joueurs sont visibles mais désactivées, avec un appel à l'action discret.
 
 ### État laissé par l'étape 1
 
 - Nadia est en mode local : aucun `User` instancié, aucune donnée envoyée au serveur.
+- Un **espace personnel** (`SpaceType.PERSONAL`) préexiste comme conteneur par défaut, avec son seul dossier virtuel « Non classés » — Nadia en est la propriétaire.
 - Une `Campagne` existe avec ses dossiers système, persistée dans le stockage local du navigateur.
 - Une `SessionViewConfig` a été créée automatiquement à `CampaignCreated` — ses `focusedFolders` ne sont pas encore configurés.
 
@@ -50,7 +51,7 @@ UC-01 postcondition : "Le MJ peut utiliser toutes les fonctionnalités de prépa
 
 ## Étape 2 — Préparation minimale : quelques documents, sans structure elaborate
 
-**UC porteurs :** [UC-04](../usecases/UC-04-gerer-documents-campagne.md), [UC-05](../usecases/UC-05-organiser-dossiers.md)
+**UC porteurs :** [UC-04](../usecases/UC-04-gerer-documents-espace.md), [UC-05](../usecases/UC-05-organiser-dossiers.md)
 
 ### Ce que Nadia cherche à faire
 

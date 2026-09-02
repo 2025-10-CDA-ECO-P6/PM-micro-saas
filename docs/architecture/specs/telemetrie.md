@@ -44,22 +44,22 @@ Le tableau ci-dessous décompose chaque pilier en événements discrets. Les col
 
 | Étape du critère | Point de capture | Événement (nom technique) | Propriétés |
 |---|---|---|---|
-| Campagne créée | Point de sortie de la création de campagne (couche Application) | `[À TRANCHER — ticket]` | `campaign_id` (probable, non acté) — reste à confirmer |
-| N documents créés | Point de sortie de la création de document, cumulé par campagne | `[À TRANCHER — ticket]` | `campaign_id`, compteur de documents — reste à confirmer |
+| Campagne créée | Point de sortie de la création de campagne (couche Application) | `[À TRANCHER — ticket]` | `space_id` (probable, non acté) — reste à confirmer |
+| N documents créés | Point de sortie de la création de document, cumulé par campagne | `[À TRANCHER — ticket]` | `space_id`, compteur de documents — reste à confirmer |
 | Seuil N | — | — | **`[À TRANCHER — ticket]` : valeur de N non fixée (ADR-006:59 ne donne aucun chiffre)** |
 
 ### 3.2 Pilier Vue session
 
 | Étape du critère | Point de capture | Événement (nom technique) | Propriétés |
 |---|---|---|---|
-| Session ouverte | Point d'entrée en session (couche Application ou Presentation) | `[À TRANCHER — ticket]` | `session_id`, `campaign_id` — reste à confirmer |
+| Session ouverte | Point d'entrée en session (couche Application ou Presentation) | `[À TRANCHER — ticket]` | `session_id`, `space_id` — reste à confirmer |
 | Usage réel constaté | — | `[À TRANCHER — ticket]` | **`[À TRANCHER — ticket]` : « usage réel constaté » n'est pas opérationnalisé dans le corpus (ADR-006:60 pose le critère sans le définir en signal observable — durée minimale ? action MJ pendant la session ? interaction joueur ? aucun de ces choix n'est tranché)** |
 
 ### 3.3 Pilier Partage
 
 | Étape du critère | Point de capture | Événement (nom technique) | Propriétés |
 |---|---|---|---|
-| Document partagé | Point de sortie de l'action de partage (couche Application) | `[À TRANCHER — ticket]` | `document_id`, `campaign_id`, visibilité de la ressource (cf. ADR-004:49) — reste à confirmer |
+| Document partagé | Point de sortie de l'action de partage (couche Application) | `[À TRANCHER — ticket]` | `document_id`, `space_id`, visibilité de la ressource (cf. ADR-004:49) — reste à confirmer |
 | ≥ 1 joueur l'ayant ouvert | Point d'ouverture du document partagé côté joueur/invité | `[À TRANCHER — ticket]` | `document_id`, identifiant de session invité (sans donnée identifiante au-delà de ce que permet NFR-CONF-02) — reste à confirmer |
 
 ### 3.4 Ce que la spec ne fixe pas
@@ -74,7 +74,7 @@ Le tableau ci-dessous décompose chaque pilier en événements discrets. Les col
 
 ADR-006 ajoute, dans le même paragraphe de compléments post-revue, une exigence distincte des trois piliers d'activation :
 
-> « Capture email non bloquante + analytics anonyme RGPD dès le mode local (finding E-06, aggravé par le MVP unique local-first) — dans le périmètre MVP. » (ADR-006:63)
+> « Capture email non bloquante + analytics anonyme RGPD dès le mode local (aggravé par le MVP unique local-first) — dans le périmètre MVP. » (ADR-006:63)
 
 Deux éléments à retenir fidèlement :
 

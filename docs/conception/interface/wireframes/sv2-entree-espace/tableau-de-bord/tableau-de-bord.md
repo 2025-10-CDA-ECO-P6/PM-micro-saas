@@ -3,7 +3,7 @@
 > Fiche de description d'écran basse-fidélité — entrée espace MJ.
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..21`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..22`.
 
 ---
 
@@ -15,8 +15,9 @@ Surface      : MJ
 Contexte     : transversal
 Type d'espace: n.a. (l'écran est indépendant du type — il liste tous les types)
 Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-02 postcondition ; UC-06 A5 ; UC-01 (espace personnel hors quota — RB-01-03) ;
-               AR-17 ; AR-15 ; AR-05 ; AR-20
+Traçabilité  : UC-02 postcondition ; UC-06 A5 ; UC-01 (espace personnel hors quota — RB-02-10) ;
+               UC-02 §Règles métier RB-02-22, RB-02-23 (désarchivage) ;
+               AR-17 ; AR-15 ; AR-05 ; AR-20 ; AR-22 (accès aux espaces archivés)
 ```
 
 ---
@@ -64,7 +65,7 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
   visibilité : MJ seul
   ancrage  : AR-17 (hors quota, jamais bloqué) ; AR-05 (libellé « Espace personnel ») ;
              AR-15 (capture-first — micro-copy compatible) ;
-             UC-01 RB-01-03 ; UC-02 §Postconditions
+             UC-01 RB-02-10 ; UC-02 §Postconditions
 
 [ REPÈRE "SESSION EN COURS" ]
   type     : principal
@@ -80,11 +81,15 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
   type     : principal
   rôle     : indique au MJ combien d'espaces partagés (campagnes et one-shots) il a créés
              sur le quota disponible à son niveau de compte (ex. « 2 / 3 ») ;
-             ce compteur ne porte QUE sur les espaces partagés — l'espace personnel
-             n'entre jamais dans ce décompte
+             ce compteur ne porte QUE sur les espaces partagés ACTIFS — l'espace
+             personnel n'entre jamais dans ce décompte (AR-17), et un espace archivé
+             n'y entre pas davantage : le quota et sa garde ne portent que sur les
+             espaces actifs de type campagne ou one-shot (`space-management.md`
+             invariant 6 ; règle métier 12 — même décompte pour la création et pour
+             le désarchivage)
   priorité : principal
   visibilité : MJ seul
-  ancrage  : AR-17 ; UC-01 RB-01-03
+  ancrage  : AR-17 ; UC-01 RB-02-10
 
 [ CARTE "+ CRÉER UNE CAMPAGNE" ]
   type     : principal
@@ -95,6 +100,35 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
   priorité : principal
   visibilité : MJ seul
   ancrage  : UC-02 scénario nominal ; AR-17 (condition de blocage quota)
+
+[ ACCÈS AUX ESPACES ARCHIVÉS ]
+  type     : latéral
+  rôle     : point d'entrée séparé, distinct de la grille de cartes-espaces, vers la
+             liste des espaces archivés du MJ (campagnes et one-shots archivés) ;
+             un espace archivé n'apparaît PAS dans la grille de cartes-espaces
+             (§Grille de cartes-espaces) — il ne se confond ni avec un espace actif
+             ni avec l'espace personnel, et n'entre pas dans le compteur d'espaces
+             partagés (§Compteur d'espaces partagés) ; l'espace personnel n'y figure
+             jamais — il n'est pas archivable (invariant 15 de `space-management.md` ;
+             AR-14)
+  priorité : secondaire-configurable (registre replié — action rare — AR-19)
+  visibilité : MJ seul
+  ancrage  : AR-22 ; UC-02 §Règles métier RB-02-22
+
+[ LISTE DES ESPACES ARCHIVÉS ]
+  rôle     : révélée depuis l'accès aux espaces archivés ; présente chaque espace
+             archivé du MJ (nom, type) ; un clic sur une entrée ouvre l'espace archivé
+             en lecture seule, dans l'état où il était au moment de l'archivage
+             (`space-management.md` règle métier 7 — lecture seule tant qu'`ARCHIVED` ;
+             `content-library.md` — `SpaceArchived` passe les documents en lecture
+             seule) ; le MJ y retrouve ses paramètres de campagne, où vit le geste de
+             désarchivage (AR-22 ; `parametres-campagne.md` §Modes §Mode : espace
+             archivé)
+  type     : latéral
+  priorité : secondaire-configurable (repliée par défaut — divulgation progressive,
+             action rare — AR-19)
+  visibilité : MJ seul
+  ancrage  : AR-22 ; UC-02 §Règles métier RB-02-22
 ```
 
 ---
@@ -102,7 +136,7 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
 ### Ce que l'utilisateur peut faire
 
 ```
-- [AR-17 ; AR-05 ; UC-01 RB-01-03] accéder à l'espace personnel → clic sur la carte
+- [AR-17 ; AR-05 ; UC-01 RB-02-10] accéder à l'espace personnel → clic sur la carte
   espace personnel (en tête de grille) ; la préparation de l'espace personnel s'ouvre ;
   toujours disponible, jamais bloquée ni grisée, indépendamment du quota d'espaces
   partagés
@@ -122,6 +156,15 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
   est atteint → invite contextuelle non bloquante expliquant la limite et proposant
   la création d'un compte (si mode local) ou le passage à l'offre supérieure
   (si compte gratuit saturé)
+
+- [AR-22 ; UC-02 §Règles métier RB-02-22] consulter la liste des espaces archivés →
+  ouvre la liste des espaces archivés du MJ (campagnes et one-shots) ; distincte de
+  la grille de cartes-espaces
+
+- [AR-22 ; UC-02 §Règles métier RB-02-22] ouvrir un espace archivé → l'espace s'ouvre
+  en lecture seule, dans l'état où il était au moment de l'archivage ; le geste de
+  désarchivage lui-même vit sur les paramètres de campagne de cet espace, pas ici
+  (AR-22 ; `parametres-campagne.md` §Modes §Mode : espace archivé)
 ```
 
 ---
@@ -133,7 +176,9 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
   la grille affiche la carte espace personnel en tête (badge « hors quota »,
   micro-copy « Vos notes et contenus, hors campagne ») et la carte
   « + Créer une campagne » ; le compteur d'espaces partagés affiche « 0 / 3 »
-  (ou selon le niveau de compte) ; aucun repère « session en cours » présent
+  (ou selon le niveau de compte) ; aucun repère « session en cours » présent ;
+  l'accès aux espaces archivés n'est pas présenté s'il n'existe aucun espace archivé
+  (Famille 7 — absent par nature, pas désactivé : rien à consulter)
   Note AR-15 : cet état vide est un état de navigation (le MJ a un compte ou revient
   après une première session) — il ne constitue PAS l'écran d'atterrissage de la
   première connexion, qui est la surface de capture de l'espace personnel (AR-15) ;
@@ -144,7 +189,8 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
   avec leur nom, leur type et, le cas échéant, le repère « session en cours » ;
   le compteur d'espaces partagés reflète le nombre réel ; la carte
   « + Créer une campagne » est présente et active si le quota n'est pas atteint,
-  désactivée avec invite contextuelle si le quota est atteint
+  désactivée avec invite contextuelle si le quota est atteint ; l'accès aux espaces
+  archivés apparaît dès qu'au moins un espace archivé existe (AR-22)
 ```
 
 ---
@@ -166,7 +212,11 @@ hiérarchie de lecture à distance :
                badge hors quota, visuellement distinct)
   priorité 3 — grille des espaces partagés
   priorité 4 — compteur d'espaces partagés et carte création
-  source : NFR-ACC-04 (lecture rapide en contexte de session)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -174,9 +224,11 @@ hiérarchie de lecture à distance :
 ### Sources
 
 ```
-Sources : UC-02 §Postconditions ; UC-06 A5 ; UC-01 ; RB-01-03 ;
-          AR-01 ; AR-05 ; AR-09 ; AR-15 ; AR-17 ; AR-20 ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+Sources : UC-02 §Postconditions ; UC-06 A5 ; UC-01 ; RB-02-10 ;
+          UC-02 §Règles métier RB-02-22, RB-02-23 ;
+          AR-01 ; AR-05 ; AR-09 ; AR-15 ; AR-17 ; AR-20 ; AR-22 ;
+          domaine `space-management.md` (règle métier 7, invariant 6, règle métier 12) ;
+          NFR-ACC-02 ;
           châssis S7 (zoning.md §S7)
 ```
 

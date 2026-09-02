@@ -47,7 +47,7 @@ Le système Haversack met en relation cinq natures d'acteurs et cinq systèmes e
 - **MJ propriétaire** — `MemberRole.OWNER`, responsable billing et RGPD de ses espaces ([ADR-009](../architecture/decisions/ADR-009-fk-campaign-owner.md)).
 - **Co-MJ** — `MemberRole.GM`.
 - **Joueur authentifié** — `SpaceMembership` de rôle `PLAYER`.
-- **Joueur invité sans compte** — `GuestAccess`, scope `CAMPAIGN` ou `SESSION` ([ADR-014](../architecture/decisions/ADR-014-modele-autorisation-api.md) §1).
+- **Joueur invité sans compte** — `GuestAccess`, scope `SPACE` ou `SESSION` ([ADR-014](../architecture/decisions/ADR-014-modele-autorisation-api.md) §1).
 - **Utilisateur solo / mode local** — aucun `User` n'existe en mode local ([ADR-001](../architecture/decisions/ADR-001-execution-domaine-mode-local.md), [ADR-017](../architecture/decisions/ADR-017-modele-indexeddb-local.md) §1.1) ; propriétaire de facto d'un espace `PERSONAL` local, sans `ownerId` assigné.
 
 **Systèmes externes** :

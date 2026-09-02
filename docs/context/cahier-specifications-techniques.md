@@ -472,7 +472,7 @@ Deux maillons ne sont, par nature, pas vérifiables par une validation continue 
 
 ## 10. Exigences non-fonctionnelles (dérivées)
 
-Les dix-neuf fiches NFR du corpus de conception (`docs/conception/besoin/nfr/`) portent les identifiants stables et sont la **source unique** des critères d'expérience. Cette section ne les recopie pas : elle référence chaque identifiant et ne consolide que ce qu'une source technique fixe effectivement au-delà du critère produit — le reste reste renvoyé, jamais reformulé.
+Les vingt fiches NFR du corpus de conception (`docs/conception/besoin/nfr/`) portent les identifiants stables et sont la **source unique** des critères d'expérience. Cette section ne les recopie pas : elle référence chaque identifiant et ne consolide que ce qu'une source technique fixe effectivement au-delà du critère produit — le reste reste renvoyé, jamais reformulé.
 
 ### Performance perçue
 
@@ -492,7 +492,8 @@ Les quatre seuils chiffrés sont ouverts par conception — le corpus ne fixe au
 | NFR-OFF-01 | Périmètre offline intégral en mode local (préparation, vue de session, recherche locale) |
 | NFR-OFF-02 | Durabilité best-effort des données locales entre sessions — retrouvées intactes après fermeture du navigateur ou redémarrage de l'appareil ; `navigator.storage.persist()` comme mécanisme de durabilité. Volet alerte délégué à NFR-OFF-03 |
 | NFR-OFF-03 | Aucune perte silencieuse — avertissement non bloquant préalable et action de sécurisation proposée dès qu'une perte devient possible (garantie de conservation non obtenue, stockage saturé) ; bandeau distinct du bandeau de confidentialité (NFR-CONF-04), à ne pas fusionner |
-| NFR-OFF-04 | Fonctionnement partiel en cas de perte réseau passagère en mode cloud (renvoi ADR-017 §2(c) pour le régime des trois postures local/migration/cloud) |
+| NFR-OFF-04 | Fonctionnement partiel en cas de perte réseau passagère en mode cloud, en session (renvoi ADR-017 §2(c) pour le régime des trois postures local/migration/cloud) |
+| NFR-OFF-05 | Continuité d'édition en préparation cloud hors session lors d'une perte de réseau — conservation locale et synchronisation automatique au retour de connexion, sans action du MJ ; distinct de NFR-OFF-04 (session active) |
 
 ### Confidentialité
 
@@ -527,11 +528,11 @@ Les bornes suivantes sont des **décisions de périmètre assumées**, pas des t
 |---|---|---|---|
 | `docs/conception/besoin/nfr/README.md` | NFR produit, index | — | Cinq familles NFR, périmètre MVP assumé par famille |
 | `docs/conception/besoin/nfr/NFR-PERF-01` à `04` | NFR produit | — | Performance perçue, seuils chiffrés non fixés |
-| `docs/conception/besoin/nfr/NFR-OFF-01` à `04` | NFR produit | — | Fonctionnement hors connexion, deux bandeaux distincts |
+| `docs/conception/besoin/nfr/NFR-OFF-01` à `05` | NFR produit | — | Fonctionnement hors connexion, deux bandeaux distincts, continuité d'édition en préparation cloud (NFR-OFF-05) |
 | `docs/conception/besoin/nfr/NFR-CONF-01` à `04` | NFR produit | — | Confidentialité — corps technique en §5/§6 |
 | `docs/conception/besoin/nfr/NFR-ACC-01` à `04` | NFR produit | — | Accessibilité, référentiel WCAG 2.1 AA |
 | `docs/conception/besoin/nfr/NFR-I18N-01` à `03` | NFR produit | — | Internationalisation, périmètre français au MVP |
-| CdC §6 | synthèse produit | — | Reformulation des dix-neuf exigences non fonctionnelles en expérience vécue |
+| CdC §6 | synthèse produit | — | Reformulation des vingt exigences non fonctionnelles en expérience vécue |
 
 ---
 

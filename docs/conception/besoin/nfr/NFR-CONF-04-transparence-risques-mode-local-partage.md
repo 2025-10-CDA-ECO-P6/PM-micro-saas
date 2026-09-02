@@ -12,7 +12,7 @@ Lorsque l'application détecte que les données locales d'un MJ pourraient être
 
 ## Raison d'être
 
-Le mode local sans compte repose sur un choix de conception délibéré : le contenu local du MJ (espace personnel et campagnes) est stocké dans l'espace de stockage de l'appareil utilisé, sans protection par mot de passe ni compte utilisateur. Ce choix permet une friction d'entrée nulle (vision §5) et une utilisation immédiate, mais il implique une limite assumée : sur un appareil partagé, toute personne ayant accès à ce même appareil et navigateur peut potentiellement lire ces données.
+Le mode local sans compte repose sur un choix de conception délibéré : le contenu local du MJ (espace personnel, campagnes et one-shots) est stocké dans l'espace de stockage de l'appareil utilisé, sans protection par mot de passe ni compte utilisateur. Ce choix permet une friction d'entrée nulle (vision §5) et une utilisation immédiate, mais il implique une limite assumée : sur un appareil partagé, toute personne ayant accès à ce même appareil et navigateur peut potentiellement lire ces données.
 
 Cette limite ne peut pas être effacée par le mode local — elle en est une contrainte structurelle, documentée dans UC-01 et assumée pour le MVP (US-UC-01, RB-01-14). L'information honnête de l'utilisateur sur cette limite est préférable à une promesse de sécurité que le mode local ne peut pas tenir.
 

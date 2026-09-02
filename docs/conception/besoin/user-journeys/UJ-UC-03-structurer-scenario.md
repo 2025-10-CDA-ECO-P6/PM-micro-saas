@@ -2,7 +2,7 @@
 
 ## Périmètre
 
-Parcours du MJ depuis l'accès à sa campagne jusqu'à la sauvegarde d'un scénario utilisable en session. Couvre les modes monobloc (scénario libre) et structuré (scènes), ainsi que la liaison de documents existants.
+Parcours du MJ depuis l'accès à son espace jusqu'à la sauvegarde d'un scénario utilisable en session. Couvre les modes monobloc (scénario libre) et structuré (scènes), ainsi que la liaison de documents existants.
 
 ---
 
@@ -13,7 +13,7 @@ Parcours du MJ depuis l'accès à sa campagne jusqu'à la sauvegarde d'un scéna
 | Émilie | Monobloc, improvisation | Saisie rapide, liberté totale | Toute étape qui impose une structure |
 | Antoine | Structuré par scènes, liens riches | Navigation entre documents, ordre des scènes | Manque de liens entre documents |
 | Nadia | Préparation express (30-45 min) | Zéro configuration, accès direct | Configuration fine, options superflues |
-| Sonia | Catalogue de scénarios réutilisables | Scénarios autonomes et portables | Couplage fort à une campagne spécifique |
+| Sonia | Catalogue de scénarios réutilisables | Scénarios autonomes et portables | Couplage fort à un espace spécifique |
 | Thomas | Structure maîtrisée, libre | Contrôle total de l'arborescence | Structure imposée par l'outil |
 
 ---
@@ -26,7 +26,7 @@ Parcours du MJ depuis l'accès à sa campagne jusqu'à la sauvegarde d'un scéna
 journey
     title Structurer un scénario — UC-03
     section Création
-        Ouvrir la campagne: 5: Émilie, Antoine, Nadia
+        Ouvrir l'espace: 5: Émilie, Antoine, Nadia
         Accéder à la section Scénarios: 5: Émilie, Antoine, Nadia
         Cliquer "Créer un scénario": 5: Émilie, Antoine, Nadia
         Renseigner le titre: 5: Émilie, Antoine, Nadia
@@ -48,7 +48,7 @@ journey
 
 ```mermaid
 flowchart TD
-    A[MJ ouvre sa campagne] --> B[Section Scénarios]
+    A[MJ ouvre son espace] --> B[Section Scénarios]
     B --> C[Créer un scénario]
     C --> D[Renseigne le titre\nchamp obligatoire]
     D --> E{Mode de travail}
@@ -80,12 +80,12 @@ flowchart TD
 
 | Étape | Persona(s) | Friction potentielle | Opportunité produit |
 |---|---|---|---|
-| Ouvrir la campagne et naviguer vers Scénarios | Tous | Navigation peu claire si beaucoup de sections | Entrée directe "Mes scénarios" sur le tableau de bord campagne |
+| Ouvrir l'espace et naviguer vers Scénarios | Tous | Navigation peu claire si beaucoup de sections | Entrée directe "Mes scénarios" sur le tableau de bord de l'espace |
 | Créer un scénario (titre seul) | Émilie, Nadia | Formulaire trop long au démarrage | Création one-click avec titre uniquement, reste configurable après |
 | Passer en mode monobloc | Émilie, Nadia | Mode par défaut peu visible si l'outil propose d'emblée des scènes | Rédaction libre par défaut, ajout de scènes en option secondaire |
 | Ajouter et ordonner des scènes | Antoine, Thomas | Absence de drag-and-drop, réordonnancement flou | Drag-and-drop sur ordre des scènes, avec indicateur visuel de l'ordre |
 | Écrire le contenu d'une scène | Tous | Éditeur peu expressif, absence de mise en forme basique | Éditeur de blocs fluide, raccourcis clavier |
-| Lier un document existant | Antoine, Sonia | Recherche de documents inexistante ou lente | Recherche rapide par titre dans la campagne, suggestion des documents récents |
+| Lier un document existant | Antoine, Sonia | Recherche de documents inexistante ou lente | Recherche rapide par titre dans l'espace, suggestion des documents récents |
 | Séparer notes privées et contenu partageable | Antoine, Thomas | Modèle "deux documents liés" non évident pour l'utilisateur | Affordance claire dans l'UI : "Ajouter une note MJ" crée automatiquement un doc privé MJ lié |
 | Définir le statut | Nadia, Sonia | Étape perçue comme superflue si la valeur n'est pas visible | Statut "brouillon" par défaut, modifiable en un clic depuis la liste |
 | Sauvegarder | Tous | Perte de données si la sauvegarde n'est pas automatique | Sauvegarde automatique + indicateur de statut de synchronisation |

@@ -1,6 +1,6 @@
 # Stack technique — Haversack
 
-> **Note de couches documentaires** : document de sélection technologique (couche décision). Déplacé de `docs/conception/` vers `docs/architecture/` le 2026-06-10 (finding CP-02, décision opérateur). Voir [ADR-003](decisions/ADR-003-stack-front.md) pour la trace de la décision landing + application.
+> **Note de couches documentaires** : document de sélection technologique (couche décision). Déplacé de `docs/conception/` vers `docs/architecture/` le 2026-06-10. Voir [ADR-003](decisions/ADR-003-stack-front.md) pour la trace de la décision landing + application.
 
 ## Vue d'ensemble
 

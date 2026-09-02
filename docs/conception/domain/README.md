@@ -44,7 +44,7 @@ Avant d'ajouter un concept dans le Core, toutes les réponses doivent être **ou
 
 1. Ce concept est-il utile à au moins deux bounded contexts ?
 2. Son sens métier reste-t-il identique dans ces contextes ?
-3. Peut-il exister sans connaître Campaign, Session, Content ou Identity ?
+3. Peut-il exister sans connaître Space, Session, Content ou Identity ?
 4. Peut-il être testé seul ?
 5. Est-il stable, ou risque-t-il de changer à chaque évolution d'un contexte spécifique ?
 6. **Le Core ne contient jamais d'entités.** Tout concept avec un identifiant propre et un cycle de vie appartient à un bounded context.

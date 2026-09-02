@@ -41,7 +41,9 @@ Intention : l'utilisateur crée un compte pour accéder à la synchronisation cl
   type     : formulaire
   rôle     : recueille les informations nécessaires à la création du compte —
              adresse de messagerie, nom d'affichage, mot de passe (UC-10 §scénario
-             nominal Inscription) ; les trois champs sont obligatoires pour ce chemin
+             nominal Inscription) ; les trois champs sont obligatoires pour ce chemin ;
+             le nom d'affichage est borné à 100 caractères maximum et ne peut pas être
+             vide (glossaire §Nom d'affichage)
   priorité : principal
   visibilité : tous (utilisateur non authentifié)
 
@@ -51,9 +53,11 @@ Intention : l'utilisateur crée un compte pour accéder à la synchronisation cl
              externe — aucun mot de passe à définir ; si un compte existe déjà avec
              cette adresse de messagerie, l'utilisateur y est connecté directement
              (UC-10 §scénario nominal Connexion via fournisseur externe) ;
-             mis en avant comme chemin de moindre coût à l'instant de bascule (AR-13)
-             [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview]
-             le ou les fournisseurs exposés et leur wording ne sont pas figés
+             mis en avant comme chemin de moindre coût à l'instant de bascule (AR-13) ;
+             fournisseurs exposés : Google et Discord (cahier des charges §Authentification —
+             RÉSOLU ; ADR-015 ; zoning.md §S9 « Fournisseurs d'identité — RÉSOLU »)
+             [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview] le wording exact
+             des libellés de bouton par fournisseur n'est pas figé
   priorité : principal
   visibilité : tous (utilisateur non authentifié)
 
@@ -124,7 +128,11 @@ hiérarchie de lecture à distance :
   priorité 1 — formulaire de création de compte (chemin principal)
   priorité 2 — zone d'accès via fournisseur externe (chemin alternatif en un geste)
   priorité 3 — lien vers la connexion
-  source : NFR-ACC-04 (ordre de lecture logique conforme à l'intention de l'écran)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -138,7 +146,7 @@ Sources : UC-10 (scénario nominal Inscription sans données locales,
                   E1 — Email déjà utilisé) ;
           UC-01 A1 (invite contextuelle déclenchant l'inscription) ;
           AR-13 (fournisseur externe mis en avant, moindre coût à l'instant de bascule) ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ;
           ADR-016 §4 (gate de reconnaissance avant migration) ;
           châssis S7 (zoning.md §S7)
 ```
@@ -151,7 +159,7 @@ Sources : UC-10 (scénario nominal Inscription sans données locales,
 
 ```
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview]
-    fournisseur(s) d'identité externe exposés sur cet écran et leur wording —
-    non figés dans le corpus
+  [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview] wording exact des libellés
+    de bouton par fournisseur d'identité externe — les fournisseurs eux-mêmes (Google,
+    Discord) sont résolus (cahier des charges §Authentification ; ADR-015)
 ```

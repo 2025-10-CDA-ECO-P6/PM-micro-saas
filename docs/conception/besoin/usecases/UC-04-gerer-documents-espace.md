@@ -46,12 +46,12 @@ contexte de campagne — cf. UC-01).
 
 ## Préconditions
 
-- Un espace existe (campagne ou espace personnel).
+- Un espace existe (`CAMPAIGN`, `ONE_SHOT` ou `PERSONAL`).
 - Le MJ a accès à cet espace.
 
 ## Scénario nominal
 
-1. Le MJ ouvre un espace (campagne ou espace personnel).
+1. Le MJ ouvre un espace (`CAMPAIGN`, `ONE_SHOT` ou `PERSONAL`).
 2. Il accède à la bibliothèque de documents, à un dossier ou à une zone de création rapide.
 3. Il clique sur "Créer un document" ou "Créer une note rapide".
 4. Le système affiche l'éditeur de document.
@@ -98,6 +98,17 @@ Un bloc ne porte pas la visibilité dans le MVP. Si le MJ veut séparer un conte
 contenu destiné aux joueurs, il crée ou utilise un document lié avec sa propre visibilité
 (privé MJ ou visible par les joueurs). Cette règle évite de transformer le bloc en fourre-tout
 de droits.
+
+### Tags
+
+Un tag est une étiquette libre que le MJ associe à un document pour organiser son contenu selon ses propres
+catégories, indépendamment de tout dossier, type ou lien. Cette fonction répond à un besoin d'organisation
+personnelle du MJ, distinct de la recherche par tag (→ UC-14 A3, Could Have — hors MVP) : le MJ tague comme il
+l'entend, sans que l'application impose une taxonomie, une hiérarchie ou une signification prédéfinie aux tags
+qu'il crée.
+
+Un document peut porter zéro, un ou plusieurs tags. Le MJ crée librement de nouveaux tags à la volée depuis
+l'éditeur de document et les retire à tout moment ; aucune structure de tags n'est imposée par l'application.
 
 ### Templates
 
@@ -202,8 +213,21 @@ Le système refuse l'accès.
 - Un document appartient toujours à exactement un dossier.
 - Un document peut être lié à plusieurs autres documents.
 - Un document peut être instancié depuis un template réutilisable.
+- Un document peut porter zéro, un ou plusieurs tags librement choisis par le MJ, pour son organisation propre —
+  distincte de la recherche par tag (UC-14 A3, Could Have — hors MVP), des dossiers (UC-05) et des liens.
+- Le MJ crée, modifie et retire les tags d'un document à tout moment, sans validation ni structure imposée par
+  l'application.
+- Un tag n'a pas de portée propre : il n'existe ni table de tags ni entité `Tag`, seulement une valeur libre portée
+  par un document (domaine, modèle de données) — la question « propre à l'espace ou global au MJ ? » n'a donc pas
+  d'objet au niveau du besoin. Reste une question d'interface distincte, hors MVP au même titre que le filtrage par
+  tag (UC-14 A3, Could Have) : l'autocomplétion des tags déjà employés doit-elle puiser dans le seul espace courant
+  ou dans tous les espaces du MJ.
+- Aucune limite de nombre de tags, ni par document ni par espace. La seule contrainte est une longueur maximale par
+  tag, portée par le modèle de données (→ domaine, Content Library).
+- La casse d'un tag est normalisée : « PNJ » et « pnj » désignent le même tag. Le MJ qui saisit une variante de
+  casse d'un tag déjà porté par un document retrouve ce même tag, pas un doublon (domaine, modèle de données).
 - Un document partagé avec des joueurs reste visible jusqu'à retrait explicite du partage.
-- Seul le MJ peut partager un document d'un espace de campagne avec les joueurs.
+- Seul le MJ peut partager un document d'un espace partagé avec les joueurs.
 - Un joueur ne peut consulter et voir que les documents qui lui sont explicitement accessibles.
 - UC-03 possède la structure narrative des scénarios et scènes, même s'ils sont représentés par des documents.
 - UC-05 possède l'organisation en dossiers et les templates par défaut de dossier.
@@ -220,8 +244,9 @@ Le système refuse l'accès.
 - Le MJ peut lier un document à d'autres documents.
 - Le MJ peut organiser un document dans un dossier.
 - Le MJ peut créer un document privé.
-- Le MJ peut partager un document avec les joueurs (espace de campagne).
+- Le MJ peut partager un document avec les joueurs (espace partagé).
 - Le MJ peut modifier la visibilité d'un document.
+- Le MJ peut ajouter, modifier ou retirer librement les tags d'un document, sans validation ni structure imposée.
 - Un document privé n'est pas visible par les joueurs.
 - Un document peut être retrouvé via la recherche.
 

@@ -101,7 +101,7 @@ Intention : le joueur, à l'ouverture du lien reçu du MJ, accède immédiatemen
   du nom est accessible ; la zone d'information RGPD est présente
 
 état erreur (lien expiré, révoqué, invalide ou quota atteint) :
-  voir fiche dédiée `docs/conception/interface/wireframes/erreur-acces.md` —
+  voir fiche dédiée `docs/conception/interface/wireframes/sv5-joueur/erreur-acces/erreur-acces.md` —
   la page d'erreur est un écran distinct ; cet écran n'affiche pas d'état d'erreur
 ```
 

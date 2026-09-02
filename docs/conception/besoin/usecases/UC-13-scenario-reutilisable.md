@@ -71,7 +71,7 @@ Le MJ veut lancer un scénario existant avec un nouveau groupe, ou veut marquer 
 1. Le MJ veut lancer un scénario sans créer un espace complet de type campagne.
 2. Il crée un espace de type `ONE_SHOT` : nom minimal, durée prévue (une session), pas de continuité.
 3. L'instance du scénario est créée dans cet espace one-shot via `Document.Instantiate`.
-4. Après la session, l'espace one-shot est archivé automatiquement.
+4. Après la session, le MJ peut archiver manuellement l'espace one-shot, comme il le ferait pour une campagne (→ UC-02).
 
 ## Exceptions
 

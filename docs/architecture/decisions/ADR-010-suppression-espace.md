@@ -131,5 +131,5 @@ Mettre les données en corbeille indéfiniment sans jamais les purger physiqueme
 ## Points à trancher en J2
 
 - **Interface de restauration** : comment l'utilisateur accède-t-il à sa corbeille et restaure-t-il un espace ? (Un onglet spécifique ? Une endpoint API dédiée ?)
-- **Détail de la cascade** : **Statué dans [ADR-011](ADR-011-cascade-integrite-referentielle.md)** — mécanisme saga applicative, toutes FK en `ON DELETE RESTRICT`, séquences de déliaison et ordre topologique de DELETE complets (matrice ~30 FK, deux cycles traités, `source_document_id` cross-espace, préséance des sagas `SpaceDeleted` et `UserAnonymized`).
+- **Détail de la cascade** : **Statué dans [ADR-011](ADR-011-cascade-integrite-referentielle.md)** — mécanisme saga applicative, toutes FK en `ON DELETE RESTRICT`, séquences de déliaison et ordre topologique de DELETE complets (matrice 38 FK, deux cycles traités, `source_document_id` cross-espace, préséance des sagas `SpaceDeleted` et `UserAnonymized`).
 - **Mécanisme du job de purge** : **Statué dans ADR-011** — Hosted Service .NET, claim exclusif par espace, transaction unique par espace, idempotence garantie.

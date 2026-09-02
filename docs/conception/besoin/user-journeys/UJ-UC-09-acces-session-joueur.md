@@ -2,7 +2,7 @@
 
 ## Périmètre
 
-Parcours couvrant deux flux distincts : l'accès d'un joueur via lien ponctuel sans compte (Lucas, Émilie), et la génération du lien par le MJ ainsi que l'accès via lien permanent (Thomas). Le flux central est celui de Lucas — joueur type sans compte, profil d'adoption critique. La gestion des membres de campagne est couverte par UC-11. La création de compte est couverte par UC-10.
+Parcours couvrant deux flux distincts : l'accès d'un joueur via lien ponctuel sans compte (Lucas, Émilie), et la génération du lien par le MJ ainsi que l'accès via lien permanent (Thomas). Le flux central est celui de Lucas — joueur type sans compte, profil d'adoption critique. La gestion des membres de l'espace partagé est couverte par UC-11. La création de compte est couverte par UC-10.
 
 ---
 
@@ -21,7 +21,7 @@ journey
         Saisir uniquement un nom d affichage: 4: Lucas
         Acceder a la vue joueur: 5: Lucas
     section Joueur consulte les informations partagees
-        Voir les documents PUBLIC de la campagne: 5: Lucas
+        Voir les documents PUBLIC de l espace partage: 5: Lucas
         Voir les documents epingles de la session: 5: Lucas
         Prendre des notes personnelles: 4: Lucas
     section MJ invite un membre regulier via lien permanent
@@ -44,7 +44,7 @@ flowchart TD
     A[MJ genere un lien] --> B{Type de lien}
 
     B -->|Ponctuel session| C[GuestAccess token\nlie a la session]
-    B -->|Permanent campagne| D[Member invitation token\nlie a la campagne]
+    B -->|Permanent espace partage| D[Member invitation token\nlie a l espace partage]
 
     C --> E[MJ partage le lien\nDiscord, WhatsApp, email]
     D --> E
@@ -54,7 +54,7 @@ flowchart TD
 
     G --> H{Token valide ?}
     H -->|Expire ou revoque| I[Message lien non actif\nContacter le MJ]
-    H -->|Invalide ou mal forme| J[Page d erreur sobre\nOpacite sur l existence de la campagne]
+    H -->|Invalide ou mal forme| J[Page d erreur sobre\nOpacite sur l existence de l espace partage]
 
     H -->|Valide — ponctuel| K{Joueur deja connecte ?}
     K -->|Non| L[Saisit uniquement un nom d affichage]
@@ -64,7 +64,7 @@ flowchart TD
     M --> N
 
     H -->|Valide — permanent| O{Joueur a un compte ?}
-    O -->|Oui| P[Acces campagne permanent\nHistorique sessions et lore partage]
+    O -->|Oui| P[Acces espace partage permanent\nHistorique sessions et lore partage]
     O -->|Non| Q[Invite a creer un compte\nUC-10]
     Q --> P
 
@@ -88,7 +88,7 @@ flowchart TD
 
 - **Opacité du message d'erreur pour un lien expiré vs invalide** : le principe d'opacité est correct d'un point de vue sécurité, mais Lucas ne comprend pas pourquoi le lien ne fonctionne pas. Le message doit être sobre mais suffisamment actionnable ("contacter le MJ") pour éviter la confusion.
 
-- **Génération du lien — Thomas ne sait pas si le lien permanent est déjà actif** : si Thomas génère plusieurs liens pour la même campagne ou modifie les membres, l'interface doit clairement indiquer l'état actif/révoqué de chaque lien dans le panneau membres.
+- **Génération du lien — Thomas ne sait pas si le lien permanent est déjà actif** : si Thomas génère plusieurs liens pour le même espace partagé ou modifie les membres, l'interface doit clairement indiquer l'état actif/révoqué de chaque lien dans le panneau membres.
 
 ---
 
@@ -113,7 +113,7 @@ flowchart TD
 - Use case source : [`docs/conception/besoin/usecases/UC-09-acces-session-joueur.md`](../usecases/UC-09-acces-session-joueur.md)
 - User stories associées : [`US-UC-09-acces-session-joueur.md`](../user-stories/US-UC-09-acces-session-joueur.md)
 - UC-10 Compte cloud : [`docs/conception/besoin/usecases/UC-10-compte-cloud.md`](../usecases/UC-10-compte-cloud.md)
-- UC-11 Gérer membres campagne : [`docs/conception/besoin/usecases/UC-11-gerer-membres-campagne.md`](../usecases/UC-11-gerer-membres-campagne.md)
+- UC-11 Gérer les membres d'un espace partagé : [`docs/conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md`](../usecases/UC-11-gerer-membres-espace-partage.md)
 - UC-08 Partager information : [`docs/conception/besoin/user-journeys/UJ-UC-08-partager-information.md`](UJ-UC-08-partager-information.md)
 - Conception Identity and Access : [`docs/conception/domain/identity-access.md`](../../domain/identity-access.md)
 - Conception Space Management : [`docs/conception/domain/space-management.md`](../../domain/space-management.md)

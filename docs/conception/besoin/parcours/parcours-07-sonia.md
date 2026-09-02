@@ -35,8 +35,14 @@ avec sa condition de retour telle que le corpus l'énonce. La frontière du pér
 
 Sonia ouvre l'application. Elle voit l'écran d'accueil avec deux options. Elle choisit
 « Commencer sans compte » — sa pratique en convention ou dans son association locale implique
-des joueurs qui changent à chaque fois ; elle ne veut pas les forcer à s'inscrire. Elle accède
-à l'écran de création de campagne.
+des joueurs qui changent à chaque fois ; elle ne veut pas les forcer à s'inscrire. Elle atterrit
+dans son **espace personnel** — le conteneur par défaut disponible dès le mode local (UC-01
+scénario nominal étape 5), sans qu'aucun espace de jeu n'existe encore. C'est précisément là
+qu'elle peut stocker et préparer ses scénarios sans créer de campagne (persona-07-sonia.md
+§Ce que ce persona révèle : « via l'espace personnel, elle peut stocker et préparer ses
+scénarios sans avoir à créer de campagne »). Pour la session qu'elle anime ce soir, elle choisit
+malgré tout de créer un espace de jeu pour disposer d'une vue session et d'un partage joueurs —
+un acte distinct et optionnel (UC-01 §Contexte, UC-02).
 
 ### Le premier point de friction
 
@@ -55,15 +61,19 @@ pas pour son flux de travail.
 - Un espace de jeu créé avec quatre dossiers système par défaut : « Personnages », « Joueurs »,
   « Scénarios », « Notes » (UC-02, glossaire §3 `Folder`). Elle peut les renommer ou les
   supprimer librement.
-- Le `SpaceType` est `CAMPAIGN` par défaut — le glossaire définit `ONE_SHOT` comme valeur
-  possible de `SpaceType`, mais son point d'entrée dédié dans l'interface (« deux points
-  d'entrée distincts » — UC-02 §Contexte) fait partie du périmètre post-MVP.
+- Le `SpaceType` est `ONE_SHOT` dès le MVP — Sonia le crée via le parcours de création nominal
+  (UC-02 scénario nominal, étapes 1-5, avec `type = ONE_SHOT`). C'est le **point d'entrée
+  dédié** (« deux points d'entrée distincts », parcours express en moins de 30 secondes) qui
+  fait partie du périmètre post-MVP — pas le type `ONE_SHOT` lui-même, disponible dès la
+  première livraison (UC-02 §Ontologie des types d'espace, scénario alternatif A1).
 - Aucune donnée envoyée au serveur. Fonctionnalités de partage désactivées en mode local.
 
 ### État laissé par l'étape 1
 
-- Une `Campagne` existe en mode local avec une `SessionViewConfig` créée automatiquement
-  à `CampaignCreated` (glossaire §5 `SessionViewConfig`).
+- Un **espace personnel** (`SpaceType.PERSONAL`) préexiste comme conteneur par défaut, avec son
+  seul dossier virtuel « Non classés » — Sonia en est la propriétaire.
+- Un espace de type `ONE_SHOT` existe en mode local avec une `SessionViewConfig` créée
+  automatiquement à `SpaceCreated` (glossaire §5 `SessionViewConfig`).
 - Sonia est en mode local, sans `User`.
 
 ### Couture vers l'étape 2
@@ -94,14 +104,22 @@ créer des liens entre eux (`DocumentLink`).
 ### La friction spécifique de Sonia à cette étape
 
 Sonia anime la même partie avec des groupes différents. Son flux de travail réel implique de
-réutiliser un scénario existant : l'adapter, le relancer, sans dupliquer tout le contenu. UC-13
-(Utiliser un scénario réutilisable) couvre ce besoin — `Document` avec `isReusable = true`,
-instanciation indépendante du source (glossaire §4 `Document réutilisable` et `Instance`).
+réutiliser un scénario existant : l'adapter, le relancer, sans dupliquer tout le contenu. Son
+**espace personnel**, provisionné dès l'étape 1, est le lieu naturel de son catalogue d'une
+quinzaine de scénarios — la fiche persona le nomme explicitement (« un espace personnel qui
+contient tous ses scénarios, accessible sans créer de campagne ») et l'acte comme partiellement
+couvert en MVP (persona-07-sonia.md §Ce que ce persona révèle : « via l'espace personnel, elle
+peut stocker et préparer ses scénarios sans avoir à créer de campagne »).
 
-UC-13 est explicitement hors première livraison. Dans le MVP, Sonia doit manuellement recréer
-ou dupliquer son scénario à chaque nouvelle table — ou maintenir une campagne de référence et
-copier le contenu à la main. Aucun mécanisme d'instanciation de document réutilisable n'est
-disponible (UC-13 — scénario réutilisable, Should Have post-MVP ; voir glossaire `ScenarioLibrary`).
+Ce que le MVP ne couvre pas : l'**instanciation** d'un scénario de son espace personnel vers
+l'espace `ONE_SHOT` d'une table donnée, sans dupliquer tout le contenu. UC-13 (Utiliser un
+scénario réutilisable) couvre ce besoin — `Document` avec `isReusable = true`, instanciation
+indépendante du source (glossaire §4 `Document réutilisable` et `Instance`) — mais est
+explicitement hors première livraison. Dans le MVP, Sonia stocke et prépare ses scénarios dans
+son espace personnel, mais doit manuellement recréer ou dupliquer leur contenu à chaque nouvelle
+table — ou maintenir une campagne de référence et copier le contenu à la main. Aucun mécanisme
+d'instanciation de document réutilisable n'est disponible (UC-13 — scénario réutilisable, Should
+Have post-MVP ; voir glossaire `ScenarioLibrary`).
 
 ### État laissé par l'étape 2
 

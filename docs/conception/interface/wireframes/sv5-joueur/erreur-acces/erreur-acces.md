@@ -89,7 +89,11 @@ annonce sans action :
 
 hiérarchie de lecture à distance :
   priorité 1 — zone de message d'erreur (seul contenu de l'écran)
-  source : NFR-ACC-04 (lecture dans n'importe quel contexte ; écran minimaliste)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -100,7 +104,7 @@ hiérarchie de lecture à distance :
 Sources : UC-09 A3 ; UC-09 E1 ; UC-09 E2 ;
           RB-09-21 ;
           AR-03 ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ;
           châssis S7 (zoning.md §S7)
 ```
 

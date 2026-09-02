@@ -1,8 +1,8 @@
-# Epic — Gérer les membres d'une campagne (UC-11)
+# Epic — Gérer les membres d'un espace partagé (UC-11)
 
 ## Objectif utilisateur
 
-Permettre au MJ de contrôler qui accède à sa campagne : générer des liens d'invitation partageables, associer un joueur à un personnage, révoquer une invitation active, retirer un membre. L'invitation par lien est le seul vecteur MVP — l'invitation par email est hors périmètre.
+Permettre au MJ de contrôler qui accède à son espace : générer des liens d'invitation partageables, associer un joueur à un personnage, révoquer une invitation active, retirer un membre. L'invitation par lien est le seul vecteur MVP — l'invitation par email est hors périmètre.
 
 ---
 
@@ -17,11 +17,11 @@ Permettre au MJ de contrôler qui accède à sa campagne : générer des liens d
 
 ## Use cases couverts
 
-- **UC-11** — Gérer les membres d'une campagne (point de vue MJ)
-  - Nominal : générer un lien d'invitation (périmètre `CAMPAIGN` ou `SESSION`)
+- **UC-11** — Gérer les membres d'un espace partagé (point de vue MJ)
+  - Nominal : générer un lien d'invitation (périmètre `SPACE` ou `SESSION`)
   - A1 : associer un joueur à un personnage après qu'il a rejoint
   - A2 : révoquer une invitation active avant qu'elle soit utilisée
-  - A3 : retirer un membre de la campagne
+  - A3 : retirer un membre de l'espace
   - A4 : lien invité sans compte (`GuestAccess`, lié à UC-09)
   - E1 : joueur déjà membre (doublon détecté)
   - E2 : invitation expirée (pas de réactivation — créer un nouveau lien)
@@ -51,7 +51,7 @@ flowchart TD
 
     A -->|Inviter un joueur| B[Generer un lien d invitation]
     B --> C{Perimetre}
-    C -->|CAMPAIGN| D[Invitation campagne durable\nMember apres acceptation]
+    C -->|SPACE| D[Invitation campagne durable\nMember apres acceptation]
     C -->|SESSION| E[Invitation session temporaire\nGuestAccess]
 
     D --> F[MJ copie le lien\nDiscord WhatsApp etc]
@@ -75,10 +75,10 @@ flowchart TD
 flowchart LR
     US1101[US-11-01\nGenerer un lien\nd invitation]
     US1102[US-11-02\nRevoquer une\ninvitation active]
-    US1103[US-11-03\nRetirer un membre\nde la campagne]
+    US1103[US-11-03\nRetirer un membre\nde l espace]
     US1104[US-11-04\nAssocier un joueur\na un personnage]
 
-    UC11[UC-11\nGerer membres campagne]
+    UC11[UC-11\nGerer membres espace]
     UC09[UC-09\nAcces session joueur]
     UC12[UC-12\nConsulter / vue joueur]
 
@@ -102,23 +102,23 @@ flowchart LR
 **Priorité** : Should Have
 
 **En tant que** MJ,
-**je veux** générer un lien d'invitation partageable pour ma campagne ou une session spécifique,
+**je veux** générer un lien d'invitation partageable pour mon espace ou une session spécifique,
 **afin de** inviter mes joueurs sans passer par la plateforme — je partage le lien moi-même (Discord, WhatsApp, etc.).
 
 **Notes de conception** :
-- Le MJ choisit le périmètre de l'invitation : `CAMPAIGN` (accès durable, lié à un `Member`) ou `SESSION` (accès temporaire, lié à un `GuestAccess`).
+- Le MJ choisit le périmètre de l'invitation : `SPACE` (accès durable, lié à un `Member`) ou `SESSION` (accès temporaire, lié à un `GuestAccess`).
 - Le lien est généré par `Space Management` et le token est géré par `Identity & Access`.
 - L'accès est automatique sur lien valide — pas d'étape d'approbation MJ après que le joueur a cliqué.
 - La plateforme ne gère pas l'envoi du lien (pas d'email, pas de notification push). Le MJ copie et partage lui-même.
 - Options configurables (toutes optionnelles) : date d'expiration, nombre d'utilisations maximum.
 - Si le nombre d'utilisations maximum n'est pas renseigné, il est **illimité** (`maxUses` = `null`, non borné) — sert le cas d'un lien unique partagé pour tout le groupe (décision produit UC-11 Q#5).
 - Si un nombre d'utilisations maximum est configuré, le compteur d'usages restants (dérivé de `usedCount` / `maxUses`) est affichable au MJ dans la liste des invitations (décision produit UC-11 Q#1 ; ne couvre pas l'historique des utilisateurs — voir *Stories exclues ou repoussées*).
-- Si un joueur utilise un lien périmètre `CAMPAIGN` et n'a pas de compte, il est redirigé vers UC-10 (création de compte) avant d'être lié comme `Member`.
+- Si un joueur utilise un lien périmètre `SPACE` et n'a pas de compte, il est redirigé vers UC-10 (création de compte) avant d'être lié comme `Member`.
 - Si un joueur utilise un lien périmètre `SESSION` sans compte, il entre via `GuestAccess` (UC-09).
 - E1 : si le joueur est déjà `Member` (`ACTIVE`), le système l'indique sans créer de doublon.
 
 **Règles métier** :
-- RB-11-01 : Seul le MJ propriétaire (`OWNER`) d'une campagne peut générer une invitation.
+- RB-11-01 : Seul le MJ propriétaire (`OWNER`) d'un espace partagé peut générer une invitation.
 - RB-11-02 : Un lien d'invitation peut être limité en durée (date d'expiration) ou en nombre d'utilisations. Ces paramètres sont optionnels. Par défaut, si le nombre d'utilisations n'est pas renseigné, il est **illimité** (`maxUses` = `null`).
 - RB-11-03 : L'accès est accordé automatiquement à réception d'un lien valide — aucune validation manuelle du MJ n'est requise.
 - RB-11-04 : La plateforme ne gère pas l'envoi du lien. Le MJ le partage via le canal de son choix.
@@ -126,8 +126,8 @@ flowchart LR
 - RB-11-06 : Si le joueur est déjà `Member` `ACTIVE`, aucun doublon n'est créé. Le MJ en est informé.
 
 **Critères d'acceptation** :
-- [ ] Le MJ peut générer un lien d'invitation depuis la section "Membres" de la campagne.
-- [ ] Le MJ choisit le périmètre : `CAMPAIGN` ou `SESSION`.
+- [ ] Le MJ peut générer un lien d'invitation depuis la section "Membres" de l'espace.
+- [ ] Le MJ choisit le périmètre : `SPACE` ou `SESSION`.
 - [ ] Pour le périmètre `SESSION`, le MJ sélectionne la session concernée.
 - [ ] Le lien est affiché avec un bouton "Copier" offrant un retour visuel immédiat.
 - [ ] Le MJ peut optionnellement configurer une date d'expiration.
@@ -142,7 +142,7 @@ flowchart LR
 Scenario : MJ genere un lien d invitation campagne (nominal)
   Etant donne qu Emilie est propriétaire de la campagne "Les Ombres du Passé"
   Quand elle ouvre la section Membres et clique sur "Inviter un joueur"
-  Et qu elle choisit le perimetre CAMPAIGN
+  Et qu elle choisit le perimetre SPACE
   Et qu elle clique sur "Generer le lien"
   Alors un lien d invitation est genere
   Et le bouton "Copier" est disponible avec retour visuel
@@ -155,7 +155,7 @@ Scenario : MJ genere un lien d invitation session
   Et le GuestAccess sera cree a utilisation du lien
 
 Scenario : Joueur deja membre — doublon detecte (E1)
-  Etant donne qu un joueur est deja Member ACTIVE de la campagne
+  Etant donne qu un joueur est deja Member ACTIVE de l espace
   Quand le MJ tente de generer une nouvelle invitation pour ce joueur
   Alors le systeme informe le MJ que ce joueur est deja membre
   Et aucun doublon n est cree
@@ -188,7 +188,7 @@ Scenario : Invitation expiree non reactivable (E2)
 **Règles métier** :
 - RB-11-07 : Seul le MJ propriétaire (`OWNER`) peut révoquer une invitation.
 - RB-11-08 : La révocation d'une invitation passe son statut à `REVOKED`. Elle ne peut plus créer d'accès, immédiatement après la révocation.
-- RB-11-09 : Un joueur qui clique sur un lien `REVOKED` voit un message générique "Ce lien n'est plus actif" — aucune information sur la campagne n'est révélée.
+- RB-11-09 : Un joueur qui clique sur un lien `REVOKED` voit un message générique "Ce lien n'est plus actif" — aucune information sur l'espace n'est révélée.
 - RB-11-10 : Une invitation déjà `REVOKED` ou expirée ne peut pas être réactivée.
 
 **Critères d'acceptation** :
@@ -209,7 +209,7 @@ Scenario : Joueur tente d utiliser un lien revoque
   Etant donne qu une invitation est passee a l etat REVOKED
   Quand un joueur clique sur le lien
   Alors il voit le message "Ce lien n est plus actif"
-  Et aucune information sur la campagne n est revele
+  Et aucune information sur l espace n est revele
 
 Scenario : Invitation deja revoquee — pas de reactivation
   Etant donne qu une invitation est a l etat REVOKED
@@ -220,57 +220,57 @@ Scenario : Invitation deja revoquee — pas de reactivation
 
 ---
 
-### US-11-03 — Retirer un membre de la campagne
+### US-11-03 — Retirer un membre de l'espace
 
 **Priorité** : Should Have
 
 **En tant que** MJ,
-**je veux** retirer un membre de ma campagne,
+**je veux** retirer un membre de mon espace,
 **afin de** révoquer son accès sans supprimer ses contributions (personnage, notes partagées).
 
 **Notes de conception** :
 - Retirer un membre passe son statut à `REMOVED` dans `Space Management`.
-- Les données du membre dans la campagne sont préservées : personnage, notes partagées, historique de session.
-- Un membre `REMOVED` ne peut plus accéder à la campagne. Un message d'accès refusé est affiché s'il tente d'utiliser un ancien lien.
+- Les données du membre dans l'espace sont préservées : personnage, notes partagées, historique de session.
+- Un membre `REMOVED` ne peut plus accéder à l'espace. Un message d'accès refusé est affiché s'il tente d'utiliser un ancien lien.
 - Un membre `REMOVED` peut être réinvité via un nouveau lien (US-11-01) — son statut repasse à `PENDING` puis `ACTIVE`.
-- Si le membre retiré avait un personnage associé, ce personnage reste dans la campagne et peut être réassocié à un autre joueur.
+- Si le membre retiré avait un personnage associé, ce personnage reste dans l'espace et peut être réassocié à un autre joueur.
 
 **Règles métier** :
 - RB-11-11 : Seul le MJ propriétaire (`OWNER`) peut retirer un membre.
-- RB-11-12 : Retirer un membre passe son statut à `REMOVED`. Il perd l'accès à la campagne immédiatement.
-- RB-11-13 : Les données du membre dans la campagne (personnage, notes partagées) ne sont pas supprimées lors du retrait.
+- RB-11-12 : Retirer un membre passe son statut à `REMOVED`. Il perd l'accès à l'espace immédiatement.
+- RB-11-13 : Les données du membre dans l'espace (personnage, notes partagées) ne sont pas supprimées lors du retrait.
 - RB-11-14 : Un membre `REMOVED` peut être réinvité. Un nouveau lien d'invitation (US-11-01) lui est envoyé.
-- RB-11-15 : Le personnage associé à un membre `REMOVED` reste dans la campagne et peut être réassocié.
+- RB-11-15 : Le personnage associé à un membre `REMOVED` reste dans l'espace et peut être réassocié.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut retirer un membre depuis la liste des membres.
-- [ ] Après le retrait, le membre est marqué `REMOVED` et n'accède plus à la campagne.
-- [ ] Le personnage et les notes du membre retiré restent dans la campagne.
+- [ ] Après le retrait, le membre est marqué `REMOVED` et n'accède plus à l'espace.
+- [ ] Le personnage et les notes du membre retiré restent dans l'espace.
 - [ ] Le MJ peut réinviter un membre `REMOVED` via un nouveau lien.
 - [ ] Le membre `REMOVED` qui tente d'accéder via un ancien lien voit un message d'accès refusé.
 
 ```gherkin
-Scenario : MJ retire un membre de la campagne (A3)
-  Etant donne que la campagne de Thomas a un Member ACTIVE nomme "Julien"
+Scenario : MJ retire un membre de l espace (A3)
+  Etant donne que l espace de Thomas a un Member ACTIVE nomme "Julien"
   Quand Thomas clique sur "Retirer" pour Julien
   Alors le statut de Julien passe a REMOVED
-  Et Julien ne peut plus acceder a la campagne
+  Et Julien ne peut plus acceder a l espace
 
 Scenario : Donnees preservees apres retrait
-  Etant donne que Julien avait un personnage et des notes dans la campagne
+  Etant donne que Julien avait un personnage et des notes dans l espace
   Quand Thomas retire Julien
-  Alors le personnage de Julien reste visible dans la campagne
+  Alors le personnage de Julien reste visible dans l espace
   Et les notes partagees sont conservees
 
 Scenario : Membre retire peut etre reinvite
   Etant donne que Julien est a l etat REMOVED
   Quand Thomas genere un nouveau lien d invitation pour Julien
-  Alors Julien peut utiliser ce lien pour rejoindre a nouveau la campagne
+  Alors Julien peut utiliser ce lien pour rejoindre a nouveau l espace
   Et son ancien personnage peut lui etre reassocie
 
 Scenario : Ancien lien d un membre retire
   Etant donne que Julien est a l etat REMOVED
-  Quand Julien tente d acceder a la campagne via un ancien lien
+  Quand Julien tente d acceder a l espace via un ancien lien
   Alors il voit un message d acces refuse
 ```
 
@@ -281,7 +281,7 @@ Scenario : Ancien lien d un membre retire
 **Priorité** : Should Have
 
 **En tant que** MJ,
-**je veux** associer un membre de ma campagne à un personnage existant,
+**je veux** associer un membre de mon espace à un personnage existant,
 **afin que** le joueur accède à sa fiche de personnage et à ses notes privées (`PLAYER_PRIVATE`) lors des sessions.
 
 **Notes de conception** :
@@ -313,7 +313,7 @@ Scenario : Ancien lien d un membre retire
 ```gherkin
 Scenario : MJ associe un joueur a un personnage (A1)
   Etant donne que Thomas a un Member ACTIVE "Sophie"
-  Et que la campagne contient un personnage "Aelindra"
+  Et que l espace contient un personnage "Aelindra"
   Quand Thomas associe Sophie a Aelindra
   Alors Sophie voit la fiche d Aelindra dans sa vue joueur
   Et Sophie a acces aux notes PLAYER_PRIVATE d Aelindra
@@ -324,7 +324,7 @@ Scenario : Personnage deja associe — unicite
   Alors le systeme indique qu Aelindra est deja associee a Sophie
 
 Scenario : GuestAccess recupere la fiche via lien personnage, pas les notes d un invité précédent
-  Etant donne qu un personnage "Aelindra" a une fiche existante dans la campagne
+  Etant donne qu un personnage "Aelindra" a une fiche existante dans l espace
   Et qu un nouveau lien GuestAccess pointant vers Aelindra est genere
   Quand le joueur utilise ce lien sans compte
   Alors il accede a la fiche d Aelindra
@@ -333,7 +333,7 @@ Scenario : GuestAccess recupere la fiche via lien personnage, pas les notes d un
 Scenario : Dissociation sans suppression
   Etant donne que Sophie est associee a Aelindra
   Quand Thomas dissocie Sophie d Aelindra
-  Alors Aelindra reste dans la campagne avec ses notes
+  Alors Aelindra reste dans l espace avec ses notes
   Et Sophie n a plus acces a la fiche d Aelindra
 ```
 
@@ -346,7 +346,7 @@ Scenario : Dissociation sans suppression
 | Invitation par email | Hors MVP — la plateforme ne gère pas l'envoi d'email d'invitation. Le MJ partage le lien lui-même. |
 | Validation manuelle du MJ avant accès | Hors MVP — l'accès est automatique sur lien valide (cohérent avec UC-09). |
 | Notification au MJ quand un joueur utilise l'invitation | Could Have — fonctionnalité de notification non prioritaire. |
-| Gestion des rôles fin-grain dans la campagne (autre que PLAYER) | Hors périmètre MVP — le seul rôle joueur est `PLAYER`. |
+| Gestion des rôles fin-grain dans l'espace (autre que PLAYER) | Hors périmètre MVP — le seul rôle joueur est `PLAYER`. |
 | Historique des actions d'invitation (qui a rejoint quand) | Could Have — audit log non prioritaire. |
 
 ---
@@ -364,10 +364,10 @@ Scenario : Dissociation sans suppression
 
 | Cas UC-11 | Story couvrant |
 |---|---|
-| Nominal — générer un lien d'invitation (CAMPAIGN ou SESSION) | US-11-01 |
+| Nominal — générer un lien d'invitation (SPACE ou SESSION) | US-11-01 |
 | A1 — associer un joueur à un personnage | US-11-04 |
 | A2 — révoquer une invitation active | US-11-02 |
-| A3 — retirer un membre de la campagne | US-11-03 |
+| A3 — retirer un membre de l'espace | US-11-03 |
 | A4 — lien invité sans compte (GuestAccess) | US-11-01 (perimetre SESSION) + UC-09 |
 | E1 — joueur déjà membre | US-11-01 |
 | E2 — invitation expirée, pas de réactivation | US-11-01 + US-11-02 |

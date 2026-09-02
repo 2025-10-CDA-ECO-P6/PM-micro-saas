@@ -4,7 +4,7 @@
 > Cas spécialisé de l'éditeur de document — instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
 > Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..21`.
-> Cas général : `docs/conception/interface/wireframes/editeur-document.md`.
+> Cas général : `docs/conception/interface/wireframes/sv3-preparation/editeur-document/editeur-document.md`.
 
 ---
 
@@ -140,10 +140,12 @@ Héritage des décisions de conception (résolutions UX) : la disposition en flu
   et les documents liés s'affichent selon ce qui a été enregistré
 
 état erreur (perte de connexion ou erreur de sauvegarde) :
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document ; NFR-OFF-04] le comportement de l'éditeur en cas
-  de perte de connexion n'est pas décrit en détail dans le corpus pour ce cas ;
-  UC-03 E2 mentionne que le système conserve les données saisies localement
-  si possible et affiche un message d'erreur
+  le contenu en cours d'édition est conservé dans l'interface ; une notification non
+  bloquante indique que la synchronisation est en attente ; le MJ peut continuer à
+  saisir et à modifier le contenu ; dès le retour de la connexion, les modifications
+  en attente sont synchronisées sans action du MJ, dans l'ordre de leur saisie
+  (NFR-OFF-05 — continuité d'édition en préparation cloud ; hérité de editeur-document.md,
+  cf. UC-03 E2 pour la formulation d'origine limitée à la sauvegarde locale)
 ```
 
 ---
@@ -162,7 +164,11 @@ hiérarchie de lecture à distance :
   priorité 1 — zone d'informations générales (titre du scénario)
   priorité 2 — zone des scènes (liste des scènes dans leur ordre narratif)
   priorité 3 — zone d'édition de scène sélectionnée
-  source : NFR-ACC-04
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -172,7 +178,7 @@ hiérarchie de lecture à distance :
 ```
 Sources : UC-03 ;
           AR-11 (backlinks — hérité de editeur-document.md) ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ; NFR-OFF-05 ;
           châssis S7 (zoning.md §S7)
 ```
 
@@ -203,13 +209,11 @@ Fonctions cloud désactivées sur l'éditeur de scénario en mode local :
 
 ```
 Éléments différés (S8) :
-  [HORS-MVP — UC-13 §Statut] instanciation d'un scénario depuis la bibliothèque
+  [HORS-MVP — UC-13 en-tête] instanciation d'un scénario depuis la bibliothèque
     « Mes scénarios » — l'interface de bibliothèque est post-MVP (AR-08 révisé)
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S9 §Éditeur de document ; NFR-OFF-04] comportement de l'éditeur
-    en cas de perte de connexion — hérité du cas général ; non décrit en détail
-    dans le corpus pour ce cas ; UC-03 E2 mentionne que le système conserve les données
-    saisies localement si possible ; point d'interview produit non couvert par les
-    décisions actuelles
+  RÉSOLU — le comportement de l'éditeur en cas de perte de connexion en préparation
+    cloud est désormais couvert par NFR-OFF-05 (continuité d'édition en préparation
+    cloud), hérité de `editeur-document.md` ; voir §États §état erreur ci-dessus.
 ```

@@ -74,8 +74,9 @@ sequenceDiagram
     participant SM as Space Management
 
     Utilisateur->>App: Supprimer mon compte
-    App->>SM: GetActiveSpacesWithMembers(userId)
-    alt Espaces actifs avec membres
+    App->>SM: GetBlockingSpaces(userId)
+    Note over SM: Espaces CAMPAIGN/ONE_SHOT avec au moins<br/>un SpaceMembership actif autre que le propriétaire.<br/>PERSONAL n'est jamais bloquant (mono-membre, invariant 3 I&A).
+    alt Espaces CAMPAIGN/ONE_SHOT bloquants
         SM-->>App: Liste des espaces bloquants
         App-->>Utilisateur: Bloqué — gérer les espaces d'abord
     else Aucun espace bloquant
@@ -83,7 +84,7 @@ sequenceDiagram
         IA-->>App: UserDeleted event
         App->>IA: User.Anonymize()
         IA-->>App: UserAnonymized event
-        App->>SM: Réagir à UserDeleted (anonymiser member data)
+        App->>SM: Réagir à UserDeleted — routage par type d'espace :<br/>PERSONAL → hard-delete (saga SpaceDeleted) ;<br/>CAMPAIGN/ONE_SHOT restants → anonymiser member data
         App-->>Utilisateur: Compte supprimé, déconnecté
     end
 ```

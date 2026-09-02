@@ -2,7 +2,7 @@
 
 ## Objectif utilisateur
 
-Permettre au MJ de piloter une session de jeu depuis un tableau de bord configurable : lancement immédiat, accès aux documents de la campagne organisés par dossiers, prise de notes de session, épinglage de documents clés, partage avec les joueurs et fermeture propre de la session. La vue session est utilisable en mode local (sans compte) pour le MJ, et avec compte pour l'accès joueur.
+Permettre au MJ de piloter une session de jeu depuis un tableau de bord configurable : lancement immédiat, accès aux documents de l'espace organisés par dossiers, prise de notes de session, épinglage de documents clés, partage avec les joueurs et fermeture propre de la session. La vue session est utilisable en mode local (sans compte) pour le MJ, et avec compte pour l'accès joueur.
 
 ---
 
@@ -133,10 +133,10 @@ flowchart LR
 **afin d'** accéder immédiatement au tableau de bord de session.
 
 **Notes de conception** :
-- `Session.Start(campagne associée, title, scenarioId?)` — crée la session directement en `LIVE`. Pas d'état intermédiaire PENDING.
+- `Session.Start(espace associé, title, scenarioId?)` — crée la session directement en `LIVE`. Pas d'état intermédiaire PENDING.
 - `scenarioId = null` est valide — scénario improvisé (A1).
-- Mode local : session créée et stockée en IndexedDB. Les notes de session joueurs ne sont pas disponibles en mode local.
-- configuration de la vue session est chargée depuis la campagne si elle existe, ou initialisée avec les dossiers de la campagne dans leur ordre par défaut.
+- Mode local : session créée et stockée dans le stockage local du navigateur. Les notes de session joueurs ne sont pas disponibles en mode local.
+- configuration de la vue session est chargée depuis l'espace si elle existe, ou initialisée avec les dossiers de l'espace dans leur ordre par défaut.
 
 **Règles métier** :
 - RB-06-01 : Le titre est obligatoire et non vide.
@@ -154,13 +154,13 @@ flowchart LR
 
 ```gherkin
 Scénario : Le MJ lance une session avec un scénario
-  Étant donné que le MJ dispose d'une campagne avec un scénario "Nuit des Ombres"
+  Étant donné que le MJ dispose d'un espace avec un scénario "Nuit des Ombres"
   Quand il lance une session intitulée "Séance 3" avec ce scénario
   Alors la session est créée avec status = LIVE et scenarioId renseigné
   Et la vue session s'ouvre
 
 Scénario : Le MJ lance une session sans scénario
-  Étant donné que le MJ dispose d'une campagne
+  Étant donné que le MJ dispose d'un espace
   Quand il lance une session intitulée "Improvisation" sans sélectionner de scénario
   Alors la session est créée avec status = LIVE et scenarioId = null
   Et la vue session s'ouvre
@@ -182,7 +182,7 @@ Scénario : Lancement refusé si titre vide
 **afin de** disposer immédiatement des informations pertinentes lors de la session.
 
 **Notes de conception** :
-- La configuration est définie par campagne, pas par session — elle persiste entre les sessions.
+- La configuration est définie par espace, pas par session — elle persiste entre les sessions.
 - Modifiable **à tout moment** : en mode édition sans session ET en direct pendant la session `LIVE`.
 - Pas de panneau paramètres séparé — la config se fait directement dans la vue session.
 - La vue session est accessible en mode édition sans lancer de session (pour configurer avant la partie).
@@ -191,8 +191,8 @@ Scénario : Lancement refusé si titre vide
 
 **Règles métier** :
 - RB-06-05 : La `SessionViewConfig` est sauvegardée automatiquement à chaque modification.
-- RB-06-06 : La config est par campagne — partagée entre toutes les sessions de la campagne.
-- RB-06-07 : La config est initialisée avec les dossiers de la campagne si elle n'existe pas encore.
+- RB-06-06 : La config est par espace — partagée entre toutes les sessions de l'espace.
+- RB-06-07 : La config est initialisée avec les dossiers de l'espace si elle n'existe pas encore.
 - RB-06-07b : La vue session est accessible en mode édition sans session active. Aucune `Session` n'est créée dans ce mode.
 
 **Critères d'acceptation** :
@@ -204,7 +204,7 @@ Scénario : Lancement refusé si titre vide
 
 ```gherkin
 Scénario : Le MJ configure ses panneaux sans lancer de session
-  Étant donné que le MJ est sur sa campagne
+  Étant donné que le MJ est sur son espace
   Quand il ouvre la vue session en mode édition
   Alors il peut ajouter, retirer et réordonner les panneaux de dossiers
   Et les modifications sont sauvegardées automatiquement
@@ -229,7 +229,7 @@ Scénario : La config persiste entre deux sessions
 **Priorité** : Must Have
 
 **En tant que** MJ,  
-**je veux** parcourir les dossiers et documents de ma campagne depuis la vue session,  
+**je veux** parcourir les dossiers et documents de mon espace depuis la vue session,  
 **afin d'** accéder aux informations dont j'ai besoin sans quitter l'interface de session.
 
 **Notes de conception** :
@@ -239,7 +239,7 @@ Scénario : La config persiste entre deux sessions
 - Les dossiers affichés correspondent aux dossiers mis en avant de configuration de la vue session. Les autres dossiers restent accessibles via la navigation secondaire ou la barre de recherche (UC-14).
 
 **Règles métier** :
-- RB-06-08 : Le MJ voit tous les documents de la campagne, quelle que soit leur visibilité, **sauf** les documents `PLAYER_PRIVATE` dont il n'est pas l'auteur — ceux-ci lui sont invisibles (ni lecture directe, ni énumération, ni métadonnées).
+- RB-06-08 : Le MJ voit tous les documents de l'espace, quelle que soit leur visibilité, **sauf** les documents `PLAYER_PRIVATE` dont il n'est pas l'auteur — ceux-ci lui sont invisibles (ni lecture directe, ni énumération, ni métadonnées).
 - RB-06-09 : Un joueur ne voit que les documents partagés.
 - RB-06-10 : la conduite de session lit la bibliothèque de contenu — il n'en modifie pas le contenu.
 
@@ -443,7 +443,7 @@ Scénario : Le MJ archive une session CLOSED
 
 **Critères d'acceptation** :
 - [ ] Un joueur avec un compte ou accès invité peut accéder à la vue joueur d'une session LIVE.
-- [ ] Le joueur voit les documents partagés de la campagne.
+- [ ] Le joueur voit les documents partagés de l'espace.
 - [ ] Le joueur voit ses propres notes de session personnelle joueur.
 - [ ] Le joueur ne voit pas les notes de session privé MJ.
 - [ ] Le joueur ne voit pas les notes de session personnelle joueur des autres joueurs.
@@ -468,7 +468,7 @@ Scénario : Accès refusé sans compte ni accès invité
 
 ---
 
-### US-06-08 — Prendre des notes personnelles joueur (personnelle joueur)
+### US-06-08 — Prendre des notes de session personnelle joueur
 
 **Priorité** : Should Have
 
@@ -524,8 +524,8 @@ Scénario : Joueur accès invité avec personnage associé
 
 **Notes de conception** :
 - Une session `LIVE` reste en `LIVE` tant que `Session.Close()` n'est pas appelé. Une interruption technique ne change pas le statut.
-- Le MJ retrouve la session à son statut `LIVE` en rouvrant la campagne.
-- En mode local : la session est restaurée depuis IndexedDB si non fermée explicitement.
+- Le MJ retrouve la session à son statut `LIVE` en rouvrant l'espace.
+- En mode local : la session est restaurée depuis le stockage local du navigateur si non fermée explicitement.
 
 **Règles métier** :
 - RB-06-29 : Une interruption technique ne modifie pas le statut de la session — elle reste `LIVE`.
@@ -533,14 +533,14 @@ Scénario : Joueur accès invité avec personnage associé
 
 **Critères d'acceptation** :
 - [ ] Une session `LIVE` interrompue reste en statut `LIVE`.
-- [ ] Le MJ peut retrouver la session LIVE depuis la campagne et la rejoindre.
+- [ ] Le MJ peut retrouver la session LIVE depuis l'espace et la rejoindre.
 - [ ] Les notes de session créées avant l'interruption sont présentes.
 - [ ] En mode local, une session interrompue est restaurée dans l'état laissé à la fermeture du navigateur.
 
 ```gherkin
 Scénario : Le MJ reprend une session après interruption
   Étant donné qu'une session était LIVE lors de l'interruption
-  Quand le MJ rouvre la campagne
+  Quand le MJ rouvre l'espace
   Alors la session est toujours en status LIVE
   Et les notes de session précédentes sont présentes
 ```
@@ -561,8 +561,7 @@ Scénario : Le MJ reprend une session après interruption
 - Les joueurs ne peuvent pas ajouter de notes rétroactives.
 
 **Règles métier** :
-- RB-06-19 : En `CLOSED`, seul le MJ peut ajouter des notes de session.
-- RB-06-20 : En `ARCHIVED`, aucune modification n'est possible.
+- Cette story applique RB-06-19 et RB-06-20, définies dans US-06-06 (terminer une session) : en `CLOSED`, le MJ peut ajouter des notes de session rétroactives, les joueurs ne le peuvent pas ; `CLOSED → ARCHIVED` est irréversible et `ARCHIVED` est en lecture seule intégrale.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut ajouter une note de session à une session CLOSED.

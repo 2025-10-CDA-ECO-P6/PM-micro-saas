@@ -25,7 +25,7 @@ La sous-couche interface est en aval. Elle traduit le besoin en descriptions de 
 | [`zoning.md`](zoning.md) | Ossature de navigation, inventaire des écrans (S4), couverture UC (S5), 21 arbitrages AR-01..AR-21 (S6), châssis applicatif (S7), exclusions (S8), trous de corpus (S9) | Produit — source de vérité des décisions d'interface |
 | [`conventions-wireframe.md`](conventions-wireframe.md) | Conventions de notation et de nommage pour les fiches d'écran : deux registres (domaine / région d'interface), légende de 10 familles de marqueurs | Produit |
 | [`gabarit-ecran.md`](gabarit-ecran.md) | Structure de toute fiche de description d'écran basse-fidélité + exemple-pilote sur la vue session MJ | Produit |
-| [`reflexion-ux-mvp.md`](reflexion-ux-mvp.md) | Rationale de conception d'interface : 4 lentilles d'analyse appliquées aux 20 écrans du MVP, points ouverts et décisions actées | Produit |
+| [`reflexion-ux-mvp.md`](reflexion-ux-mvp.md) | Rationale de conception d'interface : 4 lentilles d'analyse appliquées à l'ensemble des écrans du MVP (liste propriétaire : [`wireframes/README.md`](wireframes/README.md)), points ouverts et décisions actées | Produit |
 
 ### Artefact dérivé
 

@@ -186,7 +186,7 @@ classDiagram
 
     class InvitationScope {
         <<enumeration>>
-        CAMPAIGN
+        SPACE
         SESSION
     }
 
@@ -214,7 +214,7 @@ classDiagram
     class GuestAccessScope {
         <<enumeration>>
         SESSION
-        CAMPAIGN
+        SPACE
     }
 
     Space "1" *-- "1..*" SpaceMembership : memberships

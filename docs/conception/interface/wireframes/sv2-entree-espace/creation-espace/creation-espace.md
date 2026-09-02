@@ -107,7 +107,11 @@ hiérarchie de lecture à distance :
   priorité 1 — champ nom (seul champ obligatoire, naturellement en tête)
   priorité 2 — champs optionnels (description, système)
   priorité 3 — affordance de validation
-  source : NFR-ACC-04 (lecture rapide, formulaire minimaliste)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -118,7 +122,7 @@ hiérarchie de lecture à distance :
 Sources : UC-02 §Scénario nominal ; UC-02 §Postconditions ; UC-02 §Règles métier ;
           UC-02 §Exceptions E1, E2 ; UC-02 §Données manipulées ;
           AR-01 ; AR-16 (dossiers système réservés à CAMPAIGN et ONE_SHOT) ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ;
           châssis S7 (zoning.md §S7)
 ```
 

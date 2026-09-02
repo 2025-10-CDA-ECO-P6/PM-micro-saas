@@ -100,7 +100,7 @@ Le service est proposé selon trois paliers.
 | **Gratuit** | Email et mot de passe, ou fournisseur d'identité tiers | Synchronisation cloud, partage aux joueurs, accès multi-appareil | **3 espaces** de type campagne ou one-shot synchronisés en cloud (l'espace personnel n'est pas décompté de cette limite) ; **4 joueurs** disposant d'un accès par session ; **500 Mo** de stockage cloud |
 | **Pro** | Abonnement payant | L'ensemble des fonctionnalités du palier gratuit, sans les limites de volume ou d'espaces | Espaces illimités ; joueurs illimités par session ; **5 Go et plus** de stockage cloud ; tarif cible d'environ **7 €/mois** ou **60 €/an** |
 
-Ces valeurs sont celles consolidées dans le corpus de conception à la date du 2026-07-02 (`vision-produit.md` §3, `cahier-des-charges.md` §12.4) ; le tarif du palier Pro y est désigné comme un tarif cible, non encore contractualisé. Toute modification de ces valeurs avant publication doit être vérifiée auprès de ces mêmes sources.
+Ces valeurs sont celles consolidées dans le corpus de conception à la date du 2026-07-02 (`vision-produit.md` §3, `cahier-des-charges.md` §12.4, pour le tarif mensuel ; `UC-01-mode-local-sans-compte.md` §Modèle d'accès et de monétisation, pour la valeur annuelle) ; le tarif du palier Pro y est désigné comme un tarif cible, non encore contractualisé. Toute modification de ces valeurs avant publication doit être vérifiée auprès de ces mêmes sources.
 
 Le passage du palier local au palier gratuit est déclenché par le besoin de partager avec des joueurs ou de sécuriser les données locales. Le passage du palier gratuit au palier Pro est déclenché par le dépassement de la limite de 3 espaces. Aucune fonctionnalité de préparation n'est restreinte ou dégradée en mode local pour inciter à la conversion.
 
@@ -108,7 +108,7 @@ Le passage du palier local au palier gratuit est déclenché par le besoin de pa
 
 Le corpus de conception documente un mécanisme applicable lorsqu'un utilisateur passant du palier Pro au palier gratuit se retrouve avec plus d'espaces de type campagne ou one-shot que ne le permet le palier gratuit : les espaces excédentaires (les plus récemment créés en premier) passent alors en lecture seule — leur contenu reste consultable mais ne peut plus être modifié, et aucune donnée n'est supprimée. Ce gel est automatique et notifié à l'utilisateur. Il est intégralement réversible : si l'utilisateur revient au palier Pro, les espaces gelés redeviennent modifiables sans perte de contenu.
 
-**Ce mécanisme est documenté dans le corpus de conception comme fonctionnalité de priorité secondaire, hors périmètre de la première livraison du service (UC-15).** Il n'est donc pas activé dans la version actuellement disponible du service. Cette section décrit le comportement prévu pour informer l'utilisateur de ce qui adviendra de son contenu si ce mécanisme est activé dans une version ultérieure ; elle sera revue lors de son activation effective.
+**Ce mécanisme est documenté dans le corpus de conception comme fonctionnalité Post-MVP (spécifiés), hors périmètre de la première livraison du service (UC-15, classement `moscow.md` §UC-15).** Il n'est donc pas activé dans la version actuellement disponible du service. Cette section décrit le comportement prévu pour informer l'utilisateur de ce qui adviendra de son contenu si ce mécanisme est activé dans une version ultérieure ; elle sera revue lors de son activation effective.
 
 ## 7. Suppression de compte et sort des données
 
@@ -135,8 +135,8 @@ Ce document consolide fidèlement les sources suivantes du corpus de conception.
 - [`docs/conception/besoin/usecases/UC-01-mode-local-sans-compte.md`](../../conception/besoin/usecases/UC-01-mode-local-sans-compte.md) — mode local, bandeaux durabilité/confidentialité, export.
 - [`docs/conception/besoin/usecases/UC-09-acces-session-joueur.md`](../../conception/besoin/usecases/UC-09-acces-session-joueur.md) — accès joueur invité, statut invité, sort des données invité.
 - [`docs/conception/besoin/usecases/UC-10-compte-cloud.md`](../../conception/besoin/usecases/UC-10-compte-cloud.md) — création de compte, authentification, suppression de compte.
-- [`docs/conception/besoin/usecases/UC-11-gerer-membres-campagne.md`](../../conception/besoin/usecases/UC-11-gerer-membres-campagne.md) — invitations, membres, personnages, retrait.
-- [`docs/conception/besoin/usecases/UC-15-gel-campagnes-downgrade-tier.md`](../../conception/besoin/usecases/UC-15-gel-campagnes-downgrade-tier.md) — gel/dégel des espaces au changement de palier (Should Have, hors première livraison).
+- [`docs/conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md`](../../conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md) — invitations, membres, personnages, retrait.
+- [`docs/conception/besoin/usecases/UC-15-gel-espaces-downgrade-tier.md`](../../conception/besoin/usecases/UC-15-gel-espaces-downgrade-tier.md) — gel/dégel des espaces au changement de palier (Post-MVP (spécifiés), classement `moscow.md` §UC-15).
 - [`docs/conception/besoin/vision/vision-produit.md`](../../conception/besoin/vision/vision-produit.md) §3 — modèle de monétisation.
 - [`docs/context/cahier-des-charges.md`](../../context/cahier-des-charges.md) §12.4 — valeurs chiffrées consolidées des paliers.
 - [`docs/architecture/decisions/ADR-005-modele-monetisation.md`](../../architecture/decisions/ADR-005-modele-monetisation.md) — trace historique du modèle de paliers.

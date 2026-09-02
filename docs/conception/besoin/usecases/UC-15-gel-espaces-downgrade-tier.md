@@ -1,6 +1,6 @@
-# UC-15 — Gel de campagnes au downgrade de tier
+# UC-15 — Gel d'espaces au downgrade de tier
 
-> **Should Have — hors première livraison (post-MVP)** — Ce cas d'utilisation couvre le gel automatique des espaces excédentaires lors d'un downgrade de tier, ainsi que le dégel réversible au ré-upgrade. En MVP, le gel n'est pas déclenché (le downgrade suppose un tier payant, hors périmètre première livraison).
+> **Classement MoSCoW : Post-MVP (spécifiés)** — [`moscow.md`](../vision/moscow.md) fait autorité sur ce classement. Ce cas d'utilisation couvre le gel automatique des espaces excédentaires lors d'un downgrade de tier, ainsi que le dégel réversible au ré-upgrade. En MVP, le gel n'est pas déclenché (le downgrade suppose un tier payant, hors périmètre première livraison).
 
 > **Note de positionnement d'autorité** — Ce use case est l'**amont source-de-vérité** du comportement de gel/dégel ; le domaine ([`space-management.md`](../../domain/space-management.md) — règles 6 et 11, méthodes `Freeze()`/`Unfreeze()`) en est l'aval documenté, conformément à l'ordre d'autorité du corpus (use case → domaine). Il ratifie et détaille ce comportement plutôt que de le réinventer. Ce UC est issu de la question ouverte posée dans [UC-HORS-MVP §Gel de campagnes au downgrade de tier](UC-HORS-MVP.md).
 

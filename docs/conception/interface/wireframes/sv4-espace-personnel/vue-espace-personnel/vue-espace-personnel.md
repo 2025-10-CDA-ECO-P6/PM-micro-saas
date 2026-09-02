@@ -29,7 +29,7 @@ Traçabilité  : UC-01, UC-04 ; AR-14, AR-15, AR-16, AR-17, AR-20
 ### Intention
 
 ```
-Intention : le MJ accède à son espace de notes et contenus hors campagne — il y crée, organise
+Intention : le propriétaire accède à son espace de notes et contenus hors campagne — il y crée, organise
             et retrouve des documents immédiatement, sans avoir à créer un espace partagé,
             dès la première ouverture de l'application (capture-first — UC-01 ; AR-15).
             Micro-copy d'intention en tête de surface : « Vos notes et contenus, hors campagne »
@@ -57,7 +57,7 @@ Intention : le MJ accède à son espace de notes et contenus hors campagne — i
              garde-fou AR-20 : « Non classés » est le réceptacle garanti — toujours
              présent, peut être renommé, ne peut pas disparaître du système
   priorité : principal
-  visibilité : MJ seul
+  visibilité : propriétaire seul
   ancrage  : AR-16 (espace personnel sans dossiers système — « Non classés » seul) ;
              AR-20 (arborescence libre, renommable, supprimable ; réceptacle garanti) ;
              AR-11 (unicité d'appartenance — transverse à tous les espaces) ;
@@ -69,7 +69,7 @@ Intention : le MJ accède à son espace de notes et contenus hors campagne — i
              de type) ; permet la création d'un document dans le contexte courant ;
              accès à l'éditeur pour tout document existant
   priorité : principal
-  visibilité : MJ seul
+  visibilité : propriétaire seul
   ancrage  : UC-04 ; AR-11
 
 [ ACCÈS À L'ÉDITEUR DE DOCUMENT ]
@@ -78,7 +78,7 @@ Intention : le MJ accède à son espace de notes et contenus hors campagne — i
              titre seul obligatoire à la création — le document est rattaché au
              dossier courant ; voir fiche dédiée `editeur-document.md`
   priorité : principal
-  visibilité : MJ seul
+  visibilité : propriétaire seul
   ancrage  : UC-04 ; AR-15 (capture immédiate — titre seul obligatoire)
 
 [ BARRE DE RECHERCHE ]
@@ -87,7 +87,7 @@ Intention : le MJ accède à son espace de notes et contenus hors campagne — i
              titre seul au MVP ; les résultats s'ouvrent sans interrompre
              le contexte courant (AR-11)
   priorité : co-présent-jamais-masqué
-  visibilité : MJ seul
+  visibilité : propriétaire seul
   ancrage  : UC-14 ; AR-11
 ```
 
@@ -151,6 +151,14 @@ Intention : le MJ accède à son espace de notes et contenus hors campagne — i
   « Non classés » suit la règle générale (masqué si vide, affiché si non vide —
   AR-16 Précision 2026-07-15) ; la zone de contenu liste les documents du dossier
   courant en vue condensée ; l'éditeur est accessible pour tout document sélectionné
+
+état erreur (perte de connexion en mode cloud) :
+  la notification d'état de synchronisation apparaît de façon non bloquante, sans
+  couvrir la surface (châssis S7 §Notification d'état de synchronisation) ; la
+  navigation dans les dossiers et la lecture des documents restent disponibles depuis
+  le cache local ; les modifications en cours dans l'éditeur sont conservées et
+  synchronisées au retour de la connexion, sans action du propriétaire (NFR-OFF-05 —
+  continuité d'édition en préparation cloud)
 ```
 
 ---
@@ -168,10 +176,14 @@ annonce sans action :
 
 hiérarchie de lecture à distance :
   priorité 1 — zone de navigation par dossiers (arborescence de l'espace personnel,
-               repère du dossier courant — NFR-ACC-04)
+               repère du dossier courant)
   priorité 2 — zone de contenu / liste des documents
   priorité 3 — barre de recherche
-  source : NFR-ACC-04 (usage à distance normale de l'écran pendant la préparation)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -181,7 +193,7 @@ hiérarchie de lecture à distance :
 ```
 Sources : UC-01 ; UC-04 ; UC-05 ;
           AR-11 ; AR-14 ; AR-15 ; AR-16 ; AR-17 ; AR-20 ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ; NFR-OFF-05 ;
           domaine space-management.md (invariant 13 : mono-membre, pas d'AddMember,
             pas de CreateInvitation) ;
           domaine session-conduct.md (pas de SessionViewConfig pour PERSONAL) ;

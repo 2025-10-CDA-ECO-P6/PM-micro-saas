@@ -45,7 +45,12 @@ compte » et « Créer un compte / Se connecter ». Il choisit la première.
   confidentialité (UC-01 règles métier).
 - Les fonctionnalités de partage (UC-08) et d'accès joueur (UC-09) sont visibles mais
   désactivées, avec un appel à l'action vers la création de compte (UC-01 A1, RB-01-06).
-- Il est redirigé vers l'écran de création de campagne.
+- Il atterrit dans son **espace personnel** — le conteneur par défaut disponible dès le mode
+  local (UC-01 scénario nominal étape 5), sans qu'aucune campagne n'existe encore. Il pourrait y
+  écrire directement, sans structure de campagne imposée — ce qui rejoint directement sa
+  question sur la page vierge (fiche persona §Ce qu'il demande à l'app : « En quoi c'est mieux
+  qu'une page vierge ? »). Il choisit ensuite de créer un espace de jeu pour explorer la
+  structure documentaire, un acte distinct et optionnel (UC-01 §Contexte, UC-02).
 
 ### Ce que révèle la fiche persona sur cette étape
 
@@ -57,6 +62,8 @@ numérique par conviction.
 ### État laissé par l'étape 1
 
 - Rémi est en mode local : aucun `User` instancié, aucune donnée envoyée au serveur.
+- Un **espace personnel** (`SpaceType.PERSONAL`) existe déjà comme conteneur par défaut, avec
+  son seul dossier virtuel « Non classés » — Rémi en est le propriétaire.
 - Une session navigateur locale existe.
 
 ### Couture vers l'étape 2

@@ -69,7 +69,7 @@ La vue session joueur est accessible dès que le `GuestAccess` est `ACTIVE`. La 
 
 ## Étape 2 — Consulter ce que le MJ partage pendant la session
 
-**UC porteurs :** [UC-06](../usecases/UC-06-vue-session.md) (vue joueur), [UC-08](../usecases/UC-08-partager-information.md) (réception) | **UJ porteur :** [UJ-UC-12](../user-journeys/UJ-UC-12-rejoindre-campagne.md)
+**UC porteurs :** [UC-06](../usecases/UC-06-vue-session.md) (vue joueur), [UC-08](../usecases/UC-08-partager-information.md) (réception) | **UJ porteur :** [UJ-UC-12](../user-journeys/UJ-UC-12-consulter-espace-joueur.md)
 
 ### Ce que Lucas cherche à faire
 
@@ -99,7 +99,7 @@ Lucas peut prendre des notes personnelles à tout moment pendant une session `LI
 
 ## Étape 3 — Prendre des notes personnelles pendant la session
 
-**UC porteur :** [UC-06](../usecases/UC-06-vue-session.md) | **UJ porteur :** [UJ-UC-12](../user-journeys/UJ-UC-12-rejoindre-campagne.md), [UJ-UC-09](../user-journeys/UJ-UC-09-acces-session-joueur.md)
+**UC porteur :** [UC-06](../usecases/UC-06-vue-session.md) | **UJ porteur :** [UJ-UC-12](../user-journeys/UJ-UC-12-consulter-espace-joueur.md), [UJ-UC-09](../user-journeys/UJ-UC-09-acces-session-joueur.md)
 
 ### Ce que Lucas cherche à faire
 
@@ -165,7 +165,7 @@ L'étape 5 (rejoindre la campagne durablement) est conditionnée par Lucas ayant
 
 ## Étape 5 (optionnelle) — Créer un compte, rejoindre la campagne durablement
 
-**UC porteurs :** [UC-09](../usecases/UC-09-acces-session-joueur.md) A2 (migration invité→compte) — octroi d'accès, [UC-12](../usecases/UC-12-rejoindre-campagne.md) — vue campagne joueur post-accès | **US porteur :** [US-UC-09](../user-stories/US-UC-09-acces-session-joueur.md) — US-09-04
+**UC porteurs :** [UC-09](../usecases/UC-09-acces-session-joueur.md) A2 (migration invité→compte) — octroi d'accès, [UC-12](../usecases/UC-12-consulter-espace-joueur.md) — vue campagne joueur post-accès | **US porteur :** [US-UC-09](../user-stories/US-UC-09-acces-session-joueur.md) — US-09-04
 
 ### Ce que Lucas cherche à faire
 
@@ -188,11 +188,11 @@ La vue joueur (UC-12) présuppose que Lucas dispose d'un `SpaceMembership` actif
 - Accès à l'historique des sessions et aux documents de lore `PUBLIC` entre les séances (UC-12 postconditions, US-09-03 règle RB-09-13).
 - Ses notes `PLAYER_PRIVATE` conservées d'une session à l'autre.
 - Accès sans saisir de nom à chaque session (UC-09 A1 : "Le joueur est déjà connecté à son compte Haversack — accès direct avec historique de compte").
-- Via UC-12 (vue joueur, périmètre `CAMPAIGN`) : accès au lore complet partagé, pas seulement aux documents de la session en cours.
+- Via UC-12 (vue joueur, périmètre `SPACE`) : accès au lore complet partagé, pas seulement aux documents de la session en cours.
 
 ### Ce que Lucas n'obtient pas avec un simple compte
 
-L'accès à l'historique complet de la campagne (lore, sessions précédentes) nécessite un lien de campagne permanent (`GuestAccessScope = CAMPAIGN` ou `SpaceMembership`) généré par le MJ via UC-11 — pas simplement d'avoir un compte. UC-12 décrit la vue obtenue une fois ce lien ou ce membership actif ; l'entrée dans ce périmètre passe par UC-09 (octroi d'accès) et UC-11 (lien généré par le MJ), pas par la simple création de compte (US-09-03 notes de conception : "La génération du lien permanent est couverte par UC-11").
+L'accès à l'historique complet de la campagne (lore, sessions précédentes) nécessite un lien de campagne permanent (`GuestAccessScope = SPACE` ou `SpaceMembership`) généré par le MJ via UC-11 — pas simplement d'avoir un compte. UC-12 décrit la vue obtenue une fois ce lien ou ce membership actif ; l'entrée dans ce périmètre passe par UC-09 (octroi d'accès) et UC-11 (lien généré par le MJ), pas par la simple création de compte (US-09-03 notes de conception : "La génération du lien permanent est couverte par UC-11").
 
 ### État laissé par l'étape 5
 
@@ -234,4 +234,4 @@ UC-06 règle métier dit que la note d'un invité "reste récupérable lors d'un
 | C5 | Notes PLAYER_PRIVATE d'une session → récupération la séance suivante via personnage | 3 → session suivante | **Continue (documentée)** | La fiche de personnage (`PLAYER_CHARACTER`) de Lucas reste ré-associable lors d'une séance suivante — ce qui lui permet de retrouver le contexte de son personnage dans la campagne (UC-06, UC-11 corrigés, décision issue du modèle de domaine). Ses notes personnelles (`PLAYER_PRIVATE`) créées en mode invité ne survivent à la fin de son accès que s'il crée un compte avant cette fin (US-09-04, RB-09-14, RB-09-19) — la récupération inter-sessions via un nouveau `GuestAccess` pur (sans compte) n'est pas possible, car la confidentialité `PLAYER_PRIVATE` est indexée par `guestAccessId` qui change à chaque accès, et le modèle de domaine ne prévoit pas de chemin de lecture cross-`GuestAccess`. Cette limite de périmètre assumée est documentée dans UC-06 et UC-11, et Lucas en est averti en temps utile pour agir avant la fin de son accès (RB-09-22). La levée de cette limite (identité invité persistante inter-sessions) relève d'un changement de positionnement produit traité au plan, pas du périmètre MVP. |
 | C6 | GuestAccess actif → création de compte et migration sans perte | 4 → 5 | **Continue (fenêtre temporelle contrainte)** | US-09-04 couvre la migration invité→compte avec préservation des notes (RB-09-14). Condition : Lucas doit déclencher la migration pendant que son `GuestAccess` est encore `ACTIVE`. Si le `GuestAccess` est expiré, les notes ont déjà été supprimées (RB-09-19) — la migration ne peut plus les récupérer. Cette contrainte temporelle est une friction identifiée dans UJ-UC-09 mais n'est pas une rupture si Lucas agit dans la fenêtre. |
 | C7 | Compte créé → membre permanent de la campagne via MJ | 5 | **Continue (validation MJ requise)** | L'octroi du `SpaceMembership` relève d'UC-09 (côté joueur, migration invité→compte) et d'UC-11 (côté MJ, validation). La précondition de la vue joueur (UC-12) — disposer d'un `SpaceMembership` actif — est satisfaite après cette validation. RB-09-16 : "La promotion en `Member` permanent nécessite la validation du MJ." Lucas ne peut pas s'auto-promouvoir. La promotion est à l'initiative du MJ après notification (US-09-04). Cette dépendance est documentée dans le corpus et n'est pas une rupture. |
-| C8 | Accès SESSION → accès à l'historique complet de la campagne | 1 ou 5 | **Continue (documentée)** | Avec un `GuestAccess` de portée `SESSION`, Lucas n'a pas accès à l'historique des sessions précédentes ni au lore complet de la campagne (UJ-UC-12 flux : "Documents épinglés + PUBLIC / Pas d'historique campagne / Pas de lore complet"). L'accès à l'historique complet nécessite un `GuestAccess` de portée `CAMPAIGN` ou un `SpaceMembership` — les deux nécessitent un compte et un lien permanent généré par le MJ via UC-11. **Spécifié** : le périmètre `SESSION` vs `CAMPAIGN` est une décision MJ au moment de générer l'invitation (UC-11 scénario nominal, US-11-01). Le comportement résultant côté joueur est tracé (UC-09 Scénario nominal B, accès historique/lore via lien permanent ou compte). **Limite assumée** : la demande par Lucas d'un accès campagne via l'interface est hors-bande (Lucas demande socialement au MJ). Le seul signal in-app joueur→MJ existant est la notification de création de compte (US-09-04). Si le produit voulait un canal in-app de "demande d'accès campagne" initié par le joueur, ce serait une fonctionnalité NOUVELLE, hors de cette couture. **Localisation : UC-09 Scénario nominal B, UC-11 scénario nominal, US-11-01, UJ-UC-09 flux fonctionnel nœud "Valide — permanent."** |
+| C8 | Accès SESSION → accès à l'historique complet de la campagne | 1 ou 5 | **Continue (documentée)** | Avec un `GuestAccess` de portée `SESSION`, Lucas n'a pas accès à l'historique des sessions précédentes ni au lore complet de la campagne (UJ-UC-12 flux : "Documents épinglés + PUBLIC / Pas d'historique campagne / Pas de lore complet"). L'accès à l'historique complet nécessite un `GuestAccess` de portée `SPACE` ou un `SpaceMembership` — les deux nécessitent un compte et un lien permanent généré par le MJ via UC-11. **Spécifié** : le périmètre `SESSION` vs `SPACE` est une décision MJ au moment de générer l'invitation (UC-11 scénario nominal, US-11-01). Le comportement résultant côté joueur est tracé (UC-09 Scénario nominal B, accès historique/lore via lien permanent ou compte). **Limite assumée** : la demande par Lucas d'un accès campagne via l'interface est hors-bande (Lucas demande socialement au MJ). Le seul signal in-app joueur→MJ existant est la notification de création de compte (US-09-04). Si le produit voulait un canal in-app de "demande d'accès campagne" initié par le joueur, ce serait une fonctionnalité NOUVELLE, hors de cette couture. **Localisation : UC-09 Scénario nominal B, UC-11 scénario nominal, US-11-01, UJ-UC-09 flux fonctionnel nœud "Valide — permanent."** |

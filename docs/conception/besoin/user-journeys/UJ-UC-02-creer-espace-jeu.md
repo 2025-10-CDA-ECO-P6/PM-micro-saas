@@ -2,7 +2,7 @@
 
 ## Périmètre
 
-Ce parcours couvre la création d'un espace de jeu — campagne ou one-shot — depuis le tableau de bord jusqu'à la première interaction avec le contenu. Il inclut le scénario de blocage par la limite de campagnes.
+Ce parcours couvre la création d'un espace de jeu — campagne ou one-shot — depuis le tableau de bord jusqu'à la première interaction avec le contenu. Il inclut le scénario de blocage par la limite de synchronisation cloud (compte gratuit).
 
 Le one-shot est techniquement un espace avec `type = ONE_SHOT` ; le MJ ne voit pas ce détail.
 
@@ -52,9 +52,8 @@ flowchart TD
     B --> C[Nouvelle campagne]
     B --> D[Lancer un one-shot]
 
-    C --> E{Limite atteinte ?}
-    E -->|Non| F[Saisir le nom\ndescription et système facultatifs]
-    E -->|Oui — mode local| G[Blocage\nCTA : créer un compte]
+    C --> E{Compte gratuit :\nplafond de 3 espaces\nsynchronisés atteint ?}
+    E -->|Non — ou mode local,\naucun plafond| F[Saisir le nom\ndescription et système facultatifs]
     E -->|Oui — gratuit| H[Blocage\nCTA : passer à PRO]
     F --> I[Validation]
     I --> J[Espace campagne\n4 dossiers par défaut]
@@ -96,9 +95,9 @@ flowchart TD
 - Il a déjà 2 campagnes actives. La création suit le parcours principal sans blocage.
 - Il renomme les dossiers par défaut pour coller à la terminologie de Fate.
 
-**Limite de campagnes atteinte**
-- Mode local : blocage à la 4e campagne, message positif ("Créez un compte pour gérer plus de campagnes").
-- Compte gratuit : blocage avec CTA vers l'offre supérieure.
+**Limite de synchronisation cloud atteinte (compte gratuit)**
+- Mode local : aucun plafond de nombre d'espaces — seule la capacité de stockage du navigateur peut interrompre la création (→ UJ-UC-01, E1).
+- Compte gratuit : blocage à la synchronisation du 4e espace (`CAMPAIGN` ou `ONE_SHOT`), avec CTA vers l'offre supérieure (RB-02-10).
 - Pas de destruction silencieuse — la création est simplement refusée avec explication claire.
 
 **Nom vide à la validation**
@@ -113,8 +112,7 @@ flowchart TD
 | Première campagne créée | Dossiers visibles, accès immédiat | Installation de la confiance — reprise à la prochaine session |
 | One-shot < 30 secondes *(post-MVP — parcours express)* | Accès direct à l'éditeur | Fidélisation Sonia — usage récurrent sans effort |
 | Dossiers renommés (Antoine) | Flexibilité perçue | Satisfaction structurelle — adoption sur plusieurs systèmes |
-| Limite atteinte (mode local) | Blocage fonctionnel | Conversion vers la création de compte |
-| Limite atteinte (gratuit) | Besoin de plus de campagnes | Conversion vers offre payante |
+| Limite de synchronisation atteinte (gratuit) | Besoin de plus d'espaces synchronisés | Conversion vers offre payante |
 
 ---
 

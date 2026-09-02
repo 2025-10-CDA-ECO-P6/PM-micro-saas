@@ -50,7 +50,7 @@ Permettre au MJ de préparer un scénario utilisable en session : création, str
 
 ```mermaid
 flowchart TD
-    A[MJ ouvre sa campagne] --> B[Accède à Scénarios]
+    A[MJ ouvre son espace] --> B[Accède à Scénarios]
     B --> C[Crée un scénario]
     C --> D{Mode de travail}
     D -->|Monobloc| E[Rédige dans les blocs]
@@ -64,7 +64,7 @@ flowchart TD
     G --> L
     L --> M[Définit le statut]
     M --> N[Sauvegarde]
-    N --> O[Scénario disponible dans la campagne]
+    N --> O[Scénario disponible dans l'espace]
 ```
 
 ---
@@ -98,7 +98,7 @@ flowchart LR
 
 ## User stories
 
-### US-03-01 — Créer un scénario dans une campagne
+### US-03-01 — Créer un scénario dans un espace
 
 **Priorité** : Must Have
 
@@ -110,6 +110,10 @@ flowchart LR
 - Un scénario est un document scénario placé dans le dossier système "Scénarios" (`isSystem=true`).
 - Seul le titre est obligatoire. Résumé, contexte et objectif narratif sont des champs optionnels, stockés dans les propriétés du type `SCENARIO` ou en blocs libres.
 - Couvre le cas A4 (scénario improvisé) : une création minimale avec titre uniquement est un usage valide.
+
+**Règles métier** :
+- RB-03-01 : Le titre est le seul champ obligatoire à la création d'un scénario. Résumé, contexte et objectif narratif sont optionnels.
+- RB-03-02 : Un scénario créé avec titre uniquement est valide et fonctionnel (scénario improvisé, cas A4).
 
 **Critères d'acceptation** :
 
@@ -151,6 +155,11 @@ Scenario: Un scénario improvisé minimal est valide (A4)
 - Une scène peut elle-même contenir des lien entre documents vers des PNJ, lieux, etc.
 - Ajouter une scène = créer un document scène + appeler création d’un lien entre documents sur le scénario.
 - Supprimer une scène du scénario = supprimer le lien entre documents, pas le document. Le document scène peut subsister comme document orphelin ou être supprimé séparément.
+
+**Règles métier** :
+- RB-03-03 : Les scènes d'un scénario s'affichent dans l'ordre défini par "ordre des scènes".
+- RB-03-04 : Supprimer une scène d'un scénario supprime le lien entre le scénario et la scène ; le document de scène n'est pas supprimé automatiquement.
+- RB-03-05 : Un scénario peut contenir zéro scène.
 
 **Critères d'acceptation** :
 
@@ -204,13 +213,17 @@ Scenario: Un scénario peut contenir zéro scène
 - Le MJ peut commencer libre et ajouter des scènes plus tard (évolution non destructive).
 - Aucune contrainte de structure n'est imposée par le.
 
+**Règles métier** :
+- RB-03-06 : Un scénario libre, sans scène, est valide et fonctionnel.
+- RB-03-07 : Le MJ peut ajouter des scènes à un scénario libre a posteriori, sans perte du contenu existant.
+
 **Critères d'acceptation** :
 
 ```gherkin
 Scenario: Écrire un scénario monobloc sans scènes
   Given le MJ a créé un scénario
   When il rédige du contenu libre dans les blocs du scénario sans ajouter de scènes
-  Then le scénario est valide et accessible dans la campagne
+  Then le scénario est valide et accessible dans l'espace
 
 Scenario: Ajouter des scènes à un scénario libre a posteriori
   Given un scénario existant sans aucune scène
@@ -238,6 +251,10 @@ Scenario: Ajouter des scènes à un scénario libre a posteriori
 - Le contenu privé reste dans le document de scène (privé MJ). Le contenu partageable est un document distinct lié à la scène.
 - visible par les joueurs signifie accessible en permanence aux joueurs — ce n'est pas un partage temporaire. La révélation pendant une session est gérée par UC-08.
 - Ce choix impacte directement la vue session (UC-06) : la surface de partage est au niveau document.
+
+**Règles métier** :
+- RB-03-08 : Un document de scène est privé MJ par défaut.
+- RB-03-09 : Le contenu destiné aux joueurs (révélation) est porté par un document distinct lié à la scène, avec sa propre visibilité.
 
 **Critères d'acceptation** :
 
@@ -282,19 +299,19 @@ Scénario : Le contenu privé et le contenu partageable sont bien séparés
 ```gherkin
 Scenario: Lier un document existant à un scénario
   Given le MJ est dans l'éditeur d'un scénario
-  When il recherche et sélectionne un document existant de la campagne pour le lier
+  When il recherche et sélectionne un document existant de l'espace pour le lier
   Then le document apparaît dans la liste des documents liés du scénario
 
 Scenario: Lier un document existant à une scène
   Given le MJ est dans l'éditeur d'une scène
-  When il recherche et sélectionne un document existant de la campagne pour le lier
+  When il recherche et sélectionne un document existant de l'espace pour le lier
   Then le document apparaît dans la liste des documents liés de la scène
 
 Scenario: Supprimer un lien sans supprimer le document cible
   Given un scénario avec un document lié (ex. un PNJ)
   When le MJ supprime ce lien depuis l'éditeur
   Then le lien est supprimé
-  And le document cible (PNJ) n'est pas supprimé et reste accessible dans la campagne
+  And le document cible (PNJ) n'est pas supprimé et reste accessible dans l'espace
 
 Scenario: Voir les backlinks depuis la fiche d'un PNJ
   Given un PNJ référencé dans un ou plusieurs scénarios
@@ -302,8 +319,8 @@ Scenario: Voir les backlinks depuis la fiche d'un PNJ
   Then il voit la liste des scénarios qui référencent ce PNJ
 ```
 
-- [ ] Le MJ peut rechercher et lier un document existant de la campagne à un scénario.
-- [ ] Le MJ peut rechercher et lier un document existant de la campagne à une scène.
+- [ ] Le MJ peut rechercher et lier un document existant de l'espace à un scénario.
+- [ ] Le MJ peut rechercher et lier un document existant de l'espace à une scène.
 - [ ] Les documents liés sont visibles depuis l'éditeur du scénario/de la scène.
 - [ ] Le MJ peut supprimer un lien sans supprimer le document cible.
 - [ ] Depuis la fiche d'un PNJ, le MJ peut voir les scénarios qui le référencent (backlinks).
@@ -326,13 +343,17 @@ Scenario: Voir les backlinks depuis la fiche d'un PNJ
 
 **Option A arrêtée** : les statuts sont dans propriétés structurées du type `SCENARIO` (voir section Questions ouvertes, item 2, pour la rationale complète : choix aligné ADR-002 et content-library).
 
+**Règles métier** :
+- RB-03-10 : Un scénario porte un statut parmi brouillon, prêt, joué, archivé, stocké dans les propriétés structurées du type `SCENARIO`.
+- RB-03-11 : Le statut par défaut à la création est "brouillon".
+
 **Critères d'acceptation** :
 
 ```gherkin
 Scenario: Définir le statut d'un scénario
   Given le MJ est dans l'éditeur ou la fiche d'un scénario
   When il choisit un statut parmi : brouillon, prêt, joué, archivé
-  Then le statut est enregistré et visible dans la liste des scénarios de la campagne
+  Then le statut est enregistré et visible dans la liste des scénarios de l'espace
 
 Scenario: Statut par défaut à la création
   Given le MJ crée un scénario sans choisir de statut explicite
@@ -340,13 +361,13 @@ Scenario: Statut par défaut à la création
   Then son statut est "brouillon" par défaut
 
 Scenario: Filtrer les scénarios par statut
-  Given le MJ consulte la liste des scénarios de sa campagne
+  Given le MJ consulte la liste des scénarios de son espace
   When il applique un filtre sur un statut donné (ex. "prêt")
   Then seuls les scénarios ayant ce statut sont affichés
 ```
 
 - [ ] Le MJ peut définir le statut d'un scénario parmi : brouillon, prêt, joué, archivé.
-- [ ] Le statut est visible dans la liste des scénarios de la campagne.
+- [ ] Le statut est visible dans la liste des scénarios de l'espace.
 - [ ] Le MJ peut filtrer ou identifier ses scénarios par statut.
 - [ ] Un scénario créé sans statut explicite est en "brouillon" par défaut.
 
@@ -363,8 +384,12 @@ Scenario: Filtrer les scénarios par statut
 **Notes de conception** :
 - Créer depuis l'éditeur = créer un document du type choisi + ajouter automatiquement un lien entre documents depuis le scénario ou la scène courante.
 - Logique identique à UC-07 (création à la volée) mais en mode préparation — pas en session LIVE.
-- Le document créé est placé dans le dossier correspondant à son type dans la campagne.
+- Le document créé est placé dans le dossier correspondant à son type dans l'espace.
 - Dépend de UC-04.
+
+**Règles métier** :
+- RB-03-12 : Un document créé depuis l'éditeur de scénario ou de scène est automatiquement lié au scénario ou à la scène courante.
+- RB-03-13 : Le document créé depuis l'éditeur est placé dans le dossier correspondant à son type dans l'espace.
 
 **Critères d'acceptation** :
 
@@ -373,12 +398,12 @@ Scenario: Créer un document à la volée depuis l'éditeur de scénario
   Given le MJ est dans l'éditeur d'un scénario ou d'une scène
   When il crée un nouveau document d'un type donné (ex. NPC) depuis l'éditeur
   Then le document est créé et automatiquement lié au scénario ou à la scène courante
-  And le document est accessible depuis son dossier de type dans la campagne
+  And le document est accessible depuis son dossier de type dans l'espace
 ```
 
 - [ ] Le MJ peut créer un document d'un type donné (ex. NPC) depuis l'éditeur de scénario.
 - [ ] Le document créé est automatiquement lié au scénario ou à la scène courante.
-- [ ] Le document créé est accessible depuis son dossier de type dans la campagne.
+- [ ] Le document créé est accessible depuis son dossier de type dans l'espace.
 
 ---
 

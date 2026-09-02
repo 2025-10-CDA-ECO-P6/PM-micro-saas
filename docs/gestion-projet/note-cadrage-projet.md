@@ -198,8 +198,8 @@ Les éléments suivants sont absents du corpus de conception, de planification o
 ## 11. Documents de référence
 
 **Vision**
-- `conception/besoin/vision/vision-produit.md` — positionnement produit, hypothèses de validation, modèle de monétisation.
-- `conception/besoin/vision/moscow.md` — priorisation détaillée du périmètre (Must/Should/Could/Won't Have).
+- `../conception/besoin/vision/vision-produit.md` — positionnement produit, hypothèses de validation, modèle de monétisation.
+- `../conception/besoin/vision/moscow.md` — priorisation détaillée du périmètre (Must/Should/Could/Won't Have).
 
 **Cahier des charges**
 - `../context/cahier-des-charges.md` — document officiel de référence pour la construction du MVP, consolidant le corpus de conception.

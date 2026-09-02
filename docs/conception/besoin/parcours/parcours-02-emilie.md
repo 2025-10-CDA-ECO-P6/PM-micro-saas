@@ -19,7 +19,7 @@ Le parcours suppose qu'Émilie démarre en mode local (sans compte), et crée so
 
 ## Étape 1 — Démarrage sans compte et création d'une campagne minimale
 
-**UC porteur :** [UC-01](../usecases/UC-01-mode-local-sans-compte.md) | **UJ porteur :** [UJ-UC-01](../user-journeys/UJ-UC-01-mode-local-sans-compte.md)
+**UC porteurs :** [UC-01](../usecases/UC-01-mode-local-sans-compte.md), [UC-02](../usecases/UC-02-creer-espace-jeu.md) | **UJ porteur :** [UJ-UC-01](../user-journeys/UJ-UC-01-mode-local-sans-compte.md)
 
 ### Ce qu'Émilie cherche à faire
 
@@ -29,14 +29,15 @@ Ouvrir l'outil, commencer immédiatement, sans remplir de formulaire. Elle a une
 
 - L'application propose deux options équivalentes. Émilie choisit « Commencer sans compte ».
 - Un message court indique que les données sont stockées dans ce navigateur — non bloquant.
-- Elle est redirigée vers la création de campagne.
-- Elle saisit un nom (« Ironsworn — Fer et Cendres »), laisse le reste vide, valide.
+- Elle atterrit dans son **espace personnel** — le conteneur par défaut disponible dès le mode local (UC-01 scénario nominal étape 5), sans qu'aucune campagne n'existe encore. Elle pourrait y capturer du contenu directement.
+- Elle décide de créer un espace de jeu pour sa session du soir, un acte distinct et optionnel (UC-01 §Contexte, UC-02) : elle saisit un nom (« Ironsworn — Fer et Cendres »), laisse le reste vide, valide.
 - La campagne est créée avec quatre dossiers système : Personnages, Joueurs, Scénarios, Notes.
 - Les fonctionnalités de partage avec les joueurs sont visibles mais désactivées.
 
 ### État laissé
 
 - Mode local actif : aucun `User` instancié, données dans le stockage local du navigateur.
+- Un **espace personnel** (`SpaceType.PERSONAL`) préexiste comme conteneur par défaut, avec son seul dossier virtuel « Non classés » — Émilie en est la propriétaire (`MemberRole.OWNER`), et non « MJ » sur cet espace mono-membre (glossaire §`MJ`).
 - Une `Campagne` existe, avec ses quatre dossiers système et son dossier virtuel « Non classés ».
 - Une `SessionViewConfig` est créée automatiquement à `CampaignCreated` (glossaire §5).
 
@@ -179,7 +180,7 @@ UC-04 précondition : « Une campagne existe. Le MJ a accès à la campagne. » 
 
 ## Étape 6 — Rangement et enrichissement a posteriori
 
-**UC porteur :** [UC-04](../usecases/UC-04-gerer-documents-campagne.md) | **UJ porteur :** [UJ-UC-04](../user-journeys/UJ-UC-04-gerer-documents-campagne.md) (si besoin)
+**UC porteur :** [UC-04](../usecases/UC-04-gerer-documents-espace.md) | **UJ porteur :** [UJ-UC-04](../user-journeys/UJ-UC-04-gerer-documents-espace.md) (si besoin)
 
 ### Ce qu'Émilie cherche à faire
 

@@ -2,7 +2,7 @@
 
 ## Périmètre
 
-Parcours du MJ depuis la découverte des dossiers de sa campagne jusqu'à la personnalisation avancée (renommage, templates, réordonnage). Couvre trois profils : Antoine (organisation thématique et templates), Nadia (usage des dossiers par défaut sans configuration), Thomas (renommage des dossiers système pour les adapter à son système de jeu). Le comportement du dossier virtuel "Non classés" est couvert comme mécanisme interne, invisible en navigation.
+Parcours du MJ depuis la découverte des dossiers de son espace jusqu'à la personnalisation avancée (renommage, templates, réordonnage). Couvre trois profils : Antoine (organisation thématique et templates), Nadia (usage des dossiers par défaut sans configuration), Thomas (renommage des dossiers système pour les adapter à son système de jeu). Le comportement du dossier virtuel "Non classés" est couvert comme mécanisme interne, invisible en navigation.
 
 ---
 
@@ -24,7 +24,7 @@ Parcours du MJ depuis la découverte des dossiers de sa campagne jusqu'à la per
 journey
     title Organiser le contenu en dossiers — UC-05
     section Configuration initiale
-        Campagne créée — dossiers système disponibles: 5: Antoine, 5: Nadia, 3: Thomas
+        Espace créé — dossiers système disponibles: 5: Antoine, 5: Nadia, 3: Thomas
         Renommer un dossier système: 4: Antoine, 1: Nadia, 5: Thomas
         Supprimer un dossier système inutile: 3: Antoine, 1: Nadia, 4: Thomas
     section Personnalisation
@@ -41,7 +41,7 @@ journey
 
 ```mermaid
 flowchart TD
-    A[Campagne créée] --> B[Dossiers système présents\nPersonnages, Joueurs, Scénarios, Notes]
+    A[Espace créé] --> B[Dossiers système présents\nPersonnages, Joueurs, Scénarios, Notes]
     B --> C{Profil MJ}
 
     C -->|Antoine| D[Crée des dossiers thématiques\nFactions, Indices, Objets]
@@ -162,7 +162,7 @@ Thomas commence une campagne Blades in the Dark. Les dossiers système lui sembl
 - Use case source : [`docs/conception/besoin/usecases/`](../usecases/)
 - User stories associées : [`US-UC-05-organiser-contenu-dossiers.md`](../user-stories/US-UC-05-organiser-contenu-dossiers.md)
 - Conception source : la bibliothèque de contenu : [`docs/conception/domain/content-library.md`](../../domain/content-library.md)
-- UC-04 Documents de campagne (déplacement de documents) : [`docs/conception/besoin/user-journeys/UJ-UC-04-gerer-documents-campagne.md`](UJ-UC-04-gerer-documents-campagne.md)
+- UC-04 Documents d'espace (déplacement de documents) : [`docs/conception/besoin/user-journeys/UJ-UC-04-gerer-documents-espace.md`](UJ-UC-04-gerer-documents-espace.md)
 
 ---
 
@@ -170,7 +170,7 @@ Thomas commence une campagne Blades in the Dark. Les dossiers système lui sembl
 
 ### Depuis UC-02 (création de l'espace de jeu)
 
-À la création d'une campagne (UC-02), les dossiers système — **Personnages**, **Joueurs**, **Scénarios**, **Notes** — et le dossier virtuel « Non classés » (non visible en navigation) sont créés automatiquement. UC-05 peut être déclenché immédiatement après : le MJ renomme, supprime ou crée des dossiers selon son système de jeu, avant même d'avoir créé son premier document. L'ordre entre la configuration des dossiers (UC-05) et la création des documents (UC-04) n'est pas imposé — les deux peuvent s'alterner librement.
+À la création d'un espace `CAMPAIGN` ou `ONE_SHOT` (UC-02), les dossiers système — **Personnages**, **Joueurs**, **Scénarios**, **Notes** — et le dossier virtuel « Non classés » (non visible en navigation) sont créés automatiquement. UC-05 peut être déclenché immédiatement après : le MJ renomme, supprime ou crée des dossiers selon son système de jeu, avant même d'avoir créé son premier document. L'ordre entre la configuration des dossiers (UC-05) et la création des documents (UC-04) n'est pas imposé — les deux peuvent s'alterner librement.
 
 ### Vers UC-04 (gestion des documents)
 
@@ -178,4 +178,4 @@ L'organisation des dossiers dans UC-05 conditionne l'initialisation des document
 
 ### Vers UC-06 (vue session)
 
-La `SessionViewConfig` de la campagne référence des dossiers parmi ceux gérés dans UC-05. Le MJ configure quels dossiers apparaissent dans les panneaux de la vue session depuis les paramètres de la campagne (hors session) ou depuis la vue session elle-même. Les dossiers renommés par Thomas dans UC-05 (par exemple, « Scoundrels » au lieu de « Personnages ») apparaissent avec leur nouveau nom dans les panneaux de la vue session — aucune resynchronisation n'est nécessaire. La suppression d'un dossier présent dans la `SessionViewConfig` retire ce dossier des panneaux configurés ; les documents déplacés vers « Non classés » restent accessibles via la recherche globale de la vue session.
+La `SessionViewConfig` de l'espace référence des dossiers parmi ceux gérés dans UC-05. Le MJ configure quels dossiers apparaissent dans les panneaux de la vue session depuis les paramètres de l'espace (hors session) ou depuis la vue session elle-même. Les dossiers renommés par Thomas dans UC-05 (par exemple, « Scoundrels » au lieu de « Personnages ») apparaissent avec leur nouveau nom dans les panneaux de la vue session — aucune resynchronisation n'est nécessaire. La suppression d'un dossier présent dans la `SessionViewConfig` retire ce dossier des panneaux configurés ; les documents déplacés vers « Non classés » restent accessibles via la recherche globale de la vue session.

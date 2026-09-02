@@ -3,7 +3,7 @@
 - **Statut** : Accepté
 - **Date** : 2026-06-09
 - **Décideur** : opérateur (validation explicite, session de cadrage P1)
-- **Findings liés** : finding STRUCTURAL (plan 20260609-conception-mvp, graphe de cascade non spécifié), C-09, C-04, F-08, B-05
+- **Findings liés** : finding STRUCTURAL (2026-06-09 — graphe de cascade non spécifié), C-09, C-04, F-08, B-05
 
 > **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03, audit conception pure 2026-06.)*
 

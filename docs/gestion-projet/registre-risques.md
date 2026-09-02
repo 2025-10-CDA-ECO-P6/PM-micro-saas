@@ -198,7 +198,7 @@ Cinq hypothèses de validation produit (H1 à H5), aucune n'est cotée en probab
 
 | Identifiant | Hypothèse | Seuil et délai | Classe de conséquence si infirmée |
 |---|---|---|---|
-| P-02 | H1 — activation (préparation) | ≥ 60 % de la cohorte, 14 jours | Activation de base compromise |
+| P-02 | H1 — activation (préparation) | ≥ 60 % de la cohorte, 14 jours. *Nuance (décision opérateur du 2026-07-09) : le contenu d'un espace personnel sans campagne ne compte que **partiellement** dans cette activation, s'il traduit un **geste structurant** ; seuil exact `[À TRANCHER — métrique produit]`.* | Activation de base compromise |
 | P-03 | **H2 — vue de session (hypothèse centrale)** | ≥ 50 % à l'activation, répétabilité ≥ 50 % sur deux sessions ou plus, 30 et 60 jours | **Invalidation de la proposition de valeur du produit dans son ensemble** — seule classe de conséquence de niveau "critique" de ce registre |
 | P-04 | H3 — fluidité du partage | ≥ 40 %, 60 jours | Affaiblissement du vecteur de croissance et de différenciation |
 | P-05 | H4 — accès joueur sans compte | ≥ 70 %, 60 jours | Un frein à l'entrée du joueur invité compromet l'adoption du groupe entier |
@@ -218,7 +218,7 @@ Le gate juriste EU est un **indicateur agrégé** des questions ouvertes J-02 à
 | Catégorie | Identifiant | Point |
 |---|---|---|
 | À ratifier par l'opérateur | T-04 | Reclaim-in-place (identité fédérée reprenant une coquille de compte non vérifiée) |
-| À ratifier par l'opérateur | D-01 | Double référent de nomenclature de jalon, axe canonique proposé non imposé |
+| Résolu, résiduel à confirmer | D-01 | Double référent de nomenclature de jalon — **résolu** (axe canonique J0-J3 ratifié par l'opérateur, 2026-09-01) ; ancrage inféré `P0.5` résiduel, à confirmer |
 | Dette majeure (résiduel non abaissé) | D-07 | Compression du calendrier de build, charge concentrée en amont |
 | Dette majeure (résiduel non abaissé) | P-07 | Apprentissage produit non isolé, couplé à P-08 |
 | Question ouverte à lacune réelle | J-15 | Catégories particulières de données (article 9 RGPD) incidentes, non évaluées |
@@ -226,6 +226,8 @@ Le gate juriste EU est un **indicateur agrégé** des questions ouvertes J-02 à
 | Question ouverte à lacune réelle | J-12 | Méthode de vérification d'identité des invités non retenue |
 
 Ces trois questions ouvertes juridiques se distinguent des quatorze autres de l'axe juridique par l'absence de toute mesure actée dans le corpus, même provisoire — les autres portent au moins une posture ou un squelette en attente de confirmation.
+
+`[À TRANCHER — COMITÉ DES RISQUES]` Cette frontière est un jugement de degré, pas une ligne nette, pour **J-12** : son entrée (§3.3) porte « un principe de proportionnalité posé », structurellement comparable aux postures jugées suffisantes ailleurs sur l'axe juridique (par exemple J-04, « des bases légales par défaut sont posées »). **J-15** et **J-16**, eux, ne portent clairement aucune posture. Ce registre ne tranche pas si J-12 relève de la « lacune réelle » ou de la « posture existante » — la question est signalée ici pour statuer en comité des risques, sans reclassement de J-12 par ce registre.
 
 ---
 
@@ -297,7 +299,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 **T-05 — Câblage de l'autorisation, test d'architecture et frontières logiques de contexte**
 *Type : risque.*
 - **Description** : l'autorisation doit être centralisée dans un contrat applicatif unique, appelé identiquement par le pipeline REST et par le filtre de diffusion temps réel. Un test d'architecture en intégration continue est prévu comme garde-fou, remplaçant une discipline de revue de code jugée insuffisante ; sa définition exhaustive (couverture complète des gestionnaires de requêtes et des jetons) reste renvoyée à une passe ultérieure. Une alternative d'isolation physique par module a été écartée au profit de frontières logiques.
-- **Probabilité** : Élevée — câblage préalable, test d'architecture à définir exhaustivement.
+- **Probabilité** : Élevée — câblage préalable, test d'architecture à définir exhaustivement (→ B3.2).
 - **Impact** : Majeur — dimension dominante : sécurité & données personnelles (un gestionnaire de requête oublié constituerait une référence directe non protégée à un objet).
 - **Criticité inhérente** : Élevée.
 - **Criticité résiduelle cible** : Moyenne.

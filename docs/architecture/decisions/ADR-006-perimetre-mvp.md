@@ -5,7 +5,7 @@
 - **Décideur** : opérateur (validation explicite, session d'audit/remédiation)
 - **Findings liés** : CR-7, D-01, D-02, D-04, D-05, D-06, H-04
 
-> **Nature : décision produit — fusionnée** — la substance de cette décision a été fusionnée dans la couche vision (`docs/conception/besoin/vision/moscow.md` et `vision-produit.md`) le 2026-06-10. Ce document est une trace historique ; le raisonnement et les alternatives écartées restent lisibles ici. *(Annotation du 2026-06-10 — arbitrage T-06, audit conception pure 2026-06.)*
+> **Nature : décision produit — fusionnée** — la substance de cette décision a été fusionnée dans la couche vision (`docs/conception/besoin/vision/moscow.md` et `vision-produit.md`) le 2026-06-10. Ce document est une trace historique ; le raisonnement et les alternatives écartées restent lisibles ici.
 
 ---
 
@@ -45,14 +45,14 @@ Non retenu : l'incohérence logique de priorisation rend la planification non fi
 - Le trio le plus risqué techniquement (synchronisation local↔cloud, migration, temps réel SignalR) est front-loadé dans le MVP. La migration n'est plus différable — elle devient un livrable du jalon J2.
 - Les jalons de build se compressent : J1 (local-only), J2 (cloud + migration), J3 (partage + temps réel) doivent être enchaînés sans découplage produit entre eux.
 - UC-13 (scénario réutilisable, one-shot) reste hors périmètre MVP au sens « first release » — la vision doit être corrigée pour ne pas le présenter comme un « contexte de premier ordre » dès le lancement.
-- Une hypothèse explicite est à ajouter à la vision : « l'expérience joueur consultative (vue session invité) apporte suffisamment de valeur pour justifier l'adoption du groupe ». Cette hypothèse n'est pas formalisée dans la documentation actuelle (finding D-05).
-- UC-10 étant promu Must, son estimation de complexité (finding H-04 : sous-estimé) doit être revisitée en J2.
+- Une hypothèse explicite est à ajouter à la vision : « l'expérience joueur consultative (vue session invité) apporte suffisamment de valeur pour justifier l'adoption du groupe ». Cette hypothèse n'est pas formalisée dans la documentation actuelle.
+- UC-10 étant promu Must, son estimation de complexité (jugée sous-estimée) doit être revisitée en J2.
 
 ---
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à une revue critique postérieure à cette décision, celle-ci est complétée comme suit, sans changer sa direction.
 
 - **Instrumentation compensatoire.** Puisque le MVP unique ne sépare pas les hypothèses d'apprentissage, une télémétrie séparée par pilier est ajoutée dans le périmètre MVP :
   - Activation préparation : campagne créée + N documents créés.
@@ -60,10 +60,10 @@ Suite à la revue adversariale (revue de la phase de conception, artefact purgé
   - Activation partage : document partagé + au moins 1 joueur l'ayant ouvert.
   Cette instrumentation récupère l'essentiel de l'apprentissage que la décision de MVP unique assume de perdre.
 
-- **Capture email non bloquante + analytics anonyme RGPD** dès le mode local (finding E-06, aggravé par le MVP unique local-first) — dans le périmètre MVP.
+- **Capture email non bloquante + analytics anonyme RGPD** dès le mode local (aggravé par le MVP unique local-first) — dans le périmètre MVP.
 
 - **CR-1 (exécution du domaine en local, ADR-001) est un préalable bloquant** à la partie cloud/migration du MVP. Le jalon J2 ne peut pas commencer sans que J1 (local-only) soit stabilisé.
 
 - **Gate de validation marché.** L'hypothèse marché (E-04 taille/solvabilité, E-05 GTM) n'est pas testée avant le build. Un gate de validation marché doit être posé avant d'engager le build lourd cloud + temps réel.
 
-- **Contrepoids UC-10 promu Must.** Pour ne pas gonfler le périmètre Must, UC-05 « riche » (dossiers et types élaborés) est rétrogradé en Should (finding D-06).
+- **Contrepoids UC-10 promu Must.** Pour ne pas gonfler le périmètre Must, UC-05 « riche » (dossiers et types élaborés) est rétrogradé en Should.

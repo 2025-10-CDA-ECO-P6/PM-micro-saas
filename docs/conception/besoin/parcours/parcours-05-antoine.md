@@ -31,20 +31,21 @@ Antoine découvre Haversack. Il n'a pas de données locales préexistantes — i
 
 - Antoine accède à la page d'inscription.
 - Il renseigne email, nom d'affichage, mot de passe. Son compte est créé (tier `FREE`).
+- Son **espace personnel** (`SpaceType.PERSONAL`) est créé automatiquement à cette étape — conteneur de premier ordre, hors quota, mono-membre, dont Antoine est propriétaire (glossaire §`Espace personnel`).
 - Aucune donnée locale n'existe — le gate de reconnaissance n'est pas présenté (UC-10 scénario nominal « Inscription sans données locales »).
-- Il est redirigé vers l'écran de création de campagne.
+- Il est redirigé vers son tableau de bord — son espace personnel y figure déjà. Il choisit de créer une campagne, un acte distinct et optionnel (UC-01 §Contexte, UC-02).
 - Avec un compte `FREE` : 3 campagnes cloud maximum. Antoine a besoin de trois campagnes simultanées — il atteint immédiatement la limite du tier `FREE`. Pour trois campagnes actives en cloud, un compte `PRO` est nécessaire (glossaire §2, `AccountTier`).
 
 ### État laissé
 
 - Antoine est `User` authentifié, `AccountTier = FREE` (limite à 3 campagnes cloud).
-- Aucune `Campagne` n'existe encore.
+- Son **espace personnel** existe déjà, créé automatiquement à la création du compte (glossaire §`Espace personnel`, UC-02 §Ontologie des types d'espace) — Antoine en est le propriétaire (`MemberRole.OWNER`, pas « MJ » : le glossaire réserve ce raccourci aux espaces partagés où des joueurs existent). Aucune `Campagne` (`SpaceType.CAMPAIGN`) n'existe encore.
 
 ### Couture vers l'étape 2
 
 UC-02 précondition : « L'application est accessible (mode local ou compte cloud). » Satisfait — Antoine est authentifié.
 
-**Couture continue.** Note : la limite de 3 campagnes `FREE` couvre exactement ses trois campagnes en cours. Si Antoine voulait une quatrième, il devrait passer en `PRO`. Ce point est un signal, pas une rupture — la limite est documentée et cohérente.
+**Couture continue.** Note : la limite de 3 campagnes `FREE` couvre exactement ses trois campagnes en cours — son espace personnel n'est pas décompté de ce plafond, qui ne porte que sur les espaces `CAMPAIGN`/`ONE_SHOT` (UC-01 §Espace personnel en mode local, RB-02-10). Si Antoine voulait une quatrième campagne, il devrait passer en `PRO`. Ce point est un signal, pas une rupture — la limite est documentée et cohérente.
 
 ---
 
@@ -128,7 +129,7 @@ UC-04 précondition : « Une campagne existe. Le MJ a accès à la campagne. » 
 
 ## Étape 4 — Constitution du contenu de préparation
 
-**UC porteurs :** [UC-04](../usecases/UC-04-gerer-documents-campagne.md), [UC-03](../usecases/UC-03-structurer-scenario.md) | **UJ porteurs :** [UJ-UC-04](../user-journeys/UJ-UC-04-gerer-documents-campagne.md), [UJ-UC-03](../user-journeys/UJ-UC-03-structurer-scenario.md) (si disponible)
+**UC porteurs :** [UC-04](../usecases/UC-04-gerer-documents-espace.md), [UC-03](../usecases/UC-03-structurer-scenario.md) | **UJ porteurs :** [UJ-UC-04](../user-journeys/UJ-UC-04-gerer-documents-espace.md), [UJ-UC-03](../user-journeys/UJ-UC-03-structurer-scenario.md) (si disponible)
 
 ### Ce qu'Antoine cherche à faire
 
@@ -217,7 +218,7 @@ UC-11 précondition : « Une campagne existe. Le MJ est propriétaire de la camp
 
 ## Étape 7 — Invitation des joueurs réguliers et gestion des membres
 
-**UC porteur :** [UC-11](../usecases/UC-11-gerer-membres-campagne.md) | **UJ porteur :** [UJ-UC-11](../user-journeys/UJ-UC-11-gerer-membres-campagne.md)
+**UC porteur :** [UC-11](../usecases/UC-11-gerer-membres-espace-partage.md) | **UJ porteur :** [UJ-UC-11](../user-journeys/UJ-UC-11-gerer-membres-espace-partage.md)
 
 ### Ce qu'Antoine cherche à faire
 
@@ -226,7 +227,7 @@ Antoine a des groupes stables pour chaque campagne. Il veut inviter ses joueurs 
 ### Comportements observables
 
 - Pour chaque campagne, Antoine accède à la section « Membres ».
-- Il génère un lien d'invitation de périmètre `CAMPAIGN` (accès durable).
+- Il génère un lien d'invitation de périmètre `SPACE` (accès durable).
 - Il peut configurer une date d'expiration ou un nombre maximum d'utilisations.
 - Il partage le lien à ses joueurs.
 - Quand un joueur utilise le lien avec un compte existant, un `SpaceMembership` est créé en statut `ACTIVE` (UC-09 — octroi d'accès, scénario nominal côté joueur ; UC-11 — validation côté MJ). La vue cohérente que le joueur obtient ensuite relève d'UC-12 (vue joueur).
@@ -284,6 +285,8 @@ Ces points sont fondés sur le corpus (fiche persona, UJ-UC-05, UJ-UC-07) — au
 4. **Associer un template à un dossier sans UC-13** : UJ-UC-05 §Transitions inter-UC (Vers UC-04) précise que la disponibilité d'un modèle par défaut pour un dossier dépend de UC-13 (Should Have — post-MVP). En l'absence de UC-13, la liste des modèles disponibles est vide. Antoine ne peut pas associer de template à ses dossiers dans la première livraison — friction documentée dans UJ-UC-05 §Points de friction.
 
 5. **Limite de 4 joueurs par session (FREE)** : Antoine a potentiellement plus de 4 joueurs dans un groupe. La limite FREE est atteinte pour ses groupes les plus larges — déclencheur naturel de l'upgrade vers PRO.
+
+6. **Réutilisation cross-campagne via l'espace personnel, sans instanciation dans le MVP** : la fiche persona demande explicitement un espace personnel où stocker ses contenus réutilisables — templates de PNJ, factions génériques, fragments de lore — pour les instancier ensuite dans la campagne qui en a besoin, sans les dupliquer (persona-05-antoine.md §Ce qu'il utiliserait, §Ce qu'il demande à l'app). L'espace personnel d'Antoine existe dès l'étape 1 (créé automatiquement à la création du compte) et peut porter ce contenu réutilisable (`Document.isReusable = true`, glossaire §`Bibliothèque personnelle`). Mais l'instanciation indépendante d'un document de l'espace personnel vers une campagne cible relève d'UC-13, explicitement hors première livraison (vision-produit §5bis). Dans le MVP, Antoine ne peut que dupliquer manuellement le contenu de son espace personnel vers chacune de ses trois campagnes — même limite que celle déjà documentée pour les templates de dossier (point 4).
 
 ---
 

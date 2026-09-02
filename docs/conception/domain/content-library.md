@@ -140,6 +140,14 @@ Conteneur organisationnel. Structure l'arborescence du contenu dans un espace.
 | `order` | `int` | Ordre d'affichage dans le dossier parent. `0` par défaut. |
 | `AuditInfo` | | |
 
+**Méthodes**
+
+| Méthode | Événement produit | Description |
+|---|---|---|
+| `Create(spaceId, name, parentId?)` | `FolderCreated` | Crée un dossier. `parentId` optionnel — `null` = niveau racine. |
+| `Rename(name)` | — | Renomme le dossier. |
+| `Delete()` | `FolderDeleted` | Supprime le dossier. Ses documents sont déplacés vers le dossier virtuel « Non classés » ou vers un autre dossier choisi par le MJ (invariant 7). |
+
 **Dossiers créés à `SpaceCreated`**
 
 La création des dossiers est conditionnelle au type d'espace.
@@ -285,7 +293,7 @@ Document (SCENE) "Entrée de la crypte"
 2. `visibility = GM_ONLY` : visible uniquement par les membres `OWNER` et `GM`.
 3. `visibility = PLAYER_PRIVATE` : lisible uniquement par l'auteur du document — `createdById` pour un membre, `guestAccessId` pour un invité. Les membres `OWNER` et `GM` n'y ont aucun accès, quel que soit le type de document. Cette règle est encodée dans `Document.CanBeReadBy(userId, memberRole, documentType)` et non dans un service applicatif. La suppression en cascade (purge d'espace, ADR-011) n'est pas affectée — la confidentialité porte sur la lecture, pas sur la suppression administrative.
 4. Partager un document (`Share()`) change sa visibilité de façon permanente. Ce n'est pas un partage temporaire de session — le joueur peut y accéder entre les séances.
-5. L'instanciation d'un document réutilisable crée une copie profonde (blocs + liens + propriétés). Les modifications ultérieures du source n'affectent pas les instances.
+5. L'instanciation d'un document réutilisable crée une copie profonde (blocs + liens + propriétés). Les modifications ultérieures du source n'affectent pas les instances. L'instance est créée avec `isReusable = false` : elle n'est pas elle-même marquée réutilisable à sa création. La réutilisabilité reste une propriété du document source dans l'espace `PERSONAL` du MJ (la bibliothèque personnelle est la vue filtrée `isReusable = true` de cet espace) ; une instance vivant dans un espace `CAMPAIGN`/`ONE_SHOT` n'a pas vocation à apparaître dans cette bibliothèque. Rien n'empêche un MJ de marquer explicitement une instance comme réutilisable par la suite, au même titre que tout document.
 6. Les backlinks ne sont pas stockés — ils sont calculés à la lecture via `DocumentLink.targetDocumentId`.
 7. Les types système (`isSystem = true`) ne peuvent pas être modifiés ni supprimés.
 8. Un document `REVEAL` lié à une scène est créé avec `visibility = GM_ONLY` par défaut. Il passe à `PUBLIC` uniquement via une action explicite du MJ en session (→ UC-08 — partage d'information). Ce passage est permanent jusqu'à `Unshare()`.
@@ -318,6 +326,7 @@ Document (SCENE) "Entrée de la crypte"
 |---|---|---|
 | `SpaceCreated` | Space Management | Pour `CAMPAIGN`/`ONE_SHOT` : créer les 4 dossiers système nommés (Personnages, Joueurs, Scénarios, Notes) + le dossier virtuel (Non classés). Pour `PERSONAL` : créer uniquement le dossier virtuel (Non classés). |
 | `SpaceArchived` | Space Management | Passer tous les documents en lecture seule (soft-lock) |
+| `SpaceUnarchived` | Space Management | Repasser tous les documents en écriture (lever le soft-lock) |
 
 ### Ce que Content Library publie
 

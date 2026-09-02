@@ -50,8 +50,10 @@ Intention : l'utilisateur disposant d'un compte s'authentifie avec son adresse d
              fournisseur, l'utilisateur y est connecté directement ; si aucun compte
              n'existe, un nouveau compte est créé automatiquement (tier gratuit)
              (UC-10 §scénario nominal Connexion via fournisseur externe)
-             [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview]
-             le ou les fournisseurs exposés et leur wording ne sont pas figés
+             fournisseurs exposés : Google et Discord (cahier des charges §Authentification —
+             RÉSOLU ; ADR-015 ; zoning.md §S9 « Fournisseurs d'identité — RÉSOLU »)
+             [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview] le wording exact
+             des libellés de bouton par fournisseur n'est pas figé
   priorité : principal
   visibilité : tous (utilisateur non authentifié)
 
@@ -126,7 +128,11 @@ hiérarchie de lecture à distance :
   priorité 2 — zone d'accès via fournisseur externe (chemin alternatif en un geste)
   priorité 3 — lien de réinitialisation du mot de passe
   priorité 4 — lien vers l'inscription
-  source : NFR-ACC-04 (ordre de lecture logique conforme à l'intention de l'écran)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -139,7 +145,7 @@ Sources : UC-10 (scénario nominal Connexion,
                   A1 — Réinitialisation du mot de passe,
                   E2 — Identifiants invalides,
                   E3 — Lien de réinitialisation expiré) ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ;
           châssis S7 (zoning.md §S7)
 ```
 
@@ -151,7 +157,7 @@ Sources : UC-10 (scénario nominal Connexion,
 
 ```
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview]
-    fournisseur(s) d'identité externe exposés sur cet écran et leur wording —
-    non figés dans le corpus
+  [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview] wording exact des libellés
+    de bouton par fournisseur d'identité externe — les fournisseurs eux-mêmes (Google,
+    Discord) sont résolus (cahier des charges §Authentification ; ADR-015)
 ```

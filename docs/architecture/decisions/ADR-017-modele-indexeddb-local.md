@@ -30,7 +30,7 @@ ADR-016 a formalisé le contrat de sérialisation et la frontière de confiance 
 
 Deux points de contexte méritent d'être nommés explicitement.
 
-**Posture de synchronisation.** Au moment de cadrer ce document, une question restait ouverte : le store local doit-il prévoir un moteur de synchronisation continue (delta par entité, suivi de révision, journal de modifications) ? La réponse est non, et elle est décidée ici. Le mode local au MVP est un store CRUD hors-ligne mono-navigateur, sans aucune synchronisation cloud en cours de session. Le seul croisement local→cloud est la migration one-shot décrite dans ADR-016. Cette décision est posée comme invariant, pas comme simplification temporaire : toute infrastructure de sync continue serait architecturalement différente de ce qu'UC-01 spécifie (l.30 — aucune donnée envoyée au serveur en mode local) et relève de UC-F04, architecture offline-first complète, qui est un projet à part entière post-MVP.
+**Posture de synchronisation.** Au moment de cadrer ce document, une question restait ouverte : le store local doit-il prévoir un moteur de synchronisation continue (delta par entité, suivi de révision, journal de modifications) ? La réponse est non, et elle est décidée ici. Le mode local au MVP est un store CRUD hors-ligne mono-navigateur, sans aucune synchronisation cloud en cours de session. Le seul croisement local→cloud est la migration one-shot décrite dans ADR-016. Cette décision est posée comme invariant, pas comme simplification temporaire : toute infrastructure de sync continue serait architecturalement différente de ce qu'UC-01 spécifie (l.134 — aucune donnée envoyée au serveur en mode local) et relève de UC-F04, architecture offline-first complète, qui est un projet à part entière post-MVP.
 
 **Résolution STRUCTURAL.** L'audit F-09 signalait « XSS Angular exfiltre le local (CWE-79/312) ». En mode local pur, il n'existe pas de serveur pour absorber le vecteur : le plancher de sanitisation côté serveur (ADR-016 §2.4) ne couvre pas le rendu local. Ce point avait été escaladé en finding STRUCTURAL lors de la revue : un payload XSS persisté en IndexedDB n'est pas seulement dangereux à la lecture locale, il traverse la frontière vers le cloud à la migration, ce qui annulerait partiellement la protection serveur. Cet ADR ferme ce vecteur en imposant une sanitisation équivalente côté client Angular.
 
@@ -47,7 +47,7 @@ Le store local projette le périmètre sérialisé défini dans ADR-016 §1.2. L
 | Object store | Clé primaire | Description |
 |---|---|---|
 | `spaces` | `id` (UUID local) | Racine de l'agrégat |
-| `folders` | `id` (UUID local) | Arborescence rattachée à la campagne |
+| `folders` | `id` (UUID local) | Arborescence rattachée à l'espace |
 | `documents` | `id` (UUID local) | Documents avec leurs champs scalaires |
 | `document_blocks` | `id` (UUID local) | Blocs de contenu rattachés à un document |
 | `document_links` | `[source_id, target_id]` | Références inter-documents |
@@ -58,9 +58,9 @@ Le store local projette le périmètre sérialisé défini dans ADR-016 §1.2. L
 
 #### 1.2 Structure aggregate-rooted plutôt que miroir relationnel
 
-Le store local n'est pas un miroir des tables serveur. Il est organisé autour de la campagne comme racine d'agrégat : son contenu (dossiers, documents, blocs, liens, tags, types custom) lui est rattaché par `space_id`. Cette organisation est délibérée.
+Le store local n'est pas un miroir des tables serveur. Il est organisé autour de l'espace comme racine d'agrégat : son contenu (dossiers, documents, blocs, liens, tags, types custom) lui est rattaché par `space_id`. Cette organisation est délibérée.
 
-Un miroir relationnel réimporterait dans le navigateur la logique d'intégrité référentielle serveur (contraintes FK, ordre d'insertion topologique, résolution de cycles), ce qu'ADR-001 refuse explicitement. L'aggregate-rooted conserve le store simple et interrogeable par le seul chemin qu'UC-01 requiert : accéder à tout le contenu d'une campagne depuis sa racine.
+Un miroir relationnel réimporterait dans le navigateur la logique d'intégrité référentielle serveur (contraintes FK, ordre d'insertion topologique, résolution de cycles), ce qu'ADR-001 refuse explicitement. L'aggregate-rooted conserve le store simple et interrogeable par le seul chemin qu'UC-01 requiert : accéder à tout le contenu d'un espace depuis sa racine.
 
 Conséquence directe sur la couture de projection ADR-016 §1.4 : la fonction `store local → payload` reste quasi-identitaire. Le payload de migration est une sérialisation directe du store ; il n'y a pas de reformatage complexe entre le store et le payload.
 
@@ -70,7 +70,7 @@ Les indexes sont créés uniquement pour les chemins de lecture qu'UC-01 exige r
 
 | Index | Object store | Champ | Justification |
 |---|---|---|---|
-| `by_campaign` | `documents`, `folders`, `document_types` | `space_id` | Navigation : lister tout le contenu d'une campagne |
+| `by_space` | `documents`, `folders`, `document_types` | `space_id` | Navigation : lister tout le contenu d'un espace |
 | `by_folder` | `documents` | `folder_id` | Navigation de l'arborescence d'un dossier |
 | `by_document` | `document_blocks`, `document_links`, `document_tags` | `document_id` / `source_id` | Lecture du contenu d'un document |
 | `by_title` | `documents` | `title` | Recherche par titre (UC-01 — fonctionnalité « recherche locale ») |
@@ -100,9 +100,13 @@ Les validations locales sont minimales, conformément à ADR-001 §Décision et 
 
 **Discipline, non garantie outillée** : l'invariant `validation locale ⊆ validation serveur` est une règle de conception que l'équipe applique lors de l'implémentation TypeScript. Il n'existe pas de test cross-langage automatique qui vérifie la cohérence entre les règles TS locales et les Value Objects C# serveur. La migration revalide systématiquement via les VO serveur — c'est ce mécanisme qui constitue le filet de sécurité.
 
-#### 1.6 Règle métier RB-01-03 : plafond de 3 campagnes en mode local
+#### 1.6 RB-01-03 — absence de plafond de création en mode local
 
-La règle d'interface RB-01-03 — maximum 3 campagnes en mode local — est appliquée par le store. Avant toute écriture d'une nouvelle campagne dans l'object store `spaces`, le code vérifie le nombre de campagnes existantes. Si le plafond est atteint, l'écriture est rejetée avant d'atteindre IndexedDB, avec un message orientant vers la création de compte ou la suppression d'une campagne existante.
+*Décision initiale retirée le 2026-09-01 — trace et motif en § Compléments post-revue.*
+
+Il n'existe aucun plafond de création d'espace en mode local. Le store ne compte ni ne borne le nombre d'espaces avant écriture dans l'object store `spaces` : la seule limite à la création est la capacité de stockage allouée au navigateur (UC-01 §Modèle d'accès et de monétisation), une contrainte physique et non une règle produit à faire appliquer par un compteur applicatif.
+
+RB-01-03 porte exclusivement sur la synchronisation cloud d'un compte gratuit — un maximum de 3 espaces `CAMPAIGN`/`ONE_SHOT` synchronisables, l'espace `PERSONAL` étant exclu du décompte (UC-01). Cette règle est hors périmètre du store local décrit ici : elle conditionne l'écriture côté serveur à la migration (ADR-016), pas l'écriture dans IndexedDB.
 
 ---
 
@@ -114,7 +118,7 @@ Trois régimes sont à distinguer explicitement pour éviter toute dérive de co
 
 **(a) Mode local pur** : toutes les opérations (création, lecture, modification, suppression) s'exécutent localement dans IndexedDB. Aucune donnée n'est envoyée au serveur (UC-01 §Règles métier). Il n'y a pas de session cloud active, pas de token JWT (ADR-015 §Périmètre).
 
-**(b) Migration one-shot local→cloud** : le seul passage de données vers le serveur est la migration décrite dans ADR-016. Elle est déclenchée explicitement par l'utilisateur lors de la création de compte ou depuis les paramètres. Elle se déroule en lot, campagne par campagne, avec gate de confirmation anti-appropriation (ADR-016 §4). Ce n'est pas un canal de synchronisation : il n'y a pas de delta, pas de merge, pas d'idempotence de révision. La migration est one-shot ; elle transfère les données locales vers le cloud sous l'identité du compte créé.
+**(b) Migration one-shot local→cloud** : le seul passage de données vers le serveur est la migration décrite dans ADR-016. Elle est déclenchée explicitement par l'utilisateur lors de la création de compte ou depuis les paramètres. Elle se déroule en lot, espace par espace, avec gate de confirmation anti-appropriation (ADR-016 §4). Ce n'est pas un canal de synchronisation : il n'y a pas de delta, pas de merge, pas d'idempotence de révision. La migration est one-shot ; elle transfère les données locales vers le cloud sous l'identité du compte créé.
 
 **(c) Mode cloud** : après la migration (ou après une connexion directe sans données locales), l'application opère en mode cloud. Les écritures sont serveur-autoritaires — le serveur est la seule source de vérité (ADR-001 §Décision). UC-06 E1 (perte réseau en mode cloud) produit un brouillon transitoire côté client, pas un store local persistant : ce brouillon disparaît si la connexion n'est pas rétablie ; il n'y a pas de réconciliation asynchrone.
 
@@ -138,7 +142,7 @@ Si la persistance est accordée : aucune notification supplémentaire — compor
 
 Si la persistance est refusée ou en best-effort : un **bandeau de durabilité non bloquant** est affiché, avec le message : *« Vos données sont en mode éphémère — elles peuvent être supprimées par le navigateur. Créez un compte pour les sécuriser. »* Ce bandeau est câblé à l'invite de création de compte (UC-10). Il ne bloque pas l'accès aux fonctionnalités — l'utilisateur peut continuer à travailler.
 
-Ce comportement est cohérent avec UC-01 l.32 (risque communiqué clairement) et avec la philosophie du mode local : friction nulle à l'entrée, information honnête sur les limitations.
+Ce comportement est cohérent avec UC-01 l.34 (risque communiqué clairement) et avec la philosophie du mode local : friction nulle à l'entrée, information honnête sur les limitations.
 
 #### 3.3 Maillon NON VÉRIFIABLE IN BUILD
 
@@ -282,11 +286,15 @@ Le non-chiffrement at-rest (§4.4) est une limitation conçue, communiquée via 
 | **ADR-003** | Stack Angular — `DomSanitizer`, implémentation des services IndexedDB en P6 |
 | **ADR-015** | Confirmation de l'absence de JWT/token en mode local (§4.5) ; session cloud et tokens gouvernés par ADR-015 démarrent à la création de compte |
 | **UC-F04** | Offline-first complète, résolution de conflits CRDT — post-MVP, périmètre distinct et explicitement exclu de cet ADR |
-| **UC-01** | Bandeaux (durabilité + confidentialité), invite cloud, import JSON (A4), règle RB-01-03 (plafond 3 campagnes), risque communiqué clairement (l.32) |
+| **UC-01** | Bandeaux (durabilité + confidentialité), invite cloud, import JSON (A4), absence de plafond de création en mode local, RB-01-03 (plafond cloud uniquement — 3 espaces `CAMPAIGN`/`ONE_SHOT`, `PERSONAL` exclu), risque communiqué clairement (l.34) |
 | **UC-10** | Bandeaux câblés à l'invite de création de compte (UC-10) |
 
 ---
 
 ## Compléments post-revue
 
-*(Section réservée aux clarifications post-implémentation — vide à la date de l'ADR.)*
+**§1.6 — absence de plafond de création en mode local (2026-09-01).** La décision initialement inscrite au §1.6 appliquait RB-01-03 comme plafond de *création* en mode local : blocage de l'écriture au-delà de 3 espaces dans l'object store `spaces`, avec un message orientant vers la création de compte. Cette décision portait un point ouvert `[À TRANCHER — OPÉRATEUR]` signalant que cette application de RB-01-03 n'avait pas de source dans UC-01, lequel emploie cet identifiant pour le plafond de synchronisation cloud, espace personnel exclu.
+
+Ce point est tranché par l'opérateur : **il n'existe aucun plafond de création en mode local.** UC-01 a été amendé pour l'énoncer explicitement — la seule contrainte de création en mode local est la capacité de stockage du navigateur. RB-01-03 est confirmé comme portant exclusivement sur la synchronisation cloud d'un compte gratuit (3 espaces `CAMPAIGN`/`ONE_SHOT`, espace `PERSONAL` exclu) — pas sur la création locale. Le §1.6 est réécrit en conséquence : aucun compteur de plafond n'est implémenté dans le store local décrit par cet ADR.
+
+Cette révision ne touche à aucune autre décision de cet ADR — object stores, versionnement du store, `navigator.storage.persist()`, posture migration-only et sécurité du mode local restent inchangés.

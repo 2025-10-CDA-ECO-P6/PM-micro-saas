@@ -13,7 +13,7 @@ Permettre au MJ de créer un scénario une fois et de le rejouer avec des groupe
 | Persona | Motivation principale |
 |---|---|
 | Sonia | Catalogue de 15 scénarios, 3 à 5 parties par mois, joueurs différents à chaque session, veut lancer sans préparer |
-| Antoine | 3 campagnes simultanées, veut des structures réutilisables entre campagnes sans dupliquer manuellement |
+| Antoine | 3 campagnes simultanées, veut des structures réutilisables entre espaces sans dupliquer manuellement |
 
 ---
 
@@ -23,7 +23,7 @@ Permettre au MJ de créer un scénario une fois et de le rejouer avec des groupe
   - Nominal : rejouer un scénario depuis l'espace personnel (créer une instance dans une campagne ou un one-shot via `Document.Instantiate`)
   - A1 : marquer un scénario existant comme réutilisable (le déplacer/versionner dans l'espace personnel, `isReusable = true`)
   - A2 : consulter l'historique des runs (instances passées)
-  - A3 : campagne one-shot légère (création en moins de 30 secondes) — sans archivage automatique
+  - A3 : espace one-shot léger (création en moins de 30 secondes) — sans archivage automatique
 
 ---
 
@@ -38,7 +38,7 @@ Permettre au MJ de créer un scénario une fois et de le rejouer avec des groupe
 ## Bounded contexts pressentis
 
 - **Space Management** — héberge l'espace personnel du MJ (un `Space` de type `PERSONAL`) qui contient les scénarios réutilisables sous forme de `Document` (`isReusable = true`), les instances créées par `Document.Instantiate` dans des campagnes ou one-shots, et gère la relation entre une instance et son contexte de jeu. Note ADR-018 : la `ScenarioLibrary` en tant qu'entité distincte est subsumée par l'espace personnel — un scénario réutilisable est simplement un `Document` de cet espace.
-- **Content Library** — consomme les instances de scénario comme documents de campagne dans le contexte de jeu cible.
+- **Content Library** — consomme les instances de scénario comme documents de l'espace cible (campagne ou one-shot).
 
 ---
 
@@ -49,7 +49,7 @@ flowchart TD
     Tableau[Tableau de bord MJ\nMes scenarios]
 
     Tableau --> EspacePersonnel[Espace personnel MJ\nDocuments isReusable = true]
-    Tableau --> Scenario[Scenario dans\nune campagne]
+    Tableau --> Scenario[Scenario dans\nun espace]
 
     Scenario --> Marquer[US-13-01\nMarquer comme reutilisable\nA1]
     Marquer --> EspacePersonnel
@@ -59,7 +59,7 @@ flowchart TD
     Selectionner --> Rejouer[US-13-02\nRejouer le scenario\nNominal]
 
     Rejouer --> ContexteChoix{Contexte\ncible}
-    ContexteChoix -->|One-shot ce soir| OneShot[Campagne one-shot\nA3\nCreee en moins de 30s]
+    ContexteChoix -->|One-shot ce soir| OneShot[Espace one-shot\nA3\nCree en moins de 30s]
     ContexteChoix -->|Ajouter a une campagne| CampagneExistante[Campagne existante]
 
     OneShot --> Instance[Instance creee\nDocument.Instantiate\nScenario source intact]
@@ -108,10 +108,10 @@ flowchart LR
 **afin de** le conserver dans mon espace personnel (`isReusable = true`) et pouvoir en créer des instances sans toucher à l'original.
 
 **Notes de conception** :
-- L'action "Marquer comme réutilisable" est disponible depuis la vue d'un scénario dans une campagne.
+- L'action "Marquer comme réutilisable" est disponible depuis la vue d'un scénario dans un espace (campagne ou one-shot).
 - Une fois marqué, le scénario (`Document` avec `isReusable = true`) réside dans l'espace personnel du MJ (un `Space` de type `PERSONAL`), accessible depuis le tableau de bord ("Mes scénarios").
 - Post-ADR-018 : l'espace personnel subsume la `ScenarioLibrary` — un scénario réutilisable est un `Document` de l'espace personnel ; il n'existe pas d'entité `ScenarioLibrary` distincte.
-- Le scénario source reste dans la campagne d'origine. Le `Document` dans l'espace personnel est le template de référence — le mécanisme est la **copie** (Q1 résolue en fin de document, section « Questions ouvertes ») ; la posture UX sur le sort de l'original en campagne après marquage (conservé en doublon vs archivé/retiré) reste déférée à validation en interview (cf. UC-13 l.150-154).
+- Le scénario source reste dans l'espace d'origine (campagne ou one-shot). Le `Document` dans l'espace personnel est le template de référence — le mécanisme est la **copie** (Q1 résolue en fin de document, section « Questions ouvertes ») ; la posture UX sur le sort de l'original dans l'espace après marquage (conservé en doublon vs archivé/retiré) reste déférée à validation en interview (cf. UC-13 l.150-154).
 - Un scénario déjà présent dans l'espace personnel ne peut pas être promu une deuxième fois depuis la même source.
 - L'espace personnel est propre au compte MJ ; il n'est pas partagé entre MJ dans le MVP.
 
@@ -121,19 +121,26 @@ flowchart LR
 - RB-13-03 : Un scénario déjà dans l'espace personnel ne peut pas être promu une deuxième fois depuis la même source.
 
 **Critères d'acceptation** :
-- [ ] Le MJ peut accéder à l'action "Marquer comme réutilisable" depuis un scénario dans une campagne.
+- [ ] Le MJ peut accéder à l'action "Marquer comme réutilisable" depuis un scénario dans un espace (campagne ou one-shot).
 - [ ] Après l'action, le scénario apparaît dans l'espace personnel du MJ accessible depuis le tableau de bord.
-- [ ] Le scénario source dans la campagne d'origine reste intact.
+- [ ] Le scénario source dans l'espace d'origine reste intact.
 - [ ] Un scénario déjà présent dans l'espace personnel ne peut pas être promu une deuxième fois.
 - [ ] L'espace personnel n'est accessible que par le MJ propriétaire du compte.
 
 ```gherkin
 Scenario : Marquer un scenario comme reutilisable depuis une campagne - nominal
-  Etant donne que Sonia a un scenario "La Crypte de Malnoir" dans sa campagne "One-shots 2024"
+  Etant donne que Sonia a un scenario "La Crypte de Malnoir" dans son espace "One-shots 2024"
   Et que ce scenario n est pas encore dans son espace personnel
   Quand Sonia choisit "Marquer comme reutilisable" sur ce scenario
   Alors "La Crypte de Malnoir" apparait dans l espace personnel de Sonia (isReusable = true)
-  Et le scenario dans la campagne "One-shots 2024" reste intact
+  Et le scenario dans l espace "One-shots 2024" reste intact
+
+Scenario : Marquer un scenario comme reutilisable depuis un espace one-shot
+  Etant donne que Sonia a un scenario "Le Phare Engloutis" dans un espace one-shot "Convention Octobre"
+  Et que ce scenario n est pas encore dans son espace personnel
+  Quand Sonia choisit "Marquer comme reutilisable" sur ce scenario
+  Alors "Le Phare Engloutis" apparait dans l espace personnel de Sonia (isReusable = true)
+  Et le scenario dans l espace one-shot "Convention Octobre" reste intact
 
 Scenario : Promotion impossible si le scenario est deja dans l espace personnel
   Etant donne que "La Crypte de Malnoir" est deja dans l espace personnel de Sonia
@@ -158,20 +165,20 @@ Scenario : Espace personnel accessible uniquement par le MJ proprietaire
 **afin de** rejouer le même scénario avec un nouveau groupe sans modifier le contenu source.
 
 **Notes de conception** :
-- Le MJ choisit entre deux contextes cibles : "One-shot ce soir" (crée une campagne one-shot minimale, A3) ou "Ajouter à une campagne existante".
+- Le MJ choisit entre deux contextes cibles : "One-shot ce soir" (crée un espace one-shot minimal, A3) ou "Ajouter à une campagne existante".
 - La création de l'instance passe par `Document.Instantiate` : le scénario, ses scènes et les `Document` liés (PNJ, lieux, objets) sont dupliqués dans le contexte cible.
 - Le scénario source (`Document` de l'espace personnel) reste intact après l'instanciation.
 - Une instance est toujours liée à une campagne ou un one-shot — elle ne peut pas exister de manière indépendante.
 - Modifier une instance (noms, variantes, notes) n'affecte pas le scénario source.
-- La campagne one-shot est créée en moins de 30 secondes (nom + scénario sélectionné) — conforme au critère d'acceptation de UC-13.
-- L'archivage de la campagne one-shot est uniquement manuel, conformément à la décision prise dans UC-02.
+- L'espace one-shot est créé en moins de 30 secondes (nom + scénario sélectionné) — conforme au critère d'acceptation de UC-13.
+- L'archivage de l'espace one-shot est uniquement manuel, conformément à la décision prise dans UC-02.
 
 **Règles métier** :
 - RB-13-04 : La création d'une instance passe par `Document.Instantiate` — scénario, scènes et `Document` liés sont dupliqués dans le contexte cible.
 - RB-13-05 : Le scénario source (`Document` de l'espace personnel) reste intact après la création de toute instance.
 - RB-13-06 : Une instance est toujours liée à une campagne ou un one-shot. Elle ne peut pas exister sans contexte.
 - RB-13-07 : Modifier une instance n'affecte pas le scénario source.
-- RB-13-08 : La campagne one-shot créée via "One-shot ce soir" reste à l'état CLOSED après la session et doit être archivée manuellement par le MJ.
+- RB-13-08 : L'espace one-shot créé via "One-shot ce soir" reste à l'état CLOSED après la session et doit être archivé manuellement par le MJ.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut sélectionner un scénario dans son espace personnel et choisir "Rejouer".
@@ -179,7 +186,7 @@ Scenario : Espace personnel accessible uniquement par le MJ proprietaire
 - [ ] Une instance est créée dans le contexte sélectionné via `Document.Instantiate` avec une copie profonde du contenu source.
 - [ ] Le scénario source reste intact après la création de l'instance.
 - [ ] Le MJ peut modifier l'instance (noms, notes, variantes) sans affecter le scénario source.
-- [ ] La campagne one-shot peut être créée en moins de 30 secondes avec un nom et un scénario.
+- [ ] L'espace one-shot peut être créé en moins de 30 secondes avec un nom et un scénario.
 - [ ] L'instance est liée à une campagne ou un one-shot — elle ne peut pas être créée sans contexte.
 
 ```gherkin
@@ -187,8 +194,8 @@ Scenario : Rejouer un scenario en one-shot ce soir - nominal
   Etant donne que Sonia a le scenario "La Crypte de Malnoir" dans son espace personnel
   Quand Sonia choisit "Rejouer" puis "One-shot ce soir"
   Et que Sonia saisit le nom "Vendredi 10 mai"
-  Alors une campagne one-shot "Vendredi 10 mai" est creee
-  Et une instance de "La Crypte de Malnoir" est creee dans cette campagne via Document.Instantiate
+  Alors un espace one-shot "Vendredi 10 mai" est cree
+  Et une instance de "La Crypte de Malnoir" est creee dans cet espace via Document.Instantiate
   Et le scenario source "La Crypte de Malnoir" reste intact dans l espace personnel de Sonia
 
 Scenario : Rejouer un scenario dans une campagne existante
@@ -205,16 +212,16 @@ Scenario : Modification de l instance sans impact sur le source
   Alors le PNJ s appelle "Mordrec" dans l instance
   Et le PNJ s appelle toujours "Arborak" dans le scenario source
 
-Scenario : Campagne one-shot creee en moins de 30 secondes
+Scenario : Espace one-shot cree en moins de 30 secondes
   Etant donne que Sonia est sur la page du scenario "La Crypte de Malnoir"
   Quand Sonia choisit "One-shot ce soir" et saisit un nom
-  Alors la campagne one-shot et l instance du scenario sont creees en moins de 30 secondes
+  Alors l espace one-shot et l instance du scenario sont crees en moins de 30 secondes
 
-Scenario : Archivage manuel de la campagne one-shot apres la session
-  Etant donne que Sonia a joue une session dans la campagne one-shot "Vendredi 10 mai"
+Scenario : Archivage manuel de l espace one-shot apres la session
+  Etant donne que Sonia a joue une session dans l espace one-shot "Vendredi 10 mai"
   Quand la session se termine
-  Alors la campagne "Vendredi 10 mai" reste a l etat CLOSED
-  Et Sonia doit archiver manuellement la campagne si elle le souhaite
+  Alors l espace "Vendredi 10 mai" reste a l etat CLOSED
+  Et Sonia doit archiver manuellement cet espace si elle le souhaite
 ```
 
 ---
@@ -271,7 +278,7 @@ Scenario : Historique vide pour un scenario jamais joue
 
 | Story / Feature | Raison |
 |---|---|
-| Archivage automatique de la campagne one-shot apres la session | Hors MVP — la decision prise dans UC-02 impose que l archivage soit uniquement manuel. La campagne reste a l etat CLOSED. |
+| Archivage automatique de l'espace one-shot après la session | Hors MVP — la décision prise dans UC-02 impose que l'archivage soit uniquement manuel. L'espace reste à l'état CLOSED. |
 | Partage de l espace personnel entre MJ | Hors MVP — l espace personnel est strictement personnel dans la version initiale. |
 | Diff entre instance et source pour visualiser les modifications | Hors MVP — identifie comme question ouverte dans UC-13. Pas prioritaire pour Sonia et Antoine. |
 | Import et export de scenarios | Hors MVP — fonctionnalite utile mais non prioritaire pour les personas cibles. |
@@ -294,15 +301,15 @@ Scenario : Historique vide pour un scenario jamais joue
 | Nominal — rejouer un scenario depuis l espace personnel, creation d une instance via Document.Instantiate | US-13-02 |
 | A1 — marquer un scenario comme reutilisable (Document isReusable = true dans l espace personnel) | US-13-01 |
 | A2 — consulter l historique des runs | US-13-03 |
-| A3 — campagne one-shot en moins de 30 secondes | US-13-02 |
+| A3 — espace one-shot en moins de 30 secondes | US-13-02 |
 | Archivage automatique one-shot | Exclu MVP — archivage manuel uniquement |
 
 ---
 
 ## Questions ouvertes
 
-1. **Résolue (axe modélisation)** — Le mécanisme du marquage ("Marquer comme réutilisable") est la **copie**, et non un déplacement : seules `Create` et `Document.Instantiate` sont des opérations modélisées, un « déplacement » n'en est pas une, et il créerait une référence cross-espace `NOT NULL` couplant le scénario à la purge inconditionnelle de l'espace `PERSONAL`. Le scénario source reste donc intact dans la campagne d'origine après le marquage (cohérent avec le critère d'acceptation de US-13-01, l.126). **Point non tranché ici, déféré** : le sort de l'original en campagne après marquage (le laisser vivre en doublon vs l'archiver/le retirer pour « désencombrer ») est une posture UX qui n'est pas arbitrée par cette résolution — à valider en interview utilisateur (UC-13 pose déjà des questions voisines, l.150-154).
+1. **Résolue (axe modélisation)** — Le mécanisme du marquage ("Marquer comme réutilisable") est la **copie**, et non un déplacement : seules `Create` et `Document.Instantiate` sont des opérations modélisées, un « déplacement » n'en est pas une, et il créerait une référence cross-espace `NOT NULL` couplant le scénario à la purge inconditionnelle de l'espace `PERSONAL`. Le scénario source reste donc intact dans l'espace d'origine après le marquage (cohérent avec le critère d'acceptation de US-13-01, l.126). **Point non tranché ici, déféré** : le sort de l'original dans l'espace après marquage (le laisser vivre en doublon vs l'archiver/le retirer pour « désencombrer ») est une posture UX qui n'est pas arbitrée par cette résolution — à valider en interview utilisateur (UC-13 pose déjà des questions voisines, l.150-154).
 2. Sonia trace-t-elle vraiment les variantes entre runs, ou se contente-t-elle de relancer sans notes ? L'historique (US-13-03) est-il utile tel quel ou faut-il un mécanisme de diff (hors MVP) ?
-3. Peut-on créer un scénario réutilisable directement dans l'espace personnel sans passer par une campagne ? Par exemple, créer un template de zéro directement dans l'espace personnel.
+3. Peut-on créer un scénario réutilisable directement dans l'espace personnel sans passer par un espace partagé (campagne ou one-shot) ? Par exemple, créer un template de zéro directement dans l'espace personnel.
 4. **Résolue** — Le « contexte » affiché est déjà couvert par RB-13-11 (nom de la campagne ou du one-shot). Pour le contexte historique quand la source est archivée ou supprimée : l'historique s'appuie sur un **instantané informatif capturé à l'instanciation** (libellé du titre-source + date + libellé de l'espace cible), porté par l'instance et découplé du FK vivant `sourceDocumentId`. Comportements : source **archivée** → affichage normal ; source **supprimée** → « issu de : *[titre capturé]* (source supprimée) » sans dépendre du FK (qui a été NULL-é, cf. Q5) ; espace **cible archivé** → instance en lecture seule (`SpaceArchived`, soft-lock) ; espace **cible purgé** → l'instance disparaît, purgée avec son espace (cohérent avec la copie indépendante décrite en Q5). Pas de nouvel agrégat d'historique. Post-MVP.
 5. **Résolue** — `Document.Instantiate` réalise une **copie profonde de la clôture narrative** : le scénario, ses scènes, et les `Document` liés via `DocumentLink`, **y compris les PNJ et lieux référencés** (UC-13 règle métier l.140 ; content-library RB5 « copie profonde blocs + liens + propriétés »). Les liens **internes à la clôture** sont réécrits vers les copies ; les liens **sortant de la clôture** sont abandonnés (une référence cross-espace vivante n'est pas viable — `document_links.target_document_id` est `NOT NULL ON DELETE RESTRICT`). `sourceDocumentId` de l'instance est **informatif et nullable** : il est NULL-é à la purge de la source (ADR-011 §4), l'instance survivant comme copie indépendante (invariant 9). **Cross-utilisateur** (instance pointant vers l'espace personnel d'un *autre* MJ) : **hors MVP** — l'espace `PERSONAL` est mono-membre et non partageable (cf. RB-13-02).

@@ -94,7 +94,7 @@ flowchart LR
 
 ## User stories
 
-### US-14-01 — Rechercher un document par titre dans la campagne active
+### US-14-01 — Rechercher un document par titre dans l'espace actif
 
 **Priorité** : Should Have
 
@@ -168,7 +168,7 @@ Scénario : LIVE_NOTE session passee recherchable
 
 **Notes de conception** :
 - Le filtre par type est un **filtre additionnel** à la recherche par titre (US-14-01) — il ne remplace pas la recherche par titre.
-- La liste des types disponibles est celle portée par `Content Library` (types système et types personnalisés de la campagne).
+- La liste des types disponibles est celle portée par `Content Library` (types système et types personnalisés de l'espace).
 - L'application du filtre est immédiate, sans rechargement de page.
 - L'état vide après filtrage (A1 + A2) affiche un message adapté et propose de retirer le filtre.
 
@@ -237,7 +237,7 @@ Scénario : Retirer le filtre de type
 Scénario : Recherche depuis la vue session avec ponderation (nominal)
   Etant donne qu une session est en status LIVE
   Et que le document "Seigneur Varek" est epingle dans la session active
-  Et que la campagne contient aussi "Varek le marchand" non epingle
+  Et que l espace contient aussi "Varek le marchand" non epingle
   Quand le MJ saisit "Varek" depuis la vue session
   Alors "Seigneur Varek" apparait en tete des resultats car lie a la session active
   Et "Varek le marchand" apparait dans les resultats apres
@@ -268,7 +268,7 @@ Scénario : Recherche joueur depuis la vue session (A4, E1)
 | Story / Feature | Raison |
 |---|---|
 | Recherche full-text sur le contenu des blocs | Post-MVP — la recherche porte sur le titre uniquement dans le MVP. Complexité d'indexation non justifiée à ce stade. |
-| Recherche cross-campagne | Post-MVP — les résultats sont limités à la campagne active (RB-14-01). |
+| Recherche cross-espace | Post-MVP — les résultats sont limités à l'espace actif (RB-14-01). |
 | Filtrer par tag (A3) | Could Have — à inclure si l'implémentation est triviale (filtre additionnel sur les tags existants de `Content Library`). Repoussé si le coût d'implémentation dépasse la valeur MVP. |
 | Historique des recherches récentes | Could Have — apport UX pour les MJ fréquents, non prioritaire pour le MVP. |
 | Recherche par date de création ou de modification | Post-MVP — nécessite un tri et des critères additionnels hors périmètre du MVP. |
@@ -278,7 +278,7 @@ Scénario : Recherche joueur depuis la vue session (A4, E1)
 ## Ordre de livraison recommandé
 
 1. **US-14-01** — Recherche par titre (fondation : valeur immédiate pour Thomas et Nadia)
-2. **US-14-02** — Filtre par type (réduit le bruit sur les campagnes riches en contenu, dépend de US-14-01)
+2. **US-14-02** — Filtre par type (réduit le bruit sur les espaces riches en contenu, dépend de US-14-01)
 3. **US-14-03** — Recherche depuis la vue session avec pondération (valeur maximale pour Émilie, dépend de US-14-01 et UC-06)
 
 ---
@@ -300,4 +300,4 @@ Scénario : Recherche joueur depuis la vue session (A4, E1)
 
 - **Seuil de pondération session active** — **FERMÉE** : l'ensemble des documents liés à la session active est explicitement énuméré en RB-14-08 (épinglés, `LIVE_NOTE` de session en cours, documents du scénario associé). Le poids relatif fin relève du wireframe/implémentation, hors conception.
 - **Nombre de résultats affichés** — **FERMÉE** : décision prise = **top N + pagination (chargement progressif)**. Inscrite en RB-14-10. Justification : optimisation du périmètre d'affichage selon l'espace disponible et les performances.
-- **Filtre par tag (A3)** : confirmer si le filtre par tag est inclus dans le MVP ou repoussé en Could Have — décision conditionnée par la complexité d'implémentation.
+- **Filtre par tag (A3)** — **FERMÉE** : reste `Could Have — hors MVP` (arbitrage confirmé, voir UC-14 §A3). La fonction tag elle-même répond à un besoin d'organisation propre du MJ, indépendant de la recherche — voir UC-04 pour ses règles métier et son critère d'acceptation ; la recherche par tag n'en est qu'un filtre additionnel optionnel, jamais la justification de son existence.

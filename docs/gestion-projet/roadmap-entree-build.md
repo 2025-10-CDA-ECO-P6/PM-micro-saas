@@ -17,7 +17,7 @@ Ce que ce document **fait** : il prend la séquence de jalons déjà nommée dan
 
 **En cas de conflit entre ce document et un ADR, une US ou le CdC** : la source citée fait foi ; ce document est un artefact d'ordonnancement, pas une nouvelle autorité de corpus (même posture que [`cadrage-validation-pre-lancement-eu.md`](../securite/conformite/cadrage-validation-pre-lancement-eu.md) vis-à-vis des ADR RGPD).
 
-**Hors périmètre** : contenu précis de chaque lot B1.x/M1/L1/P… (renvoyé à chaque ADR source), valeurs de seuils et de configuration (toutes marquées `[À TRANCHER — ticket]` dans les ADR d'origine), assets d'identité et écrans (renvoyés à la présentation, `docs/conception/presentation/**`, non modifiée ici), procédure et calendrier de saisine juridique (hors artefact de planification technique).
+**Hors périmètre** : contenu précis de chaque lot B1.x/M1/L1/P… (renvoyé à chaque ADR source), valeurs de seuils et de configuration (toutes marquées `[À TRANCHER — ticket]` dans les ADR d'origine), assets d'identité et écrans (renvoyés à la conception d'interface, `docs/conception/interface/**`, non modifiée ici), procédure et calendrier de saisine juridique (hors artefact de planification technique).
 
 ---
 
@@ -114,7 +114,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 **Nature** : `NON-VERIFIABLE-IN-BUILD`. Positionné **après J1, avant** d'engager le build lourd cloud + temps réel (J2/J3) — [ADR-006 §Compléments post-revue](../architecture/decisions/ADR-006-perimetre-mvp.md) l.67.
 
-**Critère de décision** (non-CI) : télémétrie instrumentée dès le périmètre MVP par pilier — activation préparation (campagne créée + N documents), activation vue session (session ouverte + usage réel), activation partage (document partagé + ≥ 1 joueur l'ayant ouvert) — croisée avec les hypothèses de validation **H1 à H4** ([CdC §2.3](../context/cahier-des-charges.md#23-hypothèses-de-validation-h1-à-h5)). Les seuils de décision eux-mêmes ne sont pas fixés par cette roadmap — ils relèvent de l'instrumentation produit, hors périmètre technique de cet artefact.
+**Critère de décision** (non-CI) : télémétrie instrumentée dès le périmètre MVP par pilier — activation préparation (**espace créé** + N documents, le contenu d'un espace personnel sans campagne ne comptant que partiellement s'il traduit un geste structurant — [CdC §12.4](../context/cahier-des-charges.md#124-valeurs-de-référence-chiffrées)), activation vue session (session ouverte + usage réel), activation partage (document partagé + ≥ 1 joueur l'ayant ouvert) — croisée avec les hypothèses de validation **H1 à H4** ([CdC §2.3](../context/cahier-des-charges.md#23-hypothèses-de-validation-h1-à-h5)). Les seuils de décision eux-mêmes ne sont pas fixés par cette roadmap — ils relèvent de l'instrumentation produit, hors périmètre technique de cet artefact.
 
 **Ce que ce gate n'est pas** : ce n'est pas un jalon de build, il ne produit aucun livrable technique. C'est une décision d'opérateur qui conditionne l'entrée en J2 — au même titre qu'un gate produit go/no-go usuel. Ce gate ne réintroduit pas de découplage *produit* (MVP unique) — le MVP reste unique, J1 → J2 → J3 restent enchaînés sans découplage produit entre eux (§1). Il arbitre un découplage d'investissement : engager ou non le capital du build lourd cloud + temps réel (J2/J3), pas une nouvelle scission du périmètre fonctionnel.
 
@@ -179,7 +179,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 ## 4. Ordre C#-first — interne à chaque jalon
 
-**Principe acté** ([ADR-001 §Compléments](../architecture/decisions/ADR-001-execution-domaine-mode-local.md) l.53 ; [ADR-008 §Compléments post-revue](../architecture/decisions/ADR-008-structure-solution.md) l.60) : *« La solution .NET est échafaudée en premier. La structure des projets .NET est donc le premier livrable de structure, avant tout projet Angular ou TypeScript. »*
+**Principe acté** (cohérent avec [ADR-001 §Compléments](../architecture/decisions/ADR-001-execution-domaine-mode-local.md) l.53, ordre C#-first ; formulation littérale en [ADR-008 §Compléments post-revue](../architecture/decisions/ADR-008-structure-solution.md) l.60) : *« La solution .NET est échafaudée en premier. La structure des projets .NET est donc le premier livrable de structure, avant tout projet Angular ou TypeScript. »*
 
 Cet ordre s'applique **à l'intérieur de chaque jalon**, pas en travers de la séquence macro :
 
@@ -243,8 +243,8 @@ L'axe **J0/J1/J2/J3**, nommé par contenu, est l'unique repère de phasage du co
 |---|---|---|---|
 | J0 | Test d'archi CI (frontières bounded context) | — (livrable direct) | [ADR-008 §Compléments](../architecture/decisions/ADR-008-structure-solution.md) l.56 |
 | J0 | Définition exhaustive du test d'archi CI (handlers scopés/non-scopés, couverture token) | B3.2 | [ADR-014 §Points à trancher](../architecture/decisions/ADR-014-modele-autorisation-api.md) l.283 ; [ADR-015 §Points à trancher](../architecture/decisions/ADR-015-securite-authentification-mvp.md) l.351 |
-| J1 | e2e multi-versions IndexedDB (fonction de projection store→payload) | P7 | [ADR-016 §Points à trancher](../architecture/decisions/ADR-016-serialisation-locale-migration.md) l.253 ; [ADR-017 §Points à trancher](../architecture/decisions/ADR-017-modele-indexeddb-local.md) l.272 |
-| J1 | Services Angular IndexedDB (wrappers, `DomSanitizer`, bandeaux durabilité/confidentialité, CSP complète) | P6 | [ADR-017 §Points à trancher](../architecture/decisions/ADR-017-modele-indexeddb-local.md) l.271 |
+| J1 | e2e multi-versions IndexedDB (fonction de projection store→payload) | P7 | [ADR-016 §Points à trancher](../architecture/decisions/ADR-016-serialisation-locale-migration.md) l.253 ; [ADR-017 §Points à trancher](../architecture/decisions/ADR-017-modele-indexeddb-local.md) l.276 |
+| J1 | Services Angular IndexedDB (wrappers, `DomSanitizer`, bandeaux durabilité/confidentialité, CSP complète) | P6 | [ADR-017 §Points à trancher](../architecture/decisions/ADR-017-modele-indexeddb-local.md) l.275 |
 | J2 | Promotion colonnes `characterId`/`guestAccessId` (`LIVE_NOTE`), `documents.properties` (jsonb) → colonnes nullable indexées de premier niveau | — (livrable direct) | [ADR-002 §Compléments post-revue](../architecture/decisions/ADR-002-tout-est-document-gouvernance.md) l.58 |
 | J2 | Query filters EF Core globaux (`spaces.deleted_at`, `documents.is_deleted`) | B5.1 | [ADR-014 §Points à trancher](../architecture/decisions/ADR-014-modele-autorisation-api.md) l.284 |
 | J2 | Handler d'import/migration serveur (résolution références, création topologique, rapport de rejets, idempotence) | P7 | [ADR-016 §Points à trancher](../architecture/decisions/ADR-016-serialisation-locale-migration.md) l.253 |
@@ -265,14 +265,14 @@ L'axe **J0/J1/J2/J3**, nommé par contenu, est l'unique repère de phasage du co
 
 ## Annexe B — Prérequis hors jalon
 
-- **Assets d'identité** (logo, charte graphique/typo/grille, ressources icônes/composants) — **HAND-OFF présentation**. Mentionné pour visibilité de trajectoire ; le détail (production, validation) relève de `docs/conception/presentation/**`, non modifié par ce document.
+- **Assets d'identité** (logo, charte graphique/typo/grille, ressources icônes/composants) — préalable porté par la conception d'interface. Mentionné pour visibilité de trajectoire ; le détail (production, validation) relève de `docs/conception/interface/**`, non modifié par ce document.
 - **Résidu de nommage store `campaigns` → `spaces`** ([ADR-017 §1.1](../architecture/decisions/ADR-017-modele-indexeddb-local.md), tableau des object stores, encore nommé `campaigns` au moment de la rédaction de cet ADR, antérieur au renommage [ADR-018](../architecture/decisions/ADR-018-espace-personnel-generalisation-space.md)) — **watch point de build** : le renommage ubiquitaire acté par ADR-018 §Compléments post-revue a été propagé sur le corpus de conception (domaine, glossaire, use cases), mais la dénomination technique de l'object store IndexedDB (`campaigns` vs `spaces`) doit être confirmée cohérente au moment de l'implémentation P6 — ce n'est pas un point tranché différemment, c'est un résidu de rédaction à vérifier avant de coder le store.
 
 ---
 
 ## Renvois
 
-- [`docs/cahier-des-charges.md` §11](../context/cahier-des-charges.md#11-phasage--jalons) — macro-ordonnancement de référence (axe J0-J3 nommé par contenu), réconciliation de nomenclature ratifiée (§5).
+- [`docs/context/cahier-des-charges.md` §11](../context/cahier-des-charges.md#11-phasage--jalons) — macro-ordonnancement de référence (axe J0-J3 nommé par contenu), réconciliation de nomenclature ratifiée (§5).
 - [`docs/securite/conformite/cadrage-validation-pre-lancement-eu.md`](../securite/conformite/cadrage-validation-pre-lancement-eu.md) — détail des 5 axes du `[GATE JURISTE EU]`.
 - ADR cités : [ADR-001](../architecture/decisions/ADR-001-execution-domaine-mode-local.md), [ADR-002](../architecture/decisions/ADR-002-tout-est-document-gouvernance.md), [ADR-003](../architecture/decisions/ADR-003-stack-front.md), [ADR-004](../architecture/decisions/ADR-004-transport-temps-reel.md), [ADR-006](../architecture/decisions/ADR-006-perimetre-mvp.md), [ADR-007](../architecture/decisions/ADR-007-rgpd-autorisation-api.md), [ADR-008](../architecture/decisions/ADR-008-structure-solution.md), [ADR-011](../architecture/decisions/ADR-011-cascade-integrite-referentielle.md), [ADR-014](../architecture/decisions/ADR-014-modele-autorisation-api.md), [ADR-015](../architecture/decisions/ADR-015-securite-authentification-mvp.md), [ADR-016](../architecture/decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../architecture/decisions/ADR-017-modele-indexeddb-local.md), [ADR-018](../architecture/decisions/ADR-018-espace-personnel-generalisation-space.md).
 - [`docs/architecture/README.md`](../architecture/README.md) et [`docs/architecture/architecture-detaillee.md`](../architecture/architecture-detaillee.md) — vue transverse par préoccupation, non redondante avec l'ordonnancement temporel de ce document.

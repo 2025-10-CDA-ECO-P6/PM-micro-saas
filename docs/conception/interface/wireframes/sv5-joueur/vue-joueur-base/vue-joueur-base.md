@@ -40,7 +40,7 @@ Intention : le joueur, une fois son accès actif, consulte les documents PUBLIC 
 [ ZONE DE DOCUMENTS PARTAGÉS ]
   type     : principal
   rôle     : présente la liste des documents PUBLIC visibles par le joueur selon
-             son périmètre d'accès (SESSION ou CAMPAIGN) ; le contenu se met à jour
+             son périmètre d'accès (SESSION ou SPACE) ; le contenu se met à jour
              en temps réel pendant une session LIVE lorsque le MJ partage ou retire
              le partage d'un document (AR-06 — apparition ambiante, disparition
              symétrique) ; le joueur ne voit jamais les documents GM_ONLY ni
@@ -79,7 +79,7 @@ Intention : le joueur, une fois son accès actif, consulte les documents PUBLIC 
 ```
 - [UC-12 scénario nominal §4 ; RB-12-01] consulter les documents PUBLIC de la session
   → le joueur lit les documents que le MJ a partagés selon son périmètre d'accès
-  (SESSION ou CAMPAIGN) ; il ne peut pas modifier ces documents
+  (SESSION ou SPACE) ; il ne peut pas modifier ces documents
 
 - [UC-12 scénario nominal §5 ; RB-12-02 ; RB-12-03] créer une note personnelle →
   la note est liée à l'auteur et au personnage actif ; elle est PLAYER_PRIVATE
@@ -114,7 +114,7 @@ Intention : le joueur, une fois son accès actif, consulte les documents PUBLIC 
 
 état erreur (accès expiré ou révoqué pendant la session) :
   l'accès du joueur devient inactif (UC-12 E1) ; le joueur est renvoyé vers
-  le flux d'accès UC-09 — voir fiche `docs/conception/interface/wireframes/erreur-acces.md`
+  le flux d'accès UC-09 — voir fiche `docs/conception/interface/wireframes/sv5-joueur/erreur-acces/erreur-acces.md`
 ```
 
 ---
@@ -191,8 +191,8 @@ Affordances de partage et d'épinglage :
 Éléments différés (S8) :
   [HORS-MVP — AR-10 ; S8] enrichissement de la vue joueur au niveau campagne
     (UC-12 complet — historique de sessions, sélection multi-personnages intégrée,
-    accès au lore complet CAMPAIGN) : non wireframé au MVP ; seule la fraction de
-    base (session courante, périmètre SESSION ou CAMPAIGN simplifié) est couverte
+    accès au lore complet SPACE) : non wireframé au MVP ; seule la fraction de
+    base (session courante, périmètre SESSION ou SPACE simplifié) est couverte
   [HORS-MVP — UC-12 A1 ; AR-10] interface de sélection du personnage actif pour
     un joueur associé à plusieurs personnages dans la même campagne — différé avec
     l'enrichissement UC-12 complet

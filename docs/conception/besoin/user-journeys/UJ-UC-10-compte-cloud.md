@@ -58,7 +58,7 @@ flowchart TD
     L -->|Non| K
 
     K --> N{Donnees locales\nexistantes ?}
-    N -->|Oui| O[Gate de reconnaissance\nCampagnes + historique de session\nsessions, notes, epingles\nConfirmation requise\nRB-10-04 / ADR-016 §4]
+    N -->|Oui| O[Gate de reconnaissance\nEspaces + historique de session\nsessions, notes, epingles\nConfirmation requise\nRB-10-04 / ADR-016 §4]
     N -->|Non| RCC[Ecran creation de campagne\nFormulaire de creation premiere campagne]
     O --> P[Evenement publie\nSpace Management\ninitialise tableau de bord]
     RCC --> P
@@ -96,7 +96,7 @@ flowchart TD
 
 - **Sessions en cours à clôturer avant migration** : Émilie peut avoir une session ouverte (LIVE) au moment où elle souhaite créer son compte et migrer. Le gate de reconnaissance signale cette session et indique qu'elle doit être clôturée — si ce message n'est pas clair, Émilie peut être frustrée de ne pas pouvoir procéder immédiatement.
 
-- **Progression de la migration pour gros volumes** : le gate de reconnaissance (ADR-016 §4) répond à l'opacité pré-import — Émilie voit les campagnes détectées (y compris leur historique de session) avant de confirmer. Pour les volumes importants, l'absence de retour visuel pendant la migration elle-même (barre de progression, indicateur "synchronisation en cours") reste une friction résiduelle à adresser.
+- **Progression de la migration pour gros volumes** : le gate de reconnaissance (ADR-016 §4) répond à l'opacité pré-import — Émilie voit les espaces détectés (y compris leur historique de session) avant de confirmer. Pour les volumes importants, l'absence de retour visuel pendant la migration elle-même (barre de progression, indicateur "synchronisation en cours") reste une friction résiduelle à adresser.
 
 - **Réinitialisation de mot de passe avec délai d'expiration court** : si le token expire rapidement (exemple : 1 heure) et que l'utilisateur ne voit pas l'email immédiatement, il devra recommencer le processus. La durée d'expiration est à calibrer.
 
@@ -108,7 +108,7 @@ flowchart TD
 
 - **Invite contextuelle au bon moment** : déclencher la proposition de création de compte précisément lorsque le MJ tente une action qui nécessite un compte (clic sur "Partager avec les joueurs", "Accéder depuis un autre appareil"). L'invite est ainsi justifiée par le besoin et non perçue comme une interruption.
 
-- **Toast de confirmation post-migration** : après la migration, afficher une confirmation discrète "Vos X campagnes et Y documents ont été synchronisés" rassure Émilie sans interrompre son flux. Ce toast est une amélioration UX facultative, distincte du gate de reconnaissance pré-import (ADR-016 §4) qui, lui, est décidé et obligatoire.
+- **Toast de confirmation post-migration** : après la migration, afficher une confirmation discrète "Vos X espaces et Y documents ont été synchronisés" rassure Émilie sans interrompre son flux. Ce toast est une amélioration UX facultative, distincte du gate de reconnaissance pré-import (ADR-016 §4) qui, lui, est décidé et obligatoire.
 
 - **Connexion fédérée en premier plan** : sur les pages d'inscription et de connexion, la connexion fédérée peut être présentée en priorité (bouton principal) pour réduire la friction, notamment pour Lucas qui arrive depuis un lien et veut un accès rapide.
 
@@ -122,7 +122,7 @@ flowchart TD
 
 ## Après la migration — Continuité vers le partage
 
-Une fois la migration réussie, Émilie retrouve ses campagnes avec tout leur historique de session : ses sessions passées sont consultables, ses notes et documents épinglés sont en place. Elle peut alors enchaîner naturellement vers l'invitation de ses joueurs dans ces mêmes campagnes pour des sessions futures (UC-08, UC-09, UC-11), en garantissant la continuité entre ses sessions solo passées et ses sessions futures avec joueurs. Le parcours solo→joueurs est ainsi fluide et sans rupture.
+Une fois la migration réussie, Émilie retrouve ses espaces avec tout leur historique de session : ses sessions passées sont consultables, ses notes et documents épinglés sont en place. Elle peut alors enchaîner naturellement vers l'invitation de ses joueurs dans ces mêmes espaces pour des sessions futures (UC-08, UC-09, UC-11), en garantissant la continuité entre ses sessions solo passées et ses sessions futures avec joueurs. Le parcours solo→joueurs est ainsi fluide et sans rupture.
 
 ---
 
@@ -132,8 +132,8 @@ Une fois la migration réussie, Émilie retrouve ses campagnes avec tout leur hi
 - User stories associées : [`US-UC-10-compte-cloud.md`](../user-stories/US-UC-10-compte-cloud.md)
 - UC-01 Mode local : [`docs/conception/besoin/usecases/UC-01-mode-local-sans-compte.md`](../usecases/UC-01-mode-local-sans-compte.md)
 - UC-09 Accès session joueur : [`docs/conception/besoin/usecases/UC-09-acces-session-joueur.md`](../usecases/UC-09-acces-session-joueur.md)
-- UC-11 Gérer membres campagne : [`docs/conception/besoin/usecases/UC-11-gerer-membres-campagne.md`](../usecases/UC-11-gerer-membres-campagne.md)
-- UC-12 Consulter sa campagne (vue joueur) : [`docs/conception/besoin/usecases/UC-12-rejoindre-campagne.md`](../usecases/UC-12-rejoindre-campagne.md)
+- UC-11 Gérer les membres d'un espace : [`docs/conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md`](../usecases/UC-11-gerer-membres-espace-partage.md)
+- UC-12 Consulter son espace (vue joueur) : [`docs/conception/besoin/usecases/UC-12-consulter-espace-joueur.md`](../usecases/UC-12-consulter-espace-joueur.md)
 - User Journey UC-09 : [`UJ-UC-09-acces-session-joueur.md`](UJ-UC-09-acces-session-joueur.md)
 - Conception Identity and Access : [`docs/conception/domain/identity-access.md`](../../domain/identity-access.md)
 - Conception Space Management : [`docs/conception/domain/space-management.md`](../../domain/space-management.md)

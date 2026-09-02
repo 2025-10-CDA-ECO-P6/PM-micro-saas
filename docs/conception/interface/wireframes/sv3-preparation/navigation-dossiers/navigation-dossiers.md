@@ -37,7 +37,7 @@ Intention : le MJ parcourt l'arborescence des dossiers de son espace, visualise 
 ### Zones et hiérarchie
 
 ```
-[ ARBORESCENCE DES DOSSIERS ]
+[ ZONE DE NAVIGATION PAR DOSSIERS ]
   type     : principal
   rôle     : liste tous les dossiers de l'espace selon leur ordre d'affichage persisté ;
              pour un espace CAMPAIGN ou ONE_SHOT, inclut les dossiers proposés par
@@ -145,7 +145,11 @@ annonce sans action :
 hiérarchie de lecture à distance :
   priorité 1 — arborescence des dossiers (structure de l'espace)
   priorité 2 — liste condensée des documents du dossier courant
-  source : NFR-ACC-04 (usage à distance normale de l'écran pendant la préparation)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -155,7 +159,7 @@ hiérarchie de lecture à distance :
 ```
 Sources : UC-04 ; UC-05 scénario nominal, A1, A2, A3, A4, E2, E3 ;
           AR-11 ; AR-16 ; AR-20 ;
-          NFR-ACC-02 ; NFR-ACC-04 ; NFR-OFF-04 ;
+          NFR-ACC-02 ; NFR-OFF-04 ;
           châssis S7 (zoning.md §S7)
 ```
 

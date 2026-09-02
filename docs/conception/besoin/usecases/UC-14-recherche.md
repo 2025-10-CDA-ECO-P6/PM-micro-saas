@@ -18,11 +18,11 @@ Même avec une bonne organisation, certaines informations peuvent être difficil
 
 **Persona central : Nadia** (MJ occasionnelle, sessions espacées). Après plusieurs semaines d'absence, elle ne se souvient plus où est rangée une information. La recherche est son point d'entrée principal dans le contenu. Émilie en bénéficie aussi pendant la session (retrouver un PNJ en 2 secondes), Thomas moins (son organisation lui suffit).
 
-La recherche s'applique à tout espace au sens de conteneur générique : un espace de type `CAMPAIGN` (campagne partagée avec des joueurs) comme un espace de type `PERSONAL` (bibliothèque personnelle du MJ — scénarios, PNJ, lieux réutilisables). Retrouver un PNJ dans sa bibliothèque personnelle relève du même besoin que retrouver une note dans une campagne active.
+La recherche s'applique à tout espace au sens de conteneur générique : un espace partagé (`CAMPAIGN` ou `ONE_SHOT` — campagne ou one-shot, avec des joueurs) comme un espace de type `PERSONAL` (bibliothèque personnelle du MJ — scénarios, PNJ, lieux réutilisables). Retrouver un PNJ dans sa bibliothèque personnelle relève du même besoin que retrouver une note dans un espace partagé actif.
 
 ## Besoin utilisateur
 
-Nadia veut retrouver une information après une longue absence sans se souvenir de son emplacement dans les dossiers. Émilie veut retrouver un PNJ ou une note en quelques secondes pendant la session. La recherche couvre les deux cas : retrouvabilité post-absence et accès rapide en session — que le contenu soit dans une campagne ou dans un espace personnel.
+Nadia veut retrouver une information après une longue absence sans se souvenir de son emplacement dans les dossiers. Émilie veut retrouver un PNJ ou une note en quelques secondes pendant la session. La recherche couvre les deux cas : retrouvabilité post-absence et accès rapide en session — que le contenu soit dans un espace partagé ou dans un espace personnel.
 
 ## Déclencheur
 

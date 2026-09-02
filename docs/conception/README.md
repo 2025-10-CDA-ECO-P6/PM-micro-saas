@@ -55,6 +55,8 @@ Deux motifs, détectables à la lecture dans les sections de règles métier, cr
 
 Chaque contributeur applique ce balayage au fichier qu'il vient de modifier, **avant toute intégration**, pour vérifier qu'il n'a pas introduit l'un des deux motifs. Pas d'outillage imposé — la détection est manuelle et rapide (relecture guidée par les motifs).
 
+Trois pratiques complémentaires — sur la citation d'un autre document, sur le renvoi vers une de ses sections, et sur la recherche transversale d'un défaut au moment d'une réécriture du corpus — sont rassemblées dans [guide-conventions-et-dod.md, § Conventions de maintenance du corpus documentaire](../gestion-projet/guide-conventions-et-dod.md).
+
 ---
 
 ## besoin/

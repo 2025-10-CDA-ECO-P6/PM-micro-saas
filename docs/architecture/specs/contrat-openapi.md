@@ -10,7 +10,7 @@
 
 Principe posé par ADR-014 et confirmé par ADR-015 : un appelant qui n'a pas accès à une ressource ne doit pas pouvoir en déduire l'existence.
 
-> ADR-015:101 — « La liaison est rejetée silencieusement si la condition n'est pas satisfaite (pas de message d'erreur révélant l'existence du compte — **cohérent avec ADR-014 §Conséquences, principe de non-révélation d'existence**). »
+> ADR-015:119 — « La liaison est rejetée silencieusement si la condition n'est pas satisfaite (pas de message d'erreur révélant l'existence du compte — **cohérent avec ADR-014 §Conséquences, principe de non-révélation d'existence**). »
 
 Ce principe gouverne trois familles de décisions distinctes dans ce document :
 - le choix 403 vs 404 sur les lectures de ressources d'espace (§2, §4),
@@ -46,9 +46,9 @@ Le scénario 1 (non-membre, cross-espace) est le seul des huit laissé ouvert pa
 
 ### 3.1 Espace en corbeille ou en purge (P2)
 
-> ADR-014:101 — « Les prédicats P2 et P3 sont structurels et indépendants de l'appelant : ils sont portés par des **query filters EF Core globaux** (→ B5.1). »
+> ADR-014:102 — « Les prédicats P2 et P3 sont structurels et indépendants de l'appelant : ils sont portés par des **query filters EF Core globaux** (→ B5.1). »
 
-Un espace avec `deleted_at IS NOT NULL` ou `purge_claimed_at IS NOT NULL` (P2), ou un document avec `is_deleted = true` (P3), n'est **pas un cas d'erreur distinct au niveau du contrat** : le filtre EF Core global rend la ressource invisible en amont de toute résolution applicative. Le comportement observable au niveau HTTP est le même que pour toute ressource non trouvée par les prédicats structurels — la spec ne lui attribue pas de code ou de corps de réponse dédié. Ce point est cohérent avec ADR-011:156 (« Invariant de visibilité du soft-delete » — appliqué à tous les chemins de lecture, y compris lecture directe par ID).
+Un espace avec `deleted_at IS NOT NULL` ou `purge_claimed_at IS NOT NULL` (P2), ou un document avec `is_deleted = true` (P3), n'est **pas un cas d'erreur distinct au niveau du contrat** : le filtre EF Core global rend la ressource invisible en amont de toute résolution applicative. Le comportement observable au niveau HTTP est le même que pour toute ressource non trouvée par les prédicats structurels — la spec ne lui attribue pas de code ou de corps de réponse dédié. Ce point est cohérent avec ADR-011:161 (« Invariant de visibilité du soft-delete » — appliqué à tous les chemins de lecture, y compris lecture directe par ID).
 
 **Exception actée** : l'endpoint de restauration d'espace (réservé à l'`OWNER`) est le seul chemin autorisé à traverser P2 — il vérifie explicitement `deleted_at IS NOT NULL` (ADR-014:104).
 
@@ -86,13 +86,13 @@ Cette proposition n'est **pas une décision** : elle est une lecture dérivée d
 
 | Endpoint | Risque principal | Source |
 |---|---|---|
-| `POST /auth/login` | Brute-force, credential stuffing | ADR-015:182 |
-| `POST /token/refresh` | Replay de refresh token compromis | ADR-015:183 |
-| `POST /auth/validate-token` (GuestAccess) | Énumération de tokens (F-06 original) | ADR-015:184 |
-| `POST /auth/password-reset/request` | Abus de la fonction de reset, spam | ADR-015:185 |
-| `POST /auth/password-reset/confirm` | Brute-force du token de reset | ADR-015:186 |
+| `POST /auth/login` | Brute-force, credential stuffing | ADR-015:226 |
+| `POST /token/refresh` | Replay de refresh token compromis | ADR-015:227 |
+| `POST /auth/validate-token` (GuestAccess) | Énumération de tokens (F-06 original) | ADR-015:228 |
+| `POST /auth/password-reset/request` | Abus de la fonction de reset, spam | ADR-015:229 |
+| `POST /auth/password-reset/confirm` | Brute-force du token de reset | ADR-015:230 |
 
-Ces cinq endpoints renvoient **429** au-delà du seuil de rate limiting. Le mécanisme est hybride (par-IP ET par-compte, seuils indépendants cumulatifs) — détaillé dans `config-securite-migration.md` (hors périmètre codes HTTP de cette spec ; voir aussi ADR-015:295, B1.10 : « codes d'erreur 400/401/429, schémas de requête et réponse »).
+Ces cinq endpoints renvoient **429** au-delà du seuil de rate limiting. Le mécanisme est hybride (par-IP ET par-compte, seuils indépendants cumulatifs) — détaillé dans `config-securite-migration.md` (hors périmètre codes HTTP de cette spec ; voir aussi ADR-015:350, B1.10 : « codes d'erreur 400/401/429, schémas de requête et réponse »).
 
 **`[À TRANCHER — B1.10]`** : schéma exact du corps de réponse 429 (ex. `Retry-After`, quota restant) — non spécifié par l'ADR.
 
@@ -100,7 +100,7 @@ Ces cinq endpoints renvoient **429** au-delà du seuil de rate limiting. Le méc
 
 ## 6. Liaison OAuth rejetée silencieusement
 
-> ADR-015:101 (contexte complet §2.3 de l'ADR) — la liaison d'un compte OAuth à un compte préexistant dont l'email n'est pas prouvé vérifié est **rejetée silencieusement** : « pas de message d'erreur révélant l'existence du compte ».
+> ADR-015:119 (contexte complet §2.3 de l'ADR) — la liaison d'un compte OAuth à un compte préexistant dont l'email n'est pas prouvé vérifié est **rejetée silencieusement** : « pas de message d'erreur révélant l'existence du compte ».
 
 Au niveau du contrat API, cela signifie qu'aucun code ou corps de réponse distinctif ne doit permettre à l'appelant de déduire que le rejet est dû à l'existence d'un compte non vérifié plutôt qu'à une autre cause. La spec n'attribue donc pas ici de code spécifique à ce cas — l'ADR pose le principe de silence, pas un code.
 

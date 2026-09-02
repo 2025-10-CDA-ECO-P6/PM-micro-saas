@@ -26,32 +26,33 @@ Déroulé détaillé : [UJ-UC-01](../user-journeys/UJ-UC-01-mode-local-sans-comp
 
 ### Ce que Thomas fait
 
-Thomas ouvre l'application. L'écran d'accueil lui présente deux options équivalentes : « Commencer sans compte » et « Créer un compte / Se connecter ». Il choisit la première.
+Thomas ouvre l'application. L'écran d'accueil lui présente deux options équivalentes : « Commencer sans compte » et « Créer un compte / Se connecter ». Il choisit la première. Il atterrit dans son **espace personnel** — le conteneur par défaut, disponible dès le mode local, sans qu'aucune campagne n'existe encore (UC-01 scénario nominal étape 5). Il pourrait y capturer du contenu directement ; il choisit ici de créer un espace de jeu partagé pour organiser sa campagne — un acte distinct et optionnel (UC-01 §Contexte, UC-02).
 
 ### Ce que Thomas obtient (comportements observables clés)
 
 - Aucun formulaire d'inscription, aucun email demandé.
 - Deux bandeaux non bloquants apparaissent : un bandeau de durabilité (conditionnel — si le navigateur ne garantit pas la conservation permanente des données) et un bandeau de confidentialité (systématique — données lisibles par toute personne ayant accès à ce navigateur).
 - Les fonctionnalités de partage (UC-08) et d'accès joueur (UC-09) sont **visibles mais désactivées**, avec un appel à l'action vers la création de compte (RB-01-06, RB-01-07).
-- Maximum 3 campagnes créables en mode local (RB-01-03).
+- Rien ne borne le nombre d'espaces que Thomas pourrait créer en mode local — seule la place restante dans le stockage de son navigateur y mettrait un jour une limite, jamais un compteur du produit.
 
 ### État laissé par l'étape 1
 
 - Thomas est en **mode local** : aucun `User` instancié, aucune donnée envoyée au serveur.
+- Un **espace personnel** (`SpaceType.PERSONAL`) existe comme conteneur par défaut — Thomas en est le propriétaire, sans qu'aucune `Campagne` (`SpaceType.CAMPAIGN`) n'existe encore (UC-01 §Espace personnel en mode local).
 - Une session navigateur locale existe, avec un identifiant opaque.
 - Les données sont durables entre fermetures du navigateur (RB-01-04).
 
 ### Couture vers l'étape 2
 
-L'étape 2 (structuration du contenu) présuppose qu'une `Campagne` peut être créée depuis le mode local. UC-02 confirme : « Le MJ peut créer un espace de jeu en mode local (sans compte) ou depuis un compte cloud. Les préconditions sont identiques dans les deux cas. » **Couture continue.**
+L'étape 2 (structuration du contenu) présuppose qu'une `Campagne` peut être créée depuis le mode local, en plus de l'espace personnel déjà provisionné. UC-02 confirme : « Le MJ peut créer un espace de jeu en mode local (sans compte) ou depuis un compte cloud. Les préconditions sont identiques dans les deux cas. » **Couture continue.**
 
 ---
 
 ## Étape 2 — Structuration du contenu : espace de jeu, scénario, documents, dossiers
 
-**UC porteurs :** [UC-02](../usecases/UC-02-creer-espace-jeu.md), [UC-03](../usecases/UC-03-structurer-scenario.md), [UC-04](../usecases/UC-04-gerer-documents-campagne.md), [UC-05](../usecases/UC-05-organiser-dossiers.md)
+**UC porteurs :** [UC-02](../usecases/UC-02-creer-espace-jeu.md), [UC-03](../usecases/UC-03-structurer-scenario.md), [UC-04](../usecases/UC-04-gerer-documents-espace.md), [UC-05](../usecases/UC-05-organiser-dossiers.md)
 
-Déroulés détaillés : [UJ-UC-02](../user-journeys/UJ-UC-02-creer-espace-jeu.md) · [UJ-UC-03](../user-journeys/UJ-UC-03-structurer-scenario.md) · [UJ-UC-04](../user-journeys/UJ-UC-04-gerer-documents-campagne.md) · [UJ-UC-05](../user-journeys/UJ-UC-05-organiser-contenu-dossiers.md)
+Déroulés détaillés : [UJ-UC-02](../user-journeys/UJ-UC-02-creer-espace-jeu.md) · [UJ-UC-03](../user-journeys/UJ-UC-03-structurer-scenario.md) · [UJ-UC-04](../user-journeys/UJ-UC-04-gerer-documents-espace.md) · [UJ-UC-05](../user-journeys/UJ-UC-05-organiser-contenu-dossiers.md)
 
 ### Ce que Thomas fait
 
@@ -243,7 +244,7 @@ Thomas retrouve son espace de travail intact pour les campagnes importées, main
 
 ---
 
-## Ruptures nouvelles (non listées dans l'audit CP-01 à CP-22)
+## Ruptures nouvelles
 
 ### RUPTURE-N1 — Absence de modélisation du parcours « session solo mode local → création de compte → session avec joueurs »
 

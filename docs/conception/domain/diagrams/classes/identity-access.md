@@ -16,6 +16,7 @@ classDiagram
         +UpdateDisplayName(name)
         +ChangeEmail(newEmail)
         +LinkFederatedIdentity(provider, externalId)
+        +SetInitialPassword()
         +ChangeTier(tier)
         +Delete()
         +Anonymize()
@@ -82,6 +83,11 @@ classDiagram
         +horodatage occurredAt
     }
 
+    class InitialPasswordSet {
+        +identifiant userId
+        +horodatage occurredAt
+    }
+
     class AccountSuspended {
         +identifiant userId
         +horodatage occurredAt
@@ -94,6 +100,7 @@ classDiagram
     User ..> DisplayNameUpdated : produces
     User ..> EmailChangeRequested : produces
     User ..> FederatedIdentityLinked : produces
+    User ..> InitialPasswordSet : produces
     User ..> AccountTierChanged : produces
     User ..> AccountSuspended : produces
     User ..> UserDeleted : produces

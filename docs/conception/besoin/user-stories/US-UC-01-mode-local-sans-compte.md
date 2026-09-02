@@ -42,7 +42,7 @@ Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans frict
 
 ## Bounded contexts pressentis
 
-- **la gestion de campagne** — création et stockage des espaces locaux (espace personnel par défaut, campagnes), règle de quota (max 3 campagnes en mode local)
+- **Space Management** — création et stockage des espaces locaux (espace personnel par défaut, campagnes et one-shots) ; aucun plafond de création n'existe en mode local, seule la capacité de stockage du navigateur limite la création
 - **la bibliothèque de contenu** — documents, dossiers, scénarios stockés localement, y compris dans l'espace personnel
 - **Identity & Access** — activation lors de la conversion vers un compte (US-01-05 uniquement)
 
@@ -117,7 +117,7 @@ flowchart LR
 |---|---|
 | Priorité | Must Have |
 | Source | UC-01 — scénario nominal |
-| Bounded context | la gestion de campagne |
+| Bounded context | Space Management |
 
 **Critères d'acceptation**
 
@@ -141,20 +141,13 @@ Feature: Démarrage sans compte
     When il crée une campagne et y ajoute du contenu
     Then aucune donnée n'est envoyée au serveur
     And le contenu est disponible dans la session courante
-
-  Scenario: Le MJ atteint la limite de 3 campagnes en mode local
-    Given le MJ est en mode local sans compte
-    And il a déjà 3 campagnes créées
-    When il tente de créer une 4e campagne
-    Then la création est bloquée
-    And un message l'invite à créer un compte pour bénéficier d'un stockage cloud illimité
 ```
 
 **Règles métier**
 
 - RB-01-01 : En mode local, aucune donnée n'est envoyée au serveur. Cette règle est une garantie de confiance envers l'utilisateur, pas uniquement une contrainte technique.
 - RB-01-02 : L'application propose systématiquement les deux options (sans compte / avec compte) à l'écran d'accueil, sans hiérarchie visuelle forçant l'inscription.
-- RB-01-03 : En mode local, le MJ peut créer au maximum 3 campagnes. Au-delà, la création est bloquée avec un message proposant de créer un compte.
+- RB-01-03 : **Retirée** (arbitrage opérateur). Cette règle prétendait plafonner à 3 le nombre d'espaces `CAMPAIGN`/`ONE_SHOT` créables en mode local. UC-01 ne porte aucun plafond de comptage en mode local : la seule contrainte du mode local est la capacité de stockage du navigateur (voir E1 dans UC-01, couvert par US-01-06). L'identifiant `RB-01-03` n'est pas réattribué. Le plafond de 3 espaces `CAMPAIGN`/`ONE_SHOT` qui subsiste porte exclusivement sur la synchronisation cloud d'un compte gratuit (espace personnel exclu) et est identifié `RB-02-10` (UC-02) — non contesté, non affecté par ce retrait.
 - RB-01-14 : L'application affiche deux bandeaux distincts et non bloquants en mode local :
   - **Bandeau de durabilité** : conditionnel — affiché lorsque le navigateur n'a pas garanti la conservation permanente des données. Message : *« Vos données sont en mode éphémère — elles peuvent être supprimées par le navigateur. Créez un compte pour les sécuriser. »* Câblé à l'invite UC-10.
   - **Bandeau de confidentialité** : systématique en mode local — les données du stockage local du navigateur ne sont pas protégées contre la lecture ; toute personne ayant accès à ce navigateur sur ce poste peut les lire. Câblé à l'invite UC-10. Limitation MVP assumée (la protection des données stockées localement contre la lecture est repoussée post-MVP).
@@ -163,7 +156,7 @@ Feature: Démarrage sans compte
 
 **Notes de conception**
 
-- Le mode local n'instancie aucun compte utilisateur. La gestion de campagne opère avec un identifiant de session local opaque.
+- Le mode local n'instancie aucun compte utilisateur. Space Management opère avec un identifiant de session local opaque.
 - La règle "aucune donnée envoyée au serveur" doit être testable (ex : absence de requêtes réseau sortantes en mode local, vérifiable en tests d'intégration). Le raisonnement technique est tracé dans ADR-017.
 
 ---
@@ -182,7 +175,7 @@ Feature: Démarrage sans compte
 |---|---|
 | Priorité | Must Have |
 | Source | UC-01 — scénario alternatif A2 |
-| Bounded context | la gestion de campagne, la bibliothèque de contenu |
+| Bounded context | Space Management, la bibliothèque de contenu |
 
 **Critères d'acceptation**
 
@@ -222,7 +215,7 @@ Feature: Persistance des données locales
 |---|---|
 | Priorité | Must Have |
 | Source | UC-01 — règle métier 4, critère d'acceptation |
-| Bounded context | la gestion de campagne (partage), la conduite de session (accès joueur) |
+| Bounded context | Space Management (partage), la conduite de session (accès joueur) |
 
 **Critères d'acceptation**
 
@@ -271,7 +264,7 @@ Feature: Visibilité des fonctionnalités cloud en mode local
 |---|---|
 | Priorité | Must Have (dépend UC-10) |
 | Source | UC-01 — scénario alternatif A1, règle métier 2 |
-| Bounded context | Identity & Access (création du compte), la gestion de campagne (migration des données) |
+| Bounded context | Identity & Access (création du compte), Space Management (migration des données) |
 
 **Critères d'acceptation**
 
@@ -296,6 +289,7 @@ Feature: Migration des données locales à la création de compte
     And des données locales existent dans le navigateur
     When la création de compte est finalisée
     Then l'application présente les campagnes locales détectées avec titre, volume et date
+    And le contenu de l'espace personnel est présenté dans ce même gate, au même titre que les campagnes locales
     And une confirmation explicite est demandée au MJ avant de démarrer la migration
     And la migration ne démarre qu'après confirmation
 
@@ -316,9 +310,9 @@ Feature: Migration des données locales à la création de compte
 
 **Notes de conception**
 
-- Ce flow est transverse : Identity & Access crée le compte utilisateur, la gestion de campagne orchestre la migration des données locales. Ce n'est pas la responsabilité d'un seul périmètre fonctionnel.
+- Ce flow est transverse : Identity & Access crée le compte utilisateur, Space Management orchestre la migration des données locales. Ce n'est pas la responsabilité d'un seul périmètre fonctionnel.
 - Dépendance forte avec UC-10 (création de compte) : cette story ne peut être livrée qu'après stabilisation d'UC-10. Le raisonnement et les alternatives pour le gate de reconnaissance sont tracés dans ADR-016.
-- La migration implique de lire les données depuis le stockage local du navigateur et de les persister via l'API la gestion de campagne / la bibliothèque de contenu.
+- La migration implique de lire les données depuis le stockage local du navigateur et de les persister via l'API Space Management / la bibliothèque de contenu.
 
 ---
 
@@ -336,7 +330,7 @@ Feature: Migration des données locales à la création de compte
 |---|---|
 | Priorité | Should Have |
 | Source | UC-01 — scénario alternatif A3, exception E1 |
-| Bounded context | la gestion de campagne |
+| Bounded context | Space Management |
 
 **Critères d'acceptation**
 
@@ -361,13 +355,6 @@ Feature: Gestion des données locales introuvables
     When le stockage local du navigateur atteint sa limite
     Then un message indique que le stockage est plein
     And l'application propose de migrer les données vers le cloud (création de compte)
-
-  Scenario: Le MJ atteint la limite de 3 campagnes en mode local
-    Given le MJ est en mode local sans compte
-    And il a déjà 3 campagnes créées
-    When il tente de créer une 4e campagne
-    Then un message d'erreur indique que la limite de campagnes en mode local est atteinte
-    And le MJ est invité à créer un compte pour continuer
 ```
 
 **Règles métier**
@@ -401,7 +388,7 @@ Feature: Gestion des données locales introuvables
 |---|---|
 | Priorité | Should Have |
 | Source | UC-01 — scénario alternatif A4a ; vision §5bis |
-| Bounded context | la gestion de campagne |
+| Bounded context | Space Management |
 
 **Critères d'acceptation**
 
@@ -483,7 +470,7 @@ Feature: Capture dans l'espace personnel sans campagne
 
 **Notes de conception**
 
-- L'espace personnel est de type `SpaceType.PERSONAL` (ADR-018). Il n'est pas soumis à la limite de 3 campagnes (RB-01-03), qui ne concerne que les espaces de type CAMPAIGN.
+- L'espace personnel est de type `SpaceType.PERSONAL` (ADR-018). Aucun plafond de création ne s'applique en mode local, ni à l'espace personnel ni aux espaces `CAMPAIGN`/`ONE_SHOT` (RB-01-03 retirée — voir US-01-01). Côté cloud, l'espace personnel n'est de toute façon pas décompté dans le plafond de 3 espaces `CAMPAIGN`/`ONE_SHOT` du compte gratuit (RB-02-10, UC-02).
 - En mode local, l'espace personnel est identifié par l'identifiant de session opaque géré côté interface (cohérent avec US-01-01 et US-01-02). Aucun compte utilisateur n'est requis.
 - La migration vers un compte (US-01-05) inclut le contenu de l'espace personnel : il est présenté dans le gate de reconnaissance au même titre que les campagnes locales.
 
@@ -581,7 +568,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 
 1. **Affichage des bandeaux de limitation** — Formalisé. Deux bandeaux ciblés et non bloquants remplacent un bandeau persistant générique : bandeau de durabilité (conditionnel — quand la garantie de conservation permanente est refusée) et bandeau de confidentialité (systématique en mode local). Portés par RB-01-14. Le message informatif au premier démarrage reste couvert par US-01-01.
 2. **Confirmation de migration des données locales** — Formalisé : un gate de reconnaissance est présenté avant migration si des données locales existent (campagnes détectées, volume estimé, date de création). La migration démarre uniquement après confirmation explicite. Cette confirmation est une exigence du système — aucune migration ne peut démarrer sans elle. La règle porteuse est RB-10-04 dans UC-10.
-3. **Limite du nombre de campagnes en mode local** — DÉCIDÉ : limite à 3 campagnes en mode local (cap numérique).
+3. **Limite du nombre de campagnes en mode local** — DÉCIDÉ (arbitrage opérateur) : il n'existe aucun plafond de création en mode local. Seule la capacité de stockage du navigateur (~50-100 Mo) limite la création (cf. E1, US-01-06). RB-01-03, qui portait ce plafond inexistant, est retirée.
 4. **Périmètre de l'export / de la sauvegarde locale** — DÉCIDÉ : export de campagne = **Should Have** (vision §5bis, 2026-06-10), disponible en mode local comme avec un compte cloud. Le **réimport** d'un fichier de sauvegarde est un objet distinct, repoussé **post-MVP** (US-01-08).
 5. **Espace personnel et activation « préparation »** — TRANCHÉ (décision opérateur 2026-07-09, vision §2.3) : le contenu créé dans l'espace personnel sans campagne compte pour l'activation « préparation » (H1) **partiellement**, lorsqu'il traduit un geste structurant (au-delà d'une capture triviale), et non automatiquement au même titre qu'une campagne créée. Le seuil/critère exact du geste structurant reste `[À TRANCHER — métrique produit]`. Voir `docs/conception/besoin/vision/vision-produit.md` §2.3 pour la définition consolidée.
 

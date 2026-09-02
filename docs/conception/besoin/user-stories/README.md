@@ -1,6 +1,6 @@
 # User Stories — Haversack MVP
 
-Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmètre fonctionnel MVP. Chaque epic est dérivé d'un use case source (dossier `../usecases/`) et ancré dans le modèle de domaine (dossier `../domain/`). Les user journeys associés se trouvent dans `../user-journeys/`. Utiliser les epics pour le découpage en tickets, les user journeys pour valider les flux de bout en bout.
+Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmètre fonctionnel MVP. Chaque epic est dérivé d'un use case source (dossier `../usecases/`) et ancré dans le modèle de domaine (dossier `../../domain/`). Les user journeys associés se trouvent dans `../user-journeys/`. Utiliser les epics pour le découpage en tickets, les user journeys pour valider les flux de bout en bout.
 
 ---
 
@@ -24,15 +24,15 @@ Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmè
 | UC-01 | Mode local sans compte | Must Have | [US-UC-01](US-UC-01-mode-local-sans-compte.md) | [UJ-UC-01](../user-journeys/UJ-UC-01-mode-local-sans-compte.md) |
 | UC-02 | Créer un espace de jeu (campagne) | Must Have | [US-UC-02](US-UC-02-creer-espace-jeu.md) | [UJ-UC-02](../user-journeys/UJ-UC-02-creer-espace-jeu.md) |
 | UC-03 | Structurer un scénario | Must Have | [US-UC-03](US-UC-03-structurer-scenario.md) | [UJ-UC-03](../user-journeys/UJ-UC-03-structurer-scenario.md) |
-| UC-04 | Gérer les documents de campagne | Must Have | [US-UC-04](US-UC-04-gerer-documents-campagne.md) | [UJ-UC-04](../user-journeys/UJ-UC-04-gerer-documents-campagne.md) |
+| UC-04 | Gérer les documents de campagne | Must Have | [US-UC-04](US-UC-04-gerer-documents-espace.md) | [UJ-UC-04](../user-journeys/UJ-UC-04-gerer-documents-espace.md) |
 | UC-05 | Organiser le contenu en dossiers *(base — dossiers libres)* | Must Have | [US-UC-05](US-UC-05-organiser-contenu-dossiers.md) | [UJ-UC-05](../user-journeys/UJ-UC-05-organiser-contenu-dossiers.md) |
 | UC-06 | Utiliser la vue session | Must Have | [US-UC-06](US-UC-06-vue-session.md) | [UJ-UC-06](../user-journeys/UJ-UC-06-vue-session.md) |
 | UC-07 | Créer un élément à la volée | Must Have | [US-UC-07](US-UC-07-creation-volee-session.md) | [UJ-UC-07](../user-journeys/UJ-UC-07-creation-volee-session.md) |
 | UC-08 | Partager une information | Must Have | [US-UC-08](US-UC-08-partager-information.md) | [UJ-UC-08](../user-journeys/UJ-UC-08-partager-information.md) |
 | UC-09 | Accès session joueur | Must Have | [US-UC-09](US-UC-09-acces-session-joueur.md) | [UJ-UC-09](../user-journeys/UJ-UC-09-acces-session-joueur.md) |
 | UC-10 | Créer un compte et synchroniser dans le cloud | Must Have | [US-UC-10](US-UC-10-compte-cloud.md) | [UJ-UC-10](../user-journeys/UJ-UC-10-compte-cloud.md) |
-| UC-11 | Gérer les membres d'une campagne | Should Have | [US-UC-11](US-UC-11-gerer-membres-campagne.md) | [UJ-UC-11](../user-journeys/UJ-UC-11-gerer-membres-campagne.md) |
-| UC-12 | Consulter sa campagne en tant que joueur (vue post-accès) | Should Have | [US-UC-12](US-UC-12-rejoindre-campagne.md) | [UJ-UC-12](../user-journeys/UJ-UC-12-rejoindre-campagne.md) |
+| UC-11 | Gérer les membres d'une campagne | Should Have | [US-UC-11](US-UC-11-gerer-membres-espace-partage.md) | [UJ-UC-11](../user-journeys/UJ-UC-11-gerer-membres-espace-partage.md) |
+| UC-12 | Consulter sa campagne en tant que joueur (vue post-accès) | Should Have | [US-UC-12](US-UC-12-consulter-espace-joueur.md) | [UJ-UC-12](../user-journeys/UJ-UC-12-consulter-espace-joueur.md) |
 | UC-13 | Scénario réutilisable | Should Have — hors première livraison | [US-UC-13](US-UC-13-scenario-reutilisable.md) | [UJ-UC-13](../user-journeys/UJ-UC-13-scenario-reutilisable.md) |
 | UC-14 | Recherche | Should Have | [US-UC-14](US-UC-14-recherche.md) | [UJ-UC-14](../user-journeys/UJ-UC-14-recherche.md) |
 
@@ -98,7 +98,7 @@ flowchart LR
 |---|---|
 | Mode local = point d'entrée (pas d'inscription obligatoire) | UC-01 Must Have, UC-10 Must Have (le partage joueurs exige un compte — voir MoSCoW) |
 | Migration locale vers cloud avec gate de reconnaissance | US-01-05, US-10-01 |
-| Cap 3 campagnes en **mode local** (règle d'interface — RB-01-03 / RB-02-11) **et en cloud tier gratuit** (règle stable — RB-02-10) | [US-01](US-UC-01-mode-local-sans-compte.md) / RB-01-03 (local) ; [US-02](US-UC-02-creer-espace-jeu.md) / RB-02-10 (cloud) |
+| Aucun plafond de création en **mode local** — seule la capacité de stockage du navigateur limite la création (arbitrage opérateur ; `RB-01-03` retirée, `RB-02-11` retirée) ; cap 3 espaces `CAMPAIGN`/`ONE_SHOT` en **cloud tier gratuit** uniquement (règle stable — RB-02-10, espace personnel exclu) | [US-01](US-UC-01-mode-local-sans-compte.md) / RB-01-03 (retirée) ; [US-02](US-UC-02-creer-espace-jeu.md) / RB-02-10 (cloud, en vigueur) et RB-02-11 (retirée) |
 | Archivage uniquement manuel (pas d'auto-archivage) | UC-02, UC-13 A3 |
 | Tout est Document (bibliothèque de contenu) | Architecture transversale |
 | Type REVEAL pour partage scène vers joueurs | US-03-04, UC-08 |
@@ -117,7 +117,7 @@ flowchart LR
 
 ## Statut des scénarios Gherkin
 
-Les scénarios Gherkin répartis dans les user stories constituent une **couche de conception pérenne** (arbitrage T-07, audit conception pure 2026-06). Ils expriment les critères d'acceptation produit en langage métier (Given/When/Then), indépendant de tout code applicatif.
+Les scénarios Gherkin répartis dans les user stories constituent une **couche de conception pérenne**. Ils expriment les critères d'acceptation produit en langage métier (Given/When/Then), indépendant de tout code applicatif.
 
 **Règle anti double-maintenance** : les scénarios vivent dans les fichiers user stories ; ils restent la source unique. Si un outillage de test les consomme à l'avenir, cet outillage se synchronise sur les US, jamais l'inverse. Un scénario modifié côté test sans répercussion dans l'US constitue une dérive à corriger immédiatement.
 
@@ -142,5 +142,5 @@ Extensions : compte cloud, scénarios réutilisables cross-campagne, recherche.
 ## Documents source
 
 - Use cases : [`../usecases/`](../usecases/)
-- Domaine : [`../domain/`](../../domain/)
+- Domaine : [`../../domain/`](../../domain/)
 - Vision produit : [`../vision/vision-produit.md`](../vision/vision-produit.md)

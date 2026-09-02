@@ -24,7 +24,7 @@
     <span style="font:700 24px 'Hanken Grotesk';color:#2b2620;letter-spacing:-.01em">Paramètres de campagne</span>
     <span style="font:400 12px 'Spline Sans Mono',monospace;color:#a39a86">agrège plusieurs UC sans UC propre (S5)</span>
   </div>
-  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">Sources : UC-06 Phase 2 · UC-02 (archivage) · UC-11 (lien) · AR-09 · AR-10 révisé · AR-13 · AR-18   ·   <span style="color:#c9a25f">écran fortement [SOUS-SPÉCIFIÉ — S9]</span></div>
+  <div style="margin-top:6px;font:400 11px 'Spline Sans Mono',monospace;color:#9a917f">Sources : UC-06 Phase 2 · UC-02 (archivage, désarchivage) · UC-11 (lien) · AR-09 · AR-10 révisé · AR-13 · AR-18 · AR-22 (désarchivage)</div>
 </div>
 
 <!-- ============ BANDE LAPTOP ============ -->
@@ -83,7 +83,7 @@
             <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone d'archivage de l'espace <span style="color:#c9a25f">[S9]</span></span>
             <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px 14px;display:flex;align-items:center;gap:12px">
               <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Archiver la campagne</span><span style="font:400 11px/1.45 'Hanken Grotesk';color:#8a8275">Passe l'espace en lecture seule. Une session en cours doit être terminée d'abord.</span></div>
-              <span style="display:inline-flex;align-items:center;height:32px;padding:0 14px;border:1.5px solid #cdc6b8;border-radius:6px;font:600 12px 'Hanken Grotesk';color:#5c554a">Archiver…</span>
+              <span style="display:inline-flex;align-items:center;height:32px;padding:0 14px;background:#ddd6c8;border:1.5px solid #ddd6c8;border-radius:6px;font:600 12px 'Hanken Grotesk';color:#a8a08e;cursor:not-allowed">Archiver…</span>
             </div>
           </div>
           <!-- export hors-mvp -->
@@ -129,7 +129,7 @@
             <span style="font:700 14px 'Hanken Grotesk';color:#2b2620">Archiver « Les Cendres de Kar-Thol » ?</span>
             <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#a8775a;font:600 12px 'Hanken Grotesk';line-height:1.5">—</span><span style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a">L'espace passe en <b>lecture seule</b> — plus de nouvelle session ni d'édition.</span></div>
             <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#a8775a;font:600 12px 'Hanken Grotesk';line-height:1.5">—</span><span style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a">Documents et notes restent <b>consultables</b> ; les liens d'invitation actifs sont désactivés.</span></div>
-            <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#a8775a;font:600 12px 'Hanken Grotesk';line-height:1.5">—</span><span style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a">Réversible : vous pourrez désarchiver l'espace. <span style="color:#c9a25f;font:500 10px 'Spline Sans Mono',monospace">[S9 — à confirmer]</span></span></div>
+            <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#a8775a;font:600 12px 'Hanken Grotesk';line-height:1.5">—</span><span style="font:400 12px/1.5 'Hanken Grotesk';color:#5c554a">Réversible — vous pourrez désarchiver l'espace ultérieurement.</span></div>
             <div style="display:flex;align-items:center;gap:9px;padding:9px 0 2px"><span style="width:16px;height:16px;border-radius:4px;border:1.5px solid #cdc6b8"></span><span style="font:400 11.5px 'Hanken Grotesk';color:#46403a">J'ai compris les conséquences.</span></div>
             <div style="display:flex;align-items:center;gap:10px">
               <span style="display:inline-flex;align-items:center;height:38px;padding:0 16px;border:1px solid #cdc6b8;border-radius:7px;color:#6b6456;font:600 12px 'Hanken Grotesk'">Annuler</span>
@@ -142,17 +142,74 @@
   </div>
 </div>
 
+<!-- mode : espace archivé -->
+<div style="position:absolute;left:1900px;top:200px;width:600px">
+  <div data-drags-parent="1" style="position:absolute;top:-30px;left:2px;display:flex;align-items:baseline;gap:9px">
+    <span style="font:600 13px 'Hanken Grotesk';color:#4a443a">Mode : espace archivé</span>
+    <span style="font:400 10px 'Spline Sans Mono',monospace;color:#a39a86">lecture seule · refus au quota (AR-22)</span>
+  </div>
+  <div style="background:#f3efe6;border:1px solid #d8d1c2;border-radius:9px;box-shadow:0 3px 14px rgba(60,50,35,.09);overflow:hidden">
+    <div style="min-height:760px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 16px;background:#efe9de;border-bottom:1px solid #d8d1c2">
+        <span style="font:600 12px 'Hanken Grotesk';color:#6b6456">‹ vue campagne</span>
+        <span style="font:700 14px 'Hanken Grotesk';color:#3a342c;margin-left:4px">Paramètres · Les Cendres de Kar-Thol</span>
+        <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px;background:#fff;border:1px solid #cdc6b8;border-radius:15px;font:600 11.5px 'Hanken Grotesk';color:#5c554a"><span style="width:14px;height:14px;border:1.5px solid #a39a86;border-radius:50%"></span>Thomas <span style="color:#a39a86">▾</span></span>
+      </div>
+      <div style="padding:14px 16px 0">
+        <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a8775a;letter-spacing:.02em">bandeau d'état — porte l'affordance de désarchivage (AR-22)</span>
+        <div style="margin-top:6px;display:flex;align-items:center;gap:12px;padding:11px 14px;background:#fff;border:1px solid #d8c0b0;border-left:4px solid #c79a7e;border-radius:6px">
+          <span style="flex:1;font:400 12px 'Hanken Grotesk';color:#5c554a">Espace archivé — lecture seule.</span>
+          <span style="display:inline-flex;align-items:center;height:32px;padding:0 14px;background:#ddd6c8;border:1.5px solid #ddd6c8;border-radius:6px;font:600 12px 'Hanken Grotesk';color:#a8a08e;cursor:not-allowed">Désarchiver…</span>
+        </div>
+        <div style="margin-top:8px;display:flex;align-items:center;gap:10px;padding:9px 13px;background:#fff;border:1px dashed #c9c2b4;border-radius:6px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em;white-space:nowrap">invite contextuelle — refus au quota</span>
+          <span style="flex:1;font:400 12px 'Hanken Grotesk';color:#5c554a">Quota de 3 campagnes actives atteint — passez à l'offre Pro pour désarchiver cet espace.</span>
+          <span style="font:600 11.5px 'Hanken Grotesk';color:#2b2620;border-bottom:1px solid #2b2620;padding-bottom:1px">Voir l'offre Pro</span>
+        </div>
+      </div>
+      <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">aperçu de la vue session — lecture seule, espace archivé (AR-18)</span>
+          <div style="display:flex;flex-direction:column;background:#fff;border:1px solid #ddd6c8;border-radius:8px;overflow:hidden;opacity:.75">
+            <div style="padding:11px 14px;border-bottom:1px solid #ece6d9;display:flex;align-items:center;justify-content:space-between"><span style="font:600 13px 'Hanken Grotesk';color:#2b2620">Mis en avant dans la vue session</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #cdc6b8;border-radius:10px;font:500 9.5px 'Hanken Grotesk';color:#8a8275">aperçu</span></div>
+            <div style="display:flex;align-items:center;gap:11px;padding:11px 14px;border-bottom:1px solid #f1ece1"><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Personnages</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">mis en avant</span></div>
+            <div style="display:flex;align-items:center;gap:11px;padding:11px 14px"><span style="flex:1;font:500 13px 'Hanken Grotesk';color:#3a342c">Lieux</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 9px;background:#2b2620;color:#fbfaf6;border-radius:10px;font:500 9.5px 'Hanken Grotesk'">mis en avant</span></div>
+            <div style="padding:11px 14px;border-top:1px dashed #e4ded0;font:400 10px/1.5 'Spline Sans Mono',monospace;color:#a39a86">disposition consultable, non modifiable tant que l'espace reste archivé (AR-18)</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">lien d'invitation de campagne — désactivé (AR-22)</span>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px 14px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="flex:1;height:34px;background:#ddd6c8;border:1px solid #ddd6c8;border-radius:6px;display:flex;align-items:center;padding:0 11px;font:500 11.5px 'Spline Sans Mono',monospace;color:#a8a08e;overflow:hidden;white-space:nowrap;cursor:not-allowed">haversack.app/s/k7m2-fâb3</div>
+              <span style="display:inline-flex;align-items:center;height:34px;padding:0 15px;background:#ddd6c8;border:1.5px solid #ddd6c8;border-radius:6px;font:600 12px 'Hanken Grotesk';color:#a8a08e;cursor:not-allowed">Copier</span>
+            </div>
+            <span style="font:400 9.5px 'Spline Sans Mono',monospace;color:#a39a86">un espace en lecture seule n'admet pas de nouveaux membres — désarchiver pour réactiver</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 9.5px 'Spline Sans Mono',monospace;color:#a39a86;letter-spacing:.02em">zone d'export de l'espace — reste disponible</span>
+          <div style="background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:13px 14px;display:flex;align-items:center;gap:12px">
+            <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Exporter l'espace</span><span style="font:400 11px 'Hanken Grotesk';color:#8a8275">Format ouvert téléchargeable — n'écrit rien sur l'espace archivé.</span></div>
+            <span style="display:inline-flex;align-items:center;height:32px;padding:0 14px;border:1.5px solid #cdc6b8;border-radius:6px;font:600 12px 'Hanken Grotesk';color:#5c554a">Exporter…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- POST-ITS -->
-<div style="position:absolute;left:1860px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi</div>
-<div style="position:absolute;left:1860px;top:202px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
+<div style="position:absolute;left:2560px;top:172px;font:500 10px 'Spline Sans Mono',monospace;letter-spacing:.06em;color:#b3aa96;text-transform:uppercase">pourquoi</div>
+<div style="position:absolute;left:2560px;top:202px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-1deg)">
   <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-18 · US-06-02</div>
   <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">La config de la vue session se fait <b>dans la vue session</b> (mode configuration), <b>seule source</b>. Ici : aperçu en lecture seule + renvoi « Configurer dans la vue session » — pas de deuxième endroit qui pilote le même état.</div>
 </div>
-<div style="position:absolute;left:1860px;top:380px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
+<div style="position:absolute;left:2560px;top:380px;width:250px;background:#f6e58f;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(.8deg)">
   <div style="font:500 10px 'Spline Sans Mono',monospace;color:#8a7a1f;margin-bottom:5px">AR-10 révisé · AR-13</div>
   <div style="font:400 12px/1.45 'Hanken Grotesk';color:#5a5320">Placement <b>tranché par nature de l'acte</b> : lien de campagne permanent → ici ; lien de session ponctuel → vue session. En mode local, « Inviter » déclenche une invite contextuelle « créer un compte ».</div>
 </div>
-<div style="position:absolute;left:1860px;top:556px;width:250px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
+<div style="position:absolute;left:2560px;top:556px;width:250px;background:#fbe7c2;padding:12px 14px;box-shadow:0 2px 7px rgba(60,50,35,.16);transform:rotate(-.6deg)">
   <div style="font:500 10px 'Spline Sans Mono',monospace;color:#9a6a1f;margin-bottom:5px">SOUS-SPÉCIFIÉ — S9</div>
   <div style="font:400 12px/1.45 'Hanken Grotesk';color:#6a4f1a">Aucun UC dédié : confirmation d'archivage, conséquences — à trancher en maquette. Export : <b>entré au MVP</b> en version minimale (reflexion-ux §7 Décision 3 — persona Thomas), présent sans être au premier plan.</div>
 </div>
@@ -193,7 +250,7 @@
         </div>
         <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:12px 13px">
           <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Archiver la campagne</span><span style="font:400 10.5px 'Hanken Grotesk';color:#8a8275">Lecture seule.</span></div>
-          <span style="display:inline-flex;align-items:center;height:32px;padding:0 13px;border:1.5px solid #cdc6b8;border-radius:6px;font:600 12px 'Hanken Grotesk';color:#5c554a">Archiver…</span>
+          <span style="display:inline-flex;align-items:center;height:32px;padding:0 13px;background:#ddd6c8;border:1.5px solid #ddd6c8;border-radius:6px;font:600 12px 'Hanken Grotesk';color:#a8a08e;cursor:not-allowed">Archiver…</span>
         </div>
         <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ddd6c8;border-radius:8px;padding:12px 13px">
           <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:600 12.5px 'Hanken Grotesk';color:#3a342c">Exporter l'espace</span><span style="font:400 10.5px 'Hanken Grotesk';color:#8a8275">Format ouvert — version minimale (MVP).</span></div>

@@ -109,6 +109,8 @@ hiérarchie de lecture à distance :
 
 Critère de complétude : les deux réponses sont présentes. Si un changement d'état n'est pas annoncé assistivement, cela se note explicitement (pas de silence).
 
+**Mise en garde — portée de NFR-ACC-04** : NFR-ACC-04 borne explicitement son périmètre (§Portée et hors-portée) à la vue session, aux notes de session `LIVE`, aux résultats de recherche depuis la vue session et à la vue joueur pendant la session — elle **exclut nommément la phase de préparation**. L'exemple-pilote ci-dessous (vue session MJ) est un écran de session : y citer NFR-ACC-04 est légitime. Ce n'est **pas** un patron à recopier tel quel sur un écran hors session (transversal, préparation, tableau de bord) : sur ces écrans, la hiérarchie de lecture à distance reste utile à décrire, mais sa source doit être marquée `[SOUS-SPÉCIFIÉ]` plutôt que renvoyée à NFR-ACC-04. NFR-ACC-01 (ordre de tabulation clavier) est un objet distinct et ne comble pas ce manque.
+
 ---
 
 #### Sources

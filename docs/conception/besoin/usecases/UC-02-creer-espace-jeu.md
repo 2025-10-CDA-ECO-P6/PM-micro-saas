@@ -165,7 +165,20 @@ et conserve les données saisies.
   personnalisation des dossiers : ce parcours vise la friction minimale, cohérent avec le
   champ `isSystem` qui rend les dossiers renommables/supprimables une fois l'espace créé.
 - Un espace one-shot peut être archivé manuellement par le MJ, comme une campagne.
-- Un espace peut être archivé sans être supprimé définitivement.
+- Un espace peut être archivé sans être supprimé définitivement, et l'archivage est réversible :
+  le MJ peut à tout moment désarchiver l'espace pour le remettre en état actif, avec le même
+  contenu qu'au moment de l'archivage. (RB-02-22)
+- Le désarchivage d'un espace est refusé à un MJ au palier gratuit si l'espace redevenu actif
+  porterait le nombre de ses espaces actifs de type campagne ou one-shot au-delà de la limite
+  autorisée pour son palier ; le MJ est alors invité à passer au palier supérieur, comme pour
+  la création d'un nouvel espace. Sans ce blocage, un MJ pourrait dépasser sa limite en trois
+  gestes ordinaires : archiver un espace, en créer un nouveau, puis désarchiver le premier.
+  (RB-02-23)
+- Un espace ne peut pas être archivé tant qu'il porte une session en cours (statut `LIVE`) :
+  un espace archivé passe en lecture seule, ce qui empêcherait d'y écrire les notes de la
+  séance en cours. Le MJ doit d'abord clôturer cette session pour que l'archivage devienne
+  possible — même exigence que celle posée pour la migration en UC-01 (« une session en cours
+  doit être clôturée avant migration »). (RB-02-21)
 
 ## Critères d'acceptation
 
@@ -178,6 +191,13 @@ et conserve les données saisies.
 - Les quatre dossiers système existent et portent les noms neutres définis.
 - Un espace créé en mode local (sans compte) est pleinement fonctionnel.
 - L'espace personnel du MJ préexiste avant toute création d'espace via ce parcours.
+- Un espace portant une session en cours (statut `LIVE`) ne peut pas être archivé ; le MJ doit
+  d'abord clôturer cette session.
+- Un MJ peut désarchiver un espace archivé ; l'espace redevient actif et son contenu, inchangé
+  depuis l'archivage, redevient modifiable.
+- Un MJ au palier gratuit déjà à sa limite d'espaces actifs de type campagne ou one-shot ne peut
+  pas désarchiver un espace supplémentaire ; le système bloque le geste et l'invite à passer au
+  palier supérieur.
 
 ## Questions à valider en interview
 

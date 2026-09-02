@@ -131,7 +131,7 @@ Les éléments suivants sont inventoriés dans le zoning (S8) mais hors périmè
 |---|---|
 | Écran Membres complet (UC-11 — révocations, associations joueur-personnage, gestion invitations permanentes) | Should Have — AR-10 |
 | Enrichissement vue joueur au niveau campagne (UC-12 complet — historique de campagne, sélection de personnage) | Should Have — AR-10 |
-| Interface de bibliothèque « Mes scénarios » (UC-13) | Post-MVP — AR-08 révisé ; UC-13 §Statut |
+| Interface de bibliothèque « Mes scénarios » (UC-13) | Post-MVP — AR-08 révisé ; UC-13 en-tête |
 
 ---
 

@@ -131,7 +131,11 @@ annonce sans action :
 hiérarchie de lecture à distance :
   priorité 1 — zone de présentation des conséquences (information critique avant action)
   priorité 2 — zone de confirmation ou zone de blocage selon l'état courant
-  source : NFR-ACC-04
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -141,7 +145,7 @@ hiérarchie de lecture à distance :
 ```
 Sources : UC-10 A4 ; UC-10 E4 ; UC-10 §Règles métier (RGPD, RB-10-05) ;
           NFR-CONF-03 (suppression effective des données personnelles) ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ;
           châssis S7 (zoning.md §S7)
 ```
 

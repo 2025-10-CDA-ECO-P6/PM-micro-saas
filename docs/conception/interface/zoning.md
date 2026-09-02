@@ -234,7 +234,7 @@ flowchart TD
 
 | Nom | Rôle | Surface | Contexte | Forme cible | UC / US / UJ couverts |
 |---|---|---|---|---|---|
-| **Vue session MJ** *(livrable prioritaire)* | Hub central de pilotage de session — tableau de bord configurable avec panneaux de dossiers, zone de notes co-présente, recherche, épinglage, partage ; disponible en trois modes (configuration / LIVE / consultation CLOSED) selon le statut de la session. Réservé aux espaces partagés (`CAMPAIGN`/`ONE_SHOT`). | MJ | Session | Grand écran + tablette | UC-06, UC-07, UC-08, UC-14 ; US-06-01 à US-06-10 ; UJ-UC-06 |
+| **Vue session MJ** *(livrable prioritaire)* | Hub central de pilotage de session — tableau de bord configurable avec panneaux de dossiers, zone de notes co-présente, recherche, épinglage, partage ; disponible en trois modes (configuration / LIVE / consultation CLOSED) selon le statut de la session ; en mode consultation CLOSED, le MJ peut encore ajouter des notes rétroactives et modifier le résumé de la session (`Session.summary`). Réservé aux espaces partagés (`CAMPAIGN`/`ONE_SHOT`). | MJ | Session | Grand écran + tablette | UC-06, UC-07, UC-08, UC-14 ; US-06-01 à US-06-10 ; UJ-UC-06 |
 | **Panneau de création rapide à la volée** | Formulaire minimal (titre seul obligatoire) permettant de créer un document ou une note de session sans quitter la vue session ; le document créé est automatiquement épinglé | MJ | Session | Grand écran + tablette | UC-07 ; UJ-UC-07 |
 
 ---
@@ -263,7 +263,7 @@ flowchart TD
 
 | Use Case | Écran(s) porteur(s) |
 |---|---|
-| **UC-01** — Mode local sans compte | Accueil non authentifié ; Inscription (invite contextuelle A1) ; châssis mode local (bandeaux transversaux) ; espace personnel (capture immédiate, hors quota FREE — RB-01-01/RB-01-03) |
+| **UC-01** — Mode local sans compte | Accueil non authentifié ; Inscription (invite contextuelle A1) ; châssis mode local (bandeaux transversaux) ; espace personnel (capture immédiate, hors quota FREE — RB-01-01/RB-02-10) |
 | **UC-02** — Créer un espace de jeu | Tableau de bord des espaces de jeu ; Création d'un espace de jeu (espaces partagés uniquement — l'espace personnel préexiste, non créé via ce parcours) |
 | **UC-03** — Structurer un scénario | Éditeur de scénario |
 | **UC-04** — Gérer les documents d'un espace | Éditeur de document ; Navigation par dossiers |
@@ -286,7 +286,7 @@ flowchart TD
 
 ### AR-01 — Ossature de navigation — arbitrage du 2026-06-12 (révisé 2026-06-18)
 
-**Décision** : l'ossature retenue est **Tableau de bord (espaces de jeu) → Espace → {Préparation | Vue session MJ}**, l'espace se déclinant en trois types (`CAMPAIGN`, `ONE_SHOT`, `PERSONAL`). L'**espace personnel se branche uniquement sur Préparation** (mono-membre, pas de session — `session-conduct.md` ; invariant 5). Le tableau de bord le liste **hors quota** (UC-01, RB-01-03). La **surface joueur** constitue un point d'entrée parallèle par lien. Le **mode local** est un état transversal.
+**Décision** : l'ossature retenue est **Tableau de bord (espaces de jeu) → Espace → {Préparation | Vue session MJ}**, l'espace se déclinant en trois types (`CAMPAIGN`, `ONE_SHOT`, `PERSONAL`). L'**espace personnel se branche uniquement sur Préparation** (mono-membre, pas de session — `session-conduct.md` ; invariant 5). Le tableau de bord le liste **hors quota** (UC-01, RB-02-10). La **surface joueur** constitue un point d'entrée parallèle par lien. Le **mode local** est un état transversal.
 
 **Raison d'être produit** : les quatre déterminants (S2) convergent sans exception vers cette ossature. Le contenu est scopé par espace (`Document.spaceId`) — l'espace personnel est le conteneur par défaut pour tout contenu créé hors espace partagé explicite (UC-01 ; UC-02). La postcondition d'UC-02 exige un tableau de bord multi-espaces lisible où l'espace personnel figure (UC-02 §Postconditions), validé par le persona Antoine (trois campagnes simultanées). Le lancement de session depuis la campagne est universel pour les MJ (six parcours) — ce qui positionne l'espace comme nœud de transit naturel. Lucas entre par lien direct — ce qui sépare structurellement la surface joueur de l'arborescence MJ. L'espace personnel n'a pas de vue session : `session-conduct.md` (invariant : pas de `SessionViewConfig` pour PERSONAL) établit qu'un espace `PERSONAL` n'a pas de `SessionViewConfig` ni de session — le partage temps réel et la vue joueur présupposent un groupe de jeu absent d'un espace mono-membre. H1 (vision §2.3) confirme.
 
@@ -493,11 +493,11 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 **Décision** : le quota FREE (3 espaces `CAMPAIGN`/`ONE_SHOT`) **n'inclut jamais l'espace personnel** ; en surface, l'espace personnel est un conteneur permanent **hors-compteur, visuellement distinct**, **jamais bloqué ni grisé** ; le compteur visible (ex. « X / 3 ») ne porte que sur les espaces partagés.
 
-**Raison d'être produit** : `space-management.md` invariant 6 et règle 6 établissent que l'espace `PERSONAL` n'est pas décompté du quota. Moscow §Quota FREE et UC-01 (RB-01-03) confirment. Afficher l'espace personnel dans le compteur induirait le MJ en erreur sur le quota restant.
+**Raison d'être produit** : `space-management.md` invariant 6 et règle 6 établissent que l'espace `PERSONAL` n'est pas décompté du quota. Moscow §Quota FREE et UC-01 (RB-02-10) confirment. Afficher l'espace personnel dans le compteur induirait le MJ en erreur sur le quota restant.
 
 **Alternatives considérées** : espace personnel dans le compteur — induirait en erreur sur le quota restant. Même liste sans badge de décompte — ambigu sur ce qui compte et ce qui ne compte pas.
 
-**Condition de retour** : l'expression exacte (badge, section, libellé) **`[À TRANCHER — wireframe]`** — **HAND-OFF vers la session `docs/conception/presentation/` (wireframes), zone lecture seule ici** ; l'arbitrage AR-17 fixe l'invariant « PERSONAL hors quota, jamais bloqué », pas la forme de surface.
+**Condition de retour** : l'expression exacte (badge, section, libellé) **`[À TRANCHER — wireframe]`** — **renvoi vers `docs/conception/interface/wireframes/` (fiches wireframe), zone lecture seule ici** ; l'arbitrage AR-17 fixe l'invariant « PERSONAL hors quota, jamais bloqué », pas la forme de surface.
 
 ---
 
@@ -551,7 +551,19 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 **Alternatives considérées** : « Premium » — écarté, absent du corpus, introduirait un second terme pour le même tier. « Payant » — écarté, moins engageant et absent du vocabulaire déjà employé par moscow. Énoncé technique `PRO` tel quel en surface — écarté, casse la discipline de langage de besoin (aucun nom technique en interface).
 
-**Condition de retour** : aucune sur le libellé. **Hand-off** : la répercussion de ce libellé dans le wireframe `profil` (et tout autre écran mentionnant le niveau de compte) relève de la session `docs/conception/presentation/` — hors périmètre d'écriture de ce document (zone lecture seule).
+**Condition de retour** : aucune sur le libellé. **Renvoi** : la répercussion de ce libellé dans le wireframe `profil` (et tout autre écran mentionnant le niveau de compte) relève des fiches wireframe (`docs/conception/interface/wireframes/`) — hors périmètre d'écriture de ce document (zone lecture seule).
+
+---
+
+### AR-22 — Accès aux espaces archivés au tableau de bord, désarchivage sur les paramètres de campagne — arbitrage du 2026-09-02
+
+**Décision** : le **point d'entrée vers les espaces archivés** vit au **tableau de bord** — la seule surface qui donne au MJ une vue d'ensemble de ses espaces (déterminant b, S2 ; AR-17 : compteur d'espaces partagés et traitement hors-quota de l'espace personnel déjà logés là). L'**affordance de désarchivage** elle-même vit sur `parametres-campagne.md`, **symétrique** de l'affordance d'archivage déjà logée sur cette même fiche (zone d'archivage de l'espace). Un espace `ARCHIVED` restant consultable — en lecture seule, pas inaccessible (`space-management.md` règle métier 7 ; `content-library.md` — `SpaceArchived` passe les documents en lecture seule, un soft-lock, pas un verrou d'accès) —, ses paramètres de campagne restent atteignables ; la fiche `parametres-campagne.md` porte désormais un second mode (« espace archivé ») symétrique du mode par défaut. Le refus du désarchivage au quota (RB-02-23 ; `space-management.md` règle métier 12) reprend le même registre d'invite contextuelle non bloquante que celui déjà en place sur la création d'espace bloquée au quota (`tableau-de-bord.md` §Ce que l'utilisateur peut faire — carte « + Créer une campagne »).
+
+**Raison d'être produit** : UC-02 §Règles métier RB-02-22 (réversibilité de l'archivage) et RB-02-23 (garde de quota anti-contournement au désarchivage) rendent le geste de désarchivage une opération produit décidée, jusqu'ici sans surface porteuse (S9 §Affordance de désarchivage). Le déterminant (b) de S2 établit le tableau de bord comme unique surface à vue d'ensemble des espaces — condition nécessaire pour qu'un MJ « retrouve » un espace qu'il ne voit plus dans sa navigation courante. AR-12 a déjà posé le patron « un geste et son inverse au même endroit » (partager/retirer le partage, épingler) ; l'appliquer à archiver/désarchiver évite d'introduire un second point d'autorité pour le même geste. `space-management.md` règle métier 7 (« Tant qu'il reste `ARCHIVED`, l'espace est en lecture seule ») et `content-library.md` (`SpaceArchived` → documents en lecture seule, soft-lock) établissent que la lecture seule n'est pas une mise hors d'accès — le patron corpus déjà en usage pour les autres états de lecture seule (`UC-15` RB-15-03 : « son contenu reste consultable normalement, mais aucune écriture n'y est plus possible » ; `gabarit-ecran.md` mode consultation CLOSED : « navigation possible, pas de modification ») confirme cette lecture. Le refus au quota est calqué sur le précédent de blocage à la création (même garde métier — invariant 6 et règle 12 de `space-management.md` partagent le même patron anti-contournement) : réemployer la formulation déjà éprouvée évite une seconde formulation concurrente pour la même contrainte de fond.
+
+**Alternatives considérées** : loger le geste de désarchivage directement au tableau de bord (à côté du point d'entrée) — écarté, car cela romprait le patron « geste et son inverse au même endroit » déjà établi par l'archivage sur `parametres-campagne.md`, et dupliquerait l'affordance sur deux fiches sans bénéfice. Loger le point d'entrée vers les espaces archivés sur `parametres-campagne.md` plutôt qu'au tableau de bord — écarté, car cette fiche est celle d'un espace déjà identifié : un MJ qui ne se souvient plus où se trouve un espace archivé n'a besoin que de la vue d'ensemble du tableau de bord pour le retrouver, pas d'une fiche par-espace. Bloquer entièrement la navigation vers un espace archivé — écarté, contredit `space-management.md` règle métier 7 (lecture seule, pas verrou d'accès) et le patron corpus déjà en usage pour les autres états lecture seule.
+
+**Condition de retour** : aucune.
 
 ---
 
@@ -645,7 +657,7 @@ Les éléments ci-dessous sont **hors périmètre wireframe MVP**. Chacun est li
 | Élément exclu | Source |
 |---|---|
 | Point d'entrée one-shot dédié / parcours express « Lancer un one-shot » | UC-02 A1 §périmètre post-MVP ; vision §5bis arbitrage « Contexte one-shot — arbitrage du 2026-06-10 » |
-| Interface de bibliothèque « Mes scénarios » (UC-13) | UC-13 §Statut — Should Have hors première livraison ; vision §5bis ; AR-08 révisé (logée dans l'espace personnel post-MVP) |
+| Interface de bibliothèque « Mes scénarios » (UC-13) | UC-13 en-tête — Should Have hors première livraison ; vision §5bis ; AR-08 révisé (logée dans l'espace personnel post-MVP) |
 | Création de scénario en bibliothèque (UC-F07) | UC-HORS-MVP |
 | Éditeur de types de document personnalisés | moscow.md §Could Have (Types personnalisés) |
 | Réimport de fichier de sauvegarde | UC-01 A4b §Post-MVP ; moscow.md §Could Have |
@@ -682,7 +694,9 @@ Les éléments suivants relèvent d'un entretien utilisateur ou d'une session de
 | **Notification active côté joueur** | US-06 §Questions ouvertes — *« non décidé pour le MVP »*. Angle d'interview (Famille C). Laissé ouvert. |
 | **Persistance des notes invité inter-sessions sans compte** | La mécanique de récupération des notes `PLAYER_PRIVATE` d'un invité via un nouveau lien vers le même personnage est évoquée dans UC-06 §Règles métier mais non entièrement spécifiée. Parcours-03 §Couture C5 identifie ce point comme zone muette. Angle d'interview (Famille C). Laissé ouvert — relève de remédiation corpus. |
 | **Sémantique `ARCHIVED PERSONAL` — RÉSOLUE** | Le glossaire §SpaceStatus et `space-management.md` invariant 14 tranchent : un espace `PERSONAL` est toujours `ACTIVE` — `ARCHIVED` et `FROZEN` ne lui sont pas applicables (`FROZEN` = gel des espaces excédentaires au downgrade, `PERSONAL` est hors quota ; `ARCHIVED` contredirait l'invariant 14). Cohérent avec l'absence d'UI d'archivage pour l'espace personnel déjà en place dans ce zoning (§Paramètres de campagne, réservé aux espaces partagés). |
+| **Affordance de désarchivage — RÉSOLUE (zoning)** | **Résolue pour la partie zoning** par AR-22 (§S6) : le point d'entrée vers les espaces archivés vit au tableau de bord (`tableau-de-bord.md` §Zones et hiérarchie §Accès aux espaces archivés) ; l'affordance de désarchivage elle-même, symétrique de l'archivage, vit sur `parametres-campagne.md` (nouveau mode « espace archivé »), avec le traitement du refus au quota (RB-02-23 ; règle métier 12). L'accessibilité des paramètres d'un espace archivé (lecture seule, pas hors d'accès) est établie par `space-management.md` règle métier 7 et `content-library.md` (`SpaceArchived` → soft-lock des documents, pas un verrou de navigation). Renvoi : `docs/conception/interface/wireframes/sv2-entree-espace/tableau-de-bord/tableau-de-bord.md` ; `docs/conception/interface/wireframes/sv3-preparation/parametres-campagne/parametres-campagne.md`. |
 | **Fournisseurs d'identité — RÉSOLU** | MVP : Google et Discord. Règle de confiance par fournisseur : ADR-015 (Sécurité authentification MVP). Surface : les éléments interactifs (boutons, libellés) relèvent du wireframe présentation (hors périmètre zoning). |
+| **Hiérarchie de lecture visuelle hors session — [SOUS-SPÉCIFIÉ]** | NFR-ACC-04 borne explicitement son périmètre (§Portée et hors-portée) à la vue session, aux notes de session `LIVE`, aux résultats de recherche depuis la vue session et à la vue joueur pendant la session — elle exclut nommément la phase de préparation. NFR-ACC-01 couvre l'ordre de tabulation clavier, objet distinct. Aucune exigence du corpus ne couvre la hiérarchie de lecture visuelle hors session. Quinze fiches wireframe citaient à tort NFR-ACC-04 pour ce point ; corrigé par un marqueur `[SOUS-SPÉCIFIÉ]` uniforme (passe de correction interface, 2026-09-01). Le patron fautif provenait de l'exemple-pilote de `gabarit-ecran.md`, désormais mis en garde sur ce point. |
 
 ---
 

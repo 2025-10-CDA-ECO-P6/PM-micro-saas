@@ -114,8 +114,11 @@ hiérarchie de lecture à distance :
   priorité 1 — message de présentation (zone de présentation — contexte et choix)
   priorité 2 — porte d'entrée sans compte
   priorité 3 — porte d'entrée avec compte
-  source : NFR-ACC-04 (lecture à distance ; ordre de lecture logique conforme à l'intention
-           de l'écran — deux chemins équivalents, lisibles sans ambiguïté)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -123,12 +126,12 @@ hiérarchie de lecture à distance :
 ### Sources
 
 ```
-Sources : UC-01 (scénario nominal, A1, A2, RB-01-01, RB-01-03) ;
+Sources : UC-01 (scénario nominal, A1, A2, RB-01-01) ;
           UC-10 (scénario nominal Inscription sans données locales,
                  scénario nominal Connexion) ;
           AR-13 (invite contextuelle sans-compte → compte) ;
           AR-15 (onboarding capture-first) ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ;
           châssis S7 (zoning.md §S7)
 ```
 

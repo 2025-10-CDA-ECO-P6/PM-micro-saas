@@ -11,7 +11,7 @@
 
 ## Contexte
 
-La conception décrivait une structure cible avec 6 assemblies isolées dès le démarrage : un projet par bounded context, plus des projets d'infrastructure séparés. L'audit a identifié cette granularité comme sur-dimensionnée pour une phase MVP en validation d'hypothèses avec une équipe solo (finding G-05). La cérémonie de configuration (références inter-projets, contrats d'interface explicites dès J0, overhead de build) est disproportionnée au stade de conception actuel.
+La conception décrivait une structure cible avec 6 assemblies isolées dès le démarrage : un projet par bounded context, plus des projets d'infrastructure séparés. L'audit a identifié cette granularité comme sur-dimensionnée pour une phase MVP en validation d'hypothèses avec une équipe solo. La cérémonie de configuration (références inter-projets, contrats d'interface explicites dès J0, overhead de build) est disproportionnée au stade de conception actuel.
 
 La tension à résoudre était entre la rigueur architecturale DDD (isolation des bounded contexts) et la praticité d'un démarrage solo en validation.
 
@@ -41,17 +41,17 @@ Non retenu. Perd la séparation Clean Architecture et les garanties de sens de d
 
 ## Conséquences
 
-- Un fichier `structure-projets.md` est à produire comme source de vérité de la structure concrète des projets .NET (noms, responsabilités, références inter-projets). Ce fichier est un livrable de J0 (finding A-01, B-07).
-- Le nommage du projet noyau partagé (`SharedKernel` vs `Domain.Kernel`) est à trancher et à uniformiser dans toute la documentation (finding B-07). Ce point est délibérément laissé à J0.
+- Un fichier `structure-projets.md` est à produire comme source de vérité de la structure concrète des projets .NET (noms, responsabilités, références inter-projets). Ce fichier est un livrable de J0.
+- Le nommage du projet noyau partagé (`SharedKernel` vs `Domain.Kernel`) est à trancher et à uniformiser dans toute la documentation. Ce point est délibérément laissé à J0.
 - La frontière entre bounded contexts repose sur la discipline de revue de code tant qu'ils ne sont pas extraits en projets séparés. Il n'y a pas de garantie du compilateur sur le respect des frontières logiques.
 - Le module `Infrastructure.Notifications` est isolé dès J0 (cohérent avec ADR-004 — SignalR).
-- Une note de mapping EF Core est à produire en J2 : converters d'IDs typés, owned types, `HasColumnType("jsonb")` pour `properties`, discriminant de bloc, query filters (finding C-15).
+- Une note de mapping EF Core est à produire en J2 : converters d'IDs typés, owned types, `HasColumnType("jsonb")` pour `properties`, discriminant de bloc, query filters.
 
 ---
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à une revue critique postérieure à cette décision, celle-ci est complétée comme suit, sans changer sa direction.
 
 - **Test d'architecture en CI = livrable J0.** Un test d'architecture automatisé (ex. NetArchTest, ou vérification de convention de namespace en CI) garantissant les frontières de bounded context est un livrable J0. Il remplace la « discipline de revue de code » — mécanisme insuffisant en contexte solo — par une contrainte outillée vérifiable à chaque commit.
 

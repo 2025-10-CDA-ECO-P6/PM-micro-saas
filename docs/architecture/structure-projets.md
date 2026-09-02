@@ -41,40 +41,21 @@ sont des **frontières logiques** — organisées en namespaces distincts et con
 
 ```
 Haversack.Domain/
-  ├── IdentityAccess/
-  │   ├── User.cs
-  │   ├── UserId.cs
-  │   ├── IUserRepository.cs
-  │   └── ...
-  ├── SpaceManagement/
-  │   ├── Space.cs
-  │   ├── SpaceId.cs
-  │   ├── ISpaceRepository.cs
-  │   └── ...
-  ├── ContentLibrary/
-  │   ├── Document.cs
-  │   ├── DocumentId.cs
-  │   ├── IDocumentRepository.cs
-  │   └── ...
-  ├── SessionConduct/
-  │   ├── Session.cs
-  │   ├── SessionId.cs
-  │   ├── ISessionRepository.cs
-  │   └── ...
-  └── SharedKernel/
-      ├── Entity.cs
-      ├── AggregateRoot.cs
-      ├── AuditInfo.cs
-      └── ...
+  ├── IdentityAccess/       [À TRANCHER — J0]
+  ├── SpaceManagement/      [À TRANCHER — J0]
+  ├── ContentLibrary/       [À TRANCHER — J0]
+  ├── SessionConduct/       [À TRANCHER — J0]
+  └── SharedKernel/         [À TRANCHER — J0]
 
-Haversack.Application/
-  ├── Handlers/
-  │   ├── SpaceHandlers.cs
-  │   ├── DocumentHandlers.cs
-  │   └── ...
-  ├── Dtos/
-  └── ...
+Haversack.Application/      [À TRANCHER — J0]
 ```
+
+ADR-008 — la source citée pour cette section — décide seulement les deux projets (`Haversack.Domain`,
+`Haversack.Application`) et les quatre bounded contexts comme namespaces distincts ; le nommage `SharedKernel`
+est décidé par le §4 du présent document, qui clôt un report explicite d'ADR-008 (§ Conséquences). Le contenu
+de chacun des cinq namespaces — fichiers, classes, sous-dossiers — n'est fixé ni par ADR-008 ni par aucune
+autre section du présent document ; il relève du build (`[À TRANCHER — J0]`, convention de balisage reprise de
+[guide-conventions-et-dod.md, § Convention de balisage](../gestion-projet/guide-conventions-et-dod.md)).
 
 Cette approche permet une montée en équipe sans cérémonie de configuration dès J0 (ADR-008 Contexte).
 Si un contexte doit être isolé pour des raisons réelles (équipe, dépendances incompatibles, performance de build),
@@ -87,32 +68,20 @@ il peut être extrait en projet `.Domain.<ContextName>` sans rupture architectur
 Les préoccupations techniques transversales restent isolées dès J0 :
 
 ```
-Infrastructure.Persistence/
-  ├── EfCore/
-  │   ├── Migrations/
-  │   ├── SpacePersistenceConfiguration.cs
-  │   └── ...
-  └── Repositories/
-      ├── SpaceRepository.cs
-      ├── DocumentRepository.cs
-      └── ...
+Infrastructure.Persistence/    [À TRANCHER — J0]
 
-Infrastructure.Notifications/
-  ├── SignalRHub.cs
-  ├── IHubContext handlers
-  └── ... (ADR-004, § Compléments)
+Infrastructure.Notifications/  [À TRANCHER — J0] (ADR-004, § Compléments)
 
-Presentation.Api/
-  ├── Controllers/
-  ├── Middleware/
-  └── Program.cs
+Presentation.Api/              [À TRANCHER — J0]
 
-Presentation.Landing/
-  └── (Angular SSR/prerender, voir § 7)
+Presentation.Landing/          [À TRANCHER — J0] (Angular SSR/prerender, voir § 7)
 ```
 
+ADR-008 — la source citée pour cette section — décide seulement les quatre noms de projets. Le contenu de
+chacun — dossiers, fichiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document ;
+il relève du build (`[À TRANCHER — J0]`).
+
 L'isolation de `Infrastructure.Notifications` est explicitement validée pour supporter le transport SignalR temps réel (ADR-004).
-`Infrastructure.Persistence` concentre la configuration EF Core, les migrations, les repositories et les conversions d'IDs typés.
 
 *Source : [ADR-008, § Décision](decisions/ADR-008-structure-solution.md)*
 
@@ -245,7 +214,7 @@ il est construit après que la structure .NET et le modèle IndexedDB soient sta
 
 ## Prochaines étapes
 
-- **B0.4** ✓ : nommage `SharedKernel` acté et documenté (§4)
+- **Statué (ADR-008)** : nommage `SharedKernel` acté et documenté (§4) — clôt le report explicitement laissé à J0 par [ADR-008, § Conséquences](decisions/ADR-008-structure-solution.md)
 - **J0** : test d'architecture en CI (NetArchTest ou convention namespace)
 - **Post-MVP** : extraction de bounded contexts en projets séparés si besoin réel (équipe, dépendances)
 - **Statué (ADR-016)** : migration locale → cloud — format de sérialisation, gate de reconnaissance, parcours d'échec par espace (voir [ADR-016](decisions/ADR-016-serialisation-locale-migration.md))

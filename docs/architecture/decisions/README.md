@@ -16,6 +16,14 @@ sous **ADR-009**.
 
 ---
 
+## Note sur le champ « Findings liés »
+
+Chaque ADR de ce registre porte en en-tête un champ **Findings liés**, qui liste des codes (par exemple `CR-1`, `F-09`, `A-03`) issus des deux rapports d'audit de conception menés en juin 2026. Ces rapports ont été **supprimés du corpus comme périmés** (`docs/context/cahier-des-charges.md`, §12.1 : « leurs findings ne sont plus fiables », « ils ne sont pas destinés à être restaurés »).
+
+**Ces codes ne sont donc plus résolubles dans le corpus courant.** Le champ conserve une valeur de trace historique — il documente que la décision a une origine d'audit — mais ne constitue plus un renvoi actionnable : aucun document du corpus ne définit plus ce que chaque code désignait. Un identifiant public standard cité aux côtés d'un finding (par exemple `CWE-79/312`) reste, lui, résoluble — seuls les codes internes de la forme `X-NN` sont concernés par cette note.
+
+---
+
 ## Index
 
 | Numéro | Titre | Nature | Statut | Date |
@@ -29,7 +37,7 @@ sous **ADR-009**.
 | [ADR-007](ADR-007-rgpd-autorisation-api.md) | Conformité RGPD et modèle d'autorisation API | conception | Accepté | 2026-06-09 |
 | [ADR-008](ADR-008-structure-solution.md) | Structure physique de la solution | pré-implémentation | Accepté | 2026-06-09 |
 | [ADR-009](ADR-009-fk-campaign-owner.md) | FK CAMPAIGN.ownerId → USER | conception | Accepté | 2026-06-09 |
-| [ADR-010](ADR-010-suppression-campagne.md) | Suppression de campagne (soft-delete + purge + saga) | conception | Accepté | 2026-06-09 |
+| [ADR-010](ADR-010-suppression-espace.md) | Suppression de campagne (soft-delete + purge + saga) | conception | Accepté | 2026-06-09 |
 | [ADR-011](ADR-011-cascade-integrite-referentielle.md) | Cascade & intégrité référentielle (sagas `SpaceDeleted` et `UserAnonymized`) | pré-implémentation | Accepté | 2026-06-09 |
 | [ADR-012](ADR-012-rgpd-effacement-compte.md) | RGPD : effacement de compte (Art. 17 — droit à l'oubli) | conception | Accepté | 2026-06-09 |
 | [ADR-013](ADR-013-rgpd-donnees-invites.md) | RGPD : données des joueurs invités (GuestAccess, Art. 6/13) | conception | Accepté | 2026-06-09 |
@@ -37,7 +45,7 @@ sous **ADR-009**.
 | [ADR-015](ADR-015-securite-authentification-mvp.md) | Sécurité authentification MVP (politique mdp, tokens, OAuth, rate limiting) | pré-implémentation | Accepté | 2026-06-10 |
 | [ADR-016](ADR-016-serialisation-locale-migration.md) | Sérialisation locale et contrat de migration local→cloud (format payload, frontière de confiance, parcours d'échec) | mixte (dominante pré-implémentation) | Accepté | 2026-06-10 |
 | [ADR-017](ADR-017-modele-indexeddb-local.md) | Modèle IndexedDB local et sécurité du mode local (object stores, posture migration-only, persist(), F-09) | mixte (dominante pré-implémentation) | Accepté | 2026-06-10 |
-| [ADR-018](ADR-018-espace-personnel-generalisation-space.md) | Contenu personnel de premier ordre : généralisation de `Campaign` en `Space` (`SpaceType.PERSONAL`) | conception | Accepté | 2026-06-12 |
+| [ADR-018](ADR-018-espace-personnel-generalisation-space.md) | Contenu personnel de premier ordre : généralisation de `Campaign` en `Space` (`SpaceType.PERSONAL`) | mixte (dominante pré-implémentation) | Accepté | 2026-06-12 |
 
 ---
 

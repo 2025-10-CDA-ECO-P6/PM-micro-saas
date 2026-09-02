@@ -24,7 +24,7 @@ journey
         Instance creee - acces direct au scenario: 5: Sonia
         Lancer la session depuis l instance: 5: Sonia
     section Sonia marque un scenario comme reutilisable
-        Ouvrir un scenario dans une campagne: 4: Sonia
+        Ouvrir un scenario dans un espace: 4: Sonia
         Choisir Marquer comme reutilisable: 4: Sonia
         Confirmer la promotion: 4: Sonia
         Retrouver le scenario dans la bibliotheque (espace personnel): 5: Sonia
@@ -50,7 +50,7 @@ flowchart TD
     Tableau[Tableau de bord MJ]
 
     Tableau --> AccesLib[Acces a la bibliotheque\nMes scenarios reutilisables\nespace personnel du MJ]
-    Tableau --> AccesCampagne[Acces a une campagne\net a un scenario existant]
+    Tableau --> AccesCampagne[Acces a un espace\net a un scenario existant]
 
     AccesCampagne --> Marquer[Marquer comme reutilisable\nisReusable = true\nUS-13-01]
     Marquer --> LibMaj[Scenario visible dans la bibliotheque\nvia l espace personnel]
@@ -89,7 +89,7 @@ flowchart TD
 
 - **Absence de distinction claire entre source et instance dans l'interface** : si le MJ n'a pas conscience qu'il travaille sur une instance et non sur le source, il peut penser que ses modifications vont dans le scénario réutilisable. L'interface doit indiquer en permanence qu'il s'agit d'une instance, avec un lien vers le scénario source dans l'espace personnel.
 
-- **Catalogue vide au premier accès** : Sonia ouvre la bibliothèque pour la première fois et le catalogue est vide. Sans scénario marqué `isReusable` depuis ses campagnes, elle ne peut pas encore "rejouer". Ce point d'entrée vide peut dérouter — un message d'invite ("Aucun scénario réutilisable encore. Marquez un scénario depuis l'une de vos campagnes.") et un raccourci direct vers ses campagnes réduiraient la friction.
+- **Catalogue vide au premier accès** : Sonia ouvre la bibliothèque pour la première fois et le catalogue est vide. Sans scénario marqué `isReusable` depuis ses espaces, elle ne peut pas encore "rejouer". Ce point d'entrée vide peut dérouter — un message d'invite ("Aucun scénario réutilisable encore. Marquez un scénario depuis l'un de vos espaces.") et un raccourci direct vers ses espaces réduiraient la friction.
 
 - **Copie profonde invisible et silencieuse** : lors de la création d'une instance dans l'espace cible, la copie profonde (scénario + scènes + `Document` liés) peut prendre un moment ou produire un volume de contenu inattendu pour Sonia. Une indication visuelle du périmètre copié ("15 documents, 6 scènes inclus") permet d'éviter la surprise.
 

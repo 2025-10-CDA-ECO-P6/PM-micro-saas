@@ -181,10 +181,12 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 7. La création à la volée (UC-07) crée un Document dans Content Library via la couche application. Le rattachement à la session dépend du type créé :
    - **Document durable** (note, PNJ, lieu, faction, personnage joueur, objet, contenu libre) : en séance LIVE, ce Document est **épinglé par défaut** dans la session (`Session.PinDocument()`) ; le MJ peut le désépingler ensuite (`Session.UnpinDocument()`, cf. règle 4). En séance CLOSED, l'épinglage n'est pas automatique — il reste optionnel, à la main du MJ.
    - **`LIVE_NOTE`** (note de session créée à la volée) : elle est **rattachée à la session via `Session.AttachNote()`** (`sessionNoteIds`) — jamais épinglée, quel que soit le statut de la session (cf. RB-07-04).
-8. **Règle F-08 — Effacement effectif des notes privées sous obligation RGPD** (RGPD, article 17 — droit à l'effacement) : les notes `PLAYER_PRIVATE` sous obligation d'effacement sont supprimées **physiquement** — pas via le mécanisme `SoftDelete` (suppression logique réversible). Pour ces populations, « supprimé » signifie « effacé », pas « masqué ». Deux déclencheurs :
-   - **Suppression de compte utilisateur** : deux populations de Documents `LIVE_NOTE` avec `visibility = PLAYER_PRIVATE` sont effacées : (a) ceux créés par cet utilisateur (`createdById`), et (b) ceux créés par cet utilisateur et rattachés aux personnages incarnés par l'utilisateur dans les espaces où il était membre. Cette extension couvre le risque de résidu : un personnage pouvant être réassocié à un autre joueur, une note privée résiduelle serait exposée au nouveau propriétaire.
-   - **Fin définitive d'un `GuestAccess` non converti** : les Documents `LIVE_NOTE` avec `visibility = PLAYER_PRIVATE` créés par cet invité (`guestAccessId`) sont effacés physiquement — uniquement les siens.
+8. **Règle F-08 — Effacement effectif des documents privés sous obligation RGPD** (RGPD, article 17 — droit à l'effacement) : les Documents `PLAYER_PRIVATE` sous obligation d'effacement sont supprimés **physiquement** — pas via le mécanisme `SoftDelete` (suppression logique réversible). Pour ces populations, « supprimé » signifie « effacé », pas « masqué ». Cette portée n'est **pas restreinte au type `LIVE_NOTE`** : l'obligation d'effacement porte sur la confidentialité (`visibility = PLAYER_PRIVATE`), pas sur le type de document (cohérent avec content-library.md invariant 10 et identity-access.md règle métier n°4). Session Conduct manipule directement la population `LIVE_NOTE` via `sessionNoteIds` ; les autres types `PLAYER_PRIVATE` relèvent de Content Library. Deux déclencheurs :
+   - **Suppression de compte utilisateur** : deux populations de Documents `PLAYER_PRIVATE` sont effacées : (a) ceux créés par cet utilisateur (`createdById`), et (b) ceux créés par cet utilisateur et rattachés aux personnages incarnés par l'utilisateur dans les espaces où il était membre. Cette extension couvre le risque de résidu : un personnage pouvant être réassocié à un autre joueur, un document `PLAYER_PRIVATE` résiduel serait exposé au nouveau propriétaire.
+   - **Fin définitive d'un `GuestAccess` non converti** : les Documents `PLAYER_PRIVATE` créés par cet invité (`guestAccessId`) sont effacés physiquement — uniquement les siens.
    Les contenus partagés (`PUBLIC`, `GM_ONLY`) sont conservés sous intérêt légitime pour assurer la continuité de l'espace. La mise en œuvre de cette obligation est arbitrée par ADR-012 et ADR-013.
+
+   > **Portée actée** : voir identity-access.md § Règles métier n°4 — UC-10 porte désormais cette même portée large, arbitrage rendu.
 
 ---
 
@@ -217,6 +219,15 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 | `DocumentDeleted` | Content Library | Retirer de `pinnedDocumentIds` si présent |
 | `FolderDeleted` | Content Library | Retirer les documents du dossier supprimé de `pinnedDocumentIds` |
 | `DocumentVisibilityChanged` | Content Library | Mettre à jour la vue joueur en temps réel |
+| `SpaceArchived` | Space Management | *(aucune transition — convention actée ci-dessous)* |
+| `SpaceUnarchived` | Space Management | *(aucune transition — même convention, ci-dessous)* |
+
+> **Convention actée — pas de transition sur `SpaceArchived` ni `SpaceUnarchived`** : une session `CLOSED` reste `CLOSED` quel que soit le statut d'archivage de son espace, à l'aller comme au retour. Trois motifs :
+> 1. L'invariant 1 rend la machine d'états de `Session` unidirectionnelle et pilotée par ses seules commandes (`LIVE → CLOSED → ARCHIVED`). Y injecter une transition déclenchée par un événement d'un autre bounded context romprait cet invariant, pour un gain nul.
+> 2. L'archivage d'un espace est réversible (voir space-management.md), alors que `ARCHIVED` est ici un état terminal en lecture seule complète (invariant 2). Faire transiter la session sur un événement réversible créerait une asymétrie : l'espace peut redevenir actif, la session resterait figée sans retour possible.
+> 3. Puisque `SpaceArchived` ne produit déjà aucune transition, il n'y a rien à défaire au désarchivage : `SpaceUnarchived` reste sans effet sur `Session`, pour le même motif que celui qui le rend sans effet à l'aller.
+>
+> État `LIVE` : déjà couvert en amont — la garde posée sur `Space.Archive()` (space-management.md) refuse l'archivage tant qu'une session `LIVE` subsiste sur l'espace. Seul l'état `CLOSED` était concerné par cette convention.
 
 ### Ce que Session Conduct publie
 

@@ -56,9 +56,11 @@ Un outil pensé pour les problèmes du MJ.
 
 ### 2.1 Objectif principal
 
-> Permettre au MJ de préparer une campagne, structurer ses scénarios, centraliser
-> ses notes et accéder rapidement aux informations importantes pendant une session —
-> sans friction d'onboarding, sans compte obligatoire pour commencer.
+> Permettre au MJ de capturer et structurer son contenu — scénarios, PNJ, notes —
+> dès l'ouverture de l'application, dans son espace personnel par défaut ou dans un
+> espace de jeu partagé (campagne ou one-shot) lorsqu'il le décide, et d'accéder
+> rapidement aux informations importantes pendant une session — sans friction
+> d'onboarding, sans compte obligatoire pour commencer.
 
 Le MVP valide deux hypothèses en parallèle :
 
@@ -77,8 +79,9 @@ Justification :
 - Le MJ a la douleur utilisateur la plus forte et la plus documentable.
 - Une adoption réussie côté MJ entraîne mécaniquement l'adoption côté joueurs.
 
-**Aucun compte obligatoire pour commencer.** Un MJ peut ouvrir l'application et créer sa
-première campagne sans s'inscrire. Les données sont stockées localement dans le navigateur.
+**Aucun compte obligatoire pour commencer.** Un MJ peut ouvrir l'application et commencer
+à créer du contenu — dans son espace personnel ou en créant un espace de jeu — sans
+s'inscrire. Les données sont stockées localement dans le navigateur.
 Le compte n'arrive que lorsque le MJ veut partager avec ses joueurs ou sauvegarder dans le cloud.
 Cette décision réduit la friction d'onboarding pour les profils les plus résistants (Nadia, Rémi)
 et structure le modèle de monétisation — voir section 3.
@@ -125,16 +128,19 @@ qui ajoute des propriétés structurées sans retirer la liberté d'édition.
 
 **Organisation libre par dossiers.** Le MJ organise son contenu dans des dossiers qu'il
 crée et nomme lui-même. Quatre dossiers sont générés automatiquement à la création
-de la campagne ("Personnages", "Joueurs", "Scénarios", "Notes") — point de départ neutre,
-pas une cage. Le MJ peut renommer, réorganiser ou supprimer ces dossiers librement.
+d'un espace `CAMPAIGN` ou `ONE_SHOT` ("Personnages", "Joueurs", "Scénarios", "Notes") —
+point de départ neutre, pas une cage. L'espace personnel dispose, lui, du seul dossier
+virtuel « Non classés » ; le MJ y organise son contenu avec ses propres dossiers.
+Le MJ peut renommer, réorganiser ou supprimer les dossiers d'un espace `CAMPAIGN`/`ONE_SHOT`
+librement.
 Un MJ de Blades in the Dark peut renommer "Personnages" en "Factions", changer le type
 de document par défaut, ou repartir d'une ardoise vide.
 
-**Vue session configurable.** Le tableau de bord de session n'impose aucune structure fixe. Le MJ choisit quels dossiers il met en avant dans sa vue — certains veulent leurs PNJ au premier plan, d'autres leurs lieux ou leurs scènes. Cette configuration est mémorisée par campagne. La cohérence avec le système de dossiers libres est totale : ce que le MJ organise dans sa bibliothèque, il peut l'exposer directement dans sa vue session.
+**Vue session configurable.** Le tableau de bord de session n'impose aucune structure fixe. Le MJ choisit quels dossiers il met en avant dans sa vue — certains veulent leurs PNJ au premier plan, d'autres leurs lieux ou leurs scènes. Cette configuration est mémorisée par espace. La cohérence avec le système de dossiers libres est totale : ce que le MJ organise dans sa bibliothèque, il peut l'exposer directement dans sa vue session.
 
 **Relations entre documents.** N'importe quel document peut référencer un autre.
 Les backlinks (documents pointant vers un document donné) sont consultables depuis la fiche cible.
-La campagne devient un réseau d'informations navigable. Les relations typées entre documents
+L'espace devient un réseau d'informations navigable. Les relations typées entre documents
 (ce PNJ appartient à cette faction, cet objet est porté par ce personnage) sont une évolution
 post-MVP qui s'appuie sur les types de document — voir [UC-HORS-MVP](../usecases/UC-HORS-MVP.md).
 
@@ -158,7 +164,7 @@ Pour valider le concept et justifier une suite, le MVP doit démontrer cinq hypo
 
 > **Conception d'interface — Support de démonstration de H2**
 > 
-> La démonstration de l'hypothèse H2 s'appuie sur une conception documentée de l'interface de la vue session. Les wireframes basse-fidélité, dérivés du parcours utilisateur (UJ-UC-06) et des critères d'acceptation des user stories, constituent un livrable au périmètre de la conception. Ils seront produits en session dédiée avec l'opérateur en fin de complétude de la conception, avant le jalon final (décision du 2026-06-10 — arbitrage T-09, audit conception pure 2026-06).
+> La démonstration de l'hypothèse H2 s'appuie sur une conception documentée de l'interface de la vue session. Les wireframes basse-fidélité, dérivés du parcours utilisateur (UJ-UC-06) et des critères d'acceptation des user stories, constituent un livrable au périmètre de la conception. Ils seront produits en session dédiée avec l'opérateur en fin de complétude de la conception, avant le jalon final (décision du 2026-06-10).
 
 ### 2.4 Fonctionnalités hors périmètre MVP
 
@@ -185,15 +191,15 @@ l'upgrade est une décision rationnelle déclenchée par un besoin concret.
 | Tier | Compte | Fonctionnalités | Limite |
 |---|---|---|---|
 | **Local** | Aucun | Préparation complète, vue session, création à la volée | Stockage navigateur (~50-100 Mo), pas de partage joueurs, 1 device |
-| **Gratuit** | Email + mot de passe | Cloud sync, partage joueurs, accès multi-device | 3 campagnes en cloud, 4 joueurs par session, 500 Mo |
-| **Pro** | Abonnement (~7 €/mois) | Tout le gratuit + illimité | Campagnes illimitées, 5 Go+ |
+| **Gratuit** | Email + mot de passe | Cloud sync, partage joueurs, accès multi-device | 3 espaces `CAMPAIGN`/`ONE_SHOT` en cloud, 4 joueurs par session, 500 Mo |
+| **Pro** | Abonnement (~7 €/mois) | Tout le gratuit + illimité | Espaces `CAMPAIGN`/`ONE_SHOT` illimités, 5 Go+ |
 
 > Ces valeurs sont **volatiles** : consolidées et datées dans `docs/context/cahier-des-charges.md` §12.4 (arrêtées au 2026-07-02). La présente section §3 reste la **source de vérité** ; toute révision se répercute d'abord ici, puis sur la table §12.4.
 
 **Déclencheurs naturels d'upgrade :**
 - Local → Gratuit : le MJ veut partager une information avec ses joueurs (UC-08), ou il a peur
   de perdre ses données locales (bandeau de rappel non-intrusif dans l'app).
-- Gratuit → Pro : le MJ a plus de 3 campagnes actives.
+- Gratuit → Pro : le MJ a plus de 3 espaces `CAMPAIGN`/`ONE_SHOT` actifs.
 
 **Ce qui ne force pas l'upgrade :**
 - Le mode local ne présente aucun watermark ni limitation visible des fonctionnalités de préparation.
@@ -209,9 +215,10 @@ Haversack intègre le partage joueurs dans le tier gratuit, ce qui aligne l'adop
 
 ### 4.1 Maître du Jeu — MJ
 
-**Profil** : utilisateur créant et administrant une ou plusieurs campagnes.
+**Profil** : utilisateur créant et administrant un espace personnel et, le cas échéant,
+un ou plusieurs espaces de jeu partagés (campagnes ou one-shots).
 Compte optionnel — peut utiliser l'application en mode local sans s'inscrire.
-Seul rôle pouvant créer du contenu, administrer la campagne et partager des informations.
+Seul rôle pouvant créer du contenu, administrer un espace et partager des informations.
 
 **Personas de référence** : Thomas, Émilie, Nadia, Antoine, Rémi, Sonia
 → [docs/conception/besoin/persona/](../persona/)
@@ -234,6 +241,8 @@ Seul rôle pouvant créer du contenu, administrer la campagne et partager des in
 
 ```
 Mode local (sans compte)
+  ├── Espace personnel (par défaut, capture-first) → Documents, scénarios, notes
+  │                                                  └── (optionnel) Promotion vers un espace de jeu
   ├── Campagne → Préparation (scénarios, notes, dossiers) → Vue session
   │                                                        └── Création à la volée
   └── One-shot → Sélection scénario (bibliothèque) → Vue session directe
@@ -244,7 +253,7 @@ Mode local (sans compte)
 
 ### 4.2 Joueur
 
-**Profil** : utilisateur accédant à une campagne via invitation du MJ.
+**Profil** : utilisateur accédant à un espace de jeu (campagne ou one-shot) via invitation du MJ.
 Compte optionnel — peut accéder en mode invité via un lien de session.
 
 **Persona de référence** : Lucas
@@ -264,7 +273,7 @@ Compte optionnel — peut accéder en mode invité via un lien de session.
 ```
 Lien de session reçu → Saisie d'un nom d'affichage → Accès aux informations partagées
                                                      └── (optionnel) Création de compte
-                                                           → Membre permanent de la campagne
+                                                           → Membre permanent de l'espace de jeu
 ```
 
 ### 4.3 Joueur invité — mode session ponctuelle
@@ -282,7 +291,7 @@ Typique pour les one-shots, les conventions, les groupes changeants.
 - Pas d'accès à l'historique des sessions précédentes.
 - Peut créer un compte à tout moment pour convertir son accès en membre permanent (UC-09 —
   octroi d'accès, UC-11 — gestion côté MJ), sans perdre les données de session déjà consultées.
-  Une fois membre, il accède à une vue cohérente de la campagne (UC-12 — vue joueur).
+  Une fois membre, il accède à une vue cohérente de son espace de jeu (UC-12 — vue joueur).
 
 ---
 
@@ -321,13 +330,13 @@ Typique pour les one-shots, les conventions, les groupes changeants.
 
 **Condition de retour** : si l'usage ou les entretiens avec les MJ révèlent que le partage à tout le groupe bloque des tables réelles (révélations destinées à un seul joueur, gestion des secrets entre joueurs trop rigide), la granularité par joueur ou personnage sera réexaminée.
 
-### Possession des données — arbitrage du 2026-06-10
+### Possession des données — arbitrage du 2026-06-10, révisé le 2026-06-25
 
-**Décision** : l'export d'espace est rehaussé en Should Have — le MJ peut exporter l'ensemble de son espace dans un format ouvert et le consulter hors de l'application.
+**Décision** : l'export d'espace est **Must Have / version minimale** — le MJ peut exporter l'ensemble de son espace dans un format ouvert et le consulter hors de l'application. Promu de Should Have (arbitrage initial du 2026-06-10) à Must Have par décision opérateur du 2026-06-25 — voir `moscow.md` §« Export d'espace (Must Have — version minimale) ».
 
-**Raison d'être produit** : le différenciant n°1 de la vision est la possession des données. Cette possession ne peut être qu'une affirmation sans une capacité concrète et actionnable. L'export matérialise la promesse de possession et répond aux douleurs de confiance (Thomas, Rémi) et au besoin de filet de sécurité du mode local.
+**Raison d'être produit** : le différenciant n°1 de la vision est la possession des données. Cette possession ne peut être qu'une affirmation sans une capacité concrète et actionnable. L'export matérialise la promesse de possession et répond aux douleurs de confiance (Thomas, Rémi) et au besoin de filet de sécurité du mode local. La promotion du 2026-06-25 précise que la portabilité est un critère de confiance pour le segment MJ-organisé (Thomas), pas un simple confort.
 
-**Alternatives considérées** : reporter l'export en Could Have — rejeté car laisserait le différenciant « possession » sans matérialisation concrète.
+**Alternatives considérées** : reporter l'export en Could Have — rejeté car laisserait le différenciant « possession » sans matérialisation concrète. Rester en Should Have — rejeté le 2026-06-25 car l'export doit être présent dès le MVP pour rendre la promesse de possession actionnable au premier contact.
 
 **Condition de retour** : aucune. C'est une promotion de priorité, non un report conditionné.
 

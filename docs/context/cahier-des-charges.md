@@ -152,7 +152,7 @@ Haversack se différencie de ces solutions sur six points : une friction d'entr�
 
 ### 2.1 Objectif principal du MVP
 
-Le MVP doit permettre à un MJ de préparer une campagne, de structurer ses scénarios, de centraliser ses notes et d'accéder rapidement aux informations importantes pendant une session, sans friction d'onboarding et sans qu'un compte soit obligatoire pour commencer à utiliser l'application.
+Le MVP doit permettre à un MJ de capturer et structurer son contenu — scénarios, PNJ, notes — dès l'ouverture de l'application, dans son espace personnel par défaut ou dans un espace de jeu partagé (campagne ou one-shot) lorsqu'il le décide, et d'accéder rapidement aux informations importantes pendant une session, sans friction d'onboarding et sans qu'un compte soit obligatoire pour commencer à utiliser l'application.
 
 ### 2.2 Hypothèses stratégiques
 
@@ -324,7 +324,7 @@ Sept parcours bout-en-bout tissent les use cases décrits en [§5](#5-spécifica
 
 ## 5. Spécifications fonctionnelles
 
-Cette section détaille les 15 use cases du périmètre MVP sous forme de fiches homogènes. Chaque fiche est présentée telle que sa fiche use case source la décrit ; les priorités MoSCoW et les dépendances transverses sont posées en [§3](#3-périmètre-moscow).
+Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches homogènes. Chaque fiche est présentée telle que sa fiche use case source la décrit ; les priorités MoSCoW et les dépendances transverses sont posées en [§3](#3-périmètre-moscow).
 
 ### UC-01 — Mode local sans compte
 
@@ -717,7 +717,7 @@ Les fonctionnalités explicitement exclues de cette version — table visuelle, 
 
 ## 6. Exigences non-fonctionnelles
 
-Cette section reformule les dix-neuf exigences non fonctionnelles du corpus de conception, exprimées du point de vue de l'expérience vécue par le MJ et le joueur plutôt qu'en métrique d'infrastructure. Chaque exigence est vérifiable par un critère observable ; il est cité en langage besoin, sans seuil chiffré lorsque la source n'en fixe pas.
+Cette section reformule les vingt exigences non fonctionnelles du corpus de conception, exprimées du point de vue de l'expérience vécue par le MJ et le joueur plutôt qu'en métrique d'infrastructure. Chaque exigence est vérifiable par un critère observable ; il est cité en langage besoin, sans seuil chiffré lorsque la source n'en fixe pas.
 
 ### 6.1 Performance perçue
 
@@ -736,6 +736,7 @@ Le mode local (UC-01) est le point d'entrée sans compte du produit ; il doit fo
 - **Durabilité des données locales entre les sessions (NFR-OFF-02)** : le contenu saisi en mode local est retrouvé intact à la prochaine ouverture de l'application sur le même appareil, y compris après fermeture prolongée du navigateur ou redémarrage de l'appareil. Si la garantie de conservation permanente ne peut être obtenue de l'appareil, un message non bloquant en informe le MJ. Critère de vérification : absence de contenu manquant ou partiellement chargé à la réouverture.
 - **Aucune perte silencieuse de données locales (NFR-OFF-03)** : toute situation où une perte de données locales devient possible — garantie de conservation non obtenue, stockage de l'appareil saturé — déclenche un avertissement non bloquant préalable accompagné d'une action de sécurisation proposée. Critère de vérification : absence de scénario où une donnée locale disparaît sans avertissement préalable au MJ.
 - **Fonctionnement partiel en cas de perte de réseau passagère en mode cloud (NFR-OFF-04)** : un MJ utilisant un compte qui perd sa connexion en session continue de saisir des notes et de consulter les documents déjà chargés ; les modifications en attente sont conservées et synchronisées automatiquement au retour de la connexion, sans action supplémentaire de sa part. Critère de vérification : aucune note perdue lors d'une interruption réseau passagère, état synchronisé conforme à l'état affiché au retour de connexion.
+- **Continuité d'édition en préparation cloud lors d'une perte de réseau (NFR-OFF-05)** : un MJ utilisant un compte qui perd sa connexion pendant la préparation — édition d'un document ou d'un scénario, hors session — ne perd pas son travail en cours ; les modifications sont conservées et synchronisées au retour de la connexion, sans action de sa part. Ce cas, distinct de NFR-OFF-04 (qui couvre la session active), referme un trou de conception antérieurement signalé sur l'éditeur de document et l'éditeur de scénario en préparation cloud. Critère de vérification : aucune modification perdue lors d'une interruption réseau passagère en cours d'édition, état synchronisé conforme à l'état affiché à la reconnexion.
 
 ### 6.3 Confidentialité
 
@@ -763,7 +764,7 @@ Le produit est développé et lancé en français. Sa conception doit permettre 
 - **Évolutivité vers d'autres langues sans refonte de l'expérience (NFR-I18N-02)** : ajouter une langue d'interface supplémentaire est un travail de traduction, non de reconception ; la disposition des écrans et l'enchaînement des parcours restent identiques quelle que soit la longueur des libellés. Critère de vérification : absence de chevauchement, de troncature non signalée ou de débordement avec des libellés significativement plus longs ou plus courts qu'en français.
 - **Liberté totale de langue pour le contenu créé par le MJ (NFR-I18N-03)** : un MJ peut rédiger, retrouver et rechercher son contenu (titres, notes, descriptions) dans n'importe quelle langue, y compris une langue fictive ou des caractères inhabituels, indépendamment de la langue de l'interface. Critère de vérification : saisie, affichage et recherche par titre fonctionnels sans dégradation ni message d'erreur, quelle que soit la langue du contenu.
 
-> Sources : docs/conception/besoin/nfr/README.md, docs/conception/besoin/nfr/NFR-PERF-01 à NFR-PERF-04, NFR-OFF-01 à NFR-OFF-04, NFR-CONF-01 à NFR-CONF-04, NFR-ACC-01 à NFR-ACC-04, NFR-I18N-01 à NFR-I18N-03 (19 fiches)
+> Sources : docs/conception/besoin/nfr/README.md, docs/conception/besoin/nfr/NFR-PERF-01 à NFR-PERF-04, NFR-OFF-01 à NFR-OFF-05, NFR-CONF-01 à NFR-CONF-04, NFR-ACC-01 à NFR-ACC-04, NFR-I18N-01 à NFR-I18N-03 (20 fiches)
 
 ---
 
@@ -882,9 +883,9 @@ flowchart TB
 
 **Invariants et règles structurantes** :
 - Une adresse email est unique dans l'ensemble du système ; un compte suspendu ou supprimé ne peut plus s'authentifier.
-- La suppression d'un compte est irréversible et bloquée tant que son titulaire reste propriétaire d'espaces comportant des membres actifs ; une fois exécutée, elle anonymise les données nominatives tout en conservant l'identifiant technique comme référence dans les autres contextes.
+- La suppression d'un compte est irréversible ; le blocage qu'elle peut subir dépend du **type** de l'espace possédé par le titulaire — une divergence que le corpus signalait entre UC-10 et le domaine (voir le dossier de conception détaillée, §2.2/§3.c/§8.1), désormais réconciliée par le domaine : un espace personnel (`PERSONAL`), mono-membre par construction, n'est **jamais** bloquant et subit un hard-delete inconditionnel à la suppression du compte ; un espace campagne ou one-shot (`CAMPAIGN`/`ONE_SHOT`) **bloque** la suppression tant qu'il comporte au moins un membre actif autre que le propriétaire, conformément à UC-10 — le titulaire doit d'abord exclure ces membres. Une fois la suppression exécutée pour les espaces éligibles, elle anonymise les données nominatives tout en conservant l'identifiant technique comme référence dans les autres contextes.
 - Les opérations sensibles sur le compte — changement d'adresse de messagerie, liaison d'une identité externe, demande d'effacement — exigent que l'adresse de messagerie ait été préalablement vérifiée.
-- À la suppression d'un compte, les documents strictement privés à son titulaire sont effacés physiquement au titre du droit à l'effacement, tandis que les contenus partagés qu'il a produits restent rattachés à l'espace sous un motif de continuité.
+- À la suppression d'un compte, l'effacement physique au titre du droit à l'effacement (RGPD article 17) porte sur la confidentialité du document et non sur son type : tout `Document` dont la confidentialité (`visibility`) est `PLAYER_PRIVATE` et qui a été créé par l'utilisateur supprimé est effacé physiquement, quel qu'en soit le type — portée arbitrée par l'opérateur, ratifiée dans UC-10 et portée par la règle F-08 du domaine (identity-access.md § Règles métier). Les contenus partagés qu'il a produits dans un espace campagne ou one-shot restent, eux, rattachés à l'espace sous identité anonymisée, au titre de la continuité. Le contenu d'un espace personnel ne connaît pas cette continuité : l'espace entier, mono-membre, est supprimé physiquement et sans exception avec la suppression du compte.
 
 ### Space Management
 
@@ -1122,9 +1123,9 @@ Les décisions d'architecture ([§12.3](#123-index-des-décisions-darchitecture-
 
 **Ancrage documenté** (le seul établi à ce jour) :
 
-- **B1.x → J2** — ADR-011, §Points à trancher, rattachait littéralement le lot B1.x à un jalon nommé numériquement dans une nomenclature de jalon aujourd'hui retirée du corpus (`ADR-011-cascade-integrite-referentielle.md:271`). Par contenu — RGPD étendu, authentification, migration, cascade de suppression cloud — ce lot correspond à **J2** ; le rattachement retenu ici suit le contenu de B1.x, conformément à la règle de résolution actée par la ratification de l'axe canonique.
+- **B1.x → J2** — ADR-011, §Points à trancher, rattachait littéralement le lot B1.x à un jalon nommé numériquement dans une nomenclature de jalon aujourd'hui retirée du corpus (`ADR-011-cascade-integrite-referentielle.md`, §Points à trancher). Par contenu — RGPD étendu, authentification, migration, cascade de suppression cloud — ce lot correspond à **J2** ; le rattachement retenu ici suit le contenu de B1.x, conformément à la règle de résolution actée par la ratification de l'axe canonique.
 
-**Ancrage inféré, à confirmer** — distinct de l'ancrage documenté ci-dessus : ADR-010, §Conséquences, écrit seulement que « l'implémentation complète est prévue en J2 (hors périmètre du lot P0.5) » (`ADR-010-suppression-campagne.md:95`). Cette phrase établit une **antériorité** de P0.5 par rapport au premier jalon de build — elle n'établit pas littéralement que P0.5 se situe à la phase de conception. Le rapprochement **P0.5 = phase de conception** n'est donc qu'une **inférence** de cette antériorité, pas un ancrage documentaire au même titre que le précédent — à confirmer explicitement dans l'artefact de planification dédié.
+**Ancrage inféré, à confirmer** — distinct de l'ancrage documenté ci-dessus : ADR-010, §Conséquences, écrit seulement que « l'implémentation complète est prévue en J2 (hors périmètre du lot P0.5) » (`ADR-010-suppression-espace.md`, §Conséquences). Cette phrase établit une **antériorité** de P0.5 par rapport au premier jalon de build — elle n'établit pas littéralement que P0.5 se situe à la phase de conception. Le rapprochement **P0.5 = phase de conception** n'est donc qu'une **inférence** de cette antériorité, pas un ancrage documentaire au même titre que le précédent — à confirmer explicitement dans l'artefact de planification dédié.
 
 **Codes non ancrés** : `M1`, `L1`, `P6`, `P7`, `B3.2`, `B5.x` et les autres codes de renvoi présents dans les ADR ne sont, à ce stade, rattachés à aucun jalon de façon documentée dans la présente section. Leur rattachement est précisé dans l'artefact de planification dédié — ils ne sont **pas mappés** ici, pour ne pas dupliquer cette table.
 
@@ -1132,7 +1133,7 @@ Les décisions d'architecture ([§12.3](#123-index-des-décisions-darchitecture-
 
 ADR-007, §Conséquences, mentionnait un « jalon J1 » associé à une nomenclature de jalon aujourd'hui retirée du corpus, sans que la relation entre la série de codes `P` (`P0.5`, `P6`, `P7`…) et cette ancienne nomenclature ne soit documentée par ailleurs. Cette incohérence apparente de repère, signalée ici, est résolue par la ratification de l'axe J0-J3 nommé par contenu ([`roadmap-entree-build.md` §5.4](../gestion-projet/roadmap-entree-build.md)) : ADR-007 est reformulé en conséquence (§Conséquences) pour lever l'ambiguïté de jalon.
 
-> Sources : docs/architecture/decisions/ADR-010-suppression-campagne.md, ADR-011-cascade-integrite-referentielle.md, ADR-007-rgpd-autorisation-api.md
+> Sources : docs/architecture/decisions/ADR-010-suppression-espace.md, ADR-011-cascade-integrite-referentielle.md, ADR-007-rgpd-autorisation-api.md
 
 ---
 
@@ -1159,13 +1160,13 @@ Les points listés dans cette annexe sont explicitement **non tranchés** : ils 
 
 **Fournisseurs d'identité — RÉSOLU.** MVP : Google et Discord. Règle de confiance par fournisseur : cf. ADR-015 (Sécurité authentification MVP).
 
-**Granularité du gate de migration** : le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§5](#5-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration — un seul lot regroupant tous les espaces détectés, ou des lots successifs au choix de l'utilisateur — reste explicitement marquée ouverte dans la conception de l'écran de migration ([§9.2](#92-inventaire-des-écrans), Gate de migration local→cloud).
+**Granularité du gate de migration — résolu.** Le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§5](#5-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration a été tranchée par décision opérateur du 2026-07-09 : **lot unique** — tous les espaces éligibles migrent en un seul passage, avec une confirmation unique et les espaces éligibles cochés par défaut, décochables individuellement. Cette granularité globale ne modifie pas le tout-ou-rien par espace ci-dessus, qui reste en place. Décision tracée dans `docs/conception/interface/reflexion-ux-mvp.md` (§ Décisions opérateur actées, point 5).
 
 **Sémantique de comptage du quota du palier gratuit — résolu.** L'invariant limitant l'accès à une session à 4 joueurs distincts pour un espace dont le propriétaire est au palier gratuit (`docs/conception/domain/space-management.md`, invariant 11) est désormais tranché : la sémantique de comptage est portée par **RB-09-21 (UC-09), qui fait foi** — le comptage a lieu **au moment de l'octroi** de l'accès, de manière **agnostique au type d'accès** (identités-joueur distinctes comptées en capacité joueur, MJ non compté). L'invariant 11 de `space-management.md` a été réaligné en conséquence.
 
 **Autres trous de conception** (recensés au zoning d'interface §S9, à spécifier) : la vue mobile du joueur, la spécification visuelle de l'éditeur de document (disposition des blocs, affordances de type, gestion des liens), l'écran de consultation des backlinks, et la vue « Non classés » — particulièrement centrale pour l'espace personnel, où elle constitue la seule vue de départ.
 
-**Rapports d'audit — supprimés comme périmés.** Les deux rapports d'audit de conception menés en juin 2026 (`audit-conception-2026-06.md` et `audit-conception-pure-2026-06.md`) ont été supprimés car périmés — la conception a suffisamment évolué depuis pour que leurs findings ne soient plus fiables. Ils ne sont **pas destinés à être restaurés**. Le suivi des points de conception restant à trancher se fait désormais via cette annexe ([§12.1](#121-points-à-arbitrer-et-questions-ouvertes)) et le backlog du repo.
+**Rapports d'audit — supprimés comme périmés.** Les deux rapports d'audit de conception menés en juin 2026 (`audit-conception-2026-06.md` et `audit-conception-pure-2026-06.md`) ont été supprimés car périmés — la conception a suffisamment évolué depuis pour que leurs findings ne soient plus fiables. Ils ne sont **pas destinés à être restaurés**. Le suivi des points de conception restant à trancher se fait désormais via cette annexe ([§12.1](#121-points-à-arbitrer-et-questions-ouvertes)).
 
 ### 12.2 Matrice de traçabilité
 
@@ -1224,7 +1225,7 @@ Les valeurs consolidées dans cette annexe sont **volatiles** : elles sont susce
 | Stockage — palier gratuit | 500 Mo | `docs/conception/besoin/vision/vision-produit.md §3` |
 | Stockage — palier Pro | 5 Go et plus | `docs/conception/besoin/vision/vision-produit.md §3` |
 | Tarif — palier Pro | Environ 7 €/mois | `docs/conception/besoin/vision/vision-produit.md §3` |
-| H1 — seuil et délai | Seuil : ≥ 60 % des MJ de la cohorte pilote atteignent l'activation préparation. Délai : 14 jours après le premier usage. | `docs/conception/besoin/vision/vision-produit.md §2.3` |
+| H1 — seuil et délai | Seuil : ≥ 60 % des MJ de la cohorte pilote atteignent l'activation préparation. *Nuance (décision opérateur du 2026-07-09) : le contenu d'un espace personnel sans campagne n'est comptabilisé que **partiellement** dans cette activation, lorsqu'il traduit un **geste structurant** (au-delà d'une capture triviale) ; seuil exact du geste structurant `[À TRANCHER — métrique produit]`.* Délai : 14 jours après le premier usage. | `docs/conception/besoin/vision/vision-produit.md §2.3` |
 | H2 (centrale) — seuil et délai | Seuil : ≥ 50 % des MJ ayant atteint l'activation préparation atteignent l'activation vue session ; signal de répétabilité si ≥ 50 % d'entre eux l'utilisent sur deux sessions ou plus. Délai : 30 jours pour la première activation, 60 jours pour le signal de répétabilité. | `docs/conception/besoin/vision/vision-produit.md §2.3` |
 | H3 — seuil et délai | Seuil : ≥ 40 % des MJ ayant animé une session avec joueurs atteignent l'activation partage ; perception de fluidité supérieure confirmée par au moins 3 MJ interrogés sur 5. Délai : 60 jours pour l'activation partage. | `docs/conception/besoin/vision/vision-produit.md §2.3` |
 | H4 — seuil et délai | Seuil : sur les sessions avec partage, ≥ 70 % comptent au moins un joueur ayant consulté le contenu partagé ; moins de 2 joueurs sur 10 interrogés rapportent avoir renoncé à l'étape d'entrée. Délai : 60 jours. | `docs/conception/besoin/vision/vision-produit.md §2.3` |

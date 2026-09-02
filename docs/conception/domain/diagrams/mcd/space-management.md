@@ -32,7 +32,7 @@ erDiagram
         identifiant space_id FK
         texte token "UUID unique"
         texte type "LINK | EMAIL"
-        texte scope "CAMPAIGN | SESSION"
+        texte scope "SPACE | SESSION"
         identifiant session_id "nullable, ref Session Conduct"
         horodatage expires_at "nullable"
         entier max_uses "nullable"
@@ -44,7 +44,7 @@ erDiagram
     GUEST_ACCESS {
         identifiant id PK
         identifiant space_id FK
-        texte scope "SESSION | CAMPAIGN"
+        texte scope "SESSION | SPACE"
         identifiant session_id "nullable, ref Session Conduct"
         texte token "UUID unique"
         texte display_name
@@ -54,18 +54,10 @@ erDiagram
         horodatage created_at
     }
 
-    %% post-MVP
-    SCENARIO_LIBRARY_ENTRY {
-        identifiant id PK
-        identifiant owner_id FK "ref users.id"
-        identifiant document_id FK "ref documents.id (Content Library)"
-        horodatage promoted_at
-    }
-
     SPACE ||--o{ SPACE_MEMBERSHIP : "a des membres"
     SPACE ||--o{ INVITATION : "a des invitations"
     SPACE ||--o{ GUEST_ACCESS : "a des accès invités"
     SPACE_MEMBERSHIP ||--o{ MEMBERSHIP_CHARACTER : "associé à des personnages"
-    SCENARIO_LIBRARY_ENTRY }o--|| USER : "appartient à"
-    SCENARIO_LIBRARY_ENTRY }o--|| DOCUMENT : "promeut"
 ```
+
+> **Pas d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry`** : la réutilisabilité est portée par `Document.isReusable` (Content Library) ; la bibliothèque personnelle du MJ est une vue filtrée de son espace `PERSONAL` (`type = PERSONAL` ∧ `isReusable = true`) — voir space-management.md § Scénario réutilisable (invariant 12, retiré) et ADR-018.

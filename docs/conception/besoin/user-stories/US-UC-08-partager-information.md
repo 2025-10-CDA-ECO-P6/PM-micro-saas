@@ -2,7 +2,7 @@
 
 ## Objectif utilisateur
 
-Permettre au MJ de contrôler la visibilité de ses documents de campagne. Tout document est `GM_ONLY` par défaut. Le MJ peut le rendre visible par tous les joueurs (`PUBLIC`) de façon durable, et retirer ce partage à tout moment. Ce n'est pas un partage temporaire de session — la visibilité persiste entre les séances jusqu'à action explicite du MJ.
+Permettre au MJ de contrôler la visibilité de ses documents d'espace. Tout document est `GM_ONLY` par défaut. Le MJ peut le rendre visible par tous les joueurs (`PUBLIC`) de façon durable, et retirer ce partage à tout moment. Ce n'est pas un partage temporaire de session — la visibilité persiste entre les séances jusqu'à action explicite du MJ.
 
 ---
 
@@ -99,21 +99,21 @@ flowchart LR
 **Priorité** : Must Have
 
 **En tant que** MJ,  
-**je veux** rendre un document de campagne visible par les joueurs,  
+**je veux** rendre un document d'espace visible par les joueurs,  
 **afin de** leur transmettre une information (indice, aide de jeu, révélation, résumé) de façon durable.
 
 **Notes de conception** :
 - `Document.Share()` est la seule méthode de Content Library impliquée. Elle passe `visibility` de `GM_ONLY` à `PUBLIC` et produit `DocumentVisibilityChanged`.
 - Le partage est permanent : le document reste `PUBLIC` entre les sessions jusqu'à `Document.Unshare()` explicite. Ce n'est pas un partage temporaire lié à une session.
-- Le partage s'applique à tous les membres autorisés de la campagne et aux `GuestAccess` actifs — pas de ciblage individuel dans le MVP.
+- Le partage s'applique à tous les membres autorisés de l'espace et aux `GuestAccess` actifs — pas de ciblage individuel dans le MVP.
 - Le type `REVEAL` (`documentTypeId = REVEAL`) est un type système conçu pour être partagé. Son partage suit exactement le même mécanisme — aucune règle spéciale.
 - Si le document est déjà `PUBLIC`, `Share()` n'applique aucune modification (E1 — idempotence).
 
 **Règles métier** :
-- RB-08-01 : Seul un membre `OWNER` ou `GM` de la campagne peut partager un document.
+- RB-08-01 : Seul un membre `OWNER` ou `GM` de l'espace peut partager un document.
 - RB-08-02 : Le partage change `Document.visibility` de `GM_ONLY` à `PUBLIC`. Un document `PLAYER_PRIVATE` ne peut pas être partagé via cette action.
 - RB-08-03 : Le partage est durable — il persiste entre les sessions jusqu'à retrait explicite.
-- RB-08-04 : Le partage s'applique à tous les membres autorisés de la campagne et aux `GuestAccess` actifs. Pas de partage sélectif par joueur dans le MVP.
+- RB-08-04 : Le partage s'applique à tous les membres autorisés de l'espace et aux `GuestAccess` actifs. Pas de partage sélectif par joueur dans le MVP.
 - RB-08-05 : Partager un document déjà `PUBLIC` ne produit aucun changement d'état.
 
 **Critères d'acceptation** :

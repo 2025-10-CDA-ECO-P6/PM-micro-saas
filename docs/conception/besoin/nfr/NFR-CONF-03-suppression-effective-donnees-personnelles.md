@@ -35,7 +35,7 @@ Cette exigence est distincte des règles métier détaillées de suppression, qu
 
 **Ce que cette exigence ne couvre pas :**
 
-- Le détail des catégories de données supprimées ou conservées (contenus de campagne sous intérêt légitime, données anonymisées) : ces règles vivent dans le domaine Identity & Access (règle F-08, invariant 6 de l'agrégat `User`) et dans la modélisation DDD correspondante.
+- Le détail des catégories de données supprimées ou conservées (contenus de campagne et de one-shot sous intérêt légitime, données anonymisées) : ces règles vivent dans le domaine Identity & Access (règle F-08, invariant 3 et invariant 6 de l'agrégat `User`) et dans la modélisation DDD correspondante.
 - L'effacement des données des joueurs invités sans compte à la fin de leur accès : ce cas est régi par UC-09 (RB-09-18, RB-09-19) et la règle d'information RB-09-20. Il relève d'une durée de vie d'accès, pas d'une demande de suppression de compte.
 - Le délai technique d'exécution de la suppression : ce paramètre n'est pas acté à ce stade.
 - La suppression d'un compte suspendu : le comportement dans ce cas est défini dans Identity & Access.
@@ -58,7 +58,7 @@ Après suppression du compte, toute tentative de reconnexion avec les identifian
 
 **Situation limite — accès aux données après suppression :**
 
-Un utilisateur dont le compte a été supprimé ne peut plus accéder à ses données personnelles via le produit. Les contenus créés qui sont conservés dans les campagnes (sous intérêt légitime pour la continuité des campagnes actives) apparaissent sous une identité anonymisée — ils ne permettent pas d'identifier leur auteur.
+Un utilisateur dont le compte a été supprimé ne peut plus accéder à ses données personnelles via le produit. Les contenus créés qui sont conservés dans les campagnes et les one-shots (sous intérêt légitime pour la continuité des espaces actifs) apparaissent sous une identité anonymisée — ils ne permettent pas d'identifier leur auteur.
 
 ---
 

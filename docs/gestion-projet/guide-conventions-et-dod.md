@@ -38,16 +38,16 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 ## 1. Stack et principes d'architecture
 
 **Frontend — un seul écosystème Angular.** L'application (SPA) et la landing page (SSR/prerender, SSG au MVP) partagent le même écosystème Angular ; il n'y a pas de second framework front. Blazor WASM et Next.js ont été évalués et écartés.
-*Source : [ADR-003 — Stack front, § Décision](../architecture/decisions/ADR-003-stack-front.md) (l.22-24), § Compléments post-revue (l.51, landing SSG/prerender statique au MVP).*
+*Source : [ADR-003 — Stack front, § Décision](../architecture/decisions/ADR-003-stack-front.md), § Compléments post-revue (l.51, landing SSG/prerender statique au MVP).*
 
 **Backend — ASP.NET Core.** ASP.NET Core (.NET / C#), Entity Framework Core, PostgreSQL, ASP.NET Identity.
-*Source : [Stack technique](../architecture/stack.md) (l.7-15, tableau de synthèse).*
+*Source : [Stack technique, § Vue d'ensemble](../architecture/stack.md) (tableau de synthèse).*
 
 **Architecture — Clean Architecture + monolithe modulaire + DDD, inversion des dépendances.** Le domaine définit les interfaces (contrats vers la persistance, les notifications, etc.) ; l'infrastructure les implémente. La présentation dépend du domaine et de l'application, jamais l'inverse. Le sens des dépendances est Domaine → Application → Infrastructure, quelle que soit la granularité physique des projets — jamais l'inverse.
-*Source : [structure-projets.md, § 2 — Principe structurant](../architecture/structure-projets.md) (l.22-29) ; [ADR-008 — Structure physique de la solution, § Décision](../architecture/decisions/ADR-008-structure-solution.md) (l.28, « Clean Architecture conservée »).*
+*Source : [structure-projets.md, § 2 — Principe structurant](../architecture/structure-projets.md) ; [ADR-008 — Structure physique de la solution, § Décision](../architecture/decisions/ADR-008-structure-solution.md) (l.28, « Clean Architecture conservée »).*
 
 **Quatre bounded contexts en frontières logiques.** Identity & Access, Space Management, Content Library, Session Conduct sont des frontières logiques — organisées en namespaces distincts et contrats internes clairs — pas une assembly séparée par contexte au MVP. Un bounded context peut être promu en projet physique séparé à tout moment si un besoin réel émerge (montée en équipe, dépendances incompatibles, performance de build).
-*Source : [ADR-008, § Décision](../architecture/decisions/ADR-008-structure-solution.md) (l.22-26) ; [structure-projets.md, § 3](../architecture/structure-projets.md) (l.37-40, l.137-149).*
+*Source : [ADR-008, § Décision](../architecture/decisions/ADR-008-structure-solution.md) ; [structure-projets.md, § Domaine et Application : projets uniques](../architecture/structure-projets.md) et [§ 5 — Promotion ultérieure des bounded contexts](../architecture/structure-projets.md).*
 
 ---
 
@@ -56,25 +56,25 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 ### Dérivable du corpus
 
 - **Id typés obligatoires.** Jamais un `Guid`/UUID nu dans une signature métier — une classe par type d'identifiant (`SpaceId`, `UserId`, etc.). Un identifiant typé rend une inversion de paramètres détectable à la compilation plutôt qu'en production.
-  *Source : [ddd-fondations.md, § Les Id typés](../architecture/ddd-fondations.md) (l.52-53, l.104-116).*
+  *Source : [ddd-fondations.md, § Entité](../architecture/ddd-fondations.md) (l.52-53, mention des Id typés) ; [§ Les Id typés — pourquoi c'est important](../architecture/ddd-fondations.md).*
 
 - **Value objects immuables, validation encapsulée dans le type.** Un value object est défini uniquement par ses valeurs, ne se modifie pas (il se remplace), et n'est jamais instanciable dans un état invalide — par exemple un `Email` invalide ne s'instancie pas.
-  *Source : [ddd-fondations.md, § Value Object](../architecture/ddd-fondations.md) (l.59-68).*
+  *Source : [ddd-fondations.md, § Value Object](../architecture/ddd-fondations.md).*
 
 - **Agrégats modifiés via la racine uniquement.** On ne modifie jamais une entité enfant directement — on passe toujours par la racine de l'agrégat, qui garantit les invariants de tout le groupe (par exemple : `Space` garantit qu'il y a exactement un `OWNER` parmi ses membres).
-  *Source : [ddd-fondations.md, § Agrégat](../architecture/ddd-fondations.md) (l.71-81).*
+  *Source : [ddd-fondations.md, § Agrégat](../architecture/ddd-fondations.md).*
 
 - **`AuditInfo` sur toute entité.** Toute entité embarque un `AuditInfo` (qui a créé, qui a modifié, quand).
-  *Source : [ddd-fondations.md](../architecture/ddd-fondations.md) (l.53).*
+  *Source : [ddd-fondations.md, § Entité](../architecture/ddd-fondations.md) (l.53).*
 
 - **Langage ubiquitaire imposé.** Les mêmes termes dans le code, la documentation et les échanges : `Space`, `Session`, `Document`, `DocumentBlock` — jamais de synonymes techniques (`Project`, `Event`, `Record`).
-  *Source : [ddd-fondations.md, § Pourquoi DDD](../architecture/ddd-fondations.md) (l.23-26).*
+  *Source : [ddd-fondations.md, § Pourquoi DDD](../architecture/ddd-fondations.md).*
 
 - **Organisation par namespaces par bounded context.** Le code du Domaine s'organise en un sous-namespace par bounded context (`IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct`), plus un `SharedKernel` transversal.
-  *Source : [structure-projets.md, § 3](../architecture/structure-projets.md) (l.42-68).*
+  *Source : [structure-projets.md, § Domaine et Application : projets uniques](../architecture/structure-projets.md).*
 
 - **Style C# aligné DDD.** Records immuables, sealed hierarchies, pattern matching — un style cohérent avec les value objects et la modélisation du domaine.
-  *Source : [Stack technique, § Backend](../architecture/stack.md) (l.101, choix natif value objects/records/sealed classes ; l.106, « C# adapté au DDD : records immuables, pattern matching, sealed hierarchies »).*
+  *Source : [Stack technique, § Backend › Pourquoi](../architecture/stack.md) (l.101, choix natif value objects/records/sealed classes) ; [§ Backend › Points forts](../architecture/stack.md) (l.106, « C# adapté au DDD : records immuables, pattern matching, sealed hierarchies »).*
 
 ### Non couvert par le corpus
 
@@ -87,13 +87,13 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 ### Dérivable du corpus
 
 - **TypeScript strict par défaut.**
-  *Source : [Stack technique, § Application web](../architecture/stack.md) (l.73).*
+  *Source : [Stack technique, § Application web › Points forts](../architecture/stack.md) (l.73).*
 
 - **Écosystème Angular unique, partagé landing + application.** Formulaires réactifs, injection de dépendances native — cohérente avec la culture .NET du projet.
-  *Source : [Stack technique, § Application web](../architecture/stack.md) (l.70-76) ; [ADR-003](../architecture/decisions/ADR-003-stack-front.md).*
+  *Source : [Stack technique, § Application web › Points forts](../architecture/stack.md) ; [ADR-003](../architecture/decisions/ADR-003-stack-front.md).*
 
 - **Mode local TypeScript = persistance CRUD + validations minimales.** Le mode local (navigateur, sans compte) n'exécute pas le domaine C# complet : c'est une couche de persistance avec des validations TypeScript minimales (par exemple : titre de document non vide, structure de blocs valide). Le domaine serveur reste la source de vérité unique. Invariant impératif : `validation locale ⊆ validation serveur` — le mode local peut accepter un état que le serveur refuserait, jamais l'inverse.
-  *Source : [structure-projets.md, § 7 — Périmètre du mode local TypeScript](../architecture/structure-projets.md) (l.178-194).*
+  *Source : [structure-projets.md, § 7 — Périmètre du mode local TypeScript](../architecture/structure-projets.md).*
 
 ### Non couvert par le corpus
 
@@ -106,7 +106,7 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 La structure concrète des projets .NET — granularité, noms de projets, responsabilités de chacun, organisation des namespaces — est intégralement décrite dans **[structure-projets.md](../architecture/structure-projets.md)**, qui en est la source de vérité. Ce guide n'en reproduit pas le contenu ; il y renvoie.
 
 Un seul point est énoncé ici en propre, parce qu'il clôt un report explicite d'ADR-008 : le noyau partagé de types et abstractions transversales (classes de base, value objects communs, interfaces transversales) est nommé **`SharedKernel`**. Ce choix est acté et le report est clos.
-*Source : [structure-projets.md, § 4 — Nommage du noyau partagé](../architecture/structure-projets.md) (l.121-124).*
+*Source : [structure-projets.md, § 4 — Nommage du noyau partagé](../architecture/structure-projets.md).*
 
 Convention consommatrice qui en découle : tout nouveau code se place dans le namespace de son bounded context ; aucune référence ne traverse une frontière de bounded context non autorisée. Cette convention est garantie par le gate outillé en intégration continue décrit en section 6.
 
@@ -123,19 +123,19 @@ Convention consommatrice qui en découle : tout nouveau code se place dans le na
 ### Dérivable du corpus
 
 **Le test d'architecture en intégration continue est un gate obligatoire, livrable de J0.** Il vérifie les frontières de bounded context et remplace la discipline de revue de code, jugée insuffisante en contexte d'équipe restreinte, par une contrainte outillée vérifiable à chaque commit.
-*Source : [structure-projets.md, § 6 — Frontières outillées en CI](../architecture/structure-projets.md) (l.153-165) ; [ADR-008, § Compléments post-revue](../architecture/decisions/ADR-008-structure-solution.md) (l.56).*
+*Source : [structure-projets.md, § 6 — Frontières outillées en CI](../architecture/structure-projets.md) ; [ADR-008, § Compléments post-revue](../architecture/decisions/ADR-008-structure-solution.md) (l.56).*
 
 Les trois règles du test d'architecture, dans sa forme initiale :
 1. le Domaine n'importe aucune assembly d'Infrastructure ni de Présentation — il reste au centre, indépendant ;
 2. chaque contexte respecte les frontières logiques définies par les namespaces ;
 3. l'Application et l'Infrastructure ne dépendent que du Domaine et de ses interfaces.
 
-*Source : [structure-projets.md, § 6](../architecture/structure-projets.md) (l.161-163).*
+*Source : [structure-projets.md, § 6](../architecture/structure-projets.md) (l.130-132).*
 
 **Ordre C#-first, à l'intérieur de chaque incrément.** La solution .NET est échafaudée en premier. L'ordre à l'intérieur d'un même incrément est : Domaine / Application (C#) → EF Core (persistance) → TypeScript mode local → Angular. Cet ordre s'applique à l'intérieur d'un incrément, jamais en travers de la séquence macro des jalons.
-*Source : [structure-projets.md, § 8 — Ordre de construction](../architecture/structure-projets.md) (l.230-234) ; [Roadmap d'entrée en build, § 4](roadmap-entree-build.md).*
+*Source : [structure-projets.md, § 8 — Ordre de construction](../architecture/structure-projets.md) ; [Roadmap d'entrée en build, § 4](roadmap-entree-build.md).*
 
-**Renvoi** : le détail du test d'architecture dans le dispositif de test global — son objet, son périmètre, ses critères d'entrée et de sortie — est décrit dans [le cahier de stratégie de test et de recette, § 3.4](../test/cahier-strategie-test-et-recette.md) (l.115).
+**Renvoi** : le détail du test d'architecture dans le dispositif de test global — son objet, son périmètre, ses critères d'entrée et de sortie — est décrit dans [le cahier de stratégie de test et de recette, § 3.4 — Test d'architecture (CI)](../test/cahier-strategie-test-et-recette.md).
 
 ### Non couvert par le corpus
 
@@ -152,13 +152,13 @@ Les points suivants sont des **critères d'acceptation non négociables**, déri
   *Source : [Politique de sanitisation HTML et CSP, § 1](../architecture/specs/sanitisation-csp.md) (l.9-21).*
 
 - **Interdictions absolues, sans exception, quelle que soit l'implémentation retenue :** la balise `<script>` et les attributs gestionnaires d'événements (`on*`) sont interdits et supprimés des deux côtés.
-  *Source : [sanitisation-csp.md, § 1](../architecture/specs/sanitisation-csp.md) (l.22-27).*
+  *Source : [sanitisation-csp.md, § Interdictions absolues](../architecture/specs/sanitisation-csp.md).*
 
 - **Ordre impératif à l'import : valider la structure, puis sanitiser le contenu — avant toute écriture ou persistance.** Un fichier importé n'est jamais écrit tel quel dans le stockage local.
-  *Source : [sanitisation-csp.md, § 2](../architecture/specs/sanitisation-csp.md) (l.31-41).*
+  *Source : [sanitisation-csp.md, § 2 — Ordre de traitement à l'import JSON](../architecture/specs/sanitisation-csp.md).*
 
 - **Posture CSP actée :** `default-src 'self'` (restriction par défaut à l'origine de l'application) ; `script-src 'self'`, sans script inline ni tiers non approuvé ; `connect-src 'self'` (ou restreint à l'API), qui rend observable la règle « aucun envoi serveur en mode local ».
-  *Source : [sanitisation-csp.md, § 4 — Posture CSP actée](../architecture/specs/sanitisation-csp.md) (l.58-73).*
+  *Source : [sanitisation-csp.md, § 4 — Posture CSP actée](../architecture/specs/sanitisation-csp.md).*
 
 - **Le token d'accès invité n'est jamais transmis en query-string.** Cookie court-lived ou échange de token avant la négociation WebSocket.
   *Source : [Roadmap d'entrée en build, § 3.6](roadmap-entree-build.md) (l.167).*
@@ -166,11 +166,62 @@ Les points suivants sont des **critères d'acceptation non négociables**, déri
 ### Non couvert par le corpus
 
 - **[À TRANCHER — B1.2 / P6]** (le corpus nomme déjà cette dette sous ces deux codes — repris tel quel, non résolu ici) : la liste exhaustive des balises HTML autorisées, la bibliothèque de sanitisation exacte, et les directives CSP complètes (liste exhaustive des directives restantes, valeurs de nonce).
-  *Source : [sanitisation-csp.md, § 5](../architecture/specs/sanitisation-csp.md) (l.77-86).*
+  *Source : [sanitisation-csp.md, § 5 — Points laissés ouverts](../architecture/specs/sanitisation-csp.md).*
 
 ---
 
-## 8. Definition of Done
+## 8. Conventions de maintenance du corpus documentaire
+
+Les points qui suivent ne relèvent pas du même registre que les sections 1 à 7 : ils ne dérivent pas d'une décision de conception déjà actée (ADR, document de structure, spécification), mais de défauts effectivement mesurés lors de la passe de vérification pré-build du corpus documentaire (`docs/RAPPORT-VERIFICATION-PRE-BUILD.md`). Cette section ne fait donc pas exception au bandeau d'autorité de la section 0 : elle en respecte l'esprit en le disant explicitement, plutôt qu'en habillant une pratique de méthode d'une fausse source de conception. Elle porte sur la maintenance du corpus `docs/conception/**` et des autres documents normatifs du dépôt, que l'équipe de build continuera d'éditer pendant le build — amender un use case, une décision d'architecture, une spécification. Elle ne concerne ni le code C#, ni le TypeScript, ni la CI.
+
+### 8.1 Vérifier la chaîne citée au moment où l'on réécrit
+
+Un document peut citer entre guillemets une phrase d'un autre document, exactement au moment où la citation est écrite. Puis la source est réécrite, et la citation devient une attribution à un texte qui n'existe plus. Ce défaut est invisible à tout outillage de vérification de liens ou d'ancres, et invisible à la relecture du document fautif lui-même, qui reste parfaitement cohérent avec lui-même : il faut ouvrir la source pour voir le manque. Les guillemets sont précisément la marque typographique par laquelle un lecteur s'autorise à ne pas vérifier.
+
+**Pratique** : à chaque réécriture d'un énoncé normatif, chercher dans tout le corpus la chaîne distinctive que l'on vient de supprimer ou de modifier. C'est celui qui réécrit qui doit le faire — lui seul sait ce qu'il vient d'invalider, et il travaille sur une chaîne précise, pas sur un balayage général.
+
+Un balayage automatique global de cette famille de défaut a été tenté et a échoué (précision de l'ordre de 20 %) : attribuer une citation entre guillemets au fichier nommé sur la même ligne est une heuristique fausse le plus souvent — une ligne nomme très souvent un fichier pour une raison sans rapport avec ce qu'elle met entre guillemets. Il est inutile de retenter cet outil sous cette forme : la garantie tient au geste de celui qui réécrit, pas à un contrôle périodique.
+
+Note pour qui ferait une comparaison littérale automatisée : ajouter du gras à l'intérieur d'une citation la rend non littérale au sens strict — le corpus le fait par endroits, sans conséquence pratique, mais une comparaison automatisée doit normaliser l'emphase avant de comparer.
+
+### 8.2 Renvoyer par nom de section plutôt que par numéro de ligne
+
+Un numéro de ligne désigne une position, pas une identité : il se périme à chaque édition de sa cible, y compris une édition qui ne touche pas à la substance visée par le renvoi. Mesure faite lors de la passe de vérification : la réécriture d'une seule section d'un ADR a périmé une dizaine de renvois pointant dans ce fichier. La même propriété rend le défaut difficile à vérifier automatiquement sans bruit — un vérificateur écrit pour cette famille de renvoi s'est trompé dans les deux sens et n'a pas pu établir avec certitude combien de renvois étaient réellement faux.
+
+**Pratique** : quand la substance visée par un renvoi est une section, renvoyer par son nom plutôt que par son numéro de ligne. Un nom de section ne se périme que si la section disparaît ou change de nom. Le numéro de ligne reste légitime quand il désigne une ligne précise, à l'intérieur d'une section, dont le nom ne rendrait pas compte.
+
+**Dérogation structurelle** : quand une section nommée contient elle-même une sous-section nommée qui est aussi la cible de renvois distincts, le nom seul de la section mère ne désambiguïse plus entre un renvoi visant son corps propre et un renvoi visant sa sous-section — les deux sont nominalement « dans » la section mère. Dans cette configuration, porter le numéro de ligne en plus du nom n'est pas une préférence de style : c'est la seule façon de distinguer les deux renvois. Cas mesuré lors de cette passe : `sanitisation-csp.md, § 1` contient la sous-section nommée `§ Interdictions absolues` ; le renvoi vers le corps du § 1 (la politique de liste blanche elle-même, sans sous-titre propre) et celui vers `§ Interdictions absolues` sont tous deux nominalement « dans § 1 » — seul le numéro de ligne du premier les distingue encore.
+
+Le corpus applique déjà ce principe à ses index : un renvoi qui pointe ne dérive pas quand sa cible bouge, un contenu recopié doit être resynchronisé à chaque changement de la source — voir le principe posé en tête de [besoin/README.md](../conception/besoin/README.md) et de [docs/README.md](../README.md) sur le rôle d'un index. Cette pratique en est l'extension à la famille de renvois qui ne l'avait pas encore reçue.
+
+**Bilan de la résorption sur les sections 1 à 7** : les 34 renvois par numéro de ligne que portaient les sections 1 à 7 ont été rouverts un par un contre leur cible. 22 ont été convertis en renvoi par nom de section — le renvoi désignait une plage ou une section entière, dont le nom rend compte aussi bien que le numéro. 12 conservent leur numéro de ligne, chacun parce qu'il désigne un fait précis à l'intérieur d'une section qui porte plusieurs faits distincts (par exemple une clause parmi plusieurs dans une même liste, ou un paragraphe sans sous-titre propre au milieu d'une section plus large) — c'est exactement la dérogation posée ci-dessus, pas un oubli. Cette réouverture a aussi révélé une attribution de section imprécise dans un renvoi vers `ddd-fondations.md` (une citation étiquetée § Les Id typés désignait en réalité deux lignes vivant dans § Entité) ; elle a été corrigée en scindant le renvoi vers ses deux sections réelles. Aucun des 34 renvois initiaux n'est resté non examiné.
+
+### 8.3 Chercher par revendication, pas par périmètre de lecture
+
+Une vérification du corpus découpée par dossier, avec lecture intégrale de chaque fichier, peut manquer un défaut qui traverse les périmètres de lecture — un use case entier resté non généralisé pendant qu'une décision voisine l'était, une décision d'architecture actée qui contredit le modèle de domaine sur un point précis. Le lecteur de chaque dossier peut avoir lu son fichier en entier sans rien y voir d'anormal : une lecture intégrale par périmètre ne peut structurellement pas détecter une contradiction qui se noue entre deux périmètres.
+
+**Pratique** : poser la question sous forme de revendication et la mesurer sur l'ensemble du corpus, du type — quels fichiers énoncent X sans jamais nommer Y. Ce recensement est rapide et exhaustif sur ses candidats, ce qu'aucune relecture ne garantit.
+
+Deux contreparties, mesurées elles aussi :
+
+- **Le détecteur doit être validé, pas pris au mot.** Un premier filtre qui ne retient que les fichiers ne mentionnant jamais Y laisse passer les fichiers partiellement corrigés — ceux qui mentionnent Y quelque part tout en énonçant ailleurs une règle qui reste fausse. Un défaut a ainsi survécu une itération de plus.
+- **Le motif de mesure doit couvrir au moins toutes les formes du défaut.** Un renommage a été fait à moitié parce que le périmètre de recherche avait été établi sur un seul motif technique, qui ne trouvait ni les formulations en prose ni les libellés de diagrammes portant le même défaut.
+
+Il en découle une règle simple : un défaut uniforme sur N fichiers ne se corrige pas sur un sous-ensemble — un corpus à demi corrigé est cohérent avec rien, ni avec son ancien état ni avec le nouveau.
+
+### 8.4 Ouvrir la cible au moment d'écrire un renvoi, pas seulement au moment de le relire
+
+Un renvoi peut être faux sans avoir jamais été juste. Ce défaut est d'une autre nature que ceux de 8.1 et 8.2, qui raisonnent tous deux sur la **dérive** : une citation ou un numéro de ligne justes à l'écriture, rendus faux par une édition ultérieure de leur cible. Ici, rien n'a bougé dans la cible — c'est le renvoi lui-même qui, dès son écriture, désignait mal sa cible. Comme la citation fabriquée de 8.1, ce défaut est invisible à la relecture du document citant : celui-ci reste parfaitement cohérent avec lui-même, il faut ouvrir la cible pour voir l'écart. Il concerne aussi bien un renvoi par numéro de ligne qu'un renvoi par nom de section — le nom peut être aussi mal attribué que le numéro.
+
+Mesuré lors de la passe de résorption de 8.2 sur ce guide, en rouvrant un par un ses 34 renvois contre leur cible : deux cas, tous deux dans ce document. Cette mesure ne porte que sur ce guide — elle ne dit rien du reste du corpus, dont les renvois n'ont pas été rouverts un par un à cette occasion.
+- Un renvoi groupait deux plages de lignes vivant dans deux sections différentes de la même cible sous un seul nom de section, exact pour une seule des deux plages.
+- Un renvoi bornait sa plage jusqu'à une ligne tombée déjà dans la sous-section suivante de sa cible, sans rapport avec la substance annoncée.
+
+**Pratique** : au moment d'écrire un renvoi — pas seulement au moment de le relire — ouvrir la cible et vérifier que le nom de section (ou la ligne) annoncé est bien celui sous lequel la substance visée vit réellement, pas celui sous lequel on croit qu'elle vit. Le bornage d'une plage de lignes fait partie de cette vérification : une plage qui déborde dans la section suivante annonce une cible plus large que celle réellement visée — un renvoi juste s'arrête où s'arrête la substance qu'il désigne, pas où s'arrête la lecture de celui qui l'écrit.
+
+---
+
+## 9. Definition of Done
 
 ### DoD de code
 
@@ -184,6 +235,8 @@ Une tâche de développement est **terminée** quand, cumulativement, les 5 crit
 
 **Réconciliation avec la section 6** : l'item 3 (revue de code) désigne une pratique complémentaire et résiduelle, non substituable au gate de test d'architecture — c'est ce gate outillé, et non la revue manuelle, qui remplace la discipline de revue jugée insuffisante en contexte d'équipe restreinte (section 6).
 
+**Réconciliation avec la section 8** : quand une tâche réécrit un énoncé normatif du corpus documentaire cité ailleurs, l'item 4 (documentation à jour) se vérifie par la pratique de la section 8.1 — chercher dans le corpus la chaîne distinctive que la réécriture vient de supprimer. Ce n'est pas un sixième critère : c'est la façon dont l'item 4 se satisfait dans ce cas précis.
+
 Cette DoD de code s'applique à chaque incrément livré. Son accumulation, incrément après incrément, nourrit les critères de sortie de jalon dont le cahier de stratégie de test et la roadmap d'entrée en build sont les auteurs — elle ne s'y substitue pas.
 
 ### Renvoi — DoD de test et critères de sortie par jalon
@@ -191,6 +244,6 @@ Cette DoD de code s'applique à chaque incrément livré. Son accumulation, incr
 Ce guide n'énonce pas de DoD de test ni de critères de sortie de jalon en propre : ce sont des artefacts déjà produits, dont ce guide n'est pas l'auteur.
 
 - **DoD de test, par use case** : [cahier de stratégie de test et de recette, § 8](../test/cahier-strategie-test-et-recette.md) (l.274).
-- **Critères de sortie, par jalon de build** : [cahier de stratégie de test et de recette, § 9](../test/cahier-strategie-test-et-recette.md) (l.278) et [Roadmap d'entrée en build, § 3](roadmap-entree-build.md) (critères de sortie factuels, par jalon).
+- **Critères de sortie, par jalon de build** : [cahier de stratégie de test et de recette, § 9 — Critères de sortie par jalon](../test/cahier-strategie-test-et-recette.md) et [Roadmap d'entrée en build, § 3](roadmap-entree-build.md) (critères de sortie factuels, par jalon).
 
 **Frontière explicite** : la DoD de code de ce guide s'applique à chaque incrément livré, quelle que soit sa taille. Les critères de sortie de jalon opèrent à une granularité supérieure — ils agrègent plusieurs incréments et des vérifications propres au jalon (recette fonctionnelle, gates humains hors intégration continue). Un incrément peut satisfaire la DoD de code de ce guide sans que le jalon auquel il appartient satisfasse encore ses propres critères de sortie.

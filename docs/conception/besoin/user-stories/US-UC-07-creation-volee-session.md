@@ -2,7 +2,7 @@
 
 ## Objectif utilisateur
 
-Permettre au MJ de créer instantanément un document durable dans la campagne depuis la vue session — note, PNJ, lieu, faction, personnage joueur, objet ou contenu libre — sans quitter le contexte de partie. Le titre seul suffit à valider la création. Un document durable est épinglé automatiquement par défaut dans la session (LIVE, désépinglable) ; une note de session est rattachée à la session via `AttachNote` (jamais épinglée). L'élément peut être enrichi après la partie.
+Permettre au MJ de créer instantanément un document durable dans l'espace depuis la vue session — note, PNJ, lieu, faction, personnage joueur, objet ou contenu libre — sans quitter le contexte de partie. Le titre seul suffit à valider la création. Un document durable est épinglé automatiquement par défaut dans la session (LIVE, désépinglable) ; une note de session est rattachée à la session via `AttachNote` (jamais épinglée). L'élément peut être enrichi après la partie.
 
 ---
 
@@ -41,7 +41,7 @@ Permettre au MJ de créer instantanément un document durable dans la campagne d
 
 ## Bounded contexts pressentis
 
-- **Content Library** — création du document, liaison à la campagne, dossier d'accueil
+- **Content Library** — création du document, liaison à l'espace, dossier d'accueil
 - **Session Conduct** — rattachement selon le type : `Session.AttachNote` (`sessionNoteIds`) pour une note de session, `Session.PinDocument` (`pinnedDocumentIds`, auto-épinglé par défaut en LIVE, désépinglable par le MJ) pour un document durable
 
 La création à la volée est une opération cross-context : `Document.Create(...)` dans Content Library, puis — selon le type — `Session.AttachNote(documentId)` (note de session) ou `Session.PinDocument(documentId)` (document durable) dans Session Conduct.
@@ -106,7 +106,7 @@ flowchart LR
 
 **En tant que** MJ,  
 **je veux** créer un document (note, PNJ, lieu, faction, personnage joueur ou document libre) depuis la vue session avec un titre seul,  
-**afin de** maintenir la fluidité de la partie et retrouver l'élément proprement dans ma campagne après la session.
+**afin de** maintenir la fluidité de la partie et retrouver l'élément proprement dans mon espace après la session.
 
 **Notes de conception** :
 - Opération cross-context :
@@ -115,12 +115,12 @@ flowchart LR
 - Le dossier d'accueil est déterminé par le type : PNJ → dossier Personnages, NOTE → dossier Notes, PJ → dossier Personnages joueurs. Si aucun dossier typé n'existe ou si le type est indéterminé → dossier "Non classés".
 - Visibilité par défaut : `GM_ONLY`.
 - L'auto-épinglage (par défaut, désépinglable par le MJ) ne concerne que les documents durables en session LIVE ; il déclenche `Session.PinDocument`. Une `LIVE_NOTE` ne s'épingle jamais : elle se rattache via `Session.AttachNote` (cf. RB-07-04, Bounded contexts pressentis).
-- Possible en mode local (sans compte) : document créé en IndexedDB.
+- Possible en mode local (sans compte).
 - Auto-épinglage vs choix manuel du MJ : voir Question #1 des Questions ouvertes — **Résolue**, décision reprise ci-dessus (par défaut en LIVE, désépinglable).
 
 **Règles métier** :
 - RB-07-01 : Le titre est le seul champ obligatoire. La création est refusée si le titre est vide ou composé uniquement d'espaces.
-- RB-07-02 : Le document créé est automatiquement lié à la campagne de la session en cours.
+- RB-07-02 : Le document créé est automatiquement lié à l'espace de la session en cours.
 - RB-07-03 : La visibilité par défaut est `GM_ONLY`.
 - RB-07-04 : Un document durable est auto-épinglé par défaut dans `Session.pinnedDocumentIds` en session LIVE ; le MJ peut le désépingler. En session CLOSED, l'épinglage reste optionnel. (Une note de session est rattachée via `Session.AttachNote` — cf. Bounded contexts pressentis.)
 - RB-07-05 : La création à la volée est impossible depuis une session ARCHIVED.
@@ -129,7 +129,7 @@ flowchart LR
 - [ ] Le MJ peut ouvrir un panneau de création rapide depuis la vue session.
 - [ ] Le MJ peut choisir le type de document : NOTE, PNJ, PJ, document libre.
 - [ ] La création est validée avec un titre seul.
-- [ ] Le document est créé avec `visibility = GM_ONLY` et lié à la campagne courante.
+- [ ] Le document est créé avec `visibility = GM_ONLY` et lié à l'espace courant.
 - [ ] Le document est placé dans le dossier d'accueil correspondant à son type.
 - [ ] Le document est ajouté à `Session.pinnedDocumentIds` automatiquement (session LIVE) — ceci ne vaut que pour un document durable ; une `LIVE_NOTE` est ajoutée à `sessionNoteIds` via `Session.AttachNote`.
 - [ ] La création est refusée si le titre est vide (E1).
@@ -154,7 +154,7 @@ Scénario : Le MJ crée une note de session à la volée (A3)
 Scénario : Le MJ crée un document générique à la volée (A4)
   Étant donné qu'une session est en status LIVE
   Quand le MJ crée un document de type "Lieu" intitulé "Auberge du Pont Brisé"
-  Alors le document est créé, lié à la campagne, visibility = GM_ONLY
+  Alors le document est créé, lié à l'espace, visibility = GM_ONLY
   Et il est épinglé dans la session
 
 Scénario : Création refusée si titre vide (E1)
@@ -176,7 +176,7 @@ Scénario : Création impossible en ARCHIVED (E2)
 
 **En tant que** MJ,  
 **je veux** créer un document depuis une session déjà terminée (CLOSED),  
-**afin de** retrouver dans ma campagne un élément improvisé pendant la partie que je n'ai pas eu le temps de saisir à chaud.
+**afin de** retrouver dans mon espace un élément improvisé pendant la partie que je n'ai pas eu le temps de saisir à chaud.
 
 **Notes de conception** :
 - Session en statut `CLOSED` : `Session.pinnedDocumentIds` reste modifiable.
@@ -201,7 +201,7 @@ Scénario : Le MJ ajoute un PNJ rétroactivement en CLOSED (A5)
   Étant donné qu'une session est en status CLOSED
   Quand le MJ crée un PNJ "Capitaine Draven" depuis le panneau de création rapide
   Alors le document est créé dans Content Library avec visibility = GM_ONLY
-  Et il est lié à la campagne de la session
+  Et il est lié à l'espace de la session
 
 Scénario : Le document créé en CLOSED est persisté après archivage
   Étant donné qu'un document a été créé à la volée depuis une session CLOSED

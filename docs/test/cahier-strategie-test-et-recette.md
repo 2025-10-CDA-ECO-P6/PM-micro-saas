@@ -33,7 +33,7 @@ Toute référence ajoutée par ce document pointe vers le haut de cette hiérarc
 
 ### Posture consommateur Gherkin
 
-La couche Gherkin des user stories (`docs/conception/besoin/user-stories/`, arbitrage T-07) est la **source unique** des critères d'acceptation produit, en langage métier (Given/When/Then, ou Étant donné/Quand/Alors selon le fichier source). Ce document se positionne en **consommateur** : chaque case de la table de recette **transpose** un scénario Gherkin en précondition/étapes/résultat attendu et **cite sa source** (`US-UCNN-KK §"<titre du scénario>"`). Il ne réécrit pas les Gherkin mot pour mot comme une paraphrase autonome — il les trace vers un format exécutable en recette.
+La couche Gherkin des user stories (`docs/conception/besoin/user-stories/`) est la **source unique** des critères d'acceptation produit, en langage métier (Given/When/Then, ou Étant donné/Quand/Alors selon le fichier source). Ce document se positionne en **consommateur** : chaque case de la table de recette **transpose** un scénario Gherkin en précondition/étapes/résultat attendu et **cite sa source** (`US-UCNN-KK §"<titre du scénario>"`). Il ne réécrit pas les Gherkin mot pour mot comme une paraphrase autonome — il les trace vers un format exécutable en recette.
 
 **Clause de re-dérivation** : si un scénario Gherkin source est modifié, la ligne de recette correspondante doit être re-dérivée. Une divergence constatée entre une ligne de ce cahier et le scénario Gherkin qu'elle cite est un **défaut à corriger dans ce document**, jamais une variante à documenter comme telle — le Gherkin fait foi. Cette citation se fait par **titre du scénario** (le corpus amont ne porte pas d'identifiant stable de scénario) — un renommage silencieux du titre source rendrait une citation caduque sans le signaler mécaniquement. C'est pourquoi un contrôle périodique de conformité des citations (§13) est le mécanisme concret de cette clause, pas seulement une politique déclarée.
 
@@ -329,7 +329,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 |---|---|---|---|---|---|---|
 
 - **ID** : identifiant `CR-UCNN-KK` (§1).
-- **Cas** : intitulé court du cas de recette, avec sa nature entre crochets (nominal / alternatif / erreur / limite / irréversible / sécurité).
+- **Cas** : intitulé court du cas de recette, avec sa nature entre crochets — nominal / alternatif / erreur / limite / irréversible / sécurité / dérivé, seuls ou combinés/qualifiés selon le cas observé dans les tables (ex. `[RGPD, dérivé]`, `[sécurité/IDOR, dérivé]`, `[sécurité/temps réel]`, `[erreur, résilience]`, `[confidentialité]`, `[temps réel]`, `[limite, garanties fermes seulement]`).
 - **Préconditions**, **Étapes**, **Résultat attendu** : transposition directe du scénario Gherkin source (Given/When/Then ou Étant donné/Quand/Alors).
 - **Source** : `US-UCNN-KK §"<titre du scénario Gherkin>"`, ou `RB-NN-xx (dérivé, pas de Gherkin)` pour un cas de nature (a).
 - **Verdict** : `☐ OK ☐ KO ☐ N/A`, renseigné en phase d'exécution de la recette.
@@ -346,7 +346,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 | CR-UC01-01 | [nominal] Commencer sans compte | Le MJ ouvre l'application pour la première fois | Il choisit « Commencer sans compte » | L'application affiche un message court sur le stockage local ; un lien FAQ est disponible ; le MJ est redirigé vers l'écran de création de campagne | US-01-01 §"Le MJ choisit de commencer sans compte" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC01-02 | [nominal] Message informatif au 1er démarrage | Le MJ ouvre l'application pour la première fois | Il choisit de commencer sans compte | Le MJ reçoit un message informatif court sur le stockage local lors du premier démarrage | US-01-01 §"Le MJ reçoit un message informatif au premier démarrage" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC01-03 | [nominal] Créer une campagne en mode local | Le MJ est en mode local sans compte | Il crée une campagne et y ajoute du contenu | Aucune donnée n'est envoyée au serveur ; le contenu est disponible dans la session courante | US-01-01 §"Le MJ crée une campagne en mode local" | ☐ OK ☐ KO ☐ N/A |
-| CR-UC01-04 | [erreur] 4e campagne locale refusée | Le MJ est en mode local sans compte et a déjà 3 campagnes créées | Il tente de créer une 4e campagne | La création est bloquée ; un message invite à créer un compte pour un stockage cloud illimité | US-01-01 §"Le MJ atteint la limite de 3 campagnes en mode local" | ☐ OK ☐ KO ☐ N/A |
+| CR-UC01-04 | *(retiré)* — aucun plafond de création n'existe en mode local (décision opérateur, `RB-01-03` retirée) ; la seule contrainte du mode local est la capacité de stockage du navigateur, couverte par CR-UC01-14 | — | — | — | US-01-01 §RB-01-03 (retirée) | — |
 | CR-UC01-05 | [nominal] Retour après fermeture du navigateur | Le MJ a créé du contenu en mode local et a fermé le navigateur | Il rouvre l'application | Ses campagnes et contenus sont disponibles | US-01-02 §"Retour après fermeture du navigateur" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC01-06 | [alternatif] Partage visible mais désactivé | Le MJ est en mode local sans compte | Il accède à une fonctionnalité de partage (UC-08) ou d'accès joueur (UC-09) | La fonctionnalité est visible et désactivée ; un CTA invite à créer un compte | US-01-04 §"Fonctionnalité de partage visible mais désactivée" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC01-07 | [alternatif] Fonctions cloud distinguables, aucune masquée | Le MJ est en mode local sans compte | Il navigue dans l'application | Les fonctionnalités locales sont pleinement accessibles ; les fonctionnalités cloud sont distinguables visuellement (cadenas/label) ; aucune n'est masquée | US-01-04 §"Le MJ comprend ce qui est accessible sans compte" | ☐ OK ☐ KO ☐ N/A |
@@ -366,6 +366,8 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 
 **Trou traité (b) — non comblé** : US-01-08 (réimport de fichier de sauvegarde) est post-MVP — sa recette est différée, aucun cas n'est produit ici (§12).
 
+**CR-UC01-04 retiré** : ce cas présumait un plafond de création en mode local (« limite de 3 campagnes en mode local »). Cette présomption est écartée par décision opérateur — `RB-01-03` dans sa formulation « blocage de création en mode local » est retirée, faute de source amont (US-01-01 §RB-01-03). La seule contrainte réelle du mode local, la capacité de stockage du navigateur, reste couverte par CR-UC01-14.
+
 ---
 
 ### UC-02 — Créer un espace de jeu (Must / Should)
@@ -382,14 +384,16 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 | CR-UC02-05 | [nominal] Campagne avec tous les champs | Le MJ est connecté, quota non atteint | Il renseigne nom, description courte et système de jeu, valide | L'espace est créé avec les informations fournies ; dossiers système + « Non classés » créés | US-02-01 §"Le MJ crée une campagne avec tous les champs" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC02-06 | [erreur] Sans nom → refus | Le MJ accède au formulaire de création de campagne | Il valide sans renseigner de nom | Un message d'erreur indique que le nom est obligatoire ; aucun espace n'est créé | US-02-01 §"Le MJ tente de créer une campagne sans renseigner de nom" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC02-07 | [alternatif] Sans système de jeu (mode générique) | Le MJ accède au formulaire de création de campagne | Il valide sans renseigner de système de jeu | L'espace est créé en mode générique ; dossiers système et « Non classés » créés avec labels neutres | US-02-01 §"Le MJ crée une campagne sans système de jeu" | ☐ OK ☐ KO ☐ N/A |
-| CR-UC02-08 | [nominal] Création en mode local | Le MJ utilise l'application en mode local et a moins de 3 espaces créés | Il crée une campagne avec un nom | L'espace est créé et pleinement fonctionnel ; dossiers système + « Non classés » créés | US-02-01 §"Le MJ est en mode local et crée une campagne" | ☐ OK ☐ KO ☐ N/A |
+| CR-UC02-08 | [nominal] Création en mode local | Le MJ utilise l'application en mode local sans compte | Il crée une campagne avec un nom | L'espace est créé et pleinement fonctionnel ; dossiers système + « Non classés » créés | US-02-01 §"Le MJ est en mode local et crée une campagne" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC02-09 | [erreur] FREE 4e espace actif refusé | Le MJ possède un compte gratuit et a déjà 3 espaces CAMPAIGN/ONE_SHOT actifs | Il tente de créer une nouvelle campagne ou lancer un one-shot | La création est bloquée ; message de limite de 3 espaces ; CTA vers PRO ; PERSONAL non mentionné dans le décompte | US-02-03 §"Le MJ gratuit tente de créer un 4e espace CAMPAIGN ou ONE_SHOT actif" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC02-10 | [alternatif] FREE débloqué après archivage | Le MJ possède un compte gratuit avec 3 espaces actifs | Il archive l'un de ses espaces puis tente une création | La création est autorisée | US-02-03 §"Le MJ gratuit peut créer un nouvel espace après avoir archivé une campagne" | ☐ OK ☐ KO ☐ N/A |
-| CR-UC02-11 | [erreur] Local 4e espace refusé | Le MJ utilise l'application en mode local et a déjà 3 espaces créés | Il tente de créer une nouvelle campagne ou lancer un one-shot | La création est bloquée ; message de limite en mode local ; CTA vers création de compte | US-02-03 §"Le MJ en mode local tente de créer un 4e espace CAMPAIGN ou ONE_SHOT" | ☐ OK ☐ KO ☐ N/A |
+| CR-UC02-11 | *(retiré)* — aucun plafond de création n'existe en mode local (décision opérateur, `RB-01-03` retirée) ; noter que le scénario Gherkin US-02-03 §"Le MJ en mode local tente de créer un 4e espace CAMPAIGN ou ONE_SHOT" n'est, à ce jour, pas encore réaligné sur cette décision | — | — | — | US-01-01 §RB-01-03 (retirée) | — |
 | CR-UC02-12 | [alternatif] PRO jamais bloqué | Le MJ possède un compte PRO avec 3 espaces actifs ou plus | Il tente de créer une nouvelle campagne | La création est autorisée sans restriction | US-02-03 §"Le MJ PRO n'est jamais bloqué" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC02-13 | [erreur, dérivé] Erreur de sauvegarde à la création | Le MJ soumet un formulaire de création d'espace valide | Une erreur survient lors de la sauvegarde | Le système affiche un message d'erreur et conserve les données saisies ; aucun espace partiel n'est créé | UC-02 fiche §Exceptions E2 (dérivé, pas de Gherkin) | ☐ OK ☐ KO ☐ N/A |
 
 **Trous traités** : US-02-02 et US-02-04 sont post-MVP (dépendent UC-13) — non recettées ici. UC-02 exception E2 (« erreur de création ») a été traitée en case dérivée (CR-UC02-13) plutôt qu'en point ouvert, la fiche UC-02 la spécifiant explicitement (message d'erreur + conservation des données saisies).
+
+**CR-UC02-11 retiré** : ce cas présumait un plafond de création en mode local. Cette présomption est écartée par décision opérateur — `RB-01-03` dans sa formulation « blocage de création en mode local » est retirée, faute de source amont (US-01-01 §RB-01-03). Le scénario Gherkin US-02-03 §"Le MJ en mode local tente de créer un 4e espace CAMPAIGN ou ONE_SHOT" et la règle `RB-02-11` qui le porte n'étaient, au moment de cette passe, pas encore réalignés sur cette décision.
 
 ---
 
@@ -624,7 +628,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 | CR-UC10-14 | [nominal] Réinitialisation réussie, ancien mdp invalidé | Un utilisateur utilise un lien de réinitialisation valide | Il saisit et confirme un nouveau mot de passe | Le mot de passe est mis à jour ; l'ancien est immédiatement invalide ; redirection vers la connexion | US-10-04 §"Réinitialisation réussie" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-15 | [nominal] Mise à jour du nom d'affichage | Un utilisateur est connecté à son compte | Il modifie son nom d'affichage et sauvegarde | Le nouveau nom est appliqué immédiatement et visible dans toutes ses campagnes | US-10-05 §"Mise à jour du nom d'affichage (A2)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-16 | [nominal] Modification du mot de passe (mdp actuel requis) | Un utilisateur est connecté à son compte | Il saisit son mot de passe actuel et un nouveau, sauvegarde | Le mot de passe est mis à jour ; confirmation visuelle reçue | US-10-05 §"Modification du mot de passe" | ☐ OK ☐ KO ☐ N/A |
-| CR-UC10-17 | [irréversible] Suppression de compte | Un utilisateur est authentifié, son email est validé, aucune campagne à membres actifs | Il demande la suppression, prend connaissance des conséquences, confirme | Les notes de session personnelles sont supprimées physiquement ; les données nominatives sont anonymisées ; le compte passe au statut DELETED ; l'utilisateur est déconnecté | US-10-06 §"Suppression de compte (A4 nominal)" | ☐ OK ☐ KO ☐ N/A |
+| CR-UC10-17 | [irréversible] Suppression de compte | Un utilisateur est authentifié, son email est validé, aucune campagne à membres actifs | Il demande la suppression, prend connaissance des conséquences, confirme | L'effacement physique porte sur tout `Document` `PLAYER_PRIVATE` créé par l'utilisateur, quel qu'en soit le type — portée décidée par l'opérateur, voir UC-10 §A4 ; les données nominatives sont anonymisées ; le compte passe au statut DELETED ; l'utilisateur est déconnecté | UC-10 §A4 ; US-10-06 §"Suppression de compte (A4 nominal)" — noter que ce scénario Gherkin n'est, à ce jour, pas encore réaligné sur cette portée | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-18 | [erreur] Bloquée si propriétaire de campagne à membres actifs | Un utilisateur est propriétaire d'une campagne avec des membres actifs | Il demande la suppression de son compte | Le système bloque la suppression et indique les campagnes concernées | US-10-06 §"Suppression bloquée — propriétaire de campagne active (E4)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-19 | [erreur] Bloquée si email non validé | Un utilisateur est authentifié mais son email n'est pas validé | Il tente de demander la suppression de son compte | Le système refuse la demande et indique que la validation de l'email est requise | US-10-06 §"Suppression bloquée — adresse de messagerie non validée" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-20 | [sécurité, dérivé] SetInitialPassword fédéré refusé sans emailVerified + ré-authentification | Un compte est fédéré-only (aucun mot de passe existant) | L'utilisateur tente de définir un premier mot de passe complémentaire sans `emailVerified = true`, ou sans preuve de ré-authentification récente auprès du fournisseur d'identité | L'opération est refusée — `SetInitialPassword()` exige `emailVerified = true` ET une ré-authentification récente auprès du fournisseur d'identité fédéré (anti CWE-620) ; cette même exigence d'`emailVerified` s'applique à d'autres opérations sensibles (cf. suppression de compte, CR-UC10-19) | RB-10-10(b) (dérivé, pas de Gherkin), CWE-620 | ☐ OK ☐ KO ☐ N/A |
@@ -644,7 +648,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
 |---|---|---|---|---|---|---|
-| CR-UC11-01 | [nominal] Générer un lien CAMPAIGN | Le MJ est propriétaire de la campagne | Il ouvre la section Membres, choisit le périmètre CAMPAIGN, génère le lien | Un lien d'invitation est généré ; le bouton « Copier » est disponible ; l'invitation apparaît avec le statut PENDING | US-11-01 §"MJ génère un lien d'invitation campagne (nominal)" | ☐ OK ☐ KO ☐ N/A |
+| CR-UC11-01 | [nominal] Générer un lien SPACE | Le MJ est propriétaire de la campagne | Il ouvre la section Membres, choisit le périmètre SPACE, génère le lien | Un lien d'invitation est généré ; le bouton « Copier » est disponible ; l'invitation apparaît avec le statut PENDING | US-11-01 §"MJ génère un lien d'invitation campagne (nominal)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC11-02 | [nominal] Générer un lien SESSION | Le MJ veut inviter un joueur pour une session donnée | Il choisit le périmètre SESSION et sélectionne la session | Le lien est associé à cette session ; un `GuestAccess` sera créé à l'utilisation du lien | US-11-01 §"MJ génère un lien d'invitation session" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC11-03 | [erreur] Joueur déjà membre, pas de doublon | Un joueur est déjà `Member` ACTIVE de la campagne | Le MJ tente de générer une nouvelle invitation pour ce joueur | Le système informe le MJ que ce joueur est déjà membre ; aucun doublon n'est créé | US-11-01 §"Joueur déjà membre — doublon détecté (E1)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC11-04 | [erreur] Invitation expirée, REVOKED non réactivable | Une invitation a dépassé sa date d'expiration | Le MJ consulte la liste des invitations | L'invitation est marquée REVOKED ; aucune option de réactivation n'est proposée ; le MJ peut créer un nouveau lien | US-11-01 §"Invitation expirée non réactivable (E2)" | ☐ OK ☐ KO ☐ N/A |
@@ -667,7 +671,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 
 ### UC-12 — Consulter sa campagne en tant que joueur, vue post-accès (Should — zone IDOR/isolation)
 
-**Environnement(s)** : cloud ; `GuestAccess` ou `Member` ; périmètre SESSION ou CAMPAIGN ; 0/1/N personnages associés.
+**Environnement(s)** : cloud ; `GuestAccess` ou `Member` ; périmètre SESSION ou SPACE ; 0/1/N personnages associés.
 **Sources US** : US-12-01, US-12-02.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -767,30 +771,32 @@ Suite de la sous-section « Cas transverses » ci-dessus (CR-TRANS-01 à 06). Ca
 | CR-TRANS-14 | IDOR / contrôle OWNER-GM : aucune action MJ (partage, invitation, révocation, retrait, association) déclenchable par un acteur non autorisé → B5.2 | CR-UC08-05 (partage), CR-UC11-16 (révocation invitation), CR-UC11-17 (retrait membre), CR-UC11-18 (association personnage), CR-UC12-11 (IDOR cross-tenant) — ☐ OK ☐ KO ☐ N/A |
 | CR-TRANS-15 | Invalidation d'accès immédiate : ancien lien refusé après révocation/retrait | CR-UC09-07, CR-UC11-06, CR-UC11-11 — ☐ OK ☐ KO ☐ N/A |
 | CR-TRANS-16 | Gate anti-appropriation à la migration (poste partagé) : migration sans confirmation explicite rejetée | CR-UC01-10, CR-UC10-01 — ☐ OK ☐ KO ☐ N/A |
-| CR-TRANS-17 | RGPD — effacement/rétention bornée : `displayName` invité ≤ 90 jours ; notes PLAYER_PRIVATE supprimées sans délai ; séquence d'effacement compte (suppression physique des notes incarnées) | CR-UC09-16 (suppression physique notes invité), CR-UC09-17 (effacement displayName), CR-UC10-17 (séquence d'effacement compte) — ☐ OK ☐ KO ☐ N/A |
+| CR-TRANS-17 | RGPD — effacement/rétention bornée : `displayName` invité ≤ 90 jours ; notes PLAYER_PRIVATE supprimées sans délai ; séquence d'effacement compte (suppression physique de tout `Document` `PLAYER_PRIVATE`, quel qu'en soit le type — voir CR-UC10-17) | CR-UC09-16 (suppression physique notes invité), CR-UC09-17 (effacement displayName), CR-UC10-17 (séquence d'effacement compte) — ☐ OK ☐ KO ☐ N/A |
 | CR-TRANS-18 | Isolation multi-tenant de l'espace PERSONAL (post-MVP) | CR-UC13-03 — ☐ OK ☐ KO ☐ N/A |
 
 ---
 
 ## 11. Matrice de traçabilité (les 15 use cases)
 
-| UC | Intitulé | Statut MVP | US couvertes | Plage de cas de recette | Nb cas | NFR | Tests nommés | Niveaux |
-|---|---|---|---|---|---|---|---|---|
-| UC-01 | Mode local sans compte | Must / Should | US-01-01, 02, 04, 05, 06, 07, 09 | CR-UC01-01..20 | 20 | OFF-01/02/03, CONF-02/04 | P6, P7 | U, I, E2E, SEC |
-| UC-02 | Créer un espace de jeu | Must / Should (post-MVP : US-02-02/04) | US-02-00, 01, 03 | CR-UC02-01..13 | 13 | I18N transverses | — | U, I |
-| UC-03 | Structurer un scénario | Must / Should | US-03-01 à 07 | CR-UC03-01..21 | 21 | I18N-03 | — | U, I |
-| UC-04 | Gérer les documents d'un espace | Must / Should / Could | US-04-01 à 06 | CR-UC04-01..21 | 21 | CONF-01, I18N-03, ACC-* | — | U, I, SEC |
-| UC-05 | Organiser par dossiers | Must / Should | US-05-01 à 05 | CR-UC05-01..12 | 12 | ACC-*, PERF-01 | — | U, I |
-| UC-06 | Vue session | Must / Should | US-06-01 à 10 | CR-UC06-01..29 | 29 | PERF-01/02/03, OFF-04, CONF-01, ACC-01/02/03/04 | B1.7 | U, I, E2E, SEC, ACC, PERF |
-| UC-07 | Créer à la volée | Must / Should | US-07-01, 02 | CR-UC07-01..09 | 9 | PERF-03 | — | U, I |
-| UC-08 | Partager une information | Must | US-08-01, 02, 03 | CR-UC08-01..12 | 12 | PERF-03, CONF-01 | B8.2 | U, I, SEC |
-| UC-09 | Accéder à une session en tant que joueur | Must / Should | US-09-01 à 04 | CR-UC09-01..17 | 17 | CONF-01/03, PERF-02, ACC-01/02 | B1.6, B1.7, B8.2 | U, I, E2E, SEC |
-| UC-10 | Compte cloud + migration | Must | US-10-01 à 06 | CR-UC10-01..26 | 26 | CONF-02/03, OFF-04 | B1.5, B1.10, B3.2, P7, sagas SpaceDeleted/UserAnonymized | U, I, E2E, SEC |
-| UC-11 | Gérer les membres | Should | US-11-01 à 04 | CR-UC11-01..18 | 18 | CONF-03 | B1.6 | U, I, SEC |
-| UC-12 | Vue joueur post-accès | Should | US-12-01, 02 | CR-UC12-01..12 | 12 | CONF-01, ACC-*, PERF-* | B5.2 | U, I, SEC |
-| UC-13 | Scénario réutilisable | Should — hors première livraison (post-MVP) | US-13-01, 02, 03 | CR-UC13-01..10 | 10 | I18N-03 | — | U, I |
-| UC-14 | Rechercher | Should | US-14-01, 02, 03 | CR-UC14-01..13 | 13 | PERF-04, CONF-01, I18N-03, ACC-* | B5.1 | U, I, SEC, PERF |
-| UC-15 | Gel des campagnes au downgrade | Post-MVP spécifié (Should, hors première livraison) | Aucune US — dérivé RB-15-01..06 | CR-UC15-01..06 | 6 | — | — | U, I |
+| UC | Intitulé | Statut MVP | US couvertes | Plage de cas de recette | NFR | Tests nommés | Niveaux |
+|---|---|---|---|---|---|---|---|
+| UC-01 | Mode local sans compte | Must / Should | US-01-01, 02, 04, 05, 06, 07, 09 | CR-UC01-01..20 | OFF-01/02/03, CONF-02/04 | P6, P7 | U, I, E2E, SEC |
+| UC-02 | Créer un espace de jeu | Must / Should (post-MVP : US-02-02/04) | US-02-00, 01, 03 | CR-UC02-01..13 | I18N transverses | — | U, I |
+| UC-03 | Structurer un scénario | Must / Should | US-03-01 à 07 | CR-UC03-01..21 | I18N-03 | — | U, I |
+| UC-04 | Gérer les documents d'un espace | Must / Should / Could | US-04-01 à 06 | CR-UC04-01..21 | CONF-01, I18N-03, ACC-* | — | U, I, SEC |
+| UC-05 | Organiser par dossiers | Must / Should | US-05-01 à 05 | CR-UC05-01..12 | ACC-*, PERF-01 | — | U, I |
+| UC-06 | Vue session | Must / Should | US-06-01 à 10 | CR-UC06-01..29 | PERF-01/02/03, OFF-04, CONF-01, ACC-01/02/03/04 | B1.7 | U, I, E2E, SEC, ACC, PERF |
+| UC-07 | Créer à la volée | Must / Should | US-07-01, 02 | CR-UC07-01..09 | PERF-03 | — | U, I |
+| UC-08 | Partager une information | Must | US-08-01, 02, 03 | CR-UC08-01..12 | PERF-03, CONF-01 | B8.2 | U, I, SEC |
+| UC-09 | Accéder à une session en tant que joueur | Must / Should | US-09-01 à 04 | CR-UC09-01..17 | CONF-01/03, PERF-02, ACC-01/02 | B1.6, B1.7, B8.2 | U, I, E2E, SEC |
+| UC-10 | Compte cloud + migration | Must | US-10-01 à 06 | CR-UC10-01..26 | CONF-02/03, OFF-04 | B1.5, B1.10, B3.2, P7, sagas SpaceDeleted/UserAnonymized | U, I, E2E, SEC |
+| UC-11 | Gérer les membres | Should | US-11-01 à 04 | CR-UC11-01..18 | CONF-03 | B1.6 | U, I, SEC |
+| UC-12 | Vue joueur post-accès | Should | US-12-01, 02 | CR-UC12-01..12 | CONF-01, ACC-*, PERF-* | B5.2 | U, I, SEC |
+| UC-13 | Scénario réutilisable | Should — hors première livraison (post-MVP) | US-13-01, 02, 03 | CR-UC13-01..10 | I18N-03 | — | U, I |
+| UC-14 | Rechercher | Should | US-14-01, 02, 03 | CR-UC14-01..13 | PERF-04, CONF-01, I18N-03, ACC-* | B5.1 | U, I, SEC, PERF |
+| UC-15 | Gel des campagnes au downgrade | Post-MVP (spécifiés) — hors catégorisation MoSCoW (`moscow.md` §UC-15) | Aucune US — dérivé RB-15-01..06 | CR-UC15-01..06 | — | — | U, I |
+
+**Note sur le décompte** : le nombre de cas par UC est dérivable directement de la colonne « Plage de cas de recette » (ex. `CR-UC01-01..20` = 20 cas) ; il n'est pas répété dans une colonne dédiée, pour éviter une valeur recopiée qui dérive silencieusement de sa source à mesure que des cas sont ajoutés ou retirés.
 
 **Preuve de couverture** : chaque UC du périmètre MVP (UC-01 à UC-12, UC-14) porte au moins un cas de recette traçable vers sa source US/Gherkin ou, pour les trous de nature (a), vers une règle métier explicitement marquée. UC-13 et UC-15 sont hors périmètre de première livraison — leur recette est produite ici par anticipation (différée pour UC-13, intégralement dérivée pour UC-15 en l'absence d'US) mais n'est pas exigible à la livraison MVP.
 

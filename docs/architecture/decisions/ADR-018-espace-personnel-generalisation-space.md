@@ -244,7 +244,7 @@ Les choix documentés dans cet ADR sont cohérents avec le RGPD tel que lu et in
 
 ## Compléments post-revue
 
-**Exécution du renommage (plan `20260612-reecriture-domaine-space` — 2026-06-12).** La décision (Voie 3) a été propagée sur l'ensemble du corpus : domaine (5 bounded contexts), glossaire, 14 use cases, user-stories, user-journeys, parcours, vision / moscow / personas / NFR, ADR RGPD-autorisation-migration (ADR-009/010/011/012/013/014/016/017) et diagrammes. Le fichier `campaign-management.md` (domaine + 4 diagrammes) est renommé `space-management.md`. L'incohérence `ScenarioLibraryEntry` `ownerId`/`userId` est résolue (alignée sur `ownerId`).
+**Renommage engagé (2026-06-12).** La décision (Voie 3) a fait l'objet d'un chantier de propagation portant sur le corpus : domaine (4 bounded contexts + Core/shared kernel), glossaire, use cases, user-stories, user-journeys, parcours, vision / moscow / personas / NFR, ADR RGPD-autorisation-migration (ADR-009/010/011/012/013/014/016/017) et diagrammes. Le fichier `campaign-management.md` (domaine + 4 diagrammes) est renommé `space-management.md`. L'incohérence `ScenarioLibraryEntry` `ownerId`/`userId` est résolue (alignée sur `ownerId`). Ce chantier ne certifie pas à lui seul une propagation exhaustive et vérifiée sur chaque artefact du corpus — voir la Note de lecture ci-dessous pour les résidus connus.
 
 Décisions tranchées en cours de propagation (réversibles, à confirmer à l'entrée en build) :
 - quota FREE = espaces `CAMPAIGN`/`ONE_SHOT` (l'espace `PERSONAL` par défaut **n'est pas décompté**) ;

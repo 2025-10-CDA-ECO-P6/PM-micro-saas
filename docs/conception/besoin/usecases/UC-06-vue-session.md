@@ -29,15 +29,15 @@ Le MJ clique sur "Lancer la session" pour démarrer une nouvelle session (qui s'
 
 ## Préconditions
 
-- Une campagne existe et le MJ y a accès.
-- Le MJ est membre `OWNER` ou `GM` de la campagne.
+- Un espace partagé (`CAMPAIGN` ou `ONE_SHOT`) existe et le MJ y a accès.
+- Le MJ est membre `OWNER` ou `GM` de l'espace.
 - Le MJ est authentifié **ou** en mode local sans compte. La vue session MJ est disponible dans les deux cas. La vue joueur (partage, accès invité) nécessite un compte — en conséquence, aucune note de session de joueur ne peut exister en mode local.
 
 ## Scénario nominal — Lancement et navigation MJ
 
 ### Phase 1 — Lancement de la session
 
-1. Le MJ clique sur "Lancer une session" depuis la vue campagne.
+1. Le MJ clique sur "Lancer une session" depuis la vue de l'espace.
 2. Il saisit un titre (et optionnellement sélectionne un scénario).
 3. Le système crée la session directement en statut `LIVE`.
 4. La vue session s'ouvre avec les panneaux configurés dans configuration de la vue session.
@@ -45,14 +45,14 @@ Le MJ clique sur "Lancer la session" pour démarrer une nouvelle session (qui s'
 ### Phase 2 — Vue session MJ (interface)
 
 La vue session MJ est un **tableau de bord configurable**. Les panneaux affichent le contenu
-des dossiers que le MJ a configurés dans sa configuration de la vue session pour cette campagne.
+des dossiers que le MJ a configurés dans sa configuration de la vue session pour cet espace.
 Le MJ choisit quels dossiers il met en avant — certains privilégient leurs PNJ, d'autres
 leurs lieux ou leurs scènes. Aucune structure n'est imposée par l'application.
 
 **Panneaux de dossiers configurés** *(colonnes principales)*
-- Chaque panneau correspond à un dossier de la campagne sélectionné dans la configuration de la vue session.
+- Chaque panneau correspond à un dossier de l'espace sélectionné dans la configuration de la vue session.
 - Le MJ voit les documents du dossier avec leurs informations résumées (titre, type, propriétés utiles si renseignées).
-- L'ordre et la sélection des panneaux sont configurables hors session (paramètres campagne).
+- L'ordre et la sélection des panneaux sont configurables hors session (paramètres de l'espace).
 - Si le MJ a associé un scénario à la session (`Session.scenarioId`), le document scénario apparaît dans le panneau de son dossier.
 
 - Zone de saisie libre pour créer des notes de session liés à la session en cours.
@@ -67,7 +67,7 @@ leurs lieux ou leurs scènes. Aucune structure n'est imposée par l'application.
 - Clic sur un document ouvre un panneau de consultation en lecture rapide.
 
 **Barre de recherche globale**
-- Recherche dans l'ensemble du contenu textuel des documents de la campagne accessibles au MJ.
+- Recherche dans l'ensemble du contenu textuel des documents de l'espace accessibles au MJ.
 - Résultats pondérés : éléments de la session active en premier.
 - Permet d'ouvrir un document dans un panneau latéral sans quitter la vue session.
 
@@ -92,7 +92,7 @@ leurs lieux ou leurs scènes. Aucune structure n'est imposée par l'application.
 
 > **Frontière UC-12.** La **vue joueur pendant `LIVE`** décrite ici **étend la vue post-accès d'UC-12** : UC-12 couvre la consultation (fiche, documents `PUBLIC`, choix du personnage actif) ; UC-06 y ajoute, pendant une session `LIVE`, la **capacité de prendre des notes de session**. La ligne de partage est la capacité (écrire en LIVE = UC-06), pas le contenu (identique).
 
-1. Le joueur accède à la campagne pendant une session `LIVE`.
+1. Le joueur accède à l'espace pendant une session `LIVE`.
 2. Le système lui présente une vue joueur simplifiée.
 3. Cette vue affiche :
    - les documents partagés par le MJ (`visibility = visible par les joueurs`) ;
@@ -112,7 +112,7 @@ leurs lieux ou leurs scènes. Aucune structure n'est imposée par l'application.
 
 Le MJ souhaite démarrer une session improvisée sans scénario préparé.
 
-1. Depuis la vue campagne, le MJ clique sur "Lancer une session" et laisse le champ scénario vide.
+1. Depuis la vue de l'espace, le MJ clique sur "Lancer une session" et laisse le champ scénario vide.
 2. Le système crée une session avec : `status = LIVE`, `scenarioId = null`, `documents épinglés = []`.
 3. La vue session s'ouvre avec les panneaux de dossiers configurés — le scénario n'est pas mis en avant.
 4. Le MJ navigue directement dans ses dossiers et peut épingler des documents au fil de la session.
@@ -148,7 +148,7 @@ Le MJ décide de rendre visible un document aux joueurs.
 
 La session a été interrompue (perte de connexion, pause) et le MJ la reprend.
 
-1. Le MJ accède à la session depuis la vue campagne.
+1. Le MJ accède à la session depuis la vue de l'espace.
 2. La session est déjà au statut `LIVE`.
 3. La vue session s'ouvre avec l'état précédent intégralement restauré : notes de session, documents épinglés, panneaux de dossiers configurés.
 
@@ -157,7 +157,7 @@ La session a été interrompue (perte de connexion, pause) et le MJ la reprend.
 1. Le MJ clique sur "Épingler" depuis un document visible dans un panneau ou depuis les résultats de recherche.
 2. Le système appelle épinglage du document.
 3. Le document apparaît dans le panneau Documents épinglés.
-4. Pour désépingler : le MJ clique sur "Retirer" — l'entrée est supprimée de documents épinglés. Le document reste intact dans la campagne.
+4. Pour désépingler : le MJ clique sur "Retirer" — l'entrée est supprimée de documents épinglés. Le document reste intact dans l'espace.
 
 ---
 
@@ -209,7 +209,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 ### Session
 
 - `id: SessionId`
-- Campagne associée
+- Espace associé
 - `scenarioId: DocumentId?` (nullable — scénario joué, document la bibliothèque de contenu)
 - `status: SessionStatus` — `LIVE | CLOSED | ARCHIVED`
 - `documents épinglés: DocumentId[]`
@@ -217,14 +217,14 @@ La session a été créée sans `scenarioId` (session improvisée).
 
 ### configuration de la vue session
 
-- Campagne associée
+- Espace associé
 - Liste ordonnée des dossiers mis en avant dans la vue session
 
 ### note de session (documents créés pendant la session)
 
 - `id: DocumentId`
 - `type optionnel: LIVE_NOTE`
-- dossier associé — dossier "Notes" de la campagne par défaut
+- dossier associé — dossier "Notes" de l'espace par défaut
 - blocs
 - Visibilité : visible par les joueurs, privé MJ ou personnelle joueur
 - Personnage associé, pour les notes personnelles joueur
@@ -234,7 +234,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 
 ### Documents consultés / épinglés
 
-- Documents de la campagne filtrés selon la `visibility` (le MJ voit tout, les joueurs voient visible par les joueurs)
+- Documents de l'espace filtrés selon la `visibility` (le MJ voit tout, les joueurs voient visible par les joueurs)
 - documents épinglés de la session mis à jour
 
 ### Documents par dossier
@@ -247,7 +247,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 
 ## Règles métier
 
-- La vue session MJ est accessible uniquement au MJ de la campagne.
+- La vue session MJ est accessible uniquement au MJ de l'espace.
 - Les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées et leurs propres notes de session personnelles joueur.
 - **Mode local et vue joueur** : en mode local sans compte, il n'existe ni vue joueur ni accès invité — la vue session est utilisée par le MJ seul, et seules des notes de session du MJ peuvent exister. Toute participation de joueurs à une session présuppose un compte MJ.
 - **notes de session en session LIVE** :
@@ -256,7 +256,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 - **notes de session après session** :
   - MJ : peut créer et modifier des notes de session rétroactives sur une session `CLOSED` (pour compléter ses notes après la partie).
   - Joueur : ne peut créer des notes de session que pendant `LIVE`.
-- Une `note de session` avec `visibility = personnelle joueur` est inaccessible au MJ, quelles que soient ses permissions de campagne.
+- Une `note de session` avec `visibility = personnelle joueur` est inaccessible au MJ, quelles que soient ses permissions sur l'espace.
 - Un joueur invité sans compte peut créer une note de session personnelle si son accès invité est associé à un personnage associé. La fiche du personnage associé reste ré-associable lors d'une séance suivante via un nouveau lien sécurisé vers le même personnage — ce qui permet à l'invité de retrouver le contexte de son personnage. En revanche, les notes personnelles (`PLAYER_PRIVATE`) prises par un invité non converti en compte ne survivent à la fin de son accès que s'il crée un compte avant cette fin (US-09-04, RB-09-14, RB-09-19) — voir RB-09-22 pour l'avertissement donné en temps utile.
 - Partager un document change sa `visibility` à visible par les joueurs dans la bibliothèque de contenu (opération permanente) — ce n'est pas un partage temporaire de session.
 - documents épinglés de la session est une liste modifiable manuellement à tout moment pendant une session `LIVE`.
@@ -278,7 +278,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 - Le MJ peut créer une note de session (visibilité privé MJ par défaut).
 - Le MJ peut changer la visibilité d'une note de session vers visible par les joueurs.
 - Le MJ peut épingler un document dans le panneau Documents épinglés.
-- Le MJ peut rechercher dans tous les documents de la campagne sans quitter la vue session.
+- Le MJ peut rechercher dans tous les documents de l'espace sans quitter la vue session.
 - Le MJ peut créer un élément à la volée → UC-07.
 - Le MJ peut partager une information → UC-08.
 - Le MJ peut terminer la session (clôture interne, passage `LIVE → CLOSED`).

@@ -60,7 +60,8 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `CreateInvitation(type, scope, options)` | `InvitationCreated` | Crée une invitation enfant. Bloqué pour `type = PERSONAL` (voir invariant 13). |
 | `RevokeInvitation(invitationId)` | `InvitationRevoked` | Passe l'invitation en REVOKED. |
 | `AssociateCharacter(userId, characterId)` | `CharacterAssociated` | Associe un personnage (référence Content Library) à un membre. Le paramètre `characterId` est un `DocumentId` pointant vers un `Document` de type `player_character`. |
-| `Archive()` | `SpaceArchived` | Archivage manuel par le MJ. Irréversible (MVP). Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). |
+| `Archive()` | `SpaceArchived` | Archivage manuel par le MJ. Réversible (voir `Unarchive()`). Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). Refusée si l'espace porte une session `LIVE` (garde d'agrégat, invariant 16 — UC-02). |
+| `Unarchive()` | `SpaceUnarchived` | Désarchivage manuel par le MJ. Repasse l'espace de `ARCHIVED` à `ACTIVE`. Sans objet pour `type = PERSONAL` (invariant 15 — un `PERSONAL` n'est jamais `ARCHIVED`). Refusée pour un propriétaire FREE si elle porterait à 4 le nombre de ses espaces actifs de type `CAMPAIGN` ou `ONE_SHOT` (garde de quota, même patron que l'invariant 6 — règle métier 12). |
 | `Freeze()` | `SpaceFrozen` | Gel automatique lors d'un downgrade de tier. Passe en lecture seule. Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). |
 | `Unfreeze()` | `SpaceUnfrozen` | Dégel automatique lors d'une montée de tier, dans la limite du quota du tier cible (règle 11). |
 | `Delete()` | `SpaceDeleted` | Suppression d'un espace. Matérialise le contrat présupposé par ADR-010/011 (saga de suppression/purge) — absent du modèle domaine avant ADR-018. |
@@ -112,7 +113,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `id` | `InvitationId` | |
 | `token` | `InvitationToken` | Identifiant du lien d'invitation, globalement unique, non prédictible. |
 | `type` | `InvitationType` | `LINK` \| `EMAIL` |
-| `scope` | `InvitationScope` | `CAMPAIGN` \| `SESSION` |
+| `scope` | `InvitationScope` | `SPACE` \| `SESSION` |
 | `sessionId` | `SessionId?` | Renseigné si scope = SESSION |
 | `expiresAt` | `DateTime?` | |
 | `maxUses` | `int?` | Limite du nombre d'utilisations de l'invitation. **Défaut (non renseigné) : illimité** (`null` = non borné) — décision produit UC-11 Q#5. |
@@ -123,6 +124,10 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 > Une invitation est le mécanisme d'entrée. Son utilisation crée soit un `SpaceMembership`
 > (utilisateur connecté), soit un `GuestAccess` (utilisateur anonyme).
 > Cette orchestration est applicative — l'espace ne crée pas directement ces objets.
+
+> **NOTE — Statut `EXPIRED` dérivé, pas de transition explicite**
+>
+> Contrairement à `GuestAccess.Expire()` — déclenché par un événement de cycle de vie concret (fermeture de session + 24h de grâce) — aucune méthode ni événement ne produit `Invitation.status = EXPIRED`. C'est un choix cohérent avec la nature du champ : `expiresAt` sur `Invitation` est **optionnel** (`null` = pas d'expiration, illimité) et fixé arbitrairement par l'auteur de l'invitation à la création, sans déclencheur applicatif comparable à la clôture de session qui borne `GuestAccess`. `EXPIRED` est donc un **statut calculé à la lecture** : dérivé en comparant `expiresAt` à l'instant présent lorsque `expiresAt` est renseigné et dépassé. Aucune transition n'est persistée, aucun événement domaine n'est produit pour ce passage.
 
 ---
 
@@ -136,7 +141,7 @@ depuis Session Conduct par son lien d'accès.
 |---|---|---|
 | `id` | `GuestAccessId` | |
 | `spaceId` | `SpaceId` | |
-| `scope` | `GuestAccessScope` | `SESSION` \| `CAMPAIGN` |
+| `scope` | `GuestAccessScope` | `SESSION` \| `SPACE` |
 | `sessionId` | `SessionId?` | Renseigné si scope = SESSION |
 | `token` | `GuestAccessToken` | Identifiant du lien d'accès invité, globalement unique, non prédictible. |
 | `displayName` | `string` | Saisi par le joueur à l'arrivée |
@@ -193,9 +198,9 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 | `MemberRole` | `OWNER` \| `GM` \| `PLAYER` |
 | `MembershipStatus` | `PENDING` \| `ACTIVE` \| `REMOVED` |
 | `InvitationType` | `LINK` \| `EMAIL` — `EMAIL` est hors périmètre MVP (US-UC-11 stories exclues) ; la valeur est conservée pour éviter une migration ultérieure. |
-| `InvitationScope` | `CAMPAIGN` \| `SESSION` |
+| `InvitationScope` | `SPACE` \| `SESSION` |
 | `InvitationStatus` | `ACTIVE` \| `REVOKED` \| `EXPIRED` |
-| `GuestAccessScope` | `SESSION` \| `CAMPAIGN` |
+| `GuestAccessScope` | `SESSION` \| `SPACE` |
 | `GuestAccessStatus` | `ACTIVE` \| `EXPIRED` \| `REVOKED` \| `CONVERTED` |
 
 > **`SpaceType.PERSONAL`** : `PERSONAL` — espace personnel du propriétaire, conteneur par défaut du
@@ -210,9 +215,9 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 | Comportement | `CAMPAIGN` | `ONE_SHOT` | `PERSONAL` |
 |---|---|---|---|
 | Parcours de création | Configuration complète | Express — nom + scénario, aucun membre requis *(post-MVP)* | Automatique à la création du compte (voir invariant 14) |
-| Membres permanents | Attendus | Optionnels — GuestAccess typique, mais SpaceMembership possible | Aucun — propriétaire uniquement (voir invariant 13) |
+| Membres | Attendus | Optionnels — GuestAccess typique, mais SpaceMembership possible | Aucun — propriétaire uniquement (voir invariant 13) |
 | Sessions | Multiples | Une seule attendue (non forcée techniquement) | Non applicable (conteneur de contenu, pas de session) |
-| Archivage | Manuel par le MJ | Manuel par le MJ | Interdit — garde d'agrégat (invariant 15) |
+| Archivage | Manuel par le MJ — refusé si session `LIVE` (invariant 16) | Manuel par le MJ — refusé si session `LIVE` (invariant 16) | Interdit — garde d'agrégat (invariant 15) |
 | Invitations | Oui | Oui | Non (voir invariant 13) |
 
 **MVP** : Au MVP, aucune différence comportementale n'existe entre `CAMPAIGN` et `ONE_SHOT` — création, structure des dossiers, cycle de session et vue session sont identiques pour les deux types. Le parcours de création express est une caractéristique cible post-MVP (arbitrage UC-13, vision-produit §5bis). L'espace `PERSONAL` est créé automatiquement à la création du compte.
@@ -235,7 +240,8 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 12. *(retiré — `ScenarioLibraryEntry` subsumé sous ADR-018 : la bibliothèque personnelle est une vue de l'espace `PERSONAL`, pas un agrégat de pont)*
 13. Un espace `PERSONAL` est mono-membre : seul le propriétaire (`role = OWNER`) y est membre. Les opérations `AddMember()`, `CreateInvitation()` et tout octroi de `GuestAccess` sont bloqués pour `type = PERSONAL`.
 14. Un compte actif possède toujours un et un seul espace `PERSONAL` **actif**. À la création du compte, le flux **applicatif** — à réception de l'événement `UserRegistered` — invoque de façon synchrone la commande `Space.Create(ownerId, type = PERSONAL)` dans Space Management. Identity & Access ne crée pas l'espace (frontière de contexte : I&A ne connaît pas la notion d'espace). En mode local, il n'y a ni `User` ni `ownerId` ; le conteneur par défaut local **est** l'espace `PERSONAL` (sans `ownerId`), lié à l'espace `PERSONAL` cloud à la création du compte / migration (mapping 1:1). L'invariant 14 est régi par le régime compte.
-15. Un espace `PERSONAL` est toujours `ACTIVE`. `Archive()` et `Freeze()` sont refusées pour `type = PERSONAL` (garde d'agrégat, même patron que l'invariant 13). `FROZEN` est sans objet (l'espace `PERSONAL` est hors quota, jamais excédentaire) ; `ARCHIVED` contredirait l'invariant 14 (un `PERSONAL` actif à tout moment).
+15. Un espace `PERSONAL` est toujours `ACTIVE`. `Archive()` et `Freeze()` sont refusées pour `type = PERSONAL` (garde d'agrégat, même patron que l'invariant 13). `FROZEN` est sans objet (l'espace `PERSONAL` est hors quota, jamais excédentaire) ; `ARCHIVED` contredirait l'invariant 14 (un `PERSONAL` actif à tout moment). Par construction, `Unarchive()` est donc lui aussi sans objet pour ce type : un `PERSONAL` n'entre jamais en `ARCHIVED`, il n'y a donc jamais rien à désarchiver.
+16. `Archive()` est refusée si l'espace porte une session avec `status = LIVE` (garde d'agrégat) : un espace `ARCHIVED` passe en lecture seule (règle métier 7), ce qui empêcherait l'écriture des notes de la session en cours dans Session Conduct. Le porteur de la session doit d'abord la clôturer (`Session.Close()`) pour que l'archivage devienne possible. Ancrage amont : UC-02.
 
 > **NOTE — implémentation de l'invariant 14**
 >
@@ -252,11 +258,12 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 5. Un `GuestAccess SESSION` expire à la fermeture de la session + 24h de grâce.
 6. Quand `AccountTierChanged` (PRO → FREE) et que le MJ propriétaire a > 3 espaces `CAMPAIGN` ou `ONE_SHOT` à l'état `ACTIVE` (l'espace `PERSONAL` n'est pas compté) : les espaces excédentaires sont gelés dans l'ordre de création (les plus récents en premier). (le use case dédié **UC-15** ratifie et détaille ce comportement de gel/dégel)
    > **NOTE — Valeur de référence du quota** : la limite `3` d'espaces actifs pour un utilisateur FREE est consolidée en CdC §12.4 ; cette valeur volatile doit être maintenue en source unique pour la cohérence métier/produit.
-7. L'archivage est manuel et définitif (MVP). Un espace archivé est en lecture seule.
+7. L'archivage est manuel et réversible : le MJ peut désarchiver l'espace (`Unarchive()`) pour le repasser `ACTIVE`. Tant qu'il reste `ARCHIVED`, l'espace est en lecture seule.
 8. Un one-shot peut avoir simultanément des `SpaceMembership` (joueurs avec compte) et des `GuestAccess` (joueurs sans compte).
 9. Lors de la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) cessent immédiatement d'être utilisées et affichées — plus aucune finalité produit. Leur effacement effectif intervient au plus tard 90 jours après la fin d'accès, fenêtre bornée dont la seule finalité est l'exercice des droits de l'invité et le traitement des contestations (RGPD Art. 5(1)(e) — limitation de la conservation). Si l'invité a été converti en compte, ses données suivent les règles du compte.
 10. À la fin définitive d'un `GuestAccess` non converti, les notes `PLAYER_PRIVATE` créées par cet invité sont supprimées physiquement — uniquement les siennes, jamais celles d'autres participants. Cette suppression répond à la même obligation légale que l'effacement des notes à la suppression d'un compte (RGPD Art. 17 ; cohérence avec le domaine Identity & Access).
 11. Quand `AccountTierChanged` correspond à une montée de tier (p. ex. FREE → PRO), les espaces `FROZEN` du propriétaire sont dégelés automatiquement (`Unfreeze()`), dans la limite du quota d'espaces du tier cible. Le tier est binaire au MVP (PRO = illimité) ⇒ tous les espaces `FROZEN` sont dégelés ; la garde de `Unfreeze()` est exprimée relativement au quota du tier cible (et non de façon inconditionnelle), afin de rester correcte si un tier intermédiaire est introduit ultérieurement. Le dégel ne perd aucune donnée (`FROZEN` est un état de lecture seule, jamais une suppression). L'ordre de dégel lorsque le quota du tier cible est borné et inférieur au nombre d'espaces `FROZEN` (cas d'un futur tier intermédiaire) n'est pas fixé au MVP — le tier étant binaire (PRO illimité), tous les espaces `FROZEN` sont dégelés ; cet ordre sera arrêté à l'introduction éventuelle d'un tier intermédiaire.
+12. Un utilisateur FREE ne peut pas désarchiver un espace si cela porterait à 4 le nombre de ses espaces actifs de type `CAMPAIGN` ou `ONE_SHOT` — le désarchivage est bloqué avec invitation à upgrader, même garde que celle posée sur la création (invariant 6). Sans cette garde, la séquence archiver → créer → désarchiver contournerait le quota en trois gestes ordinaires (un MJ range une campagne finie, en démarre une nouvelle, puis rouvre l'ancienne), sans aucune intention de contournement.
 
 ---
 
@@ -274,6 +281,7 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 | `SpaceFrozen` | `Space.Freeze()` | Application (notification au MJ) |
 | `SpaceUnfrozen` | `Space.Unfreeze()` | Application (notification au MJ) |
 | `SpaceArchived` | `Space.Archive()` | Content Library, Session Conduct |
+| `SpaceUnarchived` | `Space.Unarchive()` | Content Library, Session Conduct |
 | `SpaceDeleted` | `Space.Delete()` | Content Library, Session Conduct, Application |
 | `GuestAccessCreated` | `GuestAccess.Create()` | Session Conduct (accès aux informations partagées) |
 | `GuestAccessExpired` | `GuestAccess.Expire()` | Session Conduct |

@@ -46,7 +46,8 @@ Intention : l'utilisateur authentifié consulte et modifie les informations de s
   type     : formulaire
   rôle     : permet à l'utilisateur de lire et de modifier le nom d'affichage associé
              à son compte ; le nom modifié est répercuté dans tous les espaces où
-             l'utilisateur est membre
+             l'utilisateur est membre ; borné à 100 caractères maximum, ne peut pas
+             être vide (glossaire §Nom d'affichage)
   priorité : principal
   visibilité : utilisateur authentifié
 
@@ -123,7 +124,11 @@ hiérarchie de lecture à distance :
   priorité 2 — formulaire de modification du nom d'affichage
   priorité 3 — formulaire de modification du mot de passe
   priorité 4 — zone d'accès aux actions sensibles
-  source : NFR-ACC-04 (usage à distance normale de l'écran)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -132,7 +137,7 @@ hiérarchie de lecture à distance :
 
 ```
 Sources : UC-10 A2 ; UC-10 A4 (accès) ; UC-10 §Règles métier (RB-10-05) ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ;
           châssis S7 (zoning.md §S7)
 ```
 

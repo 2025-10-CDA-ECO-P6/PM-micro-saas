@@ -28,7 +28,7 @@ UC-01 formalise cette règle métier : *« En mode local, aucune donnée n'est e
 
 **Ce que cette exigence couvre :**
 
-- L'ensemble du contenu local du MJ saisi en mode local : documents, notes, dossiers, scénarios, contenu des sessions — qu'il soit rattaché à un espace de campagne ou capturé dans l'espace personnel.
+- L'ensemble du contenu local du MJ saisi en mode local : documents, notes, dossiers, scénarios, contenu des sessions — qu'il soit rattaché à un espace de campagne ou de one-shot, ou capturé dans l'espace personnel.
 - L'absence de transmission de ces données vers tout service extérieur, tant que le MJ reste en mode local et n'a pas déclenché d'action explicite (création de compte ou export manuel).
 - Le comportement observable lors d'une session hors connexion : l'application fonctionne de façon identique avec ou sans connexion réseau disponible, pour toutes les fonctionnalités de préparation et de session.
 

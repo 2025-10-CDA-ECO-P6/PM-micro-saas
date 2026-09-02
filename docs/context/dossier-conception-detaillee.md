@@ -166,7 +166,7 @@ Cette section porte quatre chaînes de décisions qui traversent plusieurs modul
 
 ### 2.1 — Cascade RGPD de `Space.Delete()` et purge différée *(chaîne canonique)*
 
-**Ancrage UC.** Le corpus des use cases ne nomme pas de UC dédié à la suppression d'un espace avec fenêtre de corbeille. [UC-02](../conception/besoin/usecases/UC-02-creer-espace-jeu.md) couvre le cycle de vie de création et d'archivage d'un espace mais s'arrête avant sa suppression express ; [UC-11](../conception/besoin/usecases/UC-11-gerer-membres-campagne.md) ne couvre que la gestion des membres. Le droit du propriétaire à supprimer son espace est posé directement par [ADR-010](../architecture/decisions/ADR-010-suppression-campagne.md) §Contexte comme un besoin domaine, sans UC porteur explicite. Conformément à la discipline posée en tête de ce dossier (« un flux dont l'unique ancrage serait un ADR … signalerait une inversion à corriger »), ce point est signalé ici comme un angle mort d'ancrage — pas comblé par une invention de ce document.
+**Ancrage UC.** Le corpus des use cases ne nomme pas de UC dédié à la suppression d'un espace avec fenêtre de corbeille. [UC-02](../conception/besoin/usecases/UC-02-creer-espace-jeu.md) couvre le cycle de vie de création et d'archivage d'un espace mais s'arrête avant sa suppression express ; [UC-11](../conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md) ne couvre que la gestion des membres. Le droit du propriétaire à supprimer son espace est posé directement par [ADR-010](../architecture/decisions/ADR-010-suppression-espace.md) §Contexte comme un besoin domaine, sans UC porteur explicite. Conformément à la discipline posée en tête de ce dossier (« un flux dont l'unique ancrage serait un ADR … signalerait une inversion à corriger »), ce point est signalé ici comme un angle mort d'ancrage — pas comblé par une invention de ce document.
 
 ```mermaid
 sequenceDiagram
@@ -229,7 +229,7 @@ sequenceDiagram
 
 **Ancrage UC.** [UC-10](../conception/besoin/usecases/UC-10-compte-cloud.md) §A4 — « Suppression du compte (droit à l'effacement RGPD) ».
 
-> **Point de vigilance — divergence non réconciliée dans le corpus.** UC-10 §A4/§E4 décrit la suppression de compte comme **bloquée** tant que le titulaire est propriétaire d'espaces partagés avec des membres actifs (« le système bloque la suppression », UC-10 §E4). identity-access.md § Invariants métier, invariant 3, marque ce point **« Résolu (ADR-018, W2) »** et affirme au contraire que `User.Delete()` n'est **jamais** bloqué par la possession d'espaces — seul le routage de cascade diffère par type d'espace. Ce dossier ne tranche pas cette divergence entre l'ancrage UC et son raffinement domaine ; elle est signalée ici pour réconciliation, conformément à la discipline d'ordre d'autorité posée en tête de ce dossier.
+> **Réconciliation acquise — blocage conditionné par type d'espace.** UC-10 §A4/§E4 pose le principe : la suppression de compte est **bloquée** tant que le titulaire est propriétaire d'espaces partagés avec des membres actifs (« le système bloque la suppression », UC-10 §E4). `identity-access.md` § Invariants métier, invariant 3, réconcilie ce principe avec le routage par type d'espace : **bloquant** pour `CAMPAIGN`/`ONE_SHOT` tant que l'espace porte au moins un `SpaceMembership` actif autre que le propriétaire (conforme UC-10) ; **jamais bloquant** pour `PERSONAL`, mono-membre par construction et structurellement hors du champ « membres actifs » visé par UC-10. UC-10 reste la source du principe de blocage, le domaine en donne le routage exact par type — ce n'est plus une divergence non réconciliée mais l'articulation actée entre les deux sources.
 
 ```mermaid
 sequenceDiagram
@@ -281,7 +281,7 @@ La règle anti-résidu **F-08** n'est pas réinventée à quatre reprises : elle
 
 ### 2.3 — Modèle d'autorisation composé P1 + P4 : non-divergence REST / SignalR
 
-**Ancrage UC.** Accès aux ressources d'un espace — [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-campagne.md) (documents), [UC-06](../conception/besoin/usecases/UC-06-vue-session.md) (vue session), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (accès joueur/invité), [UC-12](../conception/besoin/usecases/UC-12-rejoindre-campagne.md) (vue joueur).
+**Ancrage UC.** Accès aux ressources d'un espace — [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-espace.md) (documents), [UC-06](../conception/besoin/usecases/UC-06-vue-session.md) (vue session), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (accès joueur/invité), [UC-12](../conception/besoin/usecases/UC-12-consulter-espace-joueur.md) (vue joueur).
 
 ```mermaid
 sequenceDiagram
@@ -382,7 +382,7 @@ sequenceDiagram
 
 ## 3 — Identity & Access
 
-Ce module couvre trois use cases : [UC-01](../conception/besoin/usecases/UC-01-mode-local-sans-compte.md) (mode local — en creux, Identity & Access n'y intervient pas), [UC-10](../conception/besoin/usecases/UC-10-compte-cloud.md) (création de compte, connexion, opérations sensibles, effacement) et [UC-11](../conception/besoin/usecases/UC-11-gerer-membres-campagne.md) (dont la facette « conversion d'un invité en compte » touche Identity & Access côté création du `User`). Deux des flux ci-dessous (3.b, 3.c) sont inter-modules ou transverses : ils renvoient à leur composition complète en §2 plutôt que d'être re-dessinés.
+Ce module couvre trois use cases : [UC-01](../conception/besoin/usecases/UC-01-mode-local-sans-compte.md) (mode local — en creux, Identity & Access n'y intervient pas), [UC-10](../conception/besoin/usecases/UC-10-compte-cloud.md) (création de compte, connexion, opérations sensibles, effacement) et [UC-11](../conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md) (dont la facette « conversion d'un invité en compte » touche Identity & Access côté création du `User`). Deux des flux ci-dessous (3.b, 3.c) sont inter-modules ou transverses : ils renvoient à leur composition complète en §2 plutôt que d'être re-dessinés.
 
 ### 3.1 — UC-01 : absence d'authentification en mode local
 
@@ -437,13 +437,13 @@ sequenceDiagram
 
 #### 3.b — `ChangeTier` → gel/dégel Space Management (flux inter-module)
 
-`User.ChangeTier(tier)` émet `AccountTierChanged` (identity-access.md § Méthodes ; règle métier 3 — la transition `PRO → FREE` est déclenchée par une notification du système de facturation via commande applicative). Côté Identity & Access, ce déclencheur ne fait rien d'autre que publier l'événement ; le gel des espaces excédentaires et le dégel réversible qu'il déclenche vivent entièrement côté Space Management et sont détaillés en **§4.c**, avec [UC-15](../conception/besoin/usecases/UC-15-gel-campagnes-downgrade-tier.md) comme ancrage amont — non redéveloppés ici. Le cadrage tarifaire (seuils, prix) qu'on pourrait chercher du côté d'[ADR-005](../architecture/decisions/ADR-005-modele-monetisation.md) n'en est plus l'autorité : cet ADR porte, depuis son propre en-tête, la mention « décision produit — fusionnée … le 2026-06-10 » — les valeurs consolidées (quota FREE = 3 espaces) vivent désormais dans la vision produit et le CdC (UC-15 § Contexte le confirme explicitement), pas dans cet ADR.
+`User.ChangeTier(tier)` émet `AccountTierChanged` (identity-access.md § Méthodes ; règle métier 3 — la transition `PRO → FREE` est déclenchée par une notification du système de facturation via commande applicative). Côté Identity & Access, ce déclencheur ne fait rien d'autre que publier l'événement ; le gel des espaces excédentaires et le dégel réversible qu'il déclenche vivent entièrement côté Space Management et sont détaillés en **§4.c**, avec [UC-15](../conception/besoin/usecases/UC-15-gel-espaces-downgrade-tier.md) comme ancrage amont — non redéveloppés ici. Le cadrage tarifaire (seuils, prix) qu'on pourrait chercher du côté d'[ADR-005](../architecture/decisions/ADR-005-modele-monetisation.md) n'en est plus l'autorité : cet ADR porte, depuis son propre en-tête, la mention « décision produit — fusionnée … le 2026-06-10 » — les valeurs consolidées (quota FREE = 3 espaces) vivent désormais dans la vision produit et le CdC (UC-15 § Contexte le confirme explicitement), pas dans cet ADR.
 
 #### 3.c — `Delete()` → `Anonymize()` : routage de cascade par type d'espace (flux transverse)
 
 **Ancrage UC.** [UC-10](../conception/besoin/usecases/UC-10-compte-cloud.md) §A4 — « Suppression du compte (droit à l'effacement RGPD) ».
 
-`User.Delete()` (identity-access.md invariant 3) est le déclencheur côté Identity & Access de la cascade d'effacement RGPD, dont le routage complet par type d'espace — y compris le point de vigilance sur la divergence non réconciliée entre UC-10 §A4/§E4 (suppression bloquée) et l'invariant 3 (routage jamais bloquant, résolu ADR-018 W2) — est développé en **§2.2**. Ce dossier ne re-tranche pas cette divergence ici ; elle reste signalée à l'endroit où elle est déjà consolidée.
+`User.Delete()` (identity-access.md invariant 3) est le déclencheur côté Identity & Access de la cascade d'effacement RGPD, dont le routage complet par type d'espace — y compris la réconciliation entre UC-10 §A4/§E4 (principe de blocage) et l'invariant 3 (routage par type : bloquant pour `CAMPAIGN`/`ONE_SHOT` à membre actif, jamais pour `PERSONAL`) — est développé en **§2.2**. Ce dossier n'y revient pas ; l'articulation est consolidée à l'endroit où elle est déjà posée.
 
 #### 3.d — Liaison OAuth et *reclaim-in-place*
 
@@ -493,7 +493,7 @@ Quand un invité sans compte crée un compte pour rejoindre une campagne de faç
 
 ## 4 — Space Management
 
-Ce module couvre cinq use cases : [UC-02](../conception/besoin/usecases/UC-02-creer-espace-jeu.md) (créer un espace), [UC-11](../conception/besoin/usecases/UC-11-gerer-membres-campagne.md) (gérer les membres), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (accès invité `GuestAccess`), [UC-12](../conception/besoin/usecases/UC-12-rejoindre-campagne.md) (vue joueur post-accès) et [UC-15](../conception/besoin/usecases/UC-15-gel-campagnes-downgrade-tier.md) (gel/dégel au changement de tier). Deux des points ci-dessous (4.d, 4.e) sont transverses et renvoient à leur composition complète en §2.
+Ce module couvre cinq use cases : [UC-02](../conception/besoin/usecases/UC-02-creer-espace-jeu.md) (créer un espace), [UC-11](../conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md) (gérer les membres), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (accès invité `GuestAccess`), [UC-12](../conception/besoin/usecases/UC-12-consulter-espace-joueur.md) (vue joueur post-accès) et [UC-15](../conception/besoin/usecases/UC-15-gel-espaces-downgrade-tier.md) (gel/dégel au changement de tier — **Post-MVP (spécifiés)**, classement arbitré, voir `moscow.md` §UC-15). Deux des points ci-dessous (4.d, 4.e) sont transverses et renvoient à leur composition complète en §2.
 
 ### 4.1 — UC-02 : création d'espace et espace `PERSONAL` automatique
 
@@ -542,7 +542,7 @@ sequenceDiagram
 
 #### 4.b — Cycle Invitation / `GuestAccess` + conversion invité → membre (F-07, statut `CONVERTED`)
 
-**Ancrage UC.** [UC-11](../conception/besoin/usecases/UC-11-gerer-membres-campagne.md) (génération et administration des accès côté MJ — propriétaire unique des données `Invitation`/`SpaceMembership`) ; [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (octroi d'accès côté joueur, propriétaire du cycle de vie `GuestAccess`).
+**Ancrage UC.** [UC-11](../conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md) (génération et administration des accès côté MJ — propriétaire unique des données `Invitation`/`SpaceMembership`) ; [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (octroi d'accès côté joueur, propriétaire du cycle de vie `GuestAccess`).
 
 ```mermaid
 sequenceDiagram
@@ -551,7 +551,7 @@ sequenceDiagram
     participant J as Joueur (via lien)
     participant IA as Identity & Access
 
-    MJ->>SM: CreateInvitation(type = LINK, scope = CAMPAIGN | SESSION, options)
+    MJ->>SM: CreateInvitation(type = LINK, scope = SPACE | SESSION, options)
     SM-->>SM: InvitationCreated — token globalement unique, non prédictible
     SM--)MJ: lien d'invitation
 
@@ -574,13 +574,13 @@ sequenceDiagram
 
 > Vue de consolidation. Diagrammes de flux détaillés : [flows/space-management.md](../conception/domain/diagrams/flows/space-management.md), [flows/identity-access.md](../conception/domain/diagrams/flows/identity-access.md).
 
-**Règles de gestion consolidées.** UC-11 fixe le vocabulaire de périmètre — `scope CAMPAIGN` (accès durable) / `scope SESSION` (accès temporaire), qui « remplace et subsume l'ancienne notion de type d'accès permanent/temporaire » (UC-11 § Données manipulées) — que space-management.md instancie dans l'entité `Invitation` (§ Invitation, champ `scope`). Le statut `CONVERTED` (ADR-014 §1) referme le trou de privilège que la simple création de `SpaceMembership` laisserait ouvert : sans cette composition, un compte fraîchement créé depuis un `GuestAccess` scope `SESSION` hériterait potentiellement du rôle `PLAYER` avant toute activation par le MJ — ADR-014 §1 l'exclut explicitement (« le saut de privilège est interdit »). Le sort RGPD des données invitées (`display_name`, notes `PLAYER_PRIVATE`) à la fin définitive d'un accès non converti compose la règle métier 9/10 de space-management.md avec la base légale et la fenêtre de rétention de 90 jours d'ADR-013 §3 — sans compte créé avant la fin de l'accès, les notes de l'invité sont supprimées physiquement (UC-11 règle métier, RB-09-19/22), non récupérées par un futur invité réassocié au même personnage.
+**Règles de gestion consolidées.** UC-11 fixe le vocabulaire de périmètre — `scope SPACE` (accès durable) / `scope SESSION` (accès temporaire), qui remplace et subsume l'ancienne notion de type d'accès permanent/temporaire (UC-11 § Données manipulées) — que space-management.md instancie dans l'entité `Invitation` (§ Invitation, champ `scope`). Le statut `CONVERTED` (ADR-014 §1) referme le trou de privilège que la simple création de `SpaceMembership` laisserait ouvert : sans cette composition, un compte fraîchement créé depuis un `GuestAccess` scope `SESSION` hériterait potentiellement du rôle `PLAYER` avant toute activation par le MJ — ADR-014 §1 l'exclut explicitement (« le saut de privilège est interdit »). Le sort RGPD des données invitées (`display_name`, notes `PLAYER_PRIVATE`) à la fin définitive d'un accès non converti compose la règle métier 9/10 de space-management.md avec la base légale et la fenêtre de rétention de 90 jours d'ADR-013 §3 — sans compte créé avant la fin de l'accès, les notes de l'invité sont supprimées physiquement (UC-11 règle métier, RB-09-19/22), non récupérées par un futur invité réassocié au même personnage.
 
 **Renvoi API** : `contrat-openapi.md` §5 — `POST /auth/validate-token (GuestAccess)`, rate limiting contre l'énumération de tokens (F-06 original).
 
 | Maillon | Source (fichier + section) | Rôle dans la chaîne |
 |---|---|---|
-| `CreateInvitation()`, scope `CAMPAIGN`/`SESSION` | space-management.md § Invitation ; UC-11 § Données manipulées | Vocabulaire de périmètre, propriétaire UC-11 |
+| `CreateInvitation()`, scope `SPACE`/`SESSION` | space-management.md § Invitation ; UC-11 § Données manipulées | Vocabulaire de périmètre, propriétaire UC-11 |
 | `GuestAccess.Create()`/`Convert()` | space-management.md § GuestAccess ; UC-09 § Ownership `GuestAccess` | Cycle de vie invité, propriétaire UC-09 |
 | Statut `CONVERTED` — pas de saut de privilège | ADR-014 §1 | Ferme le trou de privilège de la conversion |
 | Notes `PLAYER_PRIVATE` invité non converti — suppression physique | space-management.md règle métier 9, 10 ; ADR-013 §3 ; UC-11 (RB-09-19/22) | Composition RGPD — base légale + délai + suppression |
@@ -590,7 +590,7 @@ sequenceDiagram
 
 #### 4.c — `Freeze()` / `Unfreeze()` (règles 6/11)
 
-**Ancrage UC.** [UC-15](../conception/besoin/usecases/UC-15-gel-campagnes-downgrade-tier.md) — le use case se déclare lui-même **amont source-de-vérité** de ce comportement, le domaine (règles 6/11) en étant l'aval documenté (UC-15 § Note de positionnement d'autorité).
+**Ancrage UC.** [UC-15](../conception/besoin/usecases/UC-15-gel-espaces-downgrade-tier.md) — le use case se déclare lui-même **amont source-de-vérité** de ce comportement, le domaine (règles 6/11) en étant l'aval documenté (UC-15 § Note de positionnement d'autorité). UC-15 est classé **Post-MVP (spécifiés)** — hors catégorisation MoSCoW du MVP, classement arbitré par `moscow.md` §UC-15, seule autorité du corpus pour ce classement — statut à distinguer de son ancrage fonctionnel ci-dessus, qui reste valide indépendamment de la priorisation.
 
 ```mermaid
 sequenceDiagram
@@ -642,19 +642,19 @@ Space Management est la **racine** de la cascade RGPD de suppression d'espace : 
 
 #### 4.e — Modèle du principal et appartenance
 
-**Ancrage UC.** [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-campagne.md), [UC-06](../conception/besoin/usecases/UC-06-vue-session.md), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md), [UC-12](../conception/besoin/usecases/UC-12-rejoindre-campagne.md).
+**Ancrage UC.** [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-espace.md), [UC-06](../conception/besoin/usecases/UC-06-vue-session.md), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md), [UC-12](../conception/besoin/usecases/UC-12-consulter-espace-joueur.md).
 
 Côté Space Management, le prédicat d'appartenance P1 (membre `ACTIVE` ou `GuestAccess` actif dont le scope inclut la ressource) se lit directement dans les données que ce module possède — `space_memberships`, `guest_accesses` — et la matrice ressource → règle d'appartenance (ADR-014 §4) n'est pas re-détaillée ici : elle est composée avec le prédicat de visibilité domaine P4 (Content Library) dans le service unique `IResourceAccessPolicy`, dont la composition complète (modèle du principal, service centralisé, non-divergence REST/SignalR) est développée en **§2.3**. Ce paragraphe n'en pose que le point d'ancrage côté Space Management, sans redessiner le diagramme ni reproduire le tableau des maillons.
 
 ## 5 — Content Library
 
-Ce module couvre cinq use cases : [UC-03](../conception/besoin/usecases/UC-03-structurer-scenario.md) (structurer un scénario), [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-campagne.md) (gérer les documents), [UC-05](../conception/besoin/usecases/UC-05-organiser-dossiers.md) (organiser par dossiers), [UC-13](../conception/besoin/usecases/UC-13-scenario-reutilisable.md) (scénario réutilisable) et [UC-14](../conception/besoin/usecases/UC-14-recherche.md) (recherche). Un volet du point 5.e (visibilité domaine `Document.CanBeReadBy`, P4) est transverse et renvoie à sa composition complète en §2.3.
+Ce module couvre cinq use cases : [UC-03](../conception/besoin/usecases/UC-03-structurer-scenario.md) (structurer un scénario), [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-espace.md) (gérer les documents), [UC-05](../conception/besoin/usecases/UC-05-organiser-dossiers.md) (organiser par dossiers), [UC-13](../conception/besoin/usecases/UC-13-scenario-reutilisable.md) (scénario réutilisable) et [UC-14](../conception/besoin/usecases/UC-14-recherche.md) (recherche). Un volet du point 5.e (visibilité domaine `Document.CanBeReadBy`, P4) est transverse et renvoie à sa composition complète en §2.3.
 
 ### 5.1 — UC-03 / UC-04 : cycle de vie du `Document`
 
 #### 5.a — CRUD `Document` + `DocumentLink` / backlinks calculés
 
-**Ancrage UC.** [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-campagne.md), scénario nominal (titre, type optionnel, propriétés structurées, blocs, visibilité, documents liés) ; [UC-03](../conception/besoin/usecases/UC-03-structurer-scenario.md), scénario nominal (étapes 6-8 — scènes représentées par des documents `SCENE` liés) et A2/A3 (ajout d'éléments liés existants / création d'un élément depuis le scénario).
+**Ancrage UC.** [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-espace.md), scénario nominal (titre, type optionnel, propriétés structurées, blocs, visibilité, documents liés) ; [UC-03](../conception/besoin/usecases/UC-03-structurer-scenario.md), scénario nominal (étapes 6-8 — scènes représentées par des documents `SCENE` liés) et A2/A3 (ajout d'éléments liés existants / création d'un élément depuis le scénario).
 
 ```mermaid
 sequenceDiagram
@@ -692,7 +692,7 @@ sequenceDiagram
 
 #### 5.b — `Share()` / `Unshare()` (visibilité permanente)
 
-**Ancrage UC.** [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-campagne.md) A4 — « changement de visibilité », qui renvoie explicitement le détail à UC-08 ; [UC-08](../conception/besoin/usecases/UC-08-partager-information.md), scénario nominal et arbitrage de granularité.
+**Ancrage UC.** [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-espace.md) A4 — « changement de visibilité », qui renvoie explicitement le détail à UC-08 ; [UC-08](../conception/besoin/usecases/UC-08-partager-information.md), scénario nominal et arbitrage de granularité.
 
 ```mermaid
 sequenceDiagram
@@ -800,7 +800,7 @@ sequenceDiagram
 
 #### 5.e — `DocumentProperties` gouverné + `Document.CanBeReadBy` (P4)
 
-**Ancrage UC.** [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-campagne.md), scénario nominal (propriétés structurées, visibilité) ; [UC-14](../conception/besoin/usecases/UC-14-recherche.md), règles métier (filtrage par visibilité, résultats titre-seul).
+**Ancrage UC.** [UC-04](../conception/besoin/usecases/UC-04-gerer-documents-espace.md), scénario nominal (propriétés structurées, visibilité) ; [UC-14](../conception/besoin/usecases/UC-14-recherche.md), règles métier (filtrage par visibilité, résultats titre-seul).
 
 La gouvernance du champ `properties` — value object `DocumentProperties`, deux régimes de validation selon que le type est système figé ou custom/modifié — est déjà composée en **§1.2** ([ADR-002](../architecture/decisions/ADR-002-tout-est-document-gouvernance.md) + `specs/document-properties-schemas.md`) ; ce paragraphe ne la redéveloppe pas. `Document.CanBeReadBy` (P4) est le prédicat de visibilité domaine composé avec P1 dans `IResourceAccessPolicy` — sa composition complète (REST/SignalR, non-divergence) est développée en **§2.3** ; ce paragraphe n'en pose que l'ancrage Content Library, sans redessiner le diagramme ni reproduire le tableau des maillons.
 
@@ -820,7 +820,7 @@ La gouvernance du champ `properties` — value object `DocumentProperties`, deux
 
 ## 6 — Session Conduct
 
-Ce module couvre cinq use cases : [UC-06](../conception/besoin/usecases/UC-06-vue-session.md) (vue session), [UC-07](../conception/besoin/usecases/UC-07-creation-volee-session.md) (création à la volée), [UC-08](../conception/besoin/usecases/UC-08-partager-information.md) (partage), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (temps réel joueur) et [UC-12](../conception/besoin/usecases/UC-12-rejoindre-campagne.md) (vue joueur). Le point 6.d est transverse et renvoie à sa composition complète en §2.3, avec un renvoi complémentaire à §7 pour le transport temps réel.
+Ce module couvre cinq use cases : [UC-06](../conception/besoin/usecases/UC-06-vue-session.md) (vue session), [UC-07](../conception/besoin/usecases/UC-07-creation-volee-session.md) (création à la volée), [UC-08](../conception/besoin/usecases/UC-08-partager-information.md) (partage), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (temps réel joueur) et [UC-12](../conception/besoin/usecases/UC-12-consulter-espace-joueur.md) (vue joueur). Le point 6.d est transverse et renvoie à sa composition complète en §2.3, avec un renvoi complémentaire à §7 pour le transport temps réel.
 
 ### 6.1 — UC-06 : machine d'états de session
 
@@ -938,7 +938,7 @@ sequenceDiagram
 
 #### 6.d — Partage temps réel SignalR filtré par visibilité (P4)
 
-**Ancrage UC.** [UC-08](../conception/besoin/usecases/UC-08-partager-information.md) (partage — diffusion aux joueurs) ; [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (accès joueur temps réel pendant la session) ; [UC-12](../conception/besoin/usecases/UC-12-rejoindre-campagne.md) (frontière avec la capacité d'écriture temps réel d'UC-06).
+**Ancrage UC.** [UC-08](../conception/besoin/usecases/UC-08-partager-information.md) (partage — diffusion aux joueurs) ; [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md) (accès joueur temps réel pendant la session) ; [UC-12](../conception/besoin/usecases/UC-12-consulter-espace-joueur.md) (frontière avec la capacité d'écriture temps réel d'UC-06).
 
 Ce point est un flux **transverse**. La composition complète du filtrage par visibilité qui gouverne la diffusion SignalR — non-divergence REST/SignalR, service unique `IResourceAccessPolicy` — est développée en **§2.3** ; ce paragraphe ne la redéveloppe pas et ne redessine pas son diagramme. session-conduct.md consomme l'événement `DocumentVisibilityChanged` (Content Library) pour « mettre à jour la vue joueur en temps réel » (§ Ce que Session Conduct reçoit) — c'est ce déclencheur événementiel, propre à Session Conduct, qui active le filtrage composé en §2.3 côté diffusion. Le mécanisme de transport temps réel proprement dit (canal SignalR, reconnexion, repli) n'est pas développé ici — il est annoncé en **§7**, à produire.
 
@@ -1010,7 +1010,7 @@ sequenceDiagram
 
 ### 7.b — Transport temps réel et repli
 
-**Ancrage UC.** [UC-08](../conception/besoin/usecases/UC-08-partager-information.md), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md), [UC-12](../conception/besoin/usecases/UC-12-rejoindre-campagne.md) — mêmes ancrages que la diffusion temps réel développée en **§2.3/§6.4**, dont le filtrage par visibilité n'est pas redessiné ici.
+**Ancrage UC.** [UC-08](../conception/besoin/usecases/UC-08-partager-information.md), [UC-09](../conception/besoin/usecases/UC-09-acces-session-joueur.md), [UC-12](../conception/besoin/usecases/UC-12-consulter-espace-joueur.md) — mêmes ancrages que la diffusion temps réel développée en **§2.3/§6.4**, dont le filtrage par visibilité n'est pas redessiné ici.
 
 ```mermaid
 sequenceDiagram
@@ -1027,7 +1027,7 @@ sequenceDiagram
     Note over Hub: seuil de coût par session concurrente [À TRANCHER — ticket] → déclencherait un repli vers polling adaptatif [À TRANCHER — ticket]
 ```
 
-> Vue de consolidation. Diagramme de flux détaillé : non désigné par le corpus au-delà d'ADR-004 lui-même — le module `Infrastructure.Notifications` (isolé dès J0, ADR-008) ne dispose pas encore de diagramme de flux dédié dans `domain/diagrams/flows/`. Le filtrage par visibilité renvoie à [flows/content-library.md](../conception/domain/diagrams/flows/content-library.md) (visibilité document, composé en §2.3).
+> Vue de consolidation. Diagramme de flux détaillé : non désigné par le corpus au-delà d'ADR-004 lui-même — le module `Infrastructure.Notifications` (isolé dès J0, ADR-008) ne dispose pas encore de diagramme de flux dédié dans `docs/conception/domain/diagrams/flows/`. Le filtrage par visibilité renvoie à [flows/content-library.md](../conception/domain/diagrams/flows/content-library.md) (visibilité document, composé en §2.3).
 
 **Règles de gestion consolidées.** SignalR est retenu comme transport dès le MVP (ADR-004 §Décision), isolé dans le module `Infrastructure.Notifications` (ADR-008), avec repli natif WebSocket → Server-Sent Events → long-polling. La revue adversariale post-ADR (ADR-004 §Compléments post-revue) précise ce choix par une configuration sobre obligatoire — SSE forcé tant que la communication reste unidirectionnelle MJ→joueurs, connexion fermée en fin de session `LIVE`, heartbeat/keep-alive allongé (justifié par la rareté des événements en session de jeu) — que `specs/repli-temps-reel.md` §2 reporte telle quelle sans l'affaiblir. Le filtrage par visibilité qui conditionne chaque message diffusé (`PUBLIC`/`GM_ONLY`/`PLAYER_PRIVATE`, pas de diffusion par groupe indifférenciée) est déjà composé en **§2.3** — ce paragraphe ne le redéveloppe pas.
 
@@ -1037,7 +1037,7 @@ sequenceDiagram
 - **cadence cible du polling adaptatif** — nommée qualitativement seulement (« latence de quelques secondes, tolérable », ADR-004 §Alternatives considérées) ;
 - **mécanisme de détection du dépassement de seuil** (évaluation continue ? périodique ? par palier d'hébergement ?) — absent du corpus.
 
-Ce cadre n'est, par la qualification de sa propre source, **pas implémentable en l'état** (`repli-temps-reel.md` §Statut).
+Ce cadre n'est, par la qualification de sa propre source, **pas implémentable en l'état** (`repli-temps-reel.md`, en-tête — label « Statut »).
 
 | Maillon | Source (fichier + section) | Rôle dans la chaîne |
 |---|---|---|
@@ -1058,7 +1058,7 @@ Cette section consolide, en un registre unique, les points non tranchés déjà 
 |---|---|---|---|
 | Références nullable entrantes non couvertes par le critère §3(b) (`documents.character_id` d'un autre document, `guest_accesses.character_id`, `folders.default_template_document_id`) | RGPD — cascade de suppression | ADR-012 §4 ; `requete-effacement-non-partage.md` §5 | Non tranché (déjà en §2.1) |
 | Posture *reclaim-in-place* OAuth (email préexistant non vérifié face à une preuve IdP fraîche) | Sécurité — authentification | ADR-015 §2.3 | `[À TRANCHER — à ratifier opérateur]` (déjà en §3.4) |
-| 403 vs 404 pour un appelant non-membre, cross-espace | Contrat API — non-révélation | `contrat-openapi.md` §4 ; ADR-014 §Conséquences (l.240) | `[À TRANCHER — B1.10]` (déjà en §2.3) |
+| 403 vs 404 pour un appelant non-membre, cross-espace | Contrat API — non-révélation | `contrat-openapi.md` §4 ; ADR-014 §Conséquences | `[À TRANCHER — B1.10]` (déjà en §2.3) |
 | Sémantique de `Visibility` (`GM_ONLY`/`PLAYER_PRIVATE`) sur un espace `PERSONAL` mono-membre | Modélisation domaine | ADR-018 § Points à trancher | Non tranché |
 | Modélisation domaine du `propertiesSchema` pour six des huit types système seedés (`scene`, `npc`, `location`, `note`, `player_character`, `reveal`) | Modélisation domaine | `specs/document-properties-schemas.md` §5 | Non tranché (déjà en §5.5) |
 | Ordre de dégel multi-tier si un futur tier intermédiaire borne le quota cible sous le nombre d'espaces `FROZEN` | Modélisation domaine — non pertinent tant que le tier reste binaire | `space-management.md` règle métier 11 | Non tranché (déjà en §4.3) |
@@ -1069,7 +1069,7 @@ Cette section consolide, en un registre unique, les points non tranchés déjà 
 | Instanciation cross-espace `PERSONAL` → partagé : comportement du document source à la purge de l'espace `PERSONAL` d'origine | Modélisation domaine | ADR-018 § Points à trancher | Non tranché |
 | Activation de l'espace `PERSONAL` comme zone d'atterrissage par défaut en mode local (redéfinit H1) ; posture capture-first recommandée en MVP | Gate opérateur — décision produit, **à ratifier, jamais actée** | ADR-018 § Recommandations (Geste capture-first) ; § Points à trancher | `[À TRANCHER]` — recommandation non validée par l'opérateur |
 
-**Point de vigilance de cohérence corpus — divergence non réconciliée, pas un `[À TRANCHER]` créé ici.** [UC-10](../conception/besoin/usecases/UC-10-compte-cloud.md) §A4/§E4 décrit la suppression de compte comme **bloquée** tant que le titulaire est propriétaire d'espaces partagés avec des membres actifs (« le système bloque la suppression »), tandis que `identity-access.md` § Invariants métier, invariant 3, marque ce point **« Résolu (ADR-018, W2) »** et affirme au contraire que `User.Delete()` n'est **jamais** bloqué par la possession d'espaces — seul le routage de cascade diffère par type d'espace. Ce dossier ne tranche pas cette divergence entre l'ancrage UC (source de vérité du besoin) et son raffinement domaine ; elle est signalée pour réconciliation, conformément à l'ordre d'autorité posé en tête de ce dossier. Déjà signalée en **§2.2**.
+**Réconciliation de cohérence corpus — désormais actée, plus une divergence.** [UC-10](../conception/besoin/usecases/UC-10-compte-cloud.md) §A4/§E4 pose le principe : la suppression de compte est **bloquée** tant que le titulaire est propriétaire d'espaces partagés avec des membres actifs (« le système bloque la suppression »). `identity-access.md` § Invariants métier, invariant 3, réconcilie ce principe avec le routage par type d'espace : **bloquant** pour `CAMPAIGN`/`ONE_SHOT` à membre actif (conforme UC-10), **jamais bloquant** pour `PERSONAL` (mono-membre, hors champ). UC-10 reste la source du principe de blocage, le domaine en donne le routage exact — l'articulation, déjà développée en **§2.2**, n'est plus une divergence ouverte.
 
 ### 8.2 — Renvoi juridique
 
@@ -1102,7 +1102,7 @@ Ce tableau recense, par famille, l'ensemble des sources citées dans ce dossier.
 | [ADR-005](../architecture/decisions/ADR-005-modele-monetisation.md) | Modèle de monétisation — statut « décision produit fusionnée », autorité déplacée vers la vision produit / le CdC (§3.2, §4.3) |
 | [ADR-007](../architecture/decisions/ADR-007-rgpd-autorisation-api.md) | RGPD et modèle d'autorisation API — principe étendu au canal SignalR (§1.2, §2.3) |
 | [ADR-008](../architecture/decisions/ADR-008-structure-solution.md) | Structure de la solution — bounded contexts en frontières logiques, test d'architecture CI, isolation du module de notifications (§1.1, §7.b) |
-| [ADR-010](../architecture/decisions/ADR-010-suppression-campagne.md) | Droit du propriétaire à supprimer son espace, corbeille de 30 jours (§2.1, §4.4) |
+| [ADR-010](../architecture/decisions/ADR-010-suppression-espace.md) | Droit du propriétaire à supprimer son espace, corbeille de 30 jours (§2.1, §4.4) |
 | [ADR-011](../architecture/decisions/ADR-011-cascade-integrite-referentielle.md) | Cascade d'intégrité référentielle — saga `SpaceDeleted`, claim/idempotence/reprise, pattern Hosted Service (§2.1, §2.2, §2.4, §7.a) |
 | [ADR-012](../architecture/decisions/ADR-012-rgpd-effacement-compte.md) | RGPD effacement de compte — saga `UserAnonymized`, règle F-08, critère « document non partagé » (§2.1, §2.2) |
 | [ADR-013](../architecture/decisions/ADR-013-rgpd-donnees-invites.md) | RGPD données invitées — rétention 90 jours, confirmation du comportement MVP de conservation (§3.2, §4.2) |

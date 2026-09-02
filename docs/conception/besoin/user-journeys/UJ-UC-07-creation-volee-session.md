@@ -2,7 +2,7 @@
 
 ## Périmètre
 
-Parcours du MJ depuis le déclencheur de création rapide en session jusqu'à la disponibilité du document dans la campagne. Couvre trois profils : Émilie (improvisatrice, PNJ à la volée en moins de 5 secondes), Antoine (MJ structuré, création typée et retrouvabilité post-session), Nadia (note rétroactive depuis une session CLOSED). La gestion de session (lancement, fermeture) est couverte par UC-06.
+Parcours du MJ depuis le déclencheur de création rapide en session jusqu'à la disponibilité du document dans l'espace. Couvre trois profils : Émilie (improvisatrice, PNJ à la volée en moins de 5 secondes), Antoine (MJ structuré, création typée et retrouvabilité post-session), Nadia (note rétroactive depuis une session CLOSED). La gestion de session (lancement, fermeture) est couverte par UC-06.
 
 ---
 
@@ -100,9 +100,9 @@ Les joueurs d'Émilie décident d'interroger un passant anonyme qu'elle n'a pas 
 
 ### Antoine — MJ structuré, création typée et retrouvabilité post-session
 
-Antoine mène une campagne Blades in the Dark. Pendant la session, les joueurs créent un lien inattendu avec une faction non préparée. Il ouvre le panneau de création rapide, cherche le type "Faction", saisit "Les Fils de l'Anguille", valide. La faction est créée, liée à la campagne, placée dans le dossier Factions. Elle est épinglée dans la session. Après la partie, Antoine retrouve la faction dans son dossier, avec le bon type — il peut l'enrichir directement depuis Content Library sans la recréer.
+Antoine mène une campagne Blades in the Dark. Pendant la session, les joueurs créent un lien inattendu avec une faction non préparée. Il ouvre le panneau de création rapide, cherche le type "Faction", saisit "Les Fils de l'Anguille", valide. La faction est créée, liée à l'espace, placée dans le dossier Factions. Elle est épinglée dans la session. Après la partie, Antoine retrouve la faction dans son dossier, avec le bon type — il peut l'enrichir directement depuis Content Library sans la recréer.
 
-**Score de l'étape "Choisir le type de document"** : 5/5 si les types personnalisés de la campagne sont disponibles. Score : 3/5 si seuls les types génériques sont proposés.
+**Score de l'étape "Choisir le type de document"** : 5/5 si les types personnalisés de l'espace sont disponibles. Score : 3/5 si seuls les types génériques sont proposés.
 
 **Points de conversion** :
 - Type de document choisi en deux clics.
@@ -117,7 +117,7 @@ Antoine mène une campagne Blades in the Dark. Pendant la session, les joueurs c
 
 ### Nadia — Note rétroactive depuis une session CLOSED
 
-La session de Nadia est terminée depuis vingt minutes. Elle vient de se souvenir qu'elle a improvisé un PNJ important qu'elle n'a pas saisi à chaud. Elle rouvre la campagne, navigue jusqu'à la session CLOSED. Elle ouvre le panneau de création rapide — elle n'était pas sûre que ce soit possible en CLOSED. Elle choisit NOTE, saisit "Capitaine du Vieux Port — allié potentiel", valide. Le document est créé dans Content Library, lié à la campagne. La session reste CLOSED.
+La session de Nadia est terminée depuis vingt minutes. Elle vient de se souvenir qu'elle a improvisé un PNJ important qu'elle n'a pas saisi à chaud. Elle rouvre la campagne, navigue jusqu'à la session CLOSED. Elle ouvre le panneau de création rapide — elle n'était pas sûre que ce soit possible en CLOSED. Elle choisit NOTE, saisit "Capitaine du Vieux Port — allié potentiel", valide. Le document est créé dans Content Library, lié à l'espace. La session reste CLOSED.
 
 **Score de l'étape "Ouvrir le panneau de création rapide en CLOSED"** : 4/5 si le panneau est disponible et que son état (CLOSED) est indiqué clairement. Score : 2/5 si le bouton "Créer" est masqué ou désactivé en CLOSED.
 
@@ -137,7 +137,7 @@ La session de Nadia est terminée depuis vingt minutes. Elle vient de se souveni
 - **E1 — Titre vide** : le panneau empêche la validation si le titre est vide ou composé uniquement d'espaces. Message d'erreur inline sur le champ.
 - **E2 — Session ARCHIVED** : le panneau de création rapide est désactivé. Aucune création possible.
 - **A2 — Personnage joueur** : le PJ est créé avec le titre seul. Le champ "joueur associé" est vide — assignable après la session. Pas de blocage.
-- **Mode local** : la création à la volée fonctionne en mode local (IndexedDB). Pas de différence de parcours pour Émilie.
+- **Mode local** : la création à la volée fonctionne en mode local. Pas de différence de parcours pour Émilie.
 
 ---
 

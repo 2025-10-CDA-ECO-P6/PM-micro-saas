@@ -2,7 +2,7 @@
 
 ## Objectif utilisateur
 
-Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lien, sans créer de compte, avec une friction minimale. Le nom d'affichage seul suffit. Un lien de campagne permanent (avec compte) est également couvert pour les membres réguliers.
+Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lien, sans créer de compte, avec une friction minimale. Le nom d'affichage seul suffit. Un lien d'espace partagé permanent (avec compte) est également couvert pour les membres réguliers.
 
 ---
 
@@ -22,7 +22,7 @@ Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lie
   - Nominal : accès via lien ponctuel, nom d'affichage seul
   - A1 : joueur déjà connecté à son compte Haversack
   - A2 : joueur invité qui crée un compte depuis l'accès invité (migration sans perte)
-  - A3 : lien de campagne permanent (membres réguliers, avec compte)
+  - A3 : lien d'espace partagé permanent (membres réguliers, avec compte)
   - A4 : lien expiré ou révoqué
   - E1 : lien invalide ou mal formé
 
@@ -40,7 +40,7 @@ Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lie
 ## Bounded contexts pressentis
 
 - **Identity & Access** — gère `GuestAccess`, `Member`, génération et révocation des tokens de lien, validation des accès.
-- **Space Management** — associe les membres et les `GuestAccess` à une campagne, contrôle la liste des participants.
+- **Space Management** — associe les membres et les `GuestAccess` à un espace partagé, contrôle la liste des participants.
 - **Conduite de session** — consomme l'accès joueur pour afficher la vue joueur, expose les documents `PUBLIC` et les `documents épinglés` en temps réel.
 
 ---
@@ -53,7 +53,7 @@ flowchart TD
 
     B -->|Lien ponctuel| C[Identity and Access\nvalide le token GuestAccess]
     B -->|Lien permanent| D[Identity and Access\nvalide le token Member]
-    B -->|Lien invalide ou mal forme| E[Page d erreur sobre\nopacite campagne]
+    B -->|Lien invalide ou mal forme| E[Page d erreur sobre\nopacite espace partage]
     B -->|Lien expire ou revoque| F[Message lien non actif\ncontacter le MJ]
 
     C --> G{Joueur deja connecte ?}
@@ -66,7 +66,7 @@ flowchart TD
     J --> K[Vue joueur\ndocuments PUBLIC\ndocuments epingles\nnotes personnelles]
 
     D --> L{Joueur a un compte ?}
-    L -->|Oui| M[Acces campagne permanent\nhistorique et lore partage]
+    L -->|Oui| M[Acces espace partage permanent\nhistorique et lore partage]
     L -->|Non| N[Invite a creer un compte\nUC-10]
     N --> M
 
@@ -89,7 +89,7 @@ flowchart LR
 
     UC09[UC-09\nAcces session joueur]
     UC10[UC-10\nCompte cloud]
-    UC11[UC-11\nGerer membres campagne]
+    UC11[UC-11\nGerer membres espace partage]
     UC08[UC-08\nPartager information]
 
     UC09 --> US0901
@@ -132,13 +132,13 @@ flowchart LR
 - RB-09-18 : À la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) cessent immédiatement d'être utilisées et affichées — plus aucune finalité produit. Leur effacement effectif intervient au plus tard 90 jours après la fin d'accès ; cette fenêtre bornée a pour seule finalité de permettre à l'invité d'exercer ses droits et de traiter une contestation, jamais un usage produit (RGPD Art. 5(1)(e) — limitation de la conservation). Si l'invité a été converti en compte, ses données suivent les règles du compte.
 - RB-09-19 : À la fin définitive d'un `GuestAccess` non converti, les notes `PLAYER_PRIVATE` créées par cet invité sont supprimées physiquement. Seules les notes créées par cet invité sont concernées, jamais celles d'autres participants.
 - RB-09-20 : Au moment où l'invité saisit son nom d'affichage (avant ou à l'entrée en session), il est informé de manière simple de ce qui est conservé (son nom d'affichage, ses notes privées éventuelles), pour combien de temps (durée de l'accès + grâce, puis effacement du nom d'affichage au plus tard 90 jours après la fin d'accès), et du sort de ses données à la fin de l'accès : ses notes privées sont supprimées s'il n'a pas créé de compte, son nom d'affichage n'est plus utilisé et est effacé dans le délai borné.
-- RB-09-21 : Sur un compte `FREE`, une session est limitée à **4 joueurs distincts disposant d'un accès à la séance**, quel que soit le type d'accès (accès invité ponctuel, membre de campagne, ou autre type d'accès futur). Le MJ n'est jamais compté. La limite porte sur le nombre d'accès accordés au moment de leur octroi — c'est le refus du **5e accès** qui bloque, pas une mesure de présence en temps réel. La limite porte sur la taille de la table, pas sur le moyen d'y accéder — compter un seul type d'accès la rendrait contournable et viderait le levier de l'offre supérieure. Le joueur dont l'accès est refusé voit un message sobre d'erreur, sans révélation sur la campagne (même registre que le message de lien expiré) ; le MJ reçoit le signalement de la limite atteinte avec une invitation à passer `PRO` pour la lever. Cette limite transpose, pour les joueurs d'une session, le précédent de blocage du compte `FREE` déjà établi pour les campagnes.
+- RB-09-21 : Sur un compte `FREE`, une session est limitée à **4 joueurs distincts disposant d'un accès à la séance**, quel que soit le type d'accès (accès invité ponctuel, membre de l'espace partagé, ou autre type d'accès futur). Le MJ n'est jamais compté. La limite porte sur le nombre d'accès accordés au moment de leur octroi — c'est le refus du **5e accès** qui bloque, pas une mesure de présence en temps réel. La limite porte sur la taille de la table, pas sur le moyen d'y accéder — compter un seul type d'accès la rendrait contournable et viderait le levier de l'offre supérieure. Le joueur dont l'accès est refusé voit un message sobre d'erreur, sans révélation sur l'espace partagé (même registre que le message de lien expiré) ; le MJ reçoit le signalement de la limite atteinte avec une invitation à passer `PRO` pour la lever. Cette limite transpose, pour les joueurs d'une session, le précédent de blocage du compte `FREE` déjà établi pour les espaces partagés.
 - RB-09-22 : Au-delà de l'information donnée à la saisie du nom (RB-09-20), l'invité est averti en temps utile — à un moment qui lui laisse la possibilité d'agir avant la fin de son accès — que ses notes personnelles ne seront conservées que s'il crée un compte avant cette fin. Cet avertissement traite le risque que l'information initiale ne soit plus présente à l'esprit lorsque l'accès prend fin, et laisse à l'invité le temps de décider de créer un compte pour conserver ses notes (US-09-04, RB-09-14).
 
 **Critères d'acceptation** :
 - [ ] Le joueur accède à la session en cliquant sur le lien et en saisissant uniquement un nom d'affichage.
 - [ ] Aucun email, aucun mot de passe, aucune confirmation n'est demandée.
-- [ ] Le joueur voit les documents `PUBLIC` de la campagne et les `documents épinglés` de la session.
+- [ ] Le joueur voit les documents `PUBLIC` de l'espace partagé et les `documents épinglés` de la session.
 - [ ] Le joueur peut prendre des notes personnelles.
 - [ ] Le nom d'affichage du joueur est visible par le MJ dans la vue session.
 - [ ] Un joueur déjà connecté accède directement sans saisir de nom (A1).
@@ -176,25 +176,25 @@ Scénario : Acces expire apres 24h de grace
 
 **En tant que** joueur,
 **je veux** recevoir un message clair lorsque le lien que j'utilise n'est plus actif,
-**afin de** comprendre la situation et savoir quoi faire (contacter le MJ), sans obtenir d'information sur l'existence de la campagne.
+**afin de** comprendre la situation et savoir quoi faire (contacter le MJ), sans obtenir d'information sur l'existence de l'espace partagé.
 
 **Notes de conception** :
 - Identity & Access invalide le `GuestAccess` à l'expiration ou à la révocation explicite par le MJ.
-- Les deux cas — lien expiré (A4) et lien invalide ou mal formé (E1) — affichent une page d'erreur sobre avec le même message de surface, afin de ne pas révéler si la campagne existe ou non (principe d'opacité).
+- Les deux cas — lien expiré (A4) et lien invalide ou mal formé (E1) — affichent une page d'erreur sobre avec le même message de surface, afin de ne pas révéler si l'espace partagé existe ou non (principe d'opacité).
 - La distinction interne entre expiration, révocation et token malformé reste dans les logs — elle n'est pas exposée au joueur.
 - Le message propose de contacter le MJ pour obtenir un nouveau lien.
 
 **Règles métier** :
 - RB-09-06 : Un `GuestAccess` révoqué par le MJ est immédiatement invalidé.
 - RB-09-07 : Un `GuestAccess` expiré (délai de grâce dépassé) est invalide.
-- RB-09-08 : Un lien invalide ou mal formé est traité avec le même affichage qu'un lien expiré ou révoqué — aucune information sur l'existence de la campagne n'est révélée.
+- RB-09-08 : Un lien invalide ou mal formé est traité avec le même affichage qu'un lien expiré ou révoqué — aucune information sur l'existence de l'espace partagé n'est révélée.
 - RB-09-09 : Le message affiché est sobre et invite le joueur à contacter le MJ.
 
 **Critères d'acceptation** :
 - [ ] Un lien de session expiré affiche un message "Ce lien n'est plus actif" et invite à contacter le MJ.
 - [ ] Un lien révoqué affiche le même message qu'un lien expiré.
-- [ ] Un lien mal formé affiche le même message — aucune information sur la campagne n'est révélée.
-- [ ] La page d'erreur est sobre et ne révèle pas l'existence de la campagne.
+- [ ] Un lien mal formé affiche le même message — aucune information sur l'espace partagé n'est révélée.
+- [ ] La page d'erreur est sobre et ne révèle pas l'existence de l'espace partagé.
 
 ```gherkin
 Scénario : Lien de session expire (A4)
@@ -202,7 +202,7 @@ Scénario : Lien de session expire (A4)
   Quand Lucas clique sur l ancien lien de session
   Alors il voit un message "Ce lien n'est plus actif"
   Et le message invite a contacter le MJ pour un nouveau lien
-  Et aucune information sur la campagne n'est revele
+  Et aucune information sur l espace partage n'est revele
 
 Scénario : Lien revoque par le MJ (A4)
   Etant donne que le MJ a revoque le GuestAccess d une session
@@ -213,59 +213,59 @@ Scénario : Lien invalide ou mal forme (E1)
   Etant donne qu'un lien est incorrect ou malicieux
   Quand un joueur l ouvre
   Alors il voit une page d erreur sobre
-  Et aucune information sur l existence de la campagne n'est revele
+  Et aucune information sur l existence de l espace partage n'est revele
 ```
 
 ---
 
-### US-09-03 — Rejoindre une campagne via lien permanent avec compte
+### US-09-03 — Rejoindre un espace partagé via lien permanent avec compte
 
 **Priorité** : Should Have (dépend UC-10, UC-11)
 
 **En tant que** joueur régulier,
-**je veux** accéder à une campagne via un lien permanent fourni par le MJ,
+**je veux** accéder à un espace partagé via un lien permanent fourni par le MJ,
 **afin de** consulter l'historique des sessions passées et les documents de lore partagés entre les séances.
 
 **Notes de conception** :
-- Le lien permanent est associé à un `Member` de la campagne, géré par Identity & Access et Space Management.
+- Le lien permanent est associé à un `Member` de l'espace partagé, géré par Identity & Access et Space Management.
 - Contrairement au lien ponctuel (`GuestAccess`), l'accès permanent nécessite un compte Haversack — il est valide jusqu'à révocation par le MJ.
-- Si le joueur n'a pas de compte, il est redirigé vers la création de compte (UC-10). Une fois le compte créé, il est associé comme `Member` de la campagne.
+- Si le joueur n'a pas de compte, il est redirigé vers la création de compte (UC-10). Une fois le compte créé, il est associé comme `Member` de l'espace partagé.
 - L'accès permanent donne accès à l'historique des sessions et aux documents de lore `PUBLIC`.
-- La génération du lien permanent est couverte par UC-11 (Gérer les membres de campagne).
+- La génération du lien permanent est couverte par UC-11 (Gérer les membres d'un espace partagé).
 
 **Règles métier** :
-- RB-09-10 : Un lien de campagne permanent est valide jusqu'à révocation explicite par le MJ.
+- RB-09-10 : Un lien d'espace partagé permanent est valide jusqu'à révocation explicite par le MJ.
 - RB-09-11 : L'accès permanent nécessite un compte Haversack (`Member`).
-- RB-09-12 : Un joueur sans compte redirigé vers UC-10 devient `Member` de la campagne après création de son compte.
-- RB-09-13 : Le `Member` a accès à l'historique des sessions et aux documents de lore `PUBLIC` de la campagne.
+- RB-09-12 : Un joueur sans compte redirigé vers UC-10 devient `Member` de l'espace partagé après création de son compte.
+- RB-09-13 : Le `Member` a accès à l'historique des sessions et aux documents de lore `PUBLIC` de l'espace partagé.
 
 **Critères d'acceptation** :
-- [ ] Le joueur avec un compte accède directement à la campagne via le lien permanent.
+- [ ] Le joueur avec un compte accède directement à l'espace partagé via le lien permanent.
 - [ ] Le joueur sans compte est redirigé vers la création de compte (UC-10) avant d'obtenir l'accès.
-- [ ] Après création de compte, le joueur est lié comme `Member` de la campagne.
+- [ ] Après création de compte, le joueur est lié comme `Member` de l'espace partagé.
 - [ ] Le joueur accède à l'historique des sessions passées et aux documents de lore `PUBLIC`.
 - [ ] Le MJ peut révoquer l'accès permanent, ce qui invalide immédiatement le lien pour ce membre.
 
 ```gherkin
 Scénario : Joueur avec compte rejoint via lien permanent (A3)
-  Etant donne que Thomas a genere un lien permanent pour sa campagne
+  Etant donne que Thomas a genere un lien d espace partage permanent pour son espace
   Et que le joueur a deja un compte Haversack
   Quand le joueur clique sur le lien permanent
-  Alors il est lie comme Member de la campagne
+  Alors il est lie comme Member de l espace partage
   Et il accede a l historique des sessions et aux documents de lore PUBLIC
 
 Scénario : Joueur sans compte redirige vers UC-10 (A3)
-  Etant donne qu'un joueur clique sur un lien permanent de campagne
+  Etant donne qu'un joueur clique sur un lien permanent d espace partage
   Et qu'il n'a pas de compte Haversack
   Quand la page s affiche
   Alors il est invite a creer un compte via UC-10
-  Et apres creation, il est automatiquement lie comme Member de la campagne
+  Et apres creation, il est automatiquement lie comme Member de l espace partage
 
 Scénario : MJ revoque l acces permanent d un membre
-  Etant donne qu'un Member a acces a la campagne via lien permanent
+  Etant donne qu'un Member a acces a l espace partage via lien permanent
   Quand le MJ revoque l acces de ce membre
   Alors le lien devient invalide pour ce membre
-  Et le membre ne peut plus acceder a la campagne
+  Et le membre ne peut plus acceder a l espace partage
 ```
 
 ---
@@ -276,14 +276,14 @@ Scénario : MJ revoque l acces permanent d un membre
 
 **En tant que** joueur invité,
 **je veux** créer un compte Haversack depuis ma session invité et conserver toutes mes données existantes,
-**afin de** ne pas perdre mes notes personnelles et d'accéder à la campagne de façon permanente entre les séances.
+**afin de** ne pas perdre mes notes personnelles et d'accéder à l'espace partagé de façon permanente entre les séances.
 
 **Notes de conception** :
 - La migration est déclenchée volontairement par le joueur depuis la vue invité (bouton "Créer un compte").
 - Identity & Access rattache le `GuestAccess` existant au nouveau compte créé (UC-10).
 - Les notes personnelles prises en mode invité (`PLAYER_PRIVATE`) sont migrées vers le compte.
 - L'accès existant (sessions rejointes, documents consultés) est préservé.
-- Après migration, le joueur peut être proposé comme `Member` permanent de la campagne — la validation reste à la main du MJ.
+- Après migration, le joueur peut être proposé comme `Member` permanent de l'espace partagé — la validation reste à la main du MJ.
 - L'accès du compte créé depuis la migration est immédiat ; la validation de l'adresse de messagerie n'est pas bloquante (RB-10-05, ADR-015 §2.1 — UC-10). La promotion en `Member` permanent (RB-09-16) dépend uniquement du consentement du MJ, jamais de l'état `emailVerified` du compte : ce sont deux gates indépendants, l'un ne conditionne pas l'autre.
 - La migration ne doit générer aucune perte de données.
 
@@ -313,7 +313,7 @@ Scénario : Joueur invite cree un compte et migre ses donnees (A2)
 Scénario : MJ peut promouvoir le joueur migre en Member
   Etant donne qu un joueur invite vient de creer un compte
   Quand le MJ voit la notification dans le panneau membres
-  Alors il peut valider la promotion du joueur en Member de la campagne
+  Alors il peut valider la promotion du joueur en Member de l espace partage
 ```
 
 ---
@@ -345,7 +345,7 @@ Scénario : MJ peut promouvoir le joueur migre en Member
 | Nominal — accès via lien ponctuel, nom seul | US-09-01 |
 | A1 — joueur déjà connecté à son compte | US-09-01 |
 | A2 — joueur invité qui crée un compte (migration) | US-09-04 |
-| A3 — lien de campagne permanent avec compte | US-09-03 |
+| A3 — lien d'espace partagé permanent avec compte | US-09-03 |
 | A4 — lien expiré ou révoqué | US-09-02 |
 | E1 — lien invalide ou mal formé | US-09-02 |
 
@@ -356,4 +356,4 @@ Scénario : MJ peut promouvoir le joueur migre en Member
 1. **RÉSOLU** — Le nom d'affichage seul suffit ; aucun identifiant léger (pseudo, code court) n'est requis à la saisie. L'identité technique du joueur invité est le `GuestAccessId` (généré à l'octroi de l'accès, jamais saisi) — le nom d'affichage est un label sans garantie d'unicité. La désambiguïsation en cas d'homonymie (deux « Marc ») est traitée en **présentation** (suffixe court dérivé du `GuestAccessId`, affiché dans la vue session du MJ), pas par une contrainte de modèle : imposer un pseudo ou un code obligatoire sur-modéliserait un besoin de confort d'affichage.
 2. **RÉSOLU** — La durée de grâce est ratifiée à **24 h ferme** après la fin de session, alignée avec RB-09-01 et la règle 5 du domaine Space Management (`GuestAccess SESSION` expire à la fermeture de la session + 24h de grâce). Pas de variation par offre ni d'interview complémentaire requise.
 3. **RÉSOLU** — Le joueur invité reçoit une mise à jour **ambiante et temps réel** du partage de documents sans notification active au MVP (voir zoning **AR-06**). L'annonce assistive est couverte orthogonalement par **NFR-ACC-02**.
-4. **RÉSOLU** — L'accès est **immédiat** après migration invité→compte ; la validation de l'adresse de messagerie n'est **pas bloquante** (RB-10-05, ADR-015 §2.1 — cf. UC-10). L'accès `Member` permanent de la campagne reste gouverné par le consentement explicite du MJ (RB-09-16), jamais par l'état `emailVerified` du compte — ces deux gates sont indépendants. *(Cette question re-litigeait une règle déjà tranchée par UC-10/RB-10-05 ; clôture par renvoi vers la source.)*
+4. **RÉSOLU** — L'accès est **immédiat** après migration invité→compte ; la validation de l'adresse de messagerie n'est **pas bloquante** (RB-10-05, ADR-015 §2.1 — cf. UC-10). L'accès `Member` permanent de l'espace partagé reste gouverné par le consentement explicite du MJ (RB-09-16), jamais par l'état `emailVerified` du compte — ces deux gates sont indépendants. *(Cette question re-litigeait une règle déjà tranchée par UC-10/RB-10-05 ; clôture par renvoi vers la source.)*

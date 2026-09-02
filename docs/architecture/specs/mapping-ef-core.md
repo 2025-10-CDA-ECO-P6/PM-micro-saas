@@ -79,7 +79,7 @@ Ces deux prédicats sont « structurels et indépendants de l'appelant » et por
 - Index B-tree partiel `(character_id) WHERE character_id IS NOT NULL` — qualifié « préalable authz OBLIGATOIRE » pour la résolution transitive des documents `PLAYER_PRIVATE`.
 - Index B-tree partiel `(guest_access_id) WHERE guest_access_id IS NOT NULL` — même justification côté auteur invité.
 
-**Confirmation matrice FK** (ADR-011:130-131) : ces deux colonnes portent le rôle « Cycle 1 » du graphe de cascade (`documents ⇄ guest_accesses`) — NULL-ées en passe 1 de la saga `SpaceDeleted`.
+**Confirmation matrice FK** (ADR-011:136, 144) : ces deux colonnes portent le rôle « Cycle 1 » du graphe de cascade (`documents ⇄ guest_accesses`) — NULL-ées en passe 1 de la saga `SpaceDeleted`.
 
 **Conséquence de mapping** : ces deux colonnes sont mappées comme propriétés scalaires nullable de premier niveau sur l'entité `Document`, avec les deux index partiels ci-dessus déclarés en configuration EF Core (`HasIndex(...).HasFilter(...)`), pas comme faisant partie de l'owned type `DocumentProperties`.
 

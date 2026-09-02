@@ -164,11 +164,15 @@ annonce sans action :
 
 hiérarchie de lecture à distance :
   priorité 1 — zone d'accès à la vue session (repère « session en cours » lisible
-               sans approche de l'écran — NFR-ACC-04)
+               sans approche de l'écran)
   priorité 2 — zone de navigation par dossiers (arborescence de l'espace)
   priorité 3 — zone de contenu / liste des documents
   priorité 4 — barre de recherche
-  source : NFR-ACC-04 (usage à distance normale de l'écran pendant la préparation)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -178,7 +182,7 @@ hiérarchie de lecture à distance :
 ```
 Sources : UC-02 ; UC-04 ; UC-05 ; UC-06 ; UC-08 ; UC-11 ;
           AR-01 ; AR-09 ; AR-10 ; AR-11 ; AR-13 ; AR-14 ;
-          NFR-ACC-02 ; NFR-ACC-04 ; NFR-OFF-04 ;
+          NFR-ACC-02 ; NFR-OFF-04 ;
           châssis S7 (zoning.md §S7)
 ```
 

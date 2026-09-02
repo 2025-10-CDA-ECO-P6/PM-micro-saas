@@ -1,8 +1,8 @@
-# User Journey — Gérer les documents de campagne (UC-04)
+# User Journey — Gérer les documents d'un espace (UC-04)
 
 ## Périmètre
 
-Parcours du MJ depuis l'accès à sa campagne jusqu'à la création, la configuration et la récupération
+Parcours du MJ depuis l'accès à son espace jusqu'à la création, la configuration et la récupération
 d'un document durable. Couvre la note rapide (Émilie), le document modulaire avec blocs, type et
 liens (Antoine), et la navigation après une longue absence (Nadia). Le workflow des notes prises
 pendant une session reste hors périmètre (UC-06/07).
@@ -25,9 +25,9 @@ pendant une session reste hors périmètre (UC-06/07).
 
 ```mermaid
 journey
-    title Gérer les documents de campagne — UC-04
+    title Gérer les documents d'un espace — UC-04
     section Création
-        Ouvrir la campagne: 5: Émilie, Antoine, Nadia
+        Ouvrir l'espace: 5: Émilie, Antoine, Nadia
         Accéder à la bibliothèque ou à un dossier: 5: Émilie, Antoine, Nadia
         Note rapide sans formulaire: 5: Émilie, 2: Antoine, 3: Nadia
         Création complète titre + type: 2: Émilie, 5: Antoine, 3: Nadia
@@ -50,7 +50,7 @@ journey
 
 ```mermaid
 flowchart TD
-    A[MJ ouvre sa campagne] --> B[Bibliothèque documentaire\nou dossier]
+    A[MJ ouvre son espace] --> B[Bibliothèque documentaire\nou dossier]
     B --> C{Mode de création}
 
     C -->|Note rapide| D[Titre généré automatiquement\ninterface — ex. Note — 15 mai 2026 21:34]
@@ -91,7 +91,7 @@ flowchart TD
 
 | Étape | Persona(s) | Friction potentielle | Opportunité produit |
 |---|---|---|---|
-| Ouvrir la campagne et naviguer vers les documents | Tous | Bibliothèque peu visible si la campagne a beaucoup d'entrées | Entrée directe "Documents" + raccourcis vers les dossiers courants |
+| Ouvrir l'espace et naviguer vers les documents | Tous | Bibliothèque peu visible si l'espace a beaucoup d'entrées | Entrée directe "Documents" + raccourcis vers les dossiers courants |
 | Créer une note rapide | Émilie | Formulaire trop long, étapes obligatoires | Bouton "Note rapide" distinct, titre généré, éditeur ouvert immédiatement |
 | Créer un document complet avec type | Antoine | Absence de types disponibles ou types peu clairs | Types affichés avec icône et description courte dans le sélecteur, sans masquer l'option libre |
 | Ajouter des blocs libres | Tous | Éditeur perçu comme trop abstrait si les blocs sont trop techniques | Blocs simples par défaut : texte, liste, checklist, tableau, image, séparateur |
@@ -133,7 +133,7 @@ flowchart TD
 ## Liens
 
 - Use case source : [`docs/conception/besoin/usecases/`](../usecases/)
-- User stories associées : [`US-UC-04-gerer-documents-campagne.md`](../user-stories/US-UC-04-gerer-documents-campagne.md)
+- User stories associées : [`US-UC-04-gerer-documents-espace.md`](../user-stories/US-UC-04-gerer-documents-espace.md)
 - Conception documentaire source : [`docs/conception/domain/content-library.md`](../../domain/content-library.md)
 - UC-03 Structurer un scénario (liens entre documents) : [`docs/conception/besoin/user-journeys/UJ-UC-03-structurer-scenario.md`](UJ-UC-03-structurer-scenario.md)
 - UC-06 Vue session (notes de session hors périmètre UC-04) : [`docs/conception/besoin/usecases/UC-06-vue-session.md`](../usecases/UC-06-vue-session.md)
@@ -145,15 +145,15 @@ flowchart TD
 
 ### Depuis UC-02 (création de l'espace de jeu)
 
-Lorsqu'une campagne est créée (UC-02), les quatre dossiers système — **Personnages**, **Joueurs**, **Scénarios**, **Notes** — et le dossier virtuel « Non classés » sont disponibles immédiatement. UC-04 peut démarrer sans étape intermédiaire : le MJ accède directement à la bibliothèque ou à un dossier et crée ses premiers documents. Les documents créés sans dossier explicite atterrissent dans « Non classés » (accessible via la recherche mais non visible en navigation).
+Lorsqu'un espace partagé (`CAMPAIGN` ou `ONE_SHOT`) est créé (UC-02), les quatre dossiers système — **Personnages**, **Joueurs**, **Scénarios**, **Notes** — et le dossier virtuel « Non classés » sont disponibles immédiatement (un espace `PERSONAL` ne reçoit que le dossier virtuel « Non classés », RB-02-20). UC-04 peut démarrer sans étape intermédiaire : le MJ accède directement à la bibliothèque ou à un dossier et crée ses premiers documents. Les documents créés sans dossier explicite atterrissent dans « Non classés » (accessible via la recherche mais non visible en navigation).
 
 ### Depuis UC-05 (organisation en dossiers)
 
-UC-05 et UC-04 s'activent en parallèle dès la création de la campagne — il n'y a pas de séquencement obligatoire. Un `Document` créé dans un dossier portant un document réutilisable comme modèle par défaut (`defaultTemplateDocumentId`) est initialisé à partir d'une copie indépendante de ce modèle. Les modifications ultérieures du modèle source n'affectent pas les documents déjà créés. Si Thomas a configuré ses dossiers dans UC-05 avant de créer ses documents dans UC-04, chaque création depuis un dossier à modèle bénéficie de cette initialisation. Si la configuration des dossiers est faite après la création des premiers documents, les documents existants ne sont pas rétroactivement modifiés.
+UC-05 et UC-04 s'activent en parallèle dès la création de l'espace — il n'y a pas de séquencement obligatoire. Un `Document` créé dans un dossier portant un document réutilisable comme modèle par défaut (`defaultTemplateDocumentId`) est initialisé à partir d'une copie indépendante de ce modèle. Les modifications ultérieures du modèle source n'affectent pas les documents déjà créés. Si Thomas a configuré ses dossiers dans UC-05 avant de créer ses documents dans UC-04, chaque création depuis un dossier à modèle bénéficie de cette initialisation. Si la configuration des dossiers est faite après la création des premiers documents, les documents existants ne sont pas rétroactivement modifiés.
 
 ### Vers UC-06 (vue session)
 
-Les documents créés dans UC-04 — fiches de PNJ, lieux, scénarios, notes de préparation — constituent le contenu que la vue session (UC-06) exposera dans ses panneaux. La `SessionViewConfig` de la campagne définit quels dossiers apparaissent dans ces panneaux. Un document créé et organisé dans UC-04 est immédiatement disponible en vue session via son dossier ou via la barre de recherche globale, sans étape de publication supplémentaire (la visibilité reste `GM_ONLY` par défaut — le MJ seul le voit en session). Les documents créés à la volée pendant une session (UC-07) suivent le modèle documentaire de UC-04 : ils sont persistés comme `Document` ordinaires dans la campagne, rangés dans leur dossier, accessibles après la session.
+Les documents créés dans UC-04 — fiches de PNJ, lieux, scénarios, notes de préparation — constituent le contenu que la vue session (UC-06) exposera dans ses panneaux, pour un espace partagé (`CAMPAIGN` ou `ONE_SHOT`) : un espace `PERSONAL` n'a pas de session (domaine, § One-shot — spécificités). La `SessionViewConfig` de l'espace définit quels dossiers apparaissent dans ces panneaux. Un document créé et organisé dans UC-04 est immédiatement disponible en vue session via son dossier ou via la barre de recherche globale, sans étape de publication supplémentaire (la visibilité reste `GM_ONLY` par défaut — le MJ seul le voit en session). Les documents créés à la volée pendant une session (UC-07) suivent le modèle documentaire de UC-04 : ils sont persistés comme `Document` ordinaires dans l'espace, rangés dans leur dossier, accessibles après la session.
 
 ### Vers UC-14 (recherche)
 

@@ -58,7 +58,7 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 | `space_id` | `uuid` | FK → `spaces.id`, NOT NULL | |
 | `token` | `uuid` | UNIQUE, NOT NULL | Utilisé dans l'URL |
 | `type` | `varchar(10)` | NOT NULL | `LINK` / `EMAIL` |
-| `scope` | `varchar(20)` | NOT NULL | `CAMPAIGN` / `SESSION` |
+| `scope` | `varchar(20)` | NOT NULL | `SPACE` / `SESSION` |
 | `session_id` | `uuid` | nullable | FK physique réelle → `sessions.id` (Session Conduct) — exception assumée inter-module, voir note ci-dessous |
 | `expires_at` | `timestamptz` | nullable | |
 | `max_uses` | `int` | nullable | |
@@ -76,7 +76,7 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
 | `space_id` | `uuid` | FK → `spaces.id`, NOT NULL | |
-| `scope` | `varchar(20)` | NOT NULL | `SESSION` / `CAMPAIGN` |
+| `scope` | `varchar(20)` | NOT NULL | `SESSION` / `SPACE` |
 | `session_id` | `uuid` | nullable | FK physique réelle → `sessions.id` (Session Conduct) — exception assumée inter-module, voir note ci-dessous |
 | `token` | `uuid` | UNIQUE, NOT NULL | Utilisé dans l'URL |
 | `display_name` | `varchar(100)` | NOT NULL | |
@@ -89,15 +89,4 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 
 > **Note — FK inter-modules** : les colonnes traversant une frontière de bounded context (`owner_id` → I&A, `space_memberships.user_id` → I&A, `membership_characters.character_id` → Content Library, `invitations.session_id` et `guest_accesses.session_id` → Session Conduct, `guest_accesses.character_id` → Content Library) sont des **clés étrangères physiques réelles** vers la table propriétaire de l'autre module. C'est une **exception assumée** du monolithe modulaire à base de données unique partagée : l'isolation des contextes est tenue au niveau du code (contrats, namespaces), pas par l'absence de FK. À l'extraction éventuelle d'un contexte en service dédié, ces FK deviendront des projections par events. *(ADR-009)*
 
----
-
-## Table `scenario_library_entries` *(post-MVP)*
-
-| Colonne | Type SQL | Contraintes | Description |
-|---|---|---|---|
-| `id` | `uuid` | PK, NOT NULL | |
-| `owner_id` | `uuid` | FK → `users.id`, NOT NULL | Compte propriétaire de l'entrée — FK physique réelle inter-module (I&A), exception assumée *(ADR-009)* |
-| `document_id` | `uuid` | FK → `documents.id`, NOT NULL | Document promu depuis Content Library — FK physique réelle inter-module, exception assumée *(ADR-009)* |
-| `promoted_at` | `timestamptz` | NOT NULL | Horodatage de la promotion |
-
-**Index** : `UNIQUE (owner_id, document_id)`
+> **Pas de table `scenario_library_entries`** : il n'existe pas d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry`. La réutilisabilité est portée par `Document.isReusable` (Content Library) ; la bibliothèque personnelle du MJ est une vue filtrée de son espace `PERSONAL` (`type = PERSONAL` ∧ `isReusable = true`) — voir space-management.md § Scénario réutilisable (invariant 12, retiré) et ADR-018.

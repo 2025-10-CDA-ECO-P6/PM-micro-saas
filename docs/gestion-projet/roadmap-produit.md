@@ -495,7 +495,7 @@ valeur, pas vers l'outillage de conception.
 | Ouverture communautaire (templates communautaires) | UC-F05 | Won't Have en MVP, vision long terme |
 | Table visuelle légère — écarté du cœur | UC-F03 | Won't Have |
 | Application desktop avec synchronisation complète hors ligne — écarté du cœur | UC-F04 | Won't Have |
-| Gel et dégel réversible des espaces au changement de palier | UC-15 | Spécifié — capacité de cycle de vie liée à la monétisation |
+| Gel et dégel réversible des espaces au changement de palier | UC-15 | Post-MVP (spécifiés) — hors catégorisation MoSCoW du MVP, classement arbitré (voir `moscow.md` §UC-15) |
 
 ---
 

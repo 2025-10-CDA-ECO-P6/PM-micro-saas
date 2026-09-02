@@ -57,7 +57,7 @@ Le mode local est aussi la base du modèle de monétisation non-agressif : la va
 
 En mode local, le contenu créé par le MJ atterrit dans un **espace personnel par défaut**, sans que le MJ ait à créer explicitement un espace de jeu partagé. Cet espace personnel est un simple conteneur local : en mode local, il n'existe pas de `User` ni d'`ownerId` (cohérent avec ADR-017 §1.1 — ces entités d'identité sont exclues du store local). La propriété de l'espace naît à la création du compte, lors de la migration local→cloud.
 
-Le plafond de synchronisation cloud (compte gratuit : 3 campagnes) porte sur les espaces de type `CAMPAIGN` et `ONE_SHOT`. L'espace personnel par défaut n'est pas décompté dans ce plafond.
+Le plafond de synchronisation cloud (compte gratuit : 3 espaces) porte sur les espaces de type `CAMPAIGN` et `ONE_SHOT`. L'espace personnel par défaut n'est pas décompté dans ce plafond.
 
 ## Déclencheur
 
@@ -131,10 +131,11 @@ Le navigateur refuse l'enregistrement de nouvelles données. L'application affic
 
 ## Règles métier
 
-- En mode local, aucune donnée n'est envoyée au serveur.
+- En mode local, aucune donnée n'est envoyée au serveur. (RB-01-01)
 - En mode local, la session est mono-utilisateur MJ : aucun joueur ne peut y accéder ni y prendre de notes. La vue session sert au MJ seul. L'accès joueur (vue joueur, notes de session de joueur, accès invité) présuppose un compte MJ.
-- En mode local, tout contenu créé sans espace explicite atterrit dans l'espace personnel par défaut. Aucune création de campagne n'est requise pour commencer à travailler. (RB-01-01)
-- Le plafond de synchronisation cloud (compte gratuit : 3 espaces) porte sur les espaces de type `CAMPAIGN` et `ONE_SHOT`. L'espace personnel par défaut n'est pas décompté dans ce plafond. (RB-01-03)
+- En mode local, tout contenu créé sans espace explicite atterrit dans l'espace personnel par défaut. Aucune création de campagne n'est requise pour commencer à travailler.
+- Le plafond de synchronisation cloud (compte gratuit : 3 espaces) porte sur les espaces de type `CAMPAIGN` et `ONE_SHOT`. L'espace personnel par défaut n'est pas décompté dans ce plafond. (RB-02-10)
+- Il n'existe aucun plafond de création en mode local. La seule contrainte du mode local est la capacité de stockage du navigateur (§ Modèle d'accès et de monétisation ci-dessus, ~50–100 Mo en pratique) : le MJ peut créer autant de campagnes ou de one-shots qu'il le souhaite tant que cette capacité n'est pas atteinte (cf. E1). L'espace personnel est distinct de cette liberté de création : il est unique par construction, préexiste dès l'ouverture de l'application (§ Espace personnel en mode local ci-dessus) et n'est ni créé à la demande ni multipliable — il n'y a donc rien à plafonner de ce côté. Le plafond de 3 espaces énoncé ci-dessus ne s'applique qu'à la synchronisation cloud d'un compte gratuit ; il ne borne jamais la création en mode local, y compris pour les espaces de type `CAMPAIGN` ou `ONE_SHOT` créés avant toute création de compte.
 - La création de compte depuis le mode local déclenche une migration des données locales après confirmation explicite. L'application présente les espaces détectés (titre, type, historique de session, volume estimé, date de création) et exige une confirmation explicite avant de débuter. La migration ne commence qu'après cette confirmation. Les espaces sont importés un à un ; en cas de rejet d'un espace (contenu invalide, intitulé en conflit, type ou format non reconnu), un rapport détaille la raison du refus pour chaque espace et les données locales correspondantes restent intactes dans le navigateur ; les espaces acceptés sont migrés et accessibles. Une session en cours (statut `LIVE`) doit être clôturée avant migration.
 - Les fonctionnalités de partage (UC-08) et d'accès joueur (UC-09) nécessitent au minimum un compte gratuit.
 - L'application affiche deux bandeaux distincts et non bloquants en mode local :

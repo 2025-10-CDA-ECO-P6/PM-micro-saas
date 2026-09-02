@@ -49,7 +49,7 @@ Règles `CanBeReadBy` actées (décision opérateur, alignée Content Library) :
 
 **Décision actée** : `PLAYER_PRIVATE` est auteur-seul, MJ exclu, uniformément. Cette règle est portée par le domaine `CanBeReadBy` (mis à jour en parallèle dans Content Library). Toute révision ultérieure des règles de visibilité est un changement **domaine**, hors périmètre de cet ADR.
 
-**Note — espace `PERSONAL` (ADR-018)** : un espace `PERSONAL` est mono-membre (`OWNER` = propriétaire). Le prédicat d'appartenance P1 (§1 + §4) restreint naturellement l'accès au seul propriétaire via `space_memberships`. Un espace `PERSONAL` n'a pas d'invité (`GuestAccess`) et ne comporte pas de rôle `PLAYER` ni `GM`. Les colonnes « invité scope CAMPAIGN/SESSION » de la matrice ressource (§4) sont sans objet pour un espace `PERSONAL`.
+**Note — espace `PERSONAL` (ADR-018)** : un espace `PERSONAL` est mono-membre (`OWNER` = propriétaire). Le prédicat d'appartenance P1 (§1 + §4) restreint naturellement l'accès au seul propriétaire via `space_memberships`. Un espace `PERSONAL` n'a pas d'invité (`GuestAccess`) et ne comporte pas de rôle `PLAYER` ni `GM`. Les colonnes « invité scope SPACE/SESSION » de la matrice ressource (§4) sont sans objet pour un espace `PERSONAL`.
 
 ---
 
@@ -82,7 +82,7 @@ AND guest_accesses.status = 'ACTIVE'
 AND (guest_accesses.expires_at IS NULL OR guest_accesses.expires_at > now())
 ```
 
-Son **scope** (`CAMPAIGN` ou `SESSION`) détermine quelles ressources entrent dans son périmètre d'appartenance (§4 — matrice ressource).
+Son **scope** (`SPACE` ou `SESSION`) détermine quelles ressources entrent dans son périmètre d'appartenance (§4 — matrice ressource).
 
 **Statut `CONVERTED`** : un `GuestAccess` avec `status = 'CONVERTED'` correspond à un invité dont le compte a été créé mais dont le `SpaceMembership` n'a pas encore été activé par un `OWNER` ou `GM`. Pendant cette fenêtre, l'appelant conserve le **niveau d'accès GuestAccess d'origine** (scope limité de l'accès invité d'origine), pas le niveau `PLAYER`. Le saut de privilège est interdit : le statut `CONVERTED` ne satisfait pas la condition `status = 'ACTIVE'` du prédicat membre. L'élévation au rôle `PLAYER` requiert l'activation explicite du `SpaceMembership` — cohérent avec §5 / F-07.
 
@@ -143,7 +143,7 @@ Pour chaque type de ressource accessible par l'API, le chemin de résolution ver
 
 **Ressources avec `space_id` direct**
 
-| Ressource | Chemin vers `space_id` | Invité scope CAMPAIGN | Invité scope SESSION |
+| Ressource | Chemin vers `space_id` | Invité scope SPACE | Invité scope SESSION |
 |---|---|---|---|
 | `spaces` | `spaces.id` | Oui (lecture métadonnées publiques) | Non |
 | `documents` | `documents.space_id` | Oui + visibilité domaine | Restreint aux documents de sa session (via `session_pinned_documents`, `session_live_notes` ou `scenario_id` — y compris sur accès direct par ID) |
@@ -176,7 +176,7 @@ Pour chaque type de ressource accessible par l'API, le chemin de résolution ver
 **Lecture**
 
 Un invité accède aux ressources visibles selon son scope et la visibilité domaine :
-- Invité scope `CAMPAIGN` : documents `PUBLIC` de l'espace + ses propres documents `PLAYER_PRIVATE` (`guest_access_id` = lui-même).
+- Invité scope `SPACE` : documents `PUBLIC` de l'espace + ses propres documents `PLAYER_PRIVATE` (`guest_access_id` = lui-même).
 - Invité scope `SESSION` : documents `PUBLIC` accessibles dans sa session (via `session_pinned_documents`, `session_live_notes` ou `scenario_id`) + ses propres documents `PLAYER_PRIVATE`. Cette contrainte de session s'applique y compris sur un accès direct par ID (`GET /documents/{id}`) — P1 inclut la vérification que le document est rattaché à la session de l'invité, pas seulement que `space_id` correspond.
 - `GM_ONLY` : jamais accessible à un invité.
 - `PLAYER_PRIVATE` d'autrui : jamais accessible à un invité (règle auteur-seul uniforme — voir §Frontière fondamentale).

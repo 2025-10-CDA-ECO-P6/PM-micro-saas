@@ -88,7 +88,7 @@ flowchart TD
 
 | Étape | Persona(s) | Friction potentielle | Opportunité produit |
 |---|---|---|---|
-| Ouvrir l'écran de lancement | Tous | Trop d'étapes avant d'atteindre le bouton "Lancer" | Accès direct depuis le tableau de bord campagne en un clic |
+| Ouvrir l'écran de lancement | Tous | Trop d'étapes avant d'atteindre le bouton "Lancer" | Accès direct depuis le tableau de bord de l'espace en un clic |
 | Saisir le titre et sélectionner un scénario | Thomas, Sonia | Sélection du scénario obligatoire si l'UX n'indique pas que c'est optionnel | Champ scénario clairement marqué "optionnel", lancement possible sans sélection |
 | Vue session ouverte — panneaux chargés | Thomas | Panneaux dans un ordre inattendu si configuration de la vue session non configurée | Message d'invitation à configurer les panneaux à la première session |
 | Configurer les panneaux en direct | Émilie, Nadia | Accès à la configuration non évident depuis la vue session | Icône de configuration accessible directement dans la barre de la vue session |
@@ -137,7 +137,7 @@ Thomas a configuré ses panneaux la veille depuis les paramètres de sa campagne
 
 ### Nadia — Lancement rapide, peu de configuration
 
-Nadia prépare une session de Dungeon World. Elle veut lancer en moins de 30 secondes. Elle clique "Lancer une session", saisit "Séance 2", ignore la sélection de scénario et valide. La session est en `LIVE`. Elle voit ses panneaux — les dossiers par défaut de la campagne. Elle cherche son PNJ principal dans "Personnages" et met vingt secondes à le trouver parce qu'il y a quinze documents dans le dossier et la vue condensée n'est pas assez informative. Elle l'épingle pour ne plus chercher. Elle prend deux notes de session pendant la session. En fin de soirée, elle clique "Terminer" et ferme l'onglet.
+Nadia prépare une session de Dungeon World. Elle veut lancer en moins de 30 secondes. Elle clique "Lancer une session", saisit "Séance 2", ignore la sélection de scénario et valide. La session est en `LIVE`. Elle voit ses panneaux — les dossiers par défaut de l'espace. Elle cherche son PNJ principal dans "Personnages" et met vingt secondes à le trouver parce qu'il y a quinze documents dans le dossier et la vue condensée n'est pas assez informative. Elle l'épingle pour ne plus chercher. Elle prend deux notes de session pendant la session. En fin de soirée, elle clique "Terminer" et ferme l'onglet.
 
 **Points de conversion** :
 - Lancement en moins de 30 secondes — objectif atteint.
@@ -155,7 +155,7 @@ Nadia prépare une session de Dungeon World. Elle veut lancer en moins de 30 sec
 - **A2 — Modification configuration de la vue session en direct** : la config est modifiable pendant la session LIVE sans interrompre la session. La modification est effective immédiatement. La session reste en `LIVE`.
 - **A3 — Notes rétroactives en CLOSED** : disponibles uniquement pour le MJ. Les joueurs ne peuvent plus créer de notes de session en `CLOSED`.
 - **E1 — Perte de connexion pendant la saisie d'une note de session** : le contenu est conservé en draft local. Synchronisation automatique au retour de la connexion. La note n'est pas perdue.
-- **Mode local** : la vue session MJ est disponible sans compte. Les notes de session joueurs et la vue joueur ne sont pas disponibles. La session est persistée en IndexedDB.
+- **Mode local** : la vue session MJ est disponible sans compte. Les notes de session joueurs et la vue joueur ne sont pas disponibles. La session reste disponible localement d'une fermeture du navigateur à l'autre, sans garantie de conservation permanente.
 - **personnelle joueur inaccessible au MJ** : règle forte — même le rôle OWNER/GM ne peut pas lire les notes de session personnelle joueur d'un joueur.
 
 ---
@@ -202,7 +202,7 @@ Depuis la vue session `LIVE`, le MJ peut déclencher le partage d'un document vi
 
 ### Vers UC-09 (vue joueur)
 
-La vue joueur exposée par UC-09 est le pendant de la vue session MJ : elle affiche les documents `PUBLIC` de la campagne et les notes de session `PLAYER_PRIVATE` propres au joueur. La vue joueur est disponible uniquement si le MJ a un compte actif (mode local exclu — RB-01-06). Les joueurs accèdent à leur vue via un lien de session ponctuel (`GuestAccess`, portée `SESSION`) généré par le MJ depuis la vue session ou le panneau membres. Les documents que le MJ partage en session (UC-08) apparaissent dans la vue joueur en temps réel ; les documents restés `GM_ONLY` n'y sont jamais visibles même s'ils sont épinglés dans la session MJ.
+La vue joueur exposée par UC-09 est le pendant de la vue session MJ : elle affiche les documents `PUBLIC` de l'espace et les notes de session `PLAYER_PRIVATE` propres au joueur. La vue joueur est disponible uniquement si le MJ a un compte actif (mode local exclu — RB-01-06). Les joueurs accèdent à leur vue via un lien de session ponctuel (`GuestAccess`, portée `SESSION`) généré par le MJ depuis la vue session ou le panneau membres. Les documents que le MJ partage en session (UC-08) apparaissent dans la vue joueur en temps réel ; les documents restés `GM_ONLY` n'y sont jamais visibles même s'ils sont épinglés dans la session MJ.
 
 ### Vers UC-14 (recherche globale)
 

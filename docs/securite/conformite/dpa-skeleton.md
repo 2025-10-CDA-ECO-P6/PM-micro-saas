@@ -150,7 +150,7 @@ Avant même de rédiger un DPA définitif, deux qualifications juridiques amont 
 1. **Haversack est-il sous-traitant ou responsable conjoint/autonome** pour les contenus MJ décrivant des tiers identifiables ? — ADR-013 §5, ADR-013 *Conformité conçue, non certifiée* point 2.
 2. **Le périmètre s'étend-il aux contenus de l'espace `PERSONAL`** (contenu personnel décrivant un tiers identifiable) ou seulement aux espaces partagés ? — ADR-018 *Conformité conçue, non certifiée* point 2.
 
-Ces deux points sont consolidés dans le cadrage de validation pré-lancement EU (5 axes), voir [`roadmap-juridique.md`](./roadmap-juridique.md).
+Ces deux points sont consolidés dans le cadrage de validation pré-lancement EU (5 axes), voir [`cadrage-validation-pre-lancement-eu.md`](./cadrage-validation-pre-lancement-eu.md).
 
 ---
 

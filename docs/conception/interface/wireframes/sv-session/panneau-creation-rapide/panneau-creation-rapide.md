@@ -62,7 +62,7 @@ Intention : le MJ crée un document ou une note sans quitter la vue session,
 
 Distinction : documents durables vs notes de session.
   Le panneau crée deux natures d'objets :
-  - **Document durable** (note, PNJ, lieu, faction, personnage joueur, objet, contenu
+  - **Document durable** (note, PNJ, lieu, révélation, personnage joueur, objet, contenu
     libre) : épinglable à la création selon le mode (UC-07 §6, RB-07-04 puce 1).
   - **Note de session** (LIVE_NOTE) : rattachée à la session sans épinglage, quel que
     soit le mode (UC-07 A3, RB-07-04 puce 2).
@@ -107,8 +107,14 @@ Invocation depuis la vue session :
 état créé (après validation) :
   le panneau se referme ; la vue session retrouve son état précédent ;
   le document nouvellement créé est disponible dans l'espace ;
-  auto-épinglage en mode LIVE uniquement (UC-08 A3) ;
+  auto-épinglage en mode LIVE uniquement, pour les documents durables (UC-07 §6 ;
+  RB-07-04 puce 1 — distinct de l'auto-épinglage au partage, UC-08 A3) ;
   en mode CLOSED : document rangé sans épinglage automatique
+
+état erreur (perte de connexion en mode cloud) :
+  hérité de la vue session hôte — voir `vue-session-mj.md §États §état erreur` ;
+  ce panneau reste utilisable pendant la reconnexion, la création est conservée en
+  brouillon local comme le reste de la vue session (NFR-OFF-04 ; RB-06-14)
 ```
 
 ---
@@ -138,7 +144,7 @@ hiérarchie de lecture à distance :
 
 ```
 Sources : UC-07 ; S4 §Vue session MJ ; S4 §Panneau de création rapide
-          à la volée ; NFR-ACC-02 ; NFR-ACC-04 ;
+          à la volée ; RB-07-04 ; RB-06-14 ; NFR-ACC-02 ; NFR-ACC-04 ; NFR-OFF-04 ;
           châssis S7 (zoning.md §S7)
 ```
 
@@ -148,4 +154,4 @@ Sources : UC-07 ; S4 §Vue session MJ ; S4 §Panneau de création rapide
 
 ### Mode local
 
-Mode local hérité de la vue session hôte — voir `docs/conception/interface/wireframes/vue-session-mj.md`.
+Mode local hérité de la vue session hôte — voir `docs/conception/interface/wireframes/sv-session/vue-session-mj/vue-session-mj.md`.

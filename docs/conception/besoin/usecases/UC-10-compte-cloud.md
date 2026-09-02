@@ -82,7 +82,7 @@ Le MJ veut activer la sauvegarde cloud ou le partage joueurs. Le joueur veut acc
 3. Si c'est un premier accès : le système crée automatiquement un compte (tier gratuit) avec l'email et le nom d'affichage fournis par le fournisseur. Aucun mot de passe n'est défini (un mot de passe complémentaire peut être défini ultérieurement — voir Règles métier).
 4. Si un compte existe déjà avec cet email, le traitement se distingue selon l'état de vérification de l'adresse — trois branches exhaustives cohérentes avec RB-10-08 (la troisième, absence de compte, correspond à l'étape 3 ci-dessus) :
    - **Adresse VÉRIFIÉE** : le système connecte l'utilisateur à ce compte existant (liaison de l'identité fédérée).
-   - **Adresse NON vérifiée** : le système ne lie pas automatiquement l'identité fédérée à ce compte (anti-hijacking, finding F-11 / CWE-287) et ne crée pas non plus de second compte pour la même adresse, ce qui violerait l'unicité de l'email (invariant 1, cf. Règles métier). La résolution de ce cas est `[À TRANCHER — sécurité/RGPD]` : une proposition documentée existe — Option A « reclaim-in-place » (la preuve de possession apportée par le fournisseur d'identité externe fait basculer la coquille non vérifiée en compte réclamé, avec neutralisation du mot de passe préexistant) — cf. [ADR-015](../../../architecture/decisions/ADR-015-securite-authentification-mvp.md) §2.3, sur le précédent de neutralisation de credential établi par [ADR-007](../../../architecture/decisions/ADR-007-rgpd-autorisation-api.md) §Compléments ; elle n'est pas ratifiée à ce stade. Le volet RGPD de la coquille non vérifiée est routé au cadrage juridique interne ; l'opération de domaine (nom, signature, invariants précis) reste à spécifier au build B1.5. Tant que ce point n'est pas tranché, aucune implémentation ne doit présumer de l'issue de ce cas ni affirmer qu'un nouveau compte est créé.
+   - **Adresse NON vérifiée** : le système ne lie pas automatiquement l'identité fédérée à ce compte (anti-hijacking, CWE-287) et ne crée pas non plus de second compte pour la même adresse, ce qui violerait l'unicité de l'email (invariant 1, cf. Règles métier). La résolution de ce cas est `[À TRANCHER — sécurité/RGPD]` : une proposition documentée existe — Option A « reclaim-in-place » (la preuve de possession apportée par le fournisseur d'identité externe fait basculer la coquille non vérifiée en compte réclamé, avec neutralisation du mot de passe préexistant) — cf. [ADR-015](../../../architecture/decisions/ADR-015-securite-authentification-mvp.md) §2.3, sur le précédent de neutralisation de credential établi par [ADR-007](../../../architecture/decisions/ADR-007-rgpd-autorisation-api.md) §Compléments ; elle n'est pas ratifiée à ce stade. Le volet RGPD de la coquille non vérifiée est routé au cadrage juridique interne ; l'opération de domaine (nom, signature, invariants précis) reste à spécifier au build B1.5. Tant que ce point n'est pas tranché, aucune implémentation ne doit présumer de l'issue de ce cas ni affirmer qu'un nouveau compte est créé.
    - **Aucun compte existant pour cet email** : voir étape 3 (création automatique).
 5. Si des données locales existent, le gate de reconnaissance est présenté (titres, volume, date) et la migration ne démarre qu'après confirmation explicite — ADR-016 §4.
 6. L'utilisateur est redirigé selon son profil :
@@ -101,7 +101,7 @@ L'utilisateur modifie son nom d'affichage ou son mot de passe depuis la page pro
 
 ### A3 — Joueur créant un compte depuis un lien d'invitation
 
-Un joueur invité sans compte clique sur un lien d'invitation, crée un compte et rejoint la campagne en une seule action. Son accès invité est transformé en accès membre.
+Un joueur invité sans compte clique sur un lien d'invitation, crée un compte et rejoint l'espace en une seule action. Son accès invité est transformé en accès membre.
 
 ### A4 — Suppression du compte (droit à l'effacement RGPD)
 
@@ -109,21 +109,24 @@ Un joueur invité sans compte clique sur un lien d'invitation, crée un compte e
 
 1. L'utilisateur accède à la page profil et demande la suppression de son compte.
 2. Le système affiche les conséquences :
-   - les campagnes dont l'utilisateur est propriétaire (`ownerId`) seront orphelines — il doit d'abord transférer leur propriété ou accepter leur suppression en cascade ;
-   - ses notes privées (note de session personnelle joueur) seront supprimées physiquement, ainsi que les notes privées qu'il a créées rattachées aux personnages qu'il incarnait dans les campagnes vivantes ;
+   - les espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur est propriétaire (`ownerId`) seront orphelins — il doit d'abord transférer leur propriété ou accepter leur suppression en cascade ; son espace personnel (`PERSONAL`), mono-membre et propre à son compte, ne connaît pas cette situation — il est purgé avec le compte, sans transfert possible ;
+   - tout document dont la confidentialité est `PLAYER_PRIVATE` et qu'il a créé sera supprimé physiquement, quel qu'en soit le type — y compris les documents `PLAYER_PRIVATE` qu'il a créés et rattachés aux personnages qu'il incarnait dans les espaces vivants où il était membre ;
    - les autres données liées (participations, memberships) seront anonymisées.
 3. L'utilisateur confirme la suppression.
 4. Le système exécute la séquence :
-   a. Suppression physique des `note de session personnelle joueur` créées par l'utilisateur supprimé.
-      Cette suppression emporte également les notes privées rattachées aux personnages que cet utilisateur incarnait
-      dans les campagnes vivantes, afin d'éviter qu'une note résiduelle ne soit exposée à un futur joueur réassocié au personnage.
-      La fiche du personnage elle-même survit et reste ré-associable à un autre joueur pour préserver la continuité de campagne.
+   a. Suppression physique de tout document dont la confidentialité est `PLAYER_PRIVATE` et qui a été créé par l'utilisateur
+      supprimé, quel qu'en soit le type — c'est la confidentialité du document, et non son type, qui fonde cette obligation
+      d'effacement. Cette suppression emporte également les documents `PLAYER_PRIVATE` créés par cet utilisateur et rattachés
+      aux personnages qu'il incarnait dans les espaces vivants où il était membre, afin d'éviter qu'un document résiduel ne
+      soit exposé à un futur joueur réassocié au personnage. La fiche du personnage elle-même survit et reste ré-associable
+      à un autre joueur pour préserver la continuité d'espace.
    b. Anonymisation des données nominatives dans les autres tables (nom d'affichage remplacé par `[Compte supprimé]`).
-   c. Suppression ou transfert des campagnes dont l'utilisateur est propriétaire.
-   d. Désactivation du compte (`status = DELETED`).
+   c. Suppression ou transfert des espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur est propriétaire.
+   d. Purge de l'espace personnel (`PERSONAL`) de l'utilisateur — mono-membre et propre à son compte, il est supprimé avec le compte, sans transfert ni conservation possible.
+   e. Désactivation du compte (`status = DELETED`).
 5. L'utilisateur est déconnecté et redirigé vers la page d'accueil.
 
-**Note MVP** : si l'utilisateur est propriétaire de campagnes avec des membres actifs, le transfert de propriété est hors MVP. Dans le MVP, la suppression est bloquée tant que l'utilisateur a des campagnes avec d'autres membres — un message explicite lui demande de les gérer d'abord.
+**Note MVP** : si l'utilisateur est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs, le transfert de propriété est hors MVP. Dans le MVP, la suppression est bloquée tant que l'utilisateur a des espaces `CAMPAIGN`/`ONE_SHOT` avec d'autres membres — un message explicite lui demande de les gérer d'abord.
 
 ## Exceptions
 
@@ -139,9 +142,9 @@ Le système affiche un message d'erreur générique sans préciser si c'est l'em
 
 Le système informe l'utilisateur que le lien n'est plus valide et lui propose d'en générer un nouveau.
 
-### E4 — Suppression bloquée (propriétaire de campagnes actives)
+### E4 — Suppression bloquée (propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` actifs)
 
-L'utilisateur tente de supprimer son compte mais est propriétaire de campagnes avec des membres actifs. Le système bloque la suppression et indique les campagnes concernées. L'utilisateur doit d'abord exclure tous les membres ou transférer la propriété (post-MVP) avant de pouvoir supprimer son compte.
+L'utilisateur tente de supprimer son compte mais est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs. Le système bloque la suppression et indique les espaces concernés. L'utilisateur doit d'abord exclure tous les membres ou transférer la propriété (post-MVP) avant de pouvoir supprimer son compte.
 
 ### E5 — Échec ou interruption de la migration local→cloud
 
@@ -158,8 +161,9 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 ### Suppression de compte
 - Le compte est marqué `status = DELETED`.
 - Les données nominatives sont anonymisées.
-- Les notes privées (note de session personnelle joueur) créées par l'utilisateur supprimé sont supprimées physiquement, y compris celles rattachées aux personnages qu'il incarnait.
+- Tout document dont la confidentialité est `PLAYER_PRIVATE` créé par l'utilisateur supprimé est supprimé physiquement, quel qu'en soit le type, y compris les documents `PLAYER_PRIVATE` rattachés aux personnages qu'il incarnait dans les espaces vivants où il était membre.
 - Les fiches de personnages survivent et restent ré-associables à d'autres joueurs.
+- Les espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur était propriétaire sont transférés ou supprimés en cascade selon son choix ; son espace personnel (`PERSONAL`) est purgé avec le compte, sans transfert possible.
 - L'utilisateur est déconnecté.
 
 ## Données manipulées
@@ -175,7 +179,7 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 
 - L'email est unique dans le système.
 - Le mot de passe est hashé en infrastructure — le compte utilisateur ne le connaît pas.
-- Un utilisateur ne porte aucun rôle global. Le rôle MJ ou Joueur est défini dans chaque campagne. Tout utilisateur authentifié peut créer une campagne et en devenir le MJ.
+- Un utilisateur ne porte aucun rôle global. Le rôle MJ ou Joueur est défini dans chaque espace `CAMPAIGN`/`ONE_SHOT`. Tout utilisateur authentifié peut créer un espace `CAMPAIGN`/`ONE_SHOT` et en devenir le MJ.
 - Un compte suspendu ou supprimé ne peut pas se connecter.
 - **Validation de l'adresse de messagerie** :
   - L'accès est immédiat après inscription ; la validation de l'adresse de messagerie n'est pas bloquante à la connexion.
@@ -192,13 +196,17 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
   - La configuration de la vue session (choix des panneaux affichés) n'est pas reprise : elle est recréée et le MJ la reconfigure.
 - **RGPD — droit à l'effacement** :
   - La suppression d'un compte déclenche l'anonymisation des données nominatives dans toutes les tables.
-  - Les `note de session personnelle joueur` créées par l'utilisateur supprimé sont supprimées physiquement.
-    Cela emporte également les notes privées rattachées aux personnages que cet utilisateur incarnait dans les campagnes vivantes,
-    afin d'éviter qu'une note résiduelle ne soit exposée à un futur joueur réassocié au personnage.
-    La fiche du personnage elle-même survit et reste ré-associable à un autre joueur pour préserver la continuité de campagne.
-  - Les autres contenus créés (documents, notes MJ, PNJ) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu.
+  - Tout document dont la confidentialité (`visibility`) est `PLAYER_PRIVATE` et qui a été créé par l'utilisateur supprimé
+    est supprimé physiquement, quel qu'en soit le type de document — c'est la confidentialité, et non le type, qui fonde
+    cette obligation d'effacement (RGPD article 17). Cette portée couvre deux populations : (a) les documents `PLAYER_PRIVATE`
+    créés par l'utilisateur, de quelque nature qu'ils soient (notes de session, notes libres, ou tout autre type de document
+    portant cette confidentialité) ; (b) les documents `PLAYER_PRIVATE` créés par l'utilisateur et rattachés aux personnages
+    qu'il incarnait dans les espaces vivants où il était membre, afin d'éviter qu'un document résiduel ne soit exposé à un
+    futur joueur réassocié au personnage. La fiche du personnage elle-même survit et reste ré-associable à un autre joueur
+    pour préserver la continuité d'espace.
+  - Les autres contenus créés dans un espace `CAMPAIGN`/`ONE_SHOT` (documents, notes MJ, PNJ) restent attachés à l'espace sous identité anonymisée — ils appartiennent à l'espace, pas à l'individu. Le contenu de l'espace personnel (`PERSONAL`) de l'utilisateur suit un traitement distinct : mono-membre et propre à son compte, il est purgé avec le compte plutôt que conservé sous identité anonymisée.
   - La suppression est irréversible.
-  - Un utilisateur propriétaire de campagnes avec des membres actifs ne peut pas supprimer son compte tant qu'il n'a pas géré ces campagnes (MVP : exclusion des membres ; post-MVP : transfert de propriété).
+  - Un utilisateur propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs ne peut pas supprimer son compte tant qu'il n'a pas géré ces espaces (MVP : exclusion des membres ; post-MVP : transfert de propriété).
 
 ## Critères d'acceptation
 
@@ -209,14 +217,14 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 - Un compte fédéré-only peut définir un mot de passe complémentaire ; cette définition est traitée comme une opération sensible (email vérifié + preuve d'identité alternative) et reste distincte de la réinitialisation, sans objet tant qu'aucun mot de passe complémentaire n'existe.
 - Un email déjà utilisé est refusé à l'inscription.
 - Un utilisateur peut mettre à jour son nom d'affichage.
-- Un joueur invité peut créer un compte et rejoindre la campagne en une action.
-- Un utilisateur nouvellement inscrit peut immédiatement créer une campagne ou rejoindre une campagne existante via invitation.
+- Un joueur invité peut créer un compte et rejoindre l'espace en une action.
+- Un utilisateur nouvellement inscrit peut immédiatement créer un espace `CAMPAIGN`/`ONE_SHOT` ou rejoindre un espace `CAMPAIGN`/`ONE_SHOT` existant via invitation.
 - Un utilisateur nouvellement inscrit sans données locales à migrer est redirigé directement vers l'écran de création de campagne, sans écran de bienvenue intercalé.
 - Le gate de reconnaissance présente l'historique de session détecté par espace (sessions terminées, notes de session, documents épinglés, résumés) ; toute session en cours (LIVE) est signalée avec indication qu'elle doit être clôturée avant que l'espace puisse migrer.
 - Après migration réussie, l'historique de session des espaces migrés est retrouvé intact dans l'espace de travail cloud.
 - Un utilisateur peut demander la suppression de son compte depuis sa page profil.
-- La suppression est bloquée si l'utilisateur est propriétaire de campagnes avec des membres actifs.
-- Après suppression : le compte est désactivé, les données nominatives sont anonymisées, les notes privées de l'utilisateur sont supprimées physiquement.
+- La suppression est bloquée si l'utilisateur est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs.
+- Après suppression : le compte est désactivé, les données nominatives sont anonymisées, tout document dont la confidentialité est `PLAYER_PRIVATE` créé par l'utilisateur est supprimé physiquement, quel qu'en soit le type.
 
 ## Questions à valider en interview
 

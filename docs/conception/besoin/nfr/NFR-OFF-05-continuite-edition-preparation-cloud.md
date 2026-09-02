@@ -65,4 +65,4 @@ Le MJ ne perd aucune modification saisie pendant une interruption réseau passag
 | Artefact | Nature du lien |
 |---|---|
 | [UC-03 — Structurer un scénario](../usecases/UC-03-structurer-scenario.md) | Exception E2 (perte de connexion ou erreur de sauvegarde) : le système conserve les données saisies localement si possible et affiche un message d'erreur. Cette exigence généralise ce comportement. |
-| [UC-04 — Gérer les documents d'un espace](../usecases/UC-04-gerer-documents-campagne.md) | Porte le modèle documentaire général d'édition dont cette exigence couvre la continuité en cas de perte de réseau. Traçabilité montante à l'UC ; aucune règle métier dédiée à ce cas n'est portée par les user stories associées (US-UC-03, US-UC-04) à ce jour. |
+| [UC-04 — Gérer les documents d'un espace](../usecases/UC-04-gerer-documents-espace.md) | Porte le modèle documentaire général d'édition dont cette exigence couvre la continuité en cas de perte de réseau. Traçabilité montante à l'UC ; aucune règle métier dédiée à ce cas n'est portée par les user stories associées (US-UC-03, US-UC-04) à ce jour. |

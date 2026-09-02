@@ -15,6 +15,7 @@
 | **Should Have** | 5 | UC-05 riche (dossiers et types élaborés), UC-11, UC-12, UC-14, UC-13 *(hors première livraison)* |
 | **Could Have** | 3 | Types personnalisés, réimport de fichier de sauvegarde *(post-MVP ; distinct de l'export Must Have)*, notes joueur |
 | **Won't Have** | — | Voir détail ci-dessous |
+| **Post-MVP (spécifiés)** | 1 | UC-15 *(gel d'espaces au downgrade de tier — hors catégorisation MoSCoW du MVP, arbitrage du 2026-09-01, voir §UC-15 ci-dessous)* |
 
 ---
 
@@ -237,8 +238,8 @@ Le tier FREE inclut un quota de **3 espaces de type `CAMPAIGN` ou `ONE_SHOT`**. 
 personnel (`SpaceType.PERSONAL`) n'est **pas décompté** dans ce quota — il est provisionné
 inconditionnellement à la création du compte, indépendamment du tier.
 
-Cette règle est cohérente avec W1 (vision-produit.md) et UC-02 : l'espace personnel est une
-propriété permanente du compte, non une fonctionnalité soumise à limite.
+Cette règle est cohérente avec la vision produit (`vision-produit.md`) et UC-02 : l'espace
+personnel est une propriété permanente du compte, non une fonctionnalité soumise à limite.
 
 ---
 
@@ -387,6 +388,32 @@ en font une nécessité dès que l'espace a quelques semaines d'existence. La re
 
 **Critère de sortie** : un MJ retrouve n'importe quel document de son espace par mot-clé
 depuis la vue session en moins de cinq secondes.
+
+---
+
+## UC-15 — Classement arbitré : Post-MVP (spécifiés)
+
+**Décision (2026-09-01)** : `UC-15` (gel de campagnes/espaces au downgrade de tier) est classé
+« Post-MVP (spécifiés) » — hors catégorisation MoSCoW du MVP, catégorie déjà utilisée par
+l'index des use cases (`usecases/README.md:44`).
+
+**Motif** : ce classement aligne ce document — seule autorité du corpus pour attribuer une
+priorité MoSCoW — sur `usecases/README.md`, qui range déjà `UC-15` dans « Post-MVP (spécifiés) ».
+Il évite aussi d'attribuer à `UC-15` un vocabulaire MoSCoW (« Should Have ») réservé aux use cases
+effectivement priorisés pour une livraison : le mécanisme de gel suppose un tier payant et un
+downgrade, hors périmètre de la première livraison par construction, et non par arbitrage de
+priorité relative comme le sont les use cases Should Have.
+
+Avant cette décision, `UC-15` n'avait jamais été classé dans ce document — absent du tableau
+« Vue d'ensemble » et du diagramme de dépendances (voir § Dépendances) — ce qui avait laissé le
+fichier `UC-15-gel-espaces-downgrade-tier.md` s'auto-attribuer « Should Have — hors première
+livraison (post-MVP) », un vocabulaire MoSCoW que seul ce document a l'autorité d'attribuer.
+
+**Résumé du use case** : gel automatique (lecture seule) des espaces `CAMPAIGN`/`ONE_SHOT`
+excédentaires lors d'un downgrade de tier, et dégel automatique et réversible au ré-upgrade,
+sans perte de données. L'espace `PERSONAL` n'est jamais concerné (hors quota, jamais gelé).
+Le mécanisme n'est pas déclenché en MVP — le downgrade suppose un tier payant, hors périmètre
+première livraison.
 
 ---
 
@@ -540,4 +567,12 @@ UC-10 (Compte — Must)  ← Must car UC-08/09 (Must) en dépendent
 **Point clé** : UC-01 est le nouveau point d'entrée. L'espace personnel est provisionné dès
 UC-01 — un document peut naître sans espace `CAMPAIGN` ou `ONE_SHOT`. L'inscription (UC-10)
 est Must Have car elle conditionne le partage joueurs (UC-08) — déclenchée par l'intention de
-partager, pas par le démarrage. UC-11 à UC-14 restent Should Have.
+partager, pas par le démarrage. UC-11 à UC-14 restent Should Have. `UC-15`, classé
+Post-MVP (spécifiés) (voir §UC-15 ci-dessus), n'apparaît pas dans ce diagramme.
+
+**Convention actée** : ce diagramme couvre les use cases classés MoSCoW (Must Have, Should Have,
+Could Have — voir § Vue d'ensemble) et leurs dépendances propres. Il exclut par construction les
+use cases classés « Post-MVP (spécifiés) », catégorie distincte de la classification MoSCoW
+(voir §UC-15) : ceux-ci n'y figurent pas, avec leurs dépendances. `UC-15` est à ce jour le seul
+use case dans ce cas. Un futur use case classé « Post-MVP (spécifiés) » n'a donc pas à être ajouté
+à ce diagramme — son absence n'est pas un oubli.

@@ -44,12 +44,12 @@ Les espaces de type `CAMPAIGN` et `ONE_SHOT` sont créés par ces parcours. L'es
 
 ## Bounded contexts pressentis
 
-- **la gestion de campagne** — création de l'espace, application des règles métier (quota, ownership, type), publication de création d'espace
+- **Space Management** — création de l'espace, application des règles métier (quota, ownership, type), publication de création d'espace
 - **la bibliothèque de contenu** — réception de création d'espace, création des dossiers système (Personnages, Joueurs, Scénarios, Notes, Non classés)
 - **Identity & Access** — vérification de l'id du MJ propriétaire, plan d'abonnement (gratuit/PRO)
 - **la conduite de session** — redirection vers la vue session à l'issue du parcours one-shot depuis scénario existant (US-02-04)
 
-La création des dossiers système n'appartient pas à la gestion de campagne. Ce périmètre fonctionnel publie uniquement l'événement création d'espace. C'est la bibliothèque de contenu qui réagit à cet événement pour créer les dossiers système.
+La création des dossiers système n'appartient pas à Space Management. Ce périmètre fonctionnel publie uniquement l'événement création d'espace. C'est la bibliothèque de contenu qui réagit à cet événement pour créer les dossiers système.
 
 ---
 
@@ -119,7 +119,7 @@ flowchart LR
 |---|---|
 | Priorité | Must Have |
 | Source | UC-02 — ontologie des types d'espace, décision ADR-018 |
-| Bounded context | la gestion de campagne, Identity & Access |
+| Bounded context | Space Management, Identity & Access |
 
 **Critères d'acceptation**
 
@@ -155,7 +155,7 @@ Feature: Espace personnel par défaut
 
 **Notes de conception**
 
-- La création automatique de l'espace `PERSONAL` est déclenchée par la gestion de campagne au moment de la création du compte (ou de l'initialisation locale). Ce n'est pas un événement déclenché par le MJ.
+- La création automatique de l'espace `PERSONAL` est déclenchée par Space Management au moment de la création du compte (ou de l'initialisation locale). Ce n'est pas un événement déclenché par le MJ.
 - L'espace `PERSONAL` ne doit pas apparaître dans les parcours de création d'espace (US-02-01, US-02-02). Il est visible dans le tableau de bord comme espace distinct.
 
 ---
@@ -174,7 +174,7 @@ Feature: Espace personnel par défaut
 |---|---|
 | Priorité | Must Have |
 | Source | UC-02 — scénario nominal |
-| Bounded context | la gestion de campagne, la bibliothèque de contenu |
+| Bounded context | Space Management, la bibliothèque de contenu |
 
 **Critères d'acceptation**
 
@@ -215,7 +215,6 @@ Feature: Création d'une campagne
 
   Scenario: Le MJ est en mode local et crée une campagne
     Given le MJ utilise l'application en mode local sans compte
-    And il a moins de 3 espaces CAMPAIGN/ONE_SHOT créés
     When il crée une campagne avec un nom
     Then l'espace est créé et pleinement fonctionnel
     And les 4 dossiers système nommés et le dossier virtuel "Non classés" sont créés automatiquement
@@ -231,7 +230,7 @@ Feature: Création d'une campagne
 
 **Notes de conception**
 
-- La création d'un espace de jeu publie l'événement création d'espace. La gestion de campagne ne crée pas les dossiers système directement. C'est la bibliothèque de contenu qui consomme création d'espace et déclenche la création des 4 dossiers nommés et du dossier virtuel. Ce point d'architecture transverse doit être documenté dans les contrats d'intégration.
+- La création d'un espace de jeu publie l'événement création d'espace. Space Management ne crée pas les dossiers système directement. C'est la bibliothèque de contenu qui consomme création d'espace et déclenche la création des 4 dossiers nommés et du dossier virtuel. Ce point d'architecture transverse doit être documenté dans les contrats d'intégration.
 - Le `type` est positionné à `CAMPAIGN` pour ce scénario. L'utilisateur ne voit jamais ce détail technique.
 - L'absence de système de jeu est le comportement par défaut. Aucune valeur pré-sélectionnée ne doit orienter le MJ vers un système spécifique.
 
@@ -253,7 +252,7 @@ Feature: Création d'une campagne
 |---|---|
 | Priorité | Should Have — post-MVP (dépend UC-13) |
 | Source | UC-02 — scénario alternatif A1 |
-| Bounded context | la gestion de campagne |
+| Bounded context | Space Management |
 
 **Critères d'acceptation**
 
@@ -303,7 +302,7 @@ Feature: Lancement d'un one-shot en parcours express
 |---|---|
 | Priorité | Must Have |
 | Source | UC-02 — règles métier, règle stable gratuit |
-| Bounded context | la gestion de campagne |
+| Bounded context | Space Management |
 
 **Critères d'acceptation**
 
@@ -319,41 +318,39 @@ Feature: Blocage à la limite d'espaces CAMPAIGN/ONE_SHOT actifs
     And un CTA l'invite à passer en PRO pour bénéficier d'un nombre illimité d'espaces
     And son espace PERSONAL n'est pas mentionné dans ce décompte
 
-  Scenario: Le MJ gratuit peut créer un nouvel espace après avoir archivé une campagne
+  Scenario: Le MJ gratuit peut créer un nouvel espace après avoir archivé un espace
     Given le MJ possède un compte gratuit
     And il a 3 espaces CAMPAIGN/ONE_SHOT actifs
     When il archive l'un de ses espaces CAMPAIGN ou ONE_SHOT
     And il tente de créer une nouvelle campagne
     Then la création est autorisée
 
-  Scenario: Le MJ en mode local tente de créer un 4e espace CAMPAIGN ou ONE_SHOT
-    Given le MJ utilise l'application en mode local sans compte
-    And il a déjà 3 espaces CAMPAIGN/ONE_SHOT créés
-    When il tente de créer une nouvelle campagne ou de lancer un one-shot
-    Then la création est bloquée
-    And un message indique qu'il a atteint la limite en mode local
-    And un CTA l'invite à créer un compte pour continuer
-
   Scenario: Le MJ PRO n'est jamais bloqué
     Given le MJ possède un compte PRO
     And il a déjà 3 espaces CAMPAIGN/ONE_SHOT actifs ou plus
     When il tente de créer une nouvelle campagne
     Then la création est autorisée sans restriction
+
+  Scenario: Le MJ en mode local n'est jamais bloqué par un quota d'espaces
+    Given le MJ utilise l'application en mode local sans compte
+    And il a déjà créé 3 espaces CAMPAIGN/ONE_SHOT
+    When il crée un 4e espace CAMPAIGN ou ONE_SHOT
+    Then la création est autorisée sans restriction
+    And aucun message de blocage n'est affiché
 ```
 
 **Règles métier**
 
-- RB-02-10 : Un utilisateur gratuit ne peut pas avoir plus de 3 espaces `CAMPAIGN`/`ONE_SHOT` actifs simultanément. L'espace `PERSONAL` n'est pas décompté. Cette règle stable est vérifiée côté serveur dans la gestion de campagne.
-- RB-02-11 : En mode local, le cap à 3 espaces `CAMPAIGN`/`ONE_SHOT` est une règle d'interface (pas une règle stable). L'espace `PERSONAL` n'est pas décompté. Le message est distinct de celui du compte gratuit.
-- RB-02-12 : Le message de blocage est contextuel : il distingue le mode local (invitation à créer un compte) du compte gratuit (invitation à passer en PRO).
+- RB-02-10 : Un utilisateur gratuit ne peut pas avoir plus de 3 espaces `CAMPAIGN`/`ONE_SHOT` actifs simultanément. L'espace `PERSONAL` n'est pas décompté. Cette règle stable est vérifiée côté serveur dans Space Management.
+- RB-02-11 : **Retirée** (arbitrage opérateur, cf. US-UC-01 RB-01-03). Cette règle prétendait qu'un cap à 3 espaces `CAMPAIGN`/`ONE_SHOT` s'appliquait aussi en mode local, comme règle d'interface. UC-01 ne porte aucun plafond de comptage en mode local : la seule contrainte du mode local est la capacité de stockage du navigateur. L'identifiant `RB-02-11` n'est pas réattribué.
+- RB-02-12 : Le message de blocage informe le MJ gratuit qu'il a atteint la limite de 3 espaces `CAMPAIGN`/`ONE_SHOT` actifs et l'invite à passer en PRO. Ce blocage ne concerne que le compte gratuit — le mode local n'est jamais bloqué par un quota d'espaces (RB-01-03 retirée, US-UC-01).
 - RB-02-13 : Les espaces archivés ne comptent pas dans le quota actif.
 - RB-02-14 : Un utilisateur PRO ne rencontre jamais ce blocage.
 
 **Notes de conception**
 
-- La limite du compte gratuit (3 espaces `CAMPAIGN`/`ONE_SHOT` actifs maximum) est vérifiée à la création. Le rejet est une règle fonctionnelle, pas seulement une validation d'écran.
-- Le cap mode local est une règle d'interface uniquement. Il n'y a pas de compte utilisateur côté serveur en mode local. Les deux règles ont la même valeur (3) mais ne sont pas du même type.
-- Le CTA doit différer selon le contexte : "Créer un compte" en mode local, "Passer en PRO" pour un compte gratuit. Ne pas afficher le même message.
+- La limite du compte gratuit (3 espaces `CAMPAIGN`/`ONE_SHOT` actifs maximum) est vérifiée à la création côté serveur. Le rejet est une règle fonctionnelle, pas seulement une validation d'écran.
+- Le mode local n'est soumis à aucun quota d'espaces : il n'y a pas de compte utilisateur côté serveur en mode local, et aucun plafond de création n'y existe (arbitrage opérateur, RB-01-03 retirée dans US-UC-01). Cette story ne couvre donc que le blocage du compte gratuit face au plan PRO.
 
 ---
 
@@ -371,7 +368,7 @@ Feature: Blocage à la limite d'espaces CAMPAIGN/ONE_SHOT actifs
 |---|---|
 | Priorité | Should Have (dépend UC-13) |
 | Source | UC-02 — scénario alternatif A1, option "scénario existant" |
-| Bounded context | la gestion de campagne, la bibliothèque de contenu, la conduite de session |
+| Bounded context | Space Management, la bibliothèque de contenu, la conduite de session |
 
 **Critères d'acceptation**
 
@@ -410,7 +407,7 @@ Feature: One-shot depuis un scénario de bibliothèque
 **Notes de conception**
 
 - Cette story dépend de UC-13 (scénario réutilisable). Elle ne peut être livrée qu'après stabilisation d'UC-13. Marquer en bloquée si UC-13 n'est pas livré.
-- La redirection vers la vue session implique la conduite de session. L'intégration transverse (la gestion de campagne → la conduite de session) doit être définie dans les contrats d'intégration.
+- La redirection vers la vue session implique la conduite de session. L'intégration transverse (Space Management → la conduite de session) doit être définie dans les contrats d'intégration.
 - Le scénario sélectionné est associé à l'espace one-shot nouvellement créé. La bibliothèque de contenu doit exposer la liste des scénarios disponibles pour la sélection dans ce parcours.
 
 ---
@@ -451,6 +448,7 @@ Feature: One-shot depuis un scénario de bibliothèque
 | Un espace peut être archivé sans suppression définitive | US-02-02, US-02-03 |
 | Espace PERSONAL préexiste, non créé par le MJ | US-02-00 |
 | Quota FREE : 3 espaces CAMPAIGN/ONE_SHOT, PERSONAL non décompté | US-02-00, US-02-03 |
+| Aucun plafond de création en mode local (RB-01-03 retirée, US-UC-01) | US-02-01, US-02-03 |
 
 | Critère d'acceptation UC-02 | Story couvrant le critère |
 |---|---|

@@ -11,7 +11,7 @@
 
 Le mode local — démarrer et travailler sans compte, avec persistance dans le navigateur (IndexedDB) — est un pilier non négociable du produit (UC-01, statut Must). Or le domaine métier est implémenté en C#/.NET côté serveur. Six angles de l'audit avaient signalé la même question non tranchée : où s'exécute la logique métier lorsque l'utilisateur travaille hors ligne, sans compte ?
 
-Sans décision explicite, deux chemins implicites coexistaient dans la documentation : soit réimplémenter le domaine côté navigateur en TypeScript, soit traiter le mode local comme une simple couche de persistance sans validation métier. La documentation ne tranchait pas, ce qui rendait la conception du modèle local IndexedDB (finding C-11) et la procédure de migration (finding F-01) impossibles à spécifier.
+Sans décision explicite, deux chemins implicites coexistaient dans la documentation : soit réimplémenter le domaine côté navigateur en TypeScript, soit traiter le mode local comme une simple couche de persistance sans validation métier. La documentation ne tranchait pas, ce qui rendait la conception du modèle local IndexedDB et la procédure de migration impossibles à spécifier.
 
 ---
 
@@ -38,17 +38,17 @@ Le format de sérialisation utilisé pour l'export local est le même que le pay
 ## Conséquences
 
 - Le mode local est volontairement plus pauvre que le domaine serveur : les invariants métier riches ne sont pas garantis hors ligne. Ce point doit être documenté honnêtement dans UC-01 et dans la vision produit.
-- Le modèle de données local (object stores IndexedDB) est à concevoir comme une projection du schéma serveur, avec un sous-ensemble des validations. Ce travail est en J1 (finding C-11).
-- La migration locale→cloud doit inclure une étape de confirmation anti-appropriation : l'utilisateur doit prouver que les données lui appartiennent avant import (finding F-01). **Statué dans [ADR-016](ADR-016-serialisation-locale-migration.md)** : gate de reconnaissance par présentation des données détectées, pas de preuve formelle d'appartenance possible.
+- Le modèle de données local (object stores IndexedDB) est à concevoir comme une projection du schéma serveur, avec un sous-ensemble des validations. Ce travail est en J1.
+- La migration locale→cloud doit inclure une étape de confirmation anti-appropriation : l'utilisateur doit prouver que les données lui appartiennent avant import. **Statué dans [ADR-016](ADR-016-serialisation-locale-migration.md)** : gate de reconnaissance par présentation des données détectées, pas de preuve formelle d'appartenance possible.
 - Le format de sérialisation de l'export local devient un livrable de conception à part entière — il doit être spécifié explicitement. **Statué dans [ADR-016](ADR-016-serialisation-locale-migration.md)** : format JSON avec `schemaVersion` obligatoire, rejet propre des versions inconnues.
-- La stratégie de synchronisation (granularité lot ou delta) est à décider en J2 (finding I-05).
-- La capture d'audience (analytics) est structurellement limitée par le mode local (finding E-06) — point à adresser en J2.
+- La stratégie de synchronisation (granularité lot ou delta) est à décider en J2.
+- La capture d'audience (analytics) est structurellement limitée par le mode local — point à adresser en J2.
 
 ---
 
 ## Compléments post-revue (2026-06-09)
 
-Suite à la revue adversariale (revue de la phase de conception, artefact purgé du corpus — historique git), cette décision est complétée comme suit, sans changer sa direction.
+Suite à une revue critique postérieure à cette décision, celle-ci est complétée comme suit, sans changer sa direction.
 
 - **Ordre de build acté : C#-first.** Le domaine C# serveur est construit en premier (source de vérité). Le modèle local est une projection dérivée du domaine serveur. Le « walking skeleton local-only » n'est plus un jalon isolé.
 

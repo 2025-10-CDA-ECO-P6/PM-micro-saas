@@ -156,3 +156,4 @@ logs/
 # ── Docs locaux / audits (non versionnés) ────────────
 /docs/audit/
 /docs/BACKLOG.md
+/docs/RAPPORT-VERIFICATION-PRE-BUILD.md

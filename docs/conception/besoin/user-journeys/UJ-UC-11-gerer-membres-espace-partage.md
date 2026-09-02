@@ -1,4 +1,4 @@
-# User Journey — Gérer les membres d'une campagne (UC-11)
+# User Journey — Gérer les membres d'un espace partagé (UC-11)
 
 ## Périmètre
 
@@ -10,11 +10,11 @@ Parcours couvrant deux flux distincts du point de vue du MJ : la gestion rapide 
 
 ```mermaid
 journey
-    title Gerer les membres d une campagne
+    title Gerer les membres d un espace partage
     section Emilie genere un lien en 30 secondes
-        Ouvrir la section Membres de la campagne: 5: Emilie
+        Ouvrir la section Membres de l espace: 5: Emilie
         Cliquer sur Inviter un joueur: 5: Emilie
-        Choisir le perimetre CAMPAIGN ou SESSION: 4: Emilie
+        Choisir le perimetre SPACE ou SESSION: 4: Emilie
         Cliquer sur Generer le lien: 5: Emilie
         Copier le lien et le coller dans Discord: 5: Emilie
     section Thomas configure une invitation avec options
@@ -24,7 +24,7 @@ journey
         Configurer le nombre max d utilisations: 3: Thomas
         Generer et copier le lien: 5: Thomas
     section Thomas associe un joueur a son personnage
-        Joueur a rejoint la campagne via le lien: 5: Thomas
+        Joueur a rejoint l espace via le lien: 5: Thomas
         Ouvrir la fiche du membre dans la liste: 4: Thomas
         Selectionner le personnage a associer: 4: Thomas
         Confirmer l association: 5: Thomas
@@ -50,7 +50,7 @@ flowchart TD
 
     Action -->|Inviter un joueur| Inv[US-11-01\nGenerer un lien d invitation]
     Inv --> Perimetre{Perimetre du lien}
-    Perimetre -->|CAMPAIGN| LienCampagne[Lien campagne durable\nMember apres utilisation]
+    Perimetre -->|SPACE| LienCampagne[Lien perimetre SPACE - durable\nMember apres utilisation]
     Perimetre -->|SESSION| LienSession[Lien session temporaire\nGuestAccess apres utilisation]
 
     LienCampagne --> Options[Options : date d expiration\nnombre d utilisations - facultatif]
@@ -69,18 +69,18 @@ flowchart TD
     Rev --> RevConfirm[Confirmation MJ]
     RevConfirm --> Revoked[Invitation REVOKED\nIdentity and Access invalide le token]
     Revoked --> JoueurLien{Joueur tente le lien apres revocation}
-    JoueurLien --> LienMort[Message Ce lien n est plus actif\nOpacite campagne - UC-09 US-09-02]
+    JoueurLien --> LienMort[Message Ce lien n est plus actif\nOpacite espace - UC-09 US-09-02]
 
     Action -->|Retirer un membre| Rem[US-11-03\nRetirer un membre]
     Rem --> RemConfirm[Confirmation MJ]
-    RemConfirm --> Removed[Member REMOVED\nAcces campagne retire\nDonnees preservees]
+    RemConfirm --> Removed[Member REMOVED\nAcces espace retire\nDonnees preservees]
     Removed --> Reinvite{MJ veut reinviter ?}
     Reinvite -->|Oui| Inv
-    Reinvite -->|Non| End1[Fin - membre hors campagne]
+    Reinvite -->|Non| End1[Fin - membre hors espace]
 
     Action -->|Associer un personnage| Assoc[US-11-04\nAssocier joueur et personnage]
     Assoc --> SelectMembre[MJ selectionne le membre]
-    SelectMembre --> SelectPerso[MJ selectionne le personnage\npersonnage joueur de la campagne]
+    SelectMembre --> SelectPerso[MJ selectionne le personnage\npersonnage joueur de l espace]
     SelectPerso --> UniqueCheck{Personnage deja associe ?}
     UniqueCheck -->|Oui| UniqueErr[Erreur - personnage\ndeja associe a un autre membre]
     UniqueCheck -->|Non| AssocOK[Association creee\nJoueur accede a la fiche\net aux notes PLAYER_PRIVATE]
@@ -90,15 +90,15 @@ flowchart TD
 
 ## Points de friction identifiés
 
-- **Choix du périmètre peu intuitif pour Émilie** : la distinction `CAMPAIGN` / `SESSION` est technique. Émilie veut juste "inviter ses joueurs pour ce soir". Un libellé orienté usage ("Accès permanent à la campagne" / "Accès pour cette session") réduirait la friction cognitive.
+- **Choix du périmètre peu intuitif pour Émilie** : la distinction `SPACE` / `SESSION` est technique. Émilie veut juste "inviter ses joueurs pour ce soir". Un libellé orienté usage ("Accès permanent à l'espace" / "Accès pour cette session") réduirait la friction cognitive.
 
-- **Génération du lien hors de la vue session** : Émilie veut souvent inviter ses joueurs juste avant de démarrer la session. Si le point d'entrée est uniquement dans la section "Membres" de la campagne, elle doit naviguer hors de la vue session en cours. Un raccourci depuis la vue session (UC-06) éviterait cette rupture.
+- **Génération du lien hors de la vue session** : Émilie veut souvent inviter ses joueurs juste avant de démarrer la session. Si le point d'entrée est uniquement dans la section "Membres" de l'espace, elle doit naviguer hors de la vue session en cours. Un raccourci depuis la vue session (UC-06) éviterait cette rupture.
 
 - **Absence de confirmation visuelle que le joueur a rejoint** : Thomas génère un lien et attend. Sans indication dans l'interface que le lien a été utilisé, il ne sait pas si son joueur a bien rejoint. L'état de l'invitation (`PENDING` → `ACTIVE`) doit être visible en temps réel dans le panneau membres.
 
 - **Association joueur-personnage silencieuse** : Thomas associe un joueur à son personnage mais ne sait pas si le joueur l'a vu. Si l'association a lieu alors que le joueur est déjà connecté, une notification in-app côté joueur éviterait les demandes répétées ("tu as ma fiche ?").
 
-- **Retrait d'un membre — confirmation anxiogène** : le MJ craint de supprimer des données. Un message de confirmation explicite ("les données du joueur — personnage, notes — sont conservées dans la campagne") réduit l'hésitation.
+- **Retrait d'un membre — confirmation anxiogène** : le MJ craint de supprimer des données. Un message de confirmation explicite ("les données du joueur — personnage, notes — sont conservées dans l'espace") réduit l'hésitation.
 
 - **Quota d'usages — valeur par défaut ambiguë** : si Thomas ne renseigne pas de nombre maximum d'utilisations, le comportement par défaut (illimité ou 1 ?) n'est pas évident. La valeur par défaut doit être visible et documentée dans le formulaire.
 
@@ -108,13 +108,13 @@ flowchart TD
 
 - **Bouton "Inviter" dans la vue session** : depuis la vue session active (UC-06), un bouton "Inviter" génère directement un lien `SESSION` sans quitter la vue. Émilie invite ses joueurs en une action depuis l'endroit où elle se trouve déjà.
 
-- **Libellés orientés usage plutôt que techniques** : remplacer `CAMPAIGN` / `SESSION` par "Accès durable à la campagne" / "Accès pour une session" dans le formulaire, tout en conservant les codes internes dans les données.
+- **Libellés orientés usage plutôt que techniques** : remplacer `SPACE` / `SESSION` par "Accès durable à l'espace" / "Accès pour une session" dans le formulaire, tout en conservant les codes internes dans les données.
 
 - **Indicateur d'état en temps réel dans le panneau membres** : chaque invitation affiche son état actuel (`PENDING`, `ACTIVE`, `REVOKED`) avec une mise à jour en temps réel quand un joueur l'utilise. Thomas sait immédiatement que son joueur a rejoint.
 
 - **Copie du lien en un clic avec toast** : un bouton "Copier le lien" avec retour visuel discret (toast "Lien copié !") suffit. Pas de popup, pas de modale, pas de navigation.
 
-- **Message de confirmation rassurant au retrait** : lors du retrait d'un membre, un message explicite ("Le personnage et les notes de ce joueur restent dans la campagne. Seul l'accès est retiré.") réduit l'anxiété de suppression.
+- **Message de confirmation rassurant au retrait** : lors du retrait d'un membre, un message explicite ("Le personnage et les notes de ce joueur restent dans l'espace. Seul l'accès est retiré.") réduit l'anxiété de suppression.
 
 - **Réinvitation depuis la fiche membre REMOVED** : depuis la fiche d'un membre `REMOVED`, un bouton "Réinviter" déclenche directement la génération d'un nouveau lien (US-11-01) pré-configuré pour ce membre, sans navigation supplémentaire.
 
@@ -124,10 +124,10 @@ flowchart TD
 
 ## Liens
 
-- Use case source : [`docs/conception/besoin/usecases/UC-11-gerer-membres-campagne.md`](../usecases/UC-11-gerer-membres-campagne.md)
-- User stories associées : [`US-UC-11-gerer-membres-campagne.md`](../user-stories/US-UC-11-gerer-membres-campagne.md)
+- Use case source : [`docs/conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md`](../usecases/UC-11-gerer-membres-espace-partage.md)
+- User stories associées : [`US-UC-11-gerer-membres-espace-partage.md`](../user-stories/US-UC-11-gerer-membres-espace-partage.md)
 - UC-09 Accès session joueur : [`docs/conception/besoin/usecases/UC-09-acces-session-joueur.md`](../usecases/UC-09-acces-session-joueur.md)
-- UC-12 Consulter sa campagne (vue joueur) : [`docs/conception/besoin/usecases/UC-12-rejoindre-campagne.md`](../usecases/UC-12-rejoindre-campagne.md)
+- UC-12 Consulter son espace (vue joueur) : [`docs/conception/besoin/usecases/UC-12-consulter-espace-joueur.md`](../usecases/UC-12-consulter-espace-joueur.md)
 - User Journey UC-09 : [`UJ-UC-09-acces-session-joueur.md`](UJ-UC-09-acces-session-joueur.md)
 - Conception Space Management : [`docs/conception/domain/space-management.md`](../../domain/space-management.md)
 - Conception Identity and Access : [`docs/conception/domain/identity-access.md`](../../domain/identity-access.md)

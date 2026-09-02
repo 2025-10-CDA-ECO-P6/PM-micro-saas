@@ -87,9 +87,10 @@ Intention : le MJ retrouve rapidement un document dans son espace par son titre,
 
 état chargé (saisie en cours, résultats disponibles) :
   la zone de résultats s'affiche avec les documents correspondant au titre saisi,
-  regroupés par type ; les types disponibles au MVP sont les huit types natifs
-  (scénario, scène, PNJ, lieu, note, personnage joueur, note de session, révélation)
-  plus un groupe « sans type » pour les documents libres (UC-14 scénario nominal §4)
+  regroupés par type ; les types disponibles au MVP sont les types natifs de documents
+  définis par le domaine (`docs/conception/domain/content-library.md §DocumentType —
+  types système built-in`) plus un groupe « sans type » pour les documents libres
+  (UC-14 scénario nominal §4)
 
 état vide de résultats (saisie sans correspondance) :
   la zone de résultats s'affiche avec un état vide explicite ;
@@ -113,7 +114,11 @@ annonce sans action :
 hiérarchie de lecture à distance :
   priorité 1 — barre de recherche (saisie du mot-clé)
   priorité 2 — zone de résultats (résultats regroupés par type)
-  source : NFR-ACC-04 (usage à distance normale de l'écran pendant la préparation)
+  source : [SOUS-SPÉCIFIÉ] Aucune exigence non fonctionnelle du corpus ne couvre la
+           hiérarchie de lecture visuelle hors session (NFR-ACC-04 exclut explicitement
+           la phase de préparation ; NFR-ACC-01 couvre l'ordre de tabulation clavier,
+           objet distinct). La hiérarchie décrite ici relève de la bonne pratique et
+           attend une source.
 ```
 
 ---
@@ -123,7 +128,7 @@ hiérarchie de lecture à distance :
 ```
 Sources : UC-14 scénario nominal, A1, A2 ; US-UC-14 ;
           AR-11 ;
-          NFR-ACC-02 ; NFR-ACC-04 ;
+          NFR-ACC-02 ;
           châssis S7 (zoning.md §S7)
 ```
 

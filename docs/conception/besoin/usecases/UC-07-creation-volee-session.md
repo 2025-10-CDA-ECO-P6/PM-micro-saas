@@ -10,7 +10,7 @@ Aucun.
 
 ## Objectif
 
-Permettre au MJ de créer instantanément un document de campagne depuis la vue session
+Permettre au MJ de créer instantanément un document d'espace depuis la vue session
 (note, PNJ, personnage joueur, lieu, faction, objet, lore ou autre contenu), pour s'adapter
 en temps réel aux imprévus des joueurs.
 
@@ -24,7 +24,7 @@ sans quitter le contexte de session ni bloquer le rythme de jeu.
 ## Besoin utilisateur
 
 Le MJ veut créer un document en quelques secondes depuis la vue session, avec un minimum
-d'informations requises, pour maintenir la fluidité de la partie et enrichir la campagne après coup.
+d'informations requises, pour maintenir la fluidité de la partie et enrichir l'espace après coup.
 
 ## Déclencheur
 
@@ -33,7 +33,7 @@ Le MJ clique sur "Créer" ou utilise un raccourci depuis la vue session.
 ## Préconditions
 
 - Une session est en statut LIVE ou CLOSED.
-- Le MJ est propriétaire de la campagne (compte cloud) ou en mode local (UC-01).
+- Le MJ est propriétaire de l'espace (compte cloud) ou en mode local (UC-01).
 
 ## Scénario nominal
 
@@ -46,7 +46,7 @@ Le MJ clique sur "Créer" ou utilise un raccourci depuis la vue session.
 3. Il saisit un titre minimal (seul champ obligatoire).
 4. Il valide.
 5. Le système crée le document avec :
-   - la campagne de la session en cours ;
+   - l'espace de la session en cours ;
    - le type choisi, le cas échéant ;
    - une visibilité privée par défaut ;
    - dossier d'accueil selon le point d'entrée ou le type ;
@@ -78,7 +78,7 @@ La note est créée comme note de session, puis rattachée à la session en cour
 
 ### A4 — Création d'un document générique
 
-Le MJ crée un document (lieu, faction, objet, lore) avec un titre. Le document est lié à la campagne.
+Le MJ crée un document (lieu, faction, objet, lore) avec un titre. Le document est lié à l'espace.
 En session `LIVE`, il est épinglé automatiquement par défaut dans la session (le MJ peut le désépingler
 d'un geste s'il ne doit pas rester sous la main) ; en session `CLOSED`, l'épinglage reste optionnel et
 non automatique, à la main du MJ s'il doit rester accessible.
@@ -99,7 +99,7 @@ La création à la volée est impossible depuis une session ARCHIVED (lecture se
 
 ## Postconditions
 
-- Le document créé est lié à la campagne.
+- Le document créé est lié à l'espace.
 - Il est immédiatement consultable dans la vue session.
 - Il peut être enrichi ultérieurement.
 - En session `LIVE` : le document créé est épinglé par défaut dans la session (désépinglable par le MJ).
@@ -116,7 +116,7 @@ La création à la volée est impossible depuis une session ARCHIVED (lecture se
 ## Règles métier
 
 - Le titre est le seul champ obligatoire pour toute création à la volée.
-- Le document créé est automatiquement lié à la campagne de la session en cours.
+- Le document créé est automatiquement lié à l'espace de la session en cours.
 - Une note de session est rattachée à la session.
 - En session `LIVE`, un document durable créé à la volée est automatiquement épinglé par défaut (même
   paradigme qu'AR-12/UC-08 pour le partage) ; le MJ peut le désépingler d'un geste si le document n'est
@@ -129,7 +129,7 @@ La création à la volée est impossible depuis une session ARCHIVED (lecture se
 
 - Le MJ peut créer une note, un PNJ, un personnage joueur et un document depuis la vue session.
 - Le titre seul suffit à valider la création.
-- Le document est immédiatement lié à la campagne et, si nécessaire, référencé par la session.
+- Le document est immédiatement lié à l'espace et, si nécessaire, référencé par la session.
 - Un PNJ créé à la volée apparaît dans les documents épinglés ou dans son dossier, filtrable comme PNJ.
 - La création est impossible depuis une session ARCHIVED.
 - Le MJ peut compléter le document créé à la volée ultérieurement.

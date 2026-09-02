@@ -1,6 +1,6 @@
 # Requête « document non partagé » — RGPD effacement de compte, §3(b)
 
-- **Statut** : Spec pré-build — illustrative, non normative. ADR-012 renvoie explicitement l'écriture précise de cette requête à l'implémentation (« la définition donnée ici est fonctionnelle ; la requête SQL précise est à écrire lors de l'implémentation », ADR-012:189, section *Points à trancher*). Cette note produit une première formulation fidèle au critère fixé, sans le clore.
+- **Statut** : Spec pré-build — illustrative, non normative. ADR-012 renvoie explicitement l'écriture précise de cette requête à l'implémentation (« la définition donnée ici est fonctionnelle ; la requête SQL précise est à écrire lors de l'implémentation », ADR-012:226, section *Points à trancher*). Cette note produit une première formulation fidèle au critère fixé, sans le clore.
 - **Sources** : [ADR-012](../decisions/ADR-012-rgpd-effacement-compte.md) (l.92, 94, 118-124, 189) ; matrice FK [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md) (§Schéma et MLD).
 - **Périmètre** : la sélection des documents « non partagés » au sens de l'étape 5 de la saga `UserAnonymized` (ADR-012 §3(b)), l'instant de référence de l'évaluation, et le séquençage déliaison-puis-DELETE aligné sur le mécanisme de saga ADR-011.
 
@@ -47,7 +47,7 @@ Cette dernière condition n'est pas une quatrième condition cumulative de même
 ## 3. Requête SQL — illustrative, balisée
 
 ```sql
--- ILLUSTRATIF — non normatif (ADR-012:189 : la requête précise reste un point à trancher à l'implémentation).
+-- ILLUSTRATIF — non normatif (ADR-012:226 : la requête précise reste un point à trancher à l'implémentation).
 -- Sélection des documents "non partagés" au sens ADR-012 §3(b), pour un espace partagé vivant donné.
 -- Le mécanisme de figement à `deletion_requested_at` (§2 ci-dessus) n'est pas représenté ici : cette
 -- requête illustre le critère métier des trois conditions C1/C2/C3 et l'exclusion GM_ONLY (§1),
@@ -96,7 +96,7 @@ WHERE d.created_by_id = :userId
 3. **DELETE des documents** eux-mêmes.
 
 ```sql
--- ILLUSTRATIF — non normatif (ADR-012:189 : la requête précise reste un point à trancher à l'implémentation).
+-- ILLUSTRATIF — non normatif (ADR-012:226 : la requête précise reste un point à trancher à l'implémentation).
 -- Étape 1 — déliaison des FK nullable portées par les documents sélectionnés
 UPDATE documents SET source_document_id = NULL WHERE id = ANY(:selectedIds);
 UPDATE documents SET character_id       = NULL WHERE id = ANY(:selectedIds);

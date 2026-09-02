@@ -52,7 +52,7 @@ Le MJ crée un nouveau scénario template directement depuis son espace personne
 
 ### Gel de campagnes au downgrade de tier
 
-**Statut : spécifié dans [UC-15](UC-15-gel-campagnes-downgrade-tier.md).**
+**Statut : spécifié dans [UC-15](UC-15-gel-espaces-downgrade-tier.md).**
 
 Lorsqu'un MJ perd son tier premium (fin d'abonnement, non-renouvellement) et se retrouve alors au-delà de la limite de campagnes du tier gratuit, que se passe-t-il ?
 
@@ -63,7 +63,7 @@ Lorsqu'un MJ perd son tier premium (fin d'abonnement, non-renouvellement) et se 
 Ce use case délimite le périmètre de la valeur `FROZEN` dans `SpaceStatus` et du comportement `Unfreeze()` mentionnés dans le domaine.
 
 - Voir : `SpaceStatus` (`FROZEN`) dans le glossaire.
-- Voir aussi : [UC-15](UC-15-gel-campagnes-downgrade-tier.md) — décision complète et ratifiée.
+- Voir aussi : [UC-15](UC-15-gel-espaces-downgrade-tier.md) — décision complète et ratifiée.
 - Concerne : `AccountTier`, la limite d'espaces `CAMPAIGN`/`ONE_SHOT` `FREE`, `Space Management`.
 
 ---
