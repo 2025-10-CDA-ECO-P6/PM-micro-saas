@@ -158,6 +158,9 @@ Pour un développeur qui reprend ce projet en vue d'écrire la première ligne d
 2. **[roadmap-entree-build.md](docs/gestion-projet/roadmap-entree-build.md)** — la séquence de construction : jalons, préalables bloquants, critères de sortie, et les conditions pour passer d'un jalon au suivant.
 3. **[guide-conventions-et-dod.md](docs/gestion-projet/guide-conventions-et-dod.md)** — les conventions de code dérivées du corpus de conception et la Definition of Done ; le point d'entrée pour comprendre les critères de complétude d'une tâche sans devoir naviguer tout le corpus.
 4. **[structure-projets.md](docs/architecture/structure-projets.md)** et **[ADR-008](docs/architecture/decisions/ADR-008-structure-solution.md)** — la structure concrète des projets .NET, à lire avant d'échafauder la solution.
+5. **[guide-lecture-par-fonctionnalite.md](docs/gestion-projet/guide-lecture-par-fonctionnalite.md)** — l'entrée par fonctionnalité produit, pour retrouver en un renvoi le besoin, les règles métier, la maquette, les décisions et la spécification technique d'une capacité donnée.
+6. **[plan-de-travail.md](docs/gestion-projet/plan-de-travail.md)** — la décomposition en tâches exécutables du périmètre engagé, avec dépendances techniques et périmètre d'écriture calculé.
+7. **[methode-de-ticket.md](docs/gestion-projet/methode-de-ticket.md)** — le modèle de ticket, la condition d'entrée avant de prendre une tâche, et le cycle de vie jusqu'à sa clôture.
 
 ---
 
