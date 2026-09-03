@@ -172,8 +172,11 @@ def extraire_taxonomie(contenu_methode):
 
 
 def extraire_maille(contenu_plan, racine):
-    """Lit les cinq natures de module de la maille (§2 du plan) — jamais
-    recopiées en dur ici. Renvoie un dictionnaire nature -> ensemble de noms."""
+    """Lit les natures de module de la maille (§2 du plan) qu'elle a la charge
+    de résoudre — jamais recopiées en dur ici. La nature « fiche d'écran »
+    (Surface) n'en fait pas partie : elle est résolue ailleurs, par
+    mapper_nature(), via les slugs de wireframes lus sur disque. Renvoie un
+    dictionnaire nature -> ensemble de noms."""
     import glob as _glob
 
     # (a) agrégats : le §2 renvoie au modèle de domaine, on l'y lit
