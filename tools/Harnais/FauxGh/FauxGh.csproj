@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Version en support à long terme en cours à l'ouverture du build.
+         Règle et formulation posées par guide-conventions-et-dod.md §2 — « ce
+         guide énonce la règle, jamais un numéro — un numéro vieillit, la règle
+         non » — qui renvoie lui-même au §8 pour la pratique de fond dont elle
+         découle. Ce commentaire porte la règle et sa source, jamais un numéro
+         isolé ni une date. -->
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FauxGh</RootNamespace>
+    <!-- Le nom d'assemblage, pas le nom de projet, est ce que le lanceur natif
+         cherche à résoudre : c'est lui qui doit valoir « gh » pour que ce
+         binaire soit invocable sous ce nom depuis le PATH. -->
+    <AssemblyName>gh</AssemblyName>
+    <!-- Style porté uniquement par les analyzers livrés avec le SDK — aucune
+         dépendance d'analyse tierce dans ce projet. -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+</Project>

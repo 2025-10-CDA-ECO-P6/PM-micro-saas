@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Version en support à long terme en cours à l'ouverture du build.
+         Règle et formulation posées par guide-conventions-et-dod.md §2 — « ce
+         guide énonce la règle, jamais un numéro — un numéro vieillit, la règle
+         non » — qui renvoie lui-même au §8 pour la pratique de fond dont elle
+         découle. Ce commentaire porte la règle et sa source, jamais un numéro
+         isolé ni une date. -->
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>CreerIssues</RootNamespace>
+    <AssemblyName>CreerIssues</AssemblyName>
+    <!-- Style porté uniquement par les analyzers livrés avec le SDK — aucune
+         dépendance d'analyse tierce dans ce projet. -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!--
+    SOCLE « LECTURE DU PLAN » PARTAGÉ AVEC tools/CreerProjet — NE JAMAIS DUPLIQUER.
+
+    Chemins.cs, Processus.cs, PanneEnvironnementException.cs,
+    ErreurCorpusException.cs, TexteUnicode.cs, ReprPython.cs, LecteurTexte.cs,
+    RacineDepot.cs, OrigineGit.cs, TableauMarkdown.cs, BlancPython.cs et
+    PlanDeTravail.cs SONT les sources physiques que tools/CreerProjet.csproj
+    lie par chemin (`<Compile Include="../CreerIssues/…">`), plutôt que de les
+    recopier : ce dépôt n'a ni fichier de solution ni référence de projet
+    entre outils (« un projet par outil »), donc rien d'autre qu'un lien de
+    fichier ne peut porter ce partage — et ce couplage de chemin est INVISIBLE
+    depuis ce projet-ci, qui les compile comme les siens. Toute modification
+    de l'un de ces fichiers doit être revalidée dans LES DEUX projets
+    (`dotnet build` ici ET sous tools/CreerProjet/) : n'en crée jamais de
+    copie locale sous tools/CreerProjet/, quelle qu'en soit la raison.
+  -->
+
+</Project>
