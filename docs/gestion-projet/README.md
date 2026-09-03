@@ -19,6 +19,7 @@
 | [roadmap-produit.md](roadmap-produit.md) | Roadmap produit — trajectoire de valeur fonctionnelle |
 | [registre-risques.md](registre-risques.md) | Registre d'évaluation des risques (méthode ISO 31000) |
 | [decisions-en-attente.md](decisions-en-attente.md) | Index des décisions en attente, regroupées par décideur et ordonnées par ce qu'elles bloquent dans la séquence J0 → J1 → J2 → J3 → lancement |
+| [revue-produit-plan-de-travail.md](revue-produit-plan-de-travail.md) | Revue produit du plan de travail — jugement de pertinence de la décomposition et proposition instruite de redécoupage en tranches verticales |
 
 ## Deux roadmaps distinctes
 
@@ -35,6 +36,18 @@ Ce dossier porte désormais deux artefacts qu'un lecteur peut confondre, tous de
 - [plan-de-travail.md](plan-de-travail.md) décompose **à l'intérieur** de ces jalons, en épiques et en tâches.
 
 Les critères de sortie d'un jalon ne se trouvent donc pas dans le plan de travail — ils appartiennent à `roadmap-entree-build.md` et au cahier de stratégie de test et de recette ; le plan de travail ne les redéfinit pas et y renvoie.
+
+## Une revue, qui n'ordonnance rien
+
+[revue-produit-plan-de-travail.md](revue-produit-plan-de-travail.md) n'est **pas un troisième artefact
+d'ordonnancement** : elle ne décompose rien et n'ordonne rien. C'est une **revue datée et non normative** du plan de
+travail — elle juge la pertinence de sa décomposition, mesure ce qu'elle avance, et propose son redécoupage en
+tranches verticales. Elle ne fait autorité sur aucun axe : ni jalon, ni épique, ni tâche, ni priorité, ni critère
+d'acceptation. Ses recommandations attendent un arbitrage ; une fois celui-ci rendu et appliqué au plan, la revue
+décrit un état révolu et n'a plus vocation à être lue comme actuelle.
+
+Ses nombres sont des **mesures prises à une date**, chacune accompagnée de la commande qui l'établit : ils ne sont
+pas à maintenir, ils sont à remesurer.
 
 ## Guide de conventions — vocation de sortie du repo documentaire
 
