@@ -238,6 +238,22 @@ En rouvrant un par un, dans ce guide, les 34 renvois par numéro de ligne mentio
 
 **Pratique** : au moment d'écrire un renvoi — pas seulement au moment de le relire — ouvrir la cible et vérifier que le nom de section (ou la ligne) annoncé est bien celui sous lequel la substance visée vit réellement, pas celui sous lequel on croit qu'elle vit. Le bornage d'une plage de lignes fait partie de cette vérification : une plage qui déborde dans la section suivante annonce une cible plus large que celle réellement visée — un renvoi juste s'arrête où s'arrête la substance qu'il désigne, pas où s'arrête la lecture de celui qui l'écrit.
 
+### 8.5 Proscrire un terme de gestion de projet qui présuppose une grandeur ou une pratique que le corpus ne tient pas
+
+**Provenance.** Cette pratique est d'une nature différente des quatre précédentes : elle ne dérive ni d'une décision de conception déjà actée, ni d'un défaut effectivement constaté dans le corpus documentaire — c'est une contrainte de rédaction posée par le porteur du projet. Le dire explicitement ici respecte l'esprit du paragraphe d'ouverture de cette section : nommer une provenance qui n'est ni l'une ni l'autre des deux qu'il pose, plutôt que de laisser croire qu'elle s'y range par défaut.
+
+**Critère.** Un terme du champ de la gestion de projet est proscrit dans `docs/gestion-projet/**` dès qu'il remplit au moins l'une des deux conditions suivantes — remplir une seule des deux suffit à proscrire le terme examiné. Aucune des deux conditions n'est redondante avec l'autre : chacune attrape une famille de termes que l'autre laisserait passer, ce qui les rend toutes deux nécessaires à la règle prise dans son ensemble — pas à un terme jugé, qui ne réclame jamais que l'une ou l'autre :
+
+1. il **présuppose une grandeur que le corpus ne possède pas** — une mesure de durée, d'effort estimé, de capacité ou de cadence temporelle, là où le corpus ne mesure que des surfaces de vérification et des étapes de graphe ;
+2. il **nomme une pratique collective — rituel, cérémonie, réunion périodique — que le corpus ne tient pas**, même quand ce terme ne présuppose lui-même aucune grandeur.
+
+Une grandeur que le corpus définit et documente en propre n'est pas visée par la première condition : la posséder au sens de ce critère, c'est en porter une définition citable dans le corpus lui-même — pas simplement porter un nom voisin d'un terme proscrit.
+
+**Exemple interdit** : nommer un terme du champ lexical Scrum/agile qui mesure un effort estimé ou une vitesse d'avancement, ou qui fige une cadence de travail sur une durée arrêtée d'avance.
+**Exemple correct** : « surface de vérification » pour une grandeur de taille que le corpus définit et documente ([plan-de-travail.md, § Échelle de taille](plan-de-travail.md)) ; « itération » au sens que lui donne [methode-de-ticket.md, § Itération](methode-de-ticket.md) — un sous-ensemble choisi de tranches, sans durée, sans cadence et sans réunion qui lui soit attachée.
+
+**Responsable et fréquence d'application.** Même discipline que le balayage posé par [docs/conception/README.md, § Motifs interdits — détection par balayage](../conception/README.md), étendue à un second périmètre : chaque contributeur applique ce critère au document `docs/gestion-projet/**` qu'il vient de rédiger ou de modifier, avant toute intégration. Pas d'outillage imposé — la détection est manuelle et rapide.
+
 ---
 
 ## 9. Definition of Done

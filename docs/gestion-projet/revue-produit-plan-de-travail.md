@@ -53,6 +53,14 @@ conclut et recommande.
 > d'une plage de critères capturait le mauvais nombre, ce qui a produit une distribution de tailles erronée en §3.10 ;
 > et la règle de détachement du front y était posée au grain du use case, alors que le corpus n'attache pas les fiches
 > d'écran aux user stories. Le plan porte la règle corrigée en sa §1.
+>
+> **Une citation attribuant un contenu chiffré à une section d'un autre document peut devenir obsolète quand cette section change — un exemple vit en §3.10.**
+> En §3.10, le passage énoncant que la [méthode de ticket §3](methode-de-ticket.md) **porte** « un axe « par couche » à **huit valeurs fermées** » était exact à la date de cette revue. Depuis le commit 4e1ff53, cet axe a été remplacé par un axe « par nature de tranche » à six valeurs — vérifié en [`méthode-de-ticket.md §3`](methode-de-ticket.md). Le raisonnement que cette phrase soutient — « Une tranche verticale traverse trois ou quatre de ces valeurs : lui en attribuer quatre n'est plus une classification » — tiendrait sur huit valeurs et deviendrait faux sur six. La phrase n'est **pas réécrite** (ce qui produirait une prose fausse là où il y a aujourd'hui une prose exacte), mais identifiée ici pour lecture.
+>
+> Trois autres passages du même contexte — en §5.3 et §6 — restent exacts pour d'autres raisons et ne sont donc pas des défauts :
+> - **En §5.3, le titre de sous-section** énonce que l'axe « par couche » perd son sens pour une tranche. Le jugement demeure exact indépendamment du remplacement de cet axe.
+> - **En §5.3, le passage affirmant que le document est « touché »**. Exacte — la méthode de ticket a bien été modifiée.
+> - **En §6, dans la sous-section « Ajustements de règle »**, la recommandation énoncée comme « Remplacer l'axe « par couche »… ». Elle énonce ce que la revue **a recommandé** — de la même forme que celle portée en §3.10 (« Ce que la version par couche **garantissait** mieux ») : le passé, parce que la revue l'a énoncée avant la décision. Elle recommandait « par agrégat ». L'arbitrage a retenu « par nature de tranche » — une recommandation écartée. Historiquement exacte ; le passage demeure un témoin de cette recommandation.
 
 ## 1. Comment cette revue a été établie
 

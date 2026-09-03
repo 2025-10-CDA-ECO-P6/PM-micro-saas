@@ -36,6 +36,13 @@ Cinq règles opposables, quel que soit l'effectif qui exécute ce plan :
 
 **(b bis) Ce que la dépendance n'ordonne pas, l'epic le départage.** Deux tranches qui partagent un module sans dépendre l'une de l'autre doivent être sérialisées, mais aucune raison technique ne dit dans quel ordre. Leur ordre de sérialisation suit alors la section « Ordre de livraison recommandé » de l'epic qui les porte, **citée en renvoi sur la ligne concernée**. Cette règle ne classe rien par la valeur : elle nomme la source qui départage ce que la dépendance laisse indifférent.
 
+**Dispositif de départage entre deux tranches que la dépendance ne départage pas.** Deux situations y entrent, dans les deux cas parce qu'aucune dépendance technique ne les départage : deux tranches **en conflit** sans dépendance mutuelle, qu'il faut sérialiser sans qu'aucune raison technique ne dise dans quel ordre ; et deux tranches **sans conflit**, simultanément ouvrables, qu'aucune dépendance ne préfère à l'autre — il n'y a alors rien à sérialiser, mais une tranche à prendre en premier. Dans les deux cas, ce qui décide est le même :
+
+1. d'abord la section « Ordre de livraison recommandé » de l'épique, là où un use case la porte — règle (b bis) ;
+2. à défaut, le choix libre, déclaré comme tel : aucune source du corpus ne départage plus. Ce n'est pas un critère de choix : c'est l'absence d'un critère, nommée comme telle.
+
+Ce dispositif s'applique au **couple de tranches comparé**, jamais au lot (§9) — un même lot peut regrouper des tranches de plusieurs épiques (§1), et rien n'y loge un renvoi d'ordre.
+
 **(c) `En conflit avec` est calculé depuis `Périmètre d'écriture`, jamais affirmé.** Deux tranches sont en conflit si elles déclarent au moins un module commun ; le module partagé est nommé en clair sur la ligne. Un recouvrement que la maille ne sait pas décider porte la mention `recouvrement à confirmer à J0` avec sa raison — il n'est jamais affirmé sans preuve.
 
 **(d) La largeur d'un lot est son nombre de tranches, lisible sur place.** Aucun décompte n'est écrit dans ce document. Compter les lignes d'un lot dit sa largeur ; l'écrire ailleurs créerait un nombre qui dérive au premier ajout.
@@ -84,7 +91,7 @@ Le champ `Périmètre d'écriture` de chaque tranche est une liste de **modules*
 | `politique de sécurité de contenu` | [`roadmap-entree-build.md Annexe A`](roadmap-entree-build.md), code `P6` — « CSP complète » ; [`specs/sanitisation-csp.md`](../architecture/specs/sanitisation-csp.md) |
 | `projection d'export` | [`ADR-017 § Conséquences`](../architecture/decisions/ADR-017-modele-indexeddb-local.md) — « Couture de projection filtrée, sans reformatage structurel » |
 
-*Le bandeau de durabilité et le bandeau de confidentialité partagent un seul module, comme le corpus les nomme d'un seul trait. Ils sont donc déclarés en conflit et sérialisés, sans qu'aucune source ne dise dans quel ordre — leur épique n'étant pas portée par un use case, la règle (b bis) ne s'y applique pas. L'ordre est laissé à qui les prend.*
+*Le bandeau de durabilité et le bandeau de confidentialité partagent un seul module, comme le corpus les nomme d'un seul trait. Ils sont donc déclarés en conflit et sérialisés ; leur épique n'étant pas portée par un use case, le premier point du dispositif de départage (§1) ne s'y applique pas, et c'est son second point qui s'applique : l'ordre est laissé à qui les prend.*
 
 **L'agrégat couvre ses deux moitiés.** Déclarer `Space` couvre l'agrégat côté domaine **et** sa persistance côté client : le store local `spaces` **est** l'agrégat `Space` persisté, pas un second objet. Les douze object stores nommés par [`ADR-017 §1.1`](../architecture/decisions/ADR-017-modele-indexeddb-local.md) se rattachent chacun à exactement un agrégat, et ce rattachement se lit sur le tableau de cette section — il n'est pas recopié depuis l'ADR, il en est dérivé :
 
@@ -110,15 +117,17 @@ La parade est tranchée et vit à sa source : [`structure-projets.md §3 § Poin
 **Deux marqueurs, à ne pas confondre.**
 
 - **`HORS MAILLE`** — la tranche ne vise **aucun module de code** : confirmer un ADR, retenir un outil, arrêter une convention, renseigner une colonne de verdict. Ce n'est pas un manque du corpus, c'est la maille qui ne parle que de code. Une tranche `HORS MAILLE` n'a pas de conflit d'écriture par construction, et **satisfait la cinquième condition d'entrée** ([`methode-de-ticket.md §2`](methode-de-ticket.md)) au même titre qu'un module nommé.
-- **`TROU`** — la tranche vise un module de code que le corpus ne nomme pas. Aucune tranche de ce document n'en porte plus en périmètre d'écriture ; le marqueur reste défini pour le cas où une tranche future en aurait besoin.
+- **`TROU`** — la tranche vise un module de code que le corpus ne nomme pas ; le marqueur reste défini pour le cas où une tranche future en aurait besoin.
 
-Le marqueur `TROU` subsiste en revanche sur des **critères d'acceptation**, où il signale une absence réelle du corpus source. Le périmètre d'écriture et les critères d'acceptation sont deux conditions d'entrée distinctes : nommer un module ne fournit pas un critère.
+Le marqueur `TROU` s'applique de la même façon aux **critères d'acceptation** : il y signale une absence réelle du corpus source ; le marqueur reste défini pour le cas où une tranche future en aurait besoin sur ce champ. Le périmètre d'écriture et les critères d'acceptation sont deux conditions d'entrée distinctes : nommer un module ne fournit pas un critère.
 
 ---
 
 ## 3. Échelle de taille
 
 La taille d'une tranche mesure sa **surface de vérification** — combien de choses distinctes il faudra prouver, et à combien d'endroits — jamais sa **difficulté**. Une tranche `L` n'est pas une tranche dure ; c'est une tranche dont la preuve de complétude touche plusieurs modules ou s'appuie sur de nombreux renvois.
+
+**Cette échelle est un signal de découpage, rien d'autre : elle ne sert ni à remplir une itération, ni à ordonner, ni à estimer.** Une tranche cotée `M` peut à elle seule porter la clôture de tout un jalon ; lire une capacité sur cette échelle la rangerait dans le même seau qu'une tranche à trois renvois, ce qu'elle n'est pas. Ce que la taille dit de la tranche ne dit rien de sa place dans une itération — ce sujet s'inscrit ailleurs.
 
 | Taille | Critère |
 |---|---|
@@ -128,7 +137,7 @@ La taille d'une tranche mesure sa **surface de vérification** — combien de ch
 
 **Un agrégat et sa persistance locale comptent pour un seul module** (§2) : le store local d'un agrégat n'est pas un second module. Sans cette lecture, presque toute tranche verticale vaudrait `L` et l'échelle cesserait de discriminer.
 
-**Une tranche `L` porte, sur la même ligne que sa taille, la raison pour laquelle elle n'est pas scindée** — sauf lorsque son périmètre est `TROU`, auquel cas la taille se lit sur le seul décompte de renvois.
+**Une tranche `L` porte, sur la même ligne que sa taille, la raison pour laquelle elle n'est pas scindée** — sauf lorsque son périmètre ne nomme aucun module (marqueurs `HORS MAILLE` et `TROU`, §2), auquel cas la taille se lit sur le seul décompte de renvois.
 
 **Unité de comptage d'un renvoi.** Un renvoi est un **segment du champ `Critères d'acceptation` séparé par un point-virgule**. Deux règles à l'intérieur d'un segment :
 - **une plage explicite** (`CR-UC07-01 → CR-UC07-09`, `RB-06-18 → RB-06-21`) compte pour **son étendue** — jamais pour un ;
@@ -1042,7 +1051,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | — (point de départ) |
 | Tranches | TB-001, TB-007, TB-012 |
-| Modules touchés, deux à deux disjoints | TB-001 : TROU ; TB-007 : TROU ; TB-012 : TROU |
+| Modules touchés, deux à deux disjoints | TB-001 : HORS MAILLE ; TB-007 : HORS MAILLE ; TB-012 : HORS MAILLE |
 | Ferme quand | TB-001, TB-007, TB-012 sont closes |
 
 ##### LOT-02
@@ -1170,7 +1179,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 
 **Les deux points de décision non vérifiables en intégration continue.** `[DÉCISION MARCHÉ]` (renvoi seul : `roadmap-entree-build.md §3.3`) et `[VALIDATION JURIDIQUE EU]` (renvoi seul : `roadmap-entree-build.md §3.5`) ne sont pas des jalons de build : aucun test, aucun linter ne peut les trancher. Ce plan ne les décompose pas en tâches — il en hérite seulement les effets déjà tracés dans `roadmap-entree-build.md §3.4 § Dépendance d'entrée` (entrée en J2 conditionnée, cumulativement, par J1 stable et `[DÉCISION MARCHÉ] = go`) et `§3.5` (le lancement EU, pas le build de J3, est bloqué par `[VALIDATION JURIDIQUE EU]`).
 
-**Les points `[À TRANCHER]`.** Ce document en signale un sous-ensemble, un par un, au fil des tâches où ils mordent directement (marqueurs `TROU` et `TROU partiel`, §5-6) — il n'en tient pas un registre séparé ni n'en recopie le décompte : le corpus les porte déjà (`guide-conventions-et-dod.md § Convention de balisage`, `structure-projets.md §3`, `architecture/specs/*.md`).
+**Les points `[À TRANCHER]`.** Ce document en signale un sous-ensemble, un par un, au fil des tâches où ils mordent directement (sur les fiches des tranches qui les closent, §5-6) — il n'en tient pas un registre séparé ni n'en recopie le décompte : le corpus les porte déjà (`guide-conventions-et-dod.md § Convention de balisage`, `structure-projets.md §3`, `architecture/specs/*.md`).
 
 **Le post-MVP.** `UC-13` (scénario réutilisable) et `UC-15` (gel d'espaces au downgrade de tier) sont classés hors MoSCoW du MVP par `vision/moscow.md § UC-13` (paragraphe « hors première livraison ») et `§ UC-15 — Classement arbitré`, seule autorité du corpus pour cette classification. Ce plan ne leur ouvre aucune tâche ni épique décomposée, cohérent avec `moscow.md § Dépendances § Convention actée`, qui les exclut par construction de son propre diagramme.
 
@@ -1246,7 +1255,7 @@ Les identifiants de lot `LOT-01` à `LOT-14` de la version antérieure sont reti
 
 ---
 
-## 11. Renvois
+## 12. Renvois
 
 - [`docs/gestion-projet/roadmap-entree-build.md`](roadmap-entree-build.md) — séquence J0-J3, critères de sortie par jalon, ordre C#-first, réconciliation de nomenclature, rattachement des codes de renvoi.
 - [`docs/gestion-projet/guide-conventions-et-dod.md`](guide-conventions-et-dod.md) — conventions de code, gates d'intégration continue, Definition of Done, conventions de maintenance du corpus documentaire (§8, appliquées par ce document).
