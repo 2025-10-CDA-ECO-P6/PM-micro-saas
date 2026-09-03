@@ -18,6 +18,7 @@
 | [methode-de-ticket.md](methode-de-ticket.md) | Méthode de ticket — modèle de ticket, condition d'entrée avant prise et cycle de vie jusqu'à clôture |
 | [roadmap-produit.md](roadmap-produit.md) | Roadmap produit — trajectoire de valeur fonctionnelle |
 | [registre-risques.md](registre-risques.md) | Registre d'évaluation des risques (méthode ISO 31000) |
+| [decisions-en-attente.md](decisions-en-attente.md) | Index des décisions en attente, regroupées par décideur et ordonnées par ce qu'elles bloquent dans la séquence J0 → J1 → J2 → J3 → lancement |
 
 ## Deux roadmaps distinctes
 
