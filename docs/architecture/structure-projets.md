@@ -156,7 +156,7 @@ Ce test remplace la « discipline de revue de code » (insuffisante en contexte 
 
 Ce test est un **livrable de J0** (avant la première livraison à production).
 
-**Outil tranché** (décision d'entrée en build du 2026-09-03) : **NetArchTest**. L'alternative — une convention de namespace vérifiée par script — est écartée ([`guide-conventions-et-dod.md §6`](../gestion-projet/guide-conventions-et-dod.md)).
+**Outillage tranché** (décision d'entrée en build du 2026-09-03) : **les deux mécanismes, chacun sur les règles qu'il vérifie honnêtement**. La règle 2 — les frontières entre namespaces d'un même projet — relève de **NetArchTest**, qui parcourt le graphe des types de l'assemblage compilé ; un contrôle sur le texte source raterait en silence les noms pleinement qualifiés, les `global using`, les alias et les dépendances portées par une signature. Les règles 1 et 3 — les références entre projets — relèvent d'un **contrôle du graphe des fichiers de projet**, sans ambiguïté de syntaxe et exécutable avant la compilation. *Détail et limites de chacun : [`guide-conventions-et-dod.md §6`](../gestion-projet/guide-conventions-et-dod.md).*
 
 *Source : [ADR-008, § Compléments post-revue](decisions/ADR-008-structure-solution.md)*
 

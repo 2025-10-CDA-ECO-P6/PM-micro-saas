@@ -151,7 +151,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 |---|---|---|---|---|
 | EP-01 — Confirmation des décisions pré-implémentation | chaque ADR pré-implémentation ou mixte reçoit sa validation de décideur, datée | J0 | — | TB-001 |
 | EP-02 — Échafaudage de la solution .NET | les projets .NET existent, s'assemblent, et portent les abstractions communes du Domaine | J0 | EP-01 | TB-002, TB-003, TB-004, TB-005 |
-| EP-03 — Contrôle d'architecture en intégration continue | toute violation de frontière entre bounded contexts est détectée et bloquante, sans intervention humaine | J0 | EP-02 | TB-006, TB-007, TB-008, TB-009 |
+| EP-03 — Contrôle d'architecture en intégration continue | toute violation de frontière entre bounded contexts est détectée et bloquante, sans intervention humaine | J0 | EP-02 | TB-006, TB-007, TB-008, TB-009, TB-095 |
 | EP-04 — Contrat d'autorisation en couche Application | le contrat d'autorisation applicative est déclaré, puis câblé aux contrats Application avant l'ouverture de J1 | J0-J1 | EP-02 | TB-010 |
 | EP-05 — Conventions outillées et socle d'ingénierie | les conventions de format, de style et de commit/branche sont arrêtées et opposables en revue | J0 | EP-02 | TB-011, TB-012 |
 
@@ -291,25 +291,25 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 
 ### EP-03 — Contrôle d'architecture en intégration continue
 
-##### TB-006 — Écrire le test d'architecture (règles initiales)
+##### TB-006 — Écrire le test d'architecture des frontières de namespace (règle 2)
 
 | Champ | Valeur |
 |---|---|
-| But | le test échoue si une référence traverse une frontière de bounded context non autorisée, et passe sinon |
+| But | le test échoue si un type d'un bounded context dépend d'un type d'un autre bounded context sans autorisation, et passe sinon — quelle que soit la forme de la dépendance |
 | Épique | EP-03 |
 | Jalon | J0 |
 | Dépend de | TB-003 |
 | Périmètre d'écriture | le projet de test d'architecture |
 | En conflit avec | TB-009 — module partagé : le projet de test d'architecture ; recouvrement à confirmer à J0 — TB-009 écrit dans le même projet de test d'architecture, non nommé par le corpus, donc non déclarable comme module au sens de la maille (§2). Recouvrement à confirmer à J0. |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Dérivable du corpus` (les règles y sont énumérées littéralement) ; `structure-projets.md §6` ; `cahier-strategie-test-et-recette.md §3.4 — Test d'architecture (CI)` |
+| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Dérivable du corpus`, règle 2 — « chaque contexte respecte les frontières logiques définies par les namespaces » ; `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Règle 2 — NetArchTest » — le contrôle porte sur le graphe des types de l'assemblage compilé, non sur le texte source ; `cahier-strategie-test-et-recette.md §3.4 — Test d'architecture (CI)` |
 | Code de renvoi | — |
 
-##### TB-007 — Choisir l'outil du test d'architecture
+##### TB-007 — Retenir les outils du contrôle d'architecture
 
 | Champ | Valeur |
 |---|---|
-| But | un outil est retenu et la décision est tracée |
+| But | chaque règle du contrôle d'architecture est rattachée au mécanisme qui la vérifie, et le rattachement est tracé |
 | Épique | EP-03 |
 | Jalon | J0 |
 | Dépend de | — |
@@ -319,16 +319,16 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Critères d'acceptation | `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — l'outil est NetArchTest, l'alternative par script étant écartée ; `structure-projets.md §6`, mention « Outil tranché » — les trois règles de frontière y sont énumérées et s'écrivent en assertions |
 | Code de renvoi | — |
 
-##### TB-008 — Câbler le contrôle d'architecture dans le pipeline d'intégration continue
+##### TB-008 — Câbler les deux contrôles d'architecture dans le pipeline d'intégration continue
 
 | Champ | Valeur |
 |---|---|
-| But | le test d'architecture s'exécute à chaque commit et bloque en cas d'échec |
+| But | les deux contrôles d'architecture s'exécutent à chaque commit et bloquent en cas d'échec |
 | Épique | EP-03 |
 | Jalon | J0 |
-| Dépend de | TB-006, TB-007 |
+| Dépend de | TB-006, TB-007, TB-095 |
 | Périmètre d'écriture | la configuration d'intégration continue |
-| En conflit avec | — |
+| En conflit avec | TB-095 — module partagé : la configuration d'intégration continue |
 | Taille | S |
 | Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 3 — « Le test d'archi CI existe, **tourne en pipeline** » ; `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — les contrôles s'exécutent sur GitHub Actions, déclenchés à chaque commit — l'hébergement de l'application reste hors de cette décision |
 | Code de renvoi | — |
@@ -346,6 +346,21 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Taille | M — un module, 4 renvois |
 | Critères d'acceptation | `guide-conventions-et-dod.md §6` : « `[À TRANCHER — B3.2]` : la définition exhaustive du test d'architecture […] est une dette déjà nommée par le corpus sous ce code de renvoi. Elle n'est pas résolue ici. » ; `ADR-014-modele-autorisation-api.md § Points à trancher` ; `ADR-015-securite-authentification-mvp.md § Points à trancher` ; `roadmap-entree-build.md Annexe A` |
 | Code de renvoi | B3.2 |
+
+##### TB-095 — Contrôler le graphe des références de projet (règles 1 et 3)
+
+| Champ | Valeur |
+|---|---|
+| But | le contrôle échoue avant la compilation si un projet du Domaine référence l'Infrastructure ou la Présentation, ou si l'Application ou l'Infrastructure référence autre chose que le Domaine |
+| Épique | EP-03 |
+| Jalon | J0 |
+| Dépend de | TB-002 |
+| Périmètre d'écriture | la configuration d'intégration continue |
+| En conflit avec | TB-008 — module partagé : la configuration d'intégration continue |
+| Taille | M — un module, 3 renvois |
+| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Dérivable du corpus`, règles 1 et 3 — le Domaine n'importe aucune assembly d'Infrastructure ni de Présentation, l'Application et l'Infrastructure ne dépendent que du Domaine ; `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Règles 1 et 3 » — le contrôle porte sur le graphe des fichiers de projet, lisible sans ambiguïté de syntaxe et exécutable avant la compilation ; `structure-projets.md §2` — sens des dépendances de la Clean Architecture |
+| Code de renvoi | — |
+| Pourquoi une tranche distincte de TB-006 | les deux contrôles n'ont ni le même but observable, ni le même module d'écriture, ni le même moment d'exécution — celui-ci échoue avant la compilation, celui de TB-006 après. Les réunir produirait une tranche que l'on ne peut pas clore sur un seul critère. |
 
 ### EP-04 — Contrat d'autorisation en couche Application
 
@@ -1035,9 +1050,9 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 | Champ | Valeur |
 |---|---|
 | Ouvrable après | TB-002 |
-| Tranches | TB-003, TB-010, TB-011 |
-| Modules touchés, deux à deux disjoints | TB-003 : IdentityAccess, SpaceManagement, ContentLibrary, SessionConduct, SharedKernel ; TB-010 : le projet Application unique ; TB-011 : la configuration de la solution |
-| Ferme quand | TB-003, TB-010, TB-011 sont closes |
+| Tranches | TB-003, TB-010, TB-011, TB-095 |
+| Modules touchés, deux à deux disjoints | TB-003 : IdentityAccess, SpaceManagement, ContentLibrary, SessionConduct, SharedKernel ; TB-010 : le projet Application unique ; TB-011 : la configuration de la solution ; TB-095 : la configuration d'intégration continue |
+| Ferme quand | TB-003, TB-010, TB-011, TB-095 sont closes |
 
 ##### LOT-03
 
@@ -1052,7 +1067,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 
 | Champ | Valeur |
 |---|---|
-| Ouvrable après | TB-004, TB-006, TB-007 |
+| Ouvrable après | TB-004, TB-006, TB-007, TB-095 |
 | Tranches | TB-005, TB-008, TB-009 |
 | Modules touchés, deux à deux disjoints | TB-005 : SharedKernel ; TB-008 : la configuration d'intégration continue ; TB-009 : le projet de test d'architecture |
 | Ferme quand | TB-005, TB-008, TB-009 sont closes |
