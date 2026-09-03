@@ -126,23 +126,23 @@ flowchart LR
 
 ```gherkin
 Scénario : Le MJ partage un document GM_ONLY (nominal)
-  Etant donne qu'un document "Carte du donjon" a visibility = GM_ONLY
+  Étant donné qu'un document "Carte du donjon" a visibility = GM_ONLY
   Quand le MJ clique sur "Partager"
-  Alors Document.visibility passe a PUBLIC
-  Et l'evenement DocumentVisibilityChanged est produit
+  Alors Document.visibility passe à PUBLIC
+  Et l'événement DocumentVisibilityChanged est produit
   Et les joueurs voient "Carte du donjon" dans leur espace
 
-Scénario : Partage d'un document REVEAL depuis une scene (UC-03)
-  Etant donne qu'un document REVEAL "Inscription sur la porte" a visibility = GM_ONLY
+Scénario : Partage d'un document REVEAL depuis une scène (UC-03)
+  Étant donné qu'un document REVEAL "Inscription sur la porte" a visibility = GM_ONLY
   Quand le MJ clique sur "Partager"
-  Alors Document.visibility passe a PUBLIC
+  Alors Document.visibility passe à PUBLIC
   Et les joueurs voient l'inscription
 
-Scénario : Document deja PUBLIC (E1)
-  Etant donne qu'un document a visibility = PUBLIC
+Scénario : Document déjà PUBLIC (E1)
+  Étant donné qu'un document a visibility = PUBLIC
   Quand le MJ clique sur "Partager"
-  Alors aucune modification n'est appliquee
-  Et l'interface indique que le document est deja visible par les joueurs
+  Alors aucune modification n'est appliquée
+  Et l'interface indique que le document est déjà visible par les joueurs
 ```
 
 ---
@@ -177,22 +177,22 @@ Scénario : Document deja PUBLIC (E1)
 
 ```gherkin
 Scénario : Le MJ retire le partage d'un document PUBLIC (A1)
-  Etant donne qu'un document "Carte du donjon" a visibility = PUBLIC
+  Étant donné qu'un document "Carte du donjon" a visibility = PUBLIC
   Quand le MJ clique sur "Retirer le partage"
-  Alors Document.visibility passe a GM_ONLY
-  Et l'evenement DocumentVisibilityChanged est produit
+  Alors Document.visibility passe à GM_ONLY
+  Et l'événement DocumentVisibilityChanged est produit
   Et les joueurs ne voient plus "Carte du donjon"
 
 Scénario : Retrait du partage en session LIVE
-  Etant donne qu'une session est en status LIVE
+  Étant donné qu'une session est en status LIVE
   Et qu'un document "Carte du donjon" a visibility = PUBLIC
   Quand le MJ retire le partage
-  Alors le document disparait de la vue joueur en temps reel
+  Alors le document disparaît de la vue joueur en temps réel
 
-Scénario : Document deja GM_ONLY
-  Etant donne qu'un document a visibility = GM_ONLY
+Scénario : Document déjà GM_ONLY
+  Étant donné qu'un document a visibility = GM_ONLY
   Quand le MJ tente de retirer le partage
-  Alors aucune modification n'est appliquee
+  Alors aucune modification n'est appliquée
 ```
 
 ---
@@ -227,24 +227,24 @@ Scénario : Document deja GM_ONLY
 
 ```gherkin
 Scénario : Le MJ partage un REVEAL depuis la vue session (A3, A2)
-  Etant donne qu'une session est en status LIVE
+  Étant donné qu'une session est en status LIVE
   Et qu'un document REVEAL "Indice : inscription sur la porte" a visibility = GM_ONLY
   Quand le MJ clique sur "Partager" depuis la vue session
-  Alors Document.visibility passe a PUBLIC
-  Et le document est ajoute aux documents epingles de la session
+  Alors Document.visibility passe à PUBLIC
+  Et le document est ajouté aux documents épinglés de la session
   Et les joueurs voient l'indice dans la vue session
 
-Scénario : Partage d'une note improvisee en session (A2)
-  Etant donne qu'une session est en status LIVE
+Scénario : Partage d'une note improvisée en session (A2)
+  Étant donné qu'une session est en status LIVE
   Et qu'une note "Connexion faction Corbeau" a visibility = GM_ONLY
   Quand le MJ la partage depuis la vue session
-  Alors le document est PUBLIC et epingle dans la session
+  Alors le document est PUBLIC et épinglé dans la session
 
 Scénario : Partage depuis une session non LIVE
-  Etant donne qu'une session est en status CLOSED
+  Étant donné qu'une session est en status CLOSED
   Quand le MJ partage un document depuis cette vue de session
-  Alors Document.visibility passe a PUBLIC
-  Et le document n'est pas auto-epingle (session non LIVE)
+  Alors Document.visibility passe à PUBLIC
+  Et le document n'est pas auto-épinglé (session non LIVE)
 ```
 
 ---

@@ -114,18 +114,9 @@ Les contextes ne dépendent pas les uns des autres ; leurs échanges passent par
 
 Dans la première livraison, le Domaine et l'Application sont chacun un projet .NET unique — les quatre contextes métier y sont des frontières logiques (des namespaces), pas des projets séparés. Cette granularité est un choix délibéré, cohérent avec une équipe restreinte et un produit qui valide encore ses hypothèses avant d'investir dans une isolation complète : un contexte peut être extrait en projet séparé à tout moment si un besoin réel l'exige (montée en équipe, dépendances incompatibles, volume de build). La frontière entre contextes est vérifiée à chaque intégration par un test d'architecture automatisé, plutôt que par la seule discipline de revue.
 
-```
-Haversack.Domain            (namespaces : IdentityAccess, SpaceManagement, ContentLibrary, SessionConduct, SharedKernel)
-Haversack.Application
-Haversack.Infrastructure.Persistence
-Haversack.Infrastructure.Notifications
-Haversack.Presentation.Api
-Haversack.Presentation.Landing
-```
+L'infrastructure et la présentation, à l'inverse du Domaine et de l'Application, restent multi-projets dès le départ : ce sont des préoccupations techniques distinctes (persistance, notifications temps réel, API, landing page), pas un découpage du domaine. Le module `Haversack.Infrastructure.Notifications`, qui porte ce canal de notifications temps réel, est le seul nom de projet arrêté dès l'ouverture de J0.
 
-L'infrastructure et la présentation, à l'inverse du Domaine et de l'Application, restent multi-projets dès le départ : ce sont des préoccupations techniques distinctes (persistance, notifications temps réel, API, landing page), pas un découpage du domaine.
-
-Le détail complet — nommage, responsabilités, promotion ultérieure d'un contexte en projet séparé — est dans [structure-projets.md](docs/architecture/structure-projets.md), qui fait foi sur ce sujet ; la décision d'origine est tracée dans [ADR-008](docs/architecture/decisions/ADR-008-structure-solution.md).
+Le nombre de projets à l'intérieur de chaque couche, leur nom et leur contenu relèvent, pour le reste, de l'ouverture de J0. L'état exact de ce qui est tranché et de ce qui ne l'est pas est dans [structure-projets.md, § 3 — Granularité des projets .NET (MVP)](docs/architecture/structure-projets.md), qui fait foi sur ce sujet ; la décision d'origine est tracée dans [ADR-008](docs/architecture/decisions/ADR-008-structure-solution.md).
 
 ### Le mode local côté client
 

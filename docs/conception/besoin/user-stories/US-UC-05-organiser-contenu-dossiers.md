@@ -202,11 +202,11 @@ Scénario : Le MJ tente de renommer avec un nom vide
 **afin de** gagner du temps sur les documents répétitifs (fiches PNJ, lieux, factions).
 
 **Notes de conception** :
-- association d’un modèle au dossier — pointe vers un document marqué comme modèle réutilisable.
+- association d'un modèle au dossier — pointe vers un document marqué comme modèle réutilisable.
 - Lors de la création d'un document dans ce dossier : copie depuis le modèle est appelé sur le template → copie profonde indépendante. Le document créé n'est pas lié au template.
 - Si le template est supprimé après association : `defaultTemplateDocumentId` passe à `null` sans erreur. Les documents existants (copies indépendantes) sont inchangés (E4).
 - La création de templates (marqué comme modèle réutilisable) est hors périmètre UC-05. Le flow est à documenter dans UC-13.
-- association d’un modèle au dossier retire l'association — les documents existants ne sont pas affectés.
+- association d'un modèle au dossier retire l'association — les documents existants ne sont pas affectés.
 
 **Règles métier** :
 - RB-05-06 : Un dossier peut avoir 0 ou 1 template par défaut.

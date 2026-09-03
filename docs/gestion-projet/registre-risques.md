@@ -310,15 +310,15 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Confiance** : ferme.
 - **Source** : décision d'architecture sur le modèle d'autorisation API ; décision d'architecture sur l'autorisation RGPD ; décision d'architecture sur la structure de la solution ; roadmap d'entrée en build.
 
-**T-06 — Résidu de nommage de l'espace de stockage local**
+**T-06 — Résidu de nommage de l'espace de stockage local (résolu)**
 *Type : risque.*
-- **Description** : le renommage de la notion de campagne vers celle d'espace a été propagé sur le corpus de conception fonctionnelle (domaine, glossaire, cas d'usage), mais la dénomination technique de l'espace de stockage local n'est pas confirmée cohérente.
-- **Probabilité** : Modérée — résidu de nommage présent dans la documentation technique.
+- **Description** : le renommage de la notion de campagne vers celle d'espace a été propagé sur le corpus de conception fonctionnelle (domaine, glossaire, cas d'usage). **Ce point est résolu** : la dénomination technique de l'espace de stockage local est confirmée cohérente — `ADR-017 §1.1 § Object stores` nomme la racine de l'agrégat `spaces`.
+- **Probabilité** : Modérée — résidu de nommage présent dans la documentation technique au moment de la cotation *(cotation portée à la prochaine revue du comité des risques : la cause est résolue, la dénomination technique étant confirmée cohérente)*.
 - **Impact** : Mineur — dimension dominante : coût & délai.
 - **Criticité inhérente** : Faible.
 - **Criticité résiduelle cible** : Faible.
 - **Traitement** : Réduire.
-- **Mitigation** : point de vigilance signalé pour l'implémentation du service concerné ; pas un arbitrage différent, un résidu de rédaction à corriger.
+- **Mitigation** : vérification réalisée — `ADR-017 §1.1 § Object stores` nomme la racine de l'agrégat `spaces` ; ce n'est plus un point de vigilance ouvert pour l'implémentation du service concerné.
 - **Propriétaire** : Lead technique.
 - **Échéance** : local-only.
 - **Confiance** : ferme.

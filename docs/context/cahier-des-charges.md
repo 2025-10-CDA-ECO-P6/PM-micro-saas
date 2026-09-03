@@ -1000,7 +1000,7 @@ Vingt écrans composent le périmètre d'interface du MVP, regroupés par surfac
 
 ### 9.3 Arbitrages d'interface figés
 
-Vingt arbitrages de conception d'interface (AR-01 à AR-20) ont été tranchés et figés au cours de la phase de zoning. Ils sont regroupés ci-dessous par thème.
+Les arbitrages de conception d'interface tranchés et figés au cours de la phase de zoning font foi dans [`docs/conception/interface/zoning.md` §S6 — Arbitrages tracés](../conception/interface/zoning.md), qui en porte la liste et les motifs. Les tables ci-dessous en regroupent par thème ceux qui étaient figés à la date de la présente version ; s'y référer pour l'orientation, à `zoning.md §S6` pour la liste faisant foi.
 
 **Ossature et surfaces**
 

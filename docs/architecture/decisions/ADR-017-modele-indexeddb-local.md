@@ -40,7 +40,7 @@ Deux points de contexte méritent d'être nommés explicitement.
 
 #### 1.1 Object stores
 
-Le store local projette le périmètre sérialisé défini dans ADR-016 §1.2. Les object stores suivants sont créés :
+Le store local a son propre périmètre, dérivé de UC-01, UC-06 et UC-07 — un périmètre plus large que celui du payload de migration, décrit séparément par ADR-016 §1.2 § Périmètre sérialisé. Les object stores suivants sont créés :
 
 | Object store | Clé primaire | Description |
 |---|---|---|
@@ -51,8 +51,15 @@ Le store local projette le périmètre sérialisé défini dans ADR-016 §1.2. L
 | `document_links` | `[source_id, target_id]` | Références inter-documents |
 | `document_tags` | `[document_id, tag]` | Tags normalisés |
 | `document_types` | `id` (UUID local) | Types custom uniquement (les types système sont seedés côté serveur) |
+| `sessions` | `id` (UUID local) | Statut, titre, résumé, dates |
+| `session_pinned_documents` | `[session_id, document_id]` | Références d'épinglage document↔session |
+| `session_live_notes` | `[session_id, document_id]` | Références note↔session ; les notes de session elles-mêmes sont des documents de type `LIVE_NOTE`, déjà couverts par l'entrée `documents` |
+| `session_view_configs` | `id` (UUID local) | Espace associé — configuration de la vue session |
+| `session_view_folders` | `[session_view_config_id, folder_id]` | Liste ordonnée des dossiers mis en avant dans la vue session |
 
-**Exclusions identiques à ADR-016** : toute entité de session (`sessions`, `session_view_configs`, `session_pinned_documents`, `session_live_notes`, `session_view_folders`), entités d'identité (`users`, `space_memberships`, `membership_characters`), flags de cycle de vie serveur (`deleted_at`, `is_deleted`, `purge_claimed_at`). Ces exclusions ne sont pas des omissions de simplification — elles délimitent ce que le mode local UC-01 contient.
+**Exclusions du store local** : entités d'identité (`users`, `space_memberships`, `membership_characters`), flags de cycle de vie serveur (`deleted_at`, `is_deleted`, `purge_claimed_at`). Ces exclusions ne sont pas des omissions de simplification — elles délimitent ce que le mode local UC-01 contient.
+
+Le store local n'est pas identique au payload de migration : trois éléments qu'il contient en sont exclus pour des motifs propres à l'export — les sessions en statut `LIVE`, `session_view_configs` et `session_view_folders`. Ces motifs sont énoncés dans ADR-016 §1.2 § Exclusions explicites.
 
 #### 1.2 Structure aggregate-rooted plutôt que miroir relationnel
 
@@ -60,7 +67,7 @@ Le store local n'est pas un miroir des tables serveur. Il est organisé autour d
 
 Un miroir relationnel réimporterait dans le navigateur la logique d'intégrité référentielle serveur (contraintes FK, ordre d'insertion topologique, résolution de cycles), ce qu'ADR-001 refuse explicitement. L'aggregate-rooted conserve le store simple et interrogeable par le seul chemin qu'UC-01 requiert : accéder à tout le contenu d'un espace depuis sa racine.
 
-Conséquence directe sur la couture de projection ADR-016 §1.4 : la fonction `store local → payload` reste quasi-identitaire. Le payload de migration est une sérialisation directe du store ; il n'y a pas de reformatage complexe entre le store et le payload.
+Conséquence directe sur la couture de projection ADR-016 §1.4 : la fonction `store local → payload` applique un filtre nommé — elle écarte les sessions en statut `LIVE`, `session_view_configs` et `session_view_folders` (§1.1) — mais ne comporte aucun reformatage structurel complexe au-delà de ce filtre. Le reste du contenu transporté est une sérialisation directe du store vers le payload.
 
 #### 1.3 Indexes locaux
 
@@ -235,9 +242,9 @@ Prévoir dès le MVP un mécanisme de synchronisation delta basé sur les `updat
 
 ## Conséquences
 
-### Couture de projection quasi-identitaire (ADR-016 §1.4 confirmé)
+### Couture de projection filtrée, sans reformatage structurel (ADR-016 §1.4 confirmé)
 
-La structure aggregate-rooted du store local rend la fonction `store local → payload` quasi-identitaire au MVP. L'enveloppe `schemaVersion`, `exportedAt`, `appVersion` est ajoutée par la fonction de projection ; les UUID locaux sont transportés tels quels (le serveur les remplace à l'import, ADR-016 §2.2). Il n'y a pas de transformation structurelle complexe entre le store et le payload.
+La structure aggregate-rooted du store local rend la fonction `store local → payload` sans reformatage structurel complexe au MVP, au filtre près qui écarte les sessions en statut `LIVE`, `session_view_configs` et `session_view_folders` (§1.1). L'enveloppe `schemaVersion`, `exportedAt`, `appVersion` est ajoutée par la fonction de projection ; les UUID locaux sont transportés tels quels (le serveur les remplace à l'import, ADR-016 §2.2).
 
 ### Maillon NON VÉRIFIABLE IN BUILD (cumulatif)
 
@@ -279,7 +286,7 @@ Le non-chiffrement at-rest (§4.4) est une limitation conçue, communiquée via 
 
 | ADR / Document | Nature du croisement |
 |---|---|
-| **ADR-016** | Fondation directe — périmètre sérialisé (§1.1), couture de projection quasi-identitaire (§1.4), plancher de sanitisation serveur (§2.4) dont cet ADR est le pendant client, format et `schemaVersion` distincts du versionnement IndexedDB |
+| **ADR-016** | Fondation directe — périmètre sérialisé (§1.2), couture de projection filtrée, sans reformatage structurel (§1.4), plancher de sanitisation serveur (§2.4) dont cet ADR est le pendant client, format et `schemaVersion` distincts du versionnement IndexedDB |
 | **ADR-001** | Mode local CRUD + validations minimales (§1.5), invariant `validation locale ⊆ validation serveur`, G-08 (`navigator.storage.persist()`), question ouverte I-05 (sync) renvoyée à UC-F04 |
 | **ADR-003** | Stack Angular — `DomSanitizer`, implémentation des services IndexedDB en P6 |
 | **ADR-015** | Confirmation de l'absence de JWT/token en mode local (§4.5) ; session cloud et tokens gouvernés par ADR-015 démarrent à la création de compte |
@@ -295,4 +302,8 @@ Le non-chiffrement at-rest (§4.4) est une limitation conçue, communiquée via 
 
 Ce point est tranché : **il n'existe aucun plafond de création en mode local.** UC-01 a été amendé pour l'énoncer explicitement — la seule contrainte de création en mode local est la capacité de stockage du navigateur. RB-01-03 est confirmé comme portant exclusivement sur la synchronisation cloud d'un compte gratuit (3 espaces `CAMPAIGN`/`ONE_SHOT`, espace `PERSONAL` exclu) — pas sur la création locale. Le §1.6 est réécrit en conséquence : aucun compteur de plafond n'est implémenté dans le store local décrit par cet ADR.
 
-Cette révision ne touche à aucune autre décision de cet ADR — object stores, versionnement du store, `navigator.storage.persist()`, posture migration-only et sécurité du mode local restent inchangés.
+Cette révision du 2026-09-01 ne touchait, à la date de son inscription, à aucune autre décision de cet ADR — object stores, versionnement du store, `navigator.storage.persist()`, posture migration-only et sécurité du mode local restaient inchangés à cette date.
+
+**§1.1 — périmètre du store local (2026-09-02).** L'exclusion des entités de session (`sessions`, `session_view_configs`, `session_pinned_documents`, `session_live_notes`, `session_view_folders`) reposait sur la prémisse « exclusions identiques à ADR-016 ». Cette prémisse est fausse : la correction datée du 2026-06-10 apportée à ADR-016 §1.2 § Exclusions explicites qualifie de factuellement fausse l'énoncé selon lequel le mode local ne comprend pas de session, en citant UC-06 et UC-07.
+
+Le §1.1 est réécrit en conséquence : le store local est désormais énoncé avec son périmètre propre, dérivé de UC-01, UC-06 et UC-07, plus large que le payload de migration décrit par ADR-016 §1.2 § Périmètre sérialisé. Il contient les sessions y compris en statut `LIVE`, ainsi que la configuration de vue (`session_view_configs`, `session_view_folders`). Trois de ces éléments restent exclus du payload de migration pour des motifs propres à l'export énoncés par ADR-016 §1.2 § Exclusions explicites : sessions en statut `LIVE`, `session_view_configs`, `session_view_folders`.

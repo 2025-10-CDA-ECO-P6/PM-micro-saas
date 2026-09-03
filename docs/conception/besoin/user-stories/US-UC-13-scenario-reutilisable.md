@@ -128,30 +128,30 @@ flowchart LR
 - [ ] L'espace personnel n'est accessible que par le MJ propriétaire du compte.
 
 ```gherkin
-Scenario : Marquer un scenario comme reutilisable depuis une campagne - nominal
-  Etant donne que Sonia a un scenario "La Crypte de Malnoir" dans son espace "One-shots 2024"
-  Et que ce scenario n est pas encore dans son espace personnel
-  Quand Sonia choisit "Marquer comme reutilisable" sur ce scenario
-  Alors "La Crypte de Malnoir" apparait dans l espace personnel de Sonia (isReusable = true)
-  Et le scenario dans l espace "One-shots 2024" reste intact
+Scénario : Marquer un scénario comme réutilisable depuis une campagne — nominal
+  Étant donné que Sonia a un scénario "La Crypte de Malnoir" dans son espace "One-shots 2024"
+  Et que ce scénario n'est pas encore dans son espace personnel
+  Quand Sonia choisit "Marquer comme réutilisable" sur ce scénario
+  Alors "La Crypte de Malnoir" apparaît dans l'espace personnel de Sonia (isReusable = true)
+  Et le scénario dans l'espace "One-shots 2024" reste intact
 
-Scenario : Marquer un scenario comme reutilisable depuis un espace one-shot
-  Etant donne que Sonia a un scenario "Le Phare Engloutis" dans un espace one-shot "Convention Octobre"
-  Et que ce scenario n est pas encore dans son espace personnel
-  Quand Sonia choisit "Marquer comme reutilisable" sur ce scenario
-  Alors "Le Phare Engloutis" apparait dans l espace personnel de Sonia (isReusable = true)
-  Et le scenario dans l espace one-shot "Convention Octobre" reste intact
+Scénario : Marquer un scénario comme réutilisable depuis un espace one-shot
+  Étant donné que Sonia a un scénario "Le Phare Engloutis" dans un espace one-shot "Convention Octobre"
+  Et que ce scénario n'est pas encore dans son espace personnel
+  Quand Sonia choisit "Marquer comme réutilisable" sur ce scénario
+  Alors "Le Phare Engloutis" apparaît dans l'espace personnel de Sonia (isReusable = true)
+  Et le scénario dans l'espace one-shot "Convention Octobre" reste intact
 
-Scenario : Promotion impossible si le scenario est deja dans l espace personnel
-  Etant donne que "La Crypte de Malnoir" est deja dans l espace personnel de Sonia
-  Quand Sonia tente de marquer ce scenario comme reutilisable une deuxieme fois
-  Alors l application indique que le scenario est deja dans la bibliotheque
-  Et aucune duplication n est creee
+Scénario : Promotion impossible si le scénario est déjà dans l'espace personnel
+  Étant donné que "La Crypte de Malnoir" est déjà dans l'espace personnel de Sonia
+  Quand Sonia tente de marquer ce scénario comme réutilisable une deuxième fois
+  Alors l'application indique que le scénario est déjà dans la bibliothèque
+  Et aucune duplication n'est créée
 
-Scenario : Espace personnel accessible uniquement par le MJ proprietaire
-  Etant donne que Sonia a un espace personnel avec 15 scenarios
-  Quand Antoine accede au tableau de bord de son propre compte
-  Alors Antoine ne voit pas les scenarios de Sonia dans son espace personnel
+Scénario : Espace personnel accessible uniquement par le MJ propriétaire
+  Étant donné que Sonia a un espace personnel avec 15 scénarios
+  Quand Antoine accède au tableau de bord de son propre compte
+  Alors Antoine ne voit pas les scénarios de Sonia dans son espace personnel
 ```
 
 ---
@@ -190,37 +190,37 @@ Scenario : Espace personnel accessible uniquement par le MJ proprietaire
 - [ ] L'instance est liée à une campagne ou un one-shot — elle ne peut pas être créée sans contexte.
 
 ```gherkin
-Scenario : Rejouer un scenario en one-shot ce soir - nominal
-  Etant donne que Sonia a le scenario "La Crypte de Malnoir" dans son espace personnel
+Scénario : Rejouer un scénario en one-shot ce soir — nominal
+  Étant donné que Sonia a le scénario "La Crypte de Malnoir" dans son espace personnel
   Quand Sonia choisit "Rejouer" puis "One-shot ce soir"
   Et que Sonia saisit le nom "Vendredi 10 mai"
-  Alors un espace one-shot "Vendredi 10 mai" est cree
-  Et une instance de "La Crypte de Malnoir" est creee dans cet espace via Document.Instantiate
-  Et le scenario source "La Crypte de Malnoir" reste intact dans l espace personnel de Sonia
+  Alors un espace one-shot "Vendredi 10 mai" est créé
+  Et une instance de "La Crypte de Malnoir" est créée dans cet espace via Document.Instantiate
+  Et le scénario source "La Crypte de Malnoir" reste intact dans l'espace personnel de Sonia
 
-Scenario : Rejouer un scenario dans une campagne existante
-  Etant donne que Antoine a le scenario "Module d initiation" dans son espace personnel
+Scénario : Rejouer un scénario dans une campagne existante
+  Étant donné que Antoine a le scénario "Module d'initiation" dans son espace personnel
   Et que Antoine a une campagne "Campagne Nordique" en cours
-  Quand Antoine choisit "Rejouer" puis "Ajouter a une campagne existante"
-  Et que Antoine selectionne "Campagne Nordique"
-  Alors une instance de "Module d initiation" est creee dans "Campagne Nordique" via Document.Instantiate
-  Et le scenario source reste intact dans l espace personnel de Antoine
+  Quand Antoine choisit "Rejouer" puis "Ajouter à une campagne existante"
+  Et que Antoine sélectionne "Campagne Nordique"
+  Alors une instance de "Module d'initiation" est créée dans "Campagne Nordique" via Document.Instantiate
+  Et le scénario source reste intact dans l'espace personnel de Antoine
 
-Scenario : Modification de l instance sans impact sur le source
-  Etant donne que Sonia a cree une instance de "La Crypte de Malnoir"
-  Quand Sonia renomme le PNJ "Arborak" en "Mordrec" dans l instance
-  Alors le PNJ s appelle "Mordrec" dans l instance
-  Et le PNJ s appelle toujours "Arborak" dans le scenario source
+Scénario : Modification de l'instance sans impact sur le source
+  Étant donné que Sonia a créé une instance de "La Crypte de Malnoir"
+  Quand Sonia renomme le PNJ "Arborak" en "Mordrec" dans l'instance
+  Alors le PNJ s'appelle "Mordrec" dans l'instance
+  Et le PNJ s'appelle toujours "Arborak" dans le scénario source
 
-Scenario : Espace one-shot cree en moins de 30 secondes
-  Etant donne que Sonia est sur la page du scenario "La Crypte de Malnoir"
+Scénario : Espace one-shot créé en moins de 30 secondes
+  Étant donné que Sonia est sur la page du scénario "La Crypte de Malnoir"
   Quand Sonia choisit "One-shot ce soir" et saisit un nom
-  Alors l espace one-shot et l instance du scenario sont crees en moins de 30 secondes
+  Alors l'espace one-shot et l'instance du scénario sont créés en moins de 30 secondes
 
-Scenario : Archivage manuel de l espace one-shot apres la session
-  Etant donne que Sonia a joue une session dans l espace one-shot "Vendredi 10 mai"
+Scénario : Archivage manuel de l'espace one-shot après la session
+  Étant donné que Sonia a joué une session dans l'espace one-shot "Vendredi 10 mai"
   Quand la session se termine
-  Alors l espace "Vendredi 10 mai" reste a l etat CLOSED
+  Alors l'espace "Vendredi 10 mai" reste à l'état CLOSED
   Et Sonia doit archiver manuellement cet espace si elle le souhaite
 ```
 
@@ -252,24 +252,24 @@ Scenario : Archivage manuel de l espace one-shot apres la session
 - [ ] L'historique n'est pas accessible par d'autres MJ.
 
 ```gherkin
-Scenario : Consulter l historique des runs d un scenario - nominal
-  Etant donne que Sonia a joue "La Crypte de Malnoir" trois fois
-  Et que chaque run a genere une instance dans un contexte different
+Scénario : Consulter l'historique des runs d'un scénario — nominal
+  Étant donné que Sonia a joué "La Crypte de Malnoir" trois fois
+  Et que chaque run a généré une instance dans un contexte différent
   Quand Sonia ouvre la fiche de "La Crypte de Malnoir" dans son espace personnel
-  Alors Sonia voit trois entrees dans l historique des runs
-  Et chaque entree affiche la date du run, le nom du contexte et les notes MJ
+  Alors Sonia voit trois entrées dans l'historique des runs
+  Et chaque entrée affiche la date du run, le nom du contexte et les notes MJ
 
-Scenario : Consulter une instance passee en lecture seule
-  Etant donne que Sonia a un historique avec le run "Vendredi 10 mai"
-  Quand Sonia clique sur l entree "Vendredi 10 mai"
-  Alors Sonia consulte le contenu de l instance en lecture seule
-  Et aucune modification n est possible depuis cette vue historique
+Scénario : Consulter une instance passée en lecture seule
+  Étant donné que Sonia a un historique avec le run "Vendredi 10 mai"
+  Quand Sonia clique sur l'entrée "Vendredi 10 mai"
+  Alors Sonia consulte le contenu de l'instance en lecture seule
+  Et aucune modification n'est possible depuis cette vue historique
 
-Scenario : Historique vide pour un scenario jamais joue
-  Etant donne que Antoine a ajoute "Module d initiation" dans son espace personnel
-  Et qu aucune instance n a encore ete creee
-  Quand Antoine consulte l historique de "Module d initiation"
-  Alors l historique est vide et un message invite Antoine a lancer le premier run
+Scénario : Historique vide pour un scénario jamais joué
+  Étant donné que Antoine a ajouté "Module d'initiation" dans son espace personnel
+  Et qu'aucune instance n'a encore été créée
+  Quand Antoine consulte l'historique de "Module d'initiation"
+  Alors l'historique est vide et un message invite Antoine à lancer le premier run
 ```
 
 ---

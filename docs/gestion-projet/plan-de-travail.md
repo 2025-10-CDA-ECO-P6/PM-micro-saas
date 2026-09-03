@@ -48,19 +48,17 @@ Quatre règles opposables, quel que soit l'effectif qui exécute ce plan :
 
 Le champ `Périmètre d'écriture` de chaque tâche est une liste de **modules**, séparés par `;`. Un module est exactement l'une de ces natures, et rien d'autre :
 
-- un des projets .NET nommés par [`structure-projets.md` §3](../architecture/structure-projets.md) : `Haversack.Domain`, `Haversack.Application`, `Haversack.Infrastructure.Persistence`, `Haversack.Infrastructure.Notifications`, `Haversack.Presentation.Api`, `Haversack.Presentation.Landing` ;
-- un des namespaces de bounded context du Domaine : `Haversack.Domain/IdentityAccess`, `/SpaceManagement`, `/ContentLibrary`, `/SessionConduct` ;
-- le noyau partagé `Haversack.Domain/SharedKernel` ([`structure-projets.md` §4](../architecture/structure-projets.md)) ;
-- un object store local nommé par [ADR-017 §1.1](../architecture/decisions/ADR-017-modele-indexeddb-local.md) — `spaces`, `folders`, `documents`, `document_blocks`, `document_links`, `document_tags`, `document_types` ;
+- un projet .NET dont la granularité de couche est tranchée par [`structure-projets.md` §3](../architecture/structure-projets.md) : le projet Domaine unique ou le projet Application unique, désignés par leur rôle tant que leur nom n'est pas tranché (`structure-projets.md §3 § Convention de désignation`) ; `Haversack.Infrastructure.Notifications`, seul projet d'Infrastructure ou de Présentation nommé et tranché (`structure-projets.md § Infrastructure et Présentation : multi-projets conservé`) ; ou l'un des autres projets d'Infrastructure ou de Présentation, dont le nombre et les noms relèvent de J0 — aucune tâche de ce document n'en déclare un pris isolément avant J0, seule la structure de la solution entière les vise ensemble (TB-002) ;
+- un des namespaces de bounded context du Domaine, désigné par son nom ([`structure-projets.md` §3 § Convention de désignation](../architecture/structure-projets.md)) : `IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct` ;
+- le noyau partagé `SharedKernel` ([`structure-projets.md` §4](../architecture/structure-projets.md)) ;
+- un object store local, parmi ceux que nomme [ADR-017 §1.1 § Object stores](../architecture/decisions/ADR-017-modele-indexeddb-local.md) — la liste faisant foi vit dans ce tableau, ce document ne la recopie pas ;
 - une fiche d'écran, par son slug, parmi les vingt de [`docs/conception/interface/wireframes/`](../conception/interface/wireframes/README.md).
 
 **Aucun chemin de fichier n'apparaît sous ces niveaux.** `structure-projets.md §3` écrit littéralement que « le contenu de chacun des cinq namespaces — fichiers, classes, sous-dossiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document », et marque ces cinq lignes `[À TRANCHER — J0]`. Un plan qui énumérerait des fichiers trancherait à la place du build.
 
-**Coût de cette maille — écrit en clair, pas seulement mesuré.** Cette maille est **conservatrice** : elle sépare proprement deux bounded contexts ou deux couches (un namespace du Domaine ne peut pas être confondu avec `Haversack.Application`), mais elle **ne sait pas séparer deux tâches à l'intérieur d'un même module** — par exemple deux agrégats distincts du même namespace `ContentLibrary`. Ces deux tâches sont déclarées en conflit et sérialisées par ce document, alors que le code réel, une fois écrit, autoriserait peut-être leur écriture simultanée sur des fichiers distincts. **C'est un coût de délai, jamais un risque de collision — l'erreur va dans le sens sûr.**
+**Coût de cette maille — écrit en clair, pas seulement mesuré.** Cette maille est **conservatrice** : elle sépare proprement deux bounded contexts ou deux couches (un namespace du Domaine ne peut pas être confondu avec le projet Application unique), mais elle **ne sait pas séparer deux tâches à l'intérieur d'un même module** — par exemple deux agrégats distincts du même namespace `ContentLibrary`. Ces deux tâches sont déclarées en conflit et sérialisées par ce document, alors que le code réel, une fois écrit, autoriserait peut-être leur écriture simultanée sur des fichiers distincts. **C'est un coût de délai, jamais un risque de collision — l'erreur va dans le sens sûr.**
 
-**Le plancher de cette maille est le namespace ou le projet, tant que son arborescence interne reste `[À TRANCHER — J0]`.** Les namespaces du Domaine et les projets .NET portent tous ce marqueur pour leur contenu interne ([`structure-projets.md` §3](../architecture/structure-projets.md)). Dès que J0 tranche cette arborescence, la valeur du champ `Périmètre d'écriture` des tâches concernées pourra être affinée à un grain plus fin (par exemple : deux agrégats du même namespace, une fois leurs fichiers nommés, cesseraient d'être déclarés en conflit) — sans qu'aucun autre champ de la tâche (but, dépendances, acceptation) n'ait à changer.
-
-**Cas particulier — le store racine des espaces.** Le store IndexedDB racine est désigné ici par son rôle (« store local `spaces` »), pas par un nom de variable figé. [ADR-017 §1.1](../architecture/decisions/ADR-017-modele-indexeddb-local.md) nomme la table `spaces`, mais [`roadmap-entree-build.md` Annexe B](roadmap-entree-build.md) en fait un point de vigilance de build : ce nom est un résidu de rédaction antérieur au renommage `campaigns → spaces` d'[ADR-018](../architecture/decisions/ADR-018-espace-personnel-generalisation-space.md), à confirmer cohérent au moment de l'implémentation — ce plan emploie donc `spaces` en le désignant par son rôle documenté, pas comme une valeur figée à l'abri de toute révision.
+**Le plancher de cette maille est le namespace ou le projet, tant que son arborescence interne reste `[À TRANCHER — J0]`.** Les namespaces du Domaine portent ce marqueur pour leur contenu interne ; les projets .NET le portent aussi pour leur nom et pour leur séparation à l'intérieur de chaque couche, en plus de leur contenu interne ([`structure-projets.md` §3](../architecture/structure-projets.md)). Dès que J0 tranche, la valeur du champ `Périmètre d'écriture` des tâches concernées pourra être affinée à un grain plus fin (par exemple : deux agrégats du même namespace, une fois leurs fichiers nommés, cesseraient d'être déclarés en conflit) — sans qu'aucun autre champ de la tâche (but, dépendances, acceptation) n'ait à changer.
 
 **Ce que cette maille ne peut pas nommer.** Plusieurs tâches de la couche Angular/TypeScript du mode local (services d'accès au store, bandeaux transversaux, sanitisation, châssis applicatif) ne correspondent à aucune des cinq natures ci-dessus : ce ne sont ni des projets .NET, ni des namespaces du Domaine, ni des object stores, ni des fiches d'écran de wireframe — elles vivent dans une couche dont le corpus ne nomme aucun répertoire ([`structure-projets.md` §7](../architecture/structure-projets.md) en décrit le périmètre fonctionnel, pas l'emplacement). Leur champ `Périmètre d'écriture` porte `TROU — non nommable dans la maille` avec la nature précise du manque ; ce n'est pas un oubli de ce document, c'est une absence mesurée du corpus source.
 
@@ -173,7 +171,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 
 ### EP-02 — Échafaudage de la solution .NET
 
-##### TB-002 — Créer la solution et les projets nommés
+##### TB-002 — Créer la solution et ses projets
 
 | Champ | Valeur |
 |---|---|
@@ -181,8 +179,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | EP-02 |
 | Jalon | J0 |
 | Dépend de | TB-001 |
-| Périmètre d'écriture | Haversack.Domain ; Haversack.Application ; Haversack.Infrastructure.Persistence ; Haversack.Infrastructure.Notifications ; Haversack.Presentation.Api ; Haversack.Presentation.Landing |
-| En conflit avec | TB-010 — module partagé : Haversack.Application ; TB-022 — module partagé : Haversack.Application ; TB-023 — module partagé : Haversack.Application ; TB-024 — module partagé : Haversack.Application ; TB-053 — module partagé : Haversack.Application |
+| Périmètre d'écriture | le projet Domaine unique ; le projet Application unique ; Haversack.Infrastructure.Notifications ; les autres projets d'Infrastructure et de Présentation, dont le nombre et les noms relèvent de J0 |
+| En conflit avec | TB-010 — module partagé : le projet Application unique ; TB-022 — module partagé : le projet Application unique ; TB-023 — module partagé : le projet Application unique ; TB-024 — module partagé : le projet Application unique ; TB-053 — module partagé : le projet Application unique |
 | Taille | L — les projets sont échafaudés en un seul geste solidaire (une solution .NET unique) ; les scinder romprait l'unité de la structure décrite par `structure-projets.md` |
 | Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 2 |
 | Code de renvoi | — |
@@ -191,12 +189,12 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 
 | Champ | Valeur |
 |---|---|
-| But | `Haversack.Domain` contient les cinq sous-namespaces et rien d'autre |
+| But | le projet Domaine unique contient les cinq sous-namespaces et rien d'autre |
 | Épique | EP-02 |
 | Jalon | J0 |
 | Dépend de | TB-002 |
-| Périmètre d'écriture | Haversack.Domain/IdentityAccess ; Haversack.Domain/SpaceManagement ; Haversack.Domain/ContentLibrary ; Haversack.Domain/SessionConduct ; Haversack.Domain/SharedKernel |
-| En conflit avec | TB-004 — module partagé : Haversack.Domain/SharedKernel ; TB-005 — module partagé : Haversack.Domain/SharedKernel ; TB-013 — module partagé : Haversack.Domain/SpaceManagement ; TB-014 — module partagé : Haversack.Domain/ContentLibrary ; TB-015 — module partagé : Haversack.Domain/ContentLibrary ; TB-016 — module partagé : Haversack.Domain/ContentLibrary ; TB-017 — module partagé : Haversack.Domain/ContentLibrary ; TB-018 — module partagé : Haversack.Domain/ContentLibrary ; TB-019 — module partagé : Haversack.Domain/SessionConduct ; TB-020 — module partagé : Haversack.Domain/SessionConduct ; TB-021 — module partagé : Haversack.Domain/ContentLibrary, Haversack.Domain/SessionConduct ; TB-022 — module partagé : Haversack.Domain/SessionConduct |
+| Périmètre d'écriture | IdentityAccess ; SpaceManagement ; ContentLibrary ; SessionConduct ; SharedKernel |
+| En conflit avec | TB-004 — module partagé : SharedKernel ; TB-005 — module partagé : SharedKernel ; TB-013 — module partagé : SpaceManagement ; TB-014 — module partagé : ContentLibrary ; TB-015 — module partagé : ContentLibrary ; TB-016 — module partagé : ContentLibrary ; TB-017 — module partagé : ContentLibrary ; TB-018 — module partagé : ContentLibrary ; TB-019 — module partagé : SessionConduct ; TB-020 — module partagé : SessionConduct ; TB-021 — module partagé : ContentLibrary, SessionConduct ; TB-022 — module partagé : SessionConduct |
 | Taille | L — les namespaces sont posés en un seul geste de structuration du Domaine ; leur contenu interne reste `[À TRANCHER — J0]` (voir Acceptation), ce qui interdit de scinder cette tâche plus finement aujourd'hui |
 | Critères d'acceptation | `structure-projets.md § Domaine et Application : projets uniques` ; `guide-conventions-et-dod.md §2 § Organisation par namespaces par bounded context`. **`TROU`** — nature : *contenu non spécifié* — `structure-projets.md` marque les cinq lignes `[À TRANCHER — J0]` et écrit que « le contenu de chacun des cinq namespaces — fichiers, classes, sous-dossiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document » ; aucun critère d'acceptation n'existe au-delà de l'existence des cinq répertoires |
 | Code de renvoi | — |
@@ -209,8 +207,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | EP-02 |
 | Jalon | J0 |
 | Dépend de | TB-003 |
-| Périmètre d'écriture | Haversack.Domain/SharedKernel |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/SharedKernel ; TB-005 — module partagé : Haversack.Domain/SharedKernel |
+| Périmètre d'écriture | SharedKernel |
+| En conflit avec | TB-003 — module partagé : SharedKernel ; TB-005 — module partagé : SharedKernel |
 | Taille | M |
 | Critères d'acceptation | `structure-projets.md §4 — Nommage du noyau partagé` ; `conception/domain/core.md § Abstractions DDD` ; `conception/domain/core.md § Value objects primitifs` ; `conception/domain/core.md § Primitives de traçabilité` ; `guide-conventions-et-dod.md §2` |
 | Code de renvoi | — |
@@ -223,8 +221,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | EP-02 |
 | Jalon | J0 |
 | Dépend de | TB-004 |
-| Périmètre d'écriture | Haversack.Domain/SharedKernel |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/SharedKernel ; TB-004 — module partagé : Haversack.Domain/SharedKernel |
+| Périmètre d'écriture | SharedKernel |
+| En conflit avec | TB-003 — module partagé : SharedKernel ; TB-004 — module partagé : SharedKernel |
 | Taille | M |
 | Critères d'acceptation | `conception/domain/core.md § IDs typés` ; `guide-conventions-et-dod.md §2` ; `architecture/specs/mapping-ef-core.md §1` |
 | Code de renvoi | — |
@@ -239,7 +237,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | EP-03 |
 | Jalon | J0 |
 | Dépend de | TB-003 |
-| Périmètre d'écriture | TROU — nature : projet de test d'architecture non nommé par le corpus (mesuré : 0 occurrence de `.Tests`, `UnitTests`, « projet de test » dans les fichiers versionnés du dépôt) |
+| Périmètre d'écriture | TROU — nature : projet de test d'architecture non nommé par le corpus. Ce projet doit être désigné pour être inscrit à la maille. |
 | En conflit avec | TB-009 — recouvrement à confirmer à J0 : les deux tâches écrivent dans le même projet de test d'architecture, non nommé par le corpus, donc non déclarable comme module au sens de la maille (§2) |
 | Taille | M |
 | Critères d'acceptation | `guide-conventions-et-dod.md §6 § Dérivable du corpus` (les règles y sont énumérées littéralement) ; `structure-projets.md §6` ; `cahier-strategie-test-et-recette.md §3.4 — Test d'architecture (CI)` |
@@ -293,12 +291,12 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 
 | Champ | Valeur |
 |---|---|
-| But | l'interface est déclarée dans `Haversack.Application` et compile, sans implémentation ni câblage |
+| But | l'interface est déclarée dans le projet Application unique et compile, sans implémentation ni câblage |
 | Épique | EP-04 |
 | Jalon | J0 |
 | Dépend de | TB-002 |
-| Périmètre d'écriture | Haversack.Application |
-| En conflit avec | TB-002 — module partagé : Haversack.Application ; TB-022 — module partagé : Haversack.Application ; TB-023 — module partagé : Haversack.Application ; TB-024 — module partagé : Haversack.Application ; TB-053 — module partagé : Haversack.Application |
+| Périmètre d'écriture | le projet Application unique |
+| En conflit avec | TB-002 — module partagé : le projet Application unique ; TB-022 — module partagé : le projet Application unique ; TB-023 — module partagé : le projet Application unique ; TB-024 — module partagé : le projet Application unique ; TB-053 — module partagé : le projet Application unique |
 | Taille | M |
 | Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 4 ; `cahier-strategie-test-et-recette.md §9`, ligne « Socle », puce 4 ; `ADR-007-rgpd-autorisation-api.md § Conséquences` ; `ADR-014-modele-autorisation-api.md § Décision` |
 | Code de renvoi | — |
@@ -333,7 +331,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Critères d'acceptation | **`TROU`** — nature : *point intégralement laissé ouvert* — `guide-conventions-et-dod.md §5` : « Le corpus de conception ne définit aucun format de message de commit ni de convention de nommage de branche. Ce point est intégralement laissé à l'équipe de build […] un candidat courant est Conventional Commits, à ratifier — ce guide ne le tranche pas. » |
 | Code de renvoi | — |
 
-**Recouvrement d'écriture à l'intérieur de J0** : `Haversack.Domain/SharedKernel` est touché par TB-003, TB-004 et TB-005 ; `Haversack.Application` par TB-002 et TB-010 ; le projet de test d'architecture, non nommé, par TB-006 et TB-009 (recouvrement à confirmer à J0). Aucune autre paire de tâches J0 ne partage de périmètre.
+**Recouvrement d'écriture à l'intérieur de J0** : `SharedKernel` est touché par TB-003, TB-004 et TB-005 ; le projet Application unique par TB-002 et TB-010 ; le projet de test d'architecture, non nommé, par TB-006 et TB-009 (recouvrement à confirmer à J0). Aucune autre paire de tâches J0 ne partage de périmètre.
 
 ---
 
@@ -351,8 +349,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-02 |
 | Jalon | J1 |
 | Dépend de | TB-003, TB-004, TB-005 |
-| Périmètre d'écriture | Haversack.Domain/SpaceManagement |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/SpaceManagement |
+| Périmètre d'écriture | SpaceManagement |
+| En conflit avec | TB-003 — module partagé : SpaceManagement |
 | Taille | L — un seul module, mais la plage RB-02-01 → RB-02-20 et la plage CR-UC02-01 → CR-UC02-13 portent à elles seules trente-trois preuves distinctes, indivisibles de l'agrégat Space |
 | Critères d'acceptation | RB-02-01 → RB-02-20 (`user-stories/US-UC-02-creer-espace-jeu.md § Règles métier`) ; US-02-00 §"Le MJ en mode local dispose d'un espace personnel comme conteneur par défaut", §"L'espace personnel n'apparaît pas dans le quota FREE" ; US-02-01 §"Le MJ crée une campagne avec le nom uniquement", §"Le MJ tente de créer une campagne sans renseigner de nom" ; `conception/domain/space-management.md § Invariants métier` ; CR-UC02-01 → CR-UC02-13 |
 | Code de renvoi | — |
@@ -409,8 +407,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-05 |
 | Jalon | J1 |
 | Dépend de | TB-013 |
-| Périmètre d'écriture | Haversack.Domain/ContentLibrary |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/ContentLibrary ; TB-015 — module partagé : Haversack.Domain/ContentLibrary ; TB-016 — module partagé : Haversack.Domain/ContentLibrary ; TB-017 — module partagé : Haversack.Domain/ContentLibrary ; TB-018 — module partagé : Haversack.Domain/ContentLibrary ; TB-021 — module partagé : Haversack.Domain/ContentLibrary |
+| Périmètre d'écriture | ContentLibrary |
+| En conflit avec | TB-003 — module partagé : ContentLibrary ; TB-015 — module partagé : ContentLibrary ; TB-016 — module partagé : ContentLibrary ; TB-017 — module partagé : ContentLibrary ; TB-018 — module partagé : ContentLibrary ; TB-021 — module partagé : ContentLibrary |
 | Taille | L — un seul module ; les plages RB-05-01 → RB-05-12 et CR-UC05-01 → CR-UC05-12 portent l'essentiel de la surface de vérification, indivisible de l'agrégat Folder |
 | Critères d'acceptation | RB-05-01 → RB-05-12 ; US-05-01 §"Le MJ crée un dossier avec un nom valide", §"Le MJ tente de créer un dossier avec un nom vide" ; US-05-02 §"Le MJ renomme un dossier système" ; US-05-04 §"Le MJ supprime un dossier non vide — option Non classés", §"Le MJ supprime un dossier système" ; `cahier-strategie-test-et-recette.md §3.1` — « `isSystem` est informatif : les dossiers système sont renommables et supprimables ; le dossier virtuel « Non classés » est protégé » ; `zoning.md §S6 AR-20`, `AR-16` ; CR-UC05-01 → CR-UC05-12 |
 | Code de renvoi | — |
@@ -439,8 +437,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-04 |
 | Jalon | J1 |
 | Dépend de | TB-014 |
-| Périmètre d'écriture | Haversack.Domain/ContentLibrary |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/ContentLibrary ; TB-014 — module partagé : Haversack.Domain/ContentLibrary ; TB-016 — module partagé : Haversack.Domain/ContentLibrary ; TB-017 — module partagé : Haversack.Domain/ContentLibrary ; TB-018 — module partagé : Haversack.Domain/ContentLibrary ; TB-021 — module partagé : Haversack.Domain/ContentLibrary |
+| Périmètre d'écriture | ContentLibrary |
+| En conflit avec | TB-003 — module partagé : ContentLibrary ; TB-014 — module partagé : ContentLibrary ; TB-016 — module partagé : ContentLibrary ; TB-017 — module partagé : ContentLibrary ; TB-018 — module partagé : ContentLibrary ; TB-021 — module partagé : ContentLibrary |
 | Taille | L — un seul module ; la plage CR-UC04-01 → CR-UC04-21 porte à elle seule vingt-et-une preuves, indivisibles de l'agrégat Document |
 | Critères d'acceptation | RB-04-01 → RB-04-05 ; US-04-01 §"Le MJ supprime un document", §"Le MJ déplace un document vers un autre dossier" ; US-04-02 §"Le MJ crée une note sans renseigner aucun champ", §"La note rapide est placée dans le dossier "Notes" par défaut" ; US-04-04 §"Le MJ saisit une variante de casse d'un tag existant" ; US-04-05 §"Le MJ supprime un lien sans supprimer le document cible" ; `conception/domain/content-library.md § Invariants métier` ; CR-UC04-01 → CR-UC04-21 |
 | Code de renvoi | — |
@@ -453,8 +451,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-04 |
 | Jalon | J1 |
 | Dépend de | TB-015 |
-| Périmètre d'écriture | Haversack.Domain/ContentLibrary |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/ContentLibrary ; TB-014 — module partagé : Haversack.Domain/ContentLibrary ; TB-015 — module partagé : Haversack.Domain/ContentLibrary ; TB-017 — module partagé : Haversack.Domain/ContentLibrary ; TB-018 — module partagé : Haversack.Domain/ContentLibrary ; TB-021 — module partagé : Haversack.Domain/ContentLibrary |
+| Périmètre d'écriture | ContentLibrary |
+| En conflit avec | TB-003 — module partagé : ContentLibrary ; TB-014 — module partagé : ContentLibrary ; TB-015 — module partagé : ContentLibrary ; TB-017 — module partagé : ContentLibrary ; TB-018 — module partagé : ContentLibrary ; TB-021 — module partagé : ContentLibrary |
 | Taille | M — un seul module, 3 renvois |
 | Critères d'acceptation | RB-04-04, RB-04-05 ; `architecture/specs/document-properties-schemas.md §1 § Contrat du value object DocumentProperties` (décision reportée d'ADR-002) ; `cahier-strategie-test-et-recette.md §3.1`. **`TROU` partiel** — nature : *champs non modélisés* — `document-properties-schemas.md § 3` et `§ Synthèse des trous nommés` marquent `[À TRANCHER — modélisation domaine]` les champs concrets de `propertiesSchema` non encore modélisés par le domaine ; ADR-002 ne fixe pas ces champs, ils ne sont pas inventés ici |
 | Code de renvoi | — |
@@ -467,8 +465,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-04 |
 | Jalon | J1 |
 | Dépend de | TB-015 |
-| Périmètre d'écriture | Haversack.Domain/ContentLibrary |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/ContentLibrary ; TB-014 — module partagé : Haversack.Domain/ContentLibrary ; TB-015 — module partagé : Haversack.Domain/ContentLibrary ; TB-016 — module partagé : Haversack.Domain/ContentLibrary ; TB-018 — module partagé : Haversack.Domain/ContentLibrary ; TB-021 — module partagé : Haversack.Domain/ContentLibrary |
+| Périmètre d'écriture | ContentLibrary |
+| En conflit avec | TB-003 — module partagé : ContentLibrary ; TB-014 — module partagé : ContentLibrary ; TB-015 — module partagé : ContentLibrary ; TB-016 — module partagé : ContentLibrary ; TB-018 — module partagé : ContentLibrary ; TB-021 — module partagé : ContentLibrary |
 | Taille | M |
 | Critères d'acceptation | RB-04-01, RB-06-11, RB-06-25, RB-06-26 ; `cahier-strategie-test-et-recette.md §2 § Invariant transverse : privé par défaut` ; `cahier-strategie-test-et-recette.md §3.1`, puces 2-3 ; US-04-03 §"Un joueur ne voit pas un document privé" |
 | Code de renvoi | — |
@@ -497,8 +495,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-03 |
 | Jalon | J1 |
 | Dépend de | TB-015, TB-016 |
-| Périmètre d'écriture | Haversack.Domain/ContentLibrary |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/ContentLibrary ; TB-014 — module partagé : Haversack.Domain/ContentLibrary ; TB-015 — module partagé : Haversack.Domain/ContentLibrary ; TB-016 — module partagé : Haversack.Domain/ContentLibrary ; TB-017 — module partagé : Haversack.Domain/ContentLibrary ; TB-021 — module partagé : Haversack.Domain/ContentLibrary |
+| Périmètre d'écriture | ContentLibrary |
+| En conflit avec | TB-003 — module partagé : ContentLibrary ; TB-014 — module partagé : ContentLibrary ; TB-015 — module partagé : ContentLibrary ; TB-016 — module partagé : ContentLibrary ; TB-017 — module partagé : ContentLibrary ; TB-021 — module partagé : ContentLibrary |
 | Taille | L — un seul module ; les plages RB-03-01 → RB-03-13 et CR-UC03-01 → CR-UC03-21 portent l'essentiel de la surface de vérification de l'agrégat Scenario |
 | Critères d'acceptation | RB-03-01 → RB-03-13 ; US-03-01 §"Le titre est le seul champ obligatoire", §"Un scénario improvisé minimal est valide (A4)" ; US-03-02 §"Les scènes respectent l'ordre défini", §"Un scénario peut contenir zéro scène" ; US-03-03 §"Écrire un scénario monobloc sans scènes" ; US-03-04 §"Le contenu privé et le contenu partageable sont bien séparés" ; `conception/domain/content-library.md § Cas d'usage illustrés` ; CR-UC03-01 → CR-UC03-21 |
 | Code de renvoi | — |
@@ -528,8 +526,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-06 |
 | Jalon | J1 |
 | Dépend de | TB-013, TB-016 |
-| Périmètre d'écriture | Haversack.Domain/SessionConduct |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/SessionConduct ; TB-020 — module partagé : Haversack.Domain/SessionConduct ; TB-021 — module partagé : Haversack.Domain/SessionConduct ; TB-022 — module partagé : Haversack.Domain/SessionConduct |
+| Périmètre d'écriture | SessionConduct |
+| En conflit avec | TB-003 — module partagé : SessionConduct ; TB-020 — module partagé : SessionConduct ; TB-021 — module partagé : SessionConduct ; TB-022 — module partagé : SessionConduct |
 | Taille | L — un seul module ; la plage CR-UC06-01 → CR-UC06-29 porte vingt-neuf preuves à elle seule, indivisibles de la machine d'états de Session |
 | Critères d'acceptation | RB-06-18, RB-06-20, RB-06-21 ; `cahier-strategie-test-et-recette.md §3.1`, puce 1 ; `conception/domain/session-conduct.md § Machine d'états de Session`, `§ Invariants métier` ; US-06-01 §"Lancement refusé si titre vide" ; US-06-06 §"Le MJ archive une session CLOSED" ; US-07-01 §"Création impossible en ARCHIVED (E2)" ; CR-UC06-01 → CR-UC06-29 |
 | Code de renvoi | — |
@@ -542,8 +540,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-06 |
 | Jalon | J1 |
 | Dépend de | TB-019 |
-| Périmètre d'écriture | Haversack.Domain/SessionConduct |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/SessionConduct ; TB-019 — module partagé : Haversack.Domain/SessionConduct ; TB-021 — module partagé : Haversack.Domain/SessionConduct ; TB-022 — module partagé : Haversack.Domain/SessionConduct |
+| Périmètre d'écriture | SessionConduct |
+| En conflit avec | TB-003 — module partagé : SessionConduct ; TB-019 — module partagé : SessionConduct ; TB-021 — module partagé : SessionConduct ; TB-022 — module partagé : SessionConduct |
 | Taille | M |
 | Critères d'acceptation | US-06-02 §"Le MJ configure ses panneaux sans lancer de session", §"Le MJ modifie les panneaux en direct pendant une session LIVE", §"La config persiste entre deux sessions" ; `conception/domain/session-conduct.md § SessionViewConfig (agrégat)` ; `zoning.md §S6 AR-18` |
 | Code de renvoi | — |
@@ -557,8 +555,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-06 |
 | Jalon | J1 |
 | Dépend de | TB-017, TB-019 |
-| Périmètre d'écriture | Haversack.Domain/SessionConduct ; Haversack.Domain/ContentLibrary |
-| En conflit avec | TB-003 — module partagé : Haversack.Domain/ContentLibrary, Haversack.Domain/SessionConduct ; TB-014 — module partagé : Haversack.Domain/ContentLibrary ; TB-015 — module partagé : Haversack.Domain/ContentLibrary ; TB-016 — module partagé : Haversack.Domain/ContentLibrary ; TB-017 — module partagé : Haversack.Domain/ContentLibrary ; TB-018 — module partagé : Haversack.Domain/ContentLibrary ; TB-019 — module partagé : Haversack.Domain/SessionConduct ; TB-020 — module partagé : Haversack.Domain/SessionConduct ; TB-022 — module partagé : Haversack.Domain/SessionConduct |
+| Périmètre d'écriture | SessionConduct ; ContentLibrary |
+| En conflit avec | TB-003 — module partagé : ContentLibrary, SessionConduct ; TB-014 — module partagé : ContentLibrary ; TB-015 — module partagé : ContentLibrary ; TB-016 — module partagé : ContentLibrary ; TB-017 — module partagé : ContentLibrary ; TB-018 — module partagé : ContentLibrary ; TB-019 — module partagé : SessionConduct ; TB-020 — module partagé : SessionConduct ; TB-022 — module partagé : SessionConduct |
 | Taille | L — deux modules (ContentLibrary et SessionConduct, le type `LIVE_NOTE` étant un `Document`) et 4 renvois ; le geste métier (une note née dans une session) est indivisible entre les deux bounded contexts qu'il traverse |
 | Critères d'acceptation | RB-06-11, RB-06-25, RB-06-26, RB-08-08b, RB-08-08c ; US-06-04 §"Le MJ crée une note de session privé MJ", §"Le MJ rend une note de session publique" ; US-06-05 §"Le MJ épingle un document", §"Épinglage automatique à la création à la volée" ; `cahier-strategie-test-et-recette.md Annexe A § Visibilité vs épinglage` ; `zoning.md §S6 AR-12` |
 | Code de renvoi | — |
@@ -571,10 +569,10 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-06 |
 | Jalon | J1 |
 | Dépend de | TB-019, TB-020, TB-021, TB-025 |
-| Périmètre d'écriture | TROU — nature : aucun object store n'est nommé pour les entités de session, du fait de la contradiction ci-dessous |
-| En conflit avec | TB-037 — recouvrement à confirmer à J0 : la fonction de projection store→payload (TB-037) consomme le résultat de cette tâche ; le périmètre exact de l'une comme de l'autre reste indéterminable tant que D-b-01 n'est pas tranchée |
+| Périmètre d'écriture | store local `sessions` ; store local `session_pinned_documents` ; store local `session_live_notes` ; store local `session_view_configs` ; store local `session_view_folders` |
+| En conflit avec | TB-037 — pas de module partagé : le champ `Périmètre d'écriture` de TB-037 ne nomme aucun module dans cette maille (fonction de projection transverse aux object stores), donc aucun recouvrement d'écriture avec les object stores de session listés ci-dessus ; la relation entre les deux tâches reste portée par `Dépend de` (TB-037 dépend de cette tâche). D-b-01 est tranché : la contradiction ADR-016/ADR-017 qui rendait ce recouvrement indéterminable est résolue par ADR-017 §1.1 corrigée |
 | Taille | S |
-| Critères d'acceptation | **`TROU`** — nature : *contradiction entre deux ADR sources, non arbitrée*. `ADR-017-modele-indexeddb-local.md §1.1` exclut du store local « toute entité de session » (`sessions`, `session_view_configs`, `session_pinned_documents`, `session_live_notes`, `session_view_folders`), en se déclarant « exclusions identiques à ADR-016 ». `ADR-016-serialisation-locale-migration.md §1.2`, sous une annotation de correction, qualifie cette prémisse de « factuellement fausse » et inverse l'exclusion : seules restent exclues les sessions `LIVE`, `session_view_configs` et `session_view_folders` — `sessions` (CLOSED/ARCHIVED), `session_pinned_documents` et `session_live_notes` entrent au contraire dans le périmètre sérialisé. Le critère de sortie de J1 (`roadmap-entree-build.md §3.2`, puce 1) n'énumère que la liste d'ADR-017 : une livraison conforme à ce critère ne persisterait aucune session en local, ce que US-06-09 §"Le MJ reprend une session après interruption" et NFR-OFF-02 exigent par ailleurs. Aucun critère d'acceptation n'existe pour cette tâche tant que la contradiction n'est pas tranchée |
+| Critères d'acceptation | `ADR-017-modele-indexeddb-local.md §1.1 § Object stores` (tableau nommant `sessions`, `session_pinned_documents`, `session_live_notes`, `session_view_configs`, `session_view_folders` avec leurs clés) ; `ADR-016-serialisation-locale-migration.md §1.2 § Périmètre sérialisé` (sessions terminées, épinglages et références de notes de session dans le périmètre migré) ; `ADR-016-serialisation-locale-migration.md §1.2 § Exclusions explicites` (sessions `LIVE`, `session_view_configs` et `session_view_folders` exclus du payload de migration, non de la persistance locale visée par cette tâche) ; US-06-09 §"Le MJ reprend une session après interruption" ; NFR-OFF-02 |
 | Code de renvoi | — |
 
 ##### TB-050 — Paramètres de campagne
@@ -616,8 +614,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | US-UC-07 |
 | Jalon | J1 |
 | Dépend de | TB-019, TB-015 |
-| Périmètre d'écriture | Haversack.Application ; Haversack.Domain/SessionConduct |
-| En conflit avec | TB-002 — module partagé : Haversack.Application ; TB-003 — module partagé : Haversack.Domain/SessionConduct ; TB-010 — module partagé : Haversack.Application ; TB-019 — module partagé : Haversack.Domain/SessionConduct ; TB-020 — module partagé : Haversack.Domain/SessionConduct ; TB-021 — module partagé : Haversack.Domain/SessionConduct ; TB-023 — module partagé : Haversack.Application ; TB-024 — module partagé : Haversack.Application ; TB-053 — module partagé : Haversack.Application |
+| Périmètre d'écriture | le projet Application unique ; SessionConduct |
+| En conflit avec | TB-002 — module partagé : le projet Application unique ; TB-003 — module partagé : SessionConduct ; TB-010 — module partagé : le projet Application unique ; TB-019 — module partagé : SessionConduct ; TB-020 — module partagé : SessionConduct ; TB-021 — module partagé : SessionConduct ; TB-023 — module partagé : le projet Application unique ; TB-024 — module partagé : le projet Application unique ; TB-053 — module partagé : le projet Application unique |
 | Taille | L — deux modules et 4 renvois : la surface combinée dépasse le plafond `M` réservé à deux modules (§3) ; le geste de création à la volée traverse Application et SessionConduct par construction |
 | Critères d'acceptation | RB-07-01 → RB-07-08 ; les scénarios de US-07-01 ; CR-UC07-01 → CR-UC07-09 ; NFR-PERF-03 |
 | Code de renvoi | — |
@@ -646,8 +644,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | EP-06 |
 | Jalon | J1 |
 | Dépend de | TB-010 — **préalable bloquant à l'ouverture de J1** |
-| Périmètre d'écriture | Haversack.Application |
-| En conflit avec | TB-002 — module partagé : Haversack.Application ; TB-010 — module partagé : Haversack.Application ; TB-022 — module partagé : Haversack.Application ; TB-024 — module partagé : Haversack.Application ; TB-053 — module partagé : Haversack.Application |
+| Périmètre d'écriture | le projet Application unique |
+| En conflit avec | TB-002 — module partagé : le projet Application unique ; TB-010 — module partagé : le projet Application unique ; TB-022 — module partagé : le projet Application unique ; TB-024 — module partagé : le projet Application unique ; TB-053 — module partagé : le projet Application unique |
 | Taille | S |
 | Critères d'acceptation | `roadmap-entree-build.md §3.2` — « Le contrat `IResourceAccessPolicy` défini en J0 doit être intégré aux contrats Application "avant le début du jalon J1" » (`ADR-007-rgpd-autorisation-api.md § Conséquences`) ; `roadmap-entree-build.md §5.2` |
 | Code de renvoi | — |
@@ -660,8 +658,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | EP-06 |
 | Jalon | J1 |
 | Dépend de | TB-013, TB-014, TB-015, TB-016, TB-017, TB-018, TB-019, TB-020, TB-021, TB-022, TB-023 |
-| Périmètre d'écriture | Haversack.Application |
-| En conflit avec | TB-002 — module partagé : Haversack.Application ; TB-010 — module partagé : Haversack.Application ; TB-022 — module partagé : Haversack.Application ; TB-023 — module partagé : Haversack.Application ; TB-053 — module partagé : Haversack.Application |
+| Périmètre d'écriture | le projet Application unique |
+| En conflit avec | TB-002 — module partagé : le projet Application unique ; TB-010 — module partagé : le projet Application unique ; TB-022 — module partagé : le projet Application unique ; TB-023 — module partagé : le projet Application unique ; TB-053 — module partagé : le projet Application unique |
 | Taille | M |
 | Critères d'acceptation | `structure-projets.md §2` (sens des dépendances) ; `guide-conventions-et-dod.md §1 § Architecture` ; l'ensemble des RB des UC-02, UC-03, UC-04, UC-05, UC-06, UC-07 |
 | Code de renvoi | — |
@@ -851,9 +849,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Jalon | J1 |
 | Dépend de | TB-036, TB-030 |
 | Périmètre d'écriture | TROU — nature : fonction de projection transverse aux object stores, non nommable |
-| En conflit avec | TB-030 — recouvrement à confirmer à J0 : le périmètre exact des deux tâches reste indéterminable tant que la contradiction D-b-01 (TB-030) n'est pas tranchée |
+| En conflit avec | TB-030 — pas de module partagé : cette tâche (`TROU`, fonction de projection transverse aux object stores) ne nomme aucun module dans la maille, donc aucun recouvrement possible avec les object stores de session que TB-030 déclare (`ADR-017 §1.1`). D-b-01 est tranché : la contradiction ADR-016/ADR-017 qui rendait ce recouvrement indéterminable est résolue |
 | Taille | M |
-| Critères d'acceptation | `ADR-016-serialisation-locale-migration.md §1.2 § Périmètre sérialisé` (les 10 entrées listées) ; `§1.3 § Champs gouvernés et champs libres` ; `§1.4 § Format comme contrat versionné stable` (la couture de projection est nommée comme livrable) ; `ADR-017-modele-indexeddb-local.md §1.2` (« la fonction store local → payload reste quasi-identitaire »). **Dépendance bloquée** : la « quasi-identité » énoncée par ADR-017 §1.2 est fausse tant que TB-030 n'est pas tranchée — 3 des 10 collections du périmètre sérialisé (`sessions`, `session_pinned_documents`, `session_live_notes`) n'existent pas dans la liste d'object stores d'ADR-017 §1.1 |
+| Critères d'acceptation | `ADR-016-serialisation-locale-migration.md §1.2 § Périmètre sérialisé` (les 10 entrées listées) ; `§1.3 § Champs gouvernés et champs libres` ; `§1.4 § Format comme contrat versionné stable` (la couture de projection est nommée comme livrable) ; `ADR-017-modele-indexeddb-local.md § Conséquences § Couture de projection filtrée, sans reformatage structurel` (la fonction `store local → payload` applique un filtre nommé — écarte les sessions en statut `LIVE`, `session_view_configs` et `session_view_folders`, tous trois exclus du périmètre sérialisé par `ADR-016 §1.2 § Exclusions explicites` — sans reformatage structurel complexe au-delà de ce filtre) |
 | Code de renvoi | — |
 
 ##### TB-038 — Déclencher l'export depuis les paramètres
@@ -869,7 +867,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Taille | M |
 | Critères d'acceptation | US-01-07 §"Le MJ exporte sa campagne depuis les paramètres (mode local)", §"Le MJ exporte sa campagne depuis les paramètres (compte cloud)" ; `usecases/UC-01-mode-local-sans-compte.md § A4a` et `§ Critères d'acceptation` (« Must Have / version minimale […] promu ») ; `vision/moscow.md § Export d'espace § Critère de sortie` ; `wireframes/README.md` (correction UI, « export MVP ») |
 | Code de renvoi | — |
-| Écart de priorité signalé | la story `US-UC-01-mode-local-sans-compte.md § US-01-07` porte toujours la mention « Should Have » en prose et en tableau de métadonnées ; `vision/moscow.md § Export d'espace` — seule autorité MoSCoW du corpus — l'a promue Must Have par décision produit ultérieure, tout comme `usecases/UC-01-mode-local-sans-compte.md § Critères d'acceptation`. Cette tâche suit la priorité de `moscow.md` (Must Have) ; l'US porte une mention non résorbée, à corriger dans la source, pas ici |
+| Point d'attention | Appliquer la priorité définie par `vision/moscow.md § Export d'espace`, seule autorité MoSCoW du corpus : Must Have |
 
 ##### TB-039 — Dry-run structurel de validation du payload
 
@@ -928,7 +926,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Périmètre d'écriture | fiche `recherche-preparation` |
 | En conflit avec | — |
 | Taille | L — un seul module ; la plage CR-UC14-01 → CR-UC14-13 porte l'essentiel de la surface de vérification de cet écran |
-| Critères d'acceptation | `wireframes/sv3-preparation/recherche-preparation/recherche-preparation.md` (« titre seul au MVP ; résultats regroupés par type ») ; US-14-01 §"Recherche par titre avec résultat (nominal)", §"Recherche partielle insensible a la casse", §"Aucun resultat (A1)" ; NFR-PERF-04 ; CR-UC14-01 → CR-UC14-13 |
+| Critères d'acceptation | `wireframes/sv3-preparation/recherche-preparation/recherche-preparation.md` (« titre seul au MVP ; résultats regroupés par type ») ; US-14-01 §"Recherche par titre avec résultat (nominal)", §"Recherche partielle insensible à la casse", §"Aucun résultat (A1)" ; NFR-PERF-04 ; CR-UC14-01 → CR-UC14-13 |
 | Code de renvoi | — |
 
 ### EP-11 — Instrumentation de validation du MVP
@@ -941,10 +939,10 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Épique | EP-11 |
 | Jalon | J1 |
 | Dépend de | TB-024, TB-051 |
-| Périmètre d'écriture | Haversack.Application |
-| En conflit avec | TB-002 — module partagé : Haversack.Application ; TB-010 — module partagé : Haversack.Application ; TB-022 — module partagé : Haversack.Application ; TB-023 — module partagé : Haversack.Application ; TB-024 — module partagé : Haversack.Application |
+| Périmètre d'écriture | le projet Application unique |
+| En conflit avec | TB-002 — module partagé : le projet Application unique ; TB-010 — module partagé : le projet Application unique ; TB-022 — module partagé : le projet Application unique ; TB-023 — module partagé : le projet Application unique ; TB-024 — module partagé : le projet Application unique |
 | Taille | S |
-| Critères d'acceptation | **`TROU`** — nature : *unité fonctionnelle Must Have sans aucun critère d'acceptation, dont la spec se déclare inapplicable*. Aucune UC, aucune US, aucun Gherkin, aucune RB, aucun CR ne porte l'instrumentation (mesuré : 0 occurrence de « instrumentation\|télémétrie\|analytics » dans `usecases/`, `user-stories/`, `user-journeys/`) ; `architecture/specs/telemetrie.md`, bandeau « Statut » : « cadre à compléter — non implémentable en l'état, les trous nommés ci-dessous bloquent le passage en développement » — 15 marqueurs `[À TRANCHER]` y sont mesurés, dont le seuil N du pilier préparation, l'opérationnalisation de « usage réel constaté », l'outil analytics, la technique d'anonymisation et le mécanisme de capture email |
+| Critères d'acceptation | **`TROU`** — nature : *unité fonctionnelle Must Have sans aucun critère d'acceptation, dont la spec se déclare inapplicable*. Aucune UC, aucune US, aucun Gherkin, aucune RB, aucun CR ne porte l'instrumentation ; `architecture/specs/telemetrie.md`, bandeau « Statut » : « cadre à compléter — non implémentable en l'état, les trous nommés ci-dessous bloquent le passage en développement » — les marqueurs `[À TRANCHER]` qu'elle porte couvrent notamment le seuil N du pilier préparation, l'opérationnalisation de « usage réel constaté », l'outil analytics, la technique d'anonymisation et le mécanisme de capture email |
 | Code de renvoi | — |
 
 ##### TB-054 — Capture de contact non bloquante en mode local
@@ -979,13 +977,13 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tâche de l'épi
 | Point d'attention | `cahier-strategie-test-et-recette.md §13 § Contrôle d'intégrité des citations` impose, à chaque jalon, de vérifier que chaque ligne `CR-` cite un scénario Gherkin ou une RB réel et à jour dans le corpus source — un contrôle mesuré en défaut sur une partie des citations portant sur les UC de J2/J3 (hors périmètre de recette J1) |
 
 **Recouvrements d'écriture en J1** (le calcul de parallélisation en dépend — les identifiants énumérés disent la largeur du recouvrement, non répétée en nombre) :
-- `Haversack.Domain/ContentLibrary` — TB-014, TB-015, TB-016, TB-017, TB-018, TB-021.
-- `Haversack.Domain/SessionConduct` — TB-019, TB-020, TB-021, TB-022.
-- `Haversack.Application` — TB-022, TB-023, TB-024, TB-053.
+- `ContentLibrary` — TB-014, TB-015, TB-016, TB-017, TB-018, TB-021.
+- `SessionConduct` — TB-019, TB-020, TB-021, TB-022.
+- le projet Application unique — TB-022, TB-023, TB-024, TB-053.
 - Les object stores du mode local — TB-025, TB-026, TB-027, TB-028, avec un recouvrement variable par store — le point de contention le plus fort du jalon mesuré par module.
 - La fiche `parametres-campagne` — TB-038, TB-050.
 - Les fiches `vue-campagne` et `vue-espace-personnel` — TB-045.
-- Recouvrement non décidable (TROU, `recouvrement à confirmer à J0`) : TB-030 ↔ TB-037 (fonction de projection dépendant du store de session non tranché) ; TB-034 ↔ TB-035 (même configuration CSP).
+- Recouvrement non décidable (TROU, `recouvrement à confirmer à J0`) : TB-034 ↔ TB-035 (même configuration CSP).
 
 ---
 
@@ -1018,7 +1016,7 @@ Le champ `En conflit avec` de chaque tâche (§5-6) dit ce qui **ne peut pas** �
 |---|---|
 | Ouvrable après | TB-002 |
 | Tâches | TB-003, TB-010, TB-011 |
-| Modules touchés, deux à deux disjoints | TB-003 : les namespaces du Domaine ; TB-010 : Haversack.Application ; TB-011 : TROU (configuration de style) |
+| Modules touchés, deux à deux disjoints | TB-003 : les namespaces du Domaine ; TB-010 : le projet Application unique ; TB-011 : TROU (configuration de style) |
 | Ferme quand | TB-003, TB-010 et TB-011 sont clos |
 
 ##### LOT-03
@@ -1027,7 +1025,7 @@ Le champ `En conflit avec` de chaque tâche (§5-6) dit ce qui **ne peut pas** �
 |---|---|
 | Ouvrable après | TB-003 (pour TB-004 et TB-006), TB-010 (pour TB-023) |
 | Tâches | TB-004, TB-006, TB-023 |
-| Modules touchés, deux à deux disjoints | TB-004 : Haversack.Domain/SharedKernel ; TB-006 : TROU (projet de test d'architecture) ; TB-023 : Haversack.Application |
+| Modules touchés, deux à deux disjoints | TB-004 : SharedKernel ; TB-006 : TROU (projet de test d'architecture) ; TB-023 : le projet Application unique |
 | Ferme quand | TB-004, TB-006 et TB-023 sont clos |
 
 ##### LOT-04
@@ -1036,7 +1034,7 @@ Le champ `En conflit avec` de chaque tâche (§5-6) dit ce qui **ne peut pas** �
 |---|---|
 | Ouvrable après | TB-004 (pour TB-005), TB-006 et TB-007 (pour TB-008), TB-006 (pour TB-009) |
 | Tâches | TB-005, TB-008, TB-009 |
-| Modules touchés, deux à deux disjoints | TB-005 : Haversack.Domain/SharedKernel ; TB-008 : TROU (configuration de pipeline) ; TB-009 : TROU (projet de test d'architecture — recouvrement avec TB-006 signalé en §5, déjà clos à ce point) |
+| Modules touchés, deux à deux disjoints | TB-005 : SharedKernel ; TB-008 : TROU (configuration de pipeline) ; TB-009 : TROU (projet de test d'architecture — recouvrement avec TB-006 signalé en §5, déjà clos à ce point) |
 | Ferme quand | TB-005, TB-008 et TB-009 sont clos — **fin de J0** |
 
 ##### LOT-05
@@ -1045,7 +1043,7 @@ Le champ `En conflit avec` de chaque tâche (§5-6) dit ce qui **ne peut pas** �
 |---|---|
 | Ouvrable après | TB-015 et TB-016 (pour TB-018), TB-013 et TB-016 (pour TB-019) |
 | Tâches | TB-018, TB-019 |
-| Modules touchés, deux à deux disjoints | TB-018 : Haversack.Domain/ContentLibrary ; TB-019 : Haversack.Domain/SessionConduct — deux bounded contexts distincts |
+| Modules touchés, deux à deux disjoints | TB-018 : ContentLibrary ; TB-019 : SessionConduct — deux bounded contexts distincts |
 | Ferme quand | TB-018 et TB-019 sont clos |
 
 ##### LOT-06
@@ -1054,7 +1052,7 @@ Le champ `En conflit avec` de chaque tâche (§5-6) dit ce qui **ne peut pas** �
 |---|---|
 | Ouvrable après | TB-025 (pour TB-026, TB-031, TB-036), TB-019/TB-020/TB-021/TB-025 (pour TB-030) |
 | Tâches | TB-026, TB-030, TB-031, TB-036 |
-| Modules touchés, deux à deux disjoints | TB-026 : store local `documents`, `folders`, `document_types`, `document_blocks`, `document_links`, `document_tags` ; TB-030 : TROU (session, D-b-01) ; TB-031 : TROU (appel navigateur) ; TB-036 : TROU (enveloppe de payload) — aucun recouvrement signalé entre ces quatre cibles |
+| Modules touchés, deux à deux disjoints | TB-026 : store local `documents`, `folders`, `document_types`, `document_blocks`, `document_links`, `document_tags` ; TB-030 : store local `sessions`, `session_pinned_documents`, `session_live_notes`, `session_view_configs`, `session_view_folders` ; TB-031 : TROU (appel navigateur) ; TB-036 : TROU (enveloppe de payload) — aucun recouvrement signalé entre ces quatre cibles |
 | Ferme quand | TB-026, TB-030, TB-031 et TB-036 sont clos |
 
 ##### LOT-07
@@ -1099,7 +1097,7 @@ Le champ `En conflit avec` de chaque tâche (§5-6) dit ce qui **ne peut pas** �
 |---|---|
 | Ouvrable après | TB-043 (pour TB-044 et TB-045), TB-022 et TB-051 (pour TB-052), TB-024 et TB-051 (pour TB-053) |
 | Tâches | TB-044, TB-045, TB-052, TB-053 |
-| Modules touchés, deux à deux disjoints | TB-044 : fiche `creation-espace` ; TB-045 : fiche `vue-campagne`, fiche `vue-espace-personnel` ; TB-052 : fiche `panneau-creation-rapide` ; TB-053 : Haversack.Application — quatre cibles distinctes, aucun module partagé |
+| Modules touchés, deux à deux disjoints | TB-044 : fiche `creation-espace` ; TB-045 : fiche `vue-campagne`, fiche `vue-espace-personnel` ; TB-052 : fiche `panneau-creation-rapide` ; TB-053 : le projet Application unique — quatre cibles distinctes, aucun module partagé |
 | Ferme quand | TB-044, TB-045, TB-052 et TB-053 sont clos |
 
 ##### LOT-12
@@ -1157,7 +1155,7 @@ Le champ `En conflit avec` de chaque tâche (§5-6) dit ce qui **ne peut pas** �
 - [`docs/conception/besoin/vision/moscow.md`](../conception/besoin/vision/moscow.md) — priorisation MoSCoW, graphe de dépendances entre use cases.
 - [`docs/test/cahier-strategie-test-et-recette.md`](../test/cahier-strategie-test-et-recette.md) — critères de sortie par jalon, Definition of Done de test, cas de recette.
 - [`docs/conception/interface/wireframes/README.md`](../conception/interface/wireframes/README.md) — table de couverture UC → fiche(s), éléments différés.
-- [`docs/conception/interface/zoning.md`](../conception/interface/zoning.md) — arbitrages figés `AR-01` à `AR-22`, châssis.
+- [`docs/conception/interface/zoning.md`](../conception/interface/zoning.md) — arbitrages figés (§S6), châssis.
 - Use cases, user stories et journeys : `docs/conception/besoin/usecases/UC-NN-*.md`, `docs/conception/besoin/user-stories/US-UC-NN-*.md`.
 - ADR cités : [ADR-001](../architecture/decisions/ADR-001-execution-domaine-mode-local.md), [ADR-002](../architecture/decisions/ADR-002-tout-est-document-gouvernance.md), [ADR-004](../architecture/decisions/ADR-004-transport-temps-reel.md), [ADR-006](../architecture/decisions/ADR-006-perimetre-mvp.md), [ADR-007](../architecture/decisions/ADR-007-rgpd-autorisation-api.md), [ADR-008](../architecture/decisions/ADR-008-structure-solution.md), [ADR-011](../architecture/decisions/ADR-011-cascade-integrite-referentielle.md), [ADR-014](../architecture/decisions/ADR-014-modele-autorisation-api.md), [ADR-015](../architecture/decisions/ADR-015-securite-authentification-mvp.md), [ADR-016](../architecture/decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../architecture/decisions/ADR-017-modele-indexeddb-local.md), [ADR-018](../architecture/decisions/ADR-018-espace-personnel-generalisation-space.md).
 - Spécifications citées : `docs/architecture/specs/document-properties-schemas.md`, `docs/architecture/specs/sanitisation-csp.md`, `docs/architecture/specs/telemetrie.md`, `docs/architecture/specs/mapping-ef-core.md`, `docs/architecture/specs/contrat-openapi.md`, `docs/architecture/specs/repli-temps-reel.md`, `docs/architecture/specs/config-securite-migration.md`, `docs/architecture/specs/requete-effacement-non-partage.md`.

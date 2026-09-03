@@ -153,7 +153,7 @@ Scenario: Un scénario improvisé minimal est valide (A4)
 - Une scène est un document de scène relié à un scénario.
 - L'ordre des scènes est porté par ordre des scènes.
 - Une scène peut elle-même contenir des lien entre documents vers des PNJ, lieux, etc.
-- Ajouter une scène = créer un document scène + appeler création d’un lien entre documents sur le scénario.
+- Ajouter une scène = créer un document scène + appeler création d'un lien entre documents sur le scénario.
 - Supprimer une scène du scénario = supprimer le lien entre documents, pas le document. Le document scène peut subsister comme document orphelin ou être supprimé séparément.
 
 **Règles métier** :
@@ -289,7 +289,7 @@ Scénario : Le contenu privé et le contenu partageable sont bien séparés
 **afin de** centraliser les références sans dupliquer le contenu.
 
 **Notes de conception** :
-- Lier = appeler création d’un lien entre documents sur le document source (scénario ou scène).
+- Lier = appeler création d'un lien entre documents sur le document source (scénario ou scène).
 - Les documents liés peuvent être de n'importe quel type : `NPC`, `LOCATION`, `NOTE`, etc.
 - Les backlinks (ex. : quels scénarios référencent ce PNJ) sont calculés en lecture — ils ne sont pas stockés dans le modèle fonctionnel.
 - Dépend de UC-04 (les documents liés doivent exister) et UC-05 (navigation dans les dossiers pour sélectionner un document).

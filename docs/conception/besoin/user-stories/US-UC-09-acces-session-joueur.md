@@ -147,22 +147,22 @@ flowchart LR
 
 ```gherkin
 Scénario : Joueur rejoint via lien ponctuel sans compte (nominal)
-  Etant donne qu'un MJ a genere un lien de session ponctuel
+  Étant donné qu'un MJ a généré un lien de session ponctuel
   Et que le GuestAccess token est valide
-  Quand Lucas clique sur le lien et saisit "Lucas" comme nom d affichage
-  Alors le GuestAccess est active pour cette session
-  Et Lucas voit les documents PUBLIC et les documents epingles de la session
+  Quand Lucas clique sur le lien et saisit "Lucas" comme nom d'affichage
+  Alors le GuestAccess est activé pour cette session
+  Et Lucas voit les documents PUBLIC et les documents épinglés de la session
   Et le nom "Lucas" est visible par le MJ dans la vue session
 
-Scénario : Joueur deja connecte a son compte (A1)
-  Etant donne qu'un MJ a genere un lien de session ponctuel
-  Et que Lucas est deja connecte a son compte Haversack
+Scénario : Joueur déjà connecté à son compte (A1)
+  Étant donné qu'un MJ a généré un lien de session ponctuel
+  Et que Lucas est déjà connecté à son compte Haversack
   Quand Lucas clique sur le lien
-  Alors il accede directement a la session avec son historique
-  Et l etape de saisie du nom est sautee
+  Alors il accède directement à la session avec son historique
+  Et l'étape de saisie du nom est sautée
 
-Scénario : Acces expire apres 24h de grace
-  Etant donne qu'une session est passee en status CLOSED depuis plus de 24 heures
+Scénario : Accès expire après 24h de grâce
+  Étant donné qu'une session est passée en status CLOSED depuis plus de 24 heures
   Quand Lucas tente de rouvrir le lien ponctuel
   Alors le GuestAccess est invalide
   Et il voit le message lien non actif
@@ -197,23 +197,23 @@ Scénario : Acces expire apres 24h de grace
 - [ ] La page d'erreur est sobre et ne révèle pas l'existence de l'espace partagé.
 
 ```gherkin
-Scénario : Lien de session expire (A4)
-  Etant donne qu'une session est terminee depuis plus de 24 heures
-  Quand Lucas clique sur l ancien lien de session
+Scénario : Lien de session expiré (A4)
+  Étant donné qu'une session est terminée depuis plus de 24 heures
+  Quand Lucas clique sur l'ancien lien de session
   Alors il voit un message "Ce lien n'est plus actif"
-  Et le message invite a contacter le MJ pour un nouveau lien
-  Et aucune information sur l espace partage n'est revele
+  Et le message invite à contacter le MJ pour un nouveau lien
+  Et aucune information sur l'espace partagé n'est révélée
 
-Scénario : Lien revoque par le MJ (A4)
-  Etant donne que le MJ a revoque le GuestAccess d une session
-  Quand Lucas tente d y acceder
-  Alors il voit le meme message que pour un lien expire
+Scénario : Lien révoqué par le MJ (A4)
+  Étant donné que le MJ a révoqué le GuestAccess d'une session
+  Quand Lucas tente d'y accéder
+  Alors il voit le même message que pour un lien expiré
 
-Scénario : Lien invalide ou mal forme (E1)
-  Etant donne qu'un lien est incorrect ou malicieux
-  Quand un joueur l ouvre
-  Alors il voit une page d erreur sobre
-  Et aucune information sur l existence de l espace partage n'est revele
+Scénario : Lien invalide ou mal formé (E1)
+  Étant donné qu'un lien est incorrect ou malicieux
+  Quand un joueur l'ouvre
+  Alors il voit une page d'erreur sobre
+  Et aucune information sur l'existence de l'espace partagé n'est révélée
 ```
 
 ---
@@ -248,24 +248,24 @@ Scénario : Lien invalide ou mal forme (E1)
 
 ```gherkin
 Scénario : Joueur avec compte rejoint via lien permanent (A3)
-  Etant donne que Thomas a genere un lien d espace partage permanent pour son espace
-  Et que le joueur a deja un compte Haversack
+  Étant donné que Thomas a généré un lien d'espace partagé permanent pour son espace
+  Et que le joueur a déjà un compte Haversack
   Quand le joueur clique sur le lien permanent
-  Alors il est lie comme Member de l espace partage
-  Et il accede a l historique des sessions et aux documents de lore PUBLIC
+  Alors il est lié comme Member de l'espace partagé
+  Et il accède à l'historique des sessions et aux documents de lore PUBLIC
 
-Scénario : Joueur sans compte redirige vers UC-10 (A3)
-  Etant donne qu'un joueur clique sur un lien permanent d espace partage
+Scénario : Joueur sans compte redirigé vers UC-10 (A3)
+  Étant donné qu'un joueur clique sur un lien permanent d'espace partagé
   Et qu'il n'a pas de compte Haversack
-  Quand la page s affiche
-  Alors il est invite a creer un compte via UC-10
-  Et apres creation, il est automatiquement lie comme Member de l espace partage
+  Quand la page s'affiche
+  Alors il est invité à créer un compte via UC-10
+  Et après création, il est automatiquement lié comme Member de l'espace partagé
 
-Scénario : MJ revoque l acces permanent d un membre
-  Etant donne qu'un Member a acces a l espace partage via lien permanent
-  Quand le MJ revoque l acces de ce membre
+Scénario : MJ révoque l'accès permanent d'un membre
+  Étant donné qu'un Member a accès à l'espace partagé via lien permanent
+  Quand le MJ révoque l'accès de ce membre
   Alors le lien devient invalide pour ce membre
-  Et le membre ne peut plus acceder a l espace partage
+  Et le membre ne peut plus accéder à l'espace partagé
 ```
 
 ---
@@ -301,19 +301,19 @@ Scénario : MJ revoque l acces permanent d un membre
 - [ ] Le MJ est notifié qu'un joueur invité a créé un compte et peut le promouvoir en `Member`.
 
 ```gherkin
-Scénario : Joueur invite cree un compte et migre ses donnees (A2)
-  Etant donne que Lucas a acces a plusieurs sessions en tant qu invité
+Scénario : Joueur invité crée un compte et migre ses données (A2)
+  Étant donné que Lucas a accès à plusieurs sessions en tant qu'invité
   Et qu'il a pris des notes personnelles
-  Quand Lucas clique sur "Creer un compte" depuis la vue invité
-  Et qu'il complete la creation de compte via UC-10
-  Alors ses notes personnelles sont migrees vers son nouveau compte
-  Et son historique de GuestAccess est rattache au compte
-  Et aucune note n est perdue
+  Quand Lucas clique sur "Créer un compte" depuis la vue invité
+  Et qu'il complète la création de compte via UC-10
+  Alors ses notes personnelles sont migrées vers son nouveau compte
+  Et son historique de GuestAccess est rattaché au compte
+  Et aucune note n'est perdue
 
-Scénario : MJ peut promouvoir le joueur migre en Member
-  Etant donne qu un joueur invite vient de creer un compte
+Scénario : MJ peut promouvoir le joueur migré en Member
+  Étant donné qu'un joueur invité vient de créer un compte
   Quand le MJ voit la notification dans le panneau membres
-  Alors il peut valider la promotion du joueur en Member de l espace partage
+  Alors il peut valider la promotion du joueur en Member de l'espace partagé
 ```
 
 ---

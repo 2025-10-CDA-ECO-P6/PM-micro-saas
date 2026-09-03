@@ -132,7 +132,7 @@ Les trois règles du test d'architecture, dans sa forme initiale :
 
 *Source : [structure-projets.md, § 6](../architecture/structure-projets.md) (l.130-132).*
 
-**Ordre C#-first, à l'intérieur de chaque incrément.** La solution .NET est échafaudée en premier. L'ordre à l'intérieur d'un même incrément est : Domaine / Application (C#) → EF Core (persistance) → TypeScript mode local → Angular. Cet ordre s'applique à l'intérieur d'un incrément, jamais en travers de la séquence macro des jalons.
+**Ordre C#-first, à l'intérieur de chaque jalon.** La solution .NET est échafaudée en premier. L'ordre à l'intérieur d'un même jalon est : Domaine / Application (C#) → EF Core (persistance) → TypeScript mode local → Angular. Cet ordre s'applique à l'intérieur d'un jalon, jamais en travers de la séquence macro des jalons.
 *Source : [structure-projets.md, § 8 — Ordre de construction](../architecture/structure-projets.md) ; [Roadmap d'entrée en build, § 4](roadmap-entree-build.md).*
 
 **Renvoi** : le détail du test d'architecture dans le dispositif de test global — son objet, son périmètre, ses critères d'entrée et de sortie — est décrit dans [le cahier de stratégie de test et de recette, § 3.4 — Test d'architecture (CI)](../test/cahier-strategie-test-et-recette.md).

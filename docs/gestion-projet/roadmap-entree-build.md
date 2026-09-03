@@ -101,7 +101,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 - **Pas d'EF Core cloud en J1.** Le mode local est un store IndexedDB aggregate-rooted, sans aucune synchronisation continue, sans persistance serveur ([ADR-017 §1-2](../architecture/decisions/ADR-017-modele-indexeddb-local.md)). Toute apparition d'un accès EF Core / cloud dans le périmètre livré à J1 signale une confusion d'ordonnancement avec J2.
 
 **Critères de sortie factuels** :
-- Le store IndexedDB local (`folders`/`documents`/`document_blocks`/`document_links`/`document_tags`/`document_types`, plus le store racine — **nom exact non figé par ce critère, voir Annexe B** : [ADR-017 §1.1](../architecture/decisions/ADR-017-modele-indexeddb-local.md) nomme encore ce store `campaigns`, résidu de rédaction antérieur au renommage [ADR-018](../architecture/decisions/ADR-018-espace-personnel-generalisation-space.md) qui n'a pas encore été propagé à l'ADR technique) est opérationnel et couvre le périmètre défini par [ADR-017 §1.1](../architecture/decisions/ADR-017-modele-indexeddb-local.md).
+- Le store IndexedDB local est opérationnel et couvre le périmètre défini par [ADR-017 §1.1 § Object stores](../architecture/decisions/ADR-017-modele-indexeddb-local.md).
 - `navigator.storage.persist()` est appelé à l'entrée en mode local ; le résultat (accordé / refusé-best-effort) est lu et déclenche le bandeau de durabilité si nécessaire.
 - Un export au format `schemaVersion` peut être produit depuis le store local et est structurellement rejouable (dry-run de validation possible côté contrat, sans nécessiter de serveur cloud actif pour cette vérification structurelle).
 - Aucun appel réseau vers l'API Haversack n'existe dans le périmètre mode local livré (observable via la CSP `connect-src 'self'`, [ADR-017 §4.2](../architecture/decisions/ADR-017-modele-indexeddb-local.md)).
@@ -266,7 +266,6 @@ L'axe **J0/J1/J2/J3**, nommé par contenu, est l'unique repère de phasage du co
 ## Annexe B — Prérequis hors jalon
 
 - **Assets d'identité** (logo, charte graphique/typo/grille, ressources icônes/composants) — préalable porté par la conception d'interface. Mentionné pour visibilité de trajectoire ; le détail (production, validation) relève de `docs/conception/interface/**`, non modifié par ce document.
-- **Résidu de nommage store `campaigns` → `spaces`** ([ADR-017 §1.1](../architecture/decisions/ADR-017-modele-indexeddb-local.md), tableau des object stores, encore nommé `campaigns` au moment de la rédaction de cet ADR, antérieur au renommage [ADR-018](../architecture/decisions/ADR-018-espace-personnel-generalisation-space.md)) — **watch point de build** : le renommage ubiquitaire acté par ADR-018 §Compléments post-revue a été propagé sur le corpus de conception (domaine, glossaire, use cases), mais la dénomination technique de l'object store IndexedDB (`campaigns` vs `spaces`) doit être confirmée cohérente au moment de l'implémentation P6 — ce n'est pas un point tranché différemment, c'est un résidu de rédaction à vérifier avant de coder le store.
 
 ---
 

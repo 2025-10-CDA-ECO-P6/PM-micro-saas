@@ -187,7 +187,7 @@ L'ontologie `Space + SpaceType.PERSONAL + espace personnel par défaut` est act�
 
 **Recommandation** : rendre l'espace personnel opérationnel en MVP — notamment comme zone d'atterrissage par défaut pour les documents créés sans espace explicite, y compris depuis le mode local.
 
-**Caveat — DÉCISION PRODUIT à confirmer au gate** : cette recommandation redéfinit H1 (vision-produit.md §2.3 — « activation préparation » doit-elle compter le contenu de l'espace personnel ?). Elle change également l'onboarding UC-01/UC-02 : le MJ en mode local peut créer du contenu sans créer de campagne. Ce changement de posture est substantiel et doit être validé explicitement avant d'être inscrit dans les user stories.
+**Caveat — DÉCISION PRODUIT à valider explicitement** : cette recommandation redéfinit H1 (vision-produit.md §2.3 — « activation préparation » doit-elle compter le contenu de l'espace personnel ?). Elle change également l'onboarding UC-01/UC-02 : le MJ en mode local peut créer du contenu sans créer de campagne. Ce changement de posture est substantiel et doit être validé explicitement avant d'être inscrit dans les user stories.
 
 ### Bibliothèque de réutilisation inter-espaces — POST-MVP
 

@@ -4,7 +4,7 @@
 > Hub de préparation d'un espace partagé — ancre la grammaire de préparation des autres fiches de la surface.
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md`.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..21`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6`.
 
 ---
 

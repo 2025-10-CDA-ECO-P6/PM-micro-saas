@@ -127,33 +127,33 @@ flowchart LR
 
 ```gherkin
 Scénario : Recherche par titre avec résultat (nominal)
-  Etant donne que l espace actif contient un document "Seigneur Varek" de type PNJ avec visibility = GM_ONLY
+  Étant donné que l'espace actif contient un document "Seigneur Varek" de type PNJ avec visibility = GM_ONLY
   Quand le MJ saisit "Varek" dans la barre de recherche
-  Alors le document "Seigneur Varek" apparait dans les resultats
-  Et le document peut etre ouvert depuis les resultats
+  Alors le document "Seigneur Varek" apparaît dans les résultats
+  Et le document peut être ouvert depuis les résultats
 
-Scénario : Recherche partielle insensible a la casse
-  Etant donne que l espace actif contient un document "Note de session 3" de type LIVE_NOTE
+Scénario : Recherche partielle insensible à la casse
+  Étant donné que l'espace actif contient un document "Note de session 3" de type LIVE_NOTE
   Quand le MJ saisit "note de session"
-  Alors le document "Note de session 3" apparait dans les resultats
+  Alors le document "Note de session 3" apparaît dans les résultats
 
-Scénario : Aucun resultat (A1)
-  Etant donne que l espace actif ne contient aucun document dont le titre contient "Dragon rouge"
+Scénario : Aucun résultat (A1)
+  Étant donné que l'espace actif ne contient aucun document dont le titre contient "Dragon rouge"
   Quand le MJ saisit "Dragon rouge"
-  Alors un etat vide est affiche
-  Et une suggestion invite a modifier la recherche
+  Alors un état vide est affiché
+  Et une suggestion invite à modifier la recherche
 
-Scénario : Recherche joueur - documents GM_ONLY exclus (A4, E1)
-  Etant donne que l espace actif contient "Plan secret" avec visibility = GM_ONLY
+Scénario : Recherche joueur — documents GM_ONLY exclus (A4, E1)
+  Étant donné que l'espace actif contient "Plan secret" avec visibility = GM_ONLY
   Et un document "Carte publique" avec visibility = PUBLIC
   Quand le joueur effectue une recherche sur "plan"
-  Alors "Plan secret" n est pas dans les resultats
-  Et "Carte publique" n est pas affectee par ce filtre
+  Alors "Plan secret" n'est pas dans les résultats
+  Et "Carte publique" n'est pas affectée par ce filtre
 
-Scénario : LIVE_NOTE session passee recherchable
-  Etant donne qu une session cloturee contient une LIVE_NOTE intitulee "Revelation faction Corbeau"
+Scénario : LIVE_NOTE session passée recherchable
+  Étant donné qu'une session clôturée contient une LIVE_NOTE intitulée "Révélation faction Corbeau"
   Quand le MJ saisit "Corbeau" dans la recherche
-  Alors la note "Revelation faction Corbeau" apparait dans les resultats
+  Alors la note "Révélation faction Corbeau" apparaît dans les résultats
 ```
 
 ---
@@ -184,22 +184,22 @@ Scénario : LIVE_NOTE session passee recherchable
 - [ ] Aucun résultat après filtrage : un état vide est affiché avec une option pour retirer le filtre.
 
 ```gherkin
-Scénario : Filtrer les resultats par type PNJ (A2)
-  Etant donne que la recherche sur "Varek" retourne un PNJ "Seigneur Varek" et une scene "Confrontation Varek"
-  Quand le MJ selectionne le filtre de type "PNJ"
-  Alors seul "Seigneur Varek" apparait dans les resultats
+Scénario : Filtrer les résultats par type PNJ (A2)
+  Étant donné que la recherche sur "Varek" retourne un PNJ "Seigneur Varek" et une scène "Confrontation Varek"
+  Quand le MJ sélectionne le filtre de type "PNJ"
+  Alors seul "Seigneur Varek" apparaît dans les résultats
 
-Scénario : Aucun resultat apres filtre (A1 + A2)
-  Etant donne que la recherche sur "donjon" retourne des resultats
+Scénario : Aucun résultat après filtre (A1 + A2)
+  Étant donné que la recherche sur "donjon" retourne des résultats
   Et que le MJ applique le filtre de type "PNJ"
-  Et qu aucun PNJ n a "donjon" dans son titre
-  Alors un etat vide est affiche
+  Et qu'aucun PNJ n'a "donjon" dans son titre
+  Alors un état vide est affiché
   Et une option permet de retirer le filtre de type
 
 Scénario : Retirer le filtre de type
-  Etant donne que le filtre de type "PNJ" est applique
+  Étant donné que le filtre de type "PNJ" est appliqué
   Quand le MJ retire ce filtre
-  Alors tous les types de documents reapparaissent dans les resultats
+  Alors tous les types de documents réapparaissent dans les résultats
 ```
 
 ---
@@ -234,31 +234,31 @@ Scénario : Retirer le filtre de type
 - [ ] Les règles de visibilité sont respectées (MJ voit `GM_ONLY` et `PUBLIC`, joueur voit `PUBLIC` uniquement).
 
 ```gherkin
-Scénario : Recherche depuis la vue session avec ponderation (nominal)
-  Etant donne qu une session est en status LIVE
-  Et que le document "Seigneur Varek" est epingle dans la session active
-  Et que l espace contient aussi "Varek le marchand" non epingle
+Scénario : Recherche depuis la vue session avec pondération (nominal)
+  Étant donné qu'une session est en status LIVE
+  Et que le document "Seigneur Varek" est épinglé dans la session active
+  Et que l'espace contient aussi "Varek le marchand" non épinglé
   Quand le MJ saisit "Varek" depuis la vue session
-  Alors "Seigneur Varek" apparait en tete des resultats car lie a la session active
-  Et "Varek le marchand" apparait dans les resultats apres
+  Alors "Seigneur Varek" apparaît en tête des résultats car lié à la session active
+  Et "Varek le marchand" apparaît dans les résultats après
 
-Scénario : Ouverture d un document dans le panneau lateral
-  Etant donne qu une session est en status LIVE
+Scénario : Ouverture d'un document dans le panneau latéral
+  Étant donné qu'une session est en status LIVE
   Et que le MJ a saisi "Corbeau" dans la recherche depuis la vue session
-  Quand le MJ selectionne le document "Faction des Corbeaux"
-  Alors le document s ouvre dans un panneau lateral
+  Quand le MJ sélectionne le document "Faction des Corbeaux"
+  Alors le document s'ouvre dans un panneau latéral
   Et la vue session reste active
 
-Scénario : Fermeture du panneau lateral sans perte de contexte
-  Etant donne que le panneau lateral de recherche est ouvert
-  Quand le MJ ferme le panneau lateral
-  Alors la vue session est restauree telle quelle sans perte de contexte
+Scénario : Fermeture du panneau latéral sans perte de contexte
+  Étant donné que le panneau latéral de recherche est ouvert
+  Quand le MJ ferme le panneau latéral
+  Alors la vue session est restaurée telle quelle sans perte de contexte
 
 Scénario : Recherche joueur depuis la vue session (A4, E1)
-  Etant donne qu une session est en status LIVE
-  Et qu un document "Note privee MJ" a visibility = GM_ONLY
+  Étant donné qu'une session est en status LIVE
+  Et qu'un document "Note privée MJ" a visibility = GM_ONLY
   Quand le joueur effectue une recherche depuis la vue session
-  Alors "Note privee MJ" n apparait pas dans ses resultats
+  Alors "Note privée MJ" n'apparaît pas dans ses résultats
 ```
 
 ---

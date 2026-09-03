@@ -169,42 +169,42 @@ flowchart LR
 - [ ] Un nouvel inscrit sans données locales à migrer est redirigé directement vers l'écran de création de campagne, sans écran de bienvenue intercalé (UC-10 fait foi sur cette cible). Un utilisateur dont des données locales ont été migrées retrouve son espace de travail synchronisé et est redirigé vers son tableau de bord.
 
 ```gherkin
-Scénario : Inscription depuis le mode local avec donnees locales (nominal 1)
-  Etant donne qu Émilie utilise l application en mode local
-  Et qu elle a cree deux espaces et plusieurs documents localement
-  Et qu elle a egalement conduit des sessions en mode local avec des notes et documents epingles
-  Quand elle clique sur l invite de sauvegarde cloud
-  Et qu elle saisit son email, son nom d affichage et un mot de passe
-  Et qu elle soumet le formulaire d inscription
-  Alors son compte est cree immediatement
-  Et l application lui presente les espaces locaux detectes avec titre, volume et date
-  Et elle voit aussi pour chaque espace son historique de session (sessions terminees, notes, documents epingles)
+Scénario : Inscription depuis le mode local avec données locales (nominal 1)
+  Étant donné qu'Émilie utilise l'application en mode local
+  Et qu'elle a créé deux espaces et plusieurs documents localement
+  Et qu'elle a également conduit des sessions en mode local avec des notes et documents épinglés
+  Quand elle clique sur l'invite de sauvegarde cloud
+  Et qu'elle saisit son email, son nom d'affichage et un mot de passe
+  Et qu'elle soumet le formulaire d'inscription
+  Alors son compte est créé immédiatement
+  Et l'application lui présente les espaces locaux détectés avec titre, volume et date
+  Et elle voit aussi pour chaque espace son historique de session (sessions terminées, notes, documents épinglés)
   Et elle confirme explicitement la migration
-  Et ses espaces, documents et historique de session locaux sont migres vers le cloud
-  Et elle retrouve son espace de travail intact, maintenant synchronise
-  Et ses sessions passees sont consultables, ses notes et epingles sont en place
+  Et ses espaces, documents et historique de session locaux sont migrés vers le cloud
+  Et elle retrouve son espace de travail intact, maintenant synchronisé
+  Et ses sessions passées sont consultables, ses notes et épinglés sont en place
 
-Scénario : Inscription sans donnees locales (nominal 2)
-  Etant donne que Thomas accede directement a la page d inscription
-  Et qu il n a pas de donnees locales
-  Quand il saisit son email, son nom d affichage et un mot de passe
-  Et qu il soumet le formulaire
-  Alors son compte est cree immediatement
-  Et il est redirige vers l ecran de creation de campagne
+Scénario : Inscription sans données locales (nominal 2)
+  Étant donné que Thomas accède directement à la page d'inscription
+  Et qu'il n'a pas de données locales
+  Quand il saisit son email, son nom d'affichage et un mot de passe
+  Et qu'il soumet le formulaire
+  Alors son compte est créé immédiatement
+  Et il est redirigé vers l'écran de création de campagne
 
-Scénario : Email deja utilise lors de l inscription (E1)
-  Etant donne qu un compte existe avec l email "emilie@exemple.fr"
-  Quand un utilisateur tente de s inscrire avec ce meme email
-  Alors le systeme refuse la creation
-  Et un message indique que l adresse est deja associee a un compte
+Scénario : Email déjà utilisé lors de l'inscription (E1)
+  Étant donné qu'un compte existe avec l'email "emilie@exemple.fr"
+  Quand un utilisateur tente de s'inscrire avec ce même email
+  Alors le système refuse la création
+  Et un message indique que l'adresse est déjà associée à un compte
 
-Scénario : Joueur invite cree un compte depuis un lien d invitation (A3)
-  Etant donne que Lucas a acces a une session en tant qu invite GuestAccess
-  Et qu il a pris des notes personnelles pendant la session
-  Quand il clique sur "Creer un compte" depuis la vue invitee
-  Et qu il complete le formulaire d inscription
-  Alors son GuestAccess est rattache a son nouveau compte
-  Et ses notes personnelles PLAYER_PRIVATE sont migrees sans perte
+Scénario : Joueur invité crée un compte depuis un lien d'invitation (A3)
+  Étant donné que Lucas a accès à une session en tant qu'invité GuestAccess
+  Et qu'il a pris des notes personnelles pendant la session
+  Quand il clique sur "Créer un compte" depuis la vue invitée
+  Et qu'il complète le formulaire d'inscription
+  Alors son GuestAccess est rattaché à son nouveau compte
+  Et ses notes personnelles PLAYER_PRIVATE sont migrées sans perte
 ```
 
 ---
@@ -233,22 +233,22 @@ Scénario : Joueur invite cree un compte depuis un lien d invitation (A3)
 
 ```gherkin
 Scénario : Connexion avec identifiants valides (nominal 3)
-  Etant donne qu Émilie a un compte actif
+  Étant donné qu'Émilie a un compte actif
   Quand elle saisit son email et son mot de passe corrects
-  Et qu elle soumet le formulaire de connexion
-  Alors elle est authentifiee
-  Et elle est redirigee vers son tableau de bord
+  Et qu'elle soumet le formulaire de connexion
+  Alors elle est authentifiée
+  Et elle est redirigée vers son tableau de bord
 
 Scénario : Identifiants invalides (E2)
-  Etant donne qu un utilisateur tente de se connecter
+  Étant donné qu'un utilisateur tente de se connecter
   Quand il saisit un mot de passe incorrect
-  Alors le systeme affiche un message d erreur generique
-  Et le message ne precise pas si c est l email ou le mot de passe qui est incorrect
+  Alors le système affiche un message d'erreur générique
+  Et le message ne précise pas si c'est l'email ou le mot de passe qui est incorrect
 
 Scénario : Connexion avec un compte suspendu
-  Etant donne qu un compte a le statut SUSPENDED
-  Quand l utilisateur tente de se connecter
-  Alors la connexion est refusee
+  Étant donné qu'un compte a le statut SUSPENDED
+  Quand l'utilisateur tente de se connecter
+  Alors la connexion est refusée
   Et un message indique que le compte est suspendu
 ```
 
@@ -287,34 +287,34 @@ Scénario : Connexion avec un compte suspendu
 - [ ] Un premier accès fédéré sans données locales à migrer est redirigé directement vers l'écran de création de campagne, sans écran de bienvenue intercalé (cohérent avec le scénario « Inscription sans données locales », UC-10 fait foi). Un premier accès fédéré avec données locales migrées, ou un utilisateur récurrent authentifié via connexion fédérée, est redirigé vers son tableau de bord.
 
 ```gherkin
-Scénario : Premiere connexion federee sans donnees locales — creation de compte (nominal 4)
-  Etant donne que Thomas n a pas de compte Haversack
-  Et qu il n a pas de donnees locales
-  Quand il clique sur le bouton de connexion via fournisseur d identite externe
-  Et qu il autorise l acces via son fournisseur
-  Alors un compte User est cree avec son adresse de messagerie
-  Et il est redirige vers l ecran de creation de campagne
+Scénario : Première connexion fédérée sans données locales — création de compte (nominal 4)
+  Étant donné que Thomas n'a pas de compte Haversack
+  Et qu'il n'a pas de données locales
+  Quand il clique sur le bouton de connexion via fournisseur d'identité externe
+  Et qu'il autorise l'accès via son fournisseur
+  Alors un compte User est créé avec son adresse de messagerie
+  Et il est redirigé vers l'écran de création de campagne
 
-Scénario : Connexion federee avec adresse de messagerie deja presente — adresse verifiee
-  Etant donne qu Émilie a un compte existant avec l adresse "emilie@exemple.fr" et que cette adresse est verifiee
-  Quand elle se connecte via son fournisseur d identite avec cette meme adresse
-  Alors la connexion federee est liee a son compte existant
-  Et elle accede a son tableau de bord sans creer un doublon
+Scénario : Connexion fédérée avec adresse de messagerie déjà présente — adresse vérifiée
+  Étant donné qu'Émilie a un compte existant avec l'adresse "emilie@exemple.fr" et que cette adresse est vérifiée
+  Quand elle se connecte via son fournisseur d'identité avec cette même adresse
+  Alors la connexion fédérée est liée à son compte existant
+  Et elle accède à son tableau de bord sans créer un doublon
 
-Scénario : Connexion federee avec adresse de messagerie deja presente — adresse non verifiee (branche b, RB-10-08 — resolution ouverte)
-  Etant donne qu un compte existe avec l adresse "emilie@exemple.fr" mais que cette adresse n est pas verifiee
-  Quand elle se connecte via son fournisseur d identite avec cette meme adresse
-  Alors la liaison automatique au compte existant est refusee (anti-hijacking, CWE-287)
-  Et aucun nouveau compte n est cree pour cette meme adresse (invariant 1, email unique)
-  Et aucune indication ne revele l existence du compte preexistant (non-revelation, CWE-204)
-  Et le traitement exact de la coquille non verifiee reste [A TRANCHER - securite/RGPD] (RB-10-08 branche b) : ce scenario ne prejuge pas de l issue (proposition Option A "reclaim-in-place" documentee mais non ratifiee)
+Scénario : Connexion fédérée avec adresse de messagerie déjà présente — adresse non vérifiée (branche b, RB-10-08 — résolution ouverte)
+  Étant donné qu'un compte existe avec l'adresse "emilie@exemple.fr" mais que cette adresse n'est pas vérifiée
+  Quand elle se connecte via son fournisseur d'identité avec cette même adresse
+  Alors la liaison automatique au compte existant est refusée (anti-hijacking, CWE-287)
+  Et aucun nouveau compte n'est créé pour cette même adresse (invariant 1, email unique)
+  Et aucune indication ne révèle l'existence du compte préexistant (non-révélation, CWE-204)
+  Et le traitement exact de la coquille non vérifiée reste [À TRANCHER - sécurité/RGPD] (RB-10-08 branche b) : ce scénario ne préjuge pas de l'issue (proposition Option A "reclaim-in-place" documentée mais non ratifiée)
 
-Scénario : Connexion federee avec donnees locales existantes
-  Etant donne qu un utilisateur a des donnees locales
-  Quand il s inscrit pour la premiere fois via son fournisseur d identite externe
-  Alors l application lui presente les espaces locaux detectes avec titre, volume et date
+Scénario : Connexion fédérée avec données locales existantes
+  Étant donné qu'un utilisateur a des données locales
+  Quand il s'inscrit pour la première fois via son fournisseur d'identité externe
+  Alors l'application lui présente les espaces locaux détectés avec titre, volume et date
   Et il confirme explicitement la migration
-  Et ses donnees locales sont migrees vers le cloud
+  Et ses données locales sont migrées vers le cloud
   Et il retrouve son espace de travail intact
 ```
 
@@ -347,25 +347,25 @@ Scénario : Connexion federee avec donnees locales existantes
 - [ ] Après réinitialisation, l'utilisateur peut se connecter avec son nouveau mot de passe.
 
 ```gherkin
-Scénario : Reinitialisation du mot de passe (A1)
-  Etant donne qu Émilie a oublie son mot de passe
-  Quand elle clique sur "Mot de passe oublie" et saisit son email
-  Alors le systeme lui envoie un email avec un lien de reinitialisation temporaire
-  Et le message de confirmation est le meme que si l email n existait pas
+Scénario : Réinitialisation du mot de passe (A1)
+  Étant donné qu'Émilie a oublié son mot de passe
+  Quand elle clique sur "Mot de passe oublié" et saisit son email
+  Alors le système lui envoie un email avec un lien de réinitialisation temporaire
+  Et le message de confirmation est le même que si l'email n'existait pas
 
-Scénario : Lien de reinitialisation expire (E3)
-  Etant donne qu Émilie a recu un lien de reinitialisation
-  Et que le lien a expire
+Scénario : Lien de réinitialisation expiré (E3)
+  Étant donné qu'Émilie a reçu un lien de réinitialisation
+  Et que le lien a expiré
   Quand elle clique sur le lien
-  Alors le systeme l informe que le lien n est plus valide
-  Et il lui propose de generer un nouveau lien
+  Alors le système l'informe que le lien n'est plus valide
+  Et il lui propose de générer un nouveau lien
 
-Scénario : Reinitialisation reussie
-  Etant donne qu Émilie utilise un lien de reinitialisation valide
+Scénario : Réinitialisation réussie
+  Étant donné qu'Émilie utilise un lien de réinitialisation valide
   Quand elle saisit et confirme un nouveau mot de passe
-  Alors son mot de passe est mis a jour
-  Et l ancien mot de passe est immediatement invalide
-  Et elle est redirigee vers la page de connexion
+  Alors son mot de passe est mis à jour
+  Et l'ancien mot de passe est immédiatement invalide
+  Et elle est redirigée vers la page de connexion
 ```
 
 ---
@@ -395,20 +395,20 @@ Scénario : Reinitialisation reussie
 - [ ] La modification est sauvegardée avec confirmation visuelle.
 
 ```gherkin
-Scénario : Mise a jour du nom d affichage (A2)
-  Etant donne qu Émilie est connectee a son compte
-  Quand elle accede a sa page profil
-  Et qu elle modifie son nom d affichage et sauvegarde
-  Alors le nouveau nom est applique immediatement
-  Et il est visible dans tous ses espaces partages
+Scénario : Mise à jour du nom d'affichage (A2)
+  Étant donné qu'Émilie est connectée à son compte
+  Quand elle accède à sa page profil
+  Et qu'elle modifie son nom d'affichage et sauvegarde
+  Alors le nouveau nom est appliqué immédiatement
+  Et il est visible dans tous ses espaces partagés
 
 Scénario : Modification du mot de passe
-  Etant donne que Thomas est connecte a son compte
-  Quand il accede a sa page profil
-  Et qu il saisit son mot de passe actuel et un nouveau mot de passe
-  Et qu il sauvegarde
-  Alors son mot de passe est mis a jour
-  Et il recoit une confirmation visuelle
+  Étant donné que Thomas est connecté à son compte
+  Quand il accède à sa page profil
+  Et qu'il saisit son mot de passe actuel et un nouveau mot de passe
+  Et qu'il sauvegarde
+  Alors son mot de passe est mis à jour
+  Et il reçoit une confirmation visuelle
 ```
 
 ---
@@ -441,39 +441,39 @@ Scénario : Modification du mot de passe
 
 ```gherkin
 Scénario : Suppression de compte (A4 nominal)
-  Etant donne qu Émilie est authentifiee et que son adresse de messagerie est validee
-  Et qu elle n a pas d espace CAMPAIGN ou ONE_SHOT avec des membres actifs
-  Quand elle accede a sa page profil et demande la suppression de son compte
-  Et qu elle prend connaissance des consequences affichees
-  Et qu elle confirme la suppression
-  Alors tout document PLAYER_PRIVATE qu elle a cree est supprime physiquement, quel qu en soit le type
-  Et ses donnees nominatives sont anonymisees dans toutes les tables
-  Et son espace personnel est purge avec le compte
-  Et son compte est desactive avec le statut DELETED
-  Et elle est deconnectee et redirigee vers la page d accueil
+  Étant donné qu'Émilie est authentifiée et que son adresse de messagerie est validée
+  Et qu'elle n'a pas d'espace CAMPAIGN ou ONE_SHOT avec des membres actifs
+  Quand elle accède à sa page profil et demande la suppression de son compte
+  Et qu'elle prend connaissance des conséquences affichées
+  Et qu'elle confirme la suppression
+  Alors tout document PLAYER_PRIVATE qu'elle a créé est supprimé physiquement, quel qu'en soit le type
+  Et ses données nominatives sont anonymisées dans toutes les tables
+  Et son espace personnel est purgé avec le compte
+  Et son compte est désactivé avec le statut DELETED
+  Et elle est déconnectée et redirigée vers la page d'accueil
 
-Scénario : Suppression de compte — documents PLAYER_PRIVATE rattaches a un personnage dans un espace tiers
-  Etant donne que Nadia est authentifiee et que son adresse de messagerie est validee
-  Et qu elle est simple membre (joueuse), non proprietaire, de la campagne "Les Ombres du Passe"
-  Et qu elle a cree des documents PLAYER_PRIVATE rattaches au personnage qu elle y incarnait
-  Quand elle demande la suppression de son compte et confirme apres avoir pris connaissance des consequences
-  Alors ses documents PLAYER_PRIVATE rattaches a ce personnage sont supprimes physiquement
-  Et la fiche du personnage survit dans la campagne "Les Ombres du Passe"
-  Et ce personnage reste re-associable a un autre joueur
+Scénario : Suppression de compte — documents PLAYER_PRIVATE rattachés à un personnage dans un espace tiers
+  Étant donné que Nadia est authentifiée et que son adresse de messagerie est validée
+  Et qu'elle est simple membre (joueuse), non propriétaire, de la campagne "Les Ombres du Passé"
+  Et qu'elle a créé des documents PLAYER_PRIVATE rattachés au personnage qu'elle y incarnait
+  Quand elle demande la suppression de son compte et confirme après avoir pris connaissance des conséquences
+  Alors ses documents PLAYER_PRIVATE rattachés à ce personnage sont supprimés physiquement
+  Et la fiche du personnage survit dans la campagne "Les Ombres du Passé"
+  Et ce personnage reste ré-associable à un autre joueur
 
-Scénario : Suppression bloquee — propriétaire d un espace CAMPAIGN ou ONE_SHOT actif (E4)
-  Etant donne que Thomas est authentifie et que son adresse de messagerie est validee
-  Et qu il est proprietaire d un espace CAMPAIGN ou ONE_SHOT avec des membres actifs
+Scénario : Suppression bloquée — propriétaire d'un espace CAMPAIGN ou ONE_SHOT actif (E4)
+  Étant donné que Thomas est authentifié et que son adresse de messagerie est validée
+  Et qu'il est propriétaire d'un espace CAMPAIGN ou ONE_SHOT avec des membres actifs
   Quand il demande la suppression de son compte
-  Alors le systeme bloque la suppression
-  Et il indique les espaces concernes
-  Et il lui demande de gerer ces espaces avant de pouvoir supprimer son compte
+  Alors le système bloque la suppression
+  Et il indique les espaces concernés
+  Et il lui demande de gérer ces espaces avant de pouvoir supprimer son compte
 
-Scénario : Suppression bloquee — adresse de messagerie non validee
-  Etant donne qu un utilisateur est authentifie mais que son adresse de messagerie n est pas validee
+Scénario : Suppression bloquée — adresse de messagerie non validée
+  Étant donné qu'un utilisateur est authentifié mais que son adresse de messagerie n'est pas validée
   Quand il tente de demander la suppression de son compte
-  Alors le systeme refuse la demande
-  Et il lui indique que la validation de son adresse de messagerie est requise avant cette operation
+  Alors le système refuse la demande
+  Et il lui indique que la validation de son adresse de messagerie est requise avant cette opération
 ```
 
 ---

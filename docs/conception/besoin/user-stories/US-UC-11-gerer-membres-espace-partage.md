@@ -139,33 +139,33 @@ flowchart LR
 - [ ] Une invitation expirée ne peut pas être réactivée — le MJ doit créer un nouveau lien (E2).
 
 ```gherkin
-Scenario : MJ genere un lien d invitation campagne (nominal)
-  Etant donne qu Emilie est propriétaire de la campagne "Les Ombres du Passé"
+Scénario : MJ génère un lien d'invitation campagne (nominal)
+  Étant donné qu'Émilie est propriétaire de la campagne "Les Ombres du Passé"
   Quand elle ouvre la section Membres et clique sur "Inviter un joueur"
-  Et qu elle choisit le perimetre SPACE
-  Et qu elle clique sur "Generer le lien"
-  Alors un lien d invitation est genere
+  Et qu'elle choisit le périmètre SPACE
+  Et qu'elle clique sur "Générer le lien"
+  Alors un lien d'invitation est généré
   Et le bouton "Copier" est disponible avec retour visuel
-  Et l invitation apparait dans la liste avec le statut PENDING
+  Et l'invitation apparaît dans la liste avec le statut PENDING
 
-Scenario : MJ genere un lien d invitation session
-  Etant donne que Thomas veut inviter un joueur pour la session "Session 04"
-  Quand il choisit le perimetre SESSION et selectionne "Session 04"
-  Alors le lien est associe a cette session
-  Et le GuestAccess sera cree a utilisation du lien
+Scénario : MJ génère un lien d'invitation session
+  Étant donné que Thomas veut inviter un joueur pour la session "Session 04"
+  Quand il choisit le périmètre SESSION et sélectionne "Session 04"
+  Alors le lien est associé à cette session
+  Et le GuestAccess sera créé à utilisation du lien
 
-Scenario : Joueur deja membre — doublon detecte (E1)
-  Etant donne qu un joueur est deja Member ACTIVE de l espace
-  Quand le MJ tente de generer une nouvelle invitation pour ce joueur
-  Alors le systeme informe le MJ que ce joueur est deja membre
-  Et aucun doublon n est cree
+Scénario : Joueur déjà membre — doublon détecté (E1)
+  Étant donné qu'un joueur est déjà Member ACTIVE de l'espace
+  Quand le MJ tente de générer une nouvelle invitation pour ce joueur
+  Alors le système informe le MJ que ce joueur est déjà membre
+  Et aucun doublon n'est créé
 
-Scenario : Invitation expiree non reactivable (E2)
-  Etant donne qu une invitation a depassé sa date d expiration
+Scénario : Invitation expirée non réactivable (E2)
+  Étant donné qu'une invitation a dépassé sa date d'expiration
   Quand le MJ consulte la liste des invitations
-  Alors l invitation est marquee REVOKED
-  Et aucune option de reactivation n est proposee
-  Et le MJ peut creer un nouveau lien
+  Alors l'invitation est marquée REVOKED
+  Et aucune option de réactivation n'est proposée
+  Et le MJ peut créer un nouveau lien
 ```
 
 ---
@@ -199,22 +199,22 @@ Scenario : Invitation expiree non reactivable (E2)
 - [ ] Le MJ peut créer un nouveau lien après révocation (redirection vers US-11-01).
 
 ```gherkin
-Scenario : MJ revoque une invitation active (A2)
-  Etant donne que Thomas a genere un lien d invitation dont le statut est PENDING
-  Quand il clique sur "Revoquer" dans la liste des invitations
-  Alors le statut de l invitation passe a REVOKED
-  Et le token est invalide immediatement
+Scénario : MJ révoque une invitation active (A2)
+  Étant donné que Thomas a généré un lien d'invitation dont le statut est PENDING
+  Quand il clique sur "Révoquer" dans la liste des invitations
+  Alors le statut de l'invitation passe à REVOKED
+  Et le token est invalide immédiatement
 
-Scenario : Joueur tente d utiliser un lien revoque
-  Etant donne qu une invitation est passee a l etat REVOKED
+Scénario : Joueur tente d'utiliser un lien révoqué
+  Étant donné qu'une invitation est passée à l'état REVOKED
   Quand un joueur clique sur le lien
-  Alors il voit le message "Ce lien n est plus actif"
-  Et aucune information sur l espace n est revele
+  Alors il voit le message "Ce lien n'est plus actif"
+  Et aucune information sur l'espace n'est révélée
 
-Scenario : Invitation deja revoquee — pas de reactivation
-  Etant donne qu une invitation est a l etat REVOKED
+Scénario : Invitation déjà révoquée — pas de réactivation
+  Étant donné qu'une invitation est à l'état REVOKED
   Quand le MJ consulte la liste des invitations
-  Alors aucune option "Reactiver" n est proposee
+  Alors aucune option "Réactiver" n'est proposée
   Et une option "Nouveau lien" est disponible
 ```
 
@@ -250,28 +250,28 @@ Scenario : Invitation deja revoquee — pas de reactivation
 - [ ] Le membre `REMOVED` qui tente d'accéder via un ancien lien voit un message d'accès refusé.
 
 ```gherkin
-Scenario : MJ retire un membre de l espace (A3)
-  Etant donne que l espace de Thomas a un Member ACTIVE nomme "Julien"
+Scénario : MJ retire un membre de l'espace (A3)
+  Étant donné que l'espace de Thomas a un Member ACTIVE nommé "Julien"
   Quand Thomas clique sur "Retirer" pour Julien
-  Alors le statut de Julien passe a REMOVED
-  Et Julien ne peut plus acceder a l espace
+  Alors le statut de Julien passe à REMOVED
+  Et Julien ne peut plus accéder à l'espace
 
-Scenario : Donnees preservees apres retrait
-  Etant donne que Julien avait un personnage et des notes dans l espace
+Scénario : Données préservées après retrait
+  Étant donné que Julien avait un personnage et des notes dans l'espace
   Quand Thomas retire Julien
-  Alors le personnage de Julien reste visible dans l espace
-  Et les notes partagees sont conservees
+  Alors le personnage de Julien reste visible dans l'espace
+  Et les notes partagées sont conservées
 
-Scenario : Membre retire peut etre reinvite
-  Etant donne que Julien est a l etat REMOVED
-  Quand Thomas genere un nouveau lien d invitation pour Julien
-  Alors Julien peut utiliser ce lien pour rejoindre a nouveau l espace
-  Et son ancien personnage peut lui etre reassocie
+Scénario : Membre retiré peut être réinvité
+  Étant donné que Julien est à l'état REMOVED
+  Quand Thomas génère un nouveau lien d'invitation pour Julien
+  Alors Julien peut utiliser ce lien pour rejoindre à nouveau l'espace
+  Et son ancien personnage peut lui être réassocié
 
-Scenario : Ancien lien d un membre retire
-  Etant donne que Julien est a l etat REMOVED
-  Quand Julien tente d acceder a l espace via un ancien lien
-  Alors il voit un message d acces refuse
+Scénario : Ancien lien d'un membre retiré
+  Étant donné que Julien est à l'état REMOVED
+  Quand Julien tente d'accéder à l'espace via un ancien lien
+  Alors il voit un message d'accès refusé
 ```
 
 ---
@@ -311,30 +311,30 @@ Scenario : Ancien lien d un membre retire
 - [ ] Un `GuestAccess` vers un personnage déjà associé récupère la **fiche** du personnage (`Document` de type `player_character`) ; il n'hérite jamais des notes `PLAYER_PRIVATE` d'un invité précédent.
 
 ```gherkin
-Scenario : MJ associe un joueur a un personnage (A1)
-  Etant donne que Thomas a un Member ACTIVE "Sophie"
-  Et que l espace contient un personnage "Aelindra"
-  Quand Thomas associe Sophie a Aelindra
-  Alors Sophie voit la fiche d Aelindra dans sa vue joueur
-  Et Sophie a acces aux notes PLAYER_PRIVATE d Aelindra
+Scénario : MJ associe un joueur à un personnage (A1)
+  Étant donné que Thomas a un Member ACTIVE "Sophie"
+  Et que l'espace contient un personnage "Aelindra"
+  Quand Thomas associe Sophie à Aelindra
+  Alors Sophie voit la fiche d'Aelindra dans sa vue joueur
+  Et Sophie a accès aux notes PLAYER_PRIVATE d'Aelindra
 
-Scenario : Personnage deja associe — unicite
-  Etant donne qu Aelindra est deja associee a Sophie
-  Quand Thomas tente d associer Aelindra a un autre membre
-  Alors le systeme indique qu Aelindra est deja associee a Sophie
+Scénario : Personnage déjà associé — unicité
+  Étant donné qu'Aelindra est déjà associée à Sophie
+  Quand Thomas tente d'associer Aelindra à un autre membre
+  Alors le système indique qu'Aelindra est déjà associée à Sophie
 
-Scenario : GuestAccess recupere la fiche via lien personnage, pas les notes d un invité précédent
-  Etant donne qu un personnage "Aelindra" a une fiche existante dans l espace
-  Et qu un nouveau lien GuestAccess pointant vers Aelindra est genere
+Scénario : GuestAccess récupère la fiche via lien personnage, pas les notes d'un invité précédent
+  Étant donné qu'un personnage "Aelindra" a une fiche existante dans l'espace
+  Et qu'un nouveau lien GuestAccess pointant vers Aelindra est généré
   Quand le joueur utilise ce lien sans compte
-  Alors il accede a la fiche d Aelindra
-  Et les notes PLAYER_PRIVATE d un invité précédent ne lui sont pas accessibles
+  Alors il accède à la fiche d'Aelindra
+  Et les notes PLAYER_PRIVATE d'un invité précédent ne lui sont pas accessibles
 
-Scenario : Dissociation sans suppression
-  Etant donne que Sophie est associee a Aelindra
-  Quand Thomas dissocie Sophie d Aelindra
-  Alors Aelindra reste dans l espace avec ses notes
-  Et Sophie n a plus acces a la fiche d Aelindra
+Scénario : Dissociation sans suppression
+  Étant donné que Sophie est associée à Aelindra
+  Quand Thomas dissocie Sophie d'Aelindra
+  Alors Aelindra reste dans l'espace avec ses notes
+  Et Sophie n'a plus accès à la fiche d'Aelindra
 ```
 
 ---

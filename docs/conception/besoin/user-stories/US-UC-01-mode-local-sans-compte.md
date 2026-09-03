@@ -35,7 +35,7 @@ Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans frict
 | US-01-04 | Must Have |
 | US-01-05 | Must Have (dépend UC-10) |
 | US-01-06 | Should Have |
-| US-01-07 | Should Have |
+| US-01-07 | Must Have |
 | US-01-09 | Must Have |
 
 ---
@@ -370,30 +370,30 @@ Feature: Gestion des données locales introuvables
 
 ---
 
-### US-01-07 — Exporter sa campagne dans un format ouvert
+### US-01-07 — Exporter un espace dans un format ouvert
 
-**Priorité** : Should Have (vision §5bis, décision 2026-06-10)
+**Priorité** : Must Have — promue de Should Have (état antérieur, décision du 2026-06-10, vision §5bis) par décision produit du 2026-06-25 (moscow.md § Export d'espace)
 
 **Note de transversalité** : ce besoin de possession des données existe en mode local comme avec un compte cloud — l'export n'est pas une fonctionnalité exclusive au mode local. L'implémentation sera commune aux deux contextes.
 
 **Format**
 
 > En tant que MJ,
-> je veux pouvoir exporter ma campagne dans un format ouvert depuis les paramètres,
+> je veux pouvoir exporter un espace (espace personnel inclus) dans un format ouvert depuis les paramètres,
 > afin de disposer d'une copie de sauvegarde et de ne pas être enfermé dans l'outil.
 
 **Métadonnées**
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Should Have |
+| Priorité | Must Have |
 | Source | UC-01 — scénario alternatif A4a ; vision §5bis |
 | Bounded context | Space Management |
 
 **Critères d'acceptation**
 
 ```gherkin
-Feature: Export de campagne en format ouvert
+Feature: Export d'un espace en format ouvert
 
   Scenario: Le MJ exporte sa campagne depuis les paramètres (mode local)
     Given le MJ est en mode local sans compte
@@ -521,7 +521,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 4. **US-01-04** — Visibilité des fonctionnalités cloud (prépare la conversion)
 5. **US-01-06** — Gestion des données introuvables (robustesse, Should Have)
 6. **US-01-05** — Migration vers compte (dépend UC-10, livrable uniquement après)
-7. **US-01-07** — Export de campagne en format ouvert (Should Have — transverse mode local / cloud)
+7. **US-01-07** — Export d'un espace en format ouvert (Must Have — transverse mode local / cloud)
 
 ---
 
@@ -535,7 +535,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | RB-01-06 : fonctionnalités de partage nécessitent un compte | US-01-04 |
 | RB-01-14 : bandeaux durabilité + confidentialité | US-01-01 (RB-01-14), US-01-02 (logique de durabilité), US-01-06 (E1) |
 | RB-01-15 : aucun élément protégé conservé en mode local | US-01-01 (garanties du mode local) |
-| Export de campagne en format ouvert (RB-01-16/17) | US-01-07 (Should Have) |
+| Export d'un espace en format ouvert (RB-01-16/17) | US-01-07 (Must Have) |
 | Fichier réimporté validé et nettoyé avant enregistrement (post-MVP) | US-01-08 — post-MVP ; règles de validation tracées dans UC-01 A4b |
 | RB-01-18 : espace personnel instancié par défaut en mode local, propriété transférée à la migration | US-01-09 |
 | RB-01-19 : contenu capturé retrouvable et rangeable/instanciable ultérieurement | US-01-09 |
@@ -547,7 +547,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | Persistance après fermeture/réouverture | US-01-02 |
 | Rappel non bloquant sur la nature locale | US-01-01 (message premier démarrage) + RB-01-14 (bandeaux durabilité/confidentialité) |
 | Création de compte depuis n'importe quelle page avec migration | US-01-05 |
-| Export de campagne en format ouvert (Should Have) | US-01-07 |
+| Export d'un espace en format ouvert (Must Have) | US-01-07 |
 | Réimport de fichier de sauvegarde (post-MVP) | US-01-08 — post-MVP |
 | Fonctionnalités de partage visibles mais désactivées avec invite | US-01-04 |
 | Bandeau durabilité si garantie de conservation refusée | US-01-02 (RB-01-04 révisée) |
@@ -558,7 +558,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | A1 — Conversion vers un compte | US-01-05 |
 | A2 — Retour après fermeture du navigateur | US-01-02 |
 | A3 — Données introuvables (cache vidé ou éviction navigateur) | US-01-06 |
-| A4a — Export de campagne (format ouvert) | US-01-07 (Should Have) |
+| A4a — Export d'un espace (format ouvert) | US-01-07 (Must Have) |
 | A4b — Réimport de fichier de sauvegarde (validation + nettoyage) | US-01-08 — post-MVP |
 | E1 — Stockage navigateur plein | US-01-06 |
 
@@ -569,7 +569,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 1. **Affichage des bandeaux de limitation** — Formalisé. Deux bandeaux ciblés et non bloquants remplacent un bandeau persistant générique : bandeau de durabilité (conditionnel — quand la garantie de conservation permanente est refusée) et bandeau de confidentialité (systématique en mode local). Portés par RB-01-14. Le message informatif au premier démarrage reste couvert par US-01-01.
 2. **Confirmation de migration des données locales** — Formalisé : un gate de reconnaissance est présenté avant migration si des données locales existent (campagnes détectées, volume estimé, date de création). La migration démarre uniquement après confirmation explicite. Cette confirmation est une exigence du système — aucune migration ne peut démarrer sans elle. La règle porteuse est RB-10-04 dans UC-10.
 3. **Limite du nombre de campagnes en mode local** — DÉCIDÉ (arbitrage produit) : il n'existe aucun plafond de création en mode local. Seule la capacité de stockage du navigateur (~50-100 Mo) limite la création (cf. E1, US-01-06). RB-01-03, qui portait ce plafond inexistant, est retirée.
-4. **Périmètre de l'export / de la sauvegarde locale** — DÉCIDÉ : export de campagne = **Should Have** (vision §5bis, 2026-06-10), disponible en mode local comme avec un compte cloud. Le **réimport** d'un fichier de sauvegarde est un objet distinct, repoussé **post-MVP** (US-01-08).
+4. **Périmètre de l'export / de la sauvegarde locale** — DÉCIDÉ : export d'un espace (espace personnel inclus) = **Must Have**, promu de Should Have (état antérieur, décision du 2026-06-10, vision §5bis) par décision produit du 2026-06-25 (moscow.md § Export d'espace), disponible en mode local comme avec un compte cloud. Le **réimport** d'un fichier de sauvegarde est un objet distinct, repoussé **post-MVP** (US-01-08).
 5. **Espace personnel et activation « préparation »** — TRANCHÉ (décision produit du 2026-07-09, vision §2.3) : le contenu créé dans l'espace personnel sans campagne compte pour l'activation « préparation » (H1) **partiellement**, lorsqu'il traduit un geste structurant (au-delà d'une capture triviale), et non automatiquement au même titre qu'une campagne créée. Le seuil/critère exact du geste structurant reste `[À TRANCHER — métrique produit]`. Voir `docs/conception/besoin/vision/vision-produit.md` §2.3 pour la définition consolidée.
 
 ---

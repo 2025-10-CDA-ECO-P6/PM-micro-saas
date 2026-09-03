@@ -39,7 +39,7 @@ _quarantine/          exports corrompus conservés pour traçabilité (non explo
 
 Avant de lire les fiches, lire les sources de vérité dans cet ordre :
 
-1. `docs/conception/interface/zoning.md` — arbitrages figés (AR-01..21), inventaire des écrans (S4), châssis (S7), exclusions (S8), trous de corpus (S9).
+1. `docs/conception/interface/zoning.md` — arbitrages figés, inventaire des écrans (S4), châssis (S7), exclusions (S8), trous de corpus (S9).
 2. `docs/conception/interface/conventions-wireframe.md` — notation basse-fidélité (familles de marqueurs C3), deux registres de nommage (Registre 1 : termes de domaine ; Registre 2 : termes de région d'interface).
 3. `docs/conception/interface/gabarit-ecran.md` — structure du gabarit que chaque fiche instancie.
 4. Les fiches de ce répertoire.
@@ -137,7 +137,7 @@ Les éléments suivants sont inventoriés dans le zoning (S8) mais hors périmè
 
 ## Renvois
 
-- Arbitrages figés appliqués : `docs/conception/interface/zoning.md §S6 AR-01..21`
+- Arbitrages figés appliqués : `docs/conception/interface/zoning.md §S6`
 - Châssis applicatif (indicateurs, bandeaux, accessibilité transversale) : `zoning.md §S7`
 - Exclusions nommées (éléments hors périmètre wireframe MVP) : `zoning.md §S8`
 - Trous de corpus (points d'interview, éléments sous-spécifiés) : `zoning.md §S9`

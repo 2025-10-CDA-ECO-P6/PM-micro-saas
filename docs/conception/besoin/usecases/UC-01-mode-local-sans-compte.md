@@ -100,7 +100,7 @@ Aucune.
 2. L'application détecte l'absence de données locales et affiche un message explicatif distinguant ce cas d'une première visite.
 3. Elle propose de créer du contenu ou un espace de jeu, ou de se connecter à un compte existant.
 
-### A4 — Export de campagne et réimport manuel d'un fichier de sauvegarde
+### A4 — Export d'espace et réimport manuel d'un fichier de sauvegarde
 
 #### A4a — Export (Must Have / version minimale — disponible en mode local comme avec un compte)
 

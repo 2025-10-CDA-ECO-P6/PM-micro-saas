@@ -3,7 +3,7 @@
 > Fiche de description d'écran basse-fidélité — écran prioritaire.
 > Instancie le gabarit `docs/conception/interface/gabarit-ecran.md` sur l'écran le plus riche du MVP.
 > Notation et nommage : `docs/conception/interface/conventions-wireframe.md`.
-> Arbitrages figés : `docs/conception/interface/zoning.md §S6 AR-01..21`.
+> Arbitrages figés : `docs/conception/interface/zoning.md §S6`.
 
 ---
 

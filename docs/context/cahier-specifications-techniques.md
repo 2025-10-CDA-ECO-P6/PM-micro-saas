@@ -148,9 +148,9 @@ Le passage d'un espace en purge s'appuie sur un **claim exclusif**, posé avant 
 
 Le choix de SignalR (§2) impose des connexions persistantes et des sessions collantes (« sticky sessions ») côté hébergement. La configuration retenue est sobre : repli forcé vers Server-Sent Events tant que la communication reste unidirectionnelle (MJ → joueurs), fermeture de la connexion en fin de session active, et heartbeat allongé (les événements sont rares en session de jeu de rôle). Un mécanisme de repli vers un polling adaptatif est prévu au-delà d'un seuil de coût par session concurrente — ce seuil, sa métrique et sa cadence de repli restent `[À TRANCHER — spec repli-temps-reel.md §3]`, non chiffrés dans le corpus à ce stade.
 
-### Mode local : plafond et posture migration-only
+### Mode local : capacité de stockage et posture migration-only
 
-Le mode local est plafonné à **trois espaces de type campagne ou one-shot actifs** ; ce plafond est vérifié avant toute écriture dans le store local. Sa posture de synchronisation est **migration-only** : aucune synchronisation continue entre le navigateur et le cloud n'existe au MVP — le seul passage de données vers le serveur est une migration ponctuelle, déclenchée explicitement par l'utilisateur, traitée intégralement ou pas du tout par espace.
+Le mode local ne porte aucun plafond de création d'espace : sa seule contrainte est la capacité de stockage du navigateur (UC-01 § Règles métier). Le plafond de trois espaces porte exclusivement sur la synchronisation cloud d'un compte gratuit (RB-02-10), espace personnel exclu du décompte. Sa posture de synchronisation est **migration-only** : aucune synchronisation continue entre le navigateur et le cloud n'existe au MVP — le seul passage de données vers le serveur est une migration ponctuelle, déclenchée explicitement par l'utilisateur, traitée intégralement ou pas du tout par espace.
 
 ### Stockage : quotas et paliers
 
@@ -166,7 +166,7 @@ Le palier local persiste les données exclusivement dans le navigateur, sans lim
 | ADR-011 — Cascade & intégrité référentielle | pré-implémentation | Accepté | Toutes FK `RESTRICT`, sagas `SpaceDeleted`/`UserAnonymized`, transaction par espace, idempotence |
 | ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | Configuration sobre (SSE forcé, fermeture fin de session, heartbeat allongé) |
 | `docs/architecture/specs/repli-temps-reel.md` §2-3 | spec pré-build | cadre à compléter | Mécanisme de repli vers polling adaptatif ; seuil, métrique, cadence non chiffrés — `[À TRANCHER]` |
-| ADR-017 — Modèle IndexedDB local | mixte (dominante pré-implémentation) | Accepté | Plafond de 3 espaces, posture migration-only, absence de synchronisation continue |
+| ADR-017 — Modèle IndexedDB local | mixte (dominante pré-implémentation) | Accepté | Absence de plafond de création en mode local, posture migration-only, absence de synchronisation continue |
 | CdC §7.5 (+ renvoi §12.4) | synthèse produit | — | Quotas de stockage par palier, valeurs chiffrées en renvoi |
 
 ---
@@ -416,7 +416,7 @@ Avant tout import, l'utilisateur se voit présenter les espaces détectés dans 
 
 ### Modèle local IndexedDB
 
-Le store local n'est pas un miroir relationnel des tables serveur : il est **enraciné sur l'agrégat de l'espace** (aggregate-rooted), organisation cohérente avec la posture CRUD du mode local et qui rend la fonction de projection vers le payload quasi-identitaire. Les index locaux se limitent strictement aux chemins de lecture qu'exige le mode local — navigation par espace, par dossier, par document, recherche par titre — sans index spéculatif. La version interne du store IndexedDB est **distincte du `schemaVersion` du payload** : les deux contrats évoluent indépendamment, la fonction de projection absorbant les évolutions internes du store sans affecter le contrat de payload côté serveur. Le mode local est plafonné à trois espaces actifs, vérifié avant toute écriture.
+Le store local n'est pas un miroir relationnel des tables serveur : il est **enraciné sur l'agrégat de l'espace** (aggregate-rooted), organisation cohérente avec la posture CRUD du mode local et qui limite la fonction de projection vers le payload à un filtre nommé, sans reformatage structurel complexe. Les index locaux se limitent strictement aux chemins de lecture qu'exige le mode local — navigation par espace, par dossier, par document, recherche par titre — sans index spéculatif. La version interne du store IndexedDB est **distincte du `schemaVersion` du payload** : les deux contrats évoluent indépendamment, la fonction de projection absorbant les évolutions internes du store sans affecter le contrat de payload côté serveur.
 
 ### Points ouverts de configuration
 
@@ -427,7 +427,7 @@ Le seuil de `schemaVersion` minimale maintenue côté serveur et l'horizon de r�
 | Source | Nature | Statut | Ce qu'elle porte |
 |---|---|---|---|
 | ADR-016 — Sérialisation locale et contrat de migration | mixte, dominante pré-implémentation | Accepté | Format versionné, frontière de confiance, parcours d'échec transactionnel par espace, gate de confirmation |
-| ADR-017 — Modèle IndexedDB local | mixte, dominante pré-implémentation | Accepté | Structure aggregate-rooted, index restreints, versionnement du store distinct du payload, plafond de 3 espaces |
+| ADR-017 — Modèle IndexedDB local | mixte, dominante pré-implémentation | Accepté | Structure aggregate-rooted, index restreints, versionnement du store distinct du payload, absence de plafond de création en mode local |
 | ADR-001 — Exécution du domaine en mode local | pré-implémentation | Accepté | Fondation — invariant validation locale ⊆ serveur, migration comme import revalidé |
 | ADR-018 — Généralisation de `Campaign` en `Space` | conception | Accepté | Inclusion de l'espace `PERSONAL` dans le périmètre sérialisé et la transactionnalité par espace |
 | `docs/architecture/specs/sanitisation-csp.md` §2 | spec pré-build | cadre à compléter | Ordre validation puis sanitisation à l'import JSON local |

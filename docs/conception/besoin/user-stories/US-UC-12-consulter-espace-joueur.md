@@ -140,38 +140,38 @@ flowchart LR
 - [ ] Les documents dont la visibilité n'est pas `PUBLIC` ne sont pas visibles par le joueur.
 
 ```gherkin
-Scenario : Joueur avec personnage associe accede a sa fiche et aux documents partages (nominal)
-  Etant donne que Lucas a rejoint la session via un lien valide
-  Et que le MJ a associe le personnage "Aldric" a Lucas
-  Quand la vue joueur s affiche
+Scénario : Joueur avec personnage associé accède à sa fiche et aux documents partagés (nominal)
+  Étant donné que Lucas a rejoint la session via un lien valide
+  Et que le MJ a associé le personnage "Aldric" à Lucas
+  Quand la vue joueur s'affiche
   Alors Lucas voit la fiche du personnage "Aldric"
-  Et Lucas voit les documents PUBLIC de l espace
-  Et Lucas peut consulter et modifier ses notes PLAYER_PRIVATE liees a Aldric
+  Et Lucas voit les documents PUBLIC de l'espace
+  Et Lucas peut consulter et modifier ses notes PLAYER_PRIVATE liées à Aldric
 
-Scenario : Joueur sans personnage associe - consultation uniquement
-  Etant donne que Lucas a rejoint la session via un lien valide
-  Et qu aucun personnage n a ete associe a Lucas par le MJ
-  Quand la vue joueur s affiche
-  Alors Lucas voit les documents PUBLIC de l espace
+Scénario : Joueur sans personnage associé — consultation uniquement
+  Étant donné que Lucas a rejoint la session via un lien valide
+  Et qu'aucun personnage n'a été associé à Lucas par le MJ
+  Quand la vue joueur s'affiche
+  Alors Lucas voit les documents PUBLIC de l'espace
   Et Lucas ne voit pas de fiche de personnage
-  Et Lucas ne peut pas creer de notes PLAYER_PRIVATE liees a un personnage
+  Et Lucas ne peut pas créer de notes PLAYER_PRIVATE liées à un personnage
 
-Scenario : Acces perimetre SESSION - pas d acces au lore complet de l espace
-  Etant donne que Lucas a rejoint via un lien perimetre SESSION
-  Quand la vue joueur s affiche
-  Alors Lucas voit les documents epingles de la session et les documents PUBLIC
-  Et Lucas ne voit pas l historique des sessions precedentes ni le lore complet de l espace
+Scénario : Accès périmètre SESSION — pas d'accès au lore complet de l'espace
+  Étant donné que Lucas a rejoint via un lien périmètre SESSION
+  Quand la vue joueur s'affiche
+  Alors Lucas voit les documents épinglés de la session et les documents PUBLIC
+  Et Lucas ne voit pas l'historique des sessions précédentes ni le lore complet de l'espace
 
-Scenario : Notes PLAYER_PRIVATE preservees entre les sessions pour le meme auteur
-  Etant donne que Lucas a pris des notes PLAYER_PRIVATE sur Aldric lors d une session precedente
-  Et que Lucas rejoint une nouvelle session en tant que meme auteur (meme compte)
-  Quand la vue joueur s affiche
-  Alors les notes PLAYER_PRIVATE ecrites par Lucas sur Aldric sont disponibles
+Scénario : Notes PLAYER_PRIVATE préservées entre les sessions pour le même auteur
+  Étant donné que Lucas a pris des notes PLAYER_PRIVATE sur Aldric lors d'une session précédente
+  Et que Lucas rejoint une nouvelle session en tant que même auteur (même compte)
+  Quand la vue joueur s'affiche
+  Alors les notes PLAYER_PRIVATE écrites par Lucas sur Aldric sont disponibles
 
-Scenario : Documents GM_ONLY invisibles pour le joueur
-  Etant donne que l espace contient un document avec la visibilite GM_ONLY
+Scénario : Documents GM_ONLY invisibles pour le joueur
+  Étant donné que l'espace contient un document avec la visibilité GM_ONLY
   Quand Lucas consulte la vue joueur
-  Alors ce document n apparait pas dans sa liste de documents
+  Alors ce document n'apparaît pas dans sa liste de documents
 ```
 
 ---
@@ -208,36 +208,36 @@ Scenario : Documents GM_ONLY invisibles pour le joueur
 - [ ] Le changement de personnage actif ne modifie pas les associations définies par le MJ.
 
 ```gherkin
-Scenario : Joueur avec plusieurs personnages - choix du personnage actif a l entree
-  Etant donne que Thomas est Member de l espace
-  Et que le MJ a associe Thomas aux personnages "Veran" et "Kael"
-  Quand Thomas accede a la vue joueur
-  Alors une interface de selection lui propose de choisir entre "Veran" et "Kael"
-  Et Thomas peut selectionner le personnage qu il joue ce soir
+Scénario : Joueur avec plusieurs personnages — choix du personnage actif à l'entrée
+  Étant donné que Thomas est Member de l'espace
+  Et que le MJ a associé Thomas aux personnages "Veran" et "Kael"
+  Quand Thomas accède à la vue joueur
+  Alors une interface de sélection lui propose de choisir entre "Veran" et "Kael"
+  Et Thomas peut sélectionner le personnage qu'il joue ce soir
 
-Scenario : Vue joueur apres selection du personnage actif
-  Etant donne que Thomas a selectionne "Veran" comme personnage actif
-  Quand la vue joueur s affiche
-  Alors la fiche de "Veran" est visible en priorite
-  Et les notes PLAYER_PRIVATE liees a "Veran" sont accessibles et editables
-  Et les notes de "Kael" ne sont pas affichees
+Scénario : Vue joueur après sélection du personnage actif
+  Étant donné que Thomas a sélectionné "Veran" comme personnage actif
+  Quand la vue joueur s'affiche
+  Alors la fiche de "Veran" est visible en priorité
+  Et les notes PLAYER_PRIVATE liées à "Veran" sont accessibles et éditables
+  Et les notes de "Kael" ne sont pas affichées
 
-Scenario : Changement de personnage actif en cours de session
-  Etant donne que Thomas a "Veran" comme personnage actif
+Scénario : Changement de personnage actif en cours de session
+  Étant donné que Thomas a "Veran" comme personnage actif
   Quand Thomas change le personnage actif pour "Kael" depuis la vue joueur
-  Alors la fiche de "Kael" s affiche
+  Alors la fiche de "Kael" s'affiche
   Et les notes PLAYER_PRIVATE de "Kael" remplacent celles de "Veran" dans la vue
 
-Scenario : Joueur avec un seul personnage - pas de selection requise
-  Etant donne que Lucas est Member de l espace
-  Et que le MJ a associe Lucas a un seul personnage "Aldric"
-  Quand Lucas accede a la vue joueur
-  Alors la fiche d Aldric s affiche directement sans etape de selection
+Scénario : Joueur avec un seul personnage — pas de sélection requise
+  Étant donné que Lucas est Member de l'espace
+  Et que le MJ a associé Lucas à un seul personnage "Aldric"
+  Quand Lucas accède à la vue joueur
+  Alors la fiche d'Aldric s'affiche directement sans étape de sélection
 
-Scenario : Changement de personnage actif sans modifier les associations MJ
-  Etant donne que Thomas a "Veran" comme personnage actif et change pour "Kael"
+Scénario : Changement de personnage actif sans modifier les associations MJ
+  Étant donné que Thomas a "Veran" comme personnage actif et change pour "Kael"
   Quand le MJ consulte le panneau membres
-  Alors l association de Thomas avec "Veran" et "Kael" est inchangee dans Space Management
+  Alors l'association de Thomas avec "Veran" et "Kael" est inchangée dans Space Management
 ```
 
 ---

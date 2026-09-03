@@ -34,28 +34,40 @@ coexistent dans un même assembly, les dépendances vont toujours domaine → ap
 
 ## 3 — Granularité des projets .NET (MVP)
 
+**Portée de cette section.** Sont tranchés, et ne se rouvrent pas à J0 : les principes de granularité par couche
+(Domaine et Application en projets uniques, Infrastructure et Présentation en multi-projets), les namespaces de
+bounded context du Domaine, le noyau partagé (§ 4), l'isolation du module de notifications temps réel, et la
+Clean Architecture (§ 2). Relèvent de l'ouverture de J0 : la séparation en projets à l'intérieur de chaque couche
+— combien, et lesquels —, les noms de projet, et le contenu de chacun — dossiers, fichiers, classes, sous-dossiers
+(`[À TRANCHER — J0]`, convention de balisage reprise de
+[guide-conventions-et-dod.md, § Convention de balisage](../gestion-projet/guide-conventions-et-dod.md)).
+
+**Convention de désignation.** Un projet dont le nom n'est pas tranché se désigne par son rôle — « le projet
+Domaine unique », « le projet Application unique » ; un namespace se désigne par son nom, tranché. Tout document
+qui dérive de la présente section emploie cette convention plutôt qu'un nom de projet non arrêté.
+
 ### Domaine et Application : projets uniques
 
 Les quatre bounded contexts (**Identity & Access**, **Space Management**, **Content Library**, **Session Conduct**)
 sont des **frontières logiques** — organisées en namespaces distincts et contrats internes clairs — pas une assembly par contexte.
 
 ```
-Haversack.Domain/
-  ├── IdentityAccess/       [À TRANCHER — J0]
-  ├── SpaceManagement/      [À TRANCHER — J0]
-  ├── ContentLibrary/       [À TRANCHER — J0]
-  ├── SessionConduct/       [À TRANCHER — J0]
-  └── SharedKernel/         [À TRANCHER — J0]
+Projet Domaine unique               [À TRANCHER — J0] (nom du projet)
+  ├── IdentityAccess/                [À TRANCHER — J0] (contenu)
+  ├── SpaceManagement/               [À TRANCHER — J0] (contenu)
+  ├── ContentLibrary/                [À TRANCHER — J0] (contenu)
+  ├── SessionConduct/                [À TRANCHER — J0] (contenu)
+  └── SharedKernel/                  [À TRANCHER — J0] (contenu)
 
-Haversack.Application/      [À TRANCHER — J0]
+Projet Application unique           [À TRANCHER — J0] (nom du projet)
 ```
 
-ADR-008 — la source citée pour cette section — décide seulement les deux projets (`Haversack.Domain`,
-`Haversack.Application`) et les quatre bounded contexts comme namespaces distincts ; le nommage `SharedKernel`
-est décidé par le §4 du présent document, qui clôt un report explicite d'ADR-008 (§ Conséquences). Le contenu
-de chacun des cinq namespaces — fichiers, classes, sous-dossiers — n'est fixé ni par ADR-008 ni par aucune
-autre section du présent document ; il relève du build (`[À TRANCHER — J0]`, convention de balisage reprise de
-[guide-conventions-et-dod.md, § Convention de balisage](../gestion-projet/guide-conventions-et-dod.md)).
+ADR-008 — la source citée pour cette section — décide que le Domaine et l'Application sont chacun un **projet
+unique** — pas les noms qui les désignent ci-dessus, qui restent une illustration — et que les quatre bounded
+contexts y sont des namespaces distincts. Le nommage `SharedKernel` est décidé par le § 4 du présent document,
+qui clôt un report explicite d'ADR-008 (§ Conséquences). Le contenu de chacun des cinq namespaces — fichiers,
+classes, sous-dossiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document ; il relève
+du build (`[À TRANCHER — J0]`).
 
 Cette approche permet une montée en équipe sans cérémonie de configuration dès J0 (ADR-008 Contexte).
 Si un contexte doit être isolé pour des raisons réelles (équipe, dépendances incompatibles, performance de build),
@@ -65,23 +77,25 @@ il peut être extrait en projet `.Domain.<ContextName>` sans rupture architectur
 
 ### Infrastructure et Présentation : multi-projets conservé
 
-Les préoccupations techniques transversales restent isolées dès J0 :
+La granularité reste multi-projets sur l'Infrastructure et la Présentation, pour des préoccupations techniques
+distinctes du découpage DDD :
 
 ```
-Haversack.Infrastructure.Persistence/    [À TRANCHER — J0]
+Haversack.Infrastructure.Persistence/    [À TRANCHER — J0] (illustration ; nom et contenu)
 
-Haversack.Infrastructure.Notifications/  [À TRANCHER — J0] (ADR-004, § Compléments)
+Haversack.Infrastructure.Notifications/  (tranché — ADR-008 § Conséquences ; ADR-004, § Compléments)
 
-Haversack.Presentation.Api/              [À TRANCHER — J0]
+Haversack.Presentation.Api/              [À TRANCHER — J0] (illustration ; nom et contenu)
 
-Haversack.Presentation.Landing/          [À TRANCHER — J0] (Angular SSR/prerender, voir § 7)
+Haversack.Presentation.Landing/          [À TRANCHER — J0] (illustration ; nom et contenu ; Angular SSR/prerender, voir § 7)
 ```
 
-ADR-008 — la source citée pour cette section — décide seulement les quatre noms de projets. Le contenu de
-chacun — dossiers, fichiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document ;
-il relève du build (`[À TRANCHER — J0]`).
-
-L'isolation de `Haversack.Infrastructure.Notifications` est explicitement validée pour supporter le transport SignalR temps réel (ADR-004).
+ADR-008 — la source citée pour cette section — décide cette granularité multi-projets et donne les noms ci-dessus
+« Par exemple » (ADR-008 § Décision) : ils restent une illustration, pas un nom arrêté. Il isole nommément
+`Haversack.Infrastructure.Notifications` dès J0 (ADR-008 § Conséquences), cohérent avec le transport SignalR
+temps réel (ADR-004). Combien de projets composent chaque couche au-delà de ce module, lesquels, et le contenu
+de chacun — dossiers, fichiers — ne sont fixés ni par ADR-008 ni par aucune autre section du présent document ;
+ils relèvent du build (`[À TRANCHER — J0]`).
 
 *Source : [ADR-008, § Décision](decisions/ADR-008-structure-solution.md)*
 
@@ -187,6 +201,8 @@ que DDD cherche à éviter. Angular+TypeScript minimal offre une surface stable 
 Conséquence : le mode local reste plus pauvre que le domaine serveur (invariants métier riches non garantis hors ligne).
 C'est un choix accepté, documenté dans la vision produit et dans les use cases (UC-01).
 
+L'emplacement de la couche Angular et TypeScript du mode local — répertoires et découpage interne, pour la persistance locale comme pour les deux surfaces frontend décrites ci-dessus — doit être nommé à l'ouverture de `J0`. Ce nommage porte le marqueur `[À TRANCHER — J0]` et ne relève d'aucune section du présent document.
+
 *Source : [ADR-003, § Alternatives et Conséquences](decisions/ADR-003-stack-front.md) ; [ADR-001, § Décision](decisions/ADR-001-execution-domaine-mode-local.md)*
 
 ---
@@ -206,6 +222,9 @@ l'infrastructure et le front dépendent du domaine.
 
 Le « walking skeleton local-only » (une première expérience utilisateur hors ligne) n'est pas un jalon isolé ;
 il est construit après que la structure .NET et le modèle IndexedDB soient stables.
+
+Cet ordre s'applique à l'intérieur d'un même jalon ; il ne s'applique jamais en travers de la séquence des jalons.
+L'application de cet ordre jalon par jalon relève de la [Roadmap d'entrée en build, § 4. Ordre C#-first — interne à chaque jalon](../gestion-projet/roadmap-entree-build.md).
 
 *Source : [ADR-001, § Compléments post-revue](decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-008, § Compléments post-revue](decisions/ADR-008-structure-solution.md)*
 
