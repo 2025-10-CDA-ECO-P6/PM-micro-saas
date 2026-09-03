@@ -205,7 +205,13 @@ def extraire_maille(contenu_plan, racine):
     # (c) modules d'outillage et (d) modules transverses : les puces du §2
     def noms_de_puce(marqueur):
         ligne = next((l for l in contenu_plan.splitlines() if marqueur in l), None)
-        return set(re.findall(r"`([^`]+)`", ligne)) if ligne else set()
+        if ligne is None:
+            return set()
+        # Un renvoi de document est un libellé de lien markdown `` [`texte`](url) `` :
+        # sa forme le distingue d'un nom de module, qui n'est jamais un lien.
+        # On retire cette forme avant d'extraire les noms entre accents graves.
+        sans_renvois = re.sub(r"\[`[^`]+`\]\([^)]*\)", "", ligne)
+        return set(re.findall(r"`([^`]+)`", sans_renvois))
     outillage = noms_de_puce("un **module d'outillage**")
     transverses = noms_de_puce("un **module transverse nommé**")
 
