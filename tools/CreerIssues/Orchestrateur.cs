@@ -316,19 +316,53 @@ internal static class Orchestrateur
 
             string titreIssue = $"{tbId} — {tache.Titre}";
 
+            bool issueExistante = idsIssuesExistantes.Contains(tbId);
             string corps = CorpsIssue.Construire(
                 tbId, urlBlobPlan, revisionPlan, tache.Champs, numeroIssueParTb,
                 corpsExistantParTb.GetValueOrDefault(tbId));
+            // Idempotence : une issue existante dont le corps engendré tombe
+            // déjà juste ne déclenche aucun appel `gh`, sous --appliquer comme
+            // en mode à blanc — seule une divergence réelle vaut régénération.
+            bool corpsDivergent = issueExistante
+                && !string.Equals(corps, corpsExistantParTb.GetValueOrDefault(tbId, ""), StringComparison.Ordinal);
 
             if (!string.IsNullOrEmpty(args.Seulement))
             {
-                string etatCorps = idsIssuesExistantes.Contains(tbId) ? "issue existante — corps régénéré" : "à créer";
+                string etatCorps = !issueExistante
+                    ? "à créer"
+                    : corpsDivergent ? "issue existante — corps à régénérer" : "issue existante — corps déjà à jour";
                 sortie.WriteLine($"\n── Corps de l'issue {tbId} ({etatCorps}) ──\n{corps}\n── fin du corps {tbId} ──");
             }
 
-            if (idsIssuesExistantes.Contains(tbId))
+            if (issueExistante)
             {
-                compteIssues.Existant(titreIssue);
+                if (!corpsDivergent)
+                {
+                    compteIssues.Existant(titreIssue);
+                    continue;
+                }
+
+                if (!args.Appliquer)
+                {
+                    compteIssues.MiseAJour($"{titreIssue} [corps à régénérer]");
+                    continue;
+                }
+
+                // Seul le corps est modifié ici — jamais l'état, les
+                // libellés, le jalon ni le titre d'une issue existante
+                // (règle rappelée en fin d'exécution, plus bas).
+                try
+                {
+                    int numeroIssue = numeroIssueParTb[tbId];
+                    GhCli.ApiModifier(
+                        $"repos/{owner}/{repo}/issues/{numeroIssue}",
+                        new Dictionary<string, string> { ["body"] = corps });
+                    compteIssues.MiseAJour(titreIssue);
+                }
+                catch (ErreurCorpusException erreur)
+                {
+                    compteIssues.Echec(titreIssue, erreur.Message);
+                }
                 continue;
             }
 
@@ -383,8 +417,9 @@ internal static class Orchestrateur
         }
         compteIssues.Afficher(sortie, "Issues (une par tâche)");
 
-        sortie.WriteLine("\nRègle rappelée : le plan de travail reste la source de vérité ; "
-            + "aucune issue existante n'a été modifiée, fermée ou réétiquetée par ce script.");
+        sortie.WriteLine("\nRègle rappelée : le plan de travail reste la source de vérité ; sur une "
+            + "issue existante, seule la zone engendrée du corps est régénérée quand elle diverge — "
+            + "aucune issue existante n'a été fermée, réétiquetée, déplacée de jalon ni renommée par ce script.");
 
         // Signal arbitré, propre au portage C# : le script Python d'origine ne
         // compte ni les tâches sans libellé de nature déductible ni

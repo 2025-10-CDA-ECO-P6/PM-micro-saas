@@ -84,4 +84,27 @@ internal static class GhCli
         }
         return TexteUnicode.StripPython(resultat.Stdout).Length > 0 ? JsonDocument.Parse(resultat.Stdout) : null;
     }
+
+    /// <summary>
+    /// Équivalent de <c>gh api -X PATCH &lt;chemin&gt; -f clé=valeur…</c> — seule
+    /// méthode de ce module qui modifie une ressource déjà existante plutôt
+    /// que d'en créer une. Même contrat d'erreur que <see cref="ApiCreer"/> ;
+    /// la réponse n'est jamais exploitée par l'appelant (régénération du
+    /// corps d'une issue), donc pas décodée ici.
+    /// </summary>
+    public static void ApiModifier(string cheminApi, IReadOnlyDictionary<string, string> champsTexte)
+    {
+        var arguments = new List<string> { "api", "-X", "PATCH", cheminApi };
+        foreach (var (cle, valeur) in champsTexte)
+        {
+            arguments.Add("-f");
+            arguments.Add($"{cle}={valeur}");
+        }
+        var resultat = Processus.Executer("gh", arguments.ToArray());
+        if (resultat.Code != 0)
+        {
+            string message = TexteUnicode.StripPython(resultat.Stderr);
+            throw new ErreurCorpusException(message.Length > 0 ? message : "échec sans détail renvoyé par gh");
+        }
+    }
 }

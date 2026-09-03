@@ -639,3 +639,161 @@ public class CodeDeSortieUnSurMethodeDeTicketMalformee : IDisposable
         Assert.Equal(string.Empty, resultat.Stdout.Trim());
     }
 }
+
+/// <summary>
+/// Comportement de régénération sous <c>--appliquer</c> — jusqu'ici absent :
+/// l'outil ne faisait que créer, jamais mettre à jour une issue existante.
+/// Exerce les trois propriétés minimales exigées : le corps est mis à jour
+/// (appel `gh api -X PATCH … issues/{numéro}`) quand il diverge, la zone
+/// écrite à la main survit au caractère près à cette mise à jour, et une
+/// seconde passe sans changement du plan ni de l'existant GitHub n'émet
+/// AUCUN appel de mise à jour (idempotence prouvée par le journal du faux
+/// `gh`, pas seulement par un texte de prévisualisation).
+///
+/// Les listes de libellés et de jalons renvoyées par le faux `gh` couvrent
+/// déjà toute la taxonomie de la fixture (§3) : aucune création de libellé
+/// ou de jalon ne doit donc être déclenchée par cette exécution, ce qui
+/// isole le journal aux seuls appels pertinents pour la régénération du
+/// corps de l'issue. `FAUX_GH_REPONSES` sert une réponse différente par rang
+/// d'appel (auth, libellés, jalons, issues, puis l'éventuel PATCH) — une
+/// réponse unique ne le permettrait pas, la forme JSON attendue diffère
+/// d'un point d'API à l'autre.
+/// </summary>
+public class RegenerationDuCorpsDUneIssueExistanteSousAppliquer : IDisposable
+{
+    private const string TitreIssueExistante = "TB-014 — Peu importe (fixture)";
+    private const int NumeroIssueExistante = 7;
+
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+    private readonly string _cheminBin;
+
+    public RegenerationDuCorpsDUneIssueExistanteSousAppliquer()
+    {
+        FixturesCreerIssues.EcrireDepotMinimal(
+            _tmpDepot.Chemin,
+            FixturesCreerIssues.PlanPreambule + FixturesCreerIssues.TacheTb014("—", "—"));
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture régénération sous --appliquer");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerIssues.UrlOrigineFictive, pousser: true);
+
+        _cheminBin = Helpers.RepertoireBinAvecFauxGh(_tmpBin.Chemin);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    // Toute la taxonomie de FixturesCreerIssues.MethodeMd (§3), déjà
+    // présente côté GitHub simulé : aucun libellé ni jalon à créer.
+    private static string ReponseLibellesExistants() => JsonSerializer.Serialize(new object[]
+    {
+        new { name = "J0" }, new { name = "J1" },
+        new { name = "Comportement" }, new { name = "Couche cliente" }, new { name = "Outillage" },
+        new { name = "Socle" }, new { name = "Surface" }, new { name = "Hors maille" },
+        new { name = "Fonctionnel" },
+    });
+
+    private static string ReponseJalonsExistants() => JsonSerializer.Serialize(new object[]
+    {
+        new { title = "J0", number = 1 },
+        new { title = "J1", number = 2 },
+    });
+
+    private static string ReponseIssueExistante(string? corps) => JsonSerializer.Serialize(new object?[]
+    {
+        new { title = TitreIssueExistante, number = NumeroIssueExistante, body = corps },
+    });
+
+    /// <summary>
+    /// Écrit le fichier de réponses ordonnées par rang d'appel : (0) auth
+    /// status — contenu ignoré, seul le code de sortie compte — (1) liste des
+    /// libellés, (2) liste des jalons, (3) liste des issues (porte le corps
+    /// existant à comparer), (4) réponse du PATCH de mise à jour, jamais
+    /// décodée par <see cref="CreerIssues"/> — sa présence couvre aussi le
+    /// cas où aucun appel ne l'atteint (rang 4 jamais consommé).
+    /// </summary>
+    private string EcrireReponses(string? corpsIssueExistante)
+    {
+        string chemin = Path.Combine(_tmpBin.Chemin, $"reponses-{Guid.NewGuid():N}.json");
+        string contenu = JsonSerializer.Serialize(new[]
+        {
+            "{}",
+            ReponseLibellesExistants(),
+            ReponseJalonsExistants(),
+            ReponseIssueExistante(corpsIssueExistante),
+            "{}",
+        });
+        Helpers.Ecrire(chemin, contenu);
+        return chemin;
+    }
+
+    private static List<string[]> LireJournal(string chemin) =>
+        File.Exists(chemin)
+            ? File.ReadAllLines(chemin)
+                .Where(l => l.Trim().Length > 0)
+                .Select(l => JsonDocument.Parse(l).RootElement.GetProperty("args")
+                    .EnumerateArray().Select(e => e.GetString() ?? "").ToArray())
+                .ToList()
+            : new List<string[]>();
+
+    [Fact]
+    public void DevraitMettreAJourLeCorpsPreserverLaZoneManuelleEtNeRienEcrireALaSecondePasseIdentique()
+    {
+        string ancienCorps =
+            "**Tâche de plan** : [`docs/gestion-projet/plan-de-travail.md`](url-perimee) — TB-014\n"
+            + "**Dépend de** : —\n"
+            + "**En conflit avec** : —\n"
+            + "**Estampille de provenance** : ancienne révision, à écraser\n\n"
+            + FixturesCreerIssues.MarqueurSeparationCorps
+            + "\n\n## Pris par\n\nPierre-Marie, à partir du 2026-08-20.\n\n"
+            + "## Notes d'exécution\n\nBloqué par la disponibilité de l'environnement de recette.\n\n"
+            + "## Écart constaté\n\nAucun à ce jour.\n";
+        string zoneManuelleAttendue = ancienCorps[
+            (ancienCorps.IndexOf(FixturesCreerIssues.MarqueurSeparationCorps, StringComparison.Ordinal)
+                + FixturesCreerIssues.MarqueurSeparationCorps.Length)..];
+
+        // ── Première passe : le corps calculé diverge de l'ancien corps
+        // (estampille et renvoi de tâche périmés) — une régénération doit
+        // avoir lieu.
+        string journal1 = Path.Combine(_tmpBin.Chemin, "journal-passe-1.jsonl");
+        var environnement1 = new Dictionary<string, string>
+        {
+            ["PATH"] = _cheminBin,
+            ["JOURNAL_GH"] = journal1,
+            ["FAUX_GH_REPONSES"] = EcrireReponses(ancienCorps),
+        };
+        var passe1 = Helpers.ExecuterOutilAvecEnvironnement("CreerIssues", ["--appliquer"], _tmpDepot.Chemin, environnement1);
+        Assert.Equal(0, passe1.CodeSortie);
+
+        var invocations1 = LireJournal(journal1);
+        var appelsPatch1 = invocations1.Where(a => a.Contains("PATCH")).ToList();
+        Assert.Single(appelsPatch1);
+        Assert.Equal($"repos/exemple-org/exemple-depot/issues/{NumeroIssueExistante}", appelsPatch1[0][3]);
+
+        string argumentCorps = appelsPatch1[0].Single(a => a.StartsWith("body=", StringComparison.Ordinal));
+        string corpsRegenere = argumentCorps["body=".Length..];
+
+        Assert.NotEqual(ancienCorps, corpsRegenere);
+        Assert.EndsWith(zoneManuelleAttendue, corpsRegenere);
+        Assert.Contains("mis à jour  : 1", passe1.Stdout);
+
+        // ── Seconde passe : l'existant GitHub simulé porte désormais
+        // exactement le corps régénéré à la première passe — aucune
+        // divergence, donc AUCUN appel de mise à jour ne doit être émis.
+        string journal2 = Path.Combine(_tmpBin.Chemin, "journal-passe-2.jsonl");
+        var environnement2 = new Dictionary<string, string>
+        {
+            ["PATH"] = _cheminBin,
+            ["JOURNAL_GH"] = journal2,
+            ["FAUX_GH_REPONSES"] = EcrireReponses(corpsRegenere),
+        };
+        var passe2 = Helpers.ExecuterOutilAvecEnvironnement("CreerIssues", ["--appliquer"], _tmpDepot.Chemin, environnement2);
+        Assert.Equal(0, passe2.CodeSortie);
+
+        var invocations2 = LireJournal(journal2);
+        Assert.DoesNotContain(invocations2, a => a.Contains("PATCH"));
+        Assert.Contains("déjà présents : 1", passe2.Stdout);
+    }
+}
