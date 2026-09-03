@@ -315,8 +315,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Dépend de | — |
 | Périmètre d'écriture | HORS MAILLE — nature : acte de décision — retenir un outil et tracer le choix ne vise aucun module de code |
 | En conflit avec | — |
-| Taille | S |
-| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — l'outil est NetArchTest, l'alternative par script étant écartée ; `structure-projets.md §6`, mention « Outil tranché » — les trois règles de frontière y sont énumérées et s'écrivent en assertions |
+| Taille | M — 0 modules, 3 renvois |
+| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — la règle 2 relève de NetArchTest, les règles 1 et 3 d'un contrôle du graphe des références de projet ; `structure-projets.md §6`, mention « Outillage tranché » — chaque règle est rattachée au mécanisme qui la vérifie, avec la raison de ce rattachement ; `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, paragraphe « Ce que chacun ne fait pas » — les limites de chaque mécanisme sont écrites, et le rattachement n'est réputé tracé que si elles le sont |
 | Code de renvoi | — |
 
 ##### TB-008 — Câbler les deux contrôles d'architecture dans le pipeline d'intégration continue

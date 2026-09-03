@@ -36,7 +36,13 @@ conclut et recommande.
 
 ---
 
-> **Avertissement de lecture — les identifiants des exemples travaillés sont illustratifs.**
+> **Avertissement de lecture — aucun identifiant `TB-` de cette revue ne désigne une tranche actuelle.**
+> Cette revue mesure et cite le plan **tel qu'il était avant le redécoupage**. Les identifiants `TB-013` à `TB-055`
+> qu'elle nomme ont été **retirés** : la table « Identifiants retirés » du plan dit ce qui les reprend
+> ([`plan-de-travail.md §11`](plan-de-travail.md)). Les citer comme s'ils désignaient du travail à faire serait une
+> erreur de lecture.
+>
+> **Les identifiants des exemples travaillés sont, en plus, illustratifs.**
 > Les tranches nommées `TB-056` à `TB-065` dans les exemples de la §3.8 étaient des **propositions**, produites
 > avant l'arbitrage. Le plan de travail réécrit emploie ces mêmes identifiants pour d'autres tranches. **La seule
 > attribution qui fasse foi est celle du plan** ([`plan-de-travail.md §6`](plan-de-travail.md)), et la trace des
