@@ -256,8 +256,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | IdentityAccess ; SpaceManagement ; ContentLibrary ; SessionConduct ; SharedKernel |
 | En conflit avec | TB-004 — module partagé : SharedKernel ; TB-005 — module partagé : SharedKernel |
 | Taille | L — les namespaces sont posés en un seul geste de structuration du Domaine ; leur contenu interne reste `[À TRANCHER — J0]`, ce qui interdit de scinder cette tâche plus finement aujourd'hui |
-| Critères d'acceptation | `structure-projets.md § Domaine et Application : projets uniques` ; `guide-conventions-et-dod.md §2 § Organisation par namespaces par bounded context` ; **`TROU`** — nature : *contenu non spécifié* — `structure-projets.md` marque les cinq lignes `[À TRANCHER — J0]` et écrit que « le contenu de chacun des cinq namespaces — fichiers, classes, sous-dossiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document » — aucun critère d'acceptation n'existe au-delà de l'existence des cinq répertoires |
+| Critères d'acceptation | `structure-projets.md § Domaine et Application : projets uniques` ; `guide-conventions-et-dod.md §2 § Organisation par namespaces par bounded context` |
 | Code de renvoi | — |
+| Borne du critère | le critère se limite à l'existence des cinq répertoires, et c'est une borne assumée, non un manque : `structure-projets.md` marque les cinq lignes `[À TRANCHER — J0]` et écrit que « le contenu de chacun des cinq namespaces — fichiers, classes, sous-dossiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document ». Cette tranche se clôt sur l'existence des répertoires. |
 | Note de maille | cette tâche est la seule du plan à déclarer des **namespaces** et non des agrégats : elle crée les tiroirs, pas leur contenu. Les agrégats qu'ils accueilleront sont déclarés par les tranches de J1 (§2). |
 
 ##### TB-004 — Implémenter les abstractions du `SharedKernel`
@@ -315,7 +316,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | HORS MAILLE — nature : acte de décision — retenir un outil et tracer le choix ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | S |
-| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Non couvert par le corpus` : « `[À TRANCHER — J0]` : l'outil exact du test d'architecture. La source présente deux options de façon alternative, sans trancher entre elles — NetArchTest ou une convention de namespace vérifiée par script. » Aucun critère d'acceptation n'existe pour choisir entre les deux |
+| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — l'outil est NetArchTest, l'alternative par script étant écartée ; `structure-projets.md §6`, mention « Outil tranché » — les trois règles de frontière y sont énumérées et s'écrivent en assertions |
 | Code de renvoi | — |
 
 ##### TB-008 — Câbler le contrôle d'architecture dans le pipeline d'intégration continue
@@ -596,7 +597,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | DocumentType ; Document |
 | En conflit avec | TB-057 — module partagé : Document, DocumentType ; TB-065 — module partagé : Document ; TB-067 — module partagé : Document ; TB-069 — module partagé : Document ; TB-073 — module partagé : Document ; TB-076 — module partagé : Document ; TB-081 — module partagé : Document |
 | Taille | L — deux agrégats — le catalogue de types s'écrit indépendamment de toute instance de document — et plus de deux renvois |
-| Critères d'acceptation | RB-04-04, RB-04-05 ; `architecture/specs/document-properties-schemas.md §1 § Contrat du value object DocumentProperties` (décision reportée d'ADR-002) ; `cahier-strategie-test-et-recette.md §3.1` ; **`TROU` partiel** — nature : *champs non modélisés* — `document-properties-schemas.md §3` et `§ Synthèse des trous nommés` marquent `[À TRANCHER — modélisation domaine]` les champs concrets de `propertiesSchema` — ADR-002 ne les fixe pas, ils ne sont pas inventés ici |
+| Critères d'acceptation | RB-04-04, RB-04-05 ; `architecture/specs/document-properties-schemas.md §1 § Contrat du value object DocumentProperties` (décision reportée d'ADR-002) ; `cahier-strategie-test-et-recette.md §3.1` ; `document-properties-schemas.md §1` — `SetProperties()` est refusé sur un document sans type : `properties` n'existe pas sans schéma contre quoi valider ; `document-properties-schemas.md § scene, npc, location, note, player_character, reveal` — `propertiesSchema` vide au MVP pour ces six types système, absence actée sur le précédent de `live_note` |
 | Code de renvoi | — |
 
 ##### TB-067 — Invariant de visibilité `Document.CanBeReadBy`
@@ -797,9 +798,10 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Dépend de | TB-056, TB-065 |
 | Périmètre d'écriture | Document |
 | En conflit avec | TB-057 — module partagé : Document ; TB-065 — module partagé : Document ; TB-066 — module partagé : Document ; TB-067 — module partagé : Document ; TB-069 — module partagé : Document ; TB-073 — module partagé : Document ; TB-076 — module partagé : Document |
-| Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `structure-projets.md §7 § Le mode local : persistance navigateur + validations minimales` — les trois validations autorisées y sont énumérées littéralement (titre non vide, structure de blocs valide, aucune validation métier riche) ; `ADR-001 § Compléments post-revue (2026-09-03)`, puce d'invariant requalifiée — l'invariant se lit au sens des règles : aucune règle côté client que le domaine serveur ne porte pas ; **`TROU`** — nature : *invariant non outillable* — `ADR-016 § Conséquences` le qualifie de « discipline de conception dirigée, pas une propriété vérifiée par outillage » (pas de test cross-langage TypeScript/C#) — aucun critère d'acceptation vérifiable n'existe pour l'invariant lui-même, seulement pour les trois validations nommées |
+| Taille | S |
+| Critères d'acceptation | `structure-projets.md §7 § Le mode local : persistance navigateur + validations minimales` — les trois validations autorisées y sont énumérées littéralement (titre non vide, structure de blocs valide, aucune validation métier riche) ; `ADR-001 § Compléments post-revue (2026-09-03)`, puce d'invariant requalifiée — l'invariant se lit au sens des règles : aucune règle côté client que le domaine serveur ne porte pas |
 | Code de renvoi | — |
+| Borne du critère | cette tranche se clôt sur les **trois validations nommées**, pas sur l'invariant lui-même : `ADR-016 § Conséquences` qualifie celui-ci de « discipline de conception dirigée, pas une propriété vérifiée par outillage » — aucun test cross-langage TypeScript/C# ne l'assure, et le filet est la revalidation à l'import. C'est une borne assumée par le corpus, non un manque. |
 | Conséquence opposable | une validation côté client qui refuse ce que le domaine serveur accepte est un **défaut à retirer du client**, non une protection supplémentaire (`ADR-001 § Compléments post-revue (2026-09-03)`). |
 
 ### EP-08 — Durabilité et sécurité du mode local
@@ -858,7 +860,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | sanitisation ; politique de sécurité de contenu |
 | En conflit avec | TB-086 — module partagé : politique de sécurité de contenu ; recouvrement à confirmer à J0 — TB-086 porte sur la même configuration de politique de sécurité de contenu, non nommable dans la maille. Recouvrement à confirmer à J0. |
 | Taille | L — surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) |
-| Critères d'acceptation | `guide-conventions-et-dod.md §7 § Conventions de sécurité de code` — critères d'acceptation non négociables énumérés (liste blanche positive identique serveur/client, `<script>` et attributs `on*` interdits sans exception, ordre valider-puis-sanitiser avant toute écriture, posture `default-src 'self'` / `script-src 'self'` / `connect-src 'self'`) ; `specs/sanitisation-csp.md §1`, `§2`, `§4` ; `usecases/UC-01-mode-local-sans-compte.md § Critères d'acceptation` — « Aucun contenu, importé ou saisi, ne peut déclencher l'exécution de code lors de son affichage » ; `guide-conventions-et-dod.md §7`, puce « bibliothèque de sanitisation » — `DomSanitizer` d'Angular, complété de DOMPurify sur le chemin d'import JSON ; `guide-conventions-et-dod.md §7`, puce « directives » — `default-src`, `script-src` et `connect-src` en `'self'`, plus `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'none'`, sans nonce ; **`TROU` partiel** — nature : *préalable de modélisation non tranché* — la liste exhaustive des balises autorisées présuppose qu'un bloc de contenu `TEXT` porte du HTML, ce qu'aucune source du corpus n'établit (`conception/domain/content-library.md § DocumentBlock` écrit « contenu structuré selon le type de bloc ») — le format du contenu doit être tranché d'abord |
+| Critères d'acceptation | `guide-conventions-et-dod.md §7 § Conventions de sécurité de code` — critères d'acceptation non négociables énumérés (liste blanche positive identique serveur/client, `<script>` et attributs `on*` interdits sans exception, ordre valider-puis-sanitiser avant toute écriture, posture `default-src 'self'` / `script-src 'self'` / `connect-src 'self'`) ; `specs/sanitisation-csp.md §1`, `§2`, `§4` ; `usecases/UC-01-mode-local-sans-compte.md § Critères d'acceptation` — « Aucun contenu, importé ou saisi, ne peut déclencher l'exécution de code lors de son affichage » ; `guide-conventions-et-dod.md §7`, puce « bibliothèque de sanitisation » — `DomSanitizer` d'Angular, complété de DOMPurify sur le chemin d'import JSON ; `guide-conventions-et-dod.md §7`, puce « directives » — `default-src`, `script-src` et `connect-src` en `'self'`, plus `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'none'`, sans nonce ; `conception/domain/content-library.md § DocumentBlock`, mention « Format de `content` — tranché » — le contenu d'un bloc est un arbre de nœuds typés, jamais une chaîne de balisage — la liste blanche positive porte donc sur l'énumération fermée des types de nœuds |
 | Code de renvoi | B1.2, P6 |
 
 ##### TB-086 — Vérifier l'absence d'appel réseau dans le périmètre mode local
@@ -961,8 +963,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Dépend de | TB-080, TB-074 |
 | Périmètre d'écriture | le projet Application unique |
 | En conflit avec | TB-002 — module partagé : le projet Application unique ; TB-010 — module partagé : le projet Application unique ; TB-080 — module partagé : le projet Application unique |
-| Taille | S |
-| Critères d'acceptation | **`TROU`** — nature : *unité fonctionnelle Must Have sans aucun critère d'acceptation*. Aucune UC, aucune US, aucun Gherkin, aucune RB, aucun CR ne porte l'instrumentation ; `architecture/specs/telemetrie.md`, bandeau « Statut » : « cadre à compléter — non implémentable en l'état, les trous nommés ci-dessous bloquent le passage en développement » |
+| Taille | M — un module, 4 renvois |
+| Critères d'acceptation | `vision/moscow.md § Instrumentation de validation du MVP`, pilier 1 — activation préparation : un espace créé et au moins trois documents, ou un geste structurant (un dossier créé, ou un document déplacé hors de « Non classés ») ; `vision/moscow.md § Instrumentation de validation du MVP`, pilier 2 — activation vue session : au moins une action du MJ pendant la session ; `vision/moscow.md § Instrumentation de validation du MVP`, mention « Comment cette mesure sort du navigateur » — compteurs écrits dans le store local, transmis à la création de compte, aucun appel sortant en mode local ; `vision/vision-produit.md §2.3`, encadré « Limite structurelle de l'instrument » — le biais en faveur des convertis est nommé et doit être rappelé à toute lecture des résultats |
 | Code de renvoi | — |
 | Préalable, non dette | le pilier « activation partage » que `moscow.md § Instrumentation de validation du MVP` nomme suppose un partage aux joueurs, livré en J3 — deux jalons après le point de décision qu'il alimente. Point remonté, non résolu par ce plan. |
 
@@ -977,7 +979,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | châssis |
 | En conflit avec | TB-058 — module partagé : châssis |
 | Taille | S |
-| Critères d'acceptation | **`TROU`** — nature : *mécanisme non défini* — `architecture/specs/telemetrie.md §4.2 § Ce qui reste ouvert` : « Mécanisme de capture email non bloquante : point de sollicitation dans le parcours, comportement si le MJ refuse ou ignore, traitement de la donnée collectée. `[À TRANCHER — ticket]` ». Seule l'exigence de résultat est actée (`vision/moscow.md § Instrumentation de validation du MVP § Capture de contact non bloquante`) |
+| Critères d'acceptation | `vision/moscow.md § Instrumentation de validation du MVP`, mention « Mécanisme — tranché » — sollicitation unique, affichée après que le MJ a atteint l'activation préparation, un refus ou une absence de réponse valant refus définitif — la proposition ne revient jamais ; `vision/moscow.md § Instrumentation de validation du MVP § Capture de contact non bloquante` — la proposition reste refusable sans conséquence sur l'accès ni le fonctionnement |
 | Code de renvoi | — |
 
 ### EP-12 — Recette et clôture du jalon J1

@@ -105,6 +105,12 @@ Unité atomique de contenu. L'ensemble des blocs d'un document forme son corps.
 | `content` | `structure` | Contenu structuré selon le type de bloc |
 | `isLocked` | `bool` | Modélisé, valeur `false` par défaut, non activé MVP |
 
+**Format de `content` — tranché** (décision d'entrée en build du 2026-09-03). Le contenu d'un bloc est un **arbre de nœuds typés**, jamais une chaîne de balisage. Un nœud porte son type et, selon ce type, ses enfants ou sa valeur textuelle. L'interface rend cet arbre en construisant ses éléments ; elle n'injecte aucune chaîne de balisage.
+
+**Pourquoi ce point relevait de la conception et non de la sécurité.** La spécification de sanitisation présupposait une liste de balises HTML autorisées — donc un contenu balisé — que rien ici n'établissait. La « liste blanche positive » du plancher de sanitisation porte désormais sur l'**énumération fermée des types de nœuds** que ce modèle définit, ce qui réduit la surface d'injection aux seules feuilles textuelles.
+
+*Voir [`specs/sanitisation-csp.md`](../../architecture/specs/sanitisation-csp.md) pour le plancher, inchangé.*
+
 ---
 
 ### DocumentLink (value object dans Document)

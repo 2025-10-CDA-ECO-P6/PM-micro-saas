@@ -150,7 +150,7 @@ Les trois règles du test d'architecture, dans sa forme initiale :
 ### Non couvert par le corpus
 
 - **Tranché** (décision d'entrée en build du 2026-09-03) : les contrôles d'intégration continue s'exécutent sur **GitHub Actions**, la plateforme du dépôt où vit déjà le code. Le déclencheur est chaque commit. Cette décision porte sur l'intégration continue seule — **l'hébergement de l'application reste non tranché** ([`docs/deploiement/README.md`](../deploiement/README.md)).
-- **[À TRANCHER — J0]** : l'outil exact du test d'architecture. La source présente deux options de façon alternative, sans trancher entre elles — NetArchTest ou une convention de namespace vérifiée par script. Ce guide reprend cette alternative telle quelle, sans la clore ; le plan porte la tranche qui la clôt (TB-007).
+- **Tranché** (décision d'entrée en build du 2026-09-03) : l'outil du test d'architecture est **NetArchTest**. Les règles énumérées ci-dessus s'y écrivent en assertions, dans le projet de test d'architecture, et s'exécutent avec les autres tests. L'alternative que la source présentait — une convention de namespace vérifiée par script — est écartée : elle demanderait d'écrire et de maintenir soi-même l'outillage que la bibliothèque fournit.
 - **[À TRANCHER — B3.2]** : la définition exhaustive du test d'architecture (liste complète des handlers scopés/non-scopés, couverture des contrats `ITokenValidator`/`ITokenDenylist`) est une dette déjà nommée par le corpus sous ce code de renvoi. Elle n'est pas résolue ici.
 
 ---
@@ -178,8 +178,10 @@ Les points suivants sont des **critères d'acceptation non négociables**, déri
 
 - **Tranché** (décision d'entrée en build du 2026-09-03) — **bibliothèque de sanitisation, côté client** : `DomSanitizer` d'Angular, déjà acté par ADR-017, complété de **DOMPurify** sur le seul chemin d'import de fichier JSON, où le contenu vient de l'extérieur.
 - **Tranché** (décision d'entrée en build du 2026-09-03) — **directives de la politique de sécurité de contenu** : aux trois directives déjà actées (`default-src 'self'`, `script-src 'self'`, `connect-src 'self'`) s'ajoutent `object-src 'none'`, `base-uri 'self'`, `form-action 'self'` et `frame-ancestors 'none'`. Aucune valeur de nonce n'est employée : la posture `'self'` sans script en ligne la rend inutile.
-- **[À TRANCHER — modélisation domaine]** : la **liste exhaustive des balises autorisées** n'est pas décidable en l'état. Elle présuppose qu'un bloc de contenu de type `TEXT` porte du HTML, ce qu'aucune source du corpus n'établit — le modèle de domaine écrit « contenu structuré selon le type de bloc » et le stockage est `jsonb`. Le format du contenu d'un bloc doit être tranché avant la liste des balises.
-  *Source : [sanitisation-csp.md, § 5 — Points laissés ouverts](../architecture/specs/sanitisation-csp.md) ; [`conception/domain/content-library.md § DocumentBlock`](../conception/domain/content-library.md).*
+- **Tranché** (décision d'entrée en build du 2026-09-03) — **le contenu d'un bloc n'est jamais du balisage**. Il est un **arbre de nœuds typés**, conforme à ce que le modèle de domaine écrit déjà (« contenu structuré selon le type de bloc ») et au stockage `jsonb`. L'interface le rend en construisant ses éléments, **jamais en injectant une chaîne de balisage**.
+  *Source : [`conception/domain/content-library.md § DocumentBlock`](../conception/domain/content-library.md).*
+- **Conséquence sur la liste blanche.** La « liste blanche positive » que le plancher exige porte donc sur les **types de nœuds admis**, énumération fermée portée par le modèle, et non sur une liste de balises à maintenir des deux côtés. Le plancher lui-même est inchangé : rien d'exécutable n'est admis, et les deux interdictions absolues restent des critères d'acceptation non négociables.
+  *Source : [sanitisation-csp.md, § 5 — Points laissés ouverts](../architecture/specs/sanitisation-csp.md).*
 
 ---
 

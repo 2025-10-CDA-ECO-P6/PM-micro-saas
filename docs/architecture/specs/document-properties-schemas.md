@@ -17,7 +17,7 @@ Conséquences directes du contrat, reportées fidèlement :
 
 - `DocumentProperties` est le point de passage **obligatoire** de toute écriture dans `documents.properties`. Il n'existe pas de chemin d'écriture alternatif (pas de setter direct sur la colonne, pas de patch JSON brut).
 - La validation se fait **contre le `propertiesSchema` du type de document concerné** — c'est-à-dire le `propertiesSchema` porté par l'entité `DocumentType` associée au `documentTypeId` du `Document` (content-library.md:181, diagrams/mld/content-library.md:31 : `document_types.properties_schema jsonb, nullable`).
-- Un `Document` sans `documentTypeId` (le champ est optionnel, content-library.md:67) n'a pas de `propertiesSchema` à valider contre — `[À TRANCHER — modélisation domaine]` : le comportement de `SetProperties()` en l'absence de type n'est fixé nulle part (rejet, acceptation permissive par défaut, ou `properties` interdit sans type).
+- Un `Document` sans `documentTypeId` (le champ est optionnel, content-library.md:67) n'a pas de `propertiesSchema` à valider contre. **Tranché** (décision d'entrée en build du 2026-09-03) : **`properties` n'existe pas sans type** — `SetProperties()` sur un document sans `documentTypeId` est refusé. Un `properties` accepté sans schéma serait un chemin d'écriture non gouverné, ce que le caractère obligatoire du point de passage interdit. Le contenu libre du document n'est pas concerné : il vit dans ses blocs.
 
 ---
 
@@ -81,11 +81,13 @@ Le domaine précise explicitement (content-library.md:190-194) :
 
 `propertiesSchema` de `live_note` : aucun champ structuré au MVP — pas un trou, une absence actée.
 
-### `scene`, `npc`, `location`, `note`, `player_character`, `reveal` — `[À TRANCHER — modélisation domaine]`
+### `scene`, `npc`, `location`, `note`, `player_character`, `reveal` — aucun champ structuré au MVP
 
-Ces 6 types système ne font l'objet d'aucune section « Propriétés structurées du type `X` » dans `content-library.md`, contrairement à `scenario` et `live_note`. Aucun champ concret de `propertiesSchema` n'est modélisé pour eux dans le companion domaine consulté.
+Ces 6 types système ne font l'objet d'aucune section « Propriétés structurées du type `X` » dans `content-library.md`, contrairement à `scenario` et `live_note`.
 
-`propertiesSchema` de ces 6 types reste `[À TRANCHER — modélisation domaine]` — la conception ne fixe pas leurs champs ; ils ne sont pas inventés ici.
+**Tranché** (décision d'entrée en build du 2026-09-03) : `propertiesSchema` de ces 6 types est **vide au MVP** — aucun champ structuré. C'est une **absence actée, non un trou**, sur le précédent que `live_note` porte déjà dans cette même spécification. Leur contenu vit dans les blocs du document, ce que le principe « tout est document » rend possible sans propriété structurée.
+
+Cette décision n'interdit rien pour la suite : un type custom peut porter un `propertiesSchema` dès le MVP, sous le régime permissif du § 2, et ces 6 types pourront en recevoir un après le MVP sans rupture de contrat.
 
 ---
 

@@ -156,6 +156,8 @@ Ce test remplace la « discipline de revue de code » (insuffisante en contexte 
 
 Ce test est un **livrable de J0** (avant la première livraison à production).
 
+**Outil tranché** (décision d'entrée en build du 2026-09-03) : **NetArchTest**. L'alternative — une convention de namespace vérifiée par script — est écartée ([`guide-conventions-et-dod.md §6`](../gestion-projet/guide-conventions-et-dod.md)).
+
 *Source : [ADR-008, § Compléments post-revue](decisions/ADR-008-structure-solution.md)*
 
 ---

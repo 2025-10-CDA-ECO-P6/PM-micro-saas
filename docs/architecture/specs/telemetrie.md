@@ -4,9 +4,9 @@
 >
 > **Source normative** : [ADR-006 — Périmètre MVP](../decisions/ADR-006-perimetre-mvp.md), section « Compléments post-revue » (lignes 55-61). Contrainte RGPD de cohérence : [`cahier-des-charges.md` §7.4](../../context/cahier-des-charges.md#74-conformité-rgpd--protection-des-données) (ligne 808) et [NFR-CONF-02](../../conception/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md).
 >
-> **Lecteur visé** : l'équipe de build qui opérationnalisera l'instrumentation en entrée des jalons J1/J2/J3 (ADR-006:44), et le porteur produit qui devra trancher les points `[À TRANCHER]` avant que cette instrumentation puisse être implémentée.
+> **Lecteur visé** : l'équipe de build qui opérationnalisera l'instrumentation en entrée des jalons J1/J2/J3 (ADR-006:44), et le porteur produit, dont les décisions du 2026-09-03 ont levé les points qui bloquaient l'implémentation.
 >
-> **Statut** : cadre à compléter — non implémentable en l'état, les trous nommés ci-dessous bloquent le passage en développement.
+> **Statut** : les six points qui bloquaient le passage en développement sont tranchés (2026-09-03). Cette spec, fidèle à sa nature de report, **ne les tranche pas ici** — elle renvoie vers les documents qui font autorité : [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md) pour les seuils, le transport et la capture de contact, [`vision-produit.md §2.3`](../../conception/besoin/vision/vision-produit.md) pour la limite de l'instrument. Reste ouvert le seul schéma d'événements formalisé, qui se dérive des décisions ci-dessus au moment de l'implémentation.
 
 ---
 
@@ -46,14 +46,14 @@ Le tableau ci-dessous décompose chaque pilier en événements discrets. Les col
 |---|---|---|---|
 | Campagne créée | Point de sortie de la création de campagne (couche Application) | `[À TRANCHER — ticket]` | `space_id` (probable, non acté) — reste à confirmer |
 | N documents créés | Point de sortie de la création de document, cumulé par campagne | `[À TRANCHER — ticket]` | `space_id`, compteur de documents — reste à confirmer |
-| Seuil N | — | — | **`[À TRANCHER — ticket]` : valeur de N non fixée (ADR-006:57 ne donne aucun chiffre)** |
+| Seuil N | — | — | **Tranché (2026-09-03)** : N = **3 documents**. Geste structurant de l'espace personnel : un dossier créé, ou un document déplacé hors de « Non classés ». Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md) |
 
 ### 3.2 Pilier Vue session
 
 | Étape du critère | Point de capture | Événement (nom technique) | Propriétés |
 |---|---|---|---|
 | Session ouverte | Point d'entrée en session (couche Application ou Presentation) | `[À TRANCHER — ticket]` | `session_id`, `space_id` — reste à confirmer |
-| Usage réel constaté | — | `[À TRANCHER — ticket]` | **`[À TRANCHER — ticket]` : « usage réel constaté » n'est pas opérationnalisé dans le corpus (ADR-006:58 pose le critère sans le définir en signal observable — durée minimale ? action MJ pendant la session ? interaction joueur ? aucun de ces choix n'est tranché)** |
+| Usage réel constaté | — | point d'action en session | **Tranché (2026-09-03)** : au moins une action du MJ pendant la session — une note de session créée, un document épinglé, ou une scène naviguée. Une durée est explicitement écartée. Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md) |
 
 ### 3.3 Pilier Partage
 
@@ -64,9 +64,9 @@ Le tableau ci-dessous décompose chaque pilier en événements discrets. Les col
 
 ### 3.4 Ce que la spec ne fixe pas
 
-- **L'outil analytics** support de la collecte n'est pas nommé dans le corpus (ADR-006:61 mentionne « analytics anonyme RGPD » sans désigner de solution). `[À TRANCHER — ticket]`
-- **La liste concrète des événements/propriétés** au sens d'un schéma d'événements formalisé (noms exacts, typage des propriétés) n'existe pas au-delà des trois critères d'activation ci-dessus. `[À TRANCHER — ticket]`
-- **La technique d'anonymisation RGPD** appliquée à ces événements (pseudonymisation, agrégation, durée de rétention) n'est pas définie. `[À TRANCHER — ticket]`
+- **Le transport de la mesure est tranché (2026-09-03)** et rend la question de l'outil externe sans objet en mode local : les compteurs sont écrits dans le store local et **ne quittent le navigateur qu'à la création d'un compte**. Aucun appel sortant n'a lieu en mode local, ce qui préserve la directive `connect-src 'self'` et la garantie observable qu'elle porte. Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md).
+- **La limite de ce choix est nommée** : les MJ qui ne créent jamais de compte ne transmettent jamais leurs compteurs, ce qui biaise H1 et rend H5 partiellement circulaire. Renvoi seul — [`vision-produit.md §2.3`](../../conception/besoin/vision/vision-produit.md).
+- **La liste concrète des événements/propriétés** au sens d'un schéma formalisé (noms exacts, typage) reste à écrire — elle **se dérive** des trois critères d'activation ci-dessus et du transport tranché, sans nouvelle décision produit. `[À TRANCHER — ticket]`
 
 ---
 
@@ -87,8 +87,8 @@ Rien au-delà du champ d'application et de la qualification (« non bloquante »
 
 ### 4.2 Ce qui reste ouvert
 
-- **Mécanisme de capture email non bloquante** : point de sollicitation dans le parcours, comportement si le MJ refuse ou ignore, traitement de la donnée collectée. `[À TRANCHER — ticket]` (ADR-006:61)
-- **Outil et technique d'anonymisation RGPD** pour l'analytics — même trou que §3.4, seule l'exigence de résultat (« anonyme RGPD ») est actée, pas le moyen. `[À TRANCHER — ticket]` (ADR-006:61)
+- **Mécanisme de capture email non bloquante — tranché (2026-09-03)** : sollicitation unique, affichée **après** que le MJ a atteint l'activation préparation ; un refus ou une absence de réponse vaut refus définitif ; l'adresse part avec les compteurs à la création de compte et reste effaçable sur demande. Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md).
+- **Traitement des données — tranché (2026-09-03)** par le transport : rien ne sort du navigateur avant la création d'un compte, moment où la donnée entre dans le périmètre de traitement du compte. Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md).
 
 ---
 
@@ -102,22 +102,22 @@ Cette instrumentation n'est pas conçue en dehors du cadre de confidentialité d
 
 **Principe à reporter tel quel, non renégociable dans cette spec** : chaque événement décrit en §3 mesure une **occurrence** (un fait binaire ou un comptage — campagne créée, document créé, session ouverte, document ouvert) et ne capture à aucun moment le **contenu narratif** produit ou partagé par le MJ (texte des documents, notes, contenu de session). Toute implémentation qui ferait transiter du contenu narratif dans un événement de télémétrie contredirait NFR-CONF-02 et le principe déjà acté au cahier des charges.
 
-Ce principe **contraint** la résolution des trous du §3 et du §4 — en particulier le choix des propriétés d'événement — sans les résoudre : le nom de l'outil analytics, la technique d'anonymisation et le détail des propriétés restent `[À TRANCHER — ticket]`, mais devront être choisis de façon compatible avec cette contrainte.
+Ce principe **contraint** la résolution des trous du §3 et du §4 — en particulier le choix des propriétés d'événement — sans les résoudre : le détail des propriétés d'événement reste `[À TRANCHER — ticket]` et devra être choisi de façon compatible avec cette contrainte. Le transport, lui, est tranché et la sert : rien ne quitte le navigateur avant la création d'un compte.
 
 ---
 
-## 6. Récapitulatif des points à trancher
+## 6. Récapitulatif — ce qui est tranché, ce qui reste
 
-| # | Point ouvert | Référence corpus |
-|---|---|---|
-| 1 | Valeur de N (pilier préparation) | ADR-006:57 |
-| 2 | Opérationnalisation de « usage réel constaté » (pilier vue session) | ADR-006:58 |
-| 3 | Outil analytics | ADR-006:61 |
-| 4 | Liste concrète des événements/propriétés (schéma formalisé) | ADR-006:55-61 (absent) |
-| 5 | Technique d'anonymisation RGPD | ADR-006:61 |
-| 6 | Mécanisme de capture email non bloquante | ADR-006:61 |
+| # | Point | État | Référence |
+|---|---|---|---|
+| 1 | Valeur de N (pilier préparation) | **tranché** — N = 3 documents ; geste structurant nommé | ADR-006:57 ; [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md) |
+| 2 | Opérationnalisation de « usage réel constaté » | **tranché** — au moins une action du MJ en session | ADR-006:58 ; [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md) |
+| 3 | Outil analytics | **sans objet en mode local** — le transport tranché n'émet aucun appel sortant avant la création de compte | ADR-006:61 ; [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md) |
+| 4 | Liste concrète des événements/propriétés (schéma formalisé) | ouvert — **se dérive** des cinq autres, sans décision produit supplémentaire | ADR-006:55-61 (absent) |
+| 5 | Technique de traitement des données | **tranché** — rien ne quitte le navigateur avant la création de compte | ADR-006:61 ; [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md) |
+| 6 | Mécanisme de capture de contact | **tranché** — sollicitation unique après activation, refus définitif | ADR-006:61 ; [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md) |
 
-Ces six points bloquent le passage de cette spec à un ticket de développement. Aucun n'est tranché dans ce document.
+Cinq de ces six points sont tranchés le 2026-09-03 — seuils, opérationnalisation de l'usage réel, transport de la mesure en lieu et place d'un outil externe, technique de traitement, et mécanisme de capture de contact. **Aucun n'est tranché *dans* ce document**, fidèlement à sa nature de report : ils le sont dans [`moscow.md § Instrumentation de validation du MVP`](../../conception/besoin/vision/moscow.md) et [`vision-produit.md §2.3`](../../conception/besoin/vision/vision-produit.md), vers lesquels les sections ci-dessus renvoient. Le sixième — le schéma d'événements formalisé — se dérive des cinq autres au moment de l'implémentation et ne demande aucune décision produit supplémentaire.
 
 ---
 

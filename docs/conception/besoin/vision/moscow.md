@@ -279,20 +279,28 @@ section correspondante).
 
 L'application permet de constater, de façon anonyme et sans capter le contenu narratif :
 
-1. **Activation préparation** : le MJ a créé un espace (campagne) ET y a créé ses premiers
-   documents ; ou, en l'absence de campagne, a produit dans son espace personnel un contenu qui
-   traduit un **geste structurant** (au-delà d'une capture triviale — organisation, structuration,
-   franchissement d'un seuil ; seuil/critère exact non fixé, `[À TRANCHER — métrique produit]` —
-   voir vision-produit.md §2.3). Ce constat mesure si le pilier 1 (organisation et préparation)
-   a engagé l'utilisateur au-delà de la création d'un conteneur.
+1. **Activation préparation** : le MJ a créé un espace ET y a créé **au moins trois documents** ;
+   ou, en l'absence de campagne, a produit dans son espace personnel un **geste structurant** —
+   **un dossier créé, ou un document déplacé hors de « Non classés »** (décision produit du 2026-09-03). Ce constat mesure si
+   le pilier 1 (organisation et préparation) a engagé l'utilisateur au-delà de la création d'un
+   conteneur. Les deux signaux sont observables par le seul modèle, sans lire aucun contenu.
+   *Trois plutôt qu'un : un document est un essai, trois sont un usage — un seuil qui ne distingue
+   pas prive H1 de la possibilité d'être invalidée, que `vision-produit.md §2.3` exige.*
 
-2. **Activation vue session** : une session a été ouverte ET réellement utilisée pendant une partie — interaction avec du contenu, création de notes, navigation dans les panneaux. Ce constat mesure si le pilier 2 (pilotage en direct) crée une valeur immédiate.
+2. **Activation vue session** : une session a été ouverte ET **au moins une action du MJ y a eu lieu** — une note de session créée, un document épinglé, ou une scène naviguée (décision produit du 2026-09-03). Ce constat mesure si le pilier 2 (pilotage en direct) crée une valeur immédiate.
+   *Une action plutôt qu'une durée : une session ouverte puis oubliée mesurerait la présence, non l'usage, alors que H2 porte sur la valeur apportée pendant la partie.*
 
 3. **Activation partage** : un document a été partagé aux joueurs ET au moins un joueur l'a consulté. Ce constat mesure si le pilier 3 (collaboration joueur) fonctionne comme canal d'engagement collectif.
 
 **Mesure anonyme dès le mode local** : la capture fonctionne sans compte utilisateur, ne porte aucun contenu narratif ni donnée nominative (aucune lecture de titre, notes ou propriété structurée), et respecte les obligations de protection des données personnelles — elle se limite à l'existence d'une action et à sa date.
 
+**Comment cette mesure sort du navigateur — tranché** (décision produit du 2026-09-03). Les compteurs sont **écrits dans le store local et ne quittent le navigateur qu'à la création d'un compte**, avec la migration. Aucun appel sortant n'a lieu en mode local : la directive `connect-src 'self'` reste intacte, et avec elle la garantie observable « aucune donnée envoyée au serveur en mode local ».
+
+**Limite de l'instrument, à ne pas taire.** Ce choix implique que les MJ qui ne créent jamais de compte ne transmettent jamais leurs compteurs. L'activation préparation, qui porte précisément sur un usage **sans compte**, n'est donc observée que chez ceux qui convertissent — un biais en faveur des convertis, qui affecte H1 et rend H5 partiellement circulaire. Cette limite est portée par `vision-produit.md §2.3` et doit être rappelée à toute lecture des résultats.
+
 **Capture de contact non bloquante en mode local** : l'application peut proposer au MJ en mode local de laisser une adresse de contact (pour un suivi de validation produit ultérieur). Cette proposition est toujours refusable sans conséquence — elle ne bloque ni l'accès ni le fonctionnement.
+
+**Mécanisme — tranché** (décision produit du 2026-09-03) : la proposition est affichée **une seule fois**, **après** que le MJ a atteint l'activation préparation — donc à quelqu'un qui a déjà trouvé de la valeur, et non à l'entrée, ce qui contredirait le différenciant « friction d'entrée nulle ». **Un refus, ou une absence de réponse, vaut refus définitif** : la proposition ne revient jamais. L'adresse, si elle est donnée, part avec les compteurs à la création de compte, ne sert qu'au suivi de validation, et reste effaçable sur demande.
 
 Le raisonnement d'origine et les alternatives écartées de cet arbitrage sont conservés à titre de trace historique (ADR-006).
 

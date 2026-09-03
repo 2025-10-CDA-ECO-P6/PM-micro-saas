@@ -2,7 +2,7 @@
 
 | Champ | Valeur |
 |---|---|
-| Statut | Index de consolidation par décideur — première version |
+| Statut | Index de consolidation par décideur — mis à jour le 2026-09-03, les lignes barrées portent une décision prise |
 | Audience | équipe de build, responsable produit, cadrage juridique interne, comité des risques, conception d'interface |
 | Sources | `docs/context/cahier-specifications-techniques.md` §11, `docs/test/cahier-strategie-test-et-recette.md` §12, `docs/context/dossier-conception-detaillee.md` §8, `docs/securite/dossier-securite.md` §5, `docs/conception/interface/zoning.md` §S10, `docs/gestion-projet/registre-risques.md`, chaque décision d'architecture portant une section § Points à trancher, `docs/architecture/specs/telemetrie.md` §6, `docs/architecture/specs/repli-temps-reel.md` §5, `docs/gestion-projet/plan-de-travail.md`, `docs/gestion-projet/roadmap-entree-build.md` |
 
@@ -52,11 +52,11 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 
 | Décision | Bloque | À savoir | Registre propriétaire |
 |---|---|---|---|
-| Outil exact du test d'architecture | Le choix d'implémentation de TB-007 | Deux options présentées côte à côte sans arbitrage — NetArchTest ou une convention de namespace vérifiée par script | `guide-conventions-et-dod.md § 6 § Non couvert par le corpus` |
+| ~~Outil exact du test d'architecture~~ | **Tranché le 2026-09-03** — NetArchTest, l'alternative par script écartée | ne bloque plus TB-007 | `guide-conventions-et-dod.md § 6 § Non couvert par le corpus` |
 | Nom du projet de test de bout en bout | — (non signalé comme bloquant par le corpus) | Distinct du projet de test d'architecture (1.b) | `cahier-specifications-techniques.md § 11` |
 | Paramètres de hachage de mot de passe (Argon2id), seuils de limitation de débit, TTL du jeton de réinitialisation, fraîcheur de ré-authentification IdP | La définition des contrats `IPasswordHasher` / rate limiting / `ITokenValidator` en J2 | Regroupés sous le renvoi `B1.5` | `cahier-specifications-techniques.md § 11 § 5` |
 | Code de refus (403/404) sur ressource d'un autre espace, schémas de requête/réponse par point d'entrée, attribution des codes 400/401, schéma du 429 | La clôture du contrat OpenAPI avant fin de J2 | Regroupés sous le renvoi `B1.10` | `cahier-specifications-techniques.md § 11 § 7` ; `cahier-strategie-test-et-recette.md § 12`, entrée `PO-13` |
-| Listes blanches de sanitisation et directives CSP complètes, serveur et client | La sécurisation effective de l'import et du rendu de contenu | Regroupées sous les renvois `B1.2` (serveur) / `P6` (client) | `cahier-specifications-techniques.md § 11 § 5` |
+| ~~Directives de sécurité de contenu et bibliothèque de sanitisation~~ | **Tranché le 2026-09-03** — directives au complet et `DomSanitizer` complété de DOMPurify à l'import. La « liste blanche » porte désormais sur l'**énumération fermée des types de nœuds**, le contenu d'un bloc étant un arbre typé et non du balisage | reste ouverte côté serveur la seule énumération, dérivée du même modèle (`B1.2`) | `cahier-specifications-techniques.md § 11 § 5` |
 | Seuil de `schemaVersion` minimale maintenue côté serveur, horizon de rétention du registre des lots de migration | Le handler d'import/migration (`P7`) | — | `cahier-specifications-techniques.md § 11 § 8` |
 | Seuil de tentatives (N) de la limitation anti-force-brute | Le chiffrage du rate limiting hybride par-IP/par-compte | Aucun cas de recette ne chiffre N | `cahier-strategie-test-et-recette.md § 12`, entrée `PO-12` |
 | UC-03 exception E2 — perte de connexion ou erreur de sauvegarde | La recette de cette exception | Non dérivable d'un scénario Gherkin ni d'une règle métier ferme ; couvert au mieux par le principe général de résilience réseau | `cahier-strategie-test-et-recette.md § 12`, entrée `PO-09` |
@@ -93,7 +93,7 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 | Ordre de dégel `UC-15` pour un tier intermédiaire borné (post-MVP) | Sans impact MVP — le tier binaire actuel implique un dégel total | Non fixé | `cahier-strategie-test-et-recette.md § 12`, entrée `PO-07` |
 | Réimport de fichier de sauvegarde (`UC-01`, `US-01-08`, post-MVP) | Aucun cas de recette MVP | Règles de validation tracées pour reprise ultérieure | `cahier-strategie-test-et-recette.md § 12`, entrée `PO-08` |
 
-**Un point de ce groupe n'est pas arbitrable aujourd'hui et doit rester ouvert, axe métrique produit.** Le critère exact du « geste structurant » de l'hypothèse H1 — au-delà d'une capture triviale (organisation, structuration, franchissement d'un seuil) — est marqué `[À TRANCHER — métrique produit]`. Propriétaire : `vision-produit.md § 2.3`, qui fixe par ailleurs le seuil chiffré de H1 lui-même (celui-ci n'est pas en cause) ; `moscow.md § Instrumentation de validation du MVP` renvoie au critère sans le fixer.
+**Ce point l'était et ne l'est plus.** Le critère exact du « geste structurant » de l'hypothèse H1 est **tranché le 2026-09-03** : un dossier créé, ou un document déplacé hors de « Non classés ». Le seuil de documents de l'activation préparation est fixé à trois, l'opérationnalisation de l'« usage réel constaté » à au moins une action du MJ en session, et le transport de la mesure à des compteurs locaux transmis à la création de compte — avec le biais que ce transport induit, nommé dans [`vision-produit.md §2.3`](../conception/besoin/vision/vision-produit.md). Registre propriétaire de ces décisions : [`moscow.md § Instrumentation de validation du MVP`](../conception/besoin/vision/moscow.md).
 
 ---
 
@@ -101,8 +101,8 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 
 | Décision | Bloque | À savoir | Registre propriétaire |
 |---|---|---|---|
-| Champs concrets des schémas `propertiesSchema` des types de document système `scene`, `npc`, `location`, `note`, `player_character`, `reveal` | La modélisation complète du value object `DocumentProperties` | ADR-002 ne fixe pas ces champs ; ils ne sont pas inventés par la spécification | `docs/architecture/specs/document-properties-schemas.md § 5 — Champs de propertiesSchema par type — dérivés du domaine ou marqués à trancher` |
-| Comportement de `SetProperties()` en l'absence de type de document déclaré | Le contrat exact du value object dans ce cas limite | Rejet, acceptation permissive par défaut, ou `properties` interdit sans type : aucune des trois options n'est retenue | `document-properties-schemas.md § 1` |
+| ~~Champs des schémas `propertiesSchema` des six types système~~ | **Tranché le 2026-09-03** — **vide au MVP**, absence actée sur le précédent de `live_note` ; leur contenu vit dans les blocs | ne bloque plus TB-066 | `docs/architecture/specs/document-properties-schemas.md § 5 — Champs de propertiesSchema par type — dérivés du domaine ou marqués à trancher` |
+| ~~Comportement de `SetProperties()` sans type déclaré~~ | **Tranché le 2026-09-03** — `properties` **n'existe pas sans type**, l'écriture est refusée | reste ouvert le contenu exact de la validation « permissive par défaut » des types custom | `document-properties-schemas.md § 1` |
 | Réconciliation d'un désaccord de décompte de clés étrangères inter-modules entre `ADR-009` (en renvoi vers `ADR-011`) et la matrice propre d'`ADR-011` | La fiabilité du modèle de cascade référentielle documenté | Désaccord non arbitré, signalé tel quel par le cahier de spécifications techniques | `cahier-specifications-techniques.md § 11 § 4 — Modèle de données & domaine` |
 
 ---
