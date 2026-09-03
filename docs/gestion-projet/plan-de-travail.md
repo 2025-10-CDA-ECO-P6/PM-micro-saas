@@ -400,7 +400,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | la configuration de la solution |
 | En conflit avec | — |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `guide-conventions-et-dod.md §2 § Non couvert par le corpus`, puce « Tranché » — `.editorconfig` à la racine et analyzers Roslyn du SDK, appliqués par le build ; `guide-conventions-et-dod.md §3 § Non couvert par le corpus`, puce « Tranché » — ESLint avec le préréglage `angular-eslint` et Prettier, appliqués par le build ; `guide-conventions-et-dod.md §2` et `§3`, puces « Version » — la version en support à long terme en cours à l'ouverture du build, règle et non numéro |
+| Critères d'acceptation | `guide-conventions-et-dod.md §2 § Non couvert par le corpus`, puce « Tranché » — `.editorconfig` à la racine de la solution et analyzers Roslyn du SDK, appliqués par le build ; `guide-conventions-et-dod.md §3 § Non couvert par le corpus`, puce « Tranché » — ESLint avec le préréglage `angular-eslint` et Prettier, appliqués par le build ; `guide-conventions-et-dod.md §2` et `§3`, puces « Version » — la version en support à long terme en cours à l'ouverture du build, règle et non numéro |
 | Code de renvoi | — |
 
 ##### TB-012 — Arrêter la convention de commit et de branche
