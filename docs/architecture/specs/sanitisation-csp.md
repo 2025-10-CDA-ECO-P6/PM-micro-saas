@@ -76,14 +76,15 @@ Ces trois directives sont **actées** par ADR-017 comme posture — elles ne son
 
 ## 5. `[À TRANCHER]` — points laissés ouverts par les deux ADR
 
-| Point ouvert | Ticket | Source |
-|---|---|---|
-| Liste exhaustive des balises autorisées, côté serveur | **B1.2** | ADR-016 §Points à trancher ; ADR-016:237 (table des dettes) |
-| Liste exhaustive des balises autorisées, côté client | **P6** | ADR-017 §Points à trancher ; ADR-017:258 (table des dettes) |
-| Bibliothèque de sanitisation exacte (serveur et client) | **B1.2** (serveur) / **P6** (client) | ADR-016:237 ; ADR-017:258 |
-| Directives CSP complètes (liste exhaustive des directives, valeurs de nonce) | **P6** | ADR-017:257 (table des dettes), ADR-017 §Points à trancher |
+| Point | Ticket | État | Source |
+|---|---|---|---|
+| Liste exhaustive des balises autorisées, côté serveur | **B1.2** | ouvert | ADR-016 §Points à trancher ; ADR-016:237 (table des dettes) |
+| Liste exhaustive des balises autorisées, côté client | **P6** | **ouvert, et son préalable est nommé** — la liste présuppose qu'un bloc de contenu `TEXT` porte du HTML, ce qu'aucune source n'établit ([`conception/domain/content-library.md § DocumentBlock`](../../conception/domain/content-library.md) écrit « contenu structuré selon le type de bloc »). Le format du contenu doit être tranché d'abord — `[À TRANCHER — modélisation domaine]` | ADR-017 §Points à trancher ; ADR-017:258 |
+| Bibliothèque de sanitisation exacte, côté serveur | **B1.2** | ouvert | ADR-016:237 |
+| Bibliothèque de sanitisation exacte, côté client | **P6** | **tranché** (décision d'entrée en build du 2026-09-03) — renvoi seul, la décision vit dans [`guide-conventions-et-dod.md §7`](../../gestion-projet/guide-conventions-et-dod.md) | ADR-017:258 |
+| Directives CSP complètes | **P6** | **tranché** (décision d'entrée en build du 2026-09-03) — renvoi seul, la décision vit dans [`guide-conventions-et-dod.md §7`](../../gestion-projet/guide-conventions-et-dod.md) | ADR-017:257 |
 
-Ces points sont explicitement nommés comme dettes non silencieuses dans les deux ADR — ils ne sont pas des omissions, mais des décisions renvoyées à l'implémentation.
+Ces points sont explicitement nommés comme dettes non silencieuses dans les deux ADR — ils ne sont pas des omissions, mais des décisions renvoyées à l'implémentation. **Cette spécification ne les tranche pas** : conformément à son bandeau de portée, elle renvoie vers le document qui porte la décision quand elle est prise.
 
 ---
 

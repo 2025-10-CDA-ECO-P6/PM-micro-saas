@@ -101,6 +101,16 @@ ils relèvent du build (`[À TRANCHER — J0]`).
 
 ---
 
+### Points de composition : un par agrégat
+
+**Tranché** (décision d'entrée en build du 2026-09-03). Les points où les couches se composent — enregistrement des cas d'usage de la couche Application, table de routage, déclaration du schéma du store local — sont portés **par agrégat**, et non rassemblés dans un fichier commun.
+
+**Pourquoi ce point est structurel.** La maille de désignation du périmètre d'écriture du [plan de travail](../gestion-projet/plan-de-travail.md) distingue les travaux par agrégat. Un fichier de composition commun serait écrit par tous et vu par aucun : deux travaux déclarés sans recouvrement s'y rencontreraient. Un point d'enregistrement par agrégat supprime ce fichier partagé, et rend vraie la garantie que la maille énonce.
+
+*Source : cette décision clôt un point que le § 3 laissait `[À TRANCHER — J0]` sur le contenu des projets.*
+
+---
+
 ## 4 — Nommage du noyau partagé : `SharedKernel`
 
 Le dossier/namespace partagé s'appelle **`SharedKernel`** — convention DDD classique. Ce choix clôt le report ADR-008.
@@ -164,6 +174,14 @@ avec des validations TypeScript minimales :
 - aucune validation métier riche (propriétés, accès cross-context)
 
 Le domaine C#/.NET côté serveur reste la **source de vérité unique**.
+
+### Accès au store : un service par agrégat
+
+**Tranché** (décision d'entrée en build du 2026-09-03). Aucun composant de la couche cliente n'accède au store local directement : tout accès passe par un **service d'accès dédié à l'agrégat concerné**, un par agrégat persisté côté client — `Space`, `Folder`, `Document`, `DocumentType`, `Session`, `SessionViewConfig` ([`plan-de-travail.md §2`](../gestion-projet/plan-de-travail.md) porte le rattachement des object stores aux agrégats).
+
+**Deux conséquences, et la seconde est structurelle.** D'abord, la couche cliente se construit contre ce contrat sans attendre l'implémentation du domaine ([ADR-001, § Compléments post-revue (2026-09-03)](decisions/ADR-001-execution-domaine-mode-local.md)) : une doublure qui rend des jeux de données le satisfait. Ensuite, **deux travaux portant sur deux agrégats distincts n'écrivent jamais le même fichier d'accès au store** — il n'existe pas de service de façade partagé.
+
+**Contrôle opposable** : une règle de style interdit tout import direct de l'API du store hors de ces services ([`guide-conventions-et-dod.md §3`](../gestion-projet/guide-conventions-et-dod.md)).
 
 ### Projection dérivée du serveur
 

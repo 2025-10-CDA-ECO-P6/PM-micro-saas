@@ -103,7 +103,9 @@ Le champ `Périmètre d'écriture` de chaque tranche est une liste de **modules*
 
 **Aucun chemin de fichier n'apparaît.** [`structure-projets.md §3`](../architecture/structure-projets.md) écrit que « le contenu de chacun des cinq namespaces — fichiers, classes, sous-dossiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document », et marque ces lignes `[À TRANCHER — J0]`. Un plan qui énumérerait des fichiers trancherait à la place du build. **La maille par agrégat ne dépend pas de cette décision** : un agrégat est nommé et stable indépendamment de sa future disposition en fichiers.
 
-**Coût de cette maille — écrit en clair.** Elle sépare proprement deux agrégats, donc deux sujets métier distincts. Elle **ne voit pas les points de composition** — enregistrement des cas d'usage de la couche Application, table de routage, déclaration du schéma du store — qui n'appartiennent à aucun agrégat. Deux tranches déclarées sans conflit peuvent donc s'y rencontrer. **C'est un risque de collision, non un coût de délai** : l'erreur ne va plus dans le sens sûr, contrairement à la maille par couche qu'elle remplace. La parade est une convention plaçant ces points **par agrégat** plutôt qu'en fichier unique ; elle relève de l'ouverture de J0 et n'est pas tranchée ici. `[À TRANCHER — J0]`
+**Le point aveugle de cette maille, et sa parade — tranchée.** Une maille par agrégat ne voit pas les **points de composition** — enregistrement des cas d'usage de la couche Application, table de routage, déclaration du schéma du store — qui n'appartiennent à aucun agrégat. Deux tranches déclarées sans conflit s'y rencontreraient, et l'erreur cesserait d'aller dans le sens sûr.
+
+La parade est tranchée et vit à sa source : [`structure-projets.md §3 § Points de composition : un par agrégat`](../architecture/structure-projets.md) porte ces points **par agrégat** plutôt qu'en fichier commun. Côté client, la même propriété découle du contrat d'accès au store, un service par agrégat ([`structure-projets.md §7`](../architecture/structure-projets.md)). Il ne subsiste donc aucun fichier écrit par toutes les tranches, et la garantie de non-recouvrement que ce document énonce est vraie.
 
 **Deux marqueurs, à ne pas confondre.**
 
@@ -327,7 +329,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | la configuration d'intégration continue |
 | En conflit avec | — |
 | Taille | S |
-| Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 3 — « Le test d'archi CI existe, **tourne en pipeline** » ; **`TROU`** — nature : *le critère de sortie présuppose une infrastructure que le corpus ne décrit nulle part* — `docs/deploiement/README.md` déclare qu'« aucun document de déploiement n'est produit à ce jour » et que l'hébergeur est `[non tranché]` — aucun ADR, spécification ni critère d'acceptation n'existe pour la plateforme de CI, ses environnements ou son déclencheur |
+| Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 3 — « Le test d'archi CI existe, **tourne en pipeline** » ; `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — les contrôles s'exécutent sur GitHub Actions, déclenchés à chaque commit — l'hébergement de l'application reste hors de cette décision |
 | Code de renvoi | — |
 
 ##### TB-009 — Définition exhaustive du test d'architecture (`B3.2`)
@@ -372,8 +374,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Dépend de | TB-002 |
 | Périmètre d'écriture | la configuration de la solution |
 | En conflit avec | — |
-| Taille | S |
-| Critères d'acceptation | **`TROU`** — nature : *deux `[À TRANCHER — J0]` explicites* — `guide-conventions-et-dod.md §2 § Non couvert par le corpus` (règles de format et de style fines, `.editorconfig`, analyzers Roslyn, conventions de casse détaillées) et `guide-conventions-et-dod.md §3 § Non couvert par le corpus` (configuration ESLint/Prettier, ruleset exact, versions Angular/Node). Aucun critère d'acceptation n'existe |
+| Taille | M — un module, 3 renvois |
+| Critères d'acceptation | `guide-conventions-et-dod.md §2 § Non couvert par le corpus`, puce « Tranché » — `.editorconfig` à la racine et analyzers Roslyn du SDK, appliqués par le build ; `guide-conventions-et-dod.md §3 § Non couvert par le corpus`, puce « Tranché » — ESLint avec le préréglage `angular-eslint` et Prettier, appliqués par le build ; `guide-conventions-et-dod.md §2` et `§3`, puces « Version » — la version en support à long terme en cours à l'ouverture du build, règle et non numéro |
 | Code de renvoi | — |
 
 ##### TB-012 — Arrêter la convention de commit et de branche
@@ -387,7 +389,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | HORS MAILLE — nature : acte de décision — arrêter une convention ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | S |
-| Critères d'acceptation | **`TROU`** — nature : *point intégralement laissé ouvert* — `guide-conventions-et-dod.md §5` : « Le corpus de conception ne définit aucun format de message de commit ni de convention de nommage de branche. Ce point est intégralement laissé à l'équipe de build […] un candidat courant est Conventional Commits, à ratifier — ce guide ne le tranche pas. » |
+| Critères d'acceptation | `guide-conventions-et-dod.md §5`, règle de message — Conventional Commits ratifié, forme `type(portée): sujet` ; `guide-conventions-et-dod.md §5`, règle de branche — `<type>/<TB-nnn>-<slug>`, l'identifiant de tranche rendant le lien branche ↔ tranche ↔ ticket retrouvable sans qu'aucun numéro ne soit recopié dans ce plan |
 | Code de renvoi | — |
 
 ---
@@ -425,8 +427,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Dépend de | TB-005 |
 | Périmètre d'écriture | service d'accès au store |
 | En conflit avec | TB-082 — module partagé : service d'accès au store |
-| Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `ADR-001 § Compléments post-revue (2026-09-03)`, puce « Ordre C#-first » — C#-first désigne l'autorité du contrat, non l'ordre de construction de la couche cliente ; `roadmap-entree-build.md Annexe A`, ligne J1 — « Services Angular IndexedDB (wrappers, `DomSanitizer`, bandeaux durabilité/confidentialité, CSP complète) », code `P6` ; **`TROU`** — nature : *le renvoi `P6` pointe une entrée de registre de points à trancher, non un critère* — aucun critère d'acceptation n'existe pour la forme du contrat |
+| Taille | M — un module, 4 renvois |
+| Critères d'acceptation | `ADR-001 § Compléments post-revue (2026-09-03)`, puce « Ordre C#-first » — C#-first désigne l'autorité du contrat, non l'ordre de construction de la couche cliente ; `roadmap-entree-build.md Annexe A`, ligne J1 — « Services Angular IndexedDB (wrappers, `DomSanitizer`, bandeaux durabilité/confidentialité, CSP complète) », code `P6` ; `structure-projets.md §7 § Accès au store : un service par agrégat` — un service d'accès par agrégat persisté, aucun service de façade partagé ; `guide-conventions-et-dod.md §3`, puce « Une règle de style opposable » — aucun composant n'importe directement l'API du store hors de ces services |
 | Code de renvoi | P6 |
 | Ce que la doublure ne peut pas porter | aucune règle métier. `ADR-001 § Alternatives considérées` écarte la réimplémentation du domaine en TypeScript, et cette révision ne la rouvre pas : une doublure rend des jeux de données, les seules validations autorisées côté client sont celles que `structure-projets.md §7` énumère (TB-094). |
 
@@ -856,7 +858,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | sanitisation ; politique de sécurité de contenu |
 | En conflit avec | TB-086 — module partagé : politique de sécurité de contenu ; recouvrement à confirmer à J0 — TB-086 porte sur la même configuration de politique de sécurité de contenu, non nommable dans la maille. Recouvrement à confirmer à J0. |
 | Taille | L — surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) |
-| Critères d'acceptation | `guide-conventions-et-dod.md §7 § Conventions de sécurité de code` — critères d'acceptation non négociables énumérés (liste blanche positive identique serveur/client, `<script>` et attributs `on*` interdits sans exception, ordre valider-puis-sanitiser avant toute écriture, posture `default-src 'self'` / `script-src 'self'` / `connect-src 'self'`) ; `specs/sanitisation-csp.md §1`, `§2`, `§4` ; `usecases/UC-01-mode-local-sans-compte.md § Critères d'acceptation` — « Aucun contenu, importé ou saisi, ne peut déclencher l'exécution de code lors de son affichage » ; **`TROU` partiel** — nature : *dette balisée* — `guide-conventions-et-dod.md §7 § Non couvert par le corpus` : « `[À TRANCHER — B1.2 / P6]` : la liste exhaustive des balises HTML autorisées, la bibliothèque de sanitisation exacte, et les directives CSP complètes » |
+| Critères d'acceptation | `guide-conventions-et-dod.md §7 § Conventions de sécurité de code` — critères d'acceptation non négociables énumérés (liste blanche positive identique serveur/client, `<script>` et attributs `on*` interdits sans exception, ordre valider-puis-sanitiser avant toute écriture, posture `default-src 'self'` / `script-src 'self'` / `connect-src 'self'`) ; `specs/sanitisation-csp.md §1`, `§2`, `§4` ; `usecases/UC-01-mode-local-sans-compte.md § Critères d'acceptation` — « Aucun contenu, importé ou saisi, ne peut déclencher l'exécution de code lors de son affichage » ; `guide-conventions-et-dod.md §7`, puce « bibliothèque de sanitisation » — `DomSanitizer` d'Angular, complété de DOMPurify sur le chemin d'import JSON ; `guide-conventions-et-dod.md §7`, puce « directives » — `default-src`, `script-src` et `connect-src` en `'self'`, plus `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'none'`, sans nonce ; **`TROU` partiel** — nature : *préalable de modélisation non tranché* — la liste exhaustive des balises autorisées présuppose qu'un bloc de contenu `TEXT` porte du HTML, ce qu'aucune source du corpus n'établit (`conception/domain/content-library.md § DocumentBlock` écrit « contenu structuré selon le type de bloc ») — le format du contenu doit être tranché d'abord |
 | Code de renvoi | B1.2, P6 |
 
 ##### TB-086 — Vérifier l'absence d'appel réseau dans le périmètre mode local

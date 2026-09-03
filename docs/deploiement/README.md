@@ -13,6 +13,7 @@ dans le corpus, sans y être consolidés :
 
 - **Hébergeur `[non tranché]`.** La vue déploiement de [`../context/dossier-architecture.md`](../context/dossier-architecture.md#5--vue-déploiement-c4-niveau-4) marque explicitement l'hébergeur comme non tranché, jusque dans son diagramme.
 - **Options d'hébergement recensées, non arbitrées.** [`../architecture/stack.md`](../architecture/stack.md) évoque des options d'hébergement sans trancher.
+- **Plateforme d'intégration continue tranchée** (décision d'entrée en build du 2026-09-03) : **GitHub Actions**, la plateforme du dépôt où vit le code, déclenchée à chaque commit ([`../gestion-projet/guide-conventions-et-dod.md §6`](../gestion-projet/guide-conventions-et-dod.md)). Cette décision ne porte que sur l'intégration continue — **l'hébergement de l'application reste non tranché**, comme dit ci-dessus.
 - **Gates d'intégration continue déjà nommés.** Le test d'architecture en CI (frontières de bounded context) est décrit comme gate obligatoire dans [`../gestion-projet/guide-conventions-et-dod.md`](../gestion-projet/guide-conventions-et-dod.md#6-gates-dintégration-continue) et rattaché au jalon J0 dans [`../gestion-projet/roadmap-entree-build.md`](../gestion-projet/roadmap-entree-build.md).
 
 ## Contenu à venir

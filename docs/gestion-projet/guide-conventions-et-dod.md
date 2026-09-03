@@ -78,7 +78,9 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 
 ### Non couvert par le corpus
 
-- **[À TRANCHER — J0]** : règles de format et de style fines (`.editorconfig`, analyzers Roslyn activés), conventions de casse détaillées au-delà du PascalCase standard .NET. Aucune source du corpus de conception ne fixe ces points ; ils sont laissés à l'équipe de build.
+- **Tranché** (décision d'entrée en build du 2026-09-03) : le format et le style .NET sont portés par un fichier `.editorconfig` à la racine de la solution et par les **analyzers Roslyn livrés avec le SDK**, sans dépendance d'analyse supplémentaire. Les règles y sont déclarées, et le build les applique.
+- **Version du SDK** : la version en support à long terme en cours à l'ouverture du build. Ce guide énonce la règle, jamais un numéro — un numéro vieillit, la règle non (§8).
+- **Reste ouvert** : les conventions de casse détaillées au-delà du PascalCase standard .NET, que la configuration ci-dessus fixe au cas par cas plutôt que ce guide.
 
 ---
 
@@ -97,7 +99,9 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 
 ### Non couvert par le corpus
 
-- **[À TRANCHER — J0]** : configuration ESLint/Prettier, ruleset exact, versions précises d'Angular et de Node. Aucune source du corpus de conception ne fixe ces points.
+- **Tranché** (décision d'entrée en build du 2026-09-03) : le format et le style de la couche cliente sont portés par **ESLint avec le préréglage `angular-eslint`** et par **Prettier**. Le build applique les deux.
+- **Versions d'Angular et de Node** : la version en support à long terme en cours à l'ouverture du build — règle et non numéro, pour la raison donnée au §8.
+- **Une règle de style opposable, tranchée avec le contrat d'accès au store** : aucun composant n'importe directement l'API du store local ; tout accès passe par le service d'accès de l'agrégat concerné ([`structure-projets.md §7`](../architecture/structure-projets.md)).
 
 ---
 
@@ -114,7 +118,13 @@ Convention consommatrice qui en découle : tout nouveau code se place dans le na
 
 ## 5. Conventions de commit et de branche
 
-**[À TRANCHER — J0]** — Le corpus de conception ne définit aucun format de message de commit ni de convention de nommage de branche. Ce point est intégralement laissé à l'équipe de build : une convention de commit et de branche sera arrêtée à l'entrée en build ; un candidat courant est Conventional Commits, à ratifier — ce guide ne le tranche pas et n'énonce aucune règle de commit ou de branche comme décidée.
+**Tranché** (décision d'entrée en build du 2026-09-03) — la proposition que le corpus signalait « à ratifier » est ratifiée.
+
+**Message de commit — Conventional Commits, avec une portée entre parenthèses.** La forme est `type(portée): sujet`, le sujet à l'impératif présent, sans point final. La portée nomme la zone touchée. Un commit qui ne s'y conforme pas est refusé en revue.
+
+**Nommage de branche — `<type>/<TB-nnn>-<slug>`.** Le type reprend celui du commit ; `TB-nnn` est l'identifiant de la tranche du [plan de travail](plan-de-travail.md) que la branche sert ; le slug est un rappel lisible de son intitulé.
+
+**Pourquoi la branche porte l'identifiant de la tranche.** Il rend le lien branche ↔ tranche ↔ ticket retrouvable dans les trois sens, par simple recherche, **sans qu'aucun numéro ne soit recopié dans le plan** — le plan continue de ne porter aucun numéro de branche ni d'issue, pour la raison qu'expose [`methode-de-ticket.md §6`](methode-de-ticket.md).
 
 ---
 
@@ -139,7 +149,8 @@ Les trois règles du test d'architecture, dans sa forme initiale :
 
 ### Non couvert par le corpus
 
-- **[À TRANCHER — J0]** : l'outil exact du test d'architecture. La source présente deux options de façon alternative, sans trancher entre elles — NetArchTest ou une convention de namespace vérifiée par script. Ce guide reprend cette alternative telle quelle, sans la clore.
+- **Tranché** (décision d'entrée en build du 2026-09-03) : les contrôles d'intégration continue s'exécutent sur **GitHub Actions**, la plateforme du dépôt où vit déjà le code. Le déclencheur est chaque commit. Cette décision porte sur l'intégration continue seule — **l'hébergement de l'application reste non tranché** ([`docs/deploiement/README.md`](../deploiement/README.md)).
+- **[À TRANCHER — J0]** : l'outil exact du test d'architecture. La source présente deux options de façon alternative, sans trancher entre elles — NetArchTest ou une convention de namespace vérifiée par script. Ce guide reprend cette alternative telle quelle, sans la clore ; le plan porte la tranche qui la clôt (TB-007).
 - **[À TRANCHER — B3.2]** : la définition exhaustive du test d'architecture (liste complète des handlers scopés/non-scopés, couverture des contrats `ITokenValidator`/`ITokenDenylist`) est une dette déjà nommée par le corpus sous ce code de renvoi. Elle n'est pas résolue ici.
 
 ---
@@ -165,8 +176,10 @@ Les points suivants sont des **critères d'acceptation non négociables**, déri
 
 ### Non couvert par le corpus
 
-- **[À TRANCHER — B1.2 / P6]** (le corpus nomme déjà cette dette sous ces deux codes — repris tel quel, non résolu ici) : la liste exhaustive des balises HTML autorisées, la bibliothèque de sanitisation exacte, et les directives CSP complètes (liste exhaustive des directives restantes, valeurs de nonce).
-  *Source : [sanitisation-csp.md, § 5 — Points laissés ouverts](../architecture/specs/sanitisation-csp.md).*
+- **Tranché** (décision d'entrée en build du 2026-09-03) — **bibliothèque de sanitisation, côté client** : `DomSanitizer` d'Angular, déjà acté par ADR-017, complété de **DOMPurify** sur le seul chemin d'import de fichier JSON, où le contenu vient de l'extérieur.
+- **Tranché** (décision d'entrée en build du 2026-09-03) — **directives de la politique de sécurité de contenu** : aux trois directives déjà actées (`default-src 'self'`, `script-src 'self'`, `connect-src 'self'`) s'ajoutent `object-src 'none'`, `base-uri 'self'`, `form-action 'self'` et `frame-ancestors 'none'`. Aucune valeur de nonce n'est employée : la posture `'self'` sans script en ligne la rend inutile.
+- **[À TRANCHER — modélisation domaine]** : la **liste exhaustive des balises autorisées** n'est pas décidable en l'état. Elle présuppose qu'un bloc de contenu de type `TEXT` porte du HTML, ce qu'aucune source du corpus n'établit — le modèle de domaine écrit « contenu structuré selon le type de bloc » et le stockage est `jsonb`. Le format du contenu d'un bloc doit être tranché avant la liste des balises.
+  *Source : [sanitisation-csp.md, § 5 — Points laissés ouverts](../architecture/specs/sanitisation-csp.md) ; [`conception/domain/content-library.md § DocumentBlock`](../conception/domain/content-library.md).*
 
 ---
 
