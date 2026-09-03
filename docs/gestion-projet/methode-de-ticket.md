@@ -26,7 +26,7 @@ Champs attendus au minimum :
 |---|---|---|
 | **Titre** | oui | Le plan porte un intitulé de tâche, pas un titre d'issue — c'est un artefact distinct, qui doit rester comparable littéralement au premier pour détecter une divergence. |
 | **Tâche de plan** | oui | C'est l'unique lien vers le but, les dépendances, le périmètre d'écriture, la taille et les critères d'acceptation de la tâche — des champs déjà portés par `plan-de-travail.md`, qu'aucun ticket ne recopie. |
-| **Libellés** | oui | Le plan ne classe pas ses tâches par jalon, couche ou nature de vérification — c'est une lecture transverse au plan, propre au suivi d'exécution, absente de sa structure (`plan-de-travail.md §4`, vue des épiques par jalon uniquement). |
+| **Libellés** | oui | Le plan ne classe pas ses tâches par jalon, nature de tranche ou nature de vérification — c'est une lecture transverse au plan, propre au suivi d'exécution, absente de sa structure (`plan-de-travail.md §4`, vue des épiques par jalon uniquement). |
 | **État** | oui | Le plan ne porte aucune notion d'avancement — une tâche y est décrite une fois, indépendamment du moment où elle est prise en charge. |
 | **Pris par** | non, renseigné à la prise | C'est le seul champ du dispositif entier qui nomme une personne — le plan ne peut structurellement pas le porter (`plan-de-travail.md §1`, règle (a)). |
 | **Notes d'exécution** | non | Texte libre sans valeur normative, propre au déroulé d'une prise en charge donnée — rien de comparable n'existe dans le plan. |
@@ -73,24 +73,22 @@ Trois axes orthogonaux, à valeurs fermées, chacun ancré sur une source du cor
 
 Les deux points de décision qui séparent ces jalons — `[DÉCISION MARCHÉ]` et `[VALIDATION JURIDIQUE EU]` — ne sont pas des valeurs de cet axe : `roadmap-entree-build.md §1` les qualifie de `NON-VERIFIABLE-IN-BUILD`, donc par construction non vérifiables par une tâche de code, donc par aucun ticket de cette taxonomie.
 
-**Par couche** — dérivée de la granularité par couche décidée par [`structure-projets.md §3`](../architecture/structure-projets.md), de la couche mode local décrite par [`structure-projets.md §7`](../architecture/structure-projets.md), et du frontend Angular décrit par sa sous-section nommée [`structure-projets.md, § Frontend : Angular SPA + Angular SSR/prerender`](../architecture/structure-projets.md) — nommée plutôt que renvoyée à `§7`, dont le titre parle du mode local seul quand l'interface qu'elle décrit déborde ce périmètre dès J2 (dérogation structurelle de [`guide-conventions-et-dod.md §8.2`](guide-conventions-et-dod.md)) :
+**Par nature de tranche** — dérivée des natures de module que pose la maille de désignation du plan ([`plan-de-travail.md §2`](plan-de-travail.md)). La valeur se **déduit du champ `Périmètre d'écriture`** de la tranche ; elle n'est jamais saisie à la main :
 
-| Valeur | Ancrage |
-|---|---|
-| Domaine | `structure-projets.md §3` |
-| Application | `structure-projets.md §3` |
-| Infrastructure (persistance) | `structure-projets.md §3` |
-| Haversack.Infrastructure.Notifications | `structure-projets.md §3` |
-| Présentation (API) | `structure-projets.md §3` |
-| Présentation (landing) | `structure-projets.md §3` |
-| Mode local TypeScript | `structure-projets.md §7` |
-| Interface | `structure-projets.md, § Frontend : Angular SPA + Angular SSR/prerender` |
+| Valeur | Déduite quand le périmètre porte… | Ancrage |
+|---|---|---|
+| Comportement | un agrégat du modèle de domaine | `plan-de-travail.md §2`, première nature |
+| Surface | une fiche d'écran | `plan-de-travail.md §2`, deuxième nature |
+| Socle | un projet .NET, le noyau partagé, ou un namespace de bounded context | `plan-de-travail.md §2`, troisième nature |
+| Couche cliente | un des six modules de la couche cliente | `plan-de-travail.md §2`, quatrième nature |
+| Outillage | un module d'outillage | `plan-de-travail.md §2`, cinquième nature |
+| Hors maille | le marqueur `HORS MAILLE` | `plan-de-travail.md §2` |
 
-La valeur `Interface` couvre les tâches dont le `Périmètre d'écriture` est composé uniquement de fiches d'écran de wireframe — le frontend Angular partagé par l'application et la landing page, seule couche du plan qui ne se rattache à aucun projet .NET.
+**Pourquoi cet axe a remplacé un axe « par couche ».** La version antérieure de cette taxonomie classait par couche technique, ce qui était classifiant tant qu'une tâche *était* une couche. Depuis que les tranches les traversent, une tranche de comportement écrit le Domaine, l'Application et la persistance locale : elle recevrait trois libellés de couche, et un libellé posé trois fois sur la même issue ne filtre plus rien. La nature de tranche, elle, reste une valeur unique dans la quasi-totalité des cas.
 
-Cet axe s'arrête, côté serveur, au grain du projet .NET, pas à celui du namespace de bounded context (`IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct`, `SharedKernel`) ; côté client, il s'arrête de même au grain de la couche Interface, pas à celui de la fiche d'écran. Dans les deux cas, ce grain plus fin vit déjà dans le champ `Périmètre d'écriture` de chaque tâche du plan — le reproduire ici en valeurs de libellé recopierait une information que le ticket pointe déjà par son champ `Tâche de plan`, plutôt que de la compléter.
+**Cet axe ne recopie pas le périmètre.** Il en donne la **catégorie**, pas le contenu : le module exact vit dans le champ `Périmètre d'écriture` de la tranche, que le ticket pointe déjà par son champ `Tâche de plan`. Reproduire ici les noms d'agrégats ou de fiches d'écran serait la duplication que [`guide-conventions-et-dod.md §8`](guide-conventions-et-dod.md) proscrit ; en donner la nature est une lecture transverse que le plan ne porte pas en champ.
 
-**Par nature** — dérivée des niveaux et des axes transverses de [`cahier-strategie-test-et-recette.md §3`](../test/cahier-strategie-test-et-recette.md) :
+**Par nature de vérification** — dérivée des niveaux et des axes transverses de [`cahier-strategie-test-et-recette.md §3`](../test/cahier-strategie-test-et-recette.md) :
 
 | Valeur | Ancrage |
 |---|---|
