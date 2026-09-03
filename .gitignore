@@ -153,6 +153,10 @@ logs/
 *.orig
 .tmp/
 
+# ── Python (outillage de corpus) ──────────────────────
+__pycache__/
+*.py[cod]
+
 # ── Docs locaux / audits (non versionnés) ────────────
 /docs/audit/
 /docs/BACKLOG.md
