@@ -69,7 +69,22 @@ Le champ `Périmètre d'écriture` de chaque tranche est une liste de **modules*
 
 - un **agrégat du modèle de domaine**, désigné par son nom, parmi ceux que [`docs/conception/domain/`](../conception/domain/README.md) nomme en sections propres — `## Agrégats` dans trois fichiers de contexte, `## Agrégat unique : User` dans le quatrième. Les entités et value objects internes à un agrégat (`### X (entité dans Y)`, `### X (value object dans Y)`) n'en sont pas : **un agrégat est la frontière transactionnelle du modèle**, donc l'unité d'écriture ;
 - une **fiche d'écran**, par son slug, parmi celles de [`docs/conception/interface/wireframes/`](../conception/interface/wireframes/README.md) ;
-- un **module transverse nommé** : le noyau partagé `SharedKernel` ([`structure-projets.md §4`](../architecture/structure-projets.md)), `Haversack.Infrastructure.Notifications`, ou un projet .NET désigné par son rôle tant que son nom n'est pas tranché ([`structure-projets.md §3 § Convention de désignation`](../architecture/structure-projets.md)).
+- un **module transverse nommé** : le noyau partagé `SharedKernel` ([`structure-projets.md §4`](../architecture/structure-projets.md)), `Haversack.Infrastructure.Notifications`, ou un projet .NET désigné par son rôle tant que son nom n'est pas tranché ([`structure-projets.md §3 § Convention de désignation`](../architecture/structure-projets.md)) ;
+- un **module de la couche cliente**, parmi les six que le corpus nomme par leur préoccupation — jamais par un répertoire, dont l'arborescence reste `[À TRANCHER — J0]` ;
+- un **module d'outillage**, désigné par son rôle selon la même convention que les projets .NET dont le nom n'est pas tranché : `le projet de test d'architecture`, `le projet de test de bout en bout`, `la configuration de la solution`, `la configuration d'intégration continue`.
+
+**Les six modules de la couche cliente et leur ancrage.** [`structure-projets.md §7`](../architecture/structure-projets.md) renvoie l'emplacement de cette couche à l'ouverture de J0 et n'en nomme aucun répertoire. Ce document ne tranche pas cette arborescence : il désigne les modules par la **préoccupation** que le corpus leur donne déjà ailleurs.
+
+| Module | Où le corpus le nomme |
+|---|---|
+| `service d'accès au store` | [`roadmap-entree-build.md Annexe A`](roadmap-entree-build.md), ligne J1, code `P6` — « Services Angular IndexedDB (wrappers) » |
+| `châssis` | [`zoning.md §S7 — Châssis`](../conception/interface/zoning.md) |
+| `bandeaux transversaux` | [`roadmap-entree-build.md Annexe A`](roadmap-entree-build.md), code `P6` — « bandeaux durabilité/confidentialité » |
+| `sanitisation` | [`roadmap-entree-build.md Annexe A`](roadmap-entree-build.md), code `P6` — « `DomSanitizer` » ; [`specs/sanitisation-csp.md`](../architecture/specs/sanitisation-csp.md) |
+| `politique de sécurité de contenu` | [`roadmap-entree-build.md Annexe A`](roadmap-entree-build.md), code `P6` — « CSP complète » ; [`specs/sanitisation-csp.md`](../architecture/specs/sanitisation-csp.md) |
+| `projection d'export` | [`ADR-017 § Conséquences`](../architecture/decisions/ADR-017-modele-indexeddb-local.md) — « Couture de projection filtrée, sans reformatage structurel » |
+
+*Le bandeau de durabilité et le bandeau de confidentialité partagent un seul module, comme le corpus les nomme d'un seul trait. Ils sont donc déclarés en conflit et sérialisés, sans qu'aucune source ne dise dans quel ordre — leur épique n'étant pas portée par un use case, la règle (b bis) ne s'y applique pas. L'ordre est laissé à qui les prend.*
 
 **L'agrégat couvre ses deux moitiés.** Déclarer `Space` couvre l'agrégat côté domaine **et** sa persistance côté client : le store local `spaces` **est** l'agrégat `Space` persisté, pas un second objet. Les douze object stores nommés par [`ADR-017 §1.1`](../architecture/decisions/ADR-017-modele-indexeddb-local.md) se rattachent chacun à exactement un agrégat, et ce rattachement se lit sur le tableau de cette section — il n'est pas recopié depuis l'ADR, il en est dérivé :
 
@@ -90,7 +105,12 @@ Le champ `Périmètre d'écriture` de chaque tranche est une liste de **modules*
 
 **Coût de cette maille — écrit en clair.** Elle sépare proprement deux agrégats, donc deux sujets métier distincts. Elle **ne voit pas les points de composition** — enregistrement des cas d'usage de la couche Application, table de routage, déclaration du schéma du store — qui n'appartiennent à aucun agrégat. Deux tranches déclarées sans conflit peuvent donc s'y rencontrer. **C'est un risque de collision, non un coût de délai** : l'erreur ne va plus dans le sens sûr, contrairement à la maille par couche qu'elle remplace. La parade est une convention plaçant ces points **par agrégat** plutôt qu'en fichier unique ; elle relève de l'ouverture de J0 et n'est pas tranchée ici. `[À TRANCHER — J0]`
 
-**Ce que cette maille ne peut pas nommer.** Plusieurs tranches de la couche cliente (services d'accès au store, bandeaux transversaux, sanitisation, châssis), les projets de test, la configuration d'intégration continue et les actes documentaires ne correspondent à aucune des trois natures ci-dessus. Leur champ `Périmètre d'écriture` porte `TROU` avec la nature précise du manque ; ce n'est pas un oubli de ce document, c'est une absence mesurée du corpus source.
+**Deux marqueurs, à ne pas confondre.**
+
+- **`HORS MAILLE`** — la tranche ne vise **aucun module de code** : confirmer un ADR, retenir un outil, arrêter une convention, renseigner une colonne de verdict. Ce n'est pas un manque du corpus, c'est la maille qui ne parle que de code. Une tranche `HORS MAILLE` n'a pas de conflit d'écriture par construction, et **satisfait la cinquième condition d'entrée** ([`methode-de-ticket.md §2`](methode-de-ticket.md)) au même titre qu'un module nommé.
+- **`TROU`** — la tranche vise un module de code que le corpus ne nomme pas. Aucune tranche de ce document n'en porte plus en périmètre d'écriture ; le marqueur reste défini pour le cas où une tranche future en aurait besoin.
+
+Le marqueur `TROU` subsiste en revanche sur des **critères d'acceptation**, où il signale une absence réelle du corpus source. Le périmètre d'écriture et les critères d'acceptation sont deux conditions d'entrée distinctes : nommer un module ne fournit pas un critère.
 
 ---
 
@@ -201,7 +221,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-01 |
 | Jalon | J0 |
 | Dépend de | — |
-| Périmètre d'écriture | TROU — nature : acte de confirmation documentaire sur les ADR eux-mêmes, hors maille de désignation (ne vise ni agrégat, ni fiche d'écran, ni module transverse nommé) |
+| Périmètre d'écriture | HORS MAILLE — nature : acte de confirmation documentaire sur les ADR eux-mêmes — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | M — 0 modules, 3 renvois |
 | Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 1 ; `cahier-strategie-test-et-recette.md §9`, ligne « Socle », puce 1 ; la liste des ADR concernés se lit sur `architecture/decisions/README.md § Index`, colonne « Nature » (valeurs « pré-implémentation » et « mixte ») — non recopiée ici, pour ne pas dupliquer un décompte que ce registre possède et fait évoluer |
@@ -276,9 +296,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-03 |
 | Jalon | J0 |
 | Dépend de | TB-003 |
-| Périmètre d'écriture | TROU — nature : projet de test d'architecture non nommé par le corpus. Ce projet doit être désigné pour être inscrit à la maille |
-| En conflit avec | recouvrement à confirmer à J0 — TB-009 écrit dans le même projet de test d'architecture, non nommé par le corpus, donc non déclarable comme module au sens de la maille (§2). Recouvrement à confirmer à J0. |
-| Taille | M — 0 modules, 3 renvois |
+| Périmètre d'écriture | le projet de test d'architecture |
+| En conflit avec | TB-009 — module partagé : le projet de test d'architecture ; recouvrement à confirmer à J0 — TB-009 écrit dans le même projet de test d'architecture, non nommé par le corpus, donc non déclarable comme module au sens de la maille (§2). Recouvrement à confirmer à J0. |
+| Taille | M — un module, 3 renvois |
 | Critères d'acceptation | `guide-conventions-et-dod.md §6 § Dérivable du corpus` (les règles y sont énumérées littéralement) ; `structure-projets.md §6` ; `cahier-strategie-test-et-recette.md §3.4 — Test d'architecture (CI)` |
 | Code de renvoi | — |
 
@@ -290,7 +310,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-03 |
 | Jalon | J0 |
 | Dépend de | — |
-| Périmètre d'écriture | TROU — nature : destination de la décision non fixée par le corpus |
+| Périmètre d'écriture | HORS MAILLE — nature : acte de décision — retenir un outil et tracer le choix ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | S |
 | Critères d'acceptation | `guide-conventions-et-dod.md §6 § Non couvert par le corpus` : « `[À TRANCHER — J0]` : l'outil exact du test d'architecture. La source présente deux options de façon alternative, sans trancher entre elles — NetArchTest ou une convention de namespace vérifiée par script. » Aucun critère d'acceptation n'existe pour choisir entre les deux |
@@ -304,7 +324,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-03 |
 | Jalon | J0 |
 | Dépend de | TB-006, TB-007 |
-| Périmètre d'écriture | TROU — nature : configuration de pipeline, emplacement et hébergeur non fixés par le corpus |
+| Périmètre d'écriture | la configuration d'intégration continue |
 | En conflit avec | — |
 | Taille | S |
 | Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 3 — « Le test d'archi CI existe, **tourne en pipeline** » ; **`TROU`** — nature : *le critère de sortie présuppose une infrastructure que le corpus ne décrit nulle part* — `docs/deploiement/README.md` déclare qu'« aucun document de déploiement n'est produit à ce jour » et que l'hébergeur est `[non tranché]` — aucun ADR, spécification ni critère d'acceptation n'existe pour la plateforme de CI, ses environnements ou son déclencheur |
@@ -318,9 +338,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-03 |
 | Jalon | J0 (rattachement d'annexe) — **contenu dépendant de J2** |
 | Dépend de | TB-006 |
-| Périmètre d'écriture | TROU — nature : même projet de test d'architecture que TB-006, non nommé |
-| En conflit avec | recouvrement à confirmer à J0 — TB-006 écrit dans le même projet de test d'architecture, non nommé par le corpus. Recouvrement à confirmer à J0. |
-| Taille | M — 0 modules, 4 renvois |
+| Périmètre d'écriture | le projet de test d'architecture |
+| En conflit avec | TB-006 — module partagé : le projet de test d'architecture ; recouvrement à confirmer à J0 — TB-006 écrit dans le même projet de test d'architecture, non nommé par le corpus. Recouvrement à confirmer à J0. |
+| Taille | M — un module, 4 renvois |
 | Critères d'acceptation | `guide-conventions-et-dod.md §6` : « `[À TRANCHER — B3.2]` : la définition exhaustive du test d'architecture […] est une dette déjà nommée par le corpus sous ce code de renvoi. Elle n'est pas résolue ici. » ; `ADR-014-modele-autorisation-api.md § Points à trancher` ; `ADR-015-securite-authentification-mvp.md § Points à trancher` ; `roadmap-entree-build.md Annexe A` |
 | Code de renvoi | B3.2 |
 
@@ -350,7 +370,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-05 |
 | Jalon | J0 |
 | Dépend de | TB-002 |
-| Périmètre d'écriture | TROU — nature : configuration à la racine de la solution et configuration front, emplacement non nommé par le corpus |
+| Périmètre d'écriture | la configuration de la solution |
 | En conflit avec | — |
 | Taille | S |
 | Critères d'acceptation | **`TROU`** — nature : *deux `[À TRANCHER — J0]` explicites* — `guide-conventions-et-dod.md §2 § Non couvert par le corpus` (règles de format et de style fines, `.editorconfig`, analyzers Roslyn, conventions de casse détaillées) et `guide-conventions-et-dod.md §3 § Non couvert par le corpus` (configuration ESLint/Prettier, ruleset exact, versions Angular/Node). Aucun critère d'acceptation n'existe |
@@ -364,7 +384,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-05 |
 | Jalon | J0 |
 | Dépend de | — |
-| Périmètre d'écriture | TROU — nature : point intégralement laissé ouvert par le corpus, aucune destination fixée |
+| Périmètre d'écriture | HORS MAILLE — nature : acte de décision — arrêter une convention ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | S |
 | Critères d'acceptation | **`TROU`** — nature : *point intégralement laissé ouvert* — `guide-conventions-et-dod.md §5` : « Le corpus de conception ne définit aucun format de message de commit ni de convention de nommage de branche. Ce point est intégralement laissé à l'équipe de build […] un candidat courant est Conventional Commits, à ratifier — ce guide ne le tranche pas. » |
@@ -403,9 +423,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-29 |
 | Jalon | J1 |
 | Dépend de | TB-005 |
-| Périmètre d'écriture | TROU — nature : couche cliente Angular et TypeScript — le corpus en décrit le périmètre fonctionnel sans en nommer le répertoire (`structure-projets.md §7`, `[À TRANCHER — J0]`) |
-| En conflit avec | — |
-| Taille | M — 0 modules, 3 renvois |
+| Périmètre d'écriture | service d'accès au store |
+| En conflit avec | TB-082 — module partagé : service d'accès au store |
+| Taille | M — un module, 3 renvois |
 | Critères d'acceptation | `ADR-001 § Compléments post-revue (2026-09-03)`, puce « Ordre C#-first » — C#-first désigne l'autorité du contrat, non l'ordre de construction de la couche cliente ; `roadmap-entree-build.md Annexe A`, ligne J1 — « Services Angular IndexedDB (wrappers, `DomSanitizer`, bandeaux durabilité/confidentialité, CSP complète) », code `P6` ; **`TROU`** — nature : *le renvoi `P6` pointe une entrée de registre de points à trancher, non un critère* — aucun critère d'acceptation n'existe pour la forme du contrat |
 | Code de renvoi | P6 |
 | Ce que la doublure ne peut pas porter | aucune règle métier. `ADR-001 § Alternatives considérées` écarte la réimplémentation du domaine en TypeScript, et cette révision ne la rouvre pas : une doublure rend des jeux de données, les seules validations autorisées côté client sont celles que `structure-projets.md §7` énumère (TB-094). |
@@ -434,8 +454,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-10 |
 | Jalon | J1 |
 | Dépend de | TB-056 |
-| Périmètre d'écriture | TROU — nature : couche cliente Angular et TypeScript — le corpus en décrit le périmètre fonctionnel sans en nommer le répertoire (`structure-projets.md §7`, `[À TRANCHER — J0]`) |
-| En conflit avec | — |
+| Périmètre d'écriture | châssis |
+| En conflit avec | TB-093 — module partagé : châssis |
 | Taille | L — surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) |
 | Critères d'acceptation | `zoning.md §S7 — Châssis` ; `zoning.md §S6 AR-19` (règle de densité) ; NFR-ACC-01 → NFR-ACC-04 ; `cahier-strategie-test-et-recette.md §3.6 — Axe transverse Accessibilité` |
 | Code de renvoi | — |
@@ -790,9 +810,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-08 |
 | Jalon | J1 |
 | Dépend de | TB-057 |
-| Périmètre d'écriture | TROU — nature : appel d'API navigateur au niveau de la base entière — ni un agrégat, ni une fiche d'écran |
-| En conflit avec | — |
-| Taille | M — 0 modules, 3 renvois |
+| Périmètre d'écriture | service d'accès au store |
+| En conflit avec | TB-056 — module partagé : service d'accès au store |
+| Taille | M — un module, 3 renvois |
 | Critères d'acceptation | `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 2 ; `ADR-017-modele-indexeddb-local.md §3` ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only », puce 2 |
 | Code de renvoi | — |
 | Préalable bloquant | `G-08` est un **préalable bloquant à lever avant J1** (`ADR-001 § Compléments post-revue (2026-06-09)`, puce « G-08 »). |
@@ -805,9 +825,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-08 |
 | Jalon | J1 |
 | Dépend de | TB-082, TB-058 |
-| Périmètre d'écriture | TROU — nature : composant transverse de la couche cliente, présent sur toute surface MJ, sans fiche d'écran ni agrégat propre |
-| En conflit avec | — |
-| Taille | M — 0 modules, 5 renvois |
+| Périmètre d'écriture | bandeaux transversaux |
+| En conflit avec | TB-084 — module partagé : bandeaux transversaux |
+| Taille | M — un module, 5 renvois |
 | Critères d'acceptation | RB-01-04 (révisée) ; `usecases/UC-01-mode-local-sans-compte.md § Mode local (sans compte)` — « Bandeau de durabilité » ; `user-stories/US-UC-01-mode-local-sans-compte.md § US-01-03 § Révision apportée` ; NFR-OFF-02, NFR-OFF-03 ; `zoning.md §S7` |
 | Code de renvoi | — |
 
@@ -819,9 +839,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-08 |
 | Jalon | J1 |
 | Dépend de | TB-058 |
-| Périmètre d'écriture | TROU — nature : composant transverse de la couche cliente, distinct du bandeau de durabilité mais de même nature non nommable |
-| En conflit avec | — |
-| Taille | M — 0 modules, 4 renvois |
+| Périmètre d'écriture | bandeaux transversaux |
+| En conflit avec | TB-083 — module partagé : bandeaux transversaux |
+| Taille | M — un module, 4 renvois |
 | Critères d'acceptation | RB-01-14 ; `usecases/UC-01-mode-local-sans-compte.md § Mode local (sans compte)` — « Bandeau de confidentialité » ; NFR-CONF-04 ; `user-stories/US-UC-01-mode-local-sans-compte.md § US-01-03 § Révision apportée` |
 | Code de renvoi | — |
 
@@ -833,9 +853,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-08 |
 | Jalon | J1 |
 | Dépend de | TB-056 |
-| Périmètre d'écriture | TROU — nature : configuration de la page hôte et code de sanitisation de la couche cliente — ni agrégat, ni fiche d'écran |
-| En conflit avec | recouvrement à confirmer à J0 — TB-086 porte sur la même configuration de politique de sécurité de contenu, non nommable dans la maille. Recouvrement à confirmer à J0. |
-| Taille | M — 0 modules, 4 renvois |
+| Périmètre d'écriture | sanitisation ; politique de sécurité de contenu |
+| En conflit avec | TB-086 — module partagé : politique de sécurité de contenu ; recouvrement à confirmer à J0 — TB-086 porte sur la même configuration de politique de sécurité de contenu, non nommable dans la maille. Recouvrement à confirmer à J0. |
+| Taille | L — surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) |
 | Critères d'acceptation | `guide-conventions-et-dod.md §7 § Conventions de sécurité de code` — critères d'acceptation non négociables énumérés (liste blanche positive identique serveur/client, `<script>` et attributs `on*` interdits sans exception, ordre valider-puis-sanitiser avant toute écriture, posture `default-src 'self'` / `script-src 'self'` / `connect-src 'self'`) ; `specs/sanitisation-csp.md §1`, `§2`, `§4` ; `usecases/UC-01-mode-local-sans-compte.md § Critères d'acceptation` — « Aucun contenu, importé ou saisi, ne peut déclencher l'exécution de code lors de son affichage » ; **`TROU` partiel** — nature : *dette balisée* — `guide-conventions-et-dod.md §7 § Non couvert par le corpus` : « `[À TRANCHER — B1.2 / P6]` : la liste exhaustive des balises HTML autorisées, la bibliothèque de sanitisation exacte, et les directives CSP complètes » |
 | Code de renvoi | B1.2, P6 |
 
@@ -847,9 +867,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-08 |
 | Jalon | J1 |
 | Dépend de | TB-085 |
-| Périmètre d'écriture | TROU — nature : configuration de politique de sécurité de contenu et test, même terrain que TB-085 |
-| En conflit avec | recouvrement à confirmer à J0 — TB-085 porte sur la même configuration, non nommable dans la maille. Recouvrement à confirmer à J0. |
-| Taille | M — 0 modules, 3 renvois |
+| Périmètre d'écriture | politique de sécurité de contenu |
+| En conflit avec | TB-085 — module partagé : politique de sécurité de contenu ; recouvrement à confirmer à J0 — TB-085 porte sur la même configuration, non nommable dans la maille. Recouvrement à confirmer à J0. |
+| Taille | M — un module, 3 renvois |
 | Critères d'acceptation | `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 4 — « Aucun appel réseau vers l'API Haversack n'existe dans le périmètre mode local livré (observable via la CSP `connect-src 'self'`) » ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only », puce 4 ; NFR-CONF-02 |
 | Code de renvoi | — |
 
@@ -863,8 +883,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-09 |
 | Jalon | J1 |
 | Dépend de | TB-057 |
-| Périmètre d'écriture | TROU — nature : fonction d'assemblage du payload côté client, distincte des agrégats qu'elle lit |
-| En conflit avec | — |
+| Périmètre d'écriture | projection d'export |
+| En conflit avec | TB-088 — module partagé : projection d'export ; TB-089 — module partagé : projection d'export |
 | Taille | S |
 | Critères d'acceptation | `ADR-016-serialisation-locale-migration.md §1.1 § Enveloppe du payload` (structure littérale) ; `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 3 |
 | Code de renvoi | — |
@@ -877,9 +897,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-09 |
 | Jalon | J1 |
 | Dépend de | TB-087, TB-071, TB-072 |
-| Périmètre d'écriture | TROU — nature : fonction de projection transverse aux agrégats, non nommable |
-| En conflit avec | — |
-| Taille | M — 0 modules, 4 renvois |
+| Périmètre d'écriture | projection d'export |
+| En conflit avec | TB-087 — module partagé : projection d'export ; TB-089 — module partagé : projection d'export |
+| Taille | M — un module, 4 renvois |
 | Critères d'acceptation | `ADR-016-serialisation-locale-migration.md §1.2 § Périmètre sérialisé` ; `§1.3 § Champs gouvernés et champs libres` ; `§1.4 § Format comme contrat versionné stable` ; `ADR-017-modele-indexeddb-local.md § Conséquences § Couture de projection filtrée, sans reformatage structurel` (le filtre écarte les sessions en statut `LIVE`, `session_view_configs` et `session_view_folders`) |
 | Code de renvoi | — |
 
@@ -891,8 +911,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-09 |
 | Jalon | J1 |
 | Dépend de | TB-087, TB-088 |
-| Périmètre d'écriture | TROU — nature : fonction de validation structurelle, non nommable |
-| En conflit avec | — |
+| Périmètre d'écriture | projection d'export |
+| En conflit avec | TB-087 — module partagé : projection d'export ; TB-088 — module partagé : projection d'export |
 | Taille | S |
 | Critères d'acceptation | `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 3 — « […] est structurellement rejouable (dry-run de validation possible côté contrat, sans nécessiter de serveur cloud actif pour cette vérification structurelle) » ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only », puce 3 |
 | Code de renvoi | — |
@@ -905,7 +925,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-09 |
 | Jalon | J1 |
 | Dépend de | TB-057, TB-088, TB-089 |
-| Périmètre d'écriture | TROU — nature : projet de test de bout en bout, non nommé par le corpus |
+| Périmètre d'écriture | le projet de test de bout en bout |
 | En conflit avec | — |
 | Taille | S |
 | Critères d'acceptation | `roadmap-entree-build.md Annexe A`, ligne J1 — « e2e multi-versions IndexedDB (fonction de projection store→payload) », code `P7` ; `cahier-strategie-test-et-recette.md §11`, ligne UC-01, colonne « Tests nommés » |
@@ -952,8 +972,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-11 |
 | Jalon | J1 |
 | Dépend de | TB-058 |
-| Périmètre d'écriture | TROU — nature : composant transverse de la couche cliente, sans fiche d'écran ni agrégat propre |
-| En conflit avec | — |
+| Périmètre d'écriture | châssis |
+| En conflit avec | TB-058 — module partagé : châssis |
 | Taille | S |
 | Critères d'acceptation | **`TROU`** — nature : *mécanisme non défini* — `architecture/specs/telemetrie.md §4.2 § Ce qui reste ouvert` : « Mécanisme de capture email non bloquante : point de sollicitation dans le parcours, comportement si le MJ refuse ou ignore, traitement de la donnée collectée. `[À TRANCHER — ticket]` ». Seule l'exigence de résultat est actée (`vision/moscow.md § Instrumentation de validation du MVP § Capture de contact non bloquante`) |
 | Code de renvoi | — |
@@ -968,7 +988,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | EP-12 |
 | Jalon | J1 |
 | Dépend de | TB-091, TB-092, TB-093, TB-090, TB-086, TB-083, TB-084, TB-077, TB-078, TB-079, TB-081, TB-070 |
-| Périmètre d'écriture | TROU — nature : colonne Verdict d'un document de recette, hors maille de désignation |
+| Périmètre d'écriture | HORS MAILLE — nature : renseignement de la colonne Verdict d'un document de recette — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | M — 0 modules, 3 renvois |
 | Critères d'acceptation | `cahier-strategie-test-et-recette.md §8 — Critères d'entrée/sortie globaux & Definition of Done de test` ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only » (4 critères) ; `roadmap-entree-build.md §3.2 § Critères de sortie factuels` (4 critères) |
@@ -1012,7 +1032,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | TB-002 |
 | Tranches | TB-003, TB-010, TB-011 |
-| Modules touchés, deux à deux disjoints | TB-003 : IdentityAccess, SpaceManagement, ContentLibrary, SessionConduct, SharedKernel ; TB-010 : le projet Application unique ; TB-011 : TROU |
+| Modules touchés, deux à deux disjoints | TB-003 : IdentityAccess, SpaceManagement, ContentLibrary, SessionConduct, SharedKernel ; TB-010 : le projet Application unique ; TB-011 : la configuration de la solution |
 | Ferme quand | TB-003, TB-010, TB-011 sont closes |
 
 ##### LOT-03
@@ -1021,7 +1041,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | TB-003, TB-010 |
 | Tranches | TB-004, TB-006, TB-080 |
-| Modules touchés, deux à deux disjoints | TB-004 : SharedKernel ; TB-006 : TROU ; TB-080 : le projet Application unique |
+| Modules touchés, deux à deux disjoints | TB-004 : SharedKernel ; TB-006 : le projet de test d'architecture ; TB-080 : le projet Application unique |
 | Ferme quand | TB-004, TB-006, TB-080 sont closes |
 
 ##### LOT-04
@@ -1030,7 +1050,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | TB-004, TB-006, TB-007 |
 | Tranches | TB-005, TB-008, TB-009 |
-| Modules touchés, deux à deux disjoints | TB-005 : SharedKernel ; TB-008 : TROU ; TB-009 : TROU |
+| Modules touchés, deux à deux disjoints | TB-005 : SharedKernel ; TB-008 : la configuration d'intégration continue ; TB-009 : le projet de test d'architecture |
 | Ferme quand | TB-005, TB-008, TB-009 sont closes |
 
 ##### LOT-05
@@ -1039,7 +1059,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | TB-056 |
 | Tranches | TB-057, TB-058, TB-085 |
-| Modules touchés, deux à deux disjoints | TB-057 : Space, Folder, Document, DocumentType, Session, SessionViewConfig ; TB-058 : TROU ; TB-085 : TROU |
+| Modules touchés, deux à deux disjoints | TB-057 : Space, Folder, Document, DocumentType, Session, SessionViewConfig ; TB-058 : châssis ; TB-085 : sanitisation, politique de sécurité de contenu |
 | Ferme quand | TB-057, TB-058, TB-085 sont closes |
 
 ##### LOT-06
@@ -1048,7 +1068,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | TB-057, TB-058, TB-085 |
 | Tranches | TB-059, TB-079, TB-082, TB-084, TB-086, TB-087, TB-093 |
-| Modules touchés, deux à deux disjoints | TB-059 : Space ; TB-079 : fiche `accueil` ; TB-082 : TROU ; TB-084 : TROU ; TB-086 : TROU ; TB-087 : TROU ; TB-093 : TROU |
+| Modules touchés, deux à deux disjoints | TB-059 : Space ; TB-079 : fiche `accueil` ; TB-082 : service d'accès au store ; TB-084 : bandeaux transversaux ; TB-086 : politique de sécurité de contenu ; TB-087 : projection d'export ; TB-093 : châssis |
 | Ferme quand | TB-059, TB-079, TB-082, TB-084, TB-086, TB-087, TB-093 sont closes |
 
 ##### LOT-07
@@ -1057,7 +1077,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | TB-058, TB-059, TB-082 |
 | Tranches | TB-060, TB-063, TB-083 |
-| Modules touchés, deux à deux disjoints | TB-060 : fiche `tableau-de-bord` ; TB-063 : Folder ; TB-083 : TROU |
+| Modules touchés, deux à deux disjoints | TB-060 : fiche `tableau-de-bord` ; TB-063 : Folder ; TB-083 : bandeaux transversaux |
 | Ferme quand | TB-060, TB-063, TB-083 sont closes |
 
 ##### LOT-08
@@ -1102,7 +1122,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | TB-062, TB-067, TB-068, TB-069, TB-071, TB-072, TB-087 |
 | Tranches | TB-070, TB-073, TB-075, TB-088 |
-| Modules touchés, deux à deux disjoints | TB-070 : fiche `editeur-scenario` ; TB-073 : Session, Document ; TB-075 : fiche `parametres-campagne` ; TB-088 : TROU |
+| Modules touchés, deux à deux disjoints | TB-070 : fiche `editeur-scenario` ; TB-073 : Session, Document ; TB-075 : fiche `parametres-campagne` ; TB-088 : projection d'export |
 | Ferme quand | TB-070, TB-073, TB-075, TB-088 sont closes |
 
 ##### LOT-13
@@ -1111,7 +1131,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | TB-058, TB-065, TB-071, TB-072, TB-073, TB-075, TB-087, TB-088 |
 | Tranches | TB-074, TB-076, TB-089, TB-091 |
-| Modules touchés, deux à deux disjoints | TB-074 : fiche `vue-session-mj` ; TB-076 : Session, Document ; TB-089 : TROU ; TB-091 : fiche `parametres-campagne` |
+| Modules touchés, deux à deux disjoints | TB-074 : fiche `vue-session-mj` ; TB-076 : Session, Document ; TB-089 : projection d'export ; TB-091 : fiche `parametres-campagne` |
 | Ferme quand | TB-074, TB-076, TB-089, TB-091 sont closes |
 
 ##### LOT-14
@@ -1120,7 +1140,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 |---|---|
 | Ouvrable après | TB-056, TB-057, TB-065, TB-074, TB-076, TB-080, TB-088, TB-089 |
 | Tranches | TB-077, TB-081, TB-090, TB-092 |
-| Modules touchés, deux à deux disjoints | TB-077 : fiche `panneau-creation-rapide` ; TB-081 : Document ; TB-090 : TROU ; TB-092 : le projet Application unique |
+| Modules touchés, deux à deux disjoints | TB-077 : fiche `panneau-creation-rapide` ; TB-081 : Document ; TB-090 : le projet de test de bout en bout ; TB-092 : le projet Application unique |
 | Ferme quand | TB-077, TB-081, TB-090, TB-092 sont closes |
 
 **Paliers n'ouvrant qu'une seule tranche** (voir le champ `Dépend de` de la tranche elle-même) : TB-002, TB-056, TB-094.

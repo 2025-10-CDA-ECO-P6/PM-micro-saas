@@ -36,7 +36,9 @@ Champs attendus au minimum :
 
 **Tâche de plan.** Le champ porte l'identifiant `TB-nnn` seul. Le ticket ne recopie aucun des champs qu'il pointe (but, dépendances, périmètre d'écriture, taille, critères d'acceptation) : un champ recopié à deux endroits est un champ qui dérive dès que l'un des deux change sans l'autre — exactement la famille de défaut que [`guide-conventions-et-dod.md §8`](guide-conventions-et-dod.md) a nommée pour le reste du corpus documentaire, et que ce modèle de ticket étend au report plan → ticket.
 
-**Un fait à porter, mesuré sur le plan.** Plusieurs tâches de `plan-de-travail.md` portent `TROU` en périmètre d'écriture ou en critères d'acceptation, et certaines dépendent d'une tâche dont une contradiction amont, non arbitrée, rend le périmètre indéterminable. Ce document ne recopie aucun décompte de ces tâches — il renvoie au plan pour les identifier. Ce qu'un ticket ouvert sur l'une d'elles doit faire : refléter cette absence plutôt que la masquer. Une tâche `TROU` ou dépendante d'une contradiction non tranchée n'est pas prête au sens du §2 — le ticket qui lui correspond reste à l'état non prêt (§5) jusqu'à ce que le corpus source referme le trou ou tranche la contradiction, indépendamment de toute autre condition par ailleurs satisfaite.
+**Un fait à porter, mesuré sur le plan.** Des tranches de `plan-de-travail.md` portent `TROU` en critères d'acceptation : le corpus ne fournit pas de critère vérifiable pour le point qu'elles couvrent. Ce document ne recopie aucun décompte de ces tranches — il renvoie au plan pour les identifier. Ce qu'un ticket ouvert sur l'une d'elles doit faire : refléter cette absence plutôt que la masquer. Une tranche dont les critères portent `TROU` n'est pas prête au sens du §2 — le ticket qui lui correspond reste à l'état non prêt (§5) jusqu'à ce que le corpus source referme le trou, indépendamment de toute autre condition par ailleurs satisfaite.
+
+**À distinguer du marqueur `HORS MAILLE`** en périmètre d'écriture, qui ne signale aucun manque : la tranche ne vise simplement aucun module de code, et cela ne l'empêche ni d'être prête, ni d'être close.
 
 ---
 
@@ -48,7 +50,9 @@ Une tâche du plan est **prête à être prise** quand, cumulativement, les cond
 2. **Ses dépendances sont closes.** Chaque tâche nommée dans le champ `Dépend de` de `TB-nnn` correspond à un ticket à l'état terminal du cycle de vie décrit au §5 — vérifiable en ouvrant les tickets liés.
 3. **Aucun conflit n'est en cours.** Aucune tâche nommée dans le champ `En conflit avec` de `TB-nnn` ne correspond à un ticket aux états « Pris » ou « En cours » (§5) — vérifiable en ouvrant les tickets liés.
 4. **Un critère d'acceptation existe et sa cible aussi.** Le champ `Critères d'acceptation` de `TB-nnn` porte au moins un renvoi dont la cible existe réellement — vérifiable en ouvrant cette cible. Une valeur `TROU` ne constitue pas un renvoi et ne satisfait donc pas cette condition.
-5. **Un périmètre d'écriture est renseigné.** Le champ `Périmètre d'écriture` de `TB-nnn` porte au moins un module au sens de la maille de désignation ([`plan-de-travail.md §2`](plan-de-travail.md)) — une valeur `TROU` ne satisfait pas cette condition seule.
+5. **Un périmètre d'écriture est renseigné.** Le champ `Périmètre d'écriture` de `TB-nnn` porte au moins un module au sens de la maille de désignation ([`plan-de-travail.md §2`](plan-de-travail.md)) — vérifiable en ouvrant cette section. Deux marqueurs s'y distinguent, et un seul fait échouer la condition :
+   - **`HORS MAILLE`** — la tâche ne vise aucun module de code (confirmer une décision, retenir un outil, arrêter une convention, renseigner une colonne de verdict). Elle **satisfait** cette condition : il n'y a rien à nommer, et la maille ne parle que de code.
+   - **`TROU`** — la tâche vise un module de code que le corpus ne nomme pas. Elle **ne satisfait pas** cette condition.
 
 **Aucune de ces cinq conditions ne recouvre la Definition of Done** ([`guide-conventions-et-dod.md §9`](guide-conventions-et-dod.md)), qui décrit une condition de **sortie**. Celles-ci décrivent une condition d'**entrée** : une tâche peut être prête au sens de cette section sans qu'aucun code n'ait encore été écrit, exactement comme elle peut, à l'inverse, avoir tout son code écrit et rester loin de sa Definition of Done.
 
