@@ -2,7 +2,7 @@
 
 | Champ | Valeur |
 |---|---|
-| Statut | Revue datée du 2026-09-03 — **non normative**, périmée dès que ses recommandations sont arbitrées |
+| Statut | Revue datée du 2026-09-03 — **non normative**. **Ses recommandations ont été arbitrées le 2026-09-03 et appliquées** : le plan de travail a été redécoupé, et cette revue décrit désormais un état révolu. Elle est conservée comme trace de l'instruction, non comme document courant |
 | Autorité | **aucune** — cette revue ne redéfinit ni jalon, ni épique, ni tâche, ni priorité, ni critère d'acceptation |
 | Audience | la personne qui décide de changer ou de ne pas changer le découpage du plan avant l'entrée en construction |
 | Objet | juger la **pertinence** de la décomposition du plan de travail, et instruire son redécoupage en tranches verticales |
@@ -35,6 +35,18 @@ distincts — [`roadmap-entree-build.md`](roadmap-entree-build.md) ordonnance le
 conclut et recommande.
 
 ---
+
+> **Avertissement de lecture — les identifiants des exemples travaillés sont illustratifs.**
+> Les tranches nommées `TB-056` à `TB-065` dans les exemples de la §3.8 étaient des **propositions**, produites
+> avant l'arbitrage. Le plan de travail réécrit emploie ces mêmes identifiants pour d'autres tranches. **La seule
+> attribution qui fasse foi est celle du plan** ([`plan-de-travail.md §6`](plan-de-travail.md)), et la trace des
+> identifiants absorbés vit dans sa section « Identifiants retirés ». Aucun identifiant de cette revue ne doit être
+> repris comme désignation.
+>
+> **Deux mesures de cette revue étaient fausses et sont corrigées par le plan** : le motif qui comptait l'étendue
+> d'une plage de critères capturait le mauvais nombre, ce qui a produit une distribution de tailles erronée en §3.10 ;
+> et la règle de détachement du front y était posée au grain du use case, alors que le corpus n'attache pas les fiches
+> d'écran aux user stories. Le plan porte la règle corrigée en sa §1.
 
 ## 1. Comment cette revue a été établie
 
