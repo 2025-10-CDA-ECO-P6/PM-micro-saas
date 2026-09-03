@@ -132,8 +132,8 @@ Les trois règles du test d'architecture, dans sa forme initiale :
 
 *Source : [structure-projets.md, § 6](../architecture/structure-projets.md) (l.130-132).*
 
-**Ordre C#-first, à l'intérieur de chaque jalon.** La solution .NET est échafaudée en premier. L'ordre à l'intérieur d'un même jalon est : Domaine / Application (C#) → EF Core (persistance) → TypeScript mode local → Angular. Cet ordre s'applique à l'intérieur d'un jalon, jamais en travers de la séquence macro des jalons.
-*Source : [structure-projets.md, § 8 — Ordre de construction](../architecture/structure-projets.md) ; [Roadmap d'entrée en build, § 4](roadmap-entree-build.md).*
+**Ordre C#-first — autorité du contrat, non ordre de construction de la couche cliente.** La structure des projets .NET est échafaudée en premier : elle reste le premier livrable de structure. Mais le domaine C# est l'**autorité** du contrat de données et des règles métier, pas un préalable de construction pour la couche cliente : celle-ci se construit contre le contrat du service d'accès au store local, sans attendre l'implémentation du domaine. L'ordre de **dépendance** de la Clean Architecture est, lui, inchangé. Reste interdit : que la persistance EF Core cloud de J2 précède l'interface locale de J1.
+*Source : [ADR-001, § Compléments post-revue (2026-09-03)](../architecture/decisions/ADR-001-execution-domaine-mode-local.md) ; [structure-projets.md, § 8 — Ordre de construction : C#-first, au sens de l'autorité du contrat](../architecture/structure-projets.md) ; [Roadmap d'entrée en build, § 4](roadmap-entree-build.md).*
 
 **Renvoi** : le détail du test d'architecture dans le dispositif de test global — son objet, son périmètre, ses critères d'entrée et de sortie — est décrit dans [le cahier de stratégie de test et de recette, § 3.4 — Test d'architecture (CI)](../test/cahier-strategie-test-et-recette.md).
 

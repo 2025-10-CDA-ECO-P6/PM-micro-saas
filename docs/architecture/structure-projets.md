@@ -172,8 +172,13 @@ Lorsqu'un utilisateur migre ses données locales vers le cloud, il s'agit d'une 
 - les invariants métier complexes sont appliqués (un espace a exactement un OWNER, une session LIVE est unique)
 - toute donnée qui ne satisfait pas les règles est rejetée ou mise en quarantaine
 
-**Invariant clé** : `validation locale ⊆ validation serveur`. Le mode local peut accepter un état que le serveur refuserait,
-mais jamais l'inverse.
+**Invariant clé** : `validation locale ⊆ validation serveur`, **au sens des règles** — aucune règle de validation côté
+client que le domaine serveur ne porte pas. Le mode local peut donc accepter un état que le serveur refuserait ; le filet
+est la revalidation par les value objects à l'import, avec rapport de rejets. Réciproquement, une validation côté client
+qui refuse ce que le domaine serveur accepte est un **défaut à retirer du client**, non une protection supplémentaire.
+
+*La formulation antérieure de cet invariant, incompatible avec la § Décision d'ADR-001, est requalifiée en visée dirigée
+par [ADR-001, § Compléments post-revue (2026-09-03)](decisions/ADR-001-execution-domaine-mode-local.md).*
 
 ### Format de sérialisation unique
 
@@ -207,21 +212,25 @@ L'emplacement de la couche Angular et TypeScript du mode local — répertoires 
 
 ---
 
-## 8 — Ordre de construction : C#-first
+## 8 — Ordre de construction : C#-first, au sens de l'autorité du contrat
 
-La solution .NET est échafaudée **en premier** — elle est la source de vérité.
+La structure des projets .NET est échafaudée **en premier** : elle demeure le premier livrable de structure, avant tout
+projet Angular ou TypeScript ([ADR-008, § Compléments post-revue](decisions/ADR-008-structure-solution.md), non amendé).
 
-L'ordre est :
-1. **C# / .NET** : structure Domain/Application, entités, agrégats, interfaces du domaine
-2. **Persistance** : configuration EF Core, repositories, migrations
-3. **TypeScript mode local** : projection du schéma IndexedDB, validations minimales (dérivées du domaine serveur)
-4. **Frontend Angular** : composants, pages, état local, connexion API
+**C#-first désigne l'autorité du contrat, non l'ordre de construction de la couche cliente**
+([ADR-001, § Compléments post-revue (2026-09-03)](decisions/ADR-001-execution-domaine-mode-local.md)). Le domaine C# est
+la source de vérité des règles métier et du contrat de données ; la couche cliente se construit contre le contrat du
+service d'accès au store local, sans attendre l'implémentation du domaine.
 
-Cette séquence reflète le principe de Clean Architecture : le domaine ne dépend de rien (il existe d'abord),
-l'infrastructure et le front dépendent du domaine.
+L'ordre de **dépendance** — celui que la Clean Architecture impose et que le § 2 pose — est inchangé : le domaine ne
+dépend de rien, l'infrastructure et la présentation dépendent du domaine. C'est l'ordre de **construction** de la couche
+cliente qui cesse d'être dérivé de cet ordre de dépendance.
 
-Le « walking skeleton local-only » (une première expérience utilisateur hors ligne) n'est pas un jalon isolé ;
-il est construit après que la structure .NET et le modèle IndexedDB soient stables.
+Ce que cette révision ne change pas :
+- la persistance EF Core cloud de J2 ne précède jamais l'interface locale de J1 ;
+- une doublure de service côté client ne porte **aucune** règle métier — les seules validations autorisées sont celles
+  que le § 7 énumère, et l'alternative écartée par [ADR-001, § Alternatives considérées](decisions/ADR-001-execution-domaine-mode-local.md)
+  — réimplémenter le domaine en TypeScript — le reste écartée.
 
 Cet ordre s'applique à l'intérieur d'un même jalon ; il ne s'applique jamais en travers de la séquence des jalons.
 L'application de cet ordre jalon par jalon relève de la [Roadmap d'entrée en build, § 4. Ordre C#-first — interne à chaque jalon](../gestion-projet/roadmap-entree-build.md).

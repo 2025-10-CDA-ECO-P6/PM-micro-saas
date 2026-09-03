@@ -93,11 +93,11 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 ### 3.2 J1 — Local-only
 
 **Contenu** (source : [ADR-001](../architecture/decisions/ADR-001-execution-domaine-mode-local.md), [ADR-016](../architecture/decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../architecture/decisions/ADR-017-modele-indexeddb-local.md), [ADR-007 §Conséquences](../architecture/decisions/ADR-007-rgpd-autorisation-api.md)) :
-- Domaine/Application (C#) → projection TS/IndexedDB → Angular minimal, dans cet ordre (voir §4 — ordre C#-first à l'intérieur du jalon).
-- **`navigator.storage.persist()` (G-08) — préalable bloquant, à lever avant J1** ([ADR-001 §Compléments](../architecture/decisions/ADR-001-execution-domaine-mode-local.md) l.59 ; [ADR-017 §3.1](../architecture/decisions/ADR-017-modele-indexeddb-local.md)). Traité comme un état de première classe (booléen lu et traité, bandeau de durabilité affiché si refusé/best-effort) — pas une case cochée en silence.
+- Domaine/Application (C#), projection TS/IndexedDB et Angular minimal. L'ordre de **dépendance** entre ces trois étages est celui de la Clean Architecture ; leur ordre de **construction** ne l'est plus — la couche cliente se construit contre le contrat du service d'accès au store local, sans attendre l'implémentation du domaine (voir §4).
+- **`navigator.storage.persist()` (G-08) — préalable bloquant, à lever avant J1** ([ADR-001 §Compléments post-revue (2026-06-09), puce « G-08 »](../architecture/decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-017 §3.1](../architecture/decisions/ADR-017-modele-indexeddb-local.md)). Traité comme un état de première classe (booléen lu et traité, bandeau de durabilité affiché si refusé/best-effort) — pas une case cochée en silence.
 - **Invariant d'autorisation câblé** : le contrat `IResourceAccessPolicy` défini en J0 doit être intégré aux contrats Application « avant le début du jalon J1 » ([ADR-007 §Conséquences](../architecture/decisions/ADR-007-rgpd-autorisation-api.md) l.48).
 - **Export au format `schemaVersion`** : enveloppe versionnée (`schemaVersion`, `exportedAt`, `appVersion`, `spaces`), champs gouvernés vs libres, couture de projection `store local → payload` ([ADR-016 §1](../architecture/decisions/ADR-016-serialisation-locale-migration.md)).
-- **Invariant `validation locale ⊆ validation serveur`** ([ADR-001 §Compléments](../architecture/decisions/ADR-001-execution-domaine-mode-local.md) l.55 ; [ADR-016 §Conséquences](../architecture/decisions/ADR-016-serialisation-locale-migration.md)) — discipline de conception, non garantie outillée (pas de test cross-langage TS/C#).
+- **Invariant `validation locale ⊆ validation serveur`, au sens des règles** ([ADR-001 §Compléments post-revue (2026-09-03), puce d'invariant requalifiée](../architecture/decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-016 §Conséquences](../architecture/decisions/ADR-016-serialisation-locale-migration.md)) — discipline de conception, non garantie outillée (pas de test cross-langage TS/C#).
 - **Pas d'EF Core cloud en J1.** Le mode local est un store IndexedDB aggregate-rooted, sans aucune synchronisation continue, sans persistance serveur ([ADR-017 §1-2](../architecture/decisions/ADR-017-modele-indexeddb-local.md)). Toute apparition d'un accès EF Core / cloud dans le périmètre livré à J1 signale une confusion d'ordonnancement avec J2.
 
 **Critères de sortie factuels** :
@@ -179,21 +179,25 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 ## 4. Ordre C#-first — interne à chaque jalon
 
-**Principe acté** (cohérent avec [ADR-001 §Compléments](../architecture/decisions/ADR-001-execution-domaine-mode-local.md) l.53, ordre C#-first ; formulation littérale en [ADR-008 §Compléments post-revue](../architecture/decisions/ADR-008-structure-solution.md) l.60) : *« La solution .NET est échafaudée en premier. La structure des projets .NET est donc le premier livrable de structure, avant tout projet Angular ou TypeScript. »*
+**Principe acté, dans sa forme révisée** — **C#-first désigne l'autorité du contrat, non l'ordre de construction de la couche cliente** ([ADR-001 §Compléments post-revue (2026-09-03), puce « Ordre C#-first »](../architecture/decisions/ADR-001-execution-domaine-mode-local.md)). Le domaine C# est la source de vérité des règles métier et du contrat de données ; la couche Angular et TypeScript se construit contre le contrat du service d'accès au store local, sans attendre l'implémentation du domaine.
 
-Cet ordre s'applique **à l'intérieur de chaque jalon**, pas en travers de la séquence macro :
+**Ce qui n'est pas révisé et reste opposable** — [ADR-008 §Compléments post-revue, puce « Ordre C#-first (ADR-001) »](../architecture/decisions/ADR-008-structure-solution.md), non amendé : *« La solution .NET est échafaudée en premier. La structure des projets .NET est donc le premier livrable de structure, avant tout projet Angular ou TypeScript. »* Cette phrase porte sur l'ordre des livrables **de structure**, non sur l'ordre de construction des couches.
+
+Le gabarit ci-dessous est désormais un ordre de **dépendance**, pas un ordre de construction, et il s'applique **à l'intérieur de chaque jalon**, jamais en travers de la séquence macro :
 
 ```
 Domain / Application (C#)  →  EF Core (persistance)  →  TS mode local  →  Angular
 ```
 
-**Note de lecture** : ce diagramme est un **gabarit intra-jalon**, pas une séquence macro — **aucun jalon ne contient les quatre étages** (J0 n'a ni EF Core ni TS/Angular ; J1 n'a pas d'EF Core cloud ; J2 n'a pas de nouveau TS/Angular local ; voir « Application par jalon » ci-dessous). Lire « EF Core avant TS » comme un ordre global qui contredirait « J1 local-only avant J2 cloud » (§1) serait une erreur de lecture : ce gabarit ne s'applique qu'à l'intérieur d'un même jalon, jamais en travers de la séquence macro.
+**Note de lecture** : ce diagramme est un **gabarit intra-jalon de dépendance**, pas une séquence macro et pas un ordre de construction — **aucun jalon ne contient les quatre étages** (J0 n'a ni EF Core ni TS/Angular ; J1 n'a pas d'EF Core cloud ; J2 n'a pas de nouveau TS/Angular local ; voir « Application par jalon » ci-dessous). Lire « EF Core avant TS » comme un ordre global qui contredirait « J1 local-only avant J2 cloud » (§1) serait une erreur de lecture. Le lire comme un ordre de construction de la couche cliente en serait une autre, depuis la révision du 2026-09-03.
 
-**Ce que cet ordre interdit explicitement** : que l'EF Core cloud de J2 précède l'UI locale de J1. Le mode local (TS/IndexedDB, Angular minimal) de J1 est une **projection** du domaine C# défini en J0/J1 — il ne s'exécute pas en attendant que J2 (EF Core, cloud) soit disponible. Confondre les deux ordres reviendrait à bloquer J1 sur un livrable de J2, ce que la séquence macro (§1) exclut explicitement : J1 est local-only et ne dépend d'aucune brique cloud.
+**Ce que cet ordre interdit explicitement** : que l'EF Core cloud de J2 précède l'UI locale de J1. Confondre les deux ordres reviendrait à bloquer J1 sur un livrable de J2, ce que la séquence macro (§1) exclut explicitement : J1 est local-only et ne dépend d'aucune brique cloud.
+
+**Ce qu'il n'interdit plus** : que la couche cliente de J1 se construise avant que le domaine C# du même jalon soit implémenté. Le mode local reste une **projection** du domaine C# au sens de l'**autorité** — il n'en réimplémente aucune règle métier, et une doublure de service ne porte que les validations que [`structure-projets.md §7`](../architecture/structure-projets.md) énumère.
 
 **Application par jalon** :
 - **J0** : Domain/Application C# (squelette, test d'archi) — aucune brique EF Core cloud, TS ou Angular à ce stade.
-- **J1** : Domain/Application (déjà posé en J0, consommé ici) → projection TS/IndexedDB (store local, ADR-017) → Angular minimal (CRUD local). Pas d'EF Core cloud.
+- **J1** : Domain/Application (déjà posé en J0, consommé ici), projection TS/IndexedDB (store local, ADR-017) et Angular minimal (CRUD local). Les flèches expriment ici la dépendance, non l'ordre de construction : la couche cliente s'ouvre dès que le contrat du service d'accès au store est déclaré. Pas d'EF Core cloud.
 - **J2** : Application (contrats déjà posés) → EF Core (mapping, query filters, migrations SQL) → pas de nouveau TS/Angular local — le mode local de J1 reste stable pendant que le cloud se construit dessous.
 - **J3** : Application/Domain (événements `GuestAccessRevoked`/`Expired` déjà modélisés) → Haversack.Infrastructure.Notifications (SignalR, isolé dès J0 selon [ADR-004 §Conséquences](../architecture/decisions/ADR-004-transport-temps-reel.md)) → Angular (vue session temps réel).
 

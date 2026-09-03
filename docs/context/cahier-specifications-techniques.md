@@ -57,7 +57,7 @@ Cette section consolide les principes fondateurs qui cadrent l'ensemble des choi
 
 Travailler sans compte, avec persistance directement dans le navigateur, constitue un pilier non négociable du produit : le mode local. Techniquement, il se limite à une couche de persistance côté navigateur assortie de règles de validation minimales — création, modification, suppression, quelques contrôles élémentaires comme un titre non vide ou une structure de blocs valide — **sans dupliquer le domaine métier complet**. La **source de vérité unique** reste le domaine métier exécuté côté serveur : toute donnée locale qui rejoint le cloud y transite comme un **import revalidé**, jamais comme une copie acceptée sur confiance.
 
-L'invariant transverse qui gouverne cette frontière est : **validation locale ⊆ validation serveur**. Le mode local peut être plus permissif en lecture, il ne doit jamais accepter en écriture un état que le serveur rejettera à l'import. L'ordre de construction acté est C#-first : le domaine serveur est échafaudé en premier, le modèle local en est une projection dérivée.
+L'invariant transverse qui gouverne cette frontière est : **validation locale ⊆ validation serveur**, **au sens des règles** — aucune règle de validation côté client que le domaine serveur ne porte pas. Le mode local peut donc accepter un état que le serveur refusera ; le filet est la revalidation par les value objects à l'import, avec rapport de rejets. À l'inverse, une validation côté client qui refuse ce que le domaine serveur accepte est un défaut à retirer du client. **C#-first désigne l'autorité du contrat**, non l'ordre de construction de la couche cliente : celle-ci se construit contre le contrat du service d'accès au store local, sans attendre l'implémentation du domaine ([ADR-001, § Compléments post-revue (2026-09-03)](../architecture/decisions/ADR-001-execution-domaine-mode-local.md)).
 
 ### « Tout est document »
 
@@ -136,7 +136,7 @@ Les quatre frontières logiques (§1) coexistant dans un même assembly, leur re
 
 ### Invariant transverse de validation
 
-L'invariant « validation locale ⊆ validation serveur » (§1) s'applique à l'ensemble du plan technique, pas seulement au mode local : toute règle acceptée en écriture côté navigateur doit rester acceptable par le domaine serveur à la revalidation. L'ordre de build C#-first en est la conséquence directe.
+L'invariant « validation locale ⊆ validation serveur » (§1) s'applique à l'ensemble du plan technique, pas seulement au mode local : **aucune règle de validation côté navigateur que le domaine serveur ne porte pas**. Il ne garantit pas que toute donnée acceptée côté navigateur soit acceptable à la revalidation — le mode local est volontairement plus pauvre, et le rapport de rejets à l'import est le filet prévu pour l'écart. C#-first en est la conséquence au sens de l'autorité du contrat, non de l'ordre de construction de la couche cliente ([ADR-001, § Compléments post-revue (2026-09-03)](../architecture/decisions/ADR-001-execution-domaine-mode-local.md)).
 
 ### Intégrité référentielle : FK `RESTRICT`, suppression par saga
 
