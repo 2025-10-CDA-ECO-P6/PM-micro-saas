@@ -254,6 +254,28 @@ Une grandeur que le corpus définit et documente en propre n'est pas visée par 
 
 **Responsable et fréquence d'application.** Même discipline que le balayage posé par [docs/conception/README.md, § Motifs interdits — détection par balayage](../conception/README.md), étendue à un second périmètre : chaque contributeur applique ce critère au document `docs/gestion-projet/**` qu'il vient de rédiger ou de modifier, avant toute intégration. Pas d'outillage imposé — la détection est manuelle et rapide.
 
+### 8.6 Restituer la clause de démenti d'une règle en deux temps
+
+Une règle de ce corpus s'écrit souvent en deux temps : un énoncé positif, puis une clause qui le dément, le borne ou l'excepte sur une partie de son domaine. [plan-de-travail.md, § Maille de désignation du périmètre d'écriture](plan-de-travail.md) en porte un exemple : « **Aucun namespace de bounded context n'apparaît comme module**, sauf sur la seule tranche qui les crée (TB-003) : un namespace est un tiroir, pas une unité d'écriture. » Citer, résumer ou indexer cette règle en ne retenant que son premier temps — « aucun namespace de bounded context n'apparaît comme module » — reconstruit exactement la lecture que la clause de démenti prenait soin d'écarter : une interdiction absolue, là où la source pose une interdiction sauf sur une tranche nommée. Le résultat n'est pas faux mot à mot, puisque chaque mot retenu appartient à la source ; il induit pourtant la lecture que la source avait pris soin d'interdire.
+
+Ce défaut diffère par son mécanisme de ceux que nomment 8.1 et 8.4. Ces deux sous-sections raisonnent sur un renvoi ou une citation dont la **cible** est en cause — une source réécrite après coup pour 8.1, un renvoi mal formé dès l'origine pour 8.4. Ici, la cible ne bouge pas et le renvoi la désigne correctement : la faute porte sur la **restitution** de ce que la cible dit, amputée de la moitié qui la borne. Une citation littérale du premier temps de la règle, sans la clause qui le suit, est un extrait exact d'un texte devenu inexact quant à ce qu'il fait dire à sa source.
+
+Aucun outillage ne l'attrape. Le vérificateur de liens et d'ancres de ce corpus contrôle qu'un renvoi pointe vers une cible qui existe ; il ne lit rien de ce que cette cible affirme, et ne peut donc rien dire d'un résumé qui en tronque une partie. Un résumé amputé de sa clause de démenti est un texte syntaxiquement valide, pointant une cible qui existe bel et bien — exactement ce qu'un tel vérificateur est construit pour laisser passer.
+
+**Pratique** : ne jamais tronquer la clause de démenti en citant, résumant ou indexant une règle. Quand la brièveté impose de résumer, le résumé porte l'exception ou la borne au même titre que l'énoncé positif — pas l'un sans l'autre.
+
+### 8.7 Vérifier la disponibilité d'un terme par son registre d'emploi, pas par son compte d'occurrences
+
+Pour savoir si un terme candidat est disponible, compter ses occurrences répond à la mauvaise question : un compte dit si le terme **apparaît**, pas dans quel **sens** ni avec quelle **autorité** il est déjà employé. Un terme rare peut être déjà pris comme terme de projet ; un terme fréquent peut n'apparaître que dans des sens étrangers au projet, et rester disponible.
+
+Le mot « palier » l'illustre. Il a été envisagé comme synonyme d'« itération » pour la section « Itération » de [methode-de-ticket.md, § Itération](methode-de-ticket.md) — le document même où ce synonyme aurait été introduit l'emploie pourtant déjà comme terme de projet, dans cette section : « Un sous-ensemble **choisi** des tranches ouvrables du palier courant. » [plan-de-travail.md, § Lots parallélisables](plan-de-travail.md) l'emploie dans le même sens — un rang d'exécution du graphe de dépendances : « seuls les paliers ouvrant au moins deux tranches simultanément sont nommés `LOT-nn` ». Le terme est repris dans un second sens, sans rapport avec le premier, par [roadmap-produit.md, Annexe B — Glossaire](roadmap-produit.md), qui le définit en propre : « **Palier** | Une étape de la trajectoire de valeur du produit, regroupant un ensemble cohérent de capacités livrées ou envisagées. » — un palier de valeur produit et de monétisation, que [note-cadrage-projet.md, § Objectifs & enjeux](note-cadrage-projet.md) emploie de la même façon (« un modèle en trois paliers (local → compte gratuit → payant) »). Cet examen l'a donc trouvé pris deux fois, dans deux sens incompatibles, dont l'un dans le document même qu'on s'apprêtait à amender.
+
+Un compte d'occurrences aurait signalé que le terme apparaît — information vraie et inutilisable, qui ne distingue ni les deux sens ni leur statut. Ce qui a décidé l'indisponibilité, à cet examen, c'est que deux de ces emplois se sont révélés **normatifs** : l'un pose la convention de nommage des `LOT-nn`, l'autre est une entrée de glossaire qui définit le terme pour tout le document qui le porte — ni l'un ni l'autre n'était une occurrence incidente au fil d'une phrase de prose. Une lecture du registre d'emploi voit cette différence de statut ; un compte ne la voit pas, quel que soit le total qu'il rend.
+
+Cette pratique complète 8.5 sans la remplacer : 8.5 dit quels termes sont **proscrits** dans `docs/gestion-projet/**` ; celle-ci dit comment vérifier qu'un terme non proscrit est réellement **disponible**. Ce sont deux épreuves distinctes — passer la première ne dispense pas de la seconde.
+
+**Pratique** : vérifier la disponibilité d'un terme candidat en lisant son registre d'emploi — les sens dans lesquels il est effectivement employé, et l'autorité des documents qui l'emploient — jamais par son compte d'occurrences.
+
 ---
 
 ## 9. Definition of Done
