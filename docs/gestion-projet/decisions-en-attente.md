@@ -46,12 +46,24 @@ Un des `Critères de sortie factuels` de `roadmap-entree-build.md § 3.1 — J0 
 
 **Registre propriétaire.** `docs/deploiement/README.md` ; `roadmap-entree-build.md § 3.1` pour le critère de sortie ; `plan-de-travail.md`, tâches `TB-006` et `TB-009`, pour le recouvrement en attente.
 
+### 1.c — Redécoupage du module `châssis` dans la maille de désignation
+
+**Où le manque vit.** `plan-de-travail.md § 2 — Maille de désignation du périmètre d'écriture` nomme `châssis` comme un seul module transverse. `zoning.md § S7 — Châssis applicatif` y range pourtant des préoccupations distinctes : recherche (composant de châssis omniprésent), bandeaux (durabilité, confidentialité), fonctions cloud visibles mais désactivées en mode local, accès compte.
+
+**Ce que ça bloque.** La grappe de tranches déclarées en conflit sur ce seul module est passée de deux (`TB-058`, `TB-093`) à cinq (`TB-058`, `TB-093`, `TB-078`, `TB-097`, `TB-103`) au fil des dernières vagues de ce plan — mesuré en `plan-de-travail.md § 9`. Chacune est sérialisée avec les quatre autres faute d'un découpage plus fin, alors que leurs préoccupations réelles (recherche, instrumentation de validation, châssis mode local) ne se recouvrent pas fonctionnellement. Le levier de largeur de graphe qu'un découpage par préoccupation ouvrirait n'est pas exploité.
+
+**Ce qu'il faut savoir pour répondre.** Un redécoupage nommerait, à la place d'un seul `châssis`, les préoccupations distinctes que `zoning.md § S7` porte déjà en prose — sans inventer de substance neuve, seulement une maille plus fine. C'est une décision sur la maille elle-même (`plan-de-travail.md § 2`), qui s'appliquerait à toute tranche future de la couche cliente citant `châssis`, pas seulement aux cinq déjà écrites.
+
+**Registre propriétaire.** `plan-de-travail.md § 2` pour la maille ; `zoning.md § S7` pour les préoccupations distinctes qu'un découpage nommerait ; `plan-de-travail.md § 9` pour la grappe de conflit mesurée.
+
 ### Autres décisions de structure et de détail technique
 
 Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du corpus.
 
 | Décision | Bloque | À savoir | Registre propriétaire |
 |---|---|---|---|
+| Contrôle de l'appariement `But` d'épique / paragraphe `Critère de sortie` du use case porté (`plan-de-travail.md § 4`) | Aucun test, aucun linter ne le vérifie aujourd'hui | Défaut trouvé et corrigé à la main trois fois dans ce plan (`US-UC-14`, `US-UC-01`, deux fois) ; candidat naturel pour un vérificateur, sur le modèle de `tools/VerifCouvertureRecette` | `plan-de-travail.md § 4` ; `moscow.md`, paragraphes `Critère de sortie` par use case |
+| Épique départageant un couple de tranches inter-épiques (`plan-de-travail.md § 1`, règle (b bis)) | — (aucun usage actuel ne l'invoque) | La règle ne dit pas quelle épique départage un couple dont les deux tranches appartiennent à deux épiques distinctes ; une invocation fautive de ce cas a été retirée de `TB-069` le 2026-09-04 (le couple était en réalité départagé par dépendance directe, la règle ne s'y appliquait pas) | `plan-de-travail.md § 1`, règle (b bis) |
 | ~~Outil exact du test d'architecture~~ | **Tranché le 2026-09-03** — NetArchTest, l'alternative par script écartée | ne bloque plus TB-007 | `guide-conventions-et-dod.md § 6 § Non couvert par le corpus` |
 | Nom du projet de test de bout en bout | — (non signalé comme bloquant par le corpus) | Distinct du projet de test d'architecture (1.b) | `cahier-specifications-techniques.md § 11` |
 | Paramètres de hachage de mot de passe (Argon2id), seuils de limitation de débit, TTL du jeton de réinitialisation, fraîcheur de ré-authentification IdP | La définition des contrats `IPasswordHasher` / rate limiting / `ITokenValidator` en J2 | Regroupés sous le renvoi `B1.5` | `cahier-specifications-techniques.md § 11 § 5` |
@@ -92,6 +104,7 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 | Point de décision `[DÉCISION MARCHÉ]` lui-même | L'entrée en J2 (cumulé avec J1 stable) | Non vérifiable en intégration continue | `roadmap-entree-build.md § 3.3` |
 | Ordre de dégel `UC-15` pour un tier intermédiaire borné (post-MVP) | Sans impact MVP — le tier binaire actuel implique un dégel total | Non fixé | `cahier-strategie-test-et-recette.md § 12`, entrée `PO-07` |
 | Réimport de fichier de sauvegarde (`UC-01`, `US-01-08`, post-MVP) | Aucun cas de recette MVP | Règles de validation tracées pour reprise ultérieure | `cahier-strategie-test-et-recette.md § 12`, entrée `PO-08` |
+| Priorité `Could Have` de capacités absentes de `moscow.md`, dans les sections `Stories exclues ou repoussées` des fiches `US-UC-*` (mesuré : 9 lignes, hors la seule tracée à `moscow.md § UC-14` — filtre par tag) | Aucune tranche ; ne bloque rien | Même famille que le sous-grain MoSCoW retiré des fiches le 2026-09-04, mais au grain de la **capacité** plutôt que de la story ; retirer la valeur coûterait une exclusion argumentée pour gagner une étiquette — non rouvert lors de cette mission | `docs/conception/besoin/user-stories/US-UC-*.md`, sections `Stories exclues ou repoussées` |
 
 **Ce point l'était et ne l'est plus.** Le critère exact du « geste structurant » de l'hypothèse H1 est **tranché le 2026-09-03** : un dossier créé, ou un document déplacé hors de « Non classés ». Le seuil de documents de l'activation préparation est fixé à trois, l'opérationnalisation de l'« usage réel constaté » à au moins une action du MJ en session, et le transport de la mesure à des compteurs locaux transmis à la création de compte — avec le biais que ce transport induit, nommé dans [`vision-produit.md §2.3`](../conception/besoin/vision/vision-produit.md). Registre propriétaire de ces décisions : [`moscow.md § Instrumentation de validation du MVP`](../conception/besoin/vision/moscow.md).
 

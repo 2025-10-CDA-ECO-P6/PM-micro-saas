@@ -157,7 +157,7 @@ Les documents créés dans UC-04 — fiches de PNJ, lieux, scénarios, notes de 
 
 ### Vers UC-14 (recherche)
 
-Les tags posés sur un document dans UC-04 (story US-04-04) constituent les critères de retrouvabilité du document en recherche (UC-14). Nadia, après plusieurs semaines d'absence, utilise la barre de recherche pour retrouver un PNJ ou un scénario par titre ou par tag. Émilie, en session, retrouve un document non épinglé via la recherche globale sans interrompre le flux de jeu. UC-14 repose sur les métadonnées (titre, type, tags) créées dans UC-04 — sans tags, la recherche reste opérante sur le titre mais offre moins de précision au filtrage. La dépendance du filtrage par tag à la recherche est documentée comme Should Have dans UC-14.
+Les tags posés sur un document dans UC-04 (story US-04-04) constituent les critères de retrouvabilité du document en recherche (UC-14). Nadia, après plusieurs semaines d'absence, utilise la barre de recherche pour retrouver un PNJ ou un scénario par titre ou par tag. Émilie, en session, retrouve un document non épinglé via la recherche globale sans interrompre le flux de jeu. UC-14 repose sur les métadonnées (titre, type, tags) créées dans UC-04 — sans tags, la recherche reste opérante sur le titre mais offre moins de précision au filtrage. La dépendance du filtrage par tag à la recherche est documentée comme Could Have — hors MVP dans UC-14.
 
 ### Vers UC-13 (scénario réutilisable)
 

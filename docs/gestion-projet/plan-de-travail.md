@@ -717,7 +717,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Taille | L — un seul agrégat, mais la plage RB-03-01 → RB-03-13 engage treize preuves distinctes, indivisibles du scénario comme document |
 | Critères d'acceptation | RB-03-01 → RB-03-13 ; `conception/domain/content-library.md § Cas d'usage illustrés` |
 | Code de renvoi | — |
-| Ordre de sérialisation | cette tranche et TB-065 écrivent le même agrégat `Document` sans dépendre l'une de l'autre au-delà de la création ; leur ordre de sérialisation suit `US-UC-03-structurer-scenario.md § Ordre de livraison recommandé` (§1, règle (b bis)). |
+| Ordre de sérialisation | cette tranche et TB-065 écrivent le même agrégat `Document` ; TB-069 dépend de TB-065 (et de TB-066), l'ordre est donc fixé par la dépendance. |
 
 ##### TB-070 — Éditeur de scénario
 
@@ -1096,7 +1096,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Critères d'acceptation | US-01-07, ses scénarios nommés ; `usecases/UC-01-mode-local-sans-compte.md § A4a` et `§ Critères d'acceptation` (« Must Have / version minimale […] promu ») ; `vision/moscow.md § Export d'espace § Critère de sortie` ; CR-UC01-15 → CR-UC01-16 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
 | Point d'attention | appliquer la priorité définie par `vision/moscow.md § Export d'espace`, seule autorité MoSCoW du corpus : Must Have. |
-| Ordre de sérialisation | cette tranche et TB-075 écrivent la même fiche `parametres-campagne` sans dépendre l'une de l'autre ; TB-091 dépend de TB-075, l'ordre est donc fixé par la dépendance. |
+| Ordre de sérialisation | cette tranche et TB-075 écrivent la même fiche `parametres-campagne` ; TB-091 dépend de TB-075, l'ordre est donc fixé par la dépendance. |
 
 ### EP-11 — Instrumentation de validation du MVP
 
@@ -1138,7 +1138,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | But | chaque cas de recette du périmètre local porte un verdict |
 | Épique | EP-12 |
 | Jalon | J1 |
-| Dépend de | TB-077, TB-081, TB-084, TB-086, TB-090, TB-091, TB-092, TB-093, TB-096, TB-098, TB-099, TB-100, TB-101, TB-102, TB-103 |
+| Dépend de | TB-061, TB-077, TB-081, TB-084, TB-086, TB-090, TB-091, TB-092, TB-093, TB-096, TB-098, TB-099, TB-100, TB-101, TB-102, TB-103 |
 | Périmètre d'écriture | HORS MAILLE — nature : renseignement de la colonne Verdict d'un document de recette — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | M — 0 modules, 3 renvois |
