@@ -29,9 +29,7 @@ Permettre au MJ de créer un scénario une fois et de le rejouer avec des groupe
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Should Have | US-13-01, US-13-02, US-13-03 |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-13 — Utiliser un scénario réutilisable](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -101,8 +99,6 @@ flowchart LR
 
 ### US-13-01 — Marquer un scénario comme réutilisable
 
-**Priorité** : Should Have
-
 **En tant que** MJ,
 **je veux** marquer un scénario existant comme réutilisable,
 **afin de** le conserver dans mon espace personnel (`isReusable = true`) et pouvoir en créer des instances sans toucher à l'original.
@@ -157,8 +153,6 @@ Scénario : Espace personnel accessible uniquement par le MJ propriétaire
 ---
 
 ### US-13-02 — Rejouer un scénario depuis la bibliothèque
-
-**Priorité** : Should Have
 
 **En tant que** MJ,
 **je veux** créer une instance d'un scénario depuis mon espace personnel et la lancer dans le contexte de mon choix,
@@ -227,8 +221,6 @@ Scénario : Archivage manuel de l'espace one-shot après la session
 ---
 
 ### US-13-03 — Consulter l'historique des runs
-
-**Priorité** : Should Have
 
 **En tant que** MJ,
 **je veux** consulter la liste des instances passées d'un scénario depuis mon espace personnel,

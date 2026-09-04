@@ -32,10 +32,7 @@ Permettre au MJ de créer instantanément un document durable dans l'espace depu
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Must Have | US-07-01 |
-| Should Have | US-07-02 |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-07 — Créer un élément à la volée en session](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -101,8 +98,6 @@ flowchart LR
 ## User stories
 
 ### US-07-01 — Créer un document à la volée depuis une session LIVE
-
-**Priorité** : Must Have
 
 **En tant que** MJ,  
 **je veux** créer un document (note, PNJ, lieu, faction, personnage joueur ou document libre) depuis la vue session avec un titre seul,  
@@ -171,8 +166,6 @@ Scénario : Création impossible en ARCHIVED (E2)
 ---
 
 ### US-07-02 — Ajouter un élément rétroactif depuis une session CLOSED
-
-**Priorité** : Should Have
 
 **En tant que** MJ,  
 **je veux** créer un document depuis une session déjà terminée (CLOSED),  

@@ -30,9 +30,7 @@ Permettre au MJ de contrôler qui accède à son espace : générer des liens d'
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Should Have | US-11-01, US-11-02, US-11-03, US-11-04 |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-11 — Gérer les membres d'un espace](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -98,8 +96,6 @@ flowchart LR
 ## User stories
 
 ### US-11-01 — Générer un lien d'invitation
-
-**Priorité** : Should Have
 
 **En tant que** MJ,
 **je veux** générer un lien d'invitation partageable pour mon espace ou une session spécifique,
@@ -172,8 +168,6 @@ Scénario : Invitation expirée non réactivable (E2)
 
 ### US-11-02 — Révoquer une invitation active
 
-**Priorité** : Should Have
-
 **En tant que** MJ,
 **je veux** révoquer une invitation que j'ai générée,
 **afin d'** empêcher qu'elle soit utilisée (lien partagé par erreur, joueur qui ne participe plus, etc.).
@@ -221,8 +215,6 @@ Scénario : Invitation déjà révoquée — pas de réactivation
 ---
 
 ### US-11-03 — Retirer un membre de l'espace
-
-**Priorité** : Should Have
 
 **En tant que** MJ,
 **je veux** retirer un membre de mon espace,
@@ -277,8 +269,6 @@ Scénario : Ancien lien d'un membre retiré
 ---
 
 ### US-11-04 — Associer un joueur à un personnage
-
-**Priorité** : Should Have
 
 **En tant que** MJ,
 **je veux** associer un membre de mon espace à un personnage existant,

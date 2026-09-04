@@ -36,9 +36,7 @@ Permettre à un utilisateur (MJ ou joueur) de créer un compte pour activer la s
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Must Have | US-10-01, US-10-02, US-10-03, US-10-04, US-10-05, US-10-06 |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-10 — Créer un compte et synchroniser dans le cloud](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -137,8 +135,6 @@ flowchart LR
 
 ### US-10-01 — S'inscrire avec email et mot de passe
 
-**Priorité** : Must Have
-
 **En tant que** MJ ou joueur,
 **je veux** créer un compte avec mon email et un mot de passe,
 **afin de** activer la synchronisation cloud, le partage avec mes joueurs et l'accès multi-device.
@@ -211,8 +207,6 @@ Scénario : Joueur invité crée un compte depuis un lien d'invitation (A3)
 
 ### US-10-02 — Se connecter avec email et mot de passe
 
-**Priorité** : Must Have
-
 **En tant que** utilisateur avec un compte,
 **je veux** me connecter avec mon email et mon mot de passe,
 **afin de** accéder à mes espaces et données synchronisées.
@@ -255,8 +249,6 @@ Scénario : Connexion avec un compte suspendu
 ---
 
 ### US-10-03 — Se connecter ou s'inscrire via un fournisseur d'identité externe
-
-**Priorité** : Must Have
 
 **En tant que** MJ ou joueur,
 **je veux** me connecter ou créer un compte via un fournisseur d'identité externe (connexion fédérée),
@@ -322,8 +314,6 @@ Scénario : Connexion fédérée avec données locales existantes
 
 ### US-10-04 — Réinitialiser son mot de passe
 
-**Priorité** : Must Have
-
 **En tant que** utilisateur avec un compte email et mot de passe,
 **je veux** pouvoir réinitialiser mon mot de passe en cas d'oubli,
 **afin de** retrouver l'accès à mon compte sans intervention manuelle.
@@ -372,8 +362,6 @@ Scénario : Réinitialisation réussie
 
 ### US-10-05 — Mettre à jour son profil
 
-**Priorité** : Must Have
-
 **En tant que** utilisateur authentifié,
 **je veux** pouvoir modifier mon nom d'affichage,
 **afin de** garder mes informations à jour dans l'application.
@@ -414,8 +402,6 @@ Scénario : Modification du mot de passe
 ---
 
 ### US-10-06 — Supprimer son compte (droit à l'effacement RGPD)
-
-**Priorité** : Must Have
 
 **En tant que** utilisateur authentifié dont l'adresse de messagerie est validée,
 **je veux** pouvoir demander la suppression définitive de mon compte,

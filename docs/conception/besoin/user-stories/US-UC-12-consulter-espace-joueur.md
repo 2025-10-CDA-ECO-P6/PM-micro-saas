@@ -27,9 +27,7 @@ Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Should Have | US-12-01, US-12-02 |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-12 — Consulter son espace en tant que joueur (vue post-accès)](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -109,8 +107,6 @@ flowchart LR
 
 ### US-12-01 — Accéder à sa fiche de personnage et aux informations partagées
 
-**Priorité** : Should Have
-
 **En tant que** joueur,
 **je veux** voir ma fiche de personnage et les documents partagés par le MJ dès que j'ai rejoint la session,
 **afin de** disposer de toutes les informations utiles pour jouer sans avoir à les demander au MJ.
@@ -177,8 +173,6 @@ Scénario : Documents GM_ONLY invisibles pour le joueur
 ---
 
 ### US-12-02 — Choisir son personnage actif quand associé à plusieurs personnages
-
-**Priorité** : Should Have
 
 **En tant que** joueur,
 **je veux** choisir lequel de mes personnages est actif pour la session en cours,

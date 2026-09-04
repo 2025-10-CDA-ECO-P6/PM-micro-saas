@@ -27,16 +27,7 @@ Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans frict
 
 ## Priorité MoSCoW
 
-| Story | Priorité |
-|---|---|
-| US-01-01 | Must Have |
-| US-01-02 | Must Have |
-| US-01-03 | Exclue (voir section Stories exclues ou repoussées) |
-| US-01-04 | Must Have |
-| US-01-05 | Must Have (dépend UC-10) |
-| US-01-06 | Should Have |
-| US-01-07 | Must Have |
-| US-01-09 | Must Have |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-01 — Mode local sans compte](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -115,7 +106,6 @@ flowchart LR
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have |
 | Source | UC-01 — scénario nominal |
 | Bounded context | Space Management |
 
@@ -173,7 +163,6 @@ Feature: Démarrage sans compte
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have |
 | Source | UC-01 — scénario alternatif A2 |
 | Bounded context | Space Management, la bibliothèque de contenu |
 
@@ -213,7 +202,6 @@ Feature: Persistance des données locales
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have |
 | Source | UC-01 — règle métier 4, critère d'acceptation |
 | Bounded context | Space Management (partage), la conduite de session (accès joueur) |
 
@@ -262,7 +250,6 @@ Feature: Visibilité des fonctionnalités cloud en mode local
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have (dépend UC-10) |
 | Source | UC-01 — scénario alternatif A1, règle métier 2 |
 | Bounded context | Identity & Access (création du compte), Space Management (migration des données) |
 
@@ -328,7 +315,6 @@ Feature: Migration des données locales à la création de compte
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Should Have |
 | Source | UC-01 — scénario alternatif A3, exception E1 |
 | Bounded context | Space Management |
 
@@ -372,8 +358,6 @@ Feature: Gestion des données locales introuvables
 
 ### US-01-07 — Exporter un espace dans un format ouvert
 
-**Priorité** : Must Have — promue de Should Have (état antérieur, décision du 2026-06-10, vision §5bis) par décision produit du 2026-06-25 (moscow.md § Export d'espace)
-
 **Note de transversalité** : ce besoin de possession des données existe en mode local comme avec un compte cloud — l'export n'est pas une fonctionnalité exclusive au mode local. L'implémentation sera commune aux deux contextes.
 
 **Format**
@@ -386,7 +370,6 @@ Feature: Gestion des données locales introuvables
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have |
 | Source | UC-01 — scénario alternatif A4a ; vision §5bis |
 | Bounded context | Space Management |
 
@@ -433,7 +416,6 @@ Feature: Export d'un espace en format ouvert
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have |
 | Source | UC-01 — geste capture-first ; ADR-018 (espace personnel par défaut) |
 | Bounded context | la bibliothèque de contenu (capture et stockage), la gestion de l'espace (espace personnel par défaut) |
 
@@ -519,9 +501,9 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 2. **US-01-09** — Capturer sans campagne dans l'espace personnel (geste capture-first, dépend US-01-01)
 3. **US-01-02** — Persistance des données locales (nécessaire pour que l'outil soit utilisable)
 4. **US-01-04** — Visibilité des fonctionnalités cloud (prépare la conversion)
-5. **US-01-06** — Gestion des données introuvables (robustesse, Should Have)
+5. **US-01-06** — Gestion des données introuvables (robustesse)
 6. **US-01-05** — Migration vers compte (dépend UC-10, livrable uniquement après)
-7. **US-01-07** — Export d'un espace en format ouvert (Must Have — transverse mode local / cloud)
+7. **US-01-07** — Export d'un espace en format ouvert (transverse mode local / cloud)
 
 ---
 
@@ -535,7 +517,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | RB-01-06 : fonctionnalités de partage nécessitent un compte | US-01-04 |
 | RB-01-14 : bandeaux durabilité + confidentialité | US-01-01 (RB-01-14), US-01-02 (logique de durabilité), US-01-06 (E1) |
 | RB-01-15 : aucun élément protégé conservé en mode local | US-01-01 (garanties du mode local) |
-| Export d'un espace en format ouvert (RB-01-16/17) | US-01-07 (Must Have) |
+| Export d'un espace en format ouvert (RB-01-16/17) | US-01-07 |
 | Fichier réimporté validé et nettoyé avant enregistrement (post-MVP) | US-01-08 — post-MVP ; règles de validation tracées dans UC-01 A4b |
 | RB-01-18 : espace personnel instancié par défaut en mode local, propriété transférée à la migration | US-01-09 |
 | RB-01-19 : contenu capturé retrouvable et rangeable/instanciable ultérieurement | US-01-09 |
@@ -558,7 +540,7 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | A1 — Conversion vers un compte | US-01-05 |
 | A2 — Retour après fermeture du navigateur | US-01-02 |
 | A3 — Données introuvables (cache vidé ou éviction navigateur) | US-01-06 |
-| A4a — Export d'un espace (format ouvert) | US-01-07 (Must Have) |
+| A4a — Export d'un espace (format ouvert) | US-01-07 |
 | A4b — Réimport de fichier de sauvegarde (validation + nettoyage) | US-01-08 — post-MVP |
 | E1 — Stockage navigateur plein | US-01-06 |
 

@@ -32,9 +32,7 @@ Permettre au MJ de contrôler la visibilité de ses documents d'espace. Tout doc
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Must Have | US-08-01, US-08-02, US-08-03 |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-08 — Partager une information aux joueurs](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -96,8 +94,6 @@ flowchart LR
 
 ### US-08-01 — Partager un document avec les joueurs
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** rendre un document d'espace visible par les joueurs,  
 **afin de** leur transmettre une information (indice, aide de jeu, révélation, résumé) de façon durable.
@@ -149,8 +145,6 @@ Scénario : Document déjà PUBLIC (E1)
 
 ### US-08-02 — Retirer le partage d'un document
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** repasser un document `PUBLIC` en `GM_ONLY`,  
 **afin de** garder le contrôle sur ce que les joueurs voient, notamment si une information ne doit plus être accessible.
@@ -198,8 +192,6 @@ Scénario : Document déjà GM_ONLY
 ---
 
 ### US-08-03 — Partager un document depuis la vue session
-
-**Priorité** : Must Have
 
 **En tant que** MJ,  
 **je veux** partager un document directement depuis la vue session en cours,  

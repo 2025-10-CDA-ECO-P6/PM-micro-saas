@@ -36,10 +36,7 @@ Permettre au MJ de piloter une session de jeu depuis un tableau de bord configur
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Must Have | US-06-01, US-06-02, US-06-03, US-06-04, US-06-05, US-06-06, US-06-07 |
-| Should Have | US-06-08, US-06-09, US-06-10 |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-06 — Utiliser la vue session](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -126,8 +123,6 @@ flowchart LR
 
 ### US-06-01 — Lancer une session
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** lancer une session en saisissant un titre et en sélectionnant optionnellement un scénario,  
 **afin d'** accéder immédiatement au tableau de bord de session.
@@ -174,8 +169,6 @@ Scénario : Lancement refusé si titre vide
 ---
 
 ### US-06-02 — Configurer les panneaux de la vue session
-
-**Priorité** : Must Have
 
 **En tant que** MJ,  
 **je veux** configurer les dossiers mis en avant dans la vue session et leur ordre,  
@@ -226,8 +219,6 @@ Scénario : La config persiste entre deux sessions
 
 ### US-06-03 — Naviguer dans les dossiers pendant la session
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** parcourir les dossiers et documents de mon espace depuis la vue session,  
 **afin d'** accéder aux informations dont j'ai besoin sans quitter l'interface de session.
@@ -265,8 +256,6 @@ Scénario : Le joueur ne voit pas les documents non publics
 ---
 
 ### US-06-04 — Prendre des notes de session MJ
-
-**Priorité** : Must Have
 
 **En tant que** MJ,  
 **je veux** prendre des notes rapides pendant la session et choisir si elles sont visibles par les joueurs,  
@@ -325,8 +314,6 @@ Scénario : Résilience réseau (E1)
 
 ### US-06-05 — Épingler un document pendant la session
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** épingler des documents dans la vue session pour les garder accessibles sans navigation,  
 **afin de** conserver sous la main les documents critiques pour la session en cours.
@@ -369,8 +356,6 @@ Scénario : Épinglage automatique à la création à la volée
 ---
 
 ### US-06-06 — Terminer une session
-
-**Priorité** : Must Have
 
 **En tant que** MJ,  
 **je veux** terminer la session en cours,  
@@ -423,8 +408,6 @@ Scénario : Le MJ archive une session CLOSED
 
 ### US-06-07 — Accéder à la vue joueur pendant une session LIVE
 
-**Priorité** : Must Have (dépend UC-09)
-
 **En tant que** joueur,  
 **je veux** accéder à la vue de session partagée pendant une session LIVE,  
 **afin de** consulter les documents partagés par le MJ et mes notes personnelles.
@@ -470,8 +453,6 @@ Scénario : Accès refusé sans compte ni accès invité
 
 ### US-06-08 — Prendre des notes de session personnelle joueur
 
-**Priorité** : Should Have
-
 **En tant que** joueur,  
 **je veux** créer des notes personnelles visibles uniquement par moi,  
 **afin de** consigner mes observations sans les partager avec le MJ ni les autres joueurs.
@@ -516,8 +497,6 @@ Scénario : Joueur accès invité avec personnage associé
 
 ### US-06-09 — Reprendre une session interrompue
 
-**Priorité** : Should Have
-
 **En tant que** MJ,  
 **je veux** reprendre une session qui s'est interrompue (coupure réseau, fermeture accidentelle),  
 **afin de** ne pas perdre le contexte de la session en cours.
@@ -548,8 +527,6 @@ Scénario : Le MJ reprend une session après interruption
 ---
 
 ### US-06-10 — Ajouter des notes rétroactives après session CLOSED
-
-**Priorité** : Should Have
 
 **En tant que** MJ,  
 **je veux** ajouter des notes de session à une session déjà terminée (CLOSED),  

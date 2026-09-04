@@ -34,11 +34,7 @@ Permettre au MJ de structurer librement le contenu de son espace en dossiers nom
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Must Have | US-05-01, US-05-02 |
-| Should Have | US-05-03, US-05-04, US-05-05 |
-| Won't Have (MVP) | Sous-dossiers imbriqués |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans `moscow.md`, qui distingue explicitement [§ UC-05 base — Organiser le contenu en dossiers (Must Have)](../vision/moscow.md) et [§ UC-05 riche — Dossiers et types de document élaborés (Should Have)](../vision/moscow.md) — seule autorité du corpus pour attribuer cette priorité (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story, et ne décide pas non plus quelle story relève de la base et laquelle relève de la couche riche : ce rattachement est une inférence que seule l'autorité de priorisation peut trancher — une fiche dérivée qui l'opérait recopierait une décision qu'elle n'a pas l'autorité de prendre, et qu'une révision ultérieure de `moscow.md` laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -111,8 +107,6 @@ flowchart LR
 
 ### US-05-01 — Créer un dossier dans un espace
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** créer un dossier nommé dans mon espace,  
 **afin de** regrouper mes documents par thème ou catégorie.
@@ -154,8 +148,6 @@ Scénario : Le MJ tente de créer un dossier avec un nom vide
 
 ### US-05-02 — Renommer un dossier (y compris système)
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** renommer n'importe quel dossier de mon espace, y compris les dossiers système,  
 **afin d'** adapter les intitulés à mon système de jeu ou ma logique d'organisation.
@@ -194,8 +186,6 @@ Scénario : Le MJ tente de renommer avec un nom vide
 ---
 
 ### US-05-03 — Associer un template par défaut à un dossier
-
-**Priorité** : Should Have
 
 **En tant que** MJ,  
 **je veux** associer un template à un dossier pour que tout nouveau document créé dans ce dossier parte d'une structure prédéfinie,  
@@ -244,8 +234,6 @@ Scénario : Template supprimé après association
 ---
 
 ### US-05-04 — Supprimer un dossier
-
-**Priorité** : Should Have
 
 **En tant que** MJ,  
 **je veux** supprimer un dossier dont je n'ai plus besoin,  
@@ -297,8 +285,6 @@ Scénario : Le MJ supprime un dossier système
 ---
 
 ### US-05-05 — Réordonner les dossiers
-
-**Priorité** : Should Have
 
 **En tant que** MJ,  
 **je veux** modifier l'ordre d'affichage de mes dossiers,  

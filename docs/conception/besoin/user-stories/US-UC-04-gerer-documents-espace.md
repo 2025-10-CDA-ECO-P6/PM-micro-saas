@@ -36,12 +36,7 @@ d'espace : le type est une aide optionnelle, la structure reste libre en blocs.
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Must Have | US-04-01, US-04-02, US-04-03 |
-| Should Have | US-04-04, US-04-05 |
-| Could Have | US-04-06 |
-| Won't Have (MVP) | Partage sélectif par joueur |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-04 — Gérer les documents d'un espace](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -109,8 +104,6 @@ flowchart LR
 
 ### US-04-01 — Créer et modifier un document d'espace
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** créer un document modulaire dans mon espace, y rédiger un contenu libre en blocs
 et le modifier à tout moment,  
@@ -159,8 +152,6 @@ Scénario : Le MJ déplace un document vers un autre dossier
 ---
 
 ### US-04-02 — Créer une note rapide sans configuration
-
-**Priorité** : Must Have
 
 **En tant que** MJ,  
 **je veux** créer une note immédiatement sans remplir de formulaire,  
@@ -212,8 +203,6 @@ Scénario : La note rapide est accessible depuis la bibliothèque et depuis la v
 
 ### US-04-03 — Contrôler la visibilité d'un document
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** définir si un document est privé ou visible par tous les membres de mon espace,  
 **afin de** partager certains éléments avec mes joueurs tout en gardant mes notes pour moi.
@@ -257,14 +246,12 @@ Scénario : Un joueur ne voit pas un document privé
 
 ### US-04-04 — Taguer un document
 
-**Priorité** : Should Have — **confirmée** (arbitrage produit, cf. UC-04 § Tags)
-
 **En tant que** MJ,  
 **je veux** associer librement des tags à mes documents pour les organiser selon mes propres catégories,  
 **afin de** structurer mon contenu comme je l'entends, indépendamment de tout dossier, type ou lien — et, une fois la recherche par tag disponible, de les retrouver par thème.
 
 **Notes de conception** :
-- **Résolution de l'arbitrage** : la fonction tag répond à un besoin propre d'organisation du MJ, indépendant de la recherche — le MJ en fait ce qu'il veut. Ce n'est pas une fonction subordonnée au filtrage en recherche : elle a sa propre valeur d'usage, même sans recherche par tag disponible. La priorité `Should Have` est confirmée sur cette base (UC-04 § Tags, § Règles métier).
+- **Résolution de l'arbitrage** : la fonction tag répond à un besoin propre d'organisation du MJ, indépendant de la recherche — le MJ en fait ce qu'il veut. Ce n'est pas une fonction subordonnée au filtrage en recherche : elle a sa propre valeur d'usage, même sans recherche par tag disponible (UC-04 § Tags, § Règles métier).
 - Les tags sont associés directement au document. Un document peut en porter zéro, un ou plusieurs.
 - Le MJ crée librement de nouveaux tags à la volée depuis l'éditeur de document et les retire à tout moment ; aucune taxonomie, hiérarchie ou structure n'est imposée par l'application.
 - Le filtrage par tag en recherche (UC-14 A3) reste `Could Have — hors MVP` : il constitue un usage complémentaire et différé des tags, pas leur justification. Un document sans tags reste pleinement utilisable.
@@ -305,8 +292,6 @@ Scénario : Le MJ saisit une variante de casse d'un tag existant
 
 ### US-04-05 — Lier un document à d'autres éléments d'espace
 
-**Priorité** : Should Have
-
 **En tant que** MJ,  
 **je veux** lier mes documents entre eux,  
 **afin de** naviguer entre un PNJ, ses scènes, ses notes associées, sans dupliquer le contenu.
@@ -345,8 +330,6 @@ Scénario : Un document peut être lié à plusieurs autres documents
 ---
 
 ### US-04-06 — Consulter les backlinks d'un document
-
-**Priorité** : Could Have
 
 **En tant que** MJ,  
 **je veux** voir quels documents référencent le document que je consulte,  
@@ -402,8 +385,8 @@ Scénario : Un document sans backlink affiche une section vide
 2. **US-04-02** — Note rapide (valeur immédiate pour Émilie, coût faible)
 3. **US-04-03** — Visibilité (nécessaire avant tout partage avec les joueurs)
 4. **US-04-05** — Lier des documents (dépend US-04-01, valeur pour Antoine et Thomas)
-5. **US-04-04** — Taguer (Should Have, valeur propre d'organisation MJ ; le filtrage en recherche via UC-14 A3 reste un complément différé, `Could Have — hors MVP`)
-6. **US-04-06** — Backlinks (Could Have, dépend US-04-05)
+5. **US-04-04** — Taguer (valeur propre d'organisation MJ ; le filtrage en recherche via UC-14 A3 reste un complément différé, `Could Have — hors MVP`)
+6. **US-04-06** — Backlinks (dépend US-04-05)
 
 ---
 

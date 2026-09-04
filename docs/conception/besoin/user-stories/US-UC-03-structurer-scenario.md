@@ -31,12 +31,7 @@ Permettre au MJ de préparer un scénario utilisable en session : création, str
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Must Have | US-03-01, US-03-02, US-03-03, US-03-04 |
-| Should Have | US-03-05, US-03-06, US-03-07 |
-| Could Have | — |
-| Won't Have (MVP) | Visibilité par bloc |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-03 — Structurer un scénario](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -100,8 +95,6 @@ flowchart LR
 
 ### US-03-01 — Créer un scénario dans un espace
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** créer un scénario dans mon espace,  
 **afin de** disposer d'un document de préparation rattaché à cet espace.
@@ -142,8 +135,6 @@ Scenario: Un scénario improvisé minimal est valide (A4)
 ---
 
 ### US-03-02 — Ajouter et ordonner des scènes dans un scénario
-
-**Priorité** : Must Have
 
 **En tant que** MJ,  
 **je veux** ajouter des scènes à mon scénario et les ordonner,  
@@ -201,8 +192,6 @@ Scenario: Un scénario peut contenir zéro scène
 
 ### US-03-03 — Écrire un scénario libre sans découpage en scènes
 
-**Priorité** : Must Have
-
 **En tant que** MJ,  
 **je veux** écrire mon scénario comme un document monobloc, sans scènes,  
 **afin de** préparer librement sans contrainte de structure.
@@ -238,8 +227,6 @@ Scenario: Ajouter des scènes à un scénario libre a posteriori
 ---
 
 ### US-03-04 — Distinguer le contenu privé du contenu partageable dans une scène
-
-**Priorité** : Must Have
 
 **En tant que** MJ,  
 **je veux** ajouter des révélations joueurs à une scène sans mélanger mes notes privées de MJ,  
@@ -281,8 +268,6 @@ Scénario : Le contenu privé et le contenu partageable sont bien séparés
 ---
 
 ### US-03-05 — Lier des documents existants à un scénario ou une scène
-
-**Priorité** : Should Have
 
 **En tant que** MJ,  
 **je veux** lier des PNJ, lieux ou notes existants à mon scénario ou à une scène,  
@@ -329,8 +314,6 @@ Scenario: Voir les backlinks depuis la fiche d'un PNJ
 
 ### US-03-06 — Gérer le statut d'un scénario
 
-**Priorité** : Should Have
-
 **En tant que** MJ,  
 **je veux** attribuer un statut à mon scénario (brouillon, prêt, joué, archivé),  
 **afin de** suivre l'état de préparation de mes scénarios.
@@ -374,8 +357,6 @@ Scenario: Filtrer les scénarios par statut
 ---
 
 ### US-03-07 — Créer un document depuis l'éditeur de scénario
-
-**Priorité** : Should Have
 
 **En tant que** MJ,  
 **je veux** créer un PNJ ou une note directement depuis l'éditeur de mon scénario,  
@@ -424,7 +405,7 @@ Scenario: Créer un document à la volée depuis l'éditeur de scénario
 2. **US-03-03** — Scénario libre (valeur immédiate pour Émilie et Nadia, coût faible)
 3. **US-03-02** — Ajouter des scènes (Antoine, Thomas)
 4. **US-03-04** — Visibilité contenu (nécessaire avant UC-06)
-5. **US-03-06** — Statut (Should Have, peu de dépendances)
+5. **US-03-06** — Statut (peu de dépendances)
 6. **US-03-05** — Lier des documents existants (dépend UC-04, UC-05)
 7. **US-03-07** — Créer depuis l'éditeur (dépend UC-04, valeur additionnelle)
 

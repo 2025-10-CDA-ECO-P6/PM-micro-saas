@@ -30,10 +30,7 @@ Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lie
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Must Have | US-09-01, US-09-02 |
-| Should Have | US-09-03 (dépend UC-10), US-09-04 |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-09 — Accès joueur sans compte](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -108,8 +105,6 @@ flowchart LR
 
 ### US-09-01 — Rejoindre une session via lien ponctuel sans compte
 
-**Priorité** : Must Have
-
 **En tant que** joueur,
 **je veux** accéder à une session en cliquant sur un lien et en saisissant uniquement un nom d'affichage,
 **afin de** consulter les informations partagées par le MJ sans avoir à créer de compte.
@@ -172,8 +167,6 @@ Scénario : Accès expire après 24h de grâce
 
 ### US-09-02 — Lien révoqué ou expiré
 
-**Priorité** : Must Have
-
 **En tant que** joueur,
 **je veux** recevoir un message clair lorsque le lien que j'utilise n'est plus actif,
 **afin de** comprendre la situation et savoir quoi faire (contacter le MJ), sans obtenir d'information sur l'existence de l'espace partagé.
@@ -219,8 +212,6 @@ Scénario : Lien invalide ou mal formé (E1)
 ---
 
 ### US-09-03 — Rejoindre un espace partagé via lien permanent avec compte
-
-**Priorité** : Should Have (dépend UC-10, UC-11)
 
 **En tant que** joueur régulier,
 **je veux** accéder à un espace partagé via un lien permanent fourni par le MJ,
@@ -271,8 +262,6 @@ Scénario : MJ révoque l'accès permanent d'un membre
 ---
 
 ### US-09-04 — Créer un compte depuis un accès invité (migration sans perte)
-
-**Priorité** : Should Have (dépend UC-10)
 
 **En tant que** joueur invité,
 **je veux** créer un compte Haversack depuis ma session invité et conserver toutes mes données existantes,

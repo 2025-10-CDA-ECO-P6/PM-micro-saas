@@ -30,9 +30,7 @@ Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapid
 
 ## Priorité MoSCoW
 
-| Priorité | Stories |
-|---|---|
-| Should Have | US-14-01, US-14-02, US-14-03 |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-14 — Rechercher et filtrer l'information](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir. Le bloc que la table précédente reportait (`Should Have`) est celui que `moscow.md` accorde à l'ensemble d'UC-14 : le reporter au grain story restait une attribution que cette fiche n'a pas l'autorité de faire, même quand la valeur recopiée coïncidait avec la source.
 
 ---
 
@@ -96,8 +94,6 @@ flowchart LR
 
 ### US-14-01 — Rechercher un document par titre dans l'espace actif
 
-**Priorité** : Should Have
-
 **En tant que** MJ,
 **je veux** saisir un titre ou une partie de titre dans la barre de recherche de mon espace actif,
 **afin de** retrouver rapidement le document correspondant sans naviguer manuellement dans les dossiers.
@@ -160,8 +156,6 @@ Scénario : LIVE_NOTE session passée recherchable
 
 ### US-14-02 — Filtrer les résultats par type de document
 
-**Priorité** : Should Have
-
 **En tant que** MJ,
 **je veux** filtrer les résultats de recherche par type de document,
 **afin de** réduire rapidement la liste de résultats lorsque je cherche un document d'un type précis (PNJ, scène, note, lieu...).
@@ -205,8 +199,6 @@ Scénario : Retirer le filtre de type
 ---
 
 ### US-14-03 — Rechercher depuis la vue session avec pondération de la session active
-
-**Priorité** : Should Have
 
 **En tant que** MJ,
 **je veux** rechercher un document depuis la vue session sans quitter la session,

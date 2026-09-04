@@ -31,14 +31,7 @@ Les espaces de type `CAMPAIGN` et `ONE_SHOT` sont créés par ces parcours. L'es
 
 ## Priorité MoSCoW
 
-| Story | Priorité |
-|---|---|
-| US-02-00 | Must Have |
-| US-02-01 | Must Have |
-| US-02-02 | Should Have — post-MVP (dépend UC-13 ; voir vision §5bis et UC-02 §A1) |
-| US-02-03 | Must Have |
-| US-02-04 | Should Have (dépend UC-13) |
-| US-02-05 | Exclue |
+La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-02 — Créer et configurer un espace (campagne ou one-shot)](../vision/moscow.md) — seule autorité du corpus pour l'attribuer (voir [`docs/conception/README.md`, § Ordre d'autorité entre artefacts](../../README.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 ---
 
@@ -117,7 +110,6 @@ flowchart LR
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have |
 | Source | UC-02 — ontologie des types d'espace, décision ADR-018 |
 | Bounded context | Space Management, Identity & Access |
 
@@ -172,7 +164,6 @@ Feature: Espace personnel par défaut
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have |
 | Source | UC-02 — scénario nominal |
 | Bounded context | Space Management, la bibliothèque de contenu |
 
@@ -250,7 +241,6 @@ Feature: Création d'une campagne
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Should Have — post-MVP (dépend UC-13) |
 | Source | UC-02 — scénario alternatif A1 |
 | Bounded context | Space Management |
 
@@ -300,7 +290,6 @@ Feature: Lancement d'un one-shot en parcours express
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Must Have |
 | Source | UC-02 — règles métier, règle stable gratuit |
 | Bounded context | Space Management |
 
@@ -366,7 +355,6 @@ Feature: Blocage à la limite d'espaces CAMPAIGN/ONE_SHOT actifs
 
 | Champ | Valeur |
 |---|---|
-| Priorité | Should Have (dépend UC-13) |
 | Source | UC-02 — scénario alternatif A1, option "scénario existant" |
 | Bounded context | Space Management, la bibliothèque de contenu, la conduite de session |
 
@@ -414,8 +402,8 @@ Feature: One-shot depuis un scénario de bibliothèque
 
 ## Stories exclues ou repoussées
 
-- **US-02-02** — Should Have — post-MVP. Le parcours express one-shot (point d'entrée dédié) est reporté après la première livraison. En MVP, le one-shot se crée via le parcours campagne nominal avec `type = ONE_SHOT` (US-02-01). Conditionné à la livraison de UC-13.
-- **US-02-04** — Should Have (non bloquante pour le MVP, dépend de UC-13).
+- **US-02-02** — Post-MVP. Le parcours express one-shot (point d'entrée dédié) est reporté après la première livraison. En MVP, le one-shot se crée via le parcours campagne nominal avec `type = ONE_SHOT` (US-02-01). Conditionné à la livraison de UC-13.
+- **US-02-04** — Non bloquante pour le MVP, dépend de UC-13.
 - **US-02-05 — Sauvegarder une campagne en brouillon** — Exclue. Hors MVP. Le formulaire de création est minimal (1 champ obligatoire). Si implémenté, ce sera un état purement interface (brouillon local) sans statut DRAFT dans le modèle fonctionnel.
 
 ---
