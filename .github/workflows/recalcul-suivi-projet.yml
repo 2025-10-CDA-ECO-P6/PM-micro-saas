@@ -1,0 +1,165 @@
+# Premier workflow de ce dépôt.
+#
+# Le statut d'une tranche du plan de travail (« Ouvert, non prêt » → « Prêt »)
+# se déduit du graphe de dépendances entre tickets : c'est un calcul, pas un
+# champ qu'on coche. Aucun automatisme GitHub natif ne le mène — seul
+# l'outillage de ce dépôt (tools/CreerIssues, tools/CreerProjet) le fait, en
+# lisant le plan de travail versionné et l'état courant des issues. Sans ce
+# déclencheur, ce recalcul n'a lieu que si quelqu'un lance ces deux commandes
+# à la main.
+#
+# Ordre des deux outils : CreerIssues d'abord, parce que CreerProjet n'ajoute
+# au tableau que les tranches dont l'issue existe déjà (une tranche neuve du
+# plan sans issue correspondante y reste invisible jusqu'à ce que CreerIssues
+# la crée) — CreerProjet lit donc un état d'issues déjà à jour de ce que le
+# plan commande.
+name: Recalcul du suivi de projet
+
+on:
+  issues:
+    # Restreint aux trois transitions d'ÉTAT dont dépend le calcul du Statut
+    # (methode-de-ticket.md §2) : une dépendance qui se ferme fait passer ses
+    # dépendantes à « Prêt » ; une réouverture peut inverser ce calcul. Exclut
+    # délibérément « edited » : CreerIssues régénère le corps d'une issue
+    # existante sous --appliquer quand ce corps diverge (Orchestrateur.cs),
+    # ce qui émettrait sur cette même issue l'événement
+    # « edited » — l'inclure reboucherait ce déclencheur sur sa propre
+    # écriture. Les écritures de CreerProjet (champs du tableau de projet)
+    # ne portent de toute façon aucun événement « issues » : Projects v2 émet
+    # un événement distinct (`projects_v2_item`), non souscrit ici — aucune
+    # des deux écritures de cette Action ne peut donc jamais redéclencher
+    # cette Action.
+    types: [opened, closed, reopened]
+  # Filet manuel : une modification du plan lui-même (une dépendance ajoutée
+  # ou retirée, un champ Épique changé) ne passe par AUCUN événement
+  # « issues » — rien d'autre dans ce fichier ne redéclencherait alors le
+  # recalcul. CreerProjet n'écrit lui aussi que sur divergence (Orchestrateur.cs
+  # : un champ n'est réécrit que si sa valeur cible diffère de la valeur déjà
+  # posée sur l'élément — vérifié en lisant le code), donc ce déclenchement
+  # manuel reste sûr à lancer à tout moment, y compris quand rien n'a changé.
+  workflow_dispatch: {}
+
+# Groupe unique et statique : les deux outils recalculent l'état COMPLET du
+# suivi (toutes les tranches du plan, pas seulement celle qui a déclenché
+# l'exécution) à chaque passage, donc deux exécutions concurrentes
+# écriraient sur les mêmes tickets et le même tableau au même instant, quelle
+# que soit l'issue à l'origine de chacune. `cancel-in-progress: false` : une
+# exécution en cours n'est jamais interrompue en plein milieu d'une série
+# d'écritures (CreerProjet édite un champ par tranche, une à la fois) — les
+# déclenchements suivants attendent en file plutôt que d'annuler une
+# écriture partielle, ce qui laisserait le tableau dans un état mêlant deux
+# passages.
+concurrency:
+  group: recalcul-suivi-projet
+  cancel-in-progress: false
+
+jobs:
+  recalculer:
+    name: Régénérer les issues et recalculer le tableau de projet
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # contents: read — lire le plan de travail et la méthode de ticket
+    #   versionnés (git, déjà local après le checkout).
+    # issues: write — CreerIssues crée les libellés et les jalons manquants,
+    #   et régénère le corps des issues dont le corps engendré diverge ; ce
+    #   périmètre reste celui d'un jeton de dépôt standard, aucun jeton
+    #   personnel n'est requis pour cette étape (voir plus bas).
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      # Placé avant le checkout et l'installation du SDK : si ce secret
+      # manque, la suite ne sert à rien — autant échouer avant d'en payer le
+      # coût. Un jeton de dépôt (GITHUB_TOKEN) ne couvre pas les tableaux de
+      # projet : Projects v2 vit au niveau de l'ORGANISATION, hors du
+      # périmètre qu'un jeton de dépôt peut atteindre, quels que soient les
+      # droits accordés ci-dessus dans `permissions:`.
+      - name: Vérifier la présence du jeton Projects (PAT)
+        # `secrets` n'est PAS un contexte disponible dans une condition `if:`
+        # d'étape — la table « Context availability » de la documentation
+        # GitHub Actions (contexts.md, lue directement depuis la source :
+        # github/docs, content/actions/reference/workflows-and-actions/
+        # contexts.md) liste pour `jobs.<job_id>.steps.if` les seuls contextes
+        # `github, needs, strategy, matrix, job, runner, env, vars, steps,
+        # inputs` — `secrets` en est absent. Confirmé aussi par le rejet réel
+        # du fichier précédent (« Unrecognized named-value: 'secrets' »).
+        # `env`, lui, y figure, et la documentation du contexte `env` le dit
+        # explicitement : « You can use the env context in any key in a
+        # workflow step except for the id and uses keys » — `if` n'y est pas
+        # exclu. D'où le détour : le secret transite par une variable
+        # d'environnement posée sur CE step (`jobs.<job_id>.steps.env`
+        # autorise bien `secrets`, même table), relue par la condition de ce
+        # même step via `env.*`.
+        env:
+          JETON_PROJETS: ${{ secrets.PROJECTS_PAT }}
+        if: ${{ env.JETON_PROJETS == '' }}
+        run: |
+          echo "::error::Secret PROJECTS_PAT absent ou vide. Le GITHUB_TOKEN fourni par défaut à cette Action n'a pas accès aux tableaux de projet (Projects v2 vit au niveau de l'organisation, hors du périmètre d'un jeton de dépôt). CreerProjet ne peut donc pas écrire le champ Statut sans un jeton personnel dédié : créez un Personal Access Token (classic) avec le scope « project », puis ajoutez-le comme secret de CE dépôt sous le nom PROJECTS_PAT (Settings → Secrets and variables → Actions → New repository secret). Rien n'a été écrit sur GitHub par cette exécution."
+          exit 1
+
+      - name: Récupérer le dépôt
+        # Épinglée par empreinte de commit plutôt que par étiquette mobile —
+        # une étiquette peut être redirigée après coup par qui la contrôle,
+        # une empreinte de commit non. v7.0.1, résolue le 2026-09-04 depuis
+        # https://github.com/actions/checkout/releases.
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Historique COMPLET, jamais la profondeur par défaut (1 seul
+          # commit) : CreerIssues date l'estampille de provenance qu'il grave
+          # dans chaque corps d'issue par le dernier commit ayant modifié
+          # `docs/gestion-projet/plan-de-travail.md` (RevisionGuard.
+          # LireRevisionPlan, `git log -1 -- <chemin>`), pas par le commit de
+          # tête. Mesuré : sous un clone superficiel, git traite le commit
+          # limite du clone comme une racine sans parent connu — tout chemin
+          # qu'il contient y ressort donc comme « modifié par ce commit »,
+          # même quand ce commit ne l'a pas touché. Un clone superficiel ne
+          # ferait donc jamais échouer cette lecture (RevisionGuard ne
+          # lèverait aucune exception), mais lui ferait graver une estampille
+          # FAUSSE dans le corps de chaque issue régénérée — un mode de panne
+          # silencieux, plus coûteux à détecter qu'un refus net. La garde de
+          # révision proprement dite (atteignabilité locale du commit de tête
+          # sur `origin/<branche>`, sans réseau) est, elle, déjà satisfaite
+          # même à profondeur 1 — un commit est toujours son propre ancêtre —
+          # mais cette seconde lecture, distincte, ne l'est pas.
+          fetch-depth: 0
+
+      - name: Installer le SDK .NET
+        # Épinglée par empreinte de commit — même motif que le checkout
+        # ci-dessus. v6.0.0, résolue le 2026-09-04 depuis
+        # https://github.com/actions/setup-dotnet/releases.
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          # Version en support à long terme en cours à l'ouverture du build.
+          # Règle et formulation posées par guide-conventions-et-dod.md §2 —
+          # « ce guide énonce la règle, jamais un numéro — un numéro
+          # vieillit, la règle non » — qui renvoie lui-même au §8. Le sélecteur
+          # « 10.0.x » suit cette règle sur le seul correctif : le membre
+          # « 10.0 » reste, lui, la forme que les quatre .csproj de tools/
+          # figent eux-mêmes (net10.0) — le faire diverger d'eux romprait la
+          # compilation, pas la règle.
+          dotnet-version: "10.0.x"
+
+      - name: Régénérer les corps d'issues divergents (CreerIssues)
+        # N'écrit que sur divergence réelle du corps engendré (vérifié en
+        # lisant Orchestrateur.cs et en exécutant réellement, sous le faux
+        # « gh » du harnais de test de ce dépôt, la caractérisation
+        # `RegenerationDuCorpsDUneIssueExistanteSousAppliquer` : sur deux
+        # passes consécutives sans changement, la seconde n'émet aucun appel
+        # de mise à jour) : cette étape peut donc tourner à chaque
+        # déclenchement sans réécrire inutilement les issues à chaque fois.
+        # Le GITHUB_TOKEN fourni par défaut à l'Action suffit : les trois
+        # écritures de cet outil (libellés, jalons, corps d'issue) sont
+        # toutes des points d'API du DÉPÔT, jamais du tableau de projet.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: dotnet run --project tools/CreerIssues -- --appliquer
+
+      - name: Recalculer Statut et Épique du tableau de projet (CreerProjet)
+        # Jeton personnel requis ici (voir l'étape de garde en tête de ce
+        # fichier) : GH_TOKEN prime sur GITHUB_TOKEN pour `gh`, donc seule
+        # CETTE étape authentifie ses appels avec le PAT — les étapes
+        # précédentes gardent le jeton de dépôt par défaut, au périmètre
+        # plus étroit.
+        env:
+          GH_TOKEN: ${{ secrets.PROJECTS_PAT }}
+        run: dotnet run --project tools/CreerProjet -- --appliquer
