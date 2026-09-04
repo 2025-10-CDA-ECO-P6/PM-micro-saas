@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\VerifCorpus\VerifCorpus.csproj" />
     <ProjectReference Include="..\VerifMailleAgregat\VerifMailleAgregat.csproj" />
+    <ProjectReference Include="..\VerifCouvertureRecette\VerifCouvertureRecette.csproj" />
     <ProjectReference Include="..\CreerIssues\CreerIssues.csproj" />
     <ProjectReference Include="..\CreerProjet\CreerProjet.csproj" />
     <ProjectReference Include="..\Harnais\FauxGh\FauxGh.csproj" />
