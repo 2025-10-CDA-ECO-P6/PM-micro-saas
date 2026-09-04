@@ -988,6 +988,98 @@ public class ProjectionDuMarqueurTrouSurLesCriteresDAcceptation : IDisposable
 }
 
 /// <summary>
+/// `methode-de-ticket.md §1 § Ce qu'un ticket fait du marqueur TROU`, même
+/// principe étendu à `En conflit avec` / `Dépend de` — un champ entièrement
+/// qualificatif (du texte, mais aucun segment ne nomme de `TB-nnn`) doit
+/// refléter cette absence de tranche nommée plutôt que la masquer sous le
+/// rendu `—` d'un champ réellement vide, sans reproduire la phrase de
+/// raison portée par le plan.
+/// </summary>
+public class ProjectionDUnChampEntierementQualificatifSansIdentifiant : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+
+    private const string RaisonSansIdentifiant =
+        "recouvrement à confirmer à J0 — le périmètre ne nomme aucun module : "
+        + "aucun recouvrement avec une autre tranche n'est décidable tant que la source n'aura pas tranché.";
+
+    public ProjectionDUnChampEntierementQualificatifSansIdentifiant()
+    {
+        FixturesCreerIssues.EcrireDepotMinimal(
+            _tmpDepot.Chemin,
+            FixturesCreerIssues.PlanPreambule + FixturesCreerIssues.TacheTb014("—", RaisonSansIdentifiant));
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture champ qualificatif sans identifiant");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerIssues.UrlOrigineFictive, pousser: true);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void DevraitDistinguerUnChampQualificatifSansIdentifiantDUnChampReellementVide()
+    {
+        var environnement = new Dictionary<string, string> { ["PATH"] = Helpers.RepertoireBinSansGh(_tmpBin.Chemin) };
+        var resultat = Helpers.ExecuterOutilAvecEnvironnement(
+            "CreerIssues", ["--seulement", "TB-014"], _tmpDepot.Chemin, environnement);
+
+        Assert.Equal(0, resultat.CodeSortie);
+        string corps = FixturesCreerIssues.ExtraireCorpsIssue(resultat.Stdout, "TB-014");
+
+        Assert.DoesNotContain("**En conflit avec** : —", corps);
+        Assert.Contains("**En conflit avec** : texte sans identifiant `TB-nnn` — cf. `Tâche de plan`", corps);
+    }
+}
+
+/// <summary>
+/// `TranchesReferences.DecouperIdentifiants` — un segment qui ne commence
+/// pas par un identifiant qualifie la tranche déjà nommée par un segment
+/// précédent du même champ ; il ne doit ni y ajouter une cible, ni faire
+/// perdre le renvoi cliquable posé sur cette tranche (forme réelle de
+/// `TB-006 § En conflit avec` : `TB-009` puis une réserve).
+/// </summary>
+public class ProjectionDUnIdentifiantSuiviDUneReserve : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+
+    private const string IdentifiantPuisReserve =
+        "TB-009 — module partagé : le projet de test d'architecture; "
+        + "recouvrement à confirmer à J0 — réserve non tranchée.";
+
+    public ProjectionDUnIdentifiantSuiviDUneReserve()
+    {
+        FixturesCreerIssues.EcrireDepotMinimal(
+            _tmpDepot.Chemin,
+            FixturesCreerIssues.PlanPreambule + FixturesCreerIssues.TacheTb014("—", IdentifiantPuisReserve));
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture identifiant puis réserve");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerIssues.UrlOrigineFictive, pousser: true);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void DevraitGarderLeRenvoiCliquableQuandUnIdentifiantEstSuiviDUneReserve()
+    {
+        var environnement = new Dictionary<string, string> { ["PATH"] = Helpers.RepertoireBinSansGh(_tmpBin.Chemin) };
+        var resultat = Helpers.ExecuterOutilAvecEnvironnement(
+            "CreerIssues", ["--seulement", "TB-014"], _tmpDepot.Chemin, environnement);
+
+        Assert.Equal(0, resultat.CodeSortie);
+        string corps = FixturesCreerIssues.ExtraireCorpsIssue(resultat.Stdout, "TB-014");
+
+        Assert.Contains("**En conflit avec** : TB-009 (pas encore d'issue)", corps);
+    }
+}
+
+/// <summary>
 /// `methode-de-ticket.md §3 « Par jalon »` (forme amendée) — l'axe porte
 /// désormais l'intitulé du jalon en plus de sa clé (<c>J0 — Socle</c>), alors
 /// que le champ `Jalon` d'une fiche continue de porter la seule clé

@@ -63,12 +63,16 @@ internal static class CorpsIssue
         string tbId, string urlBlobPlan, string revisionPlan, IReadOnlyDictionary<string, string> champs,
         IReadOnlyDictionary<string, int> numeroIssueParTb, string? corpsExistant)
     {
+        string valeurDependDe = champs.GetValueOrDefault("Dépend de", "—");
+        string valeurEnConflit = champs.GetValueOrDefault("En conflit avec", "—");
         string renvoisDependDe = TranchesReferences.ConstruireRenvois(
-            TranchesReferences.DecouperIdentifiants(champs.GetValueOrDefault("Dépend de", "—"), ','),
-            numeroIssueParTb);
+            TranchesReferences.DecouperIdentifiants(valeurDependDe, ','),
+            numeroIssueParTb,
+            TranchesReferences.EstQualificatifSansIdentifiant(valeurDependDe, ','));
         string renvoisEnConflit = TranchesReferences.ConstruireRenvois(
-            TranchesReferences.DecouperIdentifiants(champs.GetValueOrDefault("En conflit avec", "—"), ';'),
-            numeroIssueParTb);
+            TranchesReferences.DecouperIdentifiants(valeurEnConflit, ';'),
+            numeroIssueParTb,
+            TranchesReferences.EstQualificatifSansIdentifiant(valeurEnConflit, ';'));
         string but = NormaliserChampTexte(champs.GetValueOrDefault("But", ""));
         string criteresAcceptation = NormaliserChampTexte(champs.GetValueOrDefault("Critères d'acceptation", ""));
 
