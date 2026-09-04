@@ -169,7 +169,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | But | Jalon | Dépend de | Tranches |
 |---|---|---|---|---|
 | EP-04 — Contrat d'autorisation en couche Application | le contrat d'autorisation applicative est déclaré, puis câblé aux contrats Application avant l'ouverture de J1 | J0-J1 | EP-02 | TB-080 |
-| EP-29 — Couture cliente et socle du store local | le contrat du service d'accès au store est déclaré et satisfait par une doublure, et le store local s'ouvre, s'indexe et se versionne | J1 | EP-02 | TB-056, TB-057 |
+| EP-29 — Couture cliente et socle du store local | un projet Angular existe et son build réussit, le contrat du service d'accès au store est déclaré et satisfait par une doublure, et le store local s'ouvre, s'indexe et se versionne | J1 | EP-02 | TB-056, TB-057, TB-104 |
 | EP-10 — Châssis applicatif transverse | indicateurs, bandeaux, accès compte et accessibilité transversale sont présents sur toute surface MJ | J1 | EP-29 | TB-058 |
 | US-UC-01 — Mode local sans compte | le MJ commence sans compte depuis l'écran d'accueil, retrouve ses données au retour — ou en est informé si elles ont disparu — et voit les fonctionnalités cloud inaccessibles sans compte | J1 | EP-10, EP-08, US-UC-02, EP-29 | TB-079, TB-101, TB-102, TB-103 |
 | US-UC-02 — Créer un espace de jeu | nommer et instancier un espace partagé, avec la propriété automatique de l'espace personnel | J1 | EP-29, EP-10 | TB-059, TB-060, TB-061, TB-062 |
@@ -402,6 +402,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Taille | M — un module, 3 renvois |
 | Critères d'acceptation | `guide-conventions-et-dod.md §2 § Non couvert par le corpus`, puce « Tranché » — `.editorconfig` à la racine de la solution et analyzers Roslyn du SDK, appliqués par le build ; `guide-conventions-et-dod.md §3 § Non couvert par le corpus`, puce « Tranché » — ESLint avec le préréglage `angular-eslint` et Prettier, appliqués par le build ; `guide-conventions-et-dod.md §2` et `§3`, puces « Version » — la version en support à long terme en cours à l'ouverture du build, règle et non numéro |
 | Code de renvoi | — |
+| Borne du critère | cette tranche se clôt sur la **moitié C#** de ses critères — `.editorconfig` et analyzers Roslyn, réellement appliqués par le build : `roadmap-entree-build.md §3.1 § Critères de sortie factuels` n'exige, pour clore J0, ni lint ni build TypeScript parmi ses quatre critères. La moitié TypeScript/Angular — ESLint `angular-eslint` et Prettier réellement **appliqués par le build** — relève de `TB-104`, où le projet Angular est construit (`roadmap-entree-build.md §3.2 § Contenu`) : cette tranche ne peut pas appliquer un lint à un projet qui n'existe qu'en J1. C'est une borne assumée, pas un manque. La règle de version LTS (`guide-conventions-et-dod.md §2` et `§3`, puces « Version ») reste en revanche une politique déclarable dès J0, indépendante de l'existence du projet — elle n'est pas amputée par cette borne. |
 
 ##### TB-012 — Arrêter la convention de commit et de branche
 
@@ -441,6 +442,21 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Préalable bloquant | cette tâche est un **préalable bloquant à l'ouverture de J1** nommé par `roadmap-entree-build.md §3.2 § Préalable bloquant rattaché`. |
 
 ### EP-29 — Couture cliente et socle du store local
+
+##### TB-104 — Échafauder le projet Angular (SPA + landing SSR/prerender)
+
+| Champ | Valeur |
+|---|---|
+| But | un projet Angular existe et son build réussit, portant les deux surfaces — SPA interactive, landing SSR/prerender — sans encore aucune logique métier |
+| Épique | EP-29 |
+| Jalon | J1 |
+| Dépend de | — |
+| Périmètre d'écriture | TROU — l'échafaudage du projet Angular ne correspond à aucune des cinq natures de module de `§2` (ni agrégat, ni fiche d'écran, ni projet .NET, ni préoccupation de couche cliente déjà nommée, ni rôle d'outillage de l'énumération fermée) ; son emplacement est marqué `[À TRANCHER — J0]` par `structure-projets.md §7`, qui ne le rattache à aucune de ses sections |
+| En conflit avec | recouvrement à confirmer à J0 — le périmètre `TROU` ne nomme aucun module (§2) : aucun recouvrement avec une autre tranche n'est décidable, ni affirmable ni infirmable, tant que `structure-projets.md §7` n'aura pas nommé l'emplacement de la couche cliente. Recouvrement à confirmer à J0. |
+| Taille | M — 0 modules, 4 renvois |
+| Critères d'acceptation | `roadmap-entree-build.md §3.2 § Contenu` — « Domaine/Application (C#), projection TS/IndexedDB et Angular minimal » ; `structure-projets.md §7 § Frontend : Angular SPA + Angular SSR/prerender` — « un seul écosystème, partagé par deux surfaces » (SPA interactive, landing SSR/prerender) ; `guide-conventions-et-dod.md §3 § Dérivable du corpus` — « Écosystème Angular unique, partagé landing + application » ; `guide-conventions-et-dod.md §3 § Non couvert par le corpus`, puce « Tranché » — ESLint avec le préréglage `angular-eslint` et Prettier, réellement appliqués par le build de ce projet (borne renvoyée par `TB-011`) |
+| Code de renvoi | — |
+| Trou balisé | l'emplacement des répertoires (couche Angular du mode local et des deux surfaces frontend) est marqué `[À TRANCHER — J0]` par `structure-projets.md §7`, dernier paragraphe — ce document ne tranche pas cette arborescence. Suivi : `decisions-en-attente.md § Groupe 1.a`. |
 
 ##### TB-056 — Déclarer le contrat du service d'accès au store local et sa doublure
 
@@ -1172,14 +1188,23 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 
 **Convention appliquée aux paliers scindés par conflit** — la formulation ci-dessus ne tranchait pas le cas d'un palier ouvrant plusieurs tranches dont certaines se conflictent entre elles : la scission produit alors un groupe de plusieurs tranches et un ou plusieurs groupes d'une seule. **Ce dépôt retient que c'est le palier, pas le groupe, qui porte la propriété d'exemption** : un palier qui ouvre au moins deux tranches simultanément voit tous ses groupes nommés `LOT-nn`, y compris un groupe réduit à une seule tranche par un conflit — parce que ce groupe porte alors une information que le seul champ `Dépend de` de la tranche ne porte pas : qu'elle ouvre au même palier qu'un autre lot, dont un conflit l'exclut spécifiquement. Seul un palier qui, dans son ensemble, n'ouvre qu'**une** tranche reste hors `LOT-nn`, conformément à la justification donnée (« n'ajoute rien à ce que le champ `Dépend de` de cette tranche porte déjà »).
 
+**L'appartenance à un lot se calcule depuis les dépendances et les périmètres déclarés ; elle ne présume ni du jalon, ni de la Definition of ready, ni — sur un périmètre `TROU` — d'une disjonction prouvée. Trois choses distinctes**, et `TB-104` est la première tranche du plan à les séparer toutes les trois.
+
+**Le jalon** : un lot peut mélanger J0 et J1 si le graphe le permet — c'est le cas de `LOT-01` depuis l'ajout de `TB-104` (J1) aux côtés de `TB-001`, `TB-007`, `TB-012` (J0) ; aucune phrase de cette section n'exige l'homogénéité de jalon.
+
+**La Definition of ready** (`methode-de-ticket.md §2`) : une tranche `TROU` peut ouvrir dans le même lot que des tranches prêtes sans que cela referme son trou — à la différence de `HORS MAILLE`, qui « ne signale aucun manque » et n'empêche « ni d'être prête, ni d'être close » (`methode-de-ticket.md §1 § À distinguer du marqueur HORS MAILLE`), le marqueur `TROU` maintient le ticket de `TB-104` à l'état `Ouvert, non prêt` (`methode-de-ticket.md §1 § Ce qu'un ticket fait du marqueur TROU`) tant que J0 n'a pas nommé l'emplacement de la couche Angular.
+
+**La disjonction** : `§2` n'accorde l'absence de conflit d'écriture « par construction » qu'au seul marqueur `HORS MAILLE` — `TB-001`, `TB-007` et `TB-012` en bénéficient. `TB-104` non : son périmètre `TROU` ne nomme aucun module, donc aucun recouvrement avec une autre tranche n'est décidable, et `§1 (c)` l'interdit d'affirmer sans preuve. Sa présence dans `LOT-01` repose uniquement sur l'absence de dépendance déclarée (`Dépend de : —`), jamais sur une disjonction prouvée — voir la colonne `Modules touchés` de ce lot, qui le dit explicitement.
+
 ##### LOT-01
 
 | Champ | Valeur |
 |---|---|
 | Ouvrable après | — (point de départ) |
-| Tranches | TB-001, TB-007, TB-012 |
-| Modules touchés, deux à deux disjoints | TB-001 : HORS MAILLE ; TB-007 : HORS MAILLE ; TB-012 : HORS MAILLE |
-| Ferme quand | TB-001, TB-007, TB-012 sont closes |
+| Tranches | TB-001, TB-007, TB-012, TB-104 |
+| Modules touchés, deux à deux disjoints | TB-001 : HORS MAILLE ; TB-007 : HORS MAILLE ; TB-012 : HORS MAILLE — ces trois sont disjointes par construction (§2). TB-104 : TROU — recouvrement non décidable, ni affirmé ni infirmé (§1 (c)) ; sa présence ici repose sur l'absence de dépendance déclarée, pas sur une disjonction prouvée. |
+| Ferme quand | TB-001, TB-007, TB-012, TB-104 sont closes |
+| Note | `TB-104` est en J1, les trois autres en J0 — ce lot mélange deux jalons, ce que cette section permet (voir chapeau). Son ticket reste `Ouvert, non prêt` indépendamment de sa présence ici : l'appartenance à un lot n'est ni une readiness, ni — pour cette tranche — une disjonction prouvée. |
 
 ##### LOT-02
 
