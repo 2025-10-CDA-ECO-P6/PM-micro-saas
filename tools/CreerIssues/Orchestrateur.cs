@@ -23,6 +23,35 @@ internal static class Orchestrateur
         public List<string> SegmentsResiduels { get; set; } = new();
     }
 
+    private enum DecisionRenommage { Creer, Renommer, Ambigu }
+
+    /// <summary>
+    /// Décide, pour une valeur cible de l'axe jalon (libellé ou jalon
+    /// GitHub), si un objet déjà existant sous un AUTRE nom doit être
+    /// renommé plutôt que recréé — seul cet axe porte désormais un intitulé
+    /// en plus de sa clé (« J0 — Socle »), quand l'existant GitHub porte
+    /// encore l'ancienne forme (« J0 »). Ambigu si plusieurs objets existants
+    /// partagent la même clé de jalon que la cible : ni un renommage choisi
+    /// au hasard, ni une création qui laisserait un doublon — l'appelant
+    /// échoue alors explicitement plutôt que de deviner.
+    /// </summary>
+    private static (DecisionRenommage Decision, string? Ancien) ResoudreCandidatRenommageJalon(
+        string cible, IEnumerable<string> existants)
+    {
+        string? cleCible = ResolutionMaille.ClePrefixeJalon(cible);
+        if (cleCible is null)
+        {
+            return (DecisionRenommage.Creer, null);
+        }
+        var candidats = existants.Where(e => e != cible && ResolutionMaille.ClePrefixeJalon(e) == cleCible).ToList();
+        return candidats.Count switch
+        {
+            0 => (DecisionRenommage.Creer, null),
+            1 => (DecisionRenommage.Renommer, candidats[0]),
+            _ => (DecisionRenommage.Ambigu, null),
+        };
+    }
+
     /// <summary>
     /// Exécute les quatre opérations. Renvoie vrai si l'opérateur doit agir
     /// sur quelque chose que cette exécution a rapporté (code de sortie 1
@@ -207,6 +236,49 @@ internal static class Orchestrateur
                 compteLibelles.Existant($"{nomLibelle} ({axe})");
                 continue;
             }
+
+            // Seul l'axe jalon porte désormais un intitulé en plus de sa clé —
+            // un libellé de nature de tranche ou de nature, lui, ne se renomme
+            // jamais ici : sa valeur de taxonomie EST son nom GitHub, sans
+            // détour par une clé distincte.
+            var (decision, ancien) = axe == "jalon"
+                ? ResoudreCandidatRenommageJalon(nomLibelle, libellesExistants)
+                : (DecisionRenommage.Creer, null);
+
+            if (decision == DecisionRenommage.Ambigu)
+            {
+                compteLibelles.Echec($"{nomLibelle} ({axe})",
+                    "plusieurs libellés existants partagent la même clé de jalon — renommage non résolu automatiquement");
+                continue;
+            }
+
+            if (decision == DecisionRenommage.Renommer)
+            {
+                if (!args.Appliquer)
+                {
+                    compteLibelles.Renomme(ancien!, $"{nomLibelle} ({axe}) [à renommer]");
+                    continue;
+                }
+                try
+                {
+                    // « new_name » — pas « name » — est le champ qui renomme
+                    // un libellé déjà existant (`PATCH .../labels/{name}` de
+                    // l'API REST GitHub) : la ressource reste la même, seul
+                    // son nom change, ce qui préserve ses rattachements.
+                    GhCli.ApiModifier(
+                        $"repos/{owner}/{repo}/labels/{Uri.EscapeDataString(ancien!)}",
+                        new Dictionary<string, string> { ["new_name"] = nomLibelle });
+                    libellesExistants.Remove(ancien!);
+                    libellesExistants.Add(nomLibelle);
+                    compteLibelles.Renomme(ancien!, $"{nomLibelle} ({axe})");
+                }
+                catch (ErreurCorpusException erreur)
+                {
+                    compteLibelles.Echec($"{nomLibelle} ({axe})", erreur.Message);
+                }
+                continue;
+            }
+
             if (!args.Appliquer)
             {
                 compteLibelles.Creation($"{nomLibelle} ({axe}) [à créer]");
@@ -215,6 +287,7 @@ internal static class Orchestrateur
             try
             {
                 GhCli.ApiCreer($"repos/{owner}/{repo}/labels", new Dictionary<string, string> { ["name"] = nomLibelle });
+                libellesExistants.Add(nomLibelle);
                 compteLibelles.Creation($"{nomLibelle} ({axe})");
             }
             catch (ErreurCorpusException erreur)
@@ -243,6 +316,44 @@ internal static class Orchestrateur
                 compteJalons.Existant(nomJalon);
                 continue;
             }
+
+            var (decision, ancien) = ResoudreCandidatRenommageJalon(nomJalon, jalonsExistants.Keys);
+
+            if (decision == DecisionRenommage.Ambigu)
+            {
+                compteJalons.Echec(nomJalon,
+                    "plusieurs jalons existants partagent la même clé de jalon — renommage non résolu automatiquement");
+                continue;
+            }
+
+            if (decision == DecisionRenommage.Renommer)
+            {
+                int numeroExistant = jalonsExistants[ancien!];
+                if (!args.Appliquer)
+                {
+                    compteJalons.Renomme(ancien!, $"{nomJalon} [à renommer]");
+                    continue;
+                }
+                try
+                {
+                    // Adressé par « milestone_number », jamais par titre
+                    // (`PATCH .../milestones/{milestone_number}` de l'API REST
+                    // GitHub) : la ressource reste la même, seul son titre
+                    // change, ce qui préserve ses rattachements.
+                    GhCli.ApiModifier(
+                        $"repos/{owner}/{repo}/milestones/{numeroExistant}",
+                        new Dictionary<string, string> { ["title"] = nomJalon });
+                    numeroJalon.Remove(ancien!);
+                    numeroJalon[nomJalon] = numeroExistant;
+                    compteJalons.Renomme(ancien!, nomJalon);
+                }
+                catch (ErreurCorpusException erreur)
+                {
+                    compteJalons.Echec(nomJalon, erreur.Message);
+                }
+                continue;
+            }
+
             if (!args.Appliquer)
             {
                 compteJalons.Creation($"{nomJalon} [à créer]");

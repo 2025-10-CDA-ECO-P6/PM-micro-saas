@@ -10,6 +10,7 @@ internal sealed class CompteRendu
     private readonly List<string> _crees = new();
     private readonly List<string> _existants = new();
     private readonly List<string> _misAJour = new();
+    private readonly List<(string Ancien, string Nouveau)> _renommes = new();
     private readonly List<(string Libelle, string Raison)> _echecs = new();
 
     public int Echecs => _echecs.Count;
@@ -18,13 +19,20 @@ internal sealed class CompteRendu
     public void Existant(string libelle) => _existants.Add(libelle);
 
     // Distinct de Creation (rien n'est ouvert sur GitHub) et d'Existant (une
-    // écriture a bien lieu, ou aurait lieu sous --appliquer) : seule
-    // l'opération 3 (issues) appelle cette méthode, quand le corps engendré
-    // d'une issue déjà existante diverge de son corps actuel. N'est affiché
+    // écriture a bien lieu, ou aurait lieu sous --appliquer) : appelée quand
+    // une ressource déjà existante est modifiée en place plutôt que créée —
+    // le corps engendré d'une issue qui diverge de son corps actuel (opération
+    // 3), ou tout autre appelant à venir avec le même besoin. N'est affichée
     // que si au moins un appelant s'en sert (même convention que les échecs
-    // ci-dessous), pour ne rien changer à l'affichage des libellés et des
-    // jalons, qui ne l'utilisent jamais.
+    // ci-dessous), pour ne rien changer à l'affichage d'une opération qui ne
+    // l'utilise jamais.
     public void MiseAJour(string libelle) => _misAJour.Add(libelle);
+
+    // Distinct de MiseAJour : un renommage cible une ressource retrouvée sous
+    // un AUTRE nom que celui désormais attendu (clé de fiche/taxonomie qui ne
+    // coïncide plus avec le nom posé sur l'objet GitHub), jamais une ressource
+    // déjà nommée correctement dont seul le contenu change.
+    public void Renomme(string ancien, string nouveau) => _renommes.Add((ancien, nouveau));
     public void Echec(string libelle, string raison) => _echecs.Add((libelle, raison));
 
     public void Afficher(TextWriter sortie, string titre)
@@ -38,6 +46,11 @@ internal sealed class CompteRendu
         {
             sortie.WriteLine($"  mis à jour  : {_misAJour.Count}");
             foreach (var e in _misAJour) sortie.WriteLine($"    ~ {e}");
+        }
+        if (_renommes.Count > 0)
+        {
+            sortie.WriteLine($"  renommés    : {_renommes.Count}");
+            foreach (var (ancien, nouveau) in _renommes) sortie.WriteLine($"    ~ {ancien} → {nouveau}");
         }
         if (_echecs.Count > 0)
         {

@@ -67,6 +67,33 @@ internal static class FixturesCreerIssues
     public const string DomaineMd =
         "# Personnage (domaine)\n\n## Agrégats\n\n### Personnage\n\nRacine d'agrégat, décrit un personnage joueur.\n";
 
+    /// <summary>
+    /// Variante de <see cref="MethodeMd"/> dont l'axe « Par jalon » porte
+    /// l'intitulé du jalon en plus de sa clé (forme amendée de
+    /// `methode-de-ticket.md §3`) — un seul jalon, <c>J0 — Socle</c> : la clé
+    /// de fiche (`| Jalon | J0 |`) ne coïncide alors plus avec le nom attendu
+    /// côté GitHub, ce que les tests de renommage et de résolution de clé
+    /// ci-dessous exercent.
+    /// </summary>
+    public const string MethodeMdAvecIntituleDeJalon =
+        "# Méthode de ticket (fixture de test)\n\n" +
+        "## §3 Taxonomie de libellés\n\n" +
+        "**Par jalon**\n\n" +
+        "| Valeur | Note |\n|---|---|\n" +
+        "| J0 — Socle | Fondations |\n\n" +
+        "**Par nature de tranche**\n\n" +
+        "| Valeur | Note |\n|---|---|\n" +
+        "| Comportement | Agrégat de domaine |\n" +
+        "| Couche cliente | Module client |\n" +
+        "| Outillage | Projet d'outillage |\n" +
+        "| Socle | Module transverse |\n" +
+        "| Surface | Fiche d'écran |\n" +
+        "| Hors maille | Aucun code produit |\n\n" +
+        "**Par nature de vérification**\n\n" +
+        "| Valeur | Note |\n|---|---|\n" +
+        "| Fonctionnel | Comportement observable |\n\n" +
+        "**Interdiction nommée** : aucun axe de priorité n'est posé sur les issues (fixture de test).\n";
+
     public const string UrlOrigineFictive = "git@github.com:exemple-org/exemple-depot.git";
 
     // Copie littérale de CreerIssues.CorpsIssue.{MarqueurSeparation,ZoneManuelleParDefaut}
@@ -79,10 +106,15 @@ internal static class FixturesCreerIssues
         + "sous cette ligne : écrit à la main ──";
     public const string ZoneManuelleParDefaut = "\n\n## Pris par\n\n## Notes d'exécution\n\n## Écart constaté\n";
 
-    public static void EcrireDepotMinimal(string depot, string planMd)
+    /// <summary>
+    /// <paramref name="methodeMd"/> par défaut à <see cref="MethodeMd"/> — les
+    /// appelants existants, qui ne le passent pas, restent inchangés au
+    /// caractère près (même motif que la surcharge de <see cref="TacheTb014(string, string)"/>).
+    /// </summary>
+    public static void EcrireDepotMinimal(string depot, string planMd, string? methodeMd = null)
     {
         Helpers.InitialiserDepotGit(depot);
-        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/methode-de-ticket.md"), MethodeMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/methode-de-ticket.md"), methodeMd ?? MethodeMd);
         Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/plan-de-travail.md"), planMd);
         Helpers.Ecrire(Path.Combine(depot, "docs/conception/domain/personnage.md"), DomaineMd);
     }
@@ -952,5 +984,243 @@ public class ProjectionDuMarqueurTrouSurLesCriteresDAcceptation : IDisposable
         string corps = FixturesCreerIssues.ExtraireCorpsIssue(resultat.Stdout, "TB-014");
 
         Assert.Contains("**Critères d'acceptation** : TROU", corps);
+    }
+}
+
+/// <summary>
+/// `methode-de-ticket.md §3 « Par jalon »` (forme amendée) — l'axe porte
+/// désormais l'intitulé du jalon en plus de sa clé (<c>J0 — Socle</c>), alors
+/// que le champ `Jalon` d'une fiche continue de porter la seule clé
+/// (<c>J0</c>). Le libellé posé sur une issue à créer doit porter la valeur
+/// LUE DANS LA TAXONOMIE, jamais la clé brute recopiée depuis la fiche — la
+/// clé ne relie les deux que pour la résolution, elle n'est jamais elle-même
+/// le nom posé sur GitHub.
+/// </summary>
+public class ResolutionDeLaCleDeJalonVersLIntituleDeTaxonomie : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+
+    private const string TacheAvecCleDeJalonBrute =
+        "##### TB-014 — Création d'un personnage joueur\n\n" +
+        "| Champ | Valeur |\n|---|---|\n" +
+        "| Jalon | J0 |\n" +
+        "| Périmètre d'écriture | Personnage |\n" +
+        "| Dépend de | — |\n" +
+        "| En conflit avec | — |\n";
+
+    public ResolutionDeLaCleDeJalonVersLIntituleDeTaxonomie()
+    {
+        FixturesCreerIssues.EcrireDepotMinimal(
+            _tmpDepot.Chemin,
+            FixturesCreerIssues.PlanPreambule + TacheAvecCleDeJalonBrute,
+            FixturesCreerIssues.MethodeMdAvecIntituleDeJalon);
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture clé de jalon vers intitulé de taxonomie");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerIssues.UrlOrigineFictive, pousser: true);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void DevraitPoserLIntituleDeTaxonomieCommeLibelleDeJalonPlutotQueLaCleBruteDeLaFiche()
+    {
+        var environnement = new Dictionary<string, string> { ["PATH"] = Helpers.RepertoireBinSansGh(_tmpBin.Chemin) };
+        var resultat = Helpers.ExecuterOutilAvecEnvironnement(
+            "CreerIssues", ["--seulement", "TB-014"], _tmpDepot.Chemin, environnement);
+
+        Assert.Equal(0, resultat.CodeSortie);
+        // Rendu exact mesuré sur le binaire compilé : les couches triées
+        // (« Comportement », déduite du périmètre « Personnage ») puis le
+        // jalon résolu, ajouté après le tri — jamais la clé brute « J0 ».
+        Assert.Contains(
+            "TB-014 — Création d'un personnage joueur [à créer — libellés : ['Comportement', 'J0 — Socle']]",
+            resultat.Stdout);
+    }
+}
+
+/// <summary>
+/// Le libellé et le jalon (milestone) existants sous l'ANCIENNE forme
+/// (« J0 ») doivent être RENOMMÉS vers la forme amendée de la taxonomie
+/// (« J0 — Socle ») plutôt que dupliqués sous un nom neuf en laissant
+/// l'ancien orphelin — seule une mise à jour en place (`PATCH` adressé à la
+/// ressource déjà existante : le NOM courant pour un libellé, le NUMÉRO
+/// immuable pour un jalon) préserve les rattachements existants ; une
+/// création (`POST`) laisserait les objets déjà attachés sous l'ancien nom
+/// orphelins. Preuve prise sur le JOURNAL du faux `gh` (jamais recalculée) :
+/// seul lui voit ce qui part réellement vers le service. Couvre aussi
+/// l'idempotence : une seconde passe, l'existant GitHub simulé portant
+/// désormais la forme renommée, n'émet plus aucun appel d'écriture — l'outil
+/// retrouve ce qu'il a lui-même renommé au passage précédent, jamais par un
+/// identifiant mémorisé localement, mais en relisant l'existant GitHub à
+/// chaque exécution.
+/// </summary>
+public class RenommageDUnLibelleEtDUnJalonPreserveLesRattachements : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+    private readonly string _cheminBin;
+
+    public RenommageDUnLibelleEtDUnJalonPreserveLesRattachements()
+    {
+        // Aucune tâche dans cette fixture : seul le comportement des
+        // opérations 1 (libellés) et 2 (jalons) est en cause ici, isolé de
+        // toute création d'issue.
+        FixturesCreerIssues.EcrireDepotMinimal(
+            _tmpDepot.Chemin,
+            FixturesCreerIssues.PlanPreambule,
+            FixturesCreerIssues.MethodeMdAvecIntituleDeJalon);
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture renommage jalon");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerIssues.UrlOrigineFictive, pousser: true);
+
+        _cheminBin = Helpers.RepertoireBinAvecFauxGh(_tmpBin.Chemin);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    private static string ReponseLibellesFormeAncienne() => JsonSerializer.Serialize(new object[]
+    {
+        new { name = "J0" },
+        new { name = "Comportement" }, new { name = "Couche cliente" }, new { name = "Outillage" },
+        new { name = "Socle" }, new { name = "Surface" }, new { name = "Hors maille" }, new { name = "Fonctionnel" },
+    });
+
+    private static string ReponseJalonsFormeAncienne() => JsonSerializer.Serialize(new object[]
+    {
+        new { title = "J0", number = 5 },
+    });
+
+    private static string ReponseLibellesFormeRenommee() => JsonSerializer.Serialize(new object[]
+    {
+        new { name = "J0 — Socle" },
+        new { name = "Comportement" }, new { name = "Couche cliente" }, new { name = "Outillage" },
+        new { name = "Socle" }, new { name = "Surface" }, new { name = "Hors maille" }, new { name = "Fonctionnel" },
+    });
+
+    private static string ReponseJalonsFormeRenommee() => JsonSerializer.Serialize(new object[]
+    {
+        new { title = "J0 — Socle", number = 5 },
+    });
+
+    /// <summary>
+    /// Rang d'appel attendu quand un renommage a bien lieu : (0) auth, (1)
+    /// liste des libellés, (2) réponse du `PATCH` de libellé — jamais décodée,
+    /// mais son rang est bien consommé — (3) liste des jalons, (4) réponse du
+    /// `PATCH` de jalon — même remarque —, (5) liste des issues, (6) repli.
+    /// Un appel d'écriture consomme un rang au même titre qu'une lecture :
+    /// omettre ces deux emplacements décalerait la liste des jalons sur la
+    /// réponse des issues, et la liste des issues sur le repli — mesuré en
+    /// construisant ce test (la première tentative, sans ces deux
+    /// emplacements, désynchronisait tout le reste de la séquence).
+    /// </summary>
+    private string EcrireReponsesAvantRenommage()
+    {
+        string chemin = Path.Combine(_tmpBin.Chemin, $"reponses-avant-{Guid.NewGuid():N}.json");
+        Helpers.Ecrire(chemin, JsonSerializer.Serialize(new[]
+        {
+            "{}",
+            ReponseLibellesFormeAncienne(),
+            "{}",
+            ReponseJalonsFormeAncienne(),
+            "{}",
+            "[]",
+            "{}",
+        }));
+        return chemin;
+    }
+
+    /// <summary>
+    /// Rang d'appel attendu quand aucun appel d'écriture n'a lieu (idempotence
+    /// après renommage) : (0) auth, (1) liste des libellés, (2) liste des
+    /// jalons, (3) liste des issues, (4) repli — deux rangs de moins que
+    /// <see cref="EcrireReponsesAvantRenommage"/>, faute des deux `PATCH` qui
+    /// n'ont plus lieu d'être émis.
+    /// </summary>
+    private string EcrireReponsesApresRenommage()
+    {
+        string chemin = Path.Combine(_tmpBin.Chemin, $"reponses-apres-{Guid.NewGuid():N}.json");
+        Helpers.Ecrire(chemin, JsonSerializer.Serialize(new[]
+        {
+            "{}",
+            ReponseLibellesFormeRenommee(),
+            ReponseJalonsFormeRenommee(),
+            "[]",
+            "{}",
+        }));
+        return chemin;
+    }
+
+    private static List<string[]> LireJournal(string chemin) =>
+        File.Exists(chemin)
+            ? File.ReadAllLines(chemin)
+                .Where(l => l.Trim().Length > 0)
+                .Select(l => JsonDocument.Parse(l).RootElement.GetProperty("args")
+                    .EnumerateArray().Select(e => e.GetString() ?? "").ToArray())
+                .ToList()
+            : new List<string[]>();
+
+    [Fact]
+    public void DevraitRenommerPlutotQueCreerEtNePlusRienEcrireALaPasseSuivante()
+    {
+        var environnementGarde = new Dictionary<string, string> { ["PATH"] = _cheminBin };
+        var garde = Helpers.ExecuterOutilAvecEnvironnement("GardeIdentiteGh", [], _tmpDepot.Chemin, environnementGarde);
+        Assert.Equal(0, garde.CodeSortie);
+
+        // ── Première passe : le libellé et le jalon existent côté GitHub
+        // simulé sous l'ancienne forme (« J0 ») — un renommage doit avoir
+        // lieu pour les deux, jamais une création.
+        string journal1 = Path.Combine(_tmpBin.Chemin, "journal-renommage-1.jsonl");
+        var environnement1 = new Dictionary<string, string>
+        {
+            ["PATH"] = _cheminBin,
+            ["JOURNAL_GH"] = journal1,
+            ["FAUX_GH_REPONSES"] = EcrireReponsesAvantRenommage(),
+        };
+        var passe1 = Helpers.ExecuterOutilAvecEnvironnement("CreerIssues", ["--appliquer"], _tmpDepot.Chemin, environnement1);
+        Assert.Equal(0, passe1.CodeSortie);
+        Assert.Contains("~ J0 → J0 — Socle (jalon)", passe1.Stdout);
+        Assert.Contains("~ J0 → J0 — Socle", passe1.Stdout);
+
+        var invocations1 = LireJournal(journal1);
+
+        // Preuve prise sur le journal, jamais recalculée : les deux appels
+        // d'écriture sont des PATCH adressés à la ressource déjà existante
+        // (nom courant pour le libellé, numéro immuable pour le jalon), avec
+        // la nouvelle valeur dans le corps — jamais un POST, qui créerait un
+        // doublon et laisserait l'ancien objet, et ses rattachements, orphelin.
+        Assert.Contains(invocations1, a => a.SequenceEqual(new[]
+        {
+            "api", "-X", "PATCH", "repos/exemple-org/exemple-depot/labels/J0", "-f", "new_name=J0 — Socle",
+        }));
+        Assert.Contains(invocations1, a => a.SequenceEqual(new[]
+        {
+            "api", "-X", "PATCH", "repos/exemple-org/exemple-depot/milestones/5", "-f", "title=J0 — Socle",
+        }));
+        Assert.DoesNotContain(invocations1, a => a.Contains("POST"));
+
+        // ── Seconde passe : l'existant GitHub simulé porte désormais la
+        // forme renommée — aucun appel d'écriture ne doit plus être émis, la
+        // preuve que l'outil retrouve ce qu'il a lui-même renommé.
+        string journal2 = Path.Combine(_tmpBin.Chemin, "journal-renommage-2.jsonl");
+        var environnement2 = new Dictionary<string, string>
+        {
+            ["PATH"] = _cheminBin,
+            ["JOURNAL_GH"] = journal2,
+            ["FAUX_GH_REPONSES"] = EcrireReponsesApresRenommage(),
+        };
+        var passe2 = Helpers.ExecuterOutilAvecEnvironnement("CreerIssues", ["--appliquer"], _tmpDepot.Chemin, environnement2);
+        Assert.Equal(0, passe2.CodeSortie);
+        Assert.DoesNotContain("renommés", passe2.Stdout);
+
+        var invocations2 = LireJournal(journal2);
+        Assert.DoesNotContain(invocations2, a => a.Contains("PATCH"));
+        Assert.DoesNotContain(invocations2, a => a.Contains("POST"));
     }
 }

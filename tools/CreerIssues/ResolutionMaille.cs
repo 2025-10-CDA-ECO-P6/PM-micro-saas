@@ -26,13 +26,34 @@ internal static class ResolutionMaille
     // nature retenu par le premier segment appartenant à plusieurs natures.
     private static readonly string[] OrdreNatures = { "Comportement", "Couche cliente", "Outillage", "Socle" };
 
+    /// <summary>
+    /// Clé de jalon (« J0 » à « J3 ») en tête d'une valeur — celle d'un champ
+    /// de fiche (`| Jalon | J0 |`) comme celle d'une valeur de taxonomie
+    /// (`J0 — Socle`) : les deux ne coïncident pas forcément au caractère
+    /// près, seule cette clé les relie. <see langword="null"/> si la valeur
+    /// ne commence pas par une clé de jalon suivie d'une frontière de mot.
+    /// </summary>
+    public static string? ClePrefixeJalon(string valeur)
+    {
+        string strippe = TexteUnicode.StripPython(valeur);
+        var m = MotifJalon.Match(strippe);
+        return m.Success && LimiteMotPython.FrontiereApres(strippe, m.Length) ? m.Groups[1].Value : null;
+    }
+
+    /// <summary>
+    /// Résout la valeur de taxonomie (potentiellement porteuse d'un intitulé,
+    /// ex. « J0 — Socle ») dont la clé de jalon correspond à celle du champ de
+    /// fiche — jamais la clé elle-même, qui ne coïncide plus nécessairement
+    /// avec le nom posé sur l'objet GitHub depuis que la taxonomie porte
+    /// l'intitulé du jalon en plus de sa clé.
+    /// </summary>
     public static (string? Jalon, string? Anomalie) ResoudreJalon(string valeurChamp, IReadOnlyCollection<string> jalonsValides)
     {
-        string strippe = TexteUnicode.StripPython(valeurChamp);
-        var m = MotifJalon.Match(strippe);
-        if (m.Success && LimiteMotPython.FrontiereApres(strippe, m.Length) && jalonsValides.Contains(m.Groups[1].Value))
+        string? cle = ClePrefixeJalon(valeurChamp);
+        string? valeur = cle is not null ? jalonsValides.FirstOrDefault(v => ClePrefixeJalon(v) == cle) : null;
+        if (valeur is not null)
         {
-            return (m.Groups[1].Value, null);
+            return (valeur, null);
         }
         return (null, $"valeur de jalon non résolue dans la taxonomie : {ReprPython.Chaine(valeurChamp)}");
     }
