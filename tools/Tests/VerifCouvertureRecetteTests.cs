@@ -28,13 +28,17 @@ internal static class FixturesCouvertureRecette
 
 /// <summary>
 /// Golden master — décomptes mesurés sur le corpus réel au commit de contrôle
-/// <c>1aecfcf</c> : 257 cas réels, 2 retirés (`CR-UC01-04`, `CR-UC02-11` —
-/// marqués morts dans leur propre colonne Cas), 120 cités, 85 absents de jalon
+/// <c>f04b9da</c> : 257 cas réels, 2 retirés (`CR-UC01-04`, `CR-UC02-11` —
+/// marqués morts dans leur propre colonne Cas), 134 cités, 85 absents de jalon
 /// ultérieur (UC-08/09/10/11/12, intégralement J2/J3), 16 hors MVP (UC-13 :
-/// 10 cas, UC-15 : 6 cas), 18 de synthèse (les dix-huit `CR-TRANS-*`), 16 trous
-/// réels (18 moins les 2 retirés, qui ne pèsent plus dans ce compteur), et les
-/// 2 mêmes cas retrouvés indépendamment en source déclarée retirée (§13) —
-/// les deux listes se recoupent, par construction (mandat opérateur).
+/// 10 cas, UC-15 : 6 cas), 18 de synthèse (les dix-huit `CR-TRANS-*`), et les
+/// 2 mêmes cas retrouvés indépendamment en source déclarée retirée (§13) — les
+/// deux listes se recoupent, par construction (mandat opérateur). Les 2 trous
+/// résiduels, `CR-UC01-07` et `CR-UC01-20`, ne se ferment par aucune citation
+/// de tranche : leur geste se clôt par la propriété de la tranche `TB-094`,
+/// une clôture que cet outil — qui ne compte que des citations — ne peut pas
+/// voir ; ce ne sont donc pas deux défauts du plan mais une limite connue de
+/// l'instrument.
 /// </summary>
 public class SurCorpusReelCouvertureRecette
 {
@@ -47,11 +51,16 @@ public class SurCorpusReelCouvertureRecette
         Assert.Contains("RETIRÉ (le cahier le marque mort, ne pèse pas)  : 2", stdout);
         Assert.Contains("[RETIRÉ] CR-UC01-04 ->", stdout);
         Assert.Contains("[RETIRÉ] CR-UC02-11 ->", stdout);
-        Assert.Contains("CITÉ                                           : 120", stdout);
+        Assert.Contains("CITÉ                                           : 134", stdout);
         Assert.Contains("ABSENT — JALON ULTÉRIEUR (J2/J3, légitime)     : 85", stdout);
         Assert.Contains("ABSENT — HORS MVP (use case hors §4, légitime) : 16", stdout);
         Assert.Contains("SYNTHÈSE (second niveau, cite d'autres CR-)    : 18", stdout);
-        Assert.Contains("ABSENT — TROU (ni cité, ni légitime)           : 16", stdout);
+        Assert.Contains("ABSENT — TROU (ni cité, ni légitime)           : 2", stdout);
+        // Les deux trous résiduels sont nommément identifiés : ils se ferment
+        // par la propriété de TB-094, hors de portée d'un outil qui ne compte
+        // que des citations — pas deux défauts du plan à réparer.
+        Assert.Contains("[TROU] CR-UC01-07", stdout);
+        Assert.Contains("[TROU] CR-UC01-20", stdout);
         Assert.DoesNotContain("[TROU] CR-UC01-04", stdout);
         Assert.DoesNotContain("[TROU] CR-UC02-11", stdout);
         Assert.Contains("sources déclarées retirées : 2", stdout);
@@ -62,9 +71,9 @@ public class SurCorpusReelCouvertureRecette
     [Fact]
     public void DevraitTerminerEnCodeDeSortieUnTantQueLesTrousReelsSubsistent()
     {
-        // Contrat arbitré : au moins un ABSENT — TROU ou une source retirée
-        // suffit à rendre le code de sortie 1 — c'est le cas aujourd'hui du
-        // corpus réel (18 trous, 2 sources retirées).
+        // Contrat arbitré, intemporel : au moins un ABSENT — TROU ou une
+        // source retirée suffit à rendre le code de sortie 1, quel que soit
+        // le nombre de trous restants sur le corpus réel.
         var resultat = Helpers.ExecuterOutil("VerifCouvertureRecette", [Helpers.RacineDepot]);
         Assert.Equal(1, resultat.CodeSortie);
     }
@@ -477,8 +486,8 @@ public class SourceDeclareeRetireeDetectee : IDisposable
 /// par exemple) reste classé ABSENT — TROU — ni deviné ni requalifié — mais
 /// l'outil affiche sa Source pour que l'adjudication humaine se fasse en une
 /// passe, et porte une mention explicite de cette limite plutôt que de laisser
-/// croire que les 18 trous rendus sont 18 défauts certains. Ce test ne
-/// vérifie donc pas un classement : il vérifie que l'information nécessaire à
+/// croire que chaque trou rendu est un défaut certain. Ce test ne vérifie donc
+/// pas un classement : il vérifie que l'information nécessaire à
 /// l'adjudication est bien rendue visible.
 ///
 /// Validé par injection de défaut puis révocation : l'affichage de la Source

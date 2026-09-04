@@ -49,11 +49,11 @@ internal static class FixturesMailleAgregat
 }
 
 /// <summary>
-/// Golden master — sortie nominale mesurée sur le plan de travail réel :
-/// 52 tâches, 47 périmètres entièrement résolus, 4 HORS MAILLE exclus,
-/// 0 TROU, 1 en attente de J0, 0 item non résolu, 0 écart de conflit — plus
-/// les deux compteurs neufs de la partie B, mesurés également à zéro sur le
-/// plan réel.
+/// Golden master — sortie nominale mesurée sur le plan de travail réel au
+/// commit de contrôle <c>f04b9da</c> : 61 tâches, 55 périmètres entièrement
+/// résolus, 4 HORS MAILLE exclus, 1 TROU (non nommable), 1 en attente de J0,
+/// 0 item non résolu, 0 écart de conflit — plus les deux compteurs neufs de
+/// la partie B, mesurés également à zéro sur le plan réel.
 /// </summary>
 public class SurPlanReel
 {
@@ -62,10 +62,10 @@ public class SurPlanReel
     {
         var resultat = Helpers.ExecuterOutil("VerifMailleAgregat", [Helpers.RacineDepot]);
         string stdout = resultat.Stdout;
-        Assert.Contains("tâches du plan                        : 52", stdout);
-        Assert.Contains("périmètre entièrement résolu        : 47", stdout);
+        Assert.Contains("tâches du plan                        : 61", stdout);
+        Assert.Contains("périmètre entièrement résolu        : 55", stdout);
         Assert.Contains("périmètre HORS MAILLE (exclu)       : 4", stdout);
-        Assert.Contains("périmètre TROU (non nommable)       : 0", stdout);
+        Assert.Contains("périmètre TROU (non nommable)       : 1", stdout);
         Assert.Contains("périmètre en attente de J0 (rôle)   : 1", stdout);
         Assert.Contains("item ne se résolvant pas la maille  : 0", stdout);
         Assert.Contains("écarts entre `En conflit avec` déclaré et l'intersection recalculée : 0", stdout);
