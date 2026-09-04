@@ -162,6 +162,23 @@ internal static class FixturesCreerIssues
         "| Périmètre d'écriture | Personnage |\n" +
         $"| Dépend de | {dependDe} |\n" +
         $"| En conflit avec | {enConflitAvec} |\n";
+
+    /// <summary>
+    /// Variante de <see cref="TacheTb014(string, string)"/> portant en plus
+    /// les champs `But` et `Critères d'acceptation` — <c>but</c> et
+    /// <c>criteresAcceptation</c> valent <c>null</c> par défaut, ce qui omet
+    /// la ligne de tableau correspondante (champ absent de la fiche, pas
+    /// simplement vide) ; les appels existants à la surcharge à deux
+    /// arguments restent inchangés au caractère près.
+    /// </summary>
+    public static string TacheTb014(
+        string dependDe, string enConflitAvec, string? but = null, string? criteresAcceptation = null)
+    {
+        string tache = TacheTb014(dependDe, enConflitAvec);
+        if (but is not null) tache += $"| But | {but} |\n";
+        if (criteresAcceptation is not null) tache += $"| Critères d'acceptation | {criteresAcceptation} |\n";
+        return tache;
+    }
 }
 
 /// <summary>
@@ -795,5 +812,145 @@ public class RegenerationDuCorpsDUneIssueExistanteSousAppliquer : IDisposable
         var invocations2 = LireJournal(journal2);
         Assert.DoesNotContain(invocations2, a => a.Contains("PATCH"));
         Assert.Contains("déjà présents : 1", passe2.Stdout);
+    }
+}
+
+/// <summary>
+/// `methode-de-ticket.md §1 § Ce que la zone engendrée porte` — `But` et
+/// `Critères d'acceptation` gagnent la même actionnabilité que les renvois
+/// `Dépend de` / `En conflit avec` et entrent donc dans la zone engendrée,
+/// projetés tels quels (accès de lecture au texte du champ, jamais une
+/// vérification). Cette classe couvre le cas nominal : les deux champs
+/// portent un texte non trivial (plusieurs citations séparées par des
+/// points-virgules, comme les fiches réelles du plan) et se retrouvent
+/// verbatim dans le corps engendré, sans réécriture des renvois relatifs
+/// qu'ils portent — cf. décision consignée dans le rapport de cette tâche.
+/// </summary>
+public class ProjectionDuButEtDesCriteresDAcceptation : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+
+    private const string ButAttendu = "l'agrégat Personnage existe et compile, avec ses invariants de nom et d'espace";
+    private const string CriteresAttendus =
+        "`guide-conventions-et-dod.md §2 § Non couvert par le corpus` ; "
+        + "`structure-projets.md § Domaine et Application : projets uniques`, puce 1 ; "
+        + "`usecases/UC-01-mode-local-sans-compte.md § Critères d'acceptation`";
+
+    public ProjectionDuButEtDesCriteresDAcceptation()
+    {
+        FixturesCreerIssues.EcrireDepotMinimal(
+            _tmpDepot.Chemin,
+            FixturesCreerIssues.PlanPreambule
+                + FixturesCreerIssues.TacheTb014("—", "—", ButAttendu, CriteresAttendus));
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture projection but et critères");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerIssues.UrlOrigineFictive, pousser: true);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void DevraitProjeterButEtCriteresDAcceptationVerbatimSansReecrireLesRenvoisRelatifsQuIlsPortent()
+    {
+        var environnement = new Dictionary<string, string> { ["PATH"] = Helpers.RepertoireBinSansGh(_tmpBin.Chemin) };
+        var resultat = Helpers.ExecuterOutilAvecEnvironnement(
+            "CreerIssues", ["--seulement", "TB-014"], _tmpDepot.Chemin, environnement);
+
+        Assert.Equal(0, resultat.CodeSortie);
+        string corps = FixturesCreerIssues.ExtraireCorpsIssue(resultat.Stdout, "TB-014");
+
+        Assert.Contains($"**But** : {ButAttendu}", corps);
+        Assert.Contains($"**Critères d'acceptation** : {CriteresAttendus}", corps);
+    }
+}
+
+/// <summary>
+/// Second volet du même comportement — un champ absent de la fiche (clé de
+/// tableau manquante) et un champ présent mais vide (cellule blanche)
+/// projettent tous deux « — », la convention déjà appliquée à `Dépend de` /
+/// `En conflit avec` (`TranchesReferences.DecouperIdentifiants`) plutôt
+/// qu'une seconde règle propre à ces deux champs.
+/// </summary>
+public class ProjectionDuButEtDesCriteresDAcceptationAbsentsOuVides : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+
+    public ProjectionDuButEtDesCriteresDAcceptationAbsentsOuVides()
+    {
+        FixturesCreerIssues.EcrireDepotMinimal(
+            _tmpDepot.Chemin,
+            // But absent (clé de tableau non écrite) ; Critères d'acceptation
+            // présent mais vide (cellule blanche) — les deux cas visés par ce
+            // test, dans la même fiche.
+            FixturesCreerIssues.PlanPreambule + FixturesCreerIssues.TacheTb014("—", "—", null, ""));
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture champs absent et vide");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerIssues.UrlOrigineFictive, pousser: true);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void DevraitProjeterTiretPourUnButAbsentEtPourDesCriteresDAcceptationPresentsMaisVides()
+    {
+        var environnement = new Dictionary<string, string> { ["PATH"] = Helpers.RepertoireBinSansGh(_tmpBin.Chemin) };
+        var resultat = Helpers.ExecuterOutilAvecEnvironnement(
+            "CreerIssues", ["--seulement", "TB-014"], _tmpDepot.Chemin, environnement);
+
+        Assert.Equal(0, resultat.CodeSortie);
+        string corps = FixturesCreerIssues.ExtraireCorpsIssue(resultat.Stdout, "TB-014");
+
+        Assert.Contains("**But** : —", corps);
+        Assert.Contains("**Critères d'acceptation** : —", corps);
+    }
+}
+
+/// <summary>
+/// `methode-de-ticket.md §1 § Ce qu'un ticket fait du marqueur TROU` — une
+/// valeur `TROU` sur `Critères d'acceptation` signale une absence réelle du
+/// corpus source ; la projection doit refléter cette absence plutôt que la
+/// masquer, donc la reproduire telle quelle, jamais la remplacer par « — »
+/// ni par un texte de substitution.
+/// </summary>
+public class ProjectionDuMarqueurTrouSurLesCriteresDAcceptation : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+
+    public ProjectionDuMarqueurTrouSurLesCriteresDAcceptation()
+    {
+        FixturesCreerIssues.EcrireDepotMinimal(
+            _tmpDepot.Chemin,
+            FixturesCreerIssues.PlanPreambule
+                + FixturesCreerIssues.TacheTb014("—", "—", "un but quelconque", "TROU"));
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture marqueur TROU");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerIssues.UrlOrigineFictive, pousser: true);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void DevraitProjeterLeMarqueurTrouTelQuelSansLeMasquer()
+    {
+        var environnement = new Dictionary<string, string> { ["PATH"] = Helpers.RepertoireBinSansGh(_tmpBin.Chemin) };
+        var resultat = Helpers.ExecuterOutilAvecEnvironnement(
+            "CreerIssues", ["--seulement", "TB-014"], _tmpDepot.Chemin, environnement);
+
+        Assert.Equal(0, resultat.CodeSortie);
+        string corps = FixturesCreerIssues.ExtraireCorpsIssue(resultat.Stdout, "TB-014");
+
+        Assert.Contains("**Critères d'acceptation** : TROU", corps);
     }
 }
