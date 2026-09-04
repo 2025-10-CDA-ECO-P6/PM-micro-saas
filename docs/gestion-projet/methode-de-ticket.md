@@ -96,10 +96,10 @@ Trois axes orthogonaux, à valeurs fermées, chacun ancré sur une source du cor
 
 | Valeur | Ancrage |
 |---|---|
-| J0 | `roadmap-entree-build.md §1` |
-| J1 | `roadmap-entree-build.md §1` |
-| J2 | `roadmap-entree-build.md §1` |
-| J3 | `roadmap-entree-build.md §1` |
+| J0 — Socle | `roadmap-entree-build.md §1` |
+| J1 — Local-only | `roadmap-entree-build.md §1` |
+| J2 — Cloud + migration | `roadmap-entree-build.md §1` |
+| J3 — Partage + temps réel | `roadmap-entree-build.md §1` |
 
 Les deux points de décision qui séparent ces jalons — `[DÉCISION MARCHÉ]` et `[VALIDATION JURIDIQUE EU]` — ne sont pas des valeurs de cet axe : `roadmap-entree-build.md §1` les qualifie de `NON-VERIFIABLE-IN-BUILD`, donc par construction non vérifiables par une tâche de code, donc par aucun ticket de cette taxonomie.
 
