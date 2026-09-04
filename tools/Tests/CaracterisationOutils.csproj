@@ -20,6 +20,7 @@
     <ProjectReference Include="..\VerifCorpus\VerifCorpus.csproj" />
     <ProjectReference Include="..\VerifMailleAgregat\VerifMailleAgregat.csproj" />
     <ProjectReference Include="..\CreerIssues\CreerIssues.csproj" />
+    <ProjectReference Include="..\CreerProjet\CreerProjet.csproj" />
     <ProjectReference Include="..\Harnais\FauxGh\FauxGh.csproj" />
     <ProjectReference Include="..\Harnais\GardeIdentiteGh\GardeIdentiteGh.csproj" />
   </ItemGroup>

@@ -87,33 +87,86 @@ internal static class Orchestrateur
         string owner, string repo, List<Tache> taches, List<string> etats, List<string> epiques, TextWriter sortie)
     {
         sortie.WriteLine("MODE À BLANC — rien n'est créé sur GitHub.");
-        sortie.WriteLine($"  + projet « {TitreProjet} » sous {owner}");
-        sortie.WriteLine($"  + lien du projet au dépôt {repo}");
-        sortie.WriteLine($"  + champ « Statut » (liste, {etats.Count} valeurs)");
-        sortie.WriteLine($"  + champ « Épique » (liste, {epiques.Count} valeurs)");
 
-        // subprocess.run(...).stdout or "[]" — jamais gh() : cette lecture
-        // tolère un `gh` en échec (authentification absente, réseau, etc. —
-        // stdout vide, substitué), à l'identique du script Python d'origine
-        // (creer-projet.py). Seule
-        // l'absence TOTALE du binaire `gh` sur PATH reste classée
-        // ENVIRONNEMENT : c'est Processus.Executer qui lève avant que cette
-        // tolérance n'entre en jeu (voir GhCli.InvoquerBrut).
+        // Consultation en lecture seule de l'existant distant — jamais
+        // GhCli.ExecuterJson : ces lectures tolèrent un `gh` en échec
+        // (authentification absente, réseau, etc. — stdout vide, substitué),
+        // à l'identique du script Python d'origine (creer-projet.py) pour la
+        // lecture des issues plus bas. Seule l'absence TOTALE du binaire
+        // `gh` sur PATH reste classée ENVIRONNEMENT : c'est
+        // Processus.Executer qui lève avant que cette tolérance n'entre en
+        // jeu (voir GhCli.InvoquerBrut). Sans cette consultation, cet aperçu
+        // ne pourrait qu'annoncer la voie de création sans jamais savoir ce
+        // qui sera réellement fait.
+        JsonElement? projetExistant = LireProjetExistantTolerant(owner);
+        if (projetExistant is { } projet)
+        {
+            sortie.WriteLine($"  = projet « {TitreProjet} » déjà présent sous {owner} : {projet.GetProperty("url").GetString()}");
+        }
+        else
+        {
+            sortie.WriteLine($"  + projet « {TitreProjet} » sous {owner} [à créer]");
+            sortie.WriteLine($"  + lien du projet au dépôt {repo} [à créer]");
+        }
+        int? numeroProjet = projetExistant?.GetProperty("number").GetInt32();
+
+        var champsExistants = numeroProjet.HasValue
+            ? LireChampsExistantsTolerant(numeroProjet.Value, owner)
+            : new Dictionary<string, JsonElement>(StringComparer.Ordinal);
+        AnnoncerChamp(sortie, "Statut", etats.Count, champsExistants);
+        AnnoncerChamp(sortie, "Épique", epiques.Count, champsExistants);
+
         string sortieBrute = GhCli.InvoquerBrut(
-            "issue", "list", "--repo", $"{owner}/{repo}", "--limit", "300", "--state", "all", "--json", "number,title");
+            "issue", "list", "--repo", $"{owner}/{repo}", "--limit", "300", "--state", "all", "--json", "number,title,state");
         using var document = JsonDocument.Parse(sortieBrute.Length > 0 ? sortieBrute : "[]");
 
         var presentes = new HashSet<string>(StringComparer.Ordinal);
+        var etatsParTb = new Dictionary<string, string?>(StringComparer.Ordinal);
         foreach (var i in document.RootElement.EnumerateArray())
         {
             var m = MotifIdentifiantEnTete.Match(i.GetProperty("title").GetString() ?? "");
-            if (m.Success) presentes.Add(m.Groups[1].Value);
+            if (!m.Success) continue;
+            string tb = m.Groups[1].Value;
+            presentes.Add(tb);
+            etatsParTb[tb] = i.GetProperty("state").GetString() == "CLOSED" ? "Terminé" : null;
         }
         var auPlan = new HashSet<string>(taches.Select(t => t.Id), StringComparer.Ordinal);
 
-        int intersection = presentes.Count(auPlan.Contains);
-        sortie.WriteLine($"  + {intersection} élément(s) ajouté(s) — une issue existe "
-            + $"pour {intersection} des {auPlan.Count} tranches du plan");
+        // Éléments déjà posés dans le projet — vide si le projet n'existe pas
+        // encore (aucun élément ne peut y être posé sans lui). Même lecture
+        // qu'Appliquer (ExtraireChampsItem, partagé) : seule la tolérance à
+        // l'échec de `gh` diffère.
+        var itemsExistants = numeroProjet.HasValue
+            ? LireItemsExistantsTolerant(numeroProjet.Value, owner)
+            : new Dictionary<string, ChampsItem>(StringComparer.Ordinal);
+
+        int aAjouter = 0, dejaAJour = 0, aMettreAJour = 0;
+        foreach (var tache in taches)
+        {
+            string tb = tache.Id;
+            if (!presentes.Contains(tb)) continue;
+
+            if (!itemsExistants.TryGetValue(tb, out var existant))
+            {
+                aAjouter++;
+                continue;
+            }
+
+            string epiqueCible = TexteUnicode.StripPython(tache.Champs.GetValueOrDefault("Épique", ""));
+            bool epiqueDivergente = epiqueCible.Length > 0
+                && !string.Equals(existant.Epique, epiqueCible, StringComparison.Ordinal);
+            string statutCible = StatutCalcule(tache, etatsParTb);
+            bool statutDivergent = !string.Equals(existant.Statut, statutCible, StringComparison.Ordinal);
+
+            if (epiqueDivergente || statutDivergent) aMettreAJour++;
+            else dejaAJour++;
+        }
+        int intersection = aAjouter + dejaAJour + aMettreAJour;
+
+        sortie.WriteLine($"  {intersection} tranche(s) du plan ont déjà une issue, sur {auPlan.Count} au total.");
+        sortie.WriteLine($"  + {aAjouter} élément(s) à ajouter au projet");
+        sortie.WriteLine($"  = {dejaAJour} élément(s) déjà présent(s), champs déjà à jour");
+        sortie.WriteLine($"  ~ {aMettreAJour} élément(s) déjà présent(s), au moins un champ (Statut/Épique) à mettre à jour");
 
         var sansTranche = presentes.Where(p => !auPlan.Contains(p)).ToList();
         if (sansTranche.Count > 0)
@@ -130,6 +183,67 @@ internal static class Orchestrateur
                 + "dans le projet tant que leur issue n'est pas ouverte");
         }
         return 0;
+    }
+
+    /// <summary>Recherche le projet par titre — pendant à blanc du bloc 1 d'<see cref="Appliquer"/>, sans jamais écrire.</summary>
+    private static JsonElement? LireProjetExistantTolerant(string owner)
+    {
+        string sortieBrute = GhCli.InvoquerBrut("project", "list", "--owner", owner, "--limit", "100", "--format", "json");
+        using var document = JsonDocument.Parse(sortieBrute.Length > 0 ? sortieBrute : "{}");
+        if (!document.RootElement.TryGetProperty("projects", out var projets)) return null;
+        foreach (var p in projets.EnumerateArray())
+        {
+            if (p.GetProperty("title").GetString() == TitreProjet) return p.Clone();
+        }
+        return null;
+    }
+
+    /// <summary>Liste les champs déjà posés sur le projet — pendant à blanc du bloc 2 d'<see cref="Appliquer"/>, sans jamais écrire.</summary>
+    private static Dictionary<string, JsonElement> LireChampsExistantsTolerant(int numero, string owner)
+    {
+        var resultat = new Dictionary<string, JsonElement>(StringComparer.Ordinal);
+        string sortieBrute = GhCli.InvoquerBrut("project", "field-list", numero.ToString(), "--owner", owner, "--format", "json");
+        using var document = JsonDocument.Parse(sortieBrute.Length > 0 ? sortieBrute : "{}");
+        if (!document.RootElement.TryGetProperty("fields", out var champs)) return resultat;
+        foreach (var c in champs.EnumerateArray())
+        {
+            resultat[c.GetProperty("name").GetString()!] = c.Clone();
+        }
+        return resultat;
+    }
+
+    /// <summary>Liste les éléments déjà posés dans le projet, avec leurs champs actuels — pendant à blanc du bloc 3 d'<see cref="Appliquer"/>, sans jamais écrire.</summary>
+    private static Dictionary<string, ChampsItem> LireItemsExistantsTolerant(int numero, string owner)
+    {
+        var resultat = new Dictionary<string, ChampsItem>(StringComparer.Ordinal);
+        string sortieBrute = GhCli.InvoquerBrut(
+            "project", "item-list", numero.ToString(), "--owner", owner, "--limit", "300", "--format", "json");
+        using var document = JsonDocument.Parse(sortieBrute.Length > 0 ? sortieBrute : "{}");
+        if (!document.RootElement.TryGetProperty("items", out var items)) return resultat;
+        foreach (var it in items.EnumerateArray())
+        {
+            if (ExtraireChampsItem(it) is { } trouve) resultat[trouve.Tb] = trouve.Champs;
+        }
+        return resultat;
+    }
+
+    /// <summary>
+    /// Annonce la voie « champ déjà présent » ou « à créer » — même formulation
+    /// que les deux messages symétriques d'<see cref="Appliquer"/> (bloc 2),
+    /// pour que l'aperçu et l'exécution réelle se lisent comme un seul et
+    /// même contrat.
+    /// </summary>
+    private static void AnnoncerChamp(
+        TextWriter sortie, string nom, int valeursPlan, IReadOnlyDictionary<string, JsonElement> champsExistants)
+    {
+        if (champsExistants.TryGetValue(nom, out var champ))
+        {
+            sortie.WriteLine($"  = champ « {nom} » déjà présent ({champ.GetProperty("options").GetArrayLength()} valeurs)");
+        }
+        else
+        {
+            sortie.WriteLine($"  + champ « {nom} » (liste, {valeursPlan} valeurs) [à créer]");
+        }
     }
 
     private static int Appliquer(
@@ -246,19 +360,19 @@ internal static class Orchestrateur
 
         // Éléments déjà présents dans le projet — appariés par l'identifiant
         // de tâche en tête du titre de l'issue liée, jamais par un autre
-        // champ. Le commentaire du script Python à ce même endroit évoque un
+        // champ (ExtraireChampsItem, partagé avec l'aperçu à blanc). Le
+        // commentaire du script Python à ce même endroit évoquait un
         // appariement par SUFFIXE sur la clé « épique » à cause d'un octet
-        // abîmé renvoyé par gh — aucun code de la fonction Python ne fait
-        // cela : c'est un commentaire du corpus qui périme sans plus
-        // correspondre à ce que la fonction fait réellement (voir le
-        // rapport de portage, Discoveries). Ce portage reproduit le CODE,
-        // pas le commentaire.
-        var deja = new Dictionary<string, string>(StringComparer.Ordinal);
+        // abîmé renvoyé par gh — aucun code de la fonction Python ne le
+        // faisait alors (voir le rapport de portage, Discoveries) ; ce
+        // suffixe existe désormais réellement, mais pour une autre raison :
+        // lire la valeur ACTUELLE des champs (ValeurChampActuelle), un besoin
+        // que la fonction Python d'origine n'avait jamais eu.
+        var itemsExistants = new Dictionary<string, ChampsItem>(StringComparer.Ordinal);
         foreach (var it in GhCli.ExecuterJson("project", "item-list", numero.ToString(), "--owner", owner,
                      "--limit", "300", "--format", "json").GetProperty("items").EnumerateArray())
         {
-            var m = MotifIdentifiantEnTete.Match(TitreDuContenu(it));
-            if (m.Success) deja[m.Groups[1].Value] = it.GetProperty("id").GetString()!;
+            if (ExtraireChampsItem(it) is { } trouveItem) itemsExistants[trouveItem.Tb] = trouveItem.Champs;
         }
 
         int ajoutes = 0, reutilises = 0;
@@ -268,9 +382,10 @@ internal static class Orchestrateur
             if (!parTb.ContainsKey(tb)) continue;
 
             string idItem;
-            if (deja.TryGetValue(tb, out var idExistant))
+            ChampsItem? existant = itemsExistants.TryGetValue(tb, out var trouveExistant) ? trouveExistant : null;
+            if (existant is { } e)
             {
-                idItem = idExistant;
+                idItem = e.Id;
                 reutilises++;
             }
             else
@@ -280,16 +395,24 @@ internal static class Orchestrateur
                 ajoutes++;
             }
 
+            // Idempotence : un champ n'est réécrit que si sa valeur cible
+            // diverge de la valeur actuellement posée sur l'élément — un
+            // élément tout juste ajouté (existant == null) n'a par
+            // construction aucune valeur actuelle, donc diverge toujours.
             string epique = TexteUnicode.StripPython(tache.Champs.GetValueOrDefault("Épique", ""));
-            if (optsEpique.TryGetValue(epique, out var idOptionEpique))
+            if (optsEpique.TryGetValue(epique, out var idOptionEpique)
+                && !string.Equals(existant?.Epique, epique, StringComparison.Ordinal))
             {
                 GhCli.ExecuterTexte("project", "item-edit", "--id", idItem, "--project-id", idProjet,
                     "--field-id", idEpique, "--single-select-option-id", idOptionEpique);
             }
 
             string statut = StatutCalcule(tache, etatsParTb);
-            GhCli.ExecuterTexte("project", "item-edit", "--id", idItem, "--project-id", idProjet,
-                "--field-id", idStatut, "--single-select-option-id", optsStatut[statut]);
+            if (!string.Equals(existant?.Statut, statut, StringComparison.Ordinal))
+            {
+                GhCli.ExecuterTexte("project", "item-edit", "--id", idItem, "--project-id", idProjet,
+                    "--field-id", idStatut, "--single-select-option-id", optsStatut[statut]);
+            }
 
             sortie.WriteLine($"    · {tb} — épique {(epique.Length > 0 ? epique : "—")}, statut « {statut} »");
         }
@@ -317,6 +440,58 @@ internal static class Orchestrateur
             return titre.GetString() ?? "";
         }
         return "";
+    }
+
+    /// <summary>
+    /// Élément de projet déjà posé, tel que retrouvé sur
+    /// <c>project item-list</c> : son identifiant (pour être réutilisé sans
+    /// nouvel appel <c>item-add</c>) et la valeur ACTUELLE de ses deux champs
+    /// liste — <c>null</c> quand le champ n'a encore jamais été renseigné sur
+    /// cet élément. Sert la décision d'idempotence : un champ n'est réécrit
+    /// que si sa valeur cible diverge de cette valeur actuelle.
+    /// </summary>
+    private readonly record struct ChampsItem(string Id, string? Statut, string? Epique);
+
+    /// <summary>
+    /// Lit la valeur actuelle d'un champ liste posé sur un élément de projet.
+    /// <c>gh project item-list --format json</c> projette le NOM de l'option
+    /// choisie (jamais son identifiant) sous une clé en camelCase du nom du
+    /// champ — absente de l'objet tant qu'aucune valeur n'a été posée.
+    /// Appariée par SUFFIXE ASCII (ex. <c>"pique"</c> pour « Épique »)
+    /// plutôt que par une clé accentuée écrite en dur : mesuré, cette clé
+    /// arrive parfois mal encodée sur la sortie JSON de `gh` — seul le
+    /// caractère accentué en tête en est affecté, jamais la queue ASCII du
+    /// nom du champ.
+    /// </summary>
+    private static string? ValeurChampActuelle(JsonElement item, string suffixeAscii)
+    {
+        foreach (var propriete in item.EnumerateObject())
+        {
+            if (propriete.Value.ValueKind == JsonValueKind.String
+                && propriete.Name.EndsWith(suffixeAscii, StringComparison.OrdinalIgnoreCase))
+            {
+                return propriete.Value.GetString();
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Apparie un élément de <c>project item-list</c> à sa tranche de plan —
+    /// par l'identifiant en tête du titre de l'issue liée, jamais par un
+    /// autre champ (même convention que l'ancien appariement d'<c>Appliquer</c>,
+    /// désormais partagée avec l'aperçu à blanc) — et en extrait au passage
+    /// les valeurs actuelles de ses deux champs liste. <c>null</c> si le
+    /// titre ne porte aucun identifiant reconnu.
+    /// </summary>
+    private static (string Tb, ChampsItem Champs)? ExtraireChampsItem(JsonElement it)
+    {
+        var m = MotifIdentifiantEnTete.Match(TitreDuContenu(it));
+        if (!m.Success) return null;
+        return (m.Groups[1].Value, new ChampsItem(
+            it.GetProperty("id").GetString()!,
+            ValeurChampActuelle(it, "statut"),
+            ValeurChampActuelle(it, "pique")));
     }
 
     private static bool EtatDansEnsemble(string? etat, HashSet<string> ensemble) => etat is not null && ensemble.Contains(etat);
