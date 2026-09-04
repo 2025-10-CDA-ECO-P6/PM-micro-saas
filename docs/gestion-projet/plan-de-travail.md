@@ -20,7 +20,7 @@ Ce document **décompose** un ordonnancement déjà arrêté. Il ne redéfinit :
 
 Ce que ce document **fait** : il prend la séquence de jalons J0-J3 et, pour J0 et J1, la décompose jusqu'à la tranche — but observable, dépendances techniques, périmètre d'écriture, conflits calculés, taille, critères d'acceptation par renvoi. Pour J2 et J3, il s'arrête au niveau de l'épique (raison en §7). Il regroupe les tranches ouvrables simultanément en lots parallélisables, calculés depuis les périmètres d'écriture déclarés — jamais affirmés.
 
-**Périmètre engagé, non redéfini.** Les tranches de J1 couvrent exactement les user stories que la version antérieure de ce plan engageait déjà. Les user stories du corpus J1 qu'aucune tranche ne cite restent hors périmètre engagé, et leur statut relève de [`moscow.md`](../conception/besoin/vision/moscow.md), pas de ce document.
+**Périmètre engagé, non redéfini.** Ce plan engage les user stories que ses tranches citent — ni plus, ni moins ; ce périmètre se lit sur les tranches elles-mêmes, pas sur un décompte figé dans ce bandeau. Une user story du corpus J1 qu'aucune tranche ne cite reste hors périmètre engagé ; son statut se lit au grain du use case dont elle dérive — au paragraphe `Critère de sortie` du use case concerné dans [`moscow.md`](../conception/besoin/vision/moscow.md), seule autorité du corpus pour cette priorité, et aux critères de sortie factuels du jalon « Local-only » ([`roadmap-entree-build.md §3.2`](roadmap-entree-build.md)) — et à la plage `CR-` que ce use case couvre dans [`cahier-strategie-test-et-recette.md §9`](../test/cahier-strategie-test-et-recette.md), jamais à une valeur MoSCoW ou à un critère de sortie recopiés dans ce document. Le critère fonde l'appartenance au périmètre local ; la plage `CR-` l'énumère et porte déjà ses colonnes de verdict — c'est à qui clôture J1 (`TB-094`) de trancher, cas par cas, si une plage relève du périmètre local.
 
 **Hors périmètre** : durée, effectif, affectation nominative — aucun de ces éléments n'est un fait dérivable du corpus de conception, qui ne porte ni charge ni ordonnancement temporel propre.
 
@@ -171,14 +171,14 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | EP-04 — Contrat d'autorisation en couche Application | le contrat d'autorisation applicative est déclaré, puis câblé aux contrats Application avant l'ouverture de J1 | J0-J1 | EP-02 | TB-080 |
 | EP-29 — Couture cliente et socle du store local | le contrat du service d'accès au store est déclaré et satisfait par une doublure, et le store local s'ouvre, s'indexe et se versionne | J1 | EP-02 | TB-056, TB-057 |
 | EP-10 — Châssis applicatif transverse | indicateurs, bandeaux, accès compte et accessibilité transversale sont présents sur toute surface MJ | J1 | EP-29 | TB-058 |
-| US-UC-01 — Mode local sans compte | le MJ choisit de commencer sans compte, depuis l'écran d'accueil non authentifié | J1 | EP-10 | TB-079 |
+| US-UC-01 — Mode local sans compte | le MJ commence sans compte depuis l'écran d'accueil, retrouve ses données au retour — ou en est informé si elles ont disparu — et voit les fonctionnalités cloud inaccessibles sans compte | J1 | EP-10, EP-08, US-UC-02, EP-29 | TB-079, TB-101, TB-102, TB-103 |
 | US-UC-02 — Créer un espace de jeu | nommer et instancier un espace partagé, avec la propriété automatique de l'espace personnel | J1 | EP-29, EP-10 | TB-059, TB-060, TB-061, TB-062 |
 | US-UC-05 — Organiser par dossiers | chaque espace dispose de son arborescence de dossiers par défaut, système-agnostique | J1 | US-UC-02 | TB-063, TB-064 |
 | US-UC-04 — Gérer les documents d'un espace | un document se crée, se retrouve et se modifie, avec une visibilité privée par défaut | J1 | US-UC-05 | TB-065, TB-066, TB-067, TB-068 |
-| US-UC-03 — Structurer un scénario | un scénario se crée avec son titre seul et contient zéro à N scènes ordonnées | J1 | US-UC-04 | TB-069, TB-070 |
+| US-UC-03 — Structurer un scénario | un scénario se crée avec son titre seul et contient zéro à N scènes ordonnées | J1 | US-UC-04 | TB-069, TB-070, TB-099, TB-100 |
 | US-UC-06 — Utiliser la vue session | conduire une partie hors ligne depuis un hub unique — scènes, notes, contenu mis en avant | J1 | US-UC-02, US-UC-04 | TB-071, TB-072, TB-073, TB-074, TB-075 |
 | US-UC-07 — Créer un élément à la volée | improviser un document en cours de partie, sans rupture de contexte | J1 | US-UC-06, US-UC-04 | TB-076, TB-077 |
-| US-UC-14 — Rechercher et filtrer l'information | un MJ retrouve un document de son espace par titre, depuis la préparation | J1 | EP-29, US-UC-05 | TB-078 |
+| US-UC-14 — Rechercher et filtrer l'information | un MJ retrouve un document de son espace par titre, depuis la préparation et depuis la vue session — où les documents liés à la session active remontent en tête des résultats | J1 | EP-29, US-UC-05, US-UC-04, US-UC-06 | TB-078, TB-096, TB-097, TB-098 |
 | EP-30 — Validations minimales du mode local | le mode local refuse un titre vide et une structure de blocs invalide, sans porter aucune règle que le domaine serveur n'a pas | J1 | EP-29, US-UC-04 | TB-081 |
 | EP-08 — Durabilité et sécurité du mode local | `navigator.storage.persist()` est traité comme état de première classe ; aucun contenu ne peut déclencher l'exécution de code | J1 | EP-29, EP-10 | TB-082, TB-083, TB-084, TB-085, TB-086 |
 | EP-09 — Export d'espace, version minimale | un export au format `schemaVersion` se produit depuis le store local et est structurellement rejouable | J1 | EP-29, US-UC-06 | TB-087, TB-088, TB-089, TB-090, TB-091 |
@@ -215,7 +215,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | US-UC-09 — Accès joueur sans compte | entrer dans une session par un simple lien, sans inscription préalable ni identifiant durable | J3 | EP-24, EP-26 | — |
 | US-UC-12 — Consulter son espace en tant que joueur | offrir au joueur membre une surface de consultation propre, distincte de celle du MJ | J3 | US-UC-09 | — |
 | US-UC-11 — Gérer les membres et invitations | distinguer l'invitation durable d'un membre du lien ponctuel d'une session | J3 | EP-16, EP-24 | — |
-| EP-28 — Recette du périmètre J3 | Chaque cas de recette des UC-08, 09, 11, 12 porte un verdict | J3 | US-UC-08, US-UC-09, US-UC-11, US-UC-12 | — |
+| EP-28 — Recette du périmètre J3 | Chaque cas de recette des UC-08, 09, 11, 12 porte un verdict, ainsi que le résiduel joueur/partage d'UC-06 (`CR-UC06-19 → CR-UC06-24`) | J3 | US-UC-08, US-UC-09, US-UC-11, US-UC-12 | — |
 
 
 ---
@@ -470,6 +470,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Taille | L — l'ouverture de la base porte sur tous les agrégats persistés à la fois — `onupgradeneeded` s'applique à la base entière, pas store par store ; la scinder produirait des tâches qui se réécriraient l'une l'autre |
 | Critères d'acceptation | `ADR-017-modele-indexeddb-local.md §1.1 § Object stores` (le tableau nomme les stores et leurs clés) ; `ADR-017-modele-indexeddb-local.md §1.3 § Indexes locaux` ; `ADR-017-modele-indexeddb-local.md §1.4 § Versionnement du store et stratégie d'upgrade` ; `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 1 ; NFR-PERF-04 ; NFR-OFF-03 |
 | Code de renvoi | M1, L1 |
+| Point d'attention | RB-01-15 — « aucun élément donnant accès à des données protégées (jeton d'accès, secret, identifiant de connexion à un compte) n'est conservé dans le navigateur » — s'applique aux agrégats déclarés ici. |
 
 ### EP-10 — Châssis applicatif transverse
 
@@ -482,7 +483,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Jalon | J1 |
 | Dépend de | TB-056 |
 | Périmètre d'écriture | châssis |
-| En conflit avec | TB-093 — module partagé : châssis |
+| En conflit avec | TB-078 — module partagé : châssis ; TB-093 — module partagé : châssis ; TB-097 — module partagé : châssis ; TB-103 — module partagé : châssis |
 | Taille | L — surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) |
 | Critères d'acceptation | `zoning.md §S7 — Châssis` ; `zoning.md §S6 AR-19` (règle de densité) ; NFR-ACC-01 → NFR-ACC-04 ; `cahier-strategie-test-et-recette.md §3.6 — Axe transverse Accessibilité` |
 | Code de renvoi | — |
@@ -499,10 +500,57 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Jalon | J1 |
 | Dépend de | TB-058 |
 | Périmètre d'écriture | fiche `accueil` |
-| En conflit avec | — |
+| En conflit avec | TB-101 — module partagé : fiche `accueil` |
 | Taille | M — un module, 5 renvois |
 | Critères d'acceptation | `wireframes/sv1-transversaux/accueil/accueil.md § Zones et hiérarchie` ; US-01-01, ses scénarios nommés ; CR-UC01-01 → CR-UC01-03 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
+
+##### TB-101 — Données locales introuvables, distinction première visite / perte
+
+| Champ | Valeur |
+|---|---|
+| But | le MJ qui revient et dont les données ont disparu reçoit un message distinguant ce cas d'une première visite, et une action pour repartir |
+| Épique | US-UC-01 |
+| Jalon | J1 |
+| Dépend de | TB-079, TB-083 |
+| Périmètre d'écriture | fiche `accueil` |
+| En conflit avec | TB-079 — module partagé : fiche `accueil` |
+| Taille | M — un module, 6 renvois |
+| Critères d'acceptation | `wireframes/sv1-transversaux/accueil/accueil.md § États` ; RB-01-12 ; US-01-06, ses scénarios nommés ; CR-UC01-12 → CR-UC01-14 (dérivés de la colonne `Source` du cahier) |
+| Code de renvoi | — |
+| Point d'attention | la dépendance à `TB-083` tient au cas « stockage plein » (`CR-UC01-14`) : la surface de l'alerte est portée ici, mais son comportement relève de `NFR-OFF-03`, que `TB-083` cite déjà. |
+| Trou balisé | `wireframes/sv1-transversaux/accueil/accueil.md § États` ne porte que trois états — « état vide » (première visite, aucune donnée locale ni compte détecté), « état chargé » (`[SOUS-SPÉCIFIÉ — UC-01 §Questions à valider en interview]` sur `UC-01 A2`), « état erreur » (réseau) — et aucun n'est l'état « données disparues » que `US-01-06` exige de distinguer d'une première visite. Le trou est inscrit, pas comblé : la définition de cet état relève de `docs/conception/interface/wireframes/`, non de ce plan. |
+
+##### TB-102 — Persistance après fermeture du navigateur
+
+| Champ | Valeur |
+|---|---|
+| But | le MJ qui rouvre l'application après avoir fermé le navigateur retrouve ses espaces et leurs contenus, intacts |
+| Épique | US-UC-01 |
+| Jalon | J1 |
+| Dépend de | TB-060, TB-057 |
+| Périmètre d'écriture | fiche `tableau-de-bord` |
+| En conflit avec | TB-060 — module partagé : fiche `tableau-de-bord` |
+| Taille | M — un module, 4 renvois |
+| Critères d'acceptation | `wireframes/sv2-entree-espace/tableau-de-bord/tableau-de-bord.md § États` ; RB-01-04 ; US-01-02, ses scénarios nommés ; CR-UC01-05 |
+| Code de renvoi | — |
+| Borne du critère | cette tranche se clôt sur la persistance observée (`CR-UC01-05`) — le MJ retrouve ses données. La seconde moitié de `RB-01-04` (demande de garantie de conservation permanente, bandeau si refus) est portée par `TB-083`, qui cite déjà `RB-01-04 (révisée)`. |
+
+##### TB-103 — Fonctions cloud visibles mais désactivées en mode local
+
+| Champ | Valeur |
+|---|---|
+| But | en mode local, chaque fonction cloud est visible, désactivée, et accompagnée d'une invite de conversion ; aucune n'est masquée |
+| Épique | US-UC-01 |
+| Jalon | J1 |
+| Dépend de | TB-058 |
+| Périmètre d'écriture | châssis |
+| En conflit avec | TB-058 — module partagé : châssis ; TB-093 — module partagé : châssis ; TB-078 — module partagé : châssis ; TB-097 — module partagé : châssis |
+| Taille | M — un module, 6 renvois |
+| Critères d'acceptation | RB-01-06 → RB-01-08 ; `zoning.md §S7 § Châssis mode local` ; `zoning.md § AR-13` ; `user-stories/US-UC-01-mode-local-sans-compte.md § US-01-04 § Notes de conception` |
+| Code de renvoi | — |
+| Note de portée | `US-01-05` (création de compte avec migration) relève de J2 par sa dépendance à `UC-10` : cette tranche construit l'invite de conversion, pas ce vers quoi elle mène — hors périmètre de cette tranche. |
+| Ordre de sérialisation | cette tranche dépend de `TB-058`, ce qui départage leur couple. Avec `TB-093`, `TB-078` et `TB-097`, aucune dépendance ne les départage, et aucune des épiques en présence (`US-UC-01`, `EP-11`, `US-UC-14`) ne porte à la fois cette tranche et l'une des trois autres dans un `Ordre de livraison recommandé` commun — le premier point du dispositif (§1, règle (b bis)) ne s'applique à aucun de ces trois couples. C'est le second point qui s'applique aux trois : l'ordre est laissé à qui les prend. |
 
 ### US-UC-02 — Créer un espace de jeu
 
@@ -529,7 +577,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Jalon | J1 |
 | Dépend de | TB-059, TB-058 |
 | Périmètre d'écriture | fiche `tableau-de-bord` |
-| En conflit avec | — |
+| En conflit avec | TB-102 — module partagé : fiche `tableau-de-bord` |
 | Taille | M — un module, 6 renvois |
 | Critères d'acceptation | `wireframes/sv2-entree-espace/tableau-de-bord/tableau-de-bord.md § Zones et hiérarchie` ; `zoning.md §S6 AR-17`, `AR-05`, `AR-22` ; US-02-00, ses scénarios nommés ; CR-UC02-01 → CR-UC02-03 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
@@ -547,6 +595,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Taille | L — surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) |
 | Critères d'acceptation | `wireframes/sv2-entree-espace/creation-espace/creation-espace.md` ; US-02-01, ses scénarios nommés ; US-02-03 §"Le MJ en mode local n'est jamais bloqué par un quota d'espaces" ; CR-UC02-04 → CR-UC02-08 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
+| Note de portée | `CR-UC02-09`, `CR-UC02-10` et `CR-UC02-12` (US-02-03, blocage et déblocage du quota) relèvent du plan payant et du compte cloud — J2. Cette tranche cite déjà le scénario « le MJ en mode local n'est jamais bloqué par un quota d'espaces » ; les scénarios de blocage effectif du quota gratuit n'y sont pas engagés. |
 | Cas dérivé | `CR-UC02-13` ne porte pas de user story en source (« UC-02 fiche §Exceptions E2, dérivé, pas de Gherkin ») : son rattachement à cette tranche est une lecture de sa source, non un calcul. |
 
 ##### TB-062 — Hub de travail d'un espace et déclinaison personnelle
@@ -592,7 +641,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Taille | L — un seul module, mais neuf cas de recette et quatre stories rattachés : la surface de vérification dépasse le plafond `M` |
 | Critères d'acceptation | `wireframes/sv3-preparation/navigation-dossiers/navigation-dossiers.md` ; `zoning.md §S6 AR-11`, `AR-16`, `AR-20` ; US-05-01, US-05-02, US-05-04 et US-05-05, leurs scénarios nommés ; CR-UC05-01 → CR-UC05-04 et CR-UC05-08 → CR-UC05-12 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
-| Hors périmètre engagé | CR-UC05-05 → CR-UC05-07 relèvent de US-05-03, hors périmètre engagé. |
+| Note de portée | `US-05-03` (associer un template par défaut à un dossier) relève de la couche riche de dossiers, distincte de la base que porte cette tranche — [`moscow.md § UC-05 riche — Dossiers et types de document élaborés (Should Have)`](../conception/besoin/vision/moscow.md), `§ Critère de sortie` : « Le MJ peut associer un type (PNJ, Lieu, Objet…) à un dossier ou un document pour enrichir ses entrées sans contraindre la structure. » Leur verdict (`CR-UC05-05 → CR-UC05-07`) n'est pas engagé par cette tranche. |
 
 ### US-UC-04 — Gérer les documents d'un espace
 
@@ -648,8 +697,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Dépend de | TB-065, TB-066, TB-067, TB-064 |
 | Périmètre d'écriture | fiche `editeur-document` |
 | En conflit avec | — |
-| Taille | L — un seul module, mais dix-huit cas de recette et six stories rattachés : la surface de vérification dépasse le plafond `M` |
-| Critères d'acceptation | `wireframes/sv3-preparation/editeur-document/editeur-document.md` ; `zoning.md §S6 AR-11` (placement des backlinks figé) ; US-04-01, US-04-02, US-04-03, US-04-04, US-04-05 et US-04-06, leurs scénarios nommés ; CR-UC04-01 → CR-UC04-18 (dérivés de la colonne `Source` du cahier) |
+| Taille | L — un seul module, mais dix-neuf cas de recette et sept stories rattachés (US-03-05 n'y apporte qu'un seul scénario, les backlinks) : la surface de vérification dépasse le plafond `M` |
+| Critères d'acceptation | `wireframes/sv3-preparation/editeur-document/editeur-document.md` ; `zoning.md §S6 AR-11` (placement des backlinks figé) ; US-04-01, US-04-02, US-04-03, US-04-04, US-04-05 et US-04-06, leurs scénarios nommés ; CR-UC04-01 → CR-UC04-18 (dérivés de la colonne `Source` du cahier) ; US-03-05 §"Voir les backlinks depuis la fiche d'un PNJ" ; CR-UC03-16 (dérivé de la colonne `Source` du cahier) |
 | Code de renvoi | — |
 | Cas dérivés | `CR-UC04-19`, `CR-UC04-20` et `CR-UC04-21` ne portent pas de user story en source (exceptions de fiche de use case et `NFR-CONF-01`) : leur rattachement à cette tranche est une lecture de leur source, non un calcul. |
 
@@ -679,12 +728,41 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Jalon | J1 |
 | Dépend de | TB-069, TB-068 |
 | Périmètre d'écriture | fiche `editeur-scenario` |
-| En conflit avec | — |
+| En conflit avec | TB-099 — module partagé : fiche `editeur-scenario` ; TB-100 — module partagé : fiche `editeur-scenario` |
 | Taille | L — un seul module, mais treize cas de recette et cinq stories rattachés : la surface de vérification dépasse le plafond `M` |
 | Critères d'acceptation | `wireframes/sv3-preparation/editeur-scenario/editeur-scenario.md` ; US-03-01, US-03-02, US-03-03, US-03-04 et US-03-07, leurs scénarios nommés ; CR-UC03-01 → CR-UC03-12 et CR-UC03-20 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
-| Hors périmètre engagé | CR-UC03-13 → CR-UC03-19 relèvent de US-03-05 et US-03-06, hors périmètre engagé. |
 | Trou balisé | `cahier-strategie-test-et-recette.md §12 PO-09` — exception E2 de la fiche UC-03 (perte de connexion / erreur de sauvegarde) non dérivable d'un Gherkin ni d'une RB ferme, non recettée. |
+| Cas dérivé | `CR-UC03-21` ne porte pas de user story en source (« UC-03 fiche §Exceptions E1, dérivé, pas de Gherkin ») : son geste (formulaire de création de scénario, titre manquant refusé) est situé sur cette fiche ; son rattachement est une lecture de sa source, non un calcul. |
+
+##### TB-099 — Lier des documents existants à un scénario ou une scène
+
+| Champ | Valeur |
+|---|---|
+| But | le MJ lie un document existant de l'espace à son scénario ou à une scène, et voit les backlinks depuis la fiche du document lié |
+| Épique | US-UC-03 |
+| Jalon | J1 |
+| Dépend de | TB-065, TB-070 |
+| Périmètre d'écriture | fiche `editeur-scenario` |
+| En conflit avec | TB-070 — module partagé : fiche `editeur-scenario` ; TB-100 — module partagé : fiche `editeur-scenario` |
+| Taille | M — un module, 5 renvois |
+| Critères d'acceptation | `wireframes/sv3-preparation/editeur-scenario/editeur-scenario.md` ; US-03-05, ses scénarios nommés ; CR-UC03-13 → CR-UC03-15 (dérivés de la colonne `Source` du cahier) |
+| Code de renvoi | — |
+| Ordre de sérialisation | cette tranche et `TB-100` écrivent la même fiche `editeur-scenario` sans dépendre l'une de l'autre. `US-UC-03` porte les deux dans son `Ordre de livraison recommandé`, qui place `US-03-06` (item 5) **avant** `US-03-05` (item 6) — `TB-100` est donc sérialisée avant `TB-099` (§1, règle (b bis)), malgré le sens de la numérotation des tickets. |
+
+##### TB-100 — Gérer le statut d'un scénario
+
+| Champ | Valeur |
+|---|---|
+| But | le MJ attribue un statut à son scénario (brouillon, prêt, joué, archivé) et filtre ses scénarios par statut |
+| Épique | US-UC-03 |
+| Jalon | J1 |
+| Dépend de | TB-069, TB-070 |
+| Périmètre d'écriture | fiche `editeur-scenario` |
+| En conflit avec | TB-070 — module partagé : fiche `editeur-scenario` ; TB-099 — module partagé : fiche `editeur-scenario` |
+| Taille | M — un module, 6 renvois |
+| Critères d'acceptation | `wireframes/sv3-preparation/editeur-scenario/editeur-scenario.md` ; RB-03-10, RB-03-11 ; US-03-06, ses scénarios nommés ; CR-UC03-17 → CR-UC03-19 (dérivés de la colonne `Source` du cahier) |
+| Code de renvoi | — |
 
 ### US-UC-06 — Utiliser la vue session
 
@@ -740,11 +818,11 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Jalon | J1 |
 | Dépend de | TB-071, TB-072, TB-073, TB-058 |
 | Périmètre d'écriture | fiche `vue-session-mj` |
-| En conflit avec | — |
+| En conflit avec | TB-098 — module partagé : fiche `vue-session-mj` |
 | Taille | L — un seul module déclaré, mais huit stories et vingt-et-un cas de recette s'y rattachent : la surface de vérification dépasse manifestement le plafond `M`. Cette tranche reste candidate à un redécoupage par mode au moment où l'équipe de build affine le grain — ce document ne tranche pas cette coupe |
 | Critères d'acceptation | `wireframes/sv-session/vue-session-mj/vue-session-mj.md` (modes configuration / LIVE / consultation CLOSED) ; `zoning.md §S6 AR-02`, `AR-04`, `AR-09` ; US-06-01, US-06-02, US-06-03, US-06-04, US-06-05, US-06-06, US-06-09 et US-06-10, leurs scénarios nommés ; NFR-PERF-01, NFR-PERF-02, NFR-PERF-03 ; CR-UC06-01 → CR-UC06-18 et CR-UC06-25 → CR-UC06-27 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
-| Hors périmètre engagé | CR-UC06-19 → CR-UC06-24 relèvent de US-06-07 et US-06-08, hors périmètre engagé. |
+| Note de portée | la vue joueur de la session (US-06-07, US-06-08) relève de J3 — hors périmètre de cette tranche : `moscow.md § UC-06 § Critère de sortie` borne ce jalon au mode local, « sans partage joueurs » ; leur verdict (CR-UC06-19 → CR-UC06-24) est porté par EP-28. |
 | Cas dérivés | `CR-UC06-28` et `CR-UC06-29` ne portent pas de user story en source : leur rattachement est une lecture de leur source, non un calcul. |
 
 ##### TB-075 — Paramètres de campagne
@@ -758,9 +836,10 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | fiche `parametres-campagne` |
 | En conflit avec | TB-091 — module partagé : fiche `parametres-campagne` |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `wireframes/sv3-preparation/parametres-campagne/parametres-campagne.md` ; `zoning.md §S6 AR-18` (configuration logée en surface session, paramètres = renvoi), `AR-22` (désarchivage) ; RB-02-22, RB-02-23 |
+| Critères d'acceptation | `wireframes/sv3-preparation/parametres-campagne/parametres-campagne.md` ; `zoning.md §S6 AR-18` (configuration logée en surface session, paramètres = renvoi), `AR-22` (désarchivage) ; RB-02-22, RB-02-23 ; CR-UC01-06 (dérivé de la colonne `Source` du cahier) ; US-01-04, ses scénarios nommés |
 | Code de renvoi | — |
 | Note de portée | la génération de lien d'invitation également logée sur cette fiche relève de J3 (US-UC-11, US-UC-08) — hors périmètre de cette tranche. |
+| Note de portée | `US-01-05` (création de compte avec migration, `CR-UC01-08 → CR-UC01-11`) relève de J2 par sa dépendance à `UC-10` — hors périmètre de cette tranche. `CR-UC01-09` y situe littéralement son geste : « Il accède aux paramètres et choisit de créer un compte ». |
 
 ### US-UC-07 — Créer un élément à la volée
 
@@ -803,12 +882,56 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Épique | US-UC-14 |
 | Jalon | J1 |
 | Dépend de | TB-057, TB-064 |
-| Périmètre d'écriture | fiche `recherche-preparation` |
-| En conflit avec | — |
-| Taille | L — surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) |
+| Périmètre d'écriture | fiche `recherche-preparation` ; châssis |
+| En conflit avec | TB-058 — module partagé : châssis ; TB-093 — module partagé : châssis ; TB-096 — module partagé : fiche `recherche-preparation` ; TB-097 — module partagé : châssis ; TB-103 — module partagé : châssis |
+| Taille | L — deux modules (fiche `recherche-preparation` et `châssis`) et une surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) ; la recherche est un composant de châssis dont le rendu est défini au niveau du wireframe de chaque surface (`zoning.md §S7`) — les deux moitiés ne se scindent pas |
 | Critères d'acceptation | `wireframes/sv3-preparation/recherche-preparation/recherche-preparation.md` (« titre seul au MVP ») ; US-14-01, ses scénarios nommés ; NFR-PERF-04 ; CR-UC14-01 → CR-UC14-05 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
-| Hors périmètre engagé | CR-UC14-06 → CR-UC14-12 relèvent de US-14-02 et US-14-03, hors périmètre engagé. |
+| Ordre de sérialisation | cette tranche partage `châssis` avec `TB-058` et `TB-093` sans dépendre de l'une ni de l'autre (`Dépend de` : `TB-057`, `TB-064` — aucun des deux ne s'y trouve). Ni `EP-10` (épique de `TB-058`) ni `EP-11` (épique de `TB-093`) n'est porté par un use case : le premier point du dispositif de départage (§1, règle (b bis)) ne s'applique à aucun des deux couples — `US-UC-14-recherche.md § Ordre de livraison recommandé` ordonne les stories de cette épique, pas une tranche étrangère, et ne départage donc pas davantage. C'est le second point qui s'applique aux deux couples : l'ordre est laissé à qui les prend. |
+| Cas dérivé | `CR-UC14-13` ne porte pas de user story en source (« UC-14 fiche §Exceptions E2, dérivé, pas de Gherkin ») : son rattachement à cette tranche est une lecture de sa source, non un calcul. |
+
+##### TB-096 — Filtrer les résultats de recherche par type, en préparation
+
+| Champ | Valeur |
+|---|---|
+| But | le MJ restreint les résultats de recherche à un type de document, et retire le filtre sans perdre sa recherche |
+| Épique | US-UC-14 |
+| Jalon | J1 |
+| Dépend de | TB-078, TB-066 |
+| Périmètre d'écriture | fiche `recherche-preparation` |
+| En conflit avec | TB-078 — module partagé : fiche `recherche-preparation` ; recouvrement à confirmer à J0 — la maille ne tranche pas si le filtre par type relève du composant de châssis (`zoning.md §S7`) ou du seul rendu de surface `recherche-preparation` ; aucune section ne le dit. Recouvrement à confirmer à J0. |
+| Taille | M — un module, 6 renvois |
+| Critères d'acceptation | `wireframes/sv3-preparation/recherche-preparation/recherche-preparation.md` ; `usecases/UC-14-recherche.md § A2 — Résultats nombreux` ; US-14-02, ses scénarios nommés ; CR-UC14-06 → CR-UC14-08 (dérivés de la colonne `Source` du cahier) |
+| Code de renvoi | — |
+
+##### TB-097 — Pondération de la session active dans la recherche
+
+| Champ | Valeur |
+|---|---|
+| But | depuis la vue session, les documents liés à la session active remontent en tête des résultats de recherche, sous les mêmes règles de visibilité qu'en préparation |
+| Épique | US-UC-14 |
+| Jalon | J1 |
+| Dépend de | TB-072, TB-073, TB-078, TB-067 |
+| Périmètre d'écriture | châssis |
+| En conflit avec | TB-058 — module partagé : châssis ; TB-093 — module partagé : châssis ; TB-078 — module partagé : châssis ; TB-103 — module partagé : châssis |
+| Taille | M — un module, 6 renvois |
+| Critères d'acceptation | RB-14-07 → RB-14-10 ; `zoning.md §S7 § Recherche — composant de châssis omniprésent` ; `zoning.md § AR-11` |
+| Code de renvoi | — |
+| Ordre de sérialisation | cette tranche dépend de `TB-078`, ce qui départage leur couple. Avec `TB-058` et `TB-093`, en revanche, aucune dépendance ne les départage : ni `EP-10` (épique de `TB-058`) ni `EP-11` (épique de `TB-093`) n'est porté par un use case, et `US-UC-14-recherche.md § Ordre de livraison recommandé` ne nomme ni l'une ni l'autre tranche — le premier point du dispositif de départage (§1, règle (b bis)) ne s'applique à aucun des deux couples. C'est le second point qui s'applique : l'ordre est laissé à qui les prend. |
+
+##### TB-098 — Panneau latéral de résultats de recherche en session
+
+| Champ | Valeur |
+|---|---|
+| But | le MJ recherche depuis la vue session sans la quitter ; les résultats s'ouvrent dans un panneau latéral qu'il peut fermer sans perte de contexte |
+| Épique | US-UC-14 |
+| Jalon | J1 |
+| Dépend de | TB-074, TB-097 |
+| Périmètre d'écriture | fiche `vue-session-mj` |
+| En conflit avec | TB-074 — module partagé : fiche `vue-session-mj` |
+| Taille | L — la coupe comportement/surface est déjà faite (`TB-097`) ; ce qui reste ici est indivisible : l'ouverture, le rendu et la fermeture du panneau latéral appartiennent à la même fiche d'écran, et la plage de renvois dépasse le plafond `M` (§3) |
+| Critères d'acceptation | `wireframes/sv-session/vue-session-mj/vue-session-mj.md` (zones « BARRE DE RECHERCHE », « PANNEAU LATÉRAL DE RÉSULTATS DE RECHERCHE ») ; `zoning.md § AR-11` ; US-14-03, ses scénarios nommés ; CR-UC14-09 → CR-UC14-12 (dérivés de la colonne `Source` du cahier) |
+| Code de renvoi | — |
 
 ### EP-30 — Validations minimales du mode local
 
@@ -1001,7 +1124,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Jalon | J1 |
 | Dépend de | TB-058 |
 | Périmètre d'écriture | châssis |
-| En conflit avec | TB-058 — module partagé : châssis |
+| En conflit avec | TB-058 — module partagé : châssis ; TB-078 — module partagé : châssis ; TB-097 — module partagé : châssis ; TB-103 — module partagé : châssis |
 | Taille | S |
 | Critères d'acceptation | `vision/moscow.md § Instrumentation de validation du MVP`, mention « Mécanisme — tranché » — sollicitation unique, affichée après que le MJ a atteint l'activation préparation, un refus ou une absence de réponse valant refus définitif — la proposition ne revient jamais ; `vision/moscow.md § Instrumentation de validation du MVP § Capture de contact non bloquante` — la proposition reste refusable sans conséquence sur l'accès ni le fonctionnement |
 | Code de renvoi | — |
@@ -1015,7 +1138,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | But | chaque cas de recette du périmètre local porte un verdict |
 | Épique | EP-12 |
 | Jalon | J1 |
-| Dépend de | TB-091, TB-092, TB-093, TB-090, TB-086, TB-083, TB-084, TB-077, TB-078, TB-079, TB-081, TB-070 |
+| Dépend de | TB-077, TB-081, TB-084, TB-086, TB-090, TB-091, TB-092, TB-093, TB-096, TB-098, TB-099, TB-100, TB-101, TB-102, TB-103 |
 | Périmètre d'écriture | HORS MAILLE — nature : renseignement de la colonne Verdict d'un document de recette — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | M — 0 modules, 3 renvois |
@@ -1044,6 +1167,10 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 **Convention de cette section** : seuls les paliers ouvrant au moins deux tranches simultanément sont nommés `LOT-nn` — un palier qui n'ouvre qu'une seule tranche n'ajoute rien à ce que le champ `Dépend de` de cette tranche porte déjà.
 
 **Ces lots sont calculés, non écrits à la main** : ils se recalculent depuis les champs `Dépend de` et `Périmètre d'écriture` des tranches, et doivent être recalculés après toute modification de l'un ou de l'autre.
+
+**Recalculé le 2026-09-04** (huit tranches neuves — `TB-096` à `TB-103` — et les conflits/dépendances qu'elles introduisent). Le recalcul corrige au passage un défaut topologique préexistant, indépendant de ces huit tranches : l'ancien `LOT-10` regroupait `TB-067`, `TB-071` et `TB-078` comme si les trois ouvraient au même palier — mais `TB-071` dépend de `TB-066` (qui ne clôt qu'au palier de `TB-067`) et `TB-078` dépend de `TB-064` (même palier). Ni l'un ni l'autre n'est donc prêt en même temps que `TB-067`, qui ne dépend que de `TB-065`, close un palier plus tôt. Vérifié champ par champ contre `1aecfcf` avant d'écrire ce constat.
+
+**Convention appliquée aux paliers scindés par conflit** — la formulation ci-dessus ne tranchait pas le cas d'un palier ouvrant plusieurs tranches dont certaines se conflictent entre elles : la scission produit alors un groupe de plusieurs tranches et un ou plusieurs groupes d'une seule. **Ce dépôt retient que c'est le palier, pas le groupe, qui porte la propriété d'exemption** : un palier qui ouvre au moins deux tranches simultanément voit tous ses groupes nommés `LOT-nn`, y compris un groupe réduit à une seule tranche par un conflit — parce que ce groupe porte alors une information que le seul champ `Dépend de` de la tranche ne porte pas : qu'elle ouvre au même palier qu'un autre lot, dont un conflit l'exclut spécifiquement. Seul un palier qui, dans son ensemble, n'ouvre qu'**une** tranche reste hors `LOT-nn`, conformément à la justification donnée (« n'ajoute rien à ce que le champ `Dépend de` de cette tranche porte déjà »).
 
 ##### LOT-01
 
@@ -1103,21 +1230,31 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 
 | Champ | Valeur |
 |---|---|
-| Ouvrable après | TB-058, TB-059, TB-082 |
-| Tranches | TB-060, TB-063, TB-083 |
-| Modules touchés, deux à deux disjoints | TB-060 : fiche `tableau-de-bord` ; TB-063 : Folder ; TB-083 : bandeaux transversaux |
-| Ferme quand | TB-060, TB-063, TB-083 sont closes |
+| Ouvrable après | TB-058 |
+| Tranches | TB-103 |
+| Modules touchés, deux à deux disjoints | TB-103 : châssis |
+| Ferme quand | TB-103 est close |
+| Note | même palier que `LOT-06` — exclue de ce lot par son conflit de module `châssis` avec `TB-093`. |
 
 ##### LOT-08
 
 | Champ | Valeur |
 |---|---|
-| Ouvrable après | TB-060, TB-063 |
-| Tranches | TB-061, TB-062, TB-065 |
-| Modules touchés, deux à deux disjoints | TB-061 : fiche `creation-espace` ; TB-062 : fiche `vue-campagne`, fiche `vue-espace-personnel` ; TB-065 : Document |
-| Ferme quand | TB-061, TB-062, TB-065 sont closes |
+| Ouvrable après | TB-058, TB-059, TB-082 |
+| Tranches | TB-060, TB-063, TB-083 |
+| Modules touchés, deux à deux disjoints | TB-060 : fiche `tableau-de-bord` ; TB-063 : Folder ; TB-083 : bandeaux transversaux |
+| Ferme quand | TB-060, TB-063, TB-083 sont closes |
 
 ##### LOT-09
+
+| Champ | Valeur |
+|---|---|
+| Ouvrable après | TB-057, TB-060, TB-063, TB-079, TB-083 |
+| Tranches | TB-061, TB-062, TB-065, TB-101, TB-102 |
+| Modules touchés, deux à deux disjoints | TB-061 : fiche `creation-espace` ; TB-062 : fiche `vue-campagne`, fiche `vue-espace-personnel` ; TB-065 : Document ; TB-101 : fiche `accueil` ; TB-102 : fiche `tableau-de-bord` |
+| Ferme quand | TB-061, TB-062, TB-065, TB-101, TB-102 sont closes |
+
+##### LOT-10
 
 | Champ | Valeur |
 |---|---|
@@ -1126,52 +1263,83 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 | Modules touchés, deux à deux disjoints | TB-064 : fiche `navigation-dossiers` ; TB-066 : DocumentType, Document |
 | Ferme quand | TB-064, TB-066 sont closes |
 
-##### LOT-10
-
-| Champ | Valeur |
-|---|---|
-| Ouvrable après | TB-057, TB-059, TB-064, TB-065, TB-066 |
-| Tranches | TB-067, TB-071, TB-078 |
-| Modules touchés, deux à deux disjoints | TB-067 : Document ; TB-071 : Session ; TB-078 : fiche `recherche-preparation` |
-| Ferme quand | TB-067, TB-071, TB-078 sont closes |
-
 ##### LOT-11
 
 | Champ | Valeur |
 |---|---|
-| Ouvrable après | TB-064, TB-065, TB-066, TB-067, TB-071 |
-| Tranches | TB-068, TB-069, TB-072 |
-| Modules touchés, deux à deux disjoints | TB-068 : fiche `editeur-document` ; TB-069 : Document ; TB-072 : SessionViewConfig |
-| Ferme quand | TB-068, TB-069, TB-072 sont closes |
+| Ouvrable après | TB-065 |
+| Tranches | TB-067 |
+| Modules touchés, deux à deux disjoints | TB-067 : Document |
+| Ferme quand | TB-067 est close |
+| Note | même palier que `LOT-10` — exclue par son conflit de module `Document` avec `TB-066`. |
 
 ##### LOT-12
 
 | Champ | Valeur |
 |---|---|
-| Ouvrable après | TB-062, TB-067, TB-068, TB-069, TB-071, TB-072, TB-087 |
-| Tranches | TB-070, TB-073, TB-075, TB-088 |
-| Modules touchés, deux à deux disjoints | TB-070 : fiche `editeur-scenario` ; TB-073 : Session, Document ; TB-075 : fiche `parametres-campagne` ; TB-088 : projection d'export |
-| Ferme quand | TB-070, TB-073, TB-075, TB-088 sont closes |
+| Ouvrable après | TB-056, TB-065 |
+| Tranches | TB-081 |
+| Modules touchés, deux à deux disjoints | TB-081 : Document |
+| Ferme quand | TB-081 est close |
+| Note | même palier que `LOT-10` et `LOT-11` — exclue par son conflit de module `Document` avec `TB-066` et `TB-067`. |
 
 ##### LOT-13
 
 | Champ | Valeur |
 |---|---|
-| Ouvrable après | TB-058, TB-065, TB-071, TB-072, TB-073, TB-075, TB-087, TB-088 |
-| Tranches | TB-074, TB-076, TB-089, TB-091 |
-| Modules touchés, deux à deux disjoints | TB-074 : fiche `vue-session-mj` ; TB-076 : Session, Document ; TB-089 : projection d'export ; TB-091 : fiche `parametres-campagne` |
-| Ferme quand | TB-074, TB-076, TB-089, TB-091 sont closes |
+| Ouvrable après | TB-057, TB-059, TB-064, TB-065, TB-066, TB-067 |
+| Tranches | TB-068, TB-069, TB-071, TB-078 |
+| Modules touchés, deux à deux disjoints | TB-068 : fiche `editeur-document` ; TB-069 : Document ; TB-071 : Session ; TB-078 : fiche `recherche-preparation`, châssis |
+| Ferme quand | TB-068, TB-069, TB-071, TB-078 sont closes |
 
 ##### LOT-14
 
 | Champ | Valeur |
 |---|---|
-| Ouvrable après | TB-056, TB-057, TB-065, TB-074, TB-076, TB-080, TB-088, TB-089 |
-| Tranches | TB-077, TB-081, TB-090, TB-092 |
-| Modules touchés, deux à deux disjoints | TB-077 : fiche `panneau-creation-rapide` ; TB-081 : Document ; TB-090 : le projet de test de bout en bout ; TB-092 : le projet Application unique |
-| Ferme quand | TB-077, TB-081, TB-090, TB-092 sont closes |
+| Ouvrable après | TB-066, TB-067, TB-068, TB-069, TB-071, TB-078 |
+| Tranches | TB-070, TB-072, TB-073, TB-096 |
+| Modules touchés, deux à deux disjoints | TB-070 : fiche `editeur-scenario` ; TB-072 : SessionViewConfig ; TB-073 : Session, Document ; TB-096 : fiche `recherche-preparation` |
+| Ferme quand | TB-070, TB-072, TB-073, TB-096 sont closes |
 
-**Paliers n'ouvrant qu'une seule tranche** (voir le champ `Dépend de` de la tranche elle-même) : TB-002, TB-056, TB-094.
+##### LOT-15
+
+| Champ | Valeur |
+|---|---|
+| Ouvrable après | TB-065, TB-071 |
+| Tranches | TB-076 |
+| Modules touchés, deux à deux disjoints | TB-076 : Session, Document |
+| Ferme quand | TB-076 est close |
+| Note | même palier que `LOT-14` — exclue par son conflit de modules `Session`/`Document` avec `TB-071`, `TB-069`, `TB-073`. |
+
+##### LOT-16
+
+| Champ | Valeur |
+|---|---|
+| Ouvrable après | TB-058, TB-062, TB-065, TB-067, TB-070, TB-071, TB-072, TB-073, TB-078, TB-087 |
+| Tranches | TB-074, TB-075, TB-088, TB-097, TB-099 |
+| Modules touchés, deux à deux disjoints | TB-074 : fiche `vue-session-mj` ; TB-075 : fiche `parametres-campagne` ; TB-088 : projection d'export ; TB-097 : châssis ; TB-099 : fiche `editeur-scenario` |
+| Ferme quand | TB-074, TB-075, TB-088, TB-097, TB-099 sont closes |
+
+##### LOT-17
+
+| Champ | Valeur |
+|---|---|
+| Ouvrable après | TB-069, TB-070 |
+| Tranches | TB-100 |
+| Modules touchés, deux à deux disjoints | TB-100 : fiche `editeur-scenario` |
+| Ferme quand | TB-100 est close |
+| Note | même palier que `LOT-16` — exclue par son conflit de module `fiche editeur-scenario` avec `TB-099`. |
+
+##### LOT-18
+
+| Champ | Valeur |
+|---|---|
+| Ouvrable après | TB-074, TB-075, TB-076, TB-080, TB-087, TB-088, TB-097 |
+| Tranches | TB-077, TB-089, TB-091, TB-092, TB-098 |
+| Modules touchés, deux à deux disjoints | TB-077 : fiche `panneau-creation-rapide` ; TB-089 : projection d'export ; TB-091 : fiche `parametres-campagne` ; TB-092 : le projet Application unique ; TB-098 : fiche `vue-session-mj` |
+| Ferme quand | TB-077, TB-089, TB-091, TB-092, TB-098 sont closes |
+
+**Paliers n'ouvrant qu'une seule tranche** (voir le champ `Dépend de` de la tranche elle-même) : TB-002, TB-056, TB-090, TB-094.
 
 ---
 
@@ -1185,7 +1353,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 
 **Trois points qui doivent rester ouverts, chacun sur un axe distinct — ce plan ne prend position sur aucune de leurs issues.**
 
-- **Identité graphique** (axe conception d'interface) — `roadmap-entree-build.md § Annexe B` en fait un préalable hors jalon, porté par `docs/conception/interface/**`, non modifié par ce document.
+- **Identité graphique, et le design system codé qui en dépend** (axe conception d'interface) — `roadmap-entree-build.md § Annexe B` fait de l'identité graphique un préalable hors jalon, porté par `docs/conception/interface/**`, non modifié par ce document. Tant que ce préalable n'est pas produit, aucune tranche de ce plan ne porte le design system **codé** (composants Angular, Storybook, CSS vars) : une tranche qui le viserait échouerait les quatrième et cinquième conditions d'entrée de [`methode-de-ticket.md §2`](methode-de-ticket.md) — ni critère d'acceptation tranchant, ni module nommable dans la maille (§2). Suivi de ce préalable : [`decisions-en-attente.md § Groupe 6`](decisions-en-attente.md).
 - **Seuil chiffré de l'hypothèse `H1`** (axe métrique produit) — `vision/vision-produit.md §2.3` en est propriétaire ; `vision/moscow.md § Instrumentation de validation du MVP` y renvoie sans le fixer.
 - **L'entrée `J-12` du registre des risques** (axe juridique) — `registre-risques.md §3.3`, méthode de vérification d'identité des invités non retenue ; le registre signale lui-même que la frontière entre « lacune réelle » et « posture existante » n'est pas tranchée par ce registre et attend un statut en comité des risques.
 
@@ -1251,7 +1419,7 @@ Deux épiques sont également retirées :
 | EP-06 | — dissoute : « chaque geste métier passe par un cas d'usage Application unique » est un invariant d'architecture, pas un regroupement de travail. Sa seule tranche survivante, le câblage de l'invariant d'autorisation, rejoint EP-04 dont elle est la suite directe |
 | EP-07 | — dissoute : les object stores, index et validations locales sont la moitié cliente de chaque tranche. Ce qui reste indivisible — l'ouverture et le versionnement de la base, qui portent sur la base entière — rejoint EP-29 |
 
-Les identifiants de lot `LOT-01` à `LOT-14` de la version antérieure sont retirés : les lots de la §9 sont recalculés depuis les périmètres et les dépendances de ce document, et renumérotés à partir de `LOT-01`.
+Les identifiants de lot de toute version antérieure de la §9 sont retirés à chaque recalcul : les lots sont recalculés depuis les périmètres et les dépendances de ce document, et renumérotés à partir de `LOT-01`. **Ce nombre n'est délibérément pas fixé ici** — il varie à chaque recalcul, et l'écrire figerait un décompte que la §9 elle-même contredirait au premier ajout de tranche. Se référer à la §9 pour le compte courant.
 
 ---
 
