@@ -33,6 +33,18 @@ internal static class Orchestrateur
     // re.findall n'ancre jamais : cherche n'importe où dans le texte.
     private static readonly Regex MotifIdentifiantDansTexte = new(@"TB-\d{3}", RegexOptions.CultureInvariant);
 
+    // Titre de la section qui porte le libellé et le but de chaque épique
+    // (plan-de-travail.md §4) — jamais une clause du corpus reprise en dur
+    // ailleurs : le champ « Épique » d'une fiche de tâche (PlanDeTravail) ne
+    // porte, lui, que la clé seule (ex. « EP-02 »), sans l'intitulé.
+    private const string MarqueurVueDesEpiques = "## 4. Vue des épiques";
+
+    // Sépare la clé de l'intitulé dans la première cellule d'une ligne de la
+    // Vue des épiques (« EP-02 — Échafaudage de la solution .NET ») — même
+    // séparateur (tiret cadratin entouré d'un espace de chaque côté) que
+    // PlanDeTravail.MotifTitre pour le titre d'une fiche de tâche.
+    private static readonly Regex MotifCleEtIntitule = new(@"^(.+?) — (.+)$", RegexOptions.CultureInvariant);
+
     private static readonly HashSet<string> EtatsTerminaux = new(StringComparer.Ordinal) { "Terminé" };
     private static readonly HashSet<string> EtatsEnCours = new(StringComparer.Ordinal) { "Pris", "En cours" };
 
@@ -46,9 +58,30 @@ internal static class Orchestrateur
         "            projectV2Field{ ... on ProjectV2SingleSelectField { id name options { id name } } } } }\n" +
         "    ";
 
+    // « color » et « description » lus en plus de « id »/« name » (au-delà du
+    // seul besoin de lecture d'origine) : une mise à jour de champ liste
+    // écrase l'INTÉGRALITÉ du tableau d'options (voir RequeteMettreAJourChampListe) ;
+    // toute option réémise sans divergence voulue doit donc reprendre sa
+    // couleur et sa description ACTUELLES, jamais une valeur inventée ici.
     private const string RequeteLireChampListe =
         "query($id:ID!){node(id:$id){\n" +
-        "                ... on ProjectV2SingleSelectField{ id options{ id name } } } }";
+        "                ... on ProjectV2SingleSelectField{ id options{ id name color description } } } }";
+
+    // Écrase l'intégralité des options d'un champ liste existant — jamais une
+    // création d'option isolée, qui n'existe pas côté API (mesuré par
+    // introspection du schéma : seules `createProjectV2Field`, pour un champ
+    // neuf, et `updateProjectV2Field`, en réécriture complète, existent).
+    // Toute option omise ici serait supprimée ; en conserver l'identifiant
+    // (`id`) est ce qui la RENOMME au lieu de la recréer — le champ `id` de
+    // `ProjectV2SingleSelectFieldOptionInput` porte, dans sa propre
+    // description lue par introspection, exactement cette clause : « Include
+    // this to preserve the option's identity during updates, preventing item
+    // field values from being cleared. » Voir ReconcilierOptionsEpique.
+    private const string RequeteMettreAJourChampListe =
+        "\n        mutation($f:ID!,$o:[ProjectV2SingleSelectFieldOptionInput!]!){\n" +
+        "          updateProjectV2Field(input:{fieldId:$f,singleSelectOptions:$o}){\n" +
+        "            projectV2Field{ ... on ProjectV2SingleSelectField { id name options { id name } } } } }\n" +
+        "    ";
 
     public static int Executer(bool appliquer, TextWriter sortie)
     {
@@ -67,6 +100,19 @@ internal static class Orchestrateur
         var epiques = epiquesBrutes.ToList();
         epiques.Sort(ComparateurCodePoints.Instance);
 
+        // Cible (libellé complet, but) de chaque épique référencée par au
+        // moins une tâche — dérivée de plan-de-travail.md §4 quand cette
+        // clé y est décrite ; repli sur la clé brute, sans but, sinon
+        // (absence tolérée : voir LireLibellesEpiques). C'est cette cible,
+        // jamais la clé seule, qui porte désormais le NOM posé sur l'option
+        // du champ « Épique ».
+        var libellesEpiques = LireLibellesEpiques(contenuPlan);
+        var ciblesEpiques = epiques
+            .Select(cle => libellesEpiques.TryGetValue(cle, out var trouve)
+                ? new CibleOption(cle, trouve.Libelle, trouve.But)
+                : new CibleOption(cle, cle, ""))
+            .ToList();
+
         sortie.WriteLine($"Dépôt          : {owner}/{repo}");
         sortie.WriteLine($"Projet         : {TitreProjet}");
         sortie.WriteLine($"Tranches lues  : {taches.Count}");
@@ -79,12 +125,58 @@ internal static class Orchestrateur
         sortie.WriteLine();
 
         return appliquer
-            ? Appliquer(owner, repo, taches, etats, epiques, sortie)
-            : ApercuModeABlanc(owner, repo, taches, etats, epiques, sortie);
+            ? Appliquer(owner, repo, taches, etats, ciblesEpiques, sortie)
+            : ApercuModeABlanc(owner, repo, taches, etats, ciblesEpiques, sortie);
+    }
+
+    /// <summary>
+    /// Lit plan-de-travail.md §4 (« Vue des épiques ») et en tire, pour
+    /// chaque clé d'épique qui y apparaît, son libellé complet (clé +
+    /// intitulé, dans la forme exacte du plan) et son but (colonne voisine).
+    /// Absence de la section tolérée — rend un dictionnaire vide plutôt que
+    /// de lever : un plan de fixture minimal (tests de caractérisation) n'a
+    /// jamais à porter cette section pour rester lisible par cet outil, et
+    /// une clé alors non trouvée retombe sur elle-même comme libellé (voir
+    /// l'appelant). Une clé répétée sous plusieurs jalons (ex. une épique
+    /// « J0-J1 », présente à la fois sous J0 et sous J1) y est lue plusieurs
+    /// fois ; la dernière occurrence lue l'emporte silencieusement — sans
+    /// conséquence mesurée sur le corpus réel, où aucune clé ne varie
+    /// d'intitulé ni de but d'une occurrence à l'autre.
+    /// </summary>
+    private static Dictionary<string, (string Libelle, string But)> LireLibellesEpiques(string contenuPlan)
+    {
+        var resultat = new Dictionary<string, (string, string)>(StringComparer.Ordinal);
+
+        int debut = contenuPlan.IndexOf(MarqueurVueDesEpiques, StringComparison.Ordinal);
+        if (debut == -1) return resultat;
+
+        // Bornée par le prochain titre de section de premier niveau (« ## »),
+        // jamais par la fin du document : une section suivante ne doit
+        // jamais être lue comme si elle appartenait à la Vue des épiques.
+        int finRecherche = debut + MarqueurVueDesEpiques.Length;
+        int fin = contenuPlan.IndexOf("\n## ", finRecherche, StringComparison.Ordinal);
+        string section = fin != -1 ? contenuPlan[debut..fin] : contenuPlan[debut..];
+
+        // TableauMarkdown.AnalyserLignes ne rend que les deux premières
+        // cellules de chaque ligne de tableau (ici : « clé — intitulé » et
+        // « but ») — exactement ce qu'il faut, les colonnes Jalon/Dépend
+        // de/Tranches restant hors de propos ici. Sa ligne d'en-tête
+        // (« Épique | But | … ») n'y est pas filtrée par nom (elle ne
+        // s'appelle ni « Champ » ni « Valeur ») mais ne porte jamais de tiret
+        // cadratin : MotifCleEtIntitule ne s'y apparie jamais, elle est donc
+        // écartée par construction, tout comme la ligne de séparation.
+        foreach (var (premiere, seconde) in TableauMarkdown.AnalyserLignes(section))
+        {
+            var m = MotifCleEtIntitule.Match(premiere);
+            if (!m.Success) continue;
+            string cle = m.Groups[1].Value;
+            resultat[cle] = ($"{cle} — {m.Groups[2].Value}", seconde);
+        }
+        return resultat;
     }
 
     private static int ApercuModeABlanc(
-        string owner, string repo, List<Tache> taches, List<string> etats, List<string> epiques, TextWriter sortie)
+        string owner, string repo, List<Tache> taches, List<string> etats, List<CibleOption> ciblesEpiques, TextWriter sortie)
     {
         sortie.WriteLine("MODE À BLANC — rien n'est créé sur GitHub.");
 
@@ -114,7 +206,31 @@ internal static class Orchestrateur
             ? LireChampsExistantsTolerant(numeroProjet.Value, owner)
             : new Dictionary<string, JsonElement>(StringComparer.Ordinal);
         AnnoncerChamp(sortie, "Statut", etats.Count, champsExistants);
-        AnnoncerChamp(sortie, "Épique", epiques.Count, champsExistants);
+        AnnoncerChamp(sortie, "Épique", ciblesEpiques.Count, champsExistants);
+
+        // Aperçu du renommage/de la création d'options du champ « Épique » —
+        // jamais un appel GraphQL supplémentaire (ce mode ne doit jamais
+        // perdre sa tolérance à un `gh` non authentifié) : les options déjà
+        // posées sont ici relues depuis `champsExistants`, déjà obtenu par
+        // LireChampsExistantsTolerant (`gh project field-list`, tolérant lui
+        // aussi). Couleur/description n'y sont jamais nécessaires : cet
+        // aperçu ne construit aucune charge d'écriture, seul le NOM de
+        // chaque option compte pour la décision renommer/créer/rien.
+        if (champsExistants.TryGetValue("Épique", out var champEpiqueExistant))
+        {
+            var optionsExistantes = champEpiqueExistant.GetProperty("options").EnumerateArray()
+                .Select(o => new OptionExistante(o.GetProperty("id").GetString()!, o.GetProperty("name").GetString()!, "", ""))
+                .ToList();
+            var (_, renommees, creees) = ReconcilierOptionsEpique(optionsExistantes, ciblesEpiques);
+            foreach (var (ancien, nouveau) in renommees)
+            {
+                sortie.WriteLine($"    ~ option « {ancien} » sera renommée en « {nouveau} »");
+            }
+            foreach (var creee in creees)
+            {
+                sortie.WriteLine($"    + option « {creee} » sera créée");
+            }
+        }
 
         string sortieBrute = GhCli.InvoquerBrut(
             "issue", "list", "--repo", $"{owner}/{repo}", "--limit", "300", "--state", "all", "--json", "number,title,state");
@@ -131,6 +247,12 @@ internal static class Orchestrateur
             etatsParTb[tb] = i.GetProperty("state").GetString() == "CLOSED" ? "Terminé" : null;
         }
         var auPlan = new HashSet<string>(taches.Select(t => t.Id), StringComparer.Ordinal);
+
+        // Clé brute d'épique (telle que portée par le champ « Épique » d'une
+        // fiche de tâche) → libellé complet posé comme NOM d'option — la
+        // valeur qu'un élément déjà à jour porte réellement, une fois
+        // l'option renommée (voir Appliquer, ReconcilierOptionsEpique).
+        var libelleParCle = ciblesEpiques.ToDictionary(c => c.Cle, c => c.Nom, StringComparer.Ordinal);
 
         // Éléments déjà posés dans le projet — vide si le projet n'existe pas
         // encore (aucun élément ne peut y être posé sans lui). Même lecture
@@ -152,7 +274,8 @@ internal static class Orchestrateur
                 continue;
             }
 
-            string epiqueCible = TexteUnicode.StripPython(tache.Champs.GetValueOrDefault("Épique", ""));
+            string epiqueBrute = TexteUnicode.StripPython(tache.Champs.GetValueOrDefault("Épique", ""));
+            string epiqueCible = epiqueBrute.Length > 0 ? libelleParCle.GetValueOrDefault(epiqueBrute, epiqueBrute) : "";
             bool epiqueDivergente = epiqueCible.Length > 0
                 && !string.Equals(existant.Epique, epiqueCible, StringComparison.Ordinal);
             string statutCible = StatutCalcule(tache, etatsParTb);
@@ -247,7 +370,7 @@ internal static class Orchestrateur
     }
 
     private static int Appliquer(
-        string owner, string repo, List<Tache> taches, List<string> etats, List<string> epiques, TextWriter sortie)
+        string owner, string repo, List<Tache> taches, List<string> etats, List<CibleOption> ciblesEpiques, TextWriter sortie)
     {
         // Python n'a, pour --appliquer, aucune garde explicite d'exécution :
         // `gh` absent produit une trace Python non interceptée (1 par
@@ -310,28 +433,67 @@ internal static class Orchestrateur
             champsExistants[c.GetProperty("name").GetString()!] = c;
         }
 
-        (string Id, Dictionary<string, string> Options) ChampListe(string nom, IReadOnlyList<string> valeurs)
+        // reconcilierOptions distingue les deux champs : « Statut » reste en
+        // lecture seule quand il existe déjà (comportement d'origine, jamais
+        // analysé pour un renommage — les six états de methode-de-ticket.md
+        // §5 ne sont jamais recomposés en clé + intitulé) ; seule « Épique »
+        // emprunte le chemin de réconciliation (voir ReconcilierOptionsEpique).
+        (string Id, Dictionary<string, string> Options) ChampListe(string nom, IReadOnlyList<CibleOption> cibles, bool reconcilierOptions)
         {
             if (champsExistants.TryGetValue(nom, out var champExistant))
             {
                 var variables = new JsonObject { ["id"] = champExistant.GetProperty("id").GetString() };
                 var data = Graphql.Executer(RequeteLireChampListe, variables).GetProperty("node");
-                var optionsExistantes = data.GetProperty("options");
-                sortie.WriteLine($"  = champ « {nom} » déjà présent ({optionsExistantes.GetArrayLength()} valeurs)");
-                var opts = new Dictionary<string, string>(StringComparer.Ordinal);
-                foreach (var o in optionsExistantes.EnumerateArray())
+                string idChamp = data.GetProperty("id").GetString()!;
+                var optionsExistantes = data.GetProperty("options").EnumerateArray()
+                    .Select(o => new OptionExistante(
+                        o.GetProperty("id").GetString()!,
+                        o.GetProperty("name").GetString()!,
+                        o.GetProperty("color").GetString()!,
+                        o.GetProperty("description").GetString() ?? ""))
+                    .ToList();
+
+                if (!reconcilierOptions)
                 {
-                    opts[o.GetProperty("name").GetString()!] = o.GetProperty("id").GetString()!;
+                    sortie.WriteLine($"  = champ « {nom} » déjà présent ({optionsExistantes.Count} valeurs)");
+                    var optsLecture = new Dictionary<string, string>(StringComparer.Ordinal);
+                    foreach (var o in optionsExistantes) optsLecture[o.Nom] = o.Id;
+                    return (idChamp, optsLecture);
                 }
-                return (data.GetProperty("id").GetString()!, opts);
+
+                sortie.WriteLine($"  = champ « {nom} » déjà présent ({optionsExistantes.Count} valeurs)");
+                var (finales, renommees, creees) = ReconcilierOptionsEpique(optionsExistantes, cibles);
+                Dictionary<string, string> optsEcriture;
+                if (renommees.Count == 0 && creees.Count == 0)
+                {
+                    // Idempotence : aucune divergence de libellé, aucune
+                    // clé nouvelle — pas d'écriture, les options existantes
+                    // font foi telles quelles.
+                    optsEcriture = new Dictionary<string, string>(StringComparer.Ordinal);
+                    foreach (var o in optionsExistantes) optsEcriture[o.Nom] = o.Id;
+                }
+                else
+                {
+                    optsEcriture = EcrireOptionsChamp(idChamp, finales);
+                    foreach (var (ancien, nouveau) in renommees)
+                    {
+                        sortie.WriteLine($"    ~ option « {ancien} » renommée en « {nouveau} »");
+                    }
+                    foreach (var creee in creees)
+                    {
+                        sortie.WriteLine($"    + option « {creee} » créée");
+                    }
+                }
+                return (idChamp, optsEcriture);
             }
-            var (idCree, optsCreees) = CreerChampListe(idProjet, nom, valeurs);
-            sortie.WriteLine($"  + champ « {nom} » ({valeurs.Count} valeurs)");
+            var (idCree, optsCreees) = CreerChampListe(idProjet, nom, cibles);
+            sortie.WriteLine($"  + champ « {nom} » ({cibles.Count} valeurs)");
             return (idCree, optsCreees);
         }
 
-        var (idStatut, optsStatut) = ChampListe("Statut", etats);
-        var (idEpique, optsEpique) = ChampListe("Épique", epiques);
+        var ciblesStatut = etats.Select(e => new CibleOption(e, e, "")).ToList();
+        var (idStatut, optsStatut) = ChampListe("Statut", ciblesStatut, reconcilierOptions: false);
+        var (idEpique, optsEpique) = ChampListe("Épique", ciblesEpiques, reconcilierOptions: true);
 
         // 3. les issues déjà ouvertes. Python n'adjuge pas le code de sortie
         // ICI (pas de `or "[]"` non plus, à la différence du même appel en
@@ -375,6 +537,13 @@ internal static class Orchestrateur
             if (ExtraireChampsItem(it) is { } trouveItem) itemsExistants[trouveItem.Tb] = trouveItem.Champs;
         }
 
+        // Clé brute d'épique → libellé complet posé comme NOM d'option —
+        // même correspondance que ApercuModeABlanc (voir libelleParCle
+        // là-bas) : c'est ce libellé, jamais la clé seule, que porte
+        // désormais optsEpique (Nom → Id des options telles qu'écrites
+        // ci-dessus).
+        var libelleParCle = ciblesEpiques.ToDictionary(c => c.Cle, c => c.Nom, StringComparer.Ordinal);
+
         int ajoutes = 0, reutilises = 0;
         foreach (var tache in taches)
         {
@@ -399,7 +568,8 @@ internal static class Orchestrateur
             // diverge de la valeur actuellement posée sur l'élément — un
             // élément tout juste ajouté (existant == null) n'a par
             // construction aucune valeur actuelle, donc diverge toujours.
-            string epique = TexteUnicode.StripPython(tache.Champs.GetValueOrDefault("Épique", ""));
+            string epiqueBrute = TexteUnicode.StripPython(tache.Champs.GetValueOrDefault("Épique", ""));
+            string epique = epiqueBrute.Length > 0 ? libelleParCle.GetValueOrDefault(epiqueBrute, epiqueBrute) : "";
             if (optsEpique.TryGetValue(epique, out var idOptionEpique)
                 && !string.Equals(existant?.Epique, epique, StringComparison.Ordinal))
             {
@@ -522,16 +692,16 @@ internal static class Orchestrateur
     }
 
     private static (string Id, Dictionary<string, string> Options) CreerChampListe(
-        string idProjet, string nom, IReadOnlyList<string> valeurs)
+        string idProjet, string nom, IReadOnlyList<CibleOption> cibles)
     {
         var options = new JsonArray();
-        for (int i = 0; i < valeurs.Count; i++)
+        for (int i = 0; i < cibles.Count; i++)
         {
             options.Add(new JsonObject
             {
-                ["name"] = valeurs[i],
+                ["name"] = cibles[i].Nom,
                 ["color"] = Couleurs[i % Couleurs.Length],
-                ["description"] = "",
+                ["description"] = cibles[i].Description,
             });
         }
 
@@ -545,5 +715,136 @@ internal static class Orchestrateur
             opts[o.GetProperty("name").GetString()!] = o.GetProperty("id").GetString()!;
         }
         return (champ.GetProperty("id").GetString()!, opts);
+    }
+
+    // La description d'une option n'est jamais tronquée ici : l'introspection
+    // du schéma GraphQL (champ `description` de
+    // `ProjectV2SingleSelectFieldOptionInput`) ne documente aucune longueur
+    // maximale — à la différence de son champ `id`, dont la description
+    // porte, elle, une clause explicite (voir RequeteMettreAJourChampListe).
+    // Vérifier une limite RÉELLE exigerait une mutation contre un projet
+    // réel, hors de portée de cette correction (voir le rapport de portage).
+    /// <summary>Cible d'option dérivée du plan pour une clé d'épique : son libellé complet (« clé — intitulé », ou la clé seule à défaut d'intitulé connu — voir <see cref="LireLibellesEpiques"/>) et sa description (le but de l'épique, vide à défaut).</summary>
+    private readonly record struct CibleOption(string Cle, string Nom, string Description);
+
+    /// <summary>Option de champ liste telle que lue à distance (GraphQL, <see cref="RequeteLireChampListe"/>), avec tout le nécessaire à un réemploi fidèle lors d'une réécriture complète du tableau d'options.</summary>
+    private readonly record struct OptionExistante(string Id, string Nom, string Couleur, string Description);
+
+    /// <summary>Option à envoyer dans la charge d'une mutation de champ liste — <c>Id</c> nul pour une option neuve (jamais réémis, l'API lui en attribue un), renseigné pour réémettre une option existante et en préserver l'identité.</summary>
+    private readonly record struct OptionAEnvoyer(string? Id, string Nom, string Couleur, string Description);
+
+    /// <summary>
+    /// Réconcilie les options actuellement posées sur le champ « Épique »
+    /// avec les cibles dérivées du plan — un RENOMMAGE, jamais une
+    /// recréation d'option : toute option déjà posée qui s'apparie à une clé
+    /// courante REND SON IDENTIFIANT dans <see cref="OptionAEnvoyer.Id"/>,
+    /// pour que les affectations déjà posées sur des éléments du projet ne
+    /// se perdent jamais (52 éléments en portent une au moment de cette
+    /// correction). L'appariement se fait par le NOM actuel de l'option,
+    /// contre soit la clé brute (forme historique, avant toute migration,
+    /// ex. « EP-02 »), soit le libellé complet déjà migré (ex.
+    /// « EP-02 — Échafaudage de la solution .NET ») — pour qu'une exécution
+    /// répétée après une première migration reconnaisse ses propres options
+    /// déjà renommées et n'émette alors plus aucune divergence.
+    ///
+    /// Une option non appariée à aucune clé courante — un reliquat, un cas
+    /// que la mission n'a jamais nommé — est reprise TELLE QUELLE, jamais
+    /// supprimée ni renommée : solution la plus conservative faute d'un sens
+    /// arbitré pour ce cas, absent du corpus mesuré au moment de cette
+    /// correction. Une clé sans option appariée reçoit une option neuve,
+    /// ajoutée en fin de liste.
+    ///
+    /// La divergence qui déclenche un renommage porte sur le NOM seul —
+    /// jamais sur la description d'une option dont le nom est déjà à jour :
+    /// c'est la lecture littérale retenue pour l'idempotence attendue
+    /// (« si les libellés sont déjà à jour, aucune écriture ») ; une
+    /// description qui divergerait seule, sans divergence de nom, ne
+    /// déclenche donc aucune écriture — cas absent du corpus mesuré (la
+    /// description n'est posée qu'au moment même où le nom l'est).
+    /// </summary>
+    private static (List<OptionAEnvoyer> Finales, List<(string Ancien, string Nouveau)> Renommees, List<string> Creees)
+        ReconcilierOptionsEpique(IReadOnlyList<OptionExistante> existantes, IReadOnlyList<CibleOption> cibles)
+    {
+        var finales = new List<OptionAEnvoyer>();
+        var renommees = new List<(string, string)>();
+        var appariees = new HashSet<int>();
+
+        foreach (var existante in existantes)
+        {
+            int index = -1;
+            for (int i = 0; i < cibles.Count; i++)
+            {
+                if (appariees.Contains(i)) continue;
+                if (string.Equals(existante.Nom, cibles[i].Nom, StringComparison.Ordinal)
+                    || string.Equals(existante.Nom, cibles[i].Cle, StringComparison.Ordinal))
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1)
+            {
+                finales.Add(new OptionAEnvoyer(existante.Id, existante.Nom, existante.Couleur, existante.Description));
+                continue;
+            }
+
+            appariees.Add(index);
+            var cible = cibles[index];
+            if (string.Equals(existante.Nom, cible.Nom, StringComparison.Ordinal))
+            {
+                finales.Add(new OptionAEnvoyer(existante.Id, existante.Nom, existante.Couleur, existante.Description));
+            }
+            else
+            {
+                renommees.Add((existante.Nom, cible.Nom));
+                finales.Add(new OptionAEnvoyer(existante.Id, cible.Nom, existante.Couleur, cible.Description));
+            }
+        }
+
+        var creees = new List<string>();
+        for (int i = 0; i < cibles.Count; i++)
+        {
+            if (appariees.Contains(i)) continue;
+            var cible = cibles[i];
+            finales.Add(new OptionAEnvoyer(null, cible.Nom, Couleurs[creees.Count % Couleurs.Length], cible.Description));
+            creees.Add(cible.Nom);
+        }
+
+        return (finales, renommees, creees);
+    }
+
+    /// <summary>
+    /// Réécrit l'intégralité des options d'un champ liste existant
+    /// (<see cref="RequeteMettreAJourChampListe"/>) et rend les identifiants
+    /// (nouveaux ou préservés) de chaque option telle que l'API la rend après
+    /// écriture — jamais recalculés localement : c'est la seule source fiable
+    /// de l'identifiant d'une option tout juste créée.
+    /// </summary>
+    private static Dictionary<string, string> EcrireOptionsChamp(string idChamp, IReadOnlyList<OptionAEnvoyer> options)
+    {
+        var tableauOptions = new JsonArray();
+        foreach (var option in options)
+        {
+            var noeud = new JsonObject
+            {
+                ["name"] = option.Nom,
+                ["color"] = option.Couleur,
+                ["description"] = option.Description,
+            };
+            if (option.Id is not null) noeud["id"] = option.Id;
+            tableauOptions.Add(noeud);
+        }
+
+        var variables = new JsonObject { ["f"] = idChamp, ["o"] = tableauOptions };
+        var champ = Graphql.Executer(RequeteMettreAJourChampListe, variables)
+            .GetProperty("updateProjectV2Field").GetProperty("projectV2Field");
+
+        var opts = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var o in champ.GetProperty("options").EnumerateArray())
+        {
+            opts[o.GetProperty("name").GetString()!] = o.GetProperty("id").GetString()!;
+        }
+        return opts;
     }
 }

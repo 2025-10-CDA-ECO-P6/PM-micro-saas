@@ -95,6 +95,11 @@ internal static class FixturesCreerProjet
         },
     });
 
+    // « color »/« description » désormais lus par Orchestrateur.ChampListe
+    // (une mise à jour de champ liste réécrit l'intégralité du tableau
+    // d'options — voir RequeteMettreAJourChampListe — et doit donc pouvoir
+    // reprendre la couleur/description ACTUELLE d'une option non touchée) :
+    // absents d'une réponse fixture, `GetProperty("color")` lèverait.
     public static string ReponseGraphqlOptionsStatut() => JsonSerializer.Serialize(new
     {
         data = new
@@ -104,8 +109,8 @@ internal static class FixturesCreerProjet
                 id = IdChampStatut,
                 options = new[]
                 {
-                    new { id = IdOptionOuvertNonPret, name = "Ouvert, non prêt" },
-                    new { id = IdOptionPret, name = "Prêt" },
+                    new { id = IdOptionOuvertNonPret, name = "Ouvert, non prêt", color = "GRAY", description = "" },
+                    new { id = IdOptionPret, name = "Prêt", color = "BLUE", description = "" },
                 },
             },
         },
@@ -113,7 +118,7 @@ internal static class FixturesCreerProjet
 
     public static string ReponseGraphqlOptionsEpique() => JsonSerializer.Serialize(new
     {
-        data = new { node = new { id = IdChampEpique, options = new[] { new { id = IdOptionFondations, name = "Fondations" } } } },
+        data = new { node = new { id = IdChampEpique, options = new[] { new { id = IdOptionFondations, name = "Fondations", color = "GRAY", description = "" } } } },
     });
 
     public static string ReponseIssueExistante() => JsonSerializer.Serialize(new[]
@@ -198,6 +203,27 @@ internal static class FixturesCreerProjet
                     .EnumerateArray().Select(e => e.GetString() ?? "").ToArray())
                 .ToList()
             : new List<string[]>();
+
+    /// <summary>
+    /// Comme <see cref="LireJournal"/>, en conservant aussi l'entrée standard
+    /// de chaque appel (jamais lue par <see cref="LireJournal"/>) — seul
+    /// moyen de vérifier CE QUI PART RÉELLEMENT vers `gh` pour un appel
+    /// GraphQL (le vecteur d'arguments d'un appel GraphQL vaut toujours
+    /// <c>["api","graphql","--input","-"]</c>, quelle que soit la requête :
+    /// la charge, elle, ne voyage que sur l'entrée standard — voir Graphql.cs).
+    /// </summary>
+    public static List<(string[] Args, string Stdin)> LireJournalAvecEntreeStandard(string chemin) =>
+        File.Exists(chemin)
+            ? File.ReadAllLines(chemin)
+                .Where(l => l.Trim().Length > 0)
+                .Select(l =>
+                {
+                    var racine = JsonDocument.Parse(l).RootElement;
+                    var args = racine.GetProperty("args").EnumerateArray().Select(e => e.GetString() ?? "").ToArray();
+                    return (args, racine.GetProperty("stdin").GetString() ?? "");
+                })
+                .ToList()
+            : new List<(string[], string)>();
 }
 
 /// <summary>
@@ -396,5 +422,278 @@ public class ModeABlancRefleteLEtatDistantReel : IDisposable
         Assert.Equal(4, invocations.Count);
         Assert.DoesNotContain(invocations, a => a.Contains("item-add") || a.Contains("item-edit")
             || a.Contains("create") || a.Contains("link") || a.Contains("graphql"));
+    }
+}
+
+/// <summary>
+/// Fixtures propres au renommage des options du champ « Épique » — un plan
+/// portant, à la différence de <see cref="FixturesCreerProjet"/>, une section
+/// « Vue des épiques » (plan-de-travail.md §4), seule source du libellé
+/// complet (clé + intitulé) et du but posés sur une option. Deux tâches :
+/// TB-100 référence une clé DÉCRITE par cette section (EP-02, dont le nom
+/// d'option historique — avant toute migration — vaut la clé seule) ; TB-200
+/// référence une clé ABSENTE de cette section (EP-88), dont le libellé retombe
+/// donc sur la clé seule (repli, voir Orchestrateur.LireLibellesEpiques).
+/// </summary>
+internal static class FixturesRenommageEpique
+{
+    public const string LibelleEp02 = "EP-02 — Échafaudage de la solution .NET";
+    public const string ButEp02 = "les projets .NET existent et s'assemblent";
+    public const string LibelleEp88 = "EP-88"; // repli sur la clé seule : aucune ligne EP-88 dans la Vue des épiques.
+    public const string IdOptionEp02 = "E_EP02";
+    public const string IdOptionFondations = "E_FONDATIONS_RELIQUAT";
+    public const string IdOptionEp88 = "E_EP88";
+    public const string TitreIssueTb100 = "TB-100 — Tâche de test pour le renommage";
+    public const string TitreIssueTb200 = "TB-200 — Tâche de test pour la création";
+    public const string IdItem100 = "ITEM100";
+    public const string IdItem200 = "ITEM200";
+
+    // Section 4 bornée par un titre de niveau 2 suivant (même convention que
+    // le plan réel, où « ## 5. J0 — épiques et tranches » borne la Vue des
+    // épiques) — preuve que LireLibellesEpiques ne lit jamais au-delà dans
+    // les fiches de tâches qui suivent. « Fondations » n'y figure pas : c'est
+    // le reliquat non apparié à aucune clé courante (voir
+    // ReconcilierOptionsEpique), jamais référencé par aucune tâche de ce plan.
+    public const string PlanMd =
+        "# Plan de travail (fixture de test)\n\n" +
+        "## 4. Vue des épiques\n\n" +
+        "### J0\n\n" +
+        "| Épique | But | Jalon | Dépend de | Tranches |\n|---|---|---|---|---|\n" +
+        $"| {LibelleEp02} | {ButEp02} | J0 | — | TB-100 |\n\n" +
+        "## 5. Tranches\n\n" +
+        "##### TB-100 — Tâche de test pour le renommage\n\n" +
+        "| Champ | Valeur |\n|---|---|\n" +
+        "| Périmètre d'écriture | Test |\n" +
+        "| Dépend de | — |\n" +
+        "| En conflit avec | — |\n" +
+        "| Épique | EP-02 |\n\n" +
+        "##### TB-200 — Tâche de test pour la création\n\n" +
+        "| Champ | Valeur |\n|---|---|\n" +
+        "| Périmètre d'écriture | Test |\n" +
+        "| Dépend de | — |\n" +
+        "| En conflit avec | — |\n" +
+        "| Épique | EP-88 |\n";
+
+    public static void EcrireDepotMinimal(string depot)
+    {
+        Helpers.InitialiserDepotGit(depot);
+        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/methode-de-ticket.md"), FixturesCreerProjet.MethodeMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/plan-de-travail.md"), PlanMd);
+    }
+
+    public static string ReponseChampsExistants() => JsonSerializer.Serialize(new
+    {
+        fields = new object[]
+        {
+            new { id = FixturesCreerProjet.IdChampStatut, name = "Statut" },
+            new { id = FixturesCreerProjet.IdChampEpique, name = "Épique" },
+        },
+    });
+
+    /// <summary>Avant migration : « EP-02 » (forme brute historique) et un reliquat « Fondations » non référencé par aucune tâche de ce plan.</summary>
+    public static string ReponseGraphqlEpiqueAvantMigration() => JsonSerializer.Serialize(new
+    {
+        data = new
+        {
+            node = new
+            {
+                id = FixturesCreerProjet.IdChampEpique,
+                options = new[]
+                {
+                    new { id = IdOptionEp02, name = "EP-02", color = "GRAY", description = "" },
+                    new { id = IdOptionFondations, name = "Fondations", color = "BLUE", description = "" },
+                },
+            },
+        },
+    });
+
+    /// <summary>Après migration : EP-02 renommé (identifiant préservé), Fondations inchangé, EP-88 créé.</summary>
+    public static string ReponseGraphqlEpiqueApresMigration() => JsonSerializer.Serialize(new
+    {
+        data = new
+        {
+            node = new
+            {
+                id = FixturesCreerProjet.IdChampEpique,
+                options = new[]
+                {
+                    new { id = IdOptionEp02, name = LibelleEp02, color = "GRAY", description = ButEp02 },
+                    new { id = IdOptionFondations, name = "Fondations", color = "BLUE", description = "" },
+                    new { id = IdOptionEp88, name = LibelleEp88, color = "GRAY", description = "" },
+                },
+            },
+        },
+    });
+
+    public static string ReponseMutationMiseAJourChamp() => JsonSerializer.Serialize(new
+    {
+        data = new
+        {
+            updateProjectV2Field = new
+            {
+                projectV2Field = new
+                {
+                    id = FixturesCreerProjet.IdChampEpique,
+                    name = "Épique",
+                    options = new[]
+                    {
+                        new { id = IdOptionEp02, name = LibelleEp02 },
+                        new { id = IdOptionFondations, name = "Fondations" },
+                        new { id = IdOptionEp88, name = LibelleEp88 },
+                    },
+                },
+            },
+        },
+    });
+
+    public static string ReponseIssuesOuvertes() => JsonSerializer.Serialize(new object[]
+    {
+        new { number = 101, title = TitreIssueTb100, url = "https://github.com/exemple-org/exemple-depot/issues/101", state = "OPEN" },
+        new { number = 201, title = TitreIssueTb200, url = "https://github.com/exemple-org/exemple-depot/issues/201", state = "OPEN" },
+    });
+
+    public static string ReponseItemsExistants(string epique100, string epique200) => JsonSerializer.Serialize(new
+    {
+        items = new object[]
+        {
+            new Dictionary<string, object>
+            {
+                ["id"] = IdItem100,
+                ["content"] = new { title = TitreIssueTb100 },
+                ["statut"] = "Prêt",
+                ["épique"] = epique100,
+            },
+            new Dictionary<string, object>
+            {
+                ["id"] = IdItem200,
+                ["content"] = new { title = TitreIssueTb200 },
+                ["statut"] = "Prêt",
+                ["épique"] = epique200,
+            },
+        },
+    });
+}
+
+/// <summary>
+/// Point critique de la correction — un RENOMMAGE d'option, jamais une
+/// recréation : les 52 affectations déjà posées sur des éléments du projet
+/// pointent l'IDENTIFIANT d'une option, jamais son libellé. Deux passes sous
+/// faux `gh` : la première migre (EP-02 renommé, identifiant préservé ;
+/// Fondations — un reliquat non référencé par aucune tâche — repris tel
+/// quel ; EP-88 créé, clé absente de tout état antérieur) ; la seconde,
+/// contre un état distant déjà migré, ne doit plus émettre AUCUNE mutation
+/// de champ — l'idempotence au niveau des OPTIONS elles-mêmes, distincte de
+/// l'idempotence déjà couverte par <see cref="IdempotenceDesChampsDeProjetSousAppliquer"/>
+/// (qui porte sur la VALEUR posée sur un élément, jamais sur le libellé de
+/// l'option elle-même).
+/// </summary>
+public class RenommageEtCreationDesOptionsEpiqueSousAppliquer : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+    private readonly string _cheminBin;
+
+    public RenommageEtCreationDesOptionsEpiqueSousAppliquer()
+    {
+        FixturesRenommageEpique.EcrireDepotMinimal(_tmpDepot.Chemin);
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture renommage épique CreerProjet");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerProjet.UrlOrigineFictive, pousser: false);
+        _cheminBin = Helpers.RepertoireBinAvecFauxGh(_tmpBin.Chemin);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void DevraitRenommerEnPreservantLIdentifiantEtCreerPourUneCleNouvelle()
+    {
+        string journal = Path.Combine(_tmpBin.Chemin, "journal-passe-1.jsonl");
+        var reponses = new[]
+        {
+            FixturesCreerProjet.ReponseProjetExistant(),          // 0 : project list
+            FixturesRenommageEpique.ReponseChampsExistants(),      // 1 : field-list
+            FixturesCreerProjet.ReponseGraphqlOptionsStatut(),     // 2 : graphql lecture Statut
+            FixturesRenommageEpique.ReponseGraphqlEpiqueAvantMigration(), // 3 : graphql lecture Épique
+            FixturesRenommageEpique.ReponseMutationMiseAJourChamp(),      // 4 : graphql mutation Épique
+            FixturesRenommageEpique.ReponseIssuesOuvertes(),       // 5 : issue list
+            FixturesCreerProjet.ReponseItemListeVide(),            // 6 : item-list (aucun élément posé)
+            FixturesCreerProjet.ReponseItemAjoute(),                // 7 : item-add TB-100 (id générique dans la fixture partagée)
+            "{}", "{}",                                             // 8-9 : item-edit épique, statut (TB-100)
+            FixturesCreerProjet.ReponseItemAjoute(),                // 10 : item-add TB-200
+            "{}", "{}",                                             // 11-12 : item-edit épique, statut (TB-200)
+        };
+        string cheminReponses = Path.Combine(_tmpBin.Chemin, $"reponses-{Guid.NewGuid():N}.json");
+        Helpers.Ecrire(cheminReponses, JsonSerializer.Serialize(reponses));
+
+        var environnement = new Dictionary<string, string>
+        {
+            ["PATH"] = _cheminBin,
+            ["JOURNAL_GH"] = journal,
+            ["FAUX_GH_REPONSES"] = cheminReponses,
+        };
+        var resultat = Helpers.ExecuterOutilAvecEnvironnement("CreerProjet", ["--appliquer"], _tmpDepot.Chemin, environnement);
+        Assert.Equal(0, resultat.CodeSortie);
+
+        var invocations = FixturesCreerProjet.LireJournalAvecEntreeStandard(journal);
+
+        // Preuve par le JOURNAL D'APPELS de ce qui part réellement vers le
+        // service — jamais par une valeur recalculée localement : les trois
+        // appels GraphQL partagent le même vecteur d'arguments
+        // (["api","graphql","--input","-"]), seule l'entrée standard les
+        // distingue. La mutation est repérée par le nom de la mutation
+        // GraphQL qu'elle porte dans sa charge, jamais par un rang fixé à la
+        // main (fragile au moindre appel GraphQL ajouté ailleurs dans le flux).
+        var mutations = invocations.Where(a => a.Stdin.Contains("updateProjectV2Field", StringComparison.Ordinal)).ToList();
+        Assert.Single(mutations);
+
+        using var charge = JsonDocument.Parse(mutations[0].Stdin);
+        var optionsEnvoyees = charge.RootElement.GetProperty("variables").GetProperty("o").EnumerateArray().ToList();
+
+        var optionEp02 = optionsEnvoyees.Single(o => o.GetProperty("name").GetString() == FixturesRenommageEpique.LibelleEp02);
+        Assert.Equal(FixturesRenommageEpique.IdOptionEp02, optionEp02.GetProperty("id").GetString());
+
+        var optionFondations = optionsEnvoyees.Single(o => o.GetProperty("name").GetString() == "Fondations");
+        Assert.Equal(FixturesRenommageEpique.IdOptionFondations, optionFondations.GetProperty("id").GetString());
+
+        var optionEp88 = optionsEnvoyees.Single(o => o.GetProperty("name").GetString() == FixturesRenommageEpique.LibelleEp88);
+        Assert.False(optionEp88.TryGetProperty("id", out _), "une option neuve ne doit jamais réémettre d'identifiant.");
+
+        Assert.Equal(3, optionsEnvoyees.Count);
+    }
+
+    [Fact]
+    public void NeDevraitEmettreAucuneMutationDeChampQuandLesLibellesSontDejaAJour()
+    {
+        string journal = Path.Combine(_tmpBin.Chemin, "journal-passe-2.jsonl");
+        var reponses = new[]
+        {
+            FixturesCreerProjet.ReponseProjetExistant(),
+            FixturesRenommageEpique.ReponseChampsExistants(),
+            FixturesCreerProjet.ReponseGraphqlOptionsStatut(),
+            FixturesRenommageEpique.ReponseGraphqlEpiqueApresMigration(),
+            FixturesRenommageEpique.ReponseIssuesOuvertes(),
+            FixturesRenommageEpique.ReponseItemsExistants(
+                epique100: FixturesRenommageEpique.LibelleEp02,
+                epique200: FixturesRenommageEpique.LibelleEp88),
+        };
+        string cheminReponses = Path.Combine(_tmpBin.Chemin, $"reponses-{Guid.NewGuid():N}.json");
+        Helpers.Ecrire(cheminReponses, JsonSerializer.Serialize(reponses));
+
+        var environnement = new Dictionary<string, string>
+        {
+            ["PATH"] = _cheminBin,
+            ["JOURNAL_GH"] = journal,
+            ["FAUX_GH_REPONSES"] = cheminReponses,
+        };
+        var resultat = Helpers.ExecuterOutilAvecEnvironnement("CreerProjet", ["--appliquer"], _tmpDepot.Chemin, environnement);
+        Assert.Equal(0, resultat.CodeSortie);
+
+        var invocations = FixturesCreerProjet.LireJournalAvecEntreeStandard(journal);
+        Assert.DoesNotContain(invocations, a => a.Stdin.Contains("updateProjectV2Field", StringComparison.Ordinal));
+        Assert.DoesNotContain(invocations, a => a.Args.Contains("item-add") || a.Args.Contains("item-edit"));
+        Assert.Equal(6, invocations.Count);
     }
 }
