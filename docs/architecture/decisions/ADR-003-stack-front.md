@@ -5,6 +5,8 @@
 
 > **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03.)*
 
+> **Confirmation d'entrée en build du 2026-09-04** — décision confirmée par Pierre-Marie Marchio, porteur du projet.
+
 ---
 
 ## Contexte

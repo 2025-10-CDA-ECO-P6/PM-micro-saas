@@ -10,21 +10,21 @@
 
 Le mécanisme de sanitisation est identique en posture côté serveur et côté client : une **liste blanche positive**, jamais une liste noire.
 
-**Côté serveur** (ADR-016:146) :
+**Côté serveur** (ADR-016 §2.4) :
 > « La sanitisation est réalisée par **liste blanche positive** — seules les balises explicitement autorisées sont conservées. Les balises `<script>` et les attributs gestionnaires d'événements (`on*`) sont **interdits et supprimés sans exception**. Ce plancher constitue un critère d'acceptation non négociable, indépendamment de la bibliothèque ou de la liste exacte de balises choisie. »
 
-**Côté client** (ADR-017:161) :
+**Côté client** (ADR-017:170) :
 > « La sanitisation utilise `DomSanitizer` d'Angular avec une politique de **liste blanche positive** : seules les balises explicitement autorisées sont conservées ; les balises `<script>` et les attributs gestionnaires d'événements (`on*`) sont **supprimés sans exception**. »
 
-**Symétrie actée** (ADR-017:163) :
+**Symétrie actée** (ADR-017:172) :
 > « Ce plancher est identique en posture à celui d'ADR-016 §2.4 (côté serveur) : même politique de liste blanche positive, mêmes interdictions absolues. »
 
 ### Interdictions absolues (sans exception, quelle que soit l'implémentation retenue)
 
-- Balise `<script>` : interdite/supprimée des deux côtés (ADR-016:146, ADR-017:161).
-- Attributs gestionnaires d'événements (`on*` — `onclick`, `onerror`, etc.) : interdits/supprimés des deux côtés (ADR-016:146, ADR-017:161).
+- Balise `<script>` : interdite/supprimée des deux côtés (ADR-016 §2.4, ADR-017:170).
+- Attributs gestionnaires d'événements (`on*` — `onclick`, `onerror`, etc.) : interdits/supprimés des deux côtés (ADR-016 §2.4, ADR-017:170).
 
-Ces deux interdictions sont un **critère d'acceptation non négociable** (ADR-016:146) — elles ne dépendent pas du choix de bibliothèque ni de la liste exacte de balises retenue (§4).
+Ces deux interdictions sont un **critère d'acceptation non négociable** (ADR-016 §2.4) — elles ne dépendent pas du choix de bibliothèque ni de la liste exacte de balises retenue (§4).
 
 ---
 
@@ -32,11 +32,11 @@ Ces deux interdictions sont un **critère d'acceptation non négociable** (ADR-0
 
 L'ordre est impératif et fait partie du plancher opposable, pas d'un détail d'implémentation.
 
-> ADR-017:183-187 — « Avant toute écriture dans IndexedDB, le fichier importé est soumis à deux vérifications :
+> ADR-017:192-196 — « Avant toute écriture dans IndexedDB, le fichier importé est soumis à deux vérifications :
 > 1. **Validation structurelle** : le fichier est validé contre la structure attendue du payload (présence de `schemaVersion`, format des champs, types). Un fichier malformé est rejeté avec un message d'erreur.
 > 2. **Sanitisation de contenu** : le contenu de chaque `document_block.content` est sanitisé selon le même plancher (…) — liste blanche positive, interdiction absolue des balises et attributs dangereux — avant écriture dans le store. »
 
-> ADR-017:189 — « L'ordre est impératif : **valider la structure en premier** (éviter d'exécuter de la sanitisation sur un document structurellement incohérent), **sanitiser le contenu en second** (avant persistance, pas après lecture). Un fichier JSON importé n'est jamais écrit tel quel dans IndexedDB. »
+> ADR-017:198 — « L'ordre est impératif : **valider la structure en premier** (éviter d'exécuter de la sanitisation sur un document structurellement incohérent), **sanitiser le contenu en second** (avant persistance, pas après lecture). Un fichier JSON importé n'est jamais écrit tel quel dans IndexedDB. »
 
 Cette séquence — structure puis sanitisation, sanitisation avant écriture — s'applique à l'import JSON local (UC-01 A4). Elle est distincte du parcours de migration serveur (ADR-016 §2.4), qui applique sa propre sanitisation à l'import serveur, sur le même plancher.
 
@@ -44,25 +44,25 @@ Cette séquence — structure puis sanitisation, sanitisation avant écriture �
 
 ## 3. Sanitisation côté client — moment et mécanisme
 
-**Mécanisme** : `DomSanitizer` d'Angular (ADR-017:161, l.165).
+**Mécanisme** : `DomSanitizer` d'Angular (ADR-017:170, l.165).
 
 **Deux moments de sanitisation, tous deux avant l'événement qu'ils protègent** :
 
 - **Avant injection DOM** : le rendu de `document_block.content` est sanitisé côté client Angular **avant injection dans le DOM** (ADR-017 §4.1, l.159) — ferme le vecteur XSS lors de l'affichage en session.
-- **Avant persistance IndexedDB** : le contenu importé via fichier JSON est sanitisé **avant écriture dans le store** (ADR-017:187, cohérent avec §2 ci-dessus) — évite qu'un contenu XSS non sanitisé soit persisté puis traverse la frontière locale→cloud à la migration.
+- **Avant persistance IndexedDB** : le contenu importé via fichier JSON est sanitisé **avant écriture dans le store** (ADR-017:196, cohérent avec §2 ci-dessus) — évite qu'un contenu XSS non sanitisé soit persisté puis traverse la frontière locale→cloud à la migration.
 
-> ADR-017:175 (contexte §4.2, posture CSP couplée à la sanitisation applicative) confirme que la sanitisation applicative et la CSP sont deux défenses complémentaires, pas substituables l'une à l'autre.
+> ADR-017:184 (contexte §4.2, posture CSP couplée à la sanitisation applicative) confirme que la sanitisation applicative et la CSP sont deux défenses complémentaires, pas substituables l'une à l'autre.
 
 ---
 
 ## 4. Posture CSP actée
 
-> ADR-017:167-171 (§4.2) :
+> ADR-017:180-182 (§4.2) :
 > - `default-src 'self'` : toutes les ressources par défaut restreintes à l'origine de l'application.
 > - `script-src 'self'` : pas de script inline, pas de scripts depuis des sources tierces non explicitement autorisées.
 > - Sources restreintes : assets, images, styles limités à l'origine et aux CDN explicitement approuvés.
 
-> ADR-017:175 — « Cette CSP sert deux fonctions complémentaires. D'abord, c'est une défense en profondeur anti-XSS (…). Ensuite, elle rend **observable** la règle « aucune donnée envoyée au serveur en mode local » : (…) une CSP stricte avec `connect-src 'self'` (ou restreinte à l'API) permettrait de détecter toute tentative d'envoi non autorisée. »
+> ADR-017:184 — « Cette CSP sert deux fonctions complémentaires. D'abord, c'est une défense en profondeur anti-XSS (…). Ensuite, elle rend **observable** la règle « aucune donnée envoyée au serveur en mode local » : (…) une CSP stricte avec `connect-src 'self'` (ou restreinte à l'API) permettrait de détecter toute tentative d'envoi non autorisée. »
 
 | Directive | Valeur actée | Fonction |
 |---|---|---|
@@ -78,11 +78,11 @@ Ces trois directives sont **actées** par ADR-017 comme posture — elles ne son
 
 | Point | Ticket | État | Source |
 |---|---|---|---|
-| Liste blanche positive, côté serveur | **B1.2** | **matière tranchée** (2026-09-03) — le contenu d'un bloc est un **arbre de nœuds typés**, jamais du balisage : la liste blanche porte sur l'**énumération fermée des types de nœuds** que le modèle définit, non sur des balises. Renvoi seul — [`conception/domain/content-library.md § DocumentBlock`](../../conception/domain/content-library.md) | ADR-016 §Points à trancher ; ADR-016:237 |
-| Liste blanche positive, côté client | **P6** | **matière tranchée** (2026-09-03) — même énumération de types de nœuds que côté serveur, la symétrie du plancher étant préservée. L'interface rend l'arbre en construisant ses éléments, sans jamais injecter de chaîne de balisage. Renvoi seul — [`conception/domain/content-library.md § DocumentBlock`](../../conception/domain/content-library.md) | ADR-017 §Points à trancher ; ADR-017:258 |
-| Bibliothèque de sanitisation exacte, côté serveur | **B1.2** | ouvert | ADR-016:237 |
-| Bibliothèque de sanitisation exacte, côté client | **P6** | **tranché** (décision d'entrée en build du 2026-09-03) — renvoi seul, la décision vit dans [`guide-conventions-et-dod.md §7`](../../gestion-projet/guide-conventions-et-dod.md) | ADR-017:258 |
-| Directives CSP complètes | **P6** | **tranché** (décision d'entrée en build du 2026-09-03) — renvoi seul, la décision vit dans [`guide-conventions-et-dod.md §7`](../../gestion-projet/guide-conventions-et-dod.md) | ADR-017:257 |
+| Liste blanche positive, côté serveur | **B1.2** | **matière tranchée** (2026-09-03) — le contenu d'un bloc est un **arbre de nœuds typés**, jamais du balisage : la liste blanche porte sur l'**énumération fermée des types de nœuds** que le modèle définit, non sur des balises. Renvoi seul — [`conception/domain/content-library.md § DocumentBlock`](../../conception/domain/content-library.md) | ADR-016 §Points à trancher ; ADR-016:239 |
+| Liste blanche positive, côté client | **P6** | **matière tranchée** (2026-09-03) — même énumération de types de nœuds que côté serveur, la symétrie du plancher étant préservée. L'interface rend l'arbre en construisant ses éléments, sans jamais injecter de chaîne de balisage. Renvoi seul — [`conception/domain/content-library.md § DocumentBlock`](../../conception/domain/content-library.md) | ADR-017 §Points à trancher ; ADR-017:267 |
+| Bibliothèque de sanitisation exacte, côté serveur | **B1.2** | ouvert | ADR-016:239 |
+| Bibliothèque de sanitisation exacte, côté client | **P6** | **tranché** (décision d'entrée en build du 2026-09-03) — renvoi seul, la décision vit dans [`guide-conventions-et-dod.md §7`](../../gestion-projet/guide-conventions-et-dod.md) | ADR-017:267 |
+| Directives CSP complètes | **P6** | **tranché** (décision d'entrée en build du 2026-09-03) — renvoi seul, la décision vit dans [`guide-conventions-et-dod.md §7`](../../gestion-projet/guide-conventions-et-dod.md) | ADR-017:266 |
 
 Ces points sont explicitement nommés comme dettes non silencieuses dans les deux ADR — ils ne sont pas des omissions, mais des décisions renvoyées à l'implémentation. **Cette spécification ne les tranche pas** : conformément à son bandeau de portée, elle renvoie vers le document qui porte la décision quand elle est prise.
 
@@ -92,10 +92,10 @@ Ces points sont explicitement nommés comme dettes non silencieuses dans les deu
 
 Ces deux points sont des comportements d'environnement d'exécution réel, non assertables par les tests d'archi CI. Ils ne relèvent pas d'un manque de couverture à corriger, mais d'une limite structurelle des tests applicatifs — cette spec les nomme pour éviter toute fausse confiance dans la couverture CI.
 
-**`navigator.storage.persist()` / éviction IndexedDB** (ADR-017:147) :
+**`navigator.storage.persist()` / éviction IndexedDB** (ADR-017 §3.3) :
 > « Le comportement de grant ou de refus de `navigator.storage.persist()` par le navigateur, et le comportement d'éviction IndexedDB sous pression mémoire, sont des comportements d'environnement d'exécution **non assertables en CI**. La logique applicative (lire le booléen retourné, déclencher le bandeau si false) est testable par mock de l'API `navigator.storage`. Le comportement réel du navigateur ne l'est pas. »
 
-**Migration IndexedDB multi-versions en navigateur réel** (ADR-016:227) :
+**Migration IndexedDB multi-versions en navigateur réel** (ADR-016 § Maillon NON VÉRIFIABLE IN BUILD) :
 > « La migration réelle depuis un IndexedDB multi-versions en navigateur n'est pas prouvable en CI : le comportement de la fonction de projection `store local → payload` sur différentes versions de l'IndexedDB, dans des navigateurs réels, avec des données persistées par des versions antérieures de l'application, ne peut pas être couvert par les tests d'archi CI. Cette vérification relève de tests e2e navigateur renvoyés à **P7**. »
 
 Ce que ces deux maillons impliquent pour cette spec : **la sanitisation applicative elle-même (§1-§3) est testable en CI** (mock des APIs navigateur, payloads synthétiques) — ce sont les comportements *environnementaux* qui l'entourent (grant/refus réel du navigateur, upgrade IndexedDB réel) qui ne le sont pas. Ne pas confondre les deux : cette spec ne prétend pas que la sanitisation couvre ces deux maillons, ni que les tests d'archi CI les couvrent.

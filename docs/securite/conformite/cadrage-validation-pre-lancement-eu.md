@@ -20,9 +20,9 @@ Ce cadrage consolide ces points épars en **une liste unique**, énumérée une 
 | # | Axe | Corpus source | Statut |
 |---|-----|----------------|--------|
 | 1 | Art. 8 — qualification « service destiné aux mineurs » | ADR-012 (Conformité conçue, non certifiée, pt 1) · ADR-013 (Conformité conçue, non certifiée, pt 1) | à valider juriste |
-| 2 | Art. 28 + périmètre DPA (contenu `PERSONAL` décrivant des tiers inclus) | ADR-012 (pt 2) · ADR-013 §5 + (pt 2) · ADR-018 (Conformité conçue, non certifiée, pt 2, l.237) | à valider juriste |
+| 2 | Art. 28 + périmètre DPA (contenu `PERSONAL` décrivant des tiers inclus) | ADR-012 (pt 2) · ADR-013 §5 + (pt 2) · ADR-018 (Conformité conçue, non certifiée, pt 2) | à valider juriste |
 | 3 | Mise en balance de l'intérêt légitime (§3(c) + `display_name` invité) | ADR-012 (pt 3, §3(c)) · ADR-013 (pt 3) | à valider juriste |
-| 4 | Art. 17 — hard-delete inconditionnel de l'espace `PERSONAL` | ADR-012 (pt 4) · ADR-018 (pt 1, l.233-237 et complément l.252) | à valider juriste |
+| 4 | Art. 17 — hard-delete inconditionnel de l'espace `PERSONAL` | ADR-012 (pt 4) · ADR-018 (pt 1 et complément *Compléments post-revue*) | à valider juriste |
 | 5 | Facette RGPD — Option A « reclaim-in-place » (coquille non vérifiée évincée) | ADR-015 §2.3 — routé depuis les travaux d'identité et d'accès joueur | à valider juriste |
 
 Les 5 axes sont chacun **non vérifiables en CI** : aucun ne peut être vérifié par un test automatisé, un linter ou une build Haversack — la dépendance est externe (avis juriste), au même titre que les dépendances **NON VÉRIFIABLE IN BUILD** déjà nommées dans ADR-015/016/017 pour la confiance aux fournisseurs d'identité. Voir section *Non vérifiable en CI* en fin de document.
@@ -51,7 +51,7 @@ Les 5 axes sont chacun **non vérifiables en CI** : aucun ne peut être vérifi�
 - ADR-013 §5 (*Contenu créé par le MJ — posture sous-traitant, Art. 28 RGPD*) : pose la posture retenue en conception (sous-traitant), explicitement non tranchée juridiquement.
 - ADR-013, section *Conformité conçue, non certifiée*, point 2.
 - ADR-012, section *Conformité conçue, non certifiée*, point 2.
-- ADR-018, section *Conformité conçue, non certifiée*, point 2 (l.237) : étend explicitement la question au périmètre `PERSONAL` — c'est l'apport propre d'ADR-018 par rapport à ADR-012/013, qui ne couvrent que le périmètre partagé.
+- ADR-018, section *Conformité conçue, non certifiée*, point 2 : étend explicitement la question au périmètre `PERSONAL` — c'est l'apport propre d'ADR-018 par rapport à ADR-012/013, qui ne couvrent que le périmètre partagé.
 
 **Ce qui est déjà acté en conception (non tranché juridiquement)** : la posture sous-traitant est retenue par défaut pour le contenu MJ en espace partagé décrivant des tiers identifiables. ADR-013 pose explicitement que « le DPA est un document contractuel, non un ADR technique » et que son contenu relève de l'équipe juridique.
 
@@ -85,8 +85,8 @@ Les 5 axes sont chacun **non vérifiables en CI** : aucun ne peut être vérifi�
 
 **Corpus source** :
 - ADR-012, section *Conformité conçue, non certifiée*, point 4.
-- ADR-018, section *Conformité conçue, non certifiée*, point 1 (l.233-237) : qualification du contenu « personnel de premier ordre » au regard de l'Art. 17, formulée du point de vue de la généralisation `Space`.
-- ADR-018, *Compléments post-revue* (l.252) : la purge inconditionnelle de l'espace `PERSONAL` à `UserDeleted` est actée comme décision de conception (réversible, à confirmer à l'entrée en build) — « sous le même invariant de claim/reprise que la purge J+30 (garantie Art. 17, ADR-011) ». Cette décision de conception ne se substitue pas à la validation juridique de l'axe 4 : elle en est l'objet.
+- ADR-018, section *Conformité conçue, non certifiée*, point 1 : qualification du contenu « personnel de premier ordre » au regard de l'Art. 17, formulée du point de vue de la généralisation `Space`.
+- ADR-018, *Compléments post-revue* : la purge inconditionnelle de l'espace `PERSONAL` à `UserDeleted` est actée comme décision de conception (réversible, à confirmer à l'entrée en build) — « sous le même invariant de claim/reprise que la purge J+30 (garantie Art. 17, ADR-011) ». Cette décision de conception ne se substitue pas à la validation juridique de l'axe 4 : elle en est l'objet.
 
 **Ce qui est déjà acté en conception (non tranché juridiquement)** : le hard-delete inconditionnel est présenté comme une qualification « solide en principe » (absence de tiers dans un espace personnel = absence d'intérêt légitime de continuité Art. 17§3(e)), mais explicitement non confirmée par un juriste, avec deux points subsidiaires ouverts sur l'instant de référence.
 

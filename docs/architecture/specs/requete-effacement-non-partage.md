@@ -91,7 +91,7 @@ WHERE d.created_by_id = :userId
 
 **Décision reportée** — ADR-012 §4 (l.118-124) décrit ce séquençage pour la sélection §3(a) (`PLAYER_PRIVATE`) et le qualifie de « conforme au mécanisme de saga de déliaison-puis-delete défini dans ADR-011 ». Le mandat de cette note applique le même mécanisme à la sélection §3(b) :
 
-1. **Déliaison** des FK nullable portées par les documents sélectionnés eux-mêmes : `source_document_id`, `character_id`, `guest_access_id` (colonnes nullable de `documents`, ADR-011 matrice l.127-129).
+1. **Déliaison** des FK nullable portées par les documents sélectionnés eux-mêmes : `source_document_id`, `character_id`, `guest_access_id` (colonnes nullable de `documents`, ADR-011, matrice des FK).
 2. **DELETE des tables feuilles NOT NULL** qui référencent les documents sélectionnés : `document_links` (source ou cible), `document_tags`, `document_blocks` — conformément à l'ordre topologique passe 2 d'ADR-011 (feuilles avant racines).
 3. **DELETE des documents** eux-mêmes.
 
@@ -111,7 +111,7 @@ DELETE FROM document_blocks WHERE document_id = ANY(:selectedIds);
 DELETE FROM documents WHERE id = ANY(:selectedIds);
 ```
 
-Cette séquence respecte le principe général d'ADR-011 (§2, l.36-42) : seules les FK nullable sont NULL-ées ; les FK NOT NULL imposent l'ordre de DELETE (enfant avant parent), jamais une déliaison.
+Cette séquence respecte le principe général d'ADR-011, § Règle générale de déliaison (absorbeur de cycles futurs) : seules les FK nullable sont NULL-ées ; les FK NOT NULL imposent l'ordre de DELETE (enfant avant parent), jamais une déliaison.
 
 ---
 

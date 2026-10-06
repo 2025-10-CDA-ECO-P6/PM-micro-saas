@@ -5,6 +5,8 @@
 
 > **Nature : mixte — à dominante pré-implémentation** — modèle de stockage et politique de sécurité client à confirmer à l'entrée en build ; parts de conception qui contraignent le modèle dès maintenant : l'invariant migration-only (aucune synchronisation continue au MVP), les bandeaux de durabilité et de confidentialité du mode local, et le non-chiffrement at-rest assumé. *(Annotation du 2026-06-10 — qualification postérieure à l'arbitrage T-03.)*
 
+> **Confirmation d'entrée en build du 2026-09-04** — la part pré-implémentation de cette décision est confirmée par Pierre-Marie Marchio, porteur du projet. Les parts de conception nommées dans le bandeau de nature ci-dessus contraignent le modèle depuis l'acceptation de l'ADR et ne sont pas l'objet de cette confirmation.
+
 ---
 
 ## Périmètre de cet ADR

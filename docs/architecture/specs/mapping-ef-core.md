@@ -1,8 +1,8 @@
 # Note de mapping EF Core — cluster données & persistance
 
 - **Statut** : Spec pré-build — à confirmer à l'entrée en build (même statut que les ADR sources).
-- **Sources** : [ADR-008](../decisions/ADR-008-structure-solution.md) (l.48, Conséquences) ; [ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md) (l.22, 24, 46, 58) ; [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md) (l.30-32, 130-131, 156) ; [ADR-014](../decisions/ADR-014-modele-autorisation-api.md) (l.98-99) ; [content-library.md](../../conception/domain/content-library.md) ; [diagrams/classes/content-library.md](../../conception/domain/diagrams/classes/content-library.md) ; [diagrams/mld/content-library.md](../../conception/domain/diagrams/mld/content-library.md).
-- **Périmètre** : les 5 éléments listés par ADR-008:46 comme livrable de mapping EF Core, complétés fidèlement par les décisions de gouvernance ADR-002 et les invariants de cascade/lecture ADR-011/ADR-014 qui portent directement sur le mapping physique.
+- **Sources** : [ADR-008](../decisions/ADR-008-structure-solution.md) (§Conséquences) ; [ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md) (l.22, 24, 46, 58) ; [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md) (§1 Mécanisme de cascade, l.132-133, 158) ; [ADR-014](../decisions/ADR-014-modele-autorisation-api.md) (l.98-99) ; [content-library.md](../../conception/domain/content-library.md) ; [diagrams/classes/content-library.md](../../conception/domain/diagrams/classes/content-library.md) ; [diagrams/mld/content-library.md](../../conception/domain/diagrams/mld/content-library.md).
+- **Périmètre** : les 5 éléments listés par ADR-008:48 comme livrable de mapping EF Core, complétés fidèlement par les décisions de gouvernance ADR-002 et les invariants de cascade/lecture ADR-011/ADR-014 qui portent directement sur le mapping physique.
 
 Cette note ne tranche rien qui ne soit pas déjà fixé par un ADR. Ce qui n'est pas fixé est marqué `[À TRANCHER — ticket]`.
 
@@ -34,7 +34,7 @@ Contrat détaillé (VO + schémas par type) : voir `document-properties-schemas.
 
 ## 3. `jsonb` sur `documents.properties`
 
-**Décision reportée** (ADR-002, ADR-008:46) : `HasColumnType("jsonb")` sur `documents.properties`. Le MLD confirme le type physique : `properties jsonb, nullable` (diagrams/mld/content-library.md:53).
+**Décision reportée** (ADR-002, ADR-008:48) : `HasColumnType("jsonb")` sur `documents.properties`. Le MLD confirme le type physique : `properties jsonb, nullable` (diagrams/mld/content-library.md:53).
 
 Cette colonne est exclusivement écrite via `Document.SetProperties()` (ADR-002:22) — aucune écriture JSON directe. Voir `document-properties-schemas.md` pour le contrat de validation complet.
 
@@ -79,7 +79,7 @@ Ces deux prédicats sont « structurels et indépendants de l'appelant » et por
 - Index B-tree partiel `(character_id) WHERE character_id IS NOT NULL` — qualifié « préalable authz OBLIGATOIRE » pour la résolution transitive des documents `PLAYER_PRIVATE`.
 - Index B-tree partiel `(guest_access_id) WHERE guest_access_id IS NOT NULL` — même justification côté auteur invité.
 
-**Confirmation matrice FK** (ADR-011:134, 144) : ces deux colonnes portent le rôle « Cycle 1 » du graphe de cascade (`documents ⇄ guest_accesses`) — NULL-ées en passe 1 de la saga `SpaceDeleted`.
+**Confirmation matrice FK** (ADR-011:136, 144) : ces deux colonnes portent le rôle « Cycle 1 » du graphe de cascade (`documents ⇄ guest_accesses`) — NULL-ées en passe 1 de la saga `SpaceDeleted`.
 
 **Conséquence de mapping** : ces deux colonnes sont mappées comme propriétés scalaires nullable de premier niveau sur l'entité `Document`, avec les deux index partiels ci-dessus déclarés en configuration EF Core (`HasIndex(...).HasFilter(...)`), pas comme faisant partie de l'owned type `DocumentProperties`.
 
@@ -87,7 +87,7 @@ Ces deux prédicats sont « structurels et indépendants de l'appelant » et por
 
 ## 7. Toutes FK `ON DELETE RESTRICT`
 
-**Décision reportée** (ADR-011:28-30) : toutes les clés étrangères du graphe (38 FK au total, matrice complète ADR-011 §Schéma et MLD) sont déclarées `ON DELETE RESTRICT`. Le SGBD ne cascade jamais — la progression des suppressions est intégralement pilotée par la saga applicative (`SpaceDeleted`, `UserAnonymized`), jamais par une cascade SQL déclarative.
+**Décision reportée** (ADR-011, §1 Mécanisme de cascade) : toutes les clés étrangères du graphe (38 FK au total, matrice complète ADR-011 §Schéma et MLD) sont déclarées `ON DELETE RESTRICT`. Le SGBD ne cascade jamais — la progression des suppressions est intégralement pilotée par la saga applicative (`SpaceDeleted`, `UserAnonymized`), jamais par une cascade SQL déclarative.
 
 **Conséquence de mapping** : chaque relation EF Core (`HasOne(...).WithMany(...)`) déclare explicitement `.OnDelete(DeleteBehavior.Restrict)` — ce comportement doit être fixé explicitement à la configuration, car le comportement par défaut d'EF Core pour une FK NOT NULL est `Cascade`, non `Restrict`.
 
@@ -95,9 +95,9 @@ Ces deux prédicats sont « structurels et indépendants de l'appelant » et por
 
 ## 8. Invariant soft-delete par jointure
 
-**Décision reportée** (ADR-011:154) : la visibilité des données d'un espace en corbeille est portée par jointure sur `spaces.deleted_at IS NOT NULL`. **Aucune table enfant ne porte son propre flag `deleted_at`** — l'invariant s'applique à *tous* les chemins de lecture : requêtes d'énumération, lectures directes par ID, queries SignalR, projections CQRS.
+**Décision reportée** (ADR-011:161) : la visibilité des données d'un espace en corbeille est portée par jointure sur `spaces.deleted_at IS NOT NULL`. **Aucune table enfant ne porte son propre flag `deleted_at`** — l'invariant s'applique à *tous* les chemins de lecture : requêtes d'énumération, lectures directes par ID, queries SignalR, projections CQRS.
 
-**Conséquence de mapping** : ce n'est pas un query filter portable sur chaque table enfant indépendamment — il exige soit (a) une navigation obligatoire vers `spaces` incluse dans le query filter global de chaque entité enfant qui doit hériter de la visibilité de son espace (`folders`, `documents`, `sessions`, etc.), soit (b) une vérification applicative systématique hors EF Core sur les chemins qui ne passent pas par le filtre global (lecture directe par ID notamment, citée explicitement par ADR-011:154 comme chemin à risque).
+**Conséquence de mapping** : ce n'est pas un query filter portable sur chaque table enfant indépendamment — il exige soit (a) une navigation obligatoire vers `spaces` incluse dans le query filter global de chaque entité enfant qui doit hériter de la visibilité de son espace (`folders`, `documents`, `sessions`, etc.), soit (b) une vérification applicative systématique hors EF Core sur les chemins qui ne passent pas par le filtre global (lecture directe par ID notamment, citée explicitement par ADR-011:161 comme chemin à risque).
 
 `[À TRANCHER — ticket]` : le choix entre (a) query filter EF Core avec navigation implicite vers `spaces` et (b) vérification applicative systématique n'est pas arbitré par ADR-011 — c'est un point de configuration du câblage B5.1 (même renvoi que §5 ci-dessus).
 

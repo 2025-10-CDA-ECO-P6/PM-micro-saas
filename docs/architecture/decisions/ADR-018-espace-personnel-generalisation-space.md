@@ -4,6 +4,8 @@
 - **Date** : 2026-06-12
 - **Décisions liées** : ADR-011 (cascade `CampaignDeleted` / `UserAnonymized`), ADR-012 (RGPD effacement de compte), ADR-013 (données invités), ADR-017 §1.1 (modèle IndexedDB, store campaign-rooté)
 
+> **Confirmation d'entrée en build du 2026-09-04** — décision confirmée par Pierre-Marie Marchio, porteur du projet.
+
 ---
 
 ## Périmètre de cet ADR

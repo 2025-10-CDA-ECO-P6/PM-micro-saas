@@ -7,6 +7,8 @@
 
 > **Nature : mixte — à dominante pré-implémentation** — contrat de format et mécanique d'import à confirmer à l'entrée en build ; parts de conception qui contraignent le modèle dès maintenant : la frontière de confiance, le gate de reconnaissance, la transactionnalité par espace et le périmètre de séance du contrat de migration. *(Annotation du 2026-06-10 — qualification postérieure à l'arbitrage T-03.)*
 
+> **Confirmation d'entrée en build du 2026-09-04** — la part pré-implémentation de cette décision est confirmée par Pierre-Marie Marchio, porteur du projet. Les parts de conception nommées dans le bandeau de nature ci-dessus contraignent le modèle depuis l'acceptation de l'ADR et ne sont pas l'objet de cette confirmation.
+
 ---
 
 ## Périmètre de cet ADR

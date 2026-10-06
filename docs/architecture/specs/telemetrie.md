@@ -59,7 +59,7 @@ Le tableau ci-dessous décompose chaque pilier en événements discrets. Les col
 
 | Étape du critère | Point de capture | Événement (nom technique) | Propriétés |
 |---|---|---|---|
-| Document partagé | Point de sortie de l'action de partage (couche Application) | `[À TRANCHER — ticket]` | `document_id`, `space_id`, visibilité de la ressource (cf. ADR-004:47) — reste à confirmer |
+| Document partagé | Point de sortie de l'action de partage (couche Application) | `[À TRANCHER — ticket]` | `document_id`, `space_id`, visibilité de la ressource (cf. ADR-004:49) — reste à confirmer |
 | ≥ 1 joueur l'ayant ouvert | Point d'ouverture du document partagé côté joueur/invité | `[À TRANCHER — ticket]` | `document_id`, identifiant de session invité (sans donnée identifiante au-delà de ce que permet NFR-CONF-02) — reste à confirmer |
 
 ### 3.4 Ce que la spec ne fixe pas

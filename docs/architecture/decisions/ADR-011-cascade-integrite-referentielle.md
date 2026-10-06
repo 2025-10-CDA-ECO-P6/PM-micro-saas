@@ -7,6 +7,8 @@
 
 > *Annotation du 2026-06-12 — deux natures distinctes : (1) renommage `Campaign→Space` (à confirmer à l'entrée en build, ADR-018) ; (2) règle nouvelle : purge inconditionnelle de l'espace `PERSONAL` à `UserDeleted` sous invariant de reprise (claim/idempotence/reclaim — voir §Exception PERSONAL dans `UserAnonymized` et §Saga-événements).*
 
+> **Confirmation d'entrée en build du 2026-09-04** — décision confirmée par Pierre-Marie Marchio, porteur du projet.
+
 ---
 
 ## Contexte
