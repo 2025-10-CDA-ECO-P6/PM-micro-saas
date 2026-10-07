@@ -25,9 +25,11 @@
 ### Intention
 
 ```
-Intention : le joueur, à l'ouverture du lien reçu du MJ, accède immédiatement aux
-            documents partagés pour la session et saisit uniquement un nom d'affichage
-            pour participer — sans créer de compte, sans mot de passe.
+Intention : le joueur, à l'ouverture du lien reçu du MJ, voit de quel espace ou de
+            quelle session il s'agit et qui est le MJ, puis saisit uniquement un nom
+            d'affichage pour participer — sans créer de compte, sans mot de passe ;
+            les documents partagés ne lui sont montrés qu'une fois son accès créé
+            (vue joueur post-accès).
 ```
 
 ---
@@ -35,15 +37,16 @@ Intention : le joueur, à l'ouverture du lien reçu du MJ, accède immédiatemen
 ### Zones et hiérarchie
 
 ```
-[ ZONE DE CONTENU PARTAGÉ ]
+[ ZONE D'INFORMATION DU LIEN ]
   type     : principal
-  rôle     : présente les documents que le MJ a partagés pour cette session ;
-             le contenu est visible dès l'ouverture du lien, avant toute saisie
-             du nom d'affichage — le joueur perçoit la valeur avant tout engagement
+  rôle     : présente les seules métadonnées du lien — nom de l'espace ou de la session,
+             MJ — avant toute saisie du nom d'affichage ; aucun document n'est affiché
+             à ce stade : l'accès n'existe pas encore (il est créé à la validation du
+             nom d'affichage) ; l'information RGPD vit dans sa zone dédiée ci-dessous
   priorité : principal
-  visibilité : PUBLIC (visible par les joueurs)
-  ancrage  : UC-09 scénario A §4 (« L'application affiche immédiatement les informations
-             partagées par le MJ pour cette session »)
+  visibilité : joueur seul
+  ancrage  : UC-09 scénario A §4 ; domaine `space-management` flows.md Flux 4
+             (page de saisie du nom d'abord, `GuestAccess.Create` ensuite) ; AR-03
 
 [ FORMULAIRE DE SAISIE DU NOM D'AFFICHAGE ]
   type     : formulaire
@@ -75,9 +78,10 @@ Intention : le joueur, à l'ouverture du lien reçu du MJ, accède immédiatemen
   avec ce nom visible du MJ ; son accès est actif pour la durée de la session
   (lien ponctuel — UC-09 §Règles métier)
 
-- [UC-09 scénario A §4 ; RB-12-01] consulter les documents partagés avant de saisir
-  son nom → le contenu PUBLIC visible pour cette session est accessible dès l'ouverture
-  du lien ; la saisie du nom ne conditionne pas la consultation du contenu initial
+- [UC-09 scénario A §4 ; domaine `space-management` Flux 4] prendre connaissance du lien avant
+  de saisir son nom → le joueur lit le nom de l'espace ou de la session, le MJ et
+  l'information RGPD ; aucun document n'est visible avant la création de l'accès ;
+  les documents partagés s'affichent dans la vue joueur post-accès
 
 - [UC-09 A2] créer un compte depuis cet écran → le joueur engage le parcours de
   création de compte (UC-10) pour conserver ses notes entre sessions ;
@@ -89,14 +93,10 @@ Intention : le joueur, à l'ouverture du lien reçu du MJ, accède immédiatemen
 ### États
 
 ```
-état vide (lien valide, aucun document encore partagé par le MJ) :
-  la zone de contenu partagé s'affiche avec un état vide explicite indiquant qu'aucun
-  document n'a encore été partagé pour cette session ; le formulaire de saisie du nom
-  reste accessible [SOUS-SPÉCIFIÉ — S9 §Notification active côté joueur]
-
-état chargé (lien valide, documents partagés présents) :
-  les documents PUBLIC partagés pour la session sont visibles ; le formulaire de saisie
-  du nom est accessible ; la zone d'information RGPD est présente
+état chargé (lien valide) :
+  la zone d'information du lien, le formulaire de saisie du nom et la zone d'information
+  RGPD sont présents ; aucun document n'est visible, qu'il y en ait ou non de partagés
+  par le MJ (l'état vide des documents partagés relève de la vue joueur post-accès)
 
 état erreur (lien expiré, révoqué, invalide ou quota atteint) :
   voir fiche dédiée `docs/interface/ecrans/sv5-joueur/erreur-acces/erreur-acces.md` —
@@ -111,15 +111,11 @@ Les garanties transversales (focus clavier visible en permanence, ordre de navig
 
 ```
 annonce sans action :
-  - apparition d'un nouveau document partagé pendant que le joueur est sur cet écran :
-    annoncé assistivement sans que le joueur déplace son focus — NFR-ACC-02 ;
-    AR-06 (apparition ambiante ; changement de visibilité annoncé aux outils de lecture
-    d'écran indépendamment de l'absence de notification UX visuelle)
   - validation du nom d'affichage et passage à la vue joueur : annoncé assistivement
     — NFR-ACC-02
 
 hiérarchie de lecture à distance :
-  priorité 1 — zone de contenu partagé (valeur immédiate de la session)
+  priorité 1 — zone d'information du lien (de quelle session il s'agit)
   priorité 2 — formulaire de saisie du nom d'affichage (seul geste requis)
   priorité 3 — zone d'information RGPD (information obligatoire — RB-09-20)
   source : NFR-ACC-04 (usage pendant une session, contexte de lecture rapide)
@@ -130,7 +126,8 @@ hiérarchie de lecture à distance :
 ### Sources
 
 ```
-Sources : UC-09 scénario A ; UC-09 A2 ; UC-09 A3 ;
+Sources : UC-09 scénario A §4 ; UC-09 scénario A §5 ; UC-09 A2 ; UC-09 A3 ;
+          domaine `space-management` flows.md Flux 4 ;
           UC-09 E1 ; UC-09 E2 ;
           RB-09-18 ; RB-09-19 ; RB-09-20 ; RB-09-21 ;
           RB-12-01 ;
@@ -148,10 +145,11 @@ Sources : UC-09 scénario A ; UC-09 A2 ; UC-09 A3 ;
 Déclenché — AR-03 : cet écran touche la frontière joueur.
 
 ```
-Règle de séparation : le joueur ne voit que les documents PUBLIC partagés par le MJ
-  pour cette session ; aucune structure MJ, aucun document GM_ONLY, aucun document
-  PLAYER_PRIVATE d'un autre joueur ne sont visibles ni révélés — NFR-CONF-01 ; AR-03.
-  Le joueur n'a pas accès à la connaissance de l'existence d'un contenu non partagé.
+Règle de séparation : avant la création de son accès, le joueur ne voit aucun document,
+  seulement les métadonnées du lien (décision 0045) ; aucune structure MJ, aucun document
+  GM_ONLY, aucun document PLAYER_PRIVATE d'un autre joueur ne sont visibles ni révélés —
+  NFR-CONF-01 ; AR-03. Le joueur n'a pas accès à la connaissance de l'existence d'un
+  contenu non partagé ; les documents PUBLIC lui sont montrés par la vue joueur post-accès.
 
 Indicateur de partage :
   Absent par nature sur cet écran — l'indicateur de partage est un composant de la
@@ -178,9 +176,6 @@ Déclenché — éléments S8 et S9.
     invité via un second lien sans création de compte
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S9 §Notification active côté joueur] la notification active
-    (signalement sonore ou visuel de l'apparition d'un nouveau document partagé)
-    n'est pas décidée pour le MVP — angle d'interview (US-06 §Questions ouvertes)
   [SOUS-SPÉCIFIÉ — S9 §Persistance des notes invité inter-sessions sans compte]
     la mécanique de récupération des notes PLAYER_PRIVATE d'un invité via un nouveau
     lien vers le même personnage est évoquée dans UC-06 §Règles métier mais non

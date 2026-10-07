@@ -66,7 +66,8 @@ Un terme de domaine ne se renomme jamais en surface hors de l'arbitrage AR-05. U
 | gate de migration local→cloud | Surface de confirmation explicite lors de la transition mode local → compte cloud — matérialisation de la *Gate de reconnaissance* (glossaire §Gate de reconnaissance). Le terme de région « gate de migration local→cloud » et le terme de domaine « Gate de reconnaissance » désignent la même surface ; seul le terme de région figure dans les fiches d'écran. |
 | formulaire de création rapide | Zone de saisie minimale du panneau de création rapide à la volée — seul le titre est obligatoire ; tous les autres champs sont optionnels ou complétables après création. Source : S4 §Vue session MJ ; UC-07. |
 | zone d'accès via fournisseur externe | Zone proposant la connexion ou l'inscription via un fournisseur d'identité externe en un seul geste — aucun mot de passe à définir ou à saisir. Source : UC-10 §scénario nominal Connexion via fournisseur externe ; AR-13. |
-| zone de contenu partagé | Zone principale de la surface joueur affichant les documents PUBLIC partagés par le MJ pour la session — visible dès l'ouverture du lien, avant saisie du nom. Source : UC-09 scénario A §4 ; AR-03. |
+| zone de contenu partagé | Zone principale de la surface joueur affichant les documents PUBLIC partagés par le MJ pour la session — n'affiche aucun document avant la saisie du nom : tant que le `GuestAccess` n'est pas créé, seules les métadonnées du lien sont visibles (S4). Source : UC-09 scénario A §4 ; flux 4 de [space-management](../domaine/space-management/flows.md) ; AR-03. |
+| zone d'information du lien | Zone de l'accès par lien qui présente, avant la saisie du nom, les seules métadonnées du lien : nom de l'espace ou de la session, MJ ; aucun document. Source : UC-09 scénario A §4 ; flux 4 de [space-management](../domaine/space-management/flows.md). |
 | formulaire de saisie du nom d'affichage | Zone de saisie recueillant uniquement le nom d'affichage du joueur invité — seul champ requis pour participer à une session ponctuelle. Source : UC-09 scénario A §5 ; RB-09-20. |
 | zone d'information RGPD | Bandeau non bloquant sur la surface joueur informant l'invité de la nature, de la durée de conservation et du sort de ses données à la fin de l'accès. Source : RB-09-20 (RGPD Art. 13). |
 | zone de documents partagés | Zone principale de la vue joueur post-accès listant les documents PUBLIC visibles selon le périmètre d'accès (SESSION ou SPACE). Source : UC-12 scénario nominal §4 ; RB-12-01 ; AR-06. |
@@ -77,7 +78,7 @@ Un terme de domaine ne se renomme jamais en surface hors de l'arbitrage AR-05. U
 | zone de contenu / liste des documents | Zone listant les documents du dossier courant ou de l'espace en vue condensée (titre et repère de type) ; accès à la création et à l'édition de tout document de la liste. Source : UC-04 ; UC-05 A3 ; AR-11. |
 | zone d'accès à l'éditeur de document | Point d'entrée depuis la zone de navigation ou la liste des documents vers l'éditeur de document — création (titre seul obligatoire) ou modification d'un document existant. Source : UC-04 ; AR-15 (capture-first). |
 | zone d'accès à la vue session | Point d'entrée depuis la vue campagne (espace de travail) vers la vue session MJ — permet de lancer la session (mode LIVE) ou d'y accéder en mode configuration ; affiche un repère « session en cours » si une session est déjà au statut en cours dans l'espace. Source : UC-06 §Déclencheur ; AR-09. |
-| zone d'accès aux paramètres | Accès à la configuration de la vue session (dossiers mis en avant, ordre), à l'archivage de l'espace et à la génération du lien d'invitation depuis la vue campagne (espace de travail). Source : UC-06 Phase 2 ; UC-11 A4 ; AR-09 ; AR-10. |
+| zone d'accès aux paramètres | Renvoi vers la configuration de la vue session (mode configuration de la surface session — AR-18), accès à l'archivage de l'espace et à la génération du lien d'invitation de campagne depuis la vue campagne (espace de travail). Source : UC-06 Phase 2 ; UC-11 A4 ; AR-09 ; AR-10 ; AR-18. |
 
 > Pour ajouter un terme de région : ouvrir ce fichier, ajouter la ligne dans le tableau ci-dessus, documenter la source ou l'arbitrage associé. Ne pas employer un terme de région absent de ce tableau dans une fiche d'écran.
 
@@ -99,7 +100,8 @@ Un terme de domaine ne se renomme jamais en surface hors de l'arbitrage AR-05. U
 | scénario | `Document` de type `SCENARIO` | Cas spécialisé de document |
 | visible par les joueurs | `PUBLIC` | Niveau de visibilité — cartographie dans glossaire §LIVE_NOTE |
 | privé MJ | `GM_ONLY` | Niveau de visibilité — idem |
-| note de session personnelle joueur | `PLAYER_PRIVATE` | Niveau de visibilité — idem |
+| privé (joueur) | `PLAYER_PRIVATE` | Niveau de visibilité — idem. Affiché sous le terme générique « Privé (joueur) » : le domaine applique `PLAYER_PRIVATE` à tout type de document, pas seulement aux notes |
+| note de session personnelle joueur | `LIVE_NOTE` au niveau `PLAYER_PRIVATE` | Nom du type note créée par un joueur — il ne désigne pas le niveau de visibilité, qui s'affiche « Privé (joueur) » |
 | session | `Session` | Séance de jeu |
 | en cours | `LIVE` | Statut de session |
 | terminée | `CLOSED` | Statut de session |
@@ -137,7 +139,7 @@ Délimite une région fonctionnelle de l'écran.
 
 ```
 [ NOM DE ZONE ]
-  type     : châssis | principal | latéral | bandeau | formulaire | favoris
+  type     : châssis | principal | latéral | bandeau | formulaire | favoris | règle de zoning | action | lien
   rôle     : <description en une phrase du rôle fonctionnel de la zone>
 ```
 
@@ -148,6 +150,9 @@ Les types correspondent aux régions suivantes :
 - **bandeau** : bande horizontale non bloquante portant un message d'état.
 - **formulaire** : zone de saisie structurée.
 - **favoris** : zone listant les éléments épinglés ou mis en avant.
+- **règle de zoning** : règle de répartition de l'espace d'une surface, sans région propre (ex. plancher garanti, plafond borné — AR-19).
+- **action** : région réduite à une affordance qui déclenche un geste, sans saisie structurée ni contenu (ex. génération du lien de session — AR-10).
+- **lien** : région réduite à un renvoi de navigation vers un autre écran.
 
 ---
 
@@ -186,7 +191,7 @@ Décrit qui peut voir une zone ou un élément, en termes de besoin et de domain
 ```
 visibilité : PUBLIC (visible par les joueurs)
            | GM_ONLY (privé MJ)
-           | PLAYER_PRIVATE (note de session personnelle joueur)
+           | PLAYER_PRIVATE (« Privé (joueur) »)
            | MJ seul
            | joueur seul
            | tous membres

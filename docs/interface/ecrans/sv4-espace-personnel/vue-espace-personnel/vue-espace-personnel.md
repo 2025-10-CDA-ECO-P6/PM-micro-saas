@@ -230,10 +230,14 @@ Déclenché — éléments S8 et S9.
     vers une vue filtrée interne, sans nouveau nœud d'arborescence
 
 Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S9] sémantique ARCHIVED / FROZEN d'un espace PERSONAL — non
-    tranchée à ce stade (AR-14 §Condition de retour)
+  aucun
 
 Points précédemment sous-spécifiés, maintenant résolus :
+  - sémantique ARCHIVED / FROZEN d'un espace PERSONAL : tranché — un espace PERSONAL
+    est toujours ACTIVE ; `Archive()` et `Freeze()` lui sont refusées (garde d'agrégat),
+    `Unarchive()` est sans objet (`space-management.md` invariant 15 ; zonage.md §S9
+    « Sémantique `ARCHIVED PERSONAL` — RÉSOLUE ») ; cohérent avec l'absence d'UI
+    d'archivage de l'espace personnel (AR-14)
   - présence et libellé de l'espace personnel au tableau de bord : tranché —
     carte en tête de grille, badge hors quota, micro-copy neutre
     « Vos notes et contenus, hors campagne » (AR-17 ; AR-05)

@@ -82,7 +82,7 @@ Avant de lire les fiches, lire les sources de vérité dans cet ordre :
 | [`recherche-preparation/recherche-preparation.md`](sv3-preparation/recherche-preparation/recherche-preparation.md) | Recherche en préparation | Barre de recherche globale dans le contenu de l'espace ; titre seul au MVP ; résultats regroupés par type | MJ | UC-14 ; US-UC-14 |
 | [`editeur-document/editeur-document.md`](sv3-preparation/editeur-document/editeur-document.md) | Éditeur de document | Création et modification d'un document (titre, type optionnel, propriétés structurées, blocs libres, visibilité, liens) | MJ | UC-04, UC-07 |
 | [`editeur-scenario/editeur-scenario.md`](sv3-preparation/editeur-scenario/editeur-scenario.md) | Éditeur de scénario | Cas spécialisé de l'éditeur pour les documents de type scénario — structure narrative (scènes liées, documents associés) | MJ | UC-03 |
-| [`parametres-campagne/parametres-campagne.md`](sv3-preparation/parametres-campagne/parametres-campagne.md) | Paramètres de campagne | Configuration de la vue session (dossiers mis en avant, ordre) ; génération du lien d'invitation ; archivage de l'espace | MJ | UC-06 Phase 2 (config view) ; UC-02 (archivage) ; UC-11 (lien) |
+| [`parametres-campagne/parametres-campagne.md`](sv3-preparation/parametres-campagne/parametres-campagne.md) | Paramètres de campagne | Renvoi vers la configuration de la vue session (AR-18) ; export ; archivage ; lien d'invitation | MJ | UC-06 Phase 2 (config view) ; UC-02 (archivage) ; UC-11 (lien) |
 
 ### Surface MJ — Préparation, déclinaison espace personnel (PERSONAL)
 
@@ -90,9 +90,7 @@ Déclinaison PERSONAL de la surface Préparation (branchée au tableau de bord) 
 
 | Fiche | Écran | Rôle | Surface | UC couverts |
 |---|---|---|---|---|
-| [`vue-espace-personnel/vue-espace-personnel.md`](sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md) | Vue de l'espace personnel | Hub de l'espace personnel — accès à la navigation dossiers, à l'éditeur et à la recherche ; sans vue session, sans partage, sans gestion de membres | MJ | UC-01, UC-04 |
-
-L'inventaire S4 du zonage n'a pas de ligne pour cet écran : sa surface et ses cas d'utilisation sont repris de l'en-tête de sa fiche.
+| [`vue-espace-personnel/vue-espace-personnel.md`](sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md) | Espace personnel | Hub de l'espace personnel — accès à la navigation dossiers, à l'éditeur et à la recherche ; sans vue session, sans partage, sans gestion de membres | MJ | UC-01, UC-04 |
 
 ### Surface joueur (SV5)
 

@@ -13,7 +13,7 @@
 - **Surface** : MJ
 - **Contexte** : préparation
 - **Type d'espace** : CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — voir AR-14 ; la version réduite
-  de cette surface pour l'espace personnel n'est pas wireframée ici)
+  de cette surface pour l'espace personnel est décrite dans `vue-espace-personnel.md`)
 - **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
 - **Traçabilité** : UC-02, UC-04, UC-05, UC-06, UC-08, UC-11 ; AR-01, AR-09, AR-10, AR-11, AR-13, AR-18
 
@@ -226,12 +226,16 @@ Déclenché — éléments S8 et S9.
     associations joueur-personnage) — différé (AR-10)
 
 Éléments sous-spécifiés (S9) :
-  [AR-10 révisé — tranché] placement du lien d'invitation : lien de session ponctuel
+  aucun
+
+Points précédemment sous-spécifiés, maintenant résolus :
+  - [AR-10 révisé — tranché] placement du lien d'invitation : lien de session ponctuel
     → vue session ; lien de campagne permanent → paramètres de campagne ;
     la vue campagne n'est pas un point de génération
-  [SOUS-SPÉCIFIÉ — S9 §Interface de l'espace personnel sous-spécifiée] la
-    déclinaison réduite de cette surface pour l'espace personnel (sans vue session,
-    sans invitation de joueurs, sans dossiers système nommés) n'est pas wireframée
-    séparément au MVP — son interface relève d'un point d'interview (UC-02
-    §Questions à valider en interview)
+  - interface de l'espace personnel : tranché — la déclinaison réduite de cette surface
+    pour l'espace personnel (sans vue session, sans invitation de joueurs, sans dossiers
+    système nommés) est décrite par `vue-espace-personnel.md` (AR-14 ; AR-15 ; AR-17 ;
+    zonage.md §S9 « Interface de l'espace personnel — RÉSOLU ») ; ne restent en
+    interview que la perception de l'espace personnel et son libellé de surface,
+    qui ne bloquent pas la fiche
 ```

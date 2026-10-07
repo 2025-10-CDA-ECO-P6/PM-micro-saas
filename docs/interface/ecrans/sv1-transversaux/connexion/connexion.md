@@ -82,7 +82,9 @@ Intention : l'utilisateur disposant d'un compte s'authentifie avec son adresse d
 - [UC-10 §scénario nominal Connexion via fournisseur externe] s'authentifier via
   un fournisseur externe → connexion au compte existant (même adresse de messagerie)
   ou création d'un nouveau compte (tier gratuit, premier accès) ; redirection vers
-  le tableau de bord
+  le tableau de bord, sauf pour un nouvel utilisateur sans données locales, redirigé
+  directement vers l'écran de création de campagne (UC-10 §scénario nominal Connexion
+  via fournisseur externe, étape 6 ; même cible que l'inscription sans données locales)
 
 - [UC-10 A1] demander la réinitialisation du mot de passe → le système envoie
   un lien de réinitialisation à l'adresse de messagerie saisie ; l'utilisateur choisit

@@ -33,7 +33,7 @@ Les **intitulés de section** de ce gabarit sont en langage de besoin (« Ce que
 
 - **Nom** : <nom exact tel qu'il figure dans l'inventaire S4>
 - **Surface** : MJ | joueur | transversal
-- **Contexte** : préparation | session | transversal
+- **Contexte** : préparation | session | transversal, ou une combinaison, telle que S4 la donne (par exemple « préparation + session »)
 - **Type d'espace** : CAMPAIGN | ONE_SHOT | PERSONAL | n.a. (si l'écran est indépendant du type)
 - **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
 - **Traçabilité** : <UC / US / NFR couverts, à la maille écran — source : colonne « UC / US / UJ couverts » de S4>
@@ -59,11 +59,11 @@ Critère de complétude : la phrase nomme l'utilisateur (MJ / joueur / utilisate
 
 #### Zones et hiérarchie
 
-> *Inventaire des zones de l'écran, avec leur rôle, leur type et leur priorité de présence. Utilise la Famille 1 et la Famille 2 de `conventions-wireframe.md`.*
+> *Inventaire des zones de l'écran, avec leur rôle, leur type et leur priorité de présence. Utilise la Famille 1 et la Famille 2 de `conventions-wireframe.md`. Les types sont ceux de la [Famille 1](conventions.md#famille-1--zone), y compris « règle de zoning », « action » et « lien ».*
 
 ```
 [ NOM DE ZONE ]
-  type     : châssis | principal | latéral | bandeau | formulaire | favoris
+  type     : châssis | principal | latéral | bandeau | formulaire | favoris | règle de zoning | action | lien
   rôle     : <rôle fonctionnel en une phrase>
   priorité : co-présent-jamais-masqué | principal | secondaire-configurable
   visibilité : <qui voit cette zone — Famille 4>
@@ -323,13 +323,14 @@ Intention : le MJ pilote la session depuis un tableau de bord configurable qui l
   ancrage  : AR-11 ; NFR-PERF-04
 
 [ AFFORDANCE DE GÉNÉRATION DE LIEN D'INVITATION ]
-  [SOUS-SPÉCIFIÉ — S4 §Surface MJ — Accès ; AR-10] placement non figé :
-    l'affordance est logée dans la vue session OU la vue campagne — non tranché.
-    Cette zone ne figure ici qu'à titre de traçabilité ; son appartenance à cet écran
-    n'est pas une décision (S4 §Surface MJ — Accès, AR-10).
-  rôle     : permet au MJ de générer le lien de session ponctuel à partager aux joueurs
+  type     : action
+  rôle     : permet au MJ de générer le lien de session ponctuel à partager aux joueurs ;
+             l'affordance est logée dans la vue session (acte de pilotage en séance) ;
+             le lien permanent de campagne est logé dans les paramètres de campagne,
+             pas ici (AR-10)
+  priorité : secondaire-configurable
   visibilité : MJ seul
-  ancrage  : UC-06 (lien ponctuel) ; UC-08 ; UC-11 A4 (fraction Must — AR-10)
+  ancrage  : AR-10 ; UC-06 (lien ponctuel) ; UC-08 ; UC-11 A4 (fraction Must — AR-10)
 ```
 
 ---
@@ -356,8 +357,9 @@ Intention : le MJ pilote la session depuis un tableau de bord configurable qui l
 - [AR-12 ; UC-06] épingler un document sans le partager → le document est accessible
   rapidement dans le panneau des épinglés ; il reste invisible côté joueur
 
-- [UC-07] créer un document ou une note de session à la volée → panneau de création rapide
-  s'ouvre (titre seul obligatoire) ; le document créé est automatiquement épinglé
+- [UC-07 ; RB-07-04] créer un document ou une note de session à la volée → panneau de création
+  rapide s'ouvre (titre seul obligatoire) ; un document durable est épinglé automatiquement
+  en LIVE (désépinglable par le MJ) ; une note de session est rattachée sans être épinglée
 
 - [UC-14 ; AR-11] rechercher dans le contenu de l'espace → titre seul au MVP ;
   résultats affichés dans un panneau latéral sans interrompre le contexte de la vue session
@@ -469,8 +471,9 @@ Zones actives : toutes les zones listées dans « Zones et hiérarchie »
 Affordances spécifiques :
   - [AR-12 ; UC-08] partager un document → visible par les joueurs + auto-épinglage (AR-12 §Raison d'être)
   - [AR-12 ; UC-08] retirer le partage → disparition symétrique côté joueur en temps réel (AR-06)
-  - [UC-07] créer à la volée → panneau de création rapide (titre seul obligatoire) ;
-    document créé automatiquement épinglé
+  - [UC-07 ; RB-07-04] créer à la volée → panneau de création rapide (titre seul obligatoire) ;
+    document durable automatiquement épinglé en LIVE (désépinglable), note de session
+    rattachée sans épinglage
   - [UC-06 ; RB-06-21] terminer la session → basculement en mode consultation CLOSED ;
     unidirectionnel (pas de retour en LIVE — machine d'états RB-06-21)
 
@@ -505,16 +508,19 @@ Zones absentes par nature :
 
 Affordances spécifiques :
   - [UC-07 ; S4 §Vue session MJ] créer un document ou une note à la volée de façon rétroactive
-    → le panneau de création rapide s'ouvre (titre seul obligatoire) — UC-07 A5
+    → le panneau de création rapide s'ouvre (titre seul obligatoire) — UC-07 A5 ;
+    aucun épinglage automatique en CLOSED (RB-07-04), l'épinglage reste manuel et optionnel
   - [UC-08 A3 ; AR-12] partager un document rétroactivement → le document devient visible par
     les joueurs (PUBLIC) SANS auto-épinglage (l'auto-épinglage est réservé au mode LIVE)
   - [UC-06 ; glossaire §Session] archiver la session → la session passe au statut ARCHIVED,
     lecture seule complète (aucune modification possible)
 
 Placement de l'affordance de génération de lien d'invitation :
-  [SOUS-SPÉCIFIÉ — S4 §Surface MJ — Accès ; AR-10] l'affordance est logée dans la vue session
-    OU dans la vue campagne — non tranché. Son appartenance à cet écran (et donc à ce mode)
-    n'est pas décidée ; elle ne peut donc être ni désactivée ni absente par nature dans ce mode.
+  [AR-10] l'affordance de lien de session ponctuel est logée dans la vue session ; le lien
+    permanent de campagne est logé dans les paramètres de campagne.
+  [SOUS-SPÉCIFIÉ — AR-10] son état en mode consultation CLOSED n'est pas dit : la source ne
+    tranche pas si elle reste active, est désactivée ou est absente par nature dans ce mode ;
+    elle n'est donc rangée dans aucune de ces trois listes.
 
 Éléments différés (S8) :
   [HORS-MVP — moscow.md §Won't Have] clôture formelle de session (procédure de clôture guidée)

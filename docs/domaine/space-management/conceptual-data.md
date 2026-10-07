@@ -8,6 +8,8 @@ erDiagram
         identifiant id PK
         identifiant owner_id FK "ref users.id"
         texte name
+        texte description "optionnel"
+        texte game_system "optionnel"
         texte slug "unique par owner"
         texte type "CAMPAIGN | ONE_SHOT | PERSONAL"
         texte status "ACTIVE | ARCHIVED | FROZEN"

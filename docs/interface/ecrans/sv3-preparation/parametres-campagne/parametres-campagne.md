@@ -49,24 +49,28 @@ Intention : le MJ accède à la configuration de la vue session (depuis un renvo
              UC-06 §Phase 2 — Vue session MJ (interface) §Panneaux de dossiers configurés ;
              UC-06 §Données manipulées §configuration de la vue session ;
              AR-09 (disposition persistée entre modes)
-  type     : lien / affordance de navigation
+  type     : lien
   priorité : principal (premier plan — AR-19)
   visibilité : MJ seul
 
 [ LIEN D'INVITATION DE CAMPAGNE ]
   rôle     : permet au MJ de générer ou régénérer le lien d'invitation PERMANENT de campagne
-             (SpaceMembership) — acte de préparation ; le lien donne accès à la campagne
-             de façon durable (pas le lien de session ponctuel, logé dans la vue session) ;
+             (portée SPACE) — acte de préparation ; le lien donne accès à la campagne
+             de façon durable : un utilisateur connecté qui l'utilise devient membre
+             (SpaceMembership), un anonyme obtient un accès invité à portée SPACE
+             (GuestAccess SPACE) (pas le lien de session ponctuel, logé dans la vue session) ;
              le MJ peut configurer le périmètre, la date d'expiration et le nombre
              d'utilisations maximum ; le lien est copié pour être partagé (Discord, WhatsApp,
              canal du MJ)
-  ancrage  : AR-10 révisé (lien de campagne permanent = SpaceMembership, logé ici ;
-             lien de session ponctuel logé dans la vue session — distinction explicite) ;
+  ancrage  : AR-10 révisé (lien de campagne permanent, portée SPACE, logé ici ; le lien
+             donne un GuestAccess SPACE à un anonyme et un SpaceMembership à un utilisateur
+             connecté ; lien de session ponctuel logé dans la vue session — distinction
+             explicite) ;
              UC-11 §Scénario nominal (lien partageable — MVP) ; UC-11 A4 (accès invité sans compte)
-  type     : formulaire + affordance de copie
+  type     : formulaire
   priorité : principal (premier plan — AR-19)
   visibilité : MJ seul
-  note     : le lien de campagne est un acte de préparation (SpaceMembership) ; il n'est
+  note     : le lien de campagne est un acte de préparation (portée SPACE) ; il n'est
              pas à confondre avec le lien de session ponctuel (accès temporaire) qui relève
              de la surface session
 
@@ -106,9 +110,10 @@ Intention : le MJ accède à la configuration de la vue session (depuis un renvo
   type     : formulaire (flux à deux temps : conséquences → confirmation)
   priorité : secondaire-configurable (replié — divulgation progressive, action rare — AR-19)
   visibilité : MJ seul
-  note sémantique : la sémantique ARCHIVED d'un espace PERSONAL reste un point d'interview
-             non tranché (S9) — cet écran est réservé aux espaces partagés, ce point ne
-             le concerne pas directement
+  note sémantique : DÉCIDÉ 2026-07-09 (zonage §9, invariant 15) : un espace PERSONAL est toujours
+             ACTIVE et ne peut être archivé (`space-management.md` invariant 15 ; zonage.md
+             §S9 « Sémantique `ARCHIVED PERSONAL` — RÉSOLUE ») — cet écran est réservé
+             aux espaces partagés, ce point ne le concerne pas directement
 
 [ ZONE D'EXPORT DE L'ESPACE ]
   rôle     : permet au MJ d'exporter l'espace dans un format ouvert téléchargeable
@@ -133,7 +138,7 @@ Intention : le MJ accède à la configuration de la vue session (depuis un renvo
   session (AR-09)
 
 - [UC-11 §Scénario nominal ; AR-10 révisé] générer le lien d'invitation de campagne →
-  le lien de CAMPAGNE PERMANENT (SpaceMembership) est copié pour être partagé
+  le lien de CAMPAGNE PERMANENT (portée SPACE) est copié pour être partagé
   (Discord, WhatsApp, canal du MJ) ; le MJ peut configurer le périmètre, la date
   d'expiration et le nombre d'utilisations maximum ; ce lien est distinct du lien de
   session ponctuel (logé dans la vue session, pas ici)
@@ -226,7 +231,8 @@ Sources : UC-06 Phase 2 (accès à la configuration de la vue session via renvoi
           UC-01 A4a (export — MVP version minimale) ;
           UC-11 §Scénario nominal (lien d'invitation de campagne — MVP) ; UC-11 A4 ;
           AR-09 (persistance de la configuration entre modes) ;
-          AR-10 révisé (lien de campagne permanent = SpaceMembership ; lien de session ponctuel
+          AR-10 révisé (lien de campagne permanent, portée SPACE : GuestAccess SPACE pour un anonyme,
+                        SpaceMembership pour un utilisateur connecté ; lien de session ponctuel
                         dans la vue session) ;
           AR-13 (mode local) ;
           AR-18 (configuration de la vue session logée dans la surface session, mode
@@ -308,6 +314,44 @@ Affordances spécifiques :
 
 ---
 
+### Partage et visibilité
+
+Déclenché — AR-03 : les paramètres de campagne touchent la frontière joueur. Le lien d'invitation de campagne décide qui peut entrer dans l'espace (AR-10 révisé ; UC-11 §Scénario nominal) et l'archivage change l'état d'un espace dont les joueurs sont membres.
+
+```
+Règle de séparation : le lien d'invitation donne accès à l'espace, il ne change la
+  visibilité d'aucun document — le joueur qui entre ne voit que les documents PUBLIC
+  et la fiche de son personnage associé (UC-12 ; RB-12-01), et la vue joueur n'expose aucune structure MJ ni l'existence d'un document
+  non partagé — NFR-CONF-01 ; AR-03. Toutes les zones de cette fiche sont MJ seul ;
+  cette fiche ne rend jamais la vue joueur.
+
+Indicateur de partage :
+  [ABSENT PAR NATURE] — l'indicateur de partage récapitule les documents visibles par
+  les joueurs (châssis S7 §Indicateur de partage) ; aucune zone de cette fiche ne
+  partage ni ne retire le partage d'un document.
+
+Affordances de partage et d'épinglage :
+  [ABSENT PAR NATURE] — partager et épingler sont des gestes sur un document (éditeur
+  de document, vue session — AR-12) ; cet écran n'en porte aucun.
+
+Affordances qui touchent la frontière joueur :
+  - [AR-10 révisé ; UC-11 §Scénario nominal] générer le lien d'invitation de campagne →
+    le lien permanent (portée SPACE) ouvre un accès durable à l'espace (GuestAccess SPACE
+    pour un anonyme, SpaceMembership pour un utilisateur connecté), avec date
+    d'expiration et nombre d'utilisations maximum optionnels (UC-11 étape 6) ; il est
+    distinct du lien de session ponctuel (vue session) ; l'invitation par email est
+    hors MVP
+  - [UC-02 §Règles métier RB-02-21 ; domaine `space-management.md` règle métier 7 ;
+    domaine `SpaceArchived`] archiver l'espace →
+    l'espace passe en lecture seule (aucune écriture : documents en soft-lock) ; ce que
+    voit alors un joueur déjà membre n'est pas décrit : [SOUS-SPÉCIFIÉ — S9] ni UC-12,
+    ni UC-09, ni UC-11, ni le domaine ne disent si les documents PUBLIC restent
+    consultables par les joueurs d'un espace ARCHIVED, ni si le lien d'invitation en
+    cours de validité reste utilisable
+```
+
+---
+
 ### Mode local (déclenché — surface MJ)
 
 ```
@@ -356,8 +400,12 @@ Déclenché — éléments S8 et S9.
     seul le lien partageable est disponible au MVP
 
 Éléments sous-spécifiés (S9) :
-  aucun — le point précédemment sous-spécifié est résolu : l'affordance de
-  désarchivage vit désormais sur cette fiche (mode « espace archivé », §Modes) ;
-  le point d'entrée vers la liste des espaces archivés vit au tableau de bord
-  (AR-22 ; `tableau-de-bord.md` §Zones et hiérarchie §Accès aux espaces archivés)
+  [SOUS-SPÉCIFIÉ — S9] effet de l'archivage sur ce que voient les joueurs déjà membres
+    de l'espace et sur la validité du lien d'invitation en cours — voir §Partage et
+    visibilité
+
+Points précédemment sous-spécifiés, maintenant résolus :
+  - l'affordance de désarchivage vit désormais sur cette fiche (mode « espace archivé »,
+    §Modes) ; le point d'entrée vers la liste des espaces archivés vit au tableau de bord
+    (AR-22 ; `tableau-de-bord.md` §Zones et hiérarchie §Accès aux espaces archivés)
 ```

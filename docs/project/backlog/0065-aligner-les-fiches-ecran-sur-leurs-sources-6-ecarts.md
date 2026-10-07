@@ -2,7 +2,9 @@
 
 - **Id** : 0065
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-interface (chantier conformite-corpus)
+- **Appliqué dans** : `docs/interface/ecrans/sv3-preparation/recherche-preparation/recherche-preparation.md`, `docs/interface/ecrans/README.md`, `docs/interface/ecrans/sv3-preparation/editeur-document/editeur-document.md`, `docs/interface/ecrans/sv-session/vue-session-mj/vue-session-mj.md`, `docs/interface/ecrans/sv3-preparation/parametres-campagne/parametres-campagne.md`, `docs/interface/ecrans/sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md`, `docs/interface/conventions.md`, `docs/interface/gabarit-ecran.md`, `docs/interface/zonage.md`
+- **Note** : l'item 8 suit l'option (b) de l'entrée, car retyper dans la liste existante perdait de l'information : « règle de zoning », « action » et « lien » sont ajoutés à la Famille 1 et au gabarit (décision de l'orchestrateur, par délégation de l'opérateur, 2026-10-07). L'item 10 est le même changement que l'écart 2 de 0062.
 
 - [screen-sheets:contradicted-4 — stale, recherche-preparation.md] Aligner le Contexte de l'en-tête de recherche-preparation.md sur S4 : préparation + session
 - [screen-sheets:contradicted-6 — stale, README.md] Remplacer le rôle de l'index wireframes/README.md:85 par « Renvoi vers la configuration de la vue session (AR-18) ; export ; archivage ; lien d'invitation »

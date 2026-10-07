@@ -8,6 +8,8 @@ classDiagram
         +identifiant id
         +identifiant ownerId
         +texte name
+        +texte description
+        +texte gameSystem
         +Slug slug
         +SpaceType type
         +SpaceStatus status
@@ -15,7 +17,7 @@ classDiagram
         +liste de Invitation invitations
         +horodatage createdAt
         +horodatage updatedAt
-        +Create(ownerId, name, type)$
+        +Create(ownerId, name, type, description, gameSystem)$
         +AddMember(userId, role)
         +RemoveMember(userId)
         +CreateInvitation(type, scope, options)

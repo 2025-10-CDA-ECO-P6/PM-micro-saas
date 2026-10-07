@@ -37,7 +37,7 @@ UC-09 précondition : "Le MJ a un compte (au minimum gratuit)" et "Le MJ a gén�
 
 ### Comportements observables
 
-- Lucas clique sur le lien. L'application affiche immédiatement les informations partagées par le MJ pour cette session — pas une page de marketing, pas un formulaire d'inscription.
+- Lucas clique sur le lien. L'application affiche les métadonnées du lien (nom de l'espace ou de la session, MJ, information RGPD) ; aucun document avant la saisie du nom — pas une page de marketing, pas un formulaire d'inscription.
 - Avant ou à l'entrée en session, Lucas reçoit une information simple sur les données conservées : son `displayName`, ses notes privées éventuelles, la durée de conservation (durée de l'accès + 24 heures de grâce), et leur suppression à la fin de l'accès. Cette information est donnée au moment de la saisie du nom (RB-09-20).
 - Lucas saisit uniquement un `displayName` — pas d'email, pas de mot de passe. C'est le seul prérequis à l'accès (RB-09-02, US-09-01).
 - Un `GuestAccess` de portée `SESSION` est créé : `status = ACTIVE`. Lucas accède à la vue session joueur.

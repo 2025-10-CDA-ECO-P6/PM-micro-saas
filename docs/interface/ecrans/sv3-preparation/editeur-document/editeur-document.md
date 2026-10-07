@@ -87,7 +87,7 @@ Intention : le MJ crée ou modifie un document dans son espace — en lui donnan
 [ ZONE DE VISIBILITÉ ET MÉTADONNÉES ]
   type     : formulaire
   rôle     : configuration de la visibilité du document (privé MJ par défaut,
-             visible par les joueurs, ou note de session personnelle joueur) ; dossier
+             visible par les joueurs, ou Privé (joueur)) ; dossier
              de rattachement ; tags optionnels
   priorité : secondaire-configurable
   visibilité : MJ seul
@@ -230,6 +230,41 @@ Sources : UC-04 ; UC-07 (création à la volée depuis la vue session) ;
 ---
 
 ## Sections conditionnelles
+
+### Partage et visibilité
+
+Déclenché — AR-03 et AR-12 : l'éditeur touche la frontière joueur, car le changement de visibilité d'un document modifie ce que les joueurs voient (UC-04 A4 ; UC-08).
+
+```
+Règle de séparation : un document est privé pour le MJ par défaut et un document privé n'est
+  pas visible par les joueurs (UC-04 §Règles métier ; UC-08 §Règles métier) ; la vue joueur
+  n'expose aucune structure MJ et ne révèle pas l'existence d'un document non partagé —
+  NFR-CONF-01 ; AR-03. Un bloc ne porte pas la visibilité au MVP : le contenu privé et le
+  contenu destiné aux joueurs se séparent en deux documents liés, chacun avec sa propre
+  visibilité (UC-04 §Clarification du modèle documentaire §Blocs documentaires).
+  Cette fiche ne rend jamais la vue joueur.
+
+Indicateur de partage :
+  Composant de châssis (S7 §Indicateur de partage) : récapitulatif permanent de ce que les
+  joueurs voient en ce moment. Cette fiche ne le décrit pas ; l'état de visibilité du
+  document édité se lit dans la zone de visibilité et métadonnées.
+
+Affordances de partage et d'épinglage :
+  - [UC-04 A4 ; UC-08 §Scénario nominal ; AR-12] partager → le document, privé MJ par
+    défaut, devient visible par les joueurs ; le système indique que le document devient
+    visible pour tous les membres de l'espace et les accès invités actifs, puis le MJ valide
+    (UC-08 étapes 3 et 4) ; le partage est durable jusqu'à retrait explicite (UC-08 §Règles
+    métier)
+  - [UC-04 A4 ; UC-08 A1] retirer le partage → le document redevient privé MJ ; le MJ peut
+    modifier la visibilité ultérieurement (UC-08 §Postconditions)
+  - [AR-12 ; UC-04 A5] épingler : [ABSENT PAR NATURE] — l'épinglage est un geste de la vue
+    session (panneau des documents épinglés) ; l'éditeur n'en porte pas
+  - [AR-12] distinction partager ≠ épingler : l'éditeur ne porte que le partage ; la
+    visibilité et l'épinglage sont indépendants (UC-08 §Règles métier) — retirer le partage
+    d'un document épinglé ne le retire pas du panneau des épinglés
+```
+
+---
 
 ### Mode local (déclenché — surface MJ)
 

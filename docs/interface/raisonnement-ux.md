@@ -4,7 +4,7 @@
 > Couche : interface (en aval de zoning.md, en aval des fiches wireframe).
 > Méthode : 4 lentilles d'analyse appliquées aux 20 écrans du MVP.
 > Les résolutions sont portées dans le zoning et les fiches concernées — ce document en est le rationale, pas la source des arbitrages.
-> Hiérarchie d'autorité respectée : vision > personas/parcours > UC > NFR > interface (zoning.md) > fiches wireframe.
+> Hiérarchie d'autorité respectée : personas > vision produit > use cases > parcours / user stories / NFR > interface ([zonage.md](zonage.md)) > [fiches d'écran](ecrans/README.md).
 
 ---
 
@@ -37,9 +37,9 @@ Il ne contredit pas le corpus amont. Toute décision mentionnée ici qui touche 
 
 ### Frontière fonctionnelle verrouillée
 
-La frontière fonctionnelle de l'espace personnel n'est pas une question ouverte : elle est déjà résolue par le corpus. L'espace personnel est de type `PERSONAL`, hors quota, mono-membre, mène uniquement à Préparation (pas de vue session), et constitue le conteneur par défaut de tout contenu créé hors d'un espace partagé explicite. Ces contraintes sont posées par AR-14, AR-16, AR-17 et confirmées par UC-02 §interview.
+La frontière fonctionnelle de l'espace personnel n'est pas une question ouverte : elle est déjà résolue par le corpus. L'espace personnel est de type `PERSONAL`, hors quota, mono-membre, mène uniquement à Préparation (pas de vue session), et constitue le conteneur par défaut de tout contenu créé hors d'un espace partagé explicite. Ces contraintes sont posées par AR-14, AR-16, AR-17 et confirmées par UC-02 §Contexte.
 
-La question ouverte n'est donc pas structurelle — c'est une question de **présentation** : comment l'espace personnel se présente-t-il à l'utilisateur ? Ce point est explicitement ouvert dans `zoning.md §S9` et dans UC-02 §interview.
+La question ouverte n'est donc pas structurelle — c'est une question de **présentation** : comment l'espace personnel se présente-t-il à l'utilisateur ? Ce point était ouvert dans `zoning.md §S9` ; il y est désormais résolu ([zonage.md §9](zonage.md#9-trous-de-corpus-et-points-dinterview)). Ne reste ouverte que la perception (naturelle ou à expliquer), question d'interview d'UC-02.
 
 ### Décision retenue : le mix
 
@@ -71,7 +71,7 @@ La parade n'est pas d'implémenter la couche (ii) au MVP — c'est de ne pas **f
 
 > **« Vos notes et contenus, hors campagne »**
 
-Cette formulation est compatible avec les deux usages sans en privilégier un. Elle ne requiert pas d'implémentation supplémentaire au MVP. Elle est posée dans `zoning.md §S9` (question ouverte de présentation) et portée dans la fiche `vue-espace-personnel`.
+Cette formulation est compatible avec les deux usages sans en privilégier un. Elle ne requiert pas d'implémentation supplémentaire au MVP. Elle est posée dans [zonage.md §9](zonage.md#9-trous-de-corpus-et-points-dinterview) (point résolu) et portée dans la fiche `vue-espace-personnel`.
 
 ### L'espace personnel ne s'explique pas — il se découvre
 
@@ -99,7 +99,7 @@ Le corpus documente 6 surfaces (espace personnel, campagne, vue session, surface
 
 **Faiblesse 1 — Configuration de la vue session logée à deux endroits**
 
-La configuration de la vue session est accessible depuis deux surfaces : `parametres-campagne` (comme section) et `vue-session-mj` en mode configuration. Cette duplication est en tension avec US-06-02 (*« pas de panneau de réglages séparé »*). La résolution retenue : `parametres-campagne` pointe vers le mode configuration ; la configuration effective s'effectue dans la surface session. Portée dans `zoning.md` avec un nouvel arbitrage AR.
+La configuration de la vue session est accessible depuis deux surfaces : `parametres-campagne` (comme section) et `vue-session-mj` en mode configuration. Cette duplication est en tension avec US-06-02 (*« Pas de panneau paramètres séparé »*). La résolution retenue : `parametres-campagne` pointe vers le mode configuration ; la configuration effective s'effectue dans la surface session. Portée dans `zoning.md` avec un nouvel arbitrage AR.
 
 **Faiblesse 2 — Retours de navigation non spécifiés**
 
@@ -138,7 +138,7 @@ Pour chaque écran, ce principe se décline en trois niveaux :
 
 **Paramètres de campagne** — L'export d'espace et l'archivage sont actuellement au même niveau que les réglages courants. L'export passe au MVP (décision §7) mais doit sortir du premier plan de l'écran (section dédiée, non proéminente). L'archivage se replie : action rare, pas au premier plan.
 
-**Éditeur de document** — Les liens sortants et les backlinks sont des zones utiles mais consultées ponctuellement. Ils se replient par défaut ; l'utilisateur les ouvre à la demande.
+**Éditeur de document** — Les liens sortants et les backlinks sont des zones utiles mais consultées ponctuellement. Ils se replient par défaut ; l'utilisateur les ouvre à la demande. État à la reprise : les liens sortants sont repliés ; la zone « Référencé par » (backlinks) est hors MVP et n'est pas affichée, son placement figé (zone latérale secondaire, repliée par défaut) étant conservé pour la reprise (AR-11 ; fiche `editeur-document`).
 
 ---
 
@@ -179,8 +179,8 @@ Les points suivants sont explicitement laissés à l'interview ou au corpus à v
 
 - **Notification active côté joueur** (AR-06) — le modèle d'apparition ambiante est décidé, mais la question d'une notification active explicite (push, badge, signal sonore) reste ouverte.
 - **Persistance des notes invité** — comportement des notes créées par un utilisateur non connecté lors d'un passage au mode compte : merge, abandon, demande explicite ?
-- **Sémantique de l'état `ARCHIVED` pour l'espace personnel** — que signifie « archiver » un espace personnel ? L'opération est-elle réversible ? Qui peut la déclencher ?
-- **Fournisseurs d'identité externes** — la connexion via fournisseur externe est dans le corpus (écran Connexion) mais les fournisseurs supportés ne sont pas nommés.
+- **Sémantique de l'état `ARCHIVED` pour l'espace personnel** — DÉCIDÉ 2026-07-09 (zonage §9) : un espace `PERSONAL` est toujours `ACTIVE`, `ARCHIVED` et `FROZEN` ne lui sont pas applicables (invariant 15 de `space-management`) ; aucune UI d'archivage pour l'espace personnel.
+- **Fournisseurs d'identité externes** — DÉCIDÉ 2026-07-15 (ADR-015, enregistré au zonage §9) : Google et Discord.
 - **Libellé définitif de l'espace personnel** — confirmé à « Espace personnel » dans cette réflexion (§2), mais soumis à validation interview UC-02 §interview.
 
 ---
@@ -201,7 +201,7 @@ Les points suivants sont explicitement laissés à l'interview ou au corpus à v
 
 **Sonia (MJ one-shot)** — servie en préparation. La friction de création de campagne est atténuée par le mode capture-first et l'espace personnel, qui lui permettent de préparer sans créer une campagne. Le parcours one-shot via campagne (parcours-07) couvre son besoin de session partagée.
 
-**Rémi (joueur distant, coordinateur)** — hors cible du MVP, assumé. Son profil (coordination de groupe, gestion de plannings, outils tiers) dépasse le périmètre de la première livraison. Son exclusion est documentée dans les personas et non corrigée par une décision d'interface.
+**Rémi (MJ papier)** — hors cible probable, assumé. Son choix du papier est réfléchi : un système d'organisation numérique avec dossiers et types de documents est précisément ce que sa mouvance rejette, et le persona conclut qu'il n'est probablement pas la cible de Haversack. Son exclusion est documentée dans le persona et non corrigée par une décision d'interface ; seul un usage très partiel (résumé de session consultable par les joueurs) pourrait l'intéresser.
 
 ### Lecture transversale
 
@@ -219,9 +219,9 @@ L'espace personnel est présenté selon le modèle du mix (§2) : entrée distin
 
 ### Décision 2 — Dossiers système : entièrement libres
 
-Les dossiers proposés par défaut dans l'espace personnel (Personnages, Scénarios, Notes…) sont **entièrement libres** : renommables et supprimables. La structure par défaut est un gabarit de départ, pas une contrainte. L'utilisateur peut l'adopter, la modifier ou la remplacer entièrement.
+Les dossiers proposés par défaut dans un espace partagé à la création (Personnages, Joueurs, Scénarios, Notes) sont un **gabarit de départ entièrement modifiable** : renommables et supprimables (AR-20). La structure par défaut n'est pas une contrainte : le propriétaire de l'espace peut l'adopter, la modifier ou la remplacer entièrement. L'espace personnel n'a pas de dossier système nommé : seul le dossier virtuel « Non classés » existe à la création et le propriétaire crée librement ses dossiers (AR-16).
 
-Un garde-fou est garanti par construction : un réceptacle pour le contenu non classé (« Non classés ») existe toujours. Il peut être renommé, mais il est recréé s'il est supprimé, afin qu'aucun document ne soit orphelin de dossier. Cette décision lève un angle mort du corpus — la liberté des dossiers n'était pas explicitement tranchée — et répond directement à la première question du persona Antoine.
+Un garde-fou est garanti par construction : un réceptacle pour le contenu non classé (« Non classés ») existe toujours. Il est renommable, mais ne peut pas disparaître, afin qu'aucun document ne soit orphelin de dossier (AR-20). Cette décision lève un angle mort du corpus — la liberté des dossiers n'était pas explicitement tranchée — et répond directement à la première question du persona Antoine.
 
 ### Décision 3 — Export d'espace : entre au MVP en version minimale
 
@@ -259,7 +259,7 @@ L'analyse initiale (§3, §4) a posé le socle (châssis, frontière MJ/joueur, 
 
 *(a) Configuration vue session — AR-18.* La configuration de vue session était rendue autonome dans `parametres-campagne` au lieu d'un renvoi vers la surface session. Corrigé conformément à AR-18 : `parametres-campagne` propose un renvoi + récapitulatif lecture seule ; la configuration effective s'effectue dans la surface session.
 
-*(b) Accès compte absent du châssis — S7.* L'accès compte n'était pas rendu comme composant de châssis : libellé passif, glyphe muet, absent de la vue session. Corrigé : rendu de manière identique sur les 6 surfaces MJ (S7).
+*(b) Accès compte absent du châssis — S7.* L'accès compte n'était pas rendu comme composant de châssis : libellé passif, glyphe muet, absent de la vue session. Corrigé : rendu de manière identique sur les 10 écrans MJ qui portent le châssis (S7) — `tableau-de-bord`, `creation-espace`, `vue-campagne`, `navigation-dossiers`, `recherche-preparation`, `editeur-document`, `editeur-scenario`, `parametres-campagne`, `vue-espace-personnel` et `vue-session-mj`. Le panneau `panneau-creation-rapide`, sur-couche de la vue session sans navigation propre, n'en porte pas.
 
 *(c) Lien d'invitation — AR-10 révisé.* Le lien au cadre « non tranché » obsolète a été remplacé par l'application de AR-10 révisé : lien ponctuel (valable pour une session donnée) ajouté à `vue-session-mj` ; lien permanent (valable pour toute la campagne) dans `parametres-campagne`.
 
@@ -297,7 +297,7 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 | # | Planche(s) concernée(s) | Correction apportée | Autorité corpus | Statut |
 |---|---|---|---|---|
 | 1 | `parametres-campagne` | Renvoi + récap lecture seule remplace configuration autonome | AR-18 | Résolu |
-| 2 | 6 surfaces MJ | Accès compte rendu composant de châssis identique | S7 | Résolu |
+| 2 | 10 écrans MJ (liste en Lentille 1, b) | Accès compte rendu composant de châssis identique | S7 | Résolu |
 | 3 | `vue-session-mj`, `parametres-campagne` | AR-10 révisé appliqué (ponctuel / permanent) | AR-10 révisé | Résolu |
 | 4 | `vue-session-mj` LIVE | Règle d'éviction des panneaux déclarée sur la planche | AR-19 volet b | Résolu |
 | 5 | `editeur-document`, `editeur-scenario` (laptop) | Backlinks repliés par défaut | AR-19c | Résolu |
@@ -316,8 +316,8 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 |---|---|---|
 | Tension épinglage conditionnel (UC-07) vs systématique (session-conduct Règle 7) | ✓ Résolu (UC-07 amendé) | UC-07 fait autorité : épinglage automatique par défaut en session LIVE (désépinglage d'un geste), manuel et optionnel en session CLOSED |
 | Granularité globale gate-migration (sélection lot unique vs plusieurs lots) | ✓ Résolu (décision produit du 2026-07-09) | Décisions actées — alignement wireframes — lot unique |
-| Vue « Non classés » dédiée | Point de présentation ouvert | Décision de wireframe |
-| Famille C zoning §S9 — présentation espace personnel | Trou de corpus / interview | Non forcée (famille C) |
+| Vue « Non classés » dédiée | DÉCIDÉ 2026-07-15 (zonage §9) : dossier ordinaire de l'arborescence, pas une vue dédiée | [zonage.md §9](zonage.md#9-trous-de-corpus-et-points-dinterview) ; rendu par `navigation-dossiers` |
+| Famille C zoning §S9 — présentation espace personnel | Présentation : DÉCIDÉ 2026-06-25 (zonage §9 ; mix assumé, [zonage.md §9](zonage.md#9-trous-de-corpus-et-points-dinterview)) ; restent deux points d'interview (perçu comme naturel ou à expliquer, libellé de surface) | Non forcée (famille C) |
 
 ### Décisions actées — alignement wireframes
 
@@ -344,7 +344,7 @@ Les résolutions ci-dessous sont portées (ou à porter) dans `zoning.md` comme 
 | Recherche = composant de châssis (overlay, jamais un écran) | S7 |
 | Accès compte = composant de châssis (présent sur toutes les surfaces) | S7 |
 | Espace personnel : mix assumé + micro-copy d'intention neutre | S9 (question ouverte résolue) |
-| Dossiers entièrement libres + garde-fou « Non classés » | S6 (complémentaire à AR-16) |
+| Dossiers entièrement libres + garde-fou « Non classés » | S6 — AR-20 (articulé avec AR-16) |
 | Lien d'invitation : ponctuel (vue session) / permanent (paramètres/membres) | S6 (complémentaire à AR-10) |
 | Principe de densité : plancher garanti, plafond borné, divulgation progressive | S7 |
 

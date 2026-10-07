@@ -10,6 +10,8 @@
 | `id` | `uuid` | PK, NOT NULL | SOUS-SPÉCIFIÉ |
 | `owner_id` | `uuid` | FK → `users.id`, NOT NULL | Propriétaire technique — FK physique réelle inter-module (I&A), exception assumée *(ADR-009)* |
 | `name` | `varchar(200)` | NOT NULL | Nom de l'espace |
+| `description` | `text` | NULL | Description courte de l'espace — optionnelle (UC-02) |
+| `game_system` | `text` | NULL | Système de jeu — optionnel ; `NULL` = mode générique (UC-02 A3 ; RB-02-04) |
 | `slug` | `varchar(100)` | NOT NULL | Unique par propriétaire |
 | `type` | `varchar(20)` | NOT NULL | `CAMPAIGN` / `ONE_SHOT` / `PERSONAL` |
 | `status` | `varchar(20)` | NOT NULL, DEFAULT `'ACTIVE'` | `ACTIVE` / `ARCHIVED` / `FROZEN` |

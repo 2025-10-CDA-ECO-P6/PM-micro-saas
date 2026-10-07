@@ -14,7 +14,7 @@ sequenceDiagram
     alt Quota dépassé
         App-->>MJ: Bloqué — upgrade requis
     else Quota OK
-        App->>SM: Space.Create(ownerId, name, type)
+        App->>SM: Space.Create(ownerId, name, type, description?, gameSystem?)
         SM-->>App: SpaceCreated event
         alt type = CAMPAIGN ou ONE_SHOT
             App->>CL: Créer les dossiers système (Personnages, Joueurs, Scénarios, Notes) + dossier virtuel (Non classés)

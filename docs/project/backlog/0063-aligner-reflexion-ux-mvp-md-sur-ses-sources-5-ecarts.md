@@ -2,7 +2,8 @@
 
 - **Id** : 0063
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-interface (chantier conformite-corpus)
+- **Appliqué dans** : `docs/interface/raisonnement-ux.md`  (la ligne « Famille C zoning §S9 » du tableau des points ouverts et la ligne « Dossiers entièrement libres » du tableau §8 sont alignées en conséquence)
 
 - [ux-rationale:contradicted-1 — stale] Aligner l'en-tête de reflexion-ux-mvp.md:7 sur l'ordre personas > vision > UC > parcours/US/NFR > interface
 - [ux-rationale:contradicted-2 — stale] Réécrire la Décision 2 de reflexion-ux-mvp.md pour viser les espaces partagés (AR-20) et renvoyer à AR-16 pour l'espace personnel

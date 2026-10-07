@@ -65,8 +65,9 @@ Distinction : documents durables vs notes de session.
     soit le mode (UC-07 A3, RB-07-04 puce 2).
 
 Comportement de l'auto-épinglage selon le mode (documents durables uniquement) :
-  En mode LIVE : le document créé est automatiquement épinglé dans le panneau
-  des documents épinglés (UC-07 §6 — auto-épinglage par défaut, désépinglable) ;
+  En mode LIVE : le document durable créé est automatiquement épinglé dans le panneau
+  des documents épinglés (UC-07 §6 ; RB-07-04 — auto-épinglage par défaut, que le MJ
+  peut désépingler d'un geste) ; une note de session est rattachée sans épinglage ;
   distinct de l'auto-épinglage au partage (UC-08 A3, LIVE seul).
   En mode consultation CLOSED : PAS d'auto-épinglage à la création rétroactive.
   Le document est créé et rangé dans l'espace ; il n'est pas épinglé

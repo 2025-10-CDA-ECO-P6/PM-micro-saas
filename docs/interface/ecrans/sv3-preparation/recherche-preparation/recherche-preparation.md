@@ -11,7 +11,7 @@
 
 - **Nom** : Recherche en préparation
 - **Surface** : MJ
-- **Contexte** : préparation
+- **Contexte** : préparation + session
 - **Type d'espace** : CAMPAIGN | ONE_SHOT | PERSONAL (disponible pour tous les types d'espace — UC-14 §Contexte)
 - **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
 - **Traçabilité** : UC-14 ; US-UC-14

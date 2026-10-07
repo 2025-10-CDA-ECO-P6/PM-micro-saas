@@ -509,7 +509,7 @@ sequenceDiagram
     participant IA as Identity & Access
 
     alt Création explicite — CAMPAIGN / ONE_SHOT (UC-02)
-        MJ->>SM: Space.Create(ownerId, name, type = CAMPAIGN | ONE_SHOT)
+        MJ->>SM: Space.Create(ownerId, name, type = CAMPAIGN | ONE_SHOT, description?, gameSystem?)
         SM-->>SM: owner ajouté automatiquement comme membre OWNER
         SM--)CL: SpaceCreated
         CL-->>CL: création des 4 dossiers système (Personnages, Joueurs, Scénarios, Notes) + dossier virtuel « Non classés »

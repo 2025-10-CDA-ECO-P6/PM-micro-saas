@@ -42,6 +42,8 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `id` | `SpaceId` | |
 | `ownerId` | `UserId` | Propriétaire technique unique — responsabilité billing et RGPD. FK réelle vers `users` ([ADR-009](../../decisions/ADR-009-fk-campaign-owner.md)). |
 | `name` | `string` | Nom de l'espace |
+| `description` | `string?` | Description courte de l'espace — optionnelle (UC-02, scénario nominal §3) |
+| `gameSystem` | `string?` | Système de jeu de l'espace — optionnel ; absent, l'espace est en mode générique (UC-02, scénario nominal §3 et A3 ; RB-02-01, RB-02-04) |
 | `slug` | `Slug` | Unique par propriétaire |
 | `type` | `SpaceType` | `CAMPAIGN` \| `ONE_SHOT` \| `PERSONAL` |
 | `status` | `SpaceStatus` | `ACTIVE` \| `ARCHIVED` \| `FROZEN` |
@@ -54,7 +56,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 
 | Méthode | Événement produit | Description |
 |---|---|---|
-| `Create(ownerId, name, type)` | `SpaceCreated` | Crée l'espace. L'owner est automatiquement ajouté comme membre OWNER. |
+| `Create(ownerId, name, type, description?, gameSystem?)` | `SpaceCreated` | Crée l'espace. L'owner est automatiquement ajouté comme membre OWNER. `description` et `gameSystem` sont optionnels (UC-02) ; absents pour `PERSONAL`. |
 | `AddMember(userId, role)` | `MemberJoined` | Ajoute un membre (GM ou PLAYER ; au MVP, `PLAYER` seulement — rôle `GM` hors MVP, UC-F08). Bloqué pour `type = PERSONAL` (voir invariant 13). |
 | `RemoveMember(userId)` | `MemberRemoved` | Retire un membre. Bloqué si userId == ownerId. |
 | `CreateInvitation(type, scope, options)` | `InvitationCreated` | Crée une invitation enfant. Bloqué pour `type = PERSONAL` (voir invariant 13). |

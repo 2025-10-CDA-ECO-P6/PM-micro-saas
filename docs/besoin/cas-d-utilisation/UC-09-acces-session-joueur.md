@@ -36,7 +36,7 @@ Le MJ partage un lien d'accès à une session (lien ponctuel) ou à son espace p
 1. Le MJ génère un lien de session depuis la vue session.
 2. Il partage le lien (Discord, WhatsApp, email, peu importe).
 3. Le joueur clique sur le lien.
-4. L'application affiche immédiatement les informations partagées par le MJ pour cette session.
+4. L'application affiche les métadonnées du lien : nom de l'espace ou de la session, MJ, information RGPD. Aucun document n'est affiché avant la saisie du nom.
 5. Le joueur saisit uniquement un **nom d'affichage** (pas d'email, pas de mot de passe).
 6. Il peut consulter les documents partagés, les informations révélées en temps réel pendant la session.
 7. À la fin de la session, son accès expire.
