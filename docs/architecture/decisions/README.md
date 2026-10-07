@@ -39,6 +39,9 @@ sous **ADR-009**.
 | [ADR-017](ADR-017-modele-indexeddb-local.md) | Modèle IndexedDB local et sécurité du mode local (object stores, posture migration-only, persist(), F-09) | mixte (dominante pré-implémentation) | Accepté | 2026-06-10 |
 | [ADR-018](ADR-018-espace-personnel-generalisation-space.md) | Contenu personnel de premier ordre : généralisation de `Campaign` en `Space` (`SpaceType.PERSONAL`) | mixte (dominante pré-implémentation) | Accepté | 2026-06-12 |
 | [ADR-019](ADR-019-conventions-de-tenue-du-corpus.md) | Conventions de tenue du corpus | méthode | Accepté | 2026-10-07 |
+| [ADR-020](ADR-020-le-corpus-est-reorganise-selon-l-arborescence-un-dossier-par.md) | Le corpus est réorganisé selon l'arborescence « un dossier par couche » validée | méthode | Accepté | 2026-10-07 |
+| [ADR-021](ADR-021-le-chantier-de-conformite-integre-le-backlog-d-alignement.md) | Le chantier de conformité intègre le backlog d'alignement | méthode | Accepté | 2026-10-07 |
+| [ADR-022](ADR-022-le-chantier-de-conformite-s-execute-sous-six-conditions.md) | Le chantier de conformité s'exécute sous six conditions | méthode | Accepté | 2026-10-07 |
 
 ---
 

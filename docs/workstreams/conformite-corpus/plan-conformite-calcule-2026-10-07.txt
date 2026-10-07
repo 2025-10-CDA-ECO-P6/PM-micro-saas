@@ -1,0 +1,393 @@
+conform-plan: five families, F1 first - every later operation addresses the new paths
+
+== F1 moves (148): git mv, then relink
+F1 docs/architecture/architecture-detaillee.md → docs/architecture/transverse.md
+F1 docs/architecture/ddd-fondations.md → docs/architecture/fondations.md
+F1 docs/architecture/decisions/ADR-001-execution-domaine-mode-local.md → docs/decisions/ADR-001-execution-domaine-mode-local.md
+F1 docs/architecture/decisions/ADR-002-tout-est-document-gouvernance.md → docs/decisions/ADR-002-tout-est-document-gouvernance.md
+F1 docs/architecture/decisions/ADR-003-stack-front.md → docs/decisions/ADR-003-stack-front.md
+F1 docs/architecture/decisions/ADR-004-transport-temps-reel.md → docs/decisions/ADR-004-transport-temps-reel.md
+F1 docs/architecture/decisions/ADR-005-modele-monetisation.md → docs/decisions/ADR-005-modele-monetisation.md
+F1 docs/architecture/decisions/ADR-006-perimetre-mvp.md → docs/decisions/ADR-006-perimetre-mvp.md
+F1 docs/architecture/decisions/ADR-007-rgpd-autorisation-api.md → docs/decisions/ADR-007-rgpd-autorisation-api.md
+F1 docs/architecture/decisions/ADR-008-structure-solution.md → docs/decisions/ADR-008-structure-solution.md
+F1 docs/architecture/decisions/ADR-009-fk-campaign-owner.md → docs/decisions/ADR-009-fk-campaign-owner.md
+F1 docs/architecture/decisions/ADR-010-suppression-espace.md → docs/decisions/ADR-010-suppression-espace.md
+F1 docs/architecture/decisions/ADR-011-cascade-integrite-referentielle.md → docs/decisions/ADR-011-cascade-integrite-referentielle.md
+F1 docs/architecture/decisions/ADR-012-rgpd-effacement-compte.md → docs/decisions/ADR-012-rgpd-effacement-compte.md
+F1 docs/architecture/decisions/ADR-013-rgpd-donnees-invites.md → docs/decisions/ADR-013-rgpd-donnees-invites.md
+F1 docs/architecture/decisions/ADR-014-modele-autorisation-api.md → docs/decisions/ADR-014-modele-autorisation-api.md
+F1 docs/architecture/decisions/ADR-015-securite-authentification-mvp.md → docs/decisions/ADR-015-securite-authentification-mvp.md
+F1 docs/architecture/decisions/ADR-016-serialisation-locale-migration.md → docs/decisions/ADR-016-serialisation-locale-migration.md
+F1 docs/architecture/decisions/ADR-017-modele-indexeddb-local.md → docs/decisions/ADR-017-modele-indexeddb-local.md
+F1 docs/architecture/decisions/ADR-018-espace-personnel-generalisation-space.md → docs/decisions/ADR-018-espace-personnel-generalisation-space.md
+F1 docs/architecture/decisions/ADR-019-conventions-de-tenue-du-corpus.md → docs/decisions/ADR-019-conventions-de-tenue-du-corpus.md
+F1 docs/architecture/decisions/README.md → docs/decisions/README.md
+F1 docs/conception/INTERVIEW_GUIDE.md → docs/besoin/decouverte/guide-d-entretien.md
+F1 docs/conception/besoin/nfr/NFR-ACC-01-utilisabilite-sans-dispositif-de-pointage.md → docs/besoin/nfr/NFR-ACC-01-utilisabilite-sans-dispositif-de-pointage.md
+F1 docs/conception/besoin/nfr/NFR-ACC-02-compatibilite-lecteurs-ecran.md → docs/besoin/nfr/NFR-ACC-02-compatibilite-lecteurs-ecran.md
+F1 docs/conception/besoin/nfr/NFR-ACC-03-lisibilite-faible-eclairage.md → docs/besoin/nfr/NFR-ACC-03-lisibilite-faible-eclairage.md
+F1 docs/conception/besoin/nfr/NFR-ACC-04-tailles-texte-lecture-rapide-session.md → docs/besoin/nfr/NFR-ACC-04-tailles-texte-lecture-rapide-session.md
+F1 docs/conception/besoin/nfr/NFR-CONF-01-separation-notes-privees-vue-joueurs.md → docs/besoin/nfr/NFR-CONF-01-separation-notes-privees-vue-joueurs.md
+F1 docs/conception/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md → docs/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md
+F1 docs/conception/besoin/nfr/NFR-CONF-03-suppression-effective-donnees-personnelles.md → docs/besoin/nfr/NFR-CONF-03-suppression-effective-donnees-personnelles.md
+F1 docs/conception/besoin/nfr/NFR-CONF-04-transparence-risques-mode-local-partage.md → docs/besoin/nfr/NFR-CONF-04-transparence-risques-mode-local-partage.md
+F1 docs/conception/besoin/nfr/NFR-I18N-01-interface-en-francais.md → docs/besoin/nfr/NFR-I18N-01-interface-en-francais.md
+F1 docs/conception/besoin/nfr/NFR-I18N-02-evolutivite-multilingue-sans-refonte.md → docs/besoin/nfr/NFR-I18N-02-evolutivite-multilingue-sans-refonte.md
+F1 docs/conception/besoin/nfr/NFR-I18N-03-liberte-langue-contenu-mj.md → docs/besoin/nfr/NFR-I18N-03-liberte-langue-contenu-mj.md
+F1 docs/conception/besoin/nfr/NFR-OFF-01-utilisation-integrale-sans-connexion.md → docs/besoin/nfr/NFR-OFF-01-utilisation-integrale-sans-connexion.md
+F1 docs/conception/besoin/nfr/NFR-OFF-02-durabilite-donnees-locales.md → docs/besoin/nfr/NFR-OFF-02-durabilite-donnees-locales.md
+F1 docs/conception/besoin/nfr/NFR-OFF-03-aucune-perte-silencieuse-donnees-locales.md → docs/besoin/nfr/NFR-OFF-03-aucune-perte-silencieuse-donnees-locales.md
+F1 docs/conception/besoin/nfr/NFR-OFF-04-fonctionnement-partiel-perte-reseau-cloud.md → docs/besoin/nfr/NFR-OFF-04-fonctionnement-partiel-perte-reseau-cloud.md
+F1 docs/conception/besoin/nfr/NFR-OFF-05-continuite-edition-preparation-cloud.md → docs/besoin/nfr/NFR-OFF-05-continuite-edition-preparation-cloud.md
+F1 docs/conception/besoin/nfr/NFR-PERF-01-fluidite-navigation-session.md → docs/besoin/nfr/NFR-PERF-01-fluidite-navigation-session.md
+F1 docs/conception/besoin/nfr/NFR-PERF-02-reactivite-premiere-interaction.md → docs/besoin/nfr/NFR-PERF-02-reactivite-premiere-interaction.md
+F1 docs/conception/besoin/nfr/NFR-PERF-03-continuite-sans-interruption-session.md → docs/besoin/nfr/NFR-PERF-03-continuite-sans-interruption-session.md
+F1 docs/conception/besoin/nfr/NFR-PERF-04-resultats-recherche-immediats.md → docs/besoin/nfr/NFR-PERF-04-resultats-recherche-immediats.md
+F1 docs/conception/besoin/nfr/README.md → docs/besoin/nfr/README.md
+F1 docs/conception/besoin/parcours/README.md → docs/besoin/parcours-utilisateur/bout-en-bout/README.md
+F1 docs/conception/besoin/parcours/parcours-01-thomas.md → docs/besoin/parcours-utilisateur/bout-en-bout/parcours-01-thomas.md
+F1 docs/conception/besoin/parcours/parcours-02-emilie.md → docs/besoin/parcours-utilisateur/bout-en-bout/parcours-02-emilie.md
+F1 docs/conception/besoin/parcours/parcours-03-lucas.md → docs/besoin/parcours-utilisateur/bout-en-bout/parcours-03-lucas.md
+F1 docs/conception/besoin/parcours/parcours-04-nadia.md → docs/besoin/parcours-utilisateur/bout-en-bout/parcours-04-nadia.md
+F1 docs/conception/besoin/parcours/parcours-05-antoine.md → docs/besoin/parcours-utilisateur/bout-en-bout/parcours-05-antoine.md
+F1 docs/conception/besoin/parcours/parcours-06-remi.md → docs/besoin/parcours-utilisateur/bout-en-bout/parcours-06-remi.md
+F1 docs/conception/besoin/parcours/parcours-07-sonia.md → docs/besoin/parcours-utilisateur/bout-en-bout/parcours-07-sonia.md
+F1 docs/conception/besoin/persona/README.md → docs/besoin/decouverte/personas/README.md
+F1 docs/conception/besoin/persona/persona-01-thomas.md → docs/besoin/decouverte/personas/persona-01-thomas.md
+F1 docs/conception/besoin/persona/persona-02-emilie.md → docs/besoin/decouverte/personas/persona-02-emilie.md
+F1 docs/conception/besoin/persona/persona-03-lucas.md → docs/besoin/decouverte/personas/persona-03-lucas.md
+F1 docs/conception/besoin/persona/persona-04-nadia.md → docs/besoin/decouverte/personas/persona-04-nadia.md
+F1 docs/conception/besoin/persona/persona-05-antoine.md → docs/besoin/decouverte/personas/persona-05-antoine.md
+F1 docs/conception/besoin/persona/persona-06-remi.md → docs/besoin/decouverte/personas/persona-06-remi.md
+F1 docs/conception/besoin/persona/persona-07-sonia.md → docs/besoin/decouverte/personas/persona-07-sonia.md
+F1 docs/conception/besoin/usecases/README.md → docs/besoin/cas-d-utilisation/README.md
+F1 docs/conception/besoin/usecases/UC-01-mode-local-sans-compte.md → docs/besoin/cas-d-utilisation/UC-01-mode-local-sans-compte.md
+F1 docs/conception/besoin/usecases/UC-02-creer-espace-jeu.md → docs/besoin/cas-d-utilisation/UC-02-creer-espace-jeu.md
+F1 docs/conception/besoin/usecases/UC-03-structurer-scenario.md → docs/besoin/cas-d-utilisation/UC-03-structurer-scenario.md
+F1 docs/conception/besoin/usecases/UC-04-gerer-documents-espace.md → docs/besoin/cas-d-utilisation/UC-04-gerer-documents-espace.md
+F1 docs/conception/besoin/usecases/UC-05-organiser-dossiers.md → docs/besoin/cas-d-utilisation/UC-05-organiser-dossiers.md
+F1 docs/conception/besoin/usecases/UC-06-vue-session.md → docs/besoin/cas-d-utilisation/UC-06-vue-session.md
+F1 docs/conception/besoin/usecases/UC-07-creation-volee-session.md → docs/besoin/cas-d-utilisation/UC-07-creation-volee-session.md
+F1 docs/conception/besoin/usecases/UC-08-partager-information.md → docs/besoin/cas-d-utilisation/UC-08-partager-information.md
+F1 docs/conception/besoin/usecases/UC-09-acces-session-joueur.md → docs/besoin/cas-d-utilisation/UC-09-acces-session-joueur.md
+F1 docs/conception/besoin/usecases/UC-10-compte-cloud.md → docs/besoin/cas-d-utilisation/UC-10-compte-cloud.md
+F1 docs/conception/besoin/usecases/UC-11-gerer-membres-espace-partage.md → docs/besoin/cas-d-utilisation/UC-11-gerer-membres-espace-partage.md
+F1 docs/conception/besoin/usecases/UC-12-consulter-espace-joueur.md → docs/besoin/cas-d-utilisation/UC-12-consulter-espace-joueur.md
+F1 docs/conception/besoin/usecases/UC-13-scenario-reutilisable.md → docs/besoin/cas-d-utilisation/UC-13-scenario-reutilisable.md
+F1 docs/conception/besoin/usecases/UC-14-recherche.md → docs/besoin/cas-d-utilisation/UC-14-recherche.md
+F1 docs/conception/besoin/usecases/UC-15-gel-espaces-downgrade-tier.md → docs/besoin/cas-d-utilisation/UC-15-gel-espaces-downgrade-tier.md
+F1 docs/conception/besoin/usecases/UC-HORS-MVP.md → docs/besoin/vision/perimetre/exclusions.md
+F1 docs/conception/besoin/usecases/use-cases.md → docs/besoin/cas-d-utilisation/diagrammes.md
+F1 docs/conception/besoin/user-journeys/README.md → docs/besoin/parcours-utilisateur/README.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-01-mode-local-sans-compte.md → docs/besoin/parcours-utilisateur/UJ-UC-01-mode-local-sans-compte.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-02-creer-espace-jeu.md → docs/besoin/parcours-utilisateur/UJ-UC-02-creer-espace-jeu.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-03-structurer-scenario.md → docs/besoin/parcours-utilisateur/UJ-UC-03-structurer-scenario.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-04-gerer-documents-espace.md → docs/besoin/parcours-utilisateur/UJ-UC-04-gerer-documents-espace.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-05-organiser-contenu-dossiers.md → docs/besoin/parcours-utilisateur/UJ-UC-05-organiser-contenu-dossiers.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-06-vue-session.md → docs/besoin/parcours-utilisateur/UJ-UC-06-vue-session.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-07-creation-volee-session.md → docs/besoin/parcours-utilisateur/UJ-UC-07-creation-volee-session.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-08-partager-information.md → docs/besoin/parcours-utilisateur/UJ-UC-08-partager-information.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-09-acces-session-joueur.md → docs/besoin/parcours-utilisateur/UJ-UC-09-acces-session-joueur.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-10-compte-cloud.md → docs/besoin/parcours-utilisateur/UJ-UC-10-compte-cloud.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-11-gerer-membres-espace-partage.md → docs/besoin/parcours-utilisateur/UJ-UC-11-gerer-membres-espace-partage.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-12-consulter-espace-joueur.md → docs/besoin/parcours-utilisateur/UJ-UC-12-consulter-espace-joueur.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-13-scenario-reutilisable.md → docs/besoin/parcours-utilisateur/UJ-UC-13-scenario-reutilisable.md
+F1 docs/conception/besoin/user-journeys/UJ-UC-14-recherche.md → docs/besoin/parcours-utilisateur/UJ-UC-14-recherche.md
+F1 docs/conception/besoin/user-stories/README.md → docs/besoin/stories/README.md
+F1 docs/conception/besoin/user-stories/README.md → docs/securite/conformite/README.md
+F1 docs/conception/besoin/user-stories/US-UC-01-mode-local-sans-compte.md → docs/besoin/stories/US-UC-01-mode-local-sans-compte.md
+F1 docs/conception/besoin/user-stories/US-UC-02-creer-espace-jeu.md → docs/besoin/stories/US-UC-02-creer-espace-jeu.md
+F1 docs/conception/besoin/user-stories/US-UC-03-structurer-scenario.md → docs/besoin/stories/US-UC-03-structurer-scenario.md
+F1 docs/conception/besoin/user-stories/US-UC-04-gerer-documents-espace.md → docs/besoin/stories/US-UC-04-gerer-documents-espace.md
+F1 docs/conception/besoin/user-stories/US-UC-05-organiser-contenu-dossiers.md → docs/besoin/stories/US-UC-05-organiser-contenu-dossiers.md
+F1 docs/conception/besoin/user-stories/US-UC-06-vue-session.md → docs/besoin/stories/US-UC-06-vue-session.md
+F1 docs/conception/besoin/user-stories/US-UC-07-creation-volee-session.md → docs/besoin/stories/US-UC-07-creation-volee-session.md
+F1 docs/conception/besoin/user-stories/US-UC-08-partager-information.md → docs/besoin/stories/US-UC-08-partager-information.md
+F1 docs/conception/besoin/user-stories/US-UC-09-acces-session-joueur.md → docs/besoin/stories/US-UC-09-acces-session-joueur.md
+F1 docs/conception/besoin/user-stories/US-UC-10-compte-cloud.md → docs/besoin/stories/US-UC-10-compte-cloud.md
+F1 docs/conception/besoin/user-stories/US-UC-11-gerer-membres-espace-partage.md → docs/besoin/stories/US-UC-11-gerer-membres-espace-partage.md
+F1 docs/conception/besoin/user-stories/US-UC-12-consulter-espace-joueur.md → docs/besoin/stories/US-UC-12-consulter-espace-joueur.md
+F1 docs/conception/besoin/user-stories/US-UC-13-scenario-reutilisable.md → docs/besoin/stories/US-UC-13-scenario-reutilisable.md
+F1 docs/conception/besoin/user-stories/US-UC-14-recherche.md → docs/besoin/stories/US-UC-14-recherche.md
+F1 docs/conception/besoin/vision/moscow.md → docs/besoin/vision/perimetre/matrice-de-priorites.md
+F1 docs/conception/besoin/vision/vision-produit.md → docs/besoin/vision/vision.md
+F1 docs/conception/domain/README.md → docs/domaine/README.md
+F1 docs/conception/domain/core.md → docs/domaine/core/kernel.md
+F1 docs/conception/glossaire.md → docs/glossaire.md
+F1 docs/conception/interface/conventions-wireframe.md → docs/interface/conventions.md
+F1 docs/conception/interface/reflexion-ux-mvp.md → docs/interface/raisonnement-ux.md
+F1 docs/conception/interface/wireframes/sv-session/panneau-creation-rapide → docs/conception/interface/wireframes/panneau-creation-rapide
+F1 docs/conception/interface/wireframes/sv-session/vue-session-mj → docs/conception/interface/wireframes/vue-session-mj
+F1 docs/conception/interface/wireframes/sv1-transversaux/accueil → docs/conception/interface/wireframes/accueil
+F1 docs/conception/interface/wireframes/sv1-transversaux/connexion → docs/conception/interface/wireframes/connexion
+F1 docs/conception/interface/wireframes/sv1-transversaux/gate-migration → docs/conception/interface/wireframes/gate-migration
+F1 docs/conception/interface/wireframes/sv1-transversaux/inscription → docs/conception/interface/wireframes/inscription
+F1 docs/conception/interface/wireframes/sv1-transversaux/profil → docs/conception/interface/wireframes/profil
+F1 docs/conception/interface/wireframes/sv1-transversaux/suppression-compte-rgpd → docs/conception/interface/wireframes/suppression-compte-rgpd
+F1 docs/conception/interface/wireframes/sv2-entree-espace/creation-espace → docs/conception/interface/wireframes/creation-espace
+F1 docs/conception/interface/wireframes/sv2-entree-espace/tableau-de-bord → docs/conception/interface/wireframes/tableau-de-bord
+F1 docs/conception/interface/wireframes/sv3-preparation/editeur-document → docs/conception/interface/wireframes/editeur-document
+F1 docs/conception/interface/wireframes/sv3-preparation/editeur-scenario → docs/conception/interface/wireframes/editeur-scenario
+F1 docs/conception/interface/wireframes/sv3-preparation/navigation-dossiers → docs/conception/interface/wireframes/navigation-dossiers
+F1 docs/conception/interface/wireframes/sv3-preparation/parametres-campagne → docs/conception/interface/wireframes/parametres-campagne
+F1 docs/conception/interface/wireframes/sv3-preparation/recherche-preparation → docs/conception/interface/wireframes/recherche-preparation
+F1 docs/conception/interface/wireframes/sv3-preparation/vue-campagne → docs/conception/interface/wireframes/vue-campagne
+F1 docs/conception/interface/wireframes/sv4-espace-personnel/vue-espace-personnel → docs/conception/interface/wireframes/vue-espace-personnel
+F1 docs/conception/interface/wireframes/sv5-joueur/acces-lien-saisie-nom → docs/conception/interface/wireframes/acces-lien-saisie-nom
+F1 docs/conception/interface/wireframes/sv5-joueur/erreur-acces → docs/conception/interface/wireframes/erreur-acces
+F1 docs/conception/interface/wireframes/sv5-joueur/vue-joueur-base → docs/conception/interface/wireframes/vue-joueur-base
+F1 docs/conception/interface/zoning.md → docs/interface/zonage.md
+F1 docs/context/cahier-des-charges.md → docs/reference/cahier-des-charges.md
+F1 docs/context/dossier-architecture.md → docs/reference/dossier-architecture.md
+F1 docs/context/dossier-conception-detaillee.md → docs/reference/conception-detaillee.md
+F1 docs/context/note-business-gtm.md → docs/reference/note-business.md
+F1 docs/gestion-projet/decisions-en-attente.md → docs/projet/decisions-en-attente.md
+F1 docs/gestion-projet/guide-conventions-et-dod.md → docs/pilotage/conventions-dod.md
+F1 docs/gestion-projet/methode-de-ticket.md → docs/projet/methode-de-ticket.md
+F1 docs/gestion-projet/note-cadrage-projet.md → docs/gestion-projet/note-de-cadrage.md
+F1 docs/gestion-projet/registre-risques.md → docs/projet/registre-des-risques.md
+F1 docs/gestion-projet/roadmap-produit.md → docs/pilotage/roadmap-produit.md
+F1 docs/test/cahier-strategie-test-et-recette.md → docs/assurance/strategie-de-test.md
+# F1 build-roadmap docs/gestion-projet/roadmap-entree-build.md: ambiguous - not moved
+# F1 compliance-frameworks docs/context/cahier-specifications-techniques.md: ambiguous - not moved
+# F1 compliance-frameworks docs/gestion-projet/plan-de-travail.md: ambiguous - not moved
+# F1 compliance-frameworks docs/gestion-projet/roadmap-entree-build.md: ambiguous - not moved
+# F1 compliance-public-drafts docs/context/cahier-specifications-techniques.md: ambiguous - not moved
+# F1 docs/project/backlog/0051-ajouter-a-la-dod-la-mise-a-jour-du-guide-de-lecture-par-fonc.md: the target docs/gestion-projet/guide-lecture-par-fonctionnalite.md exists - not moved
+# F1 domain-classes docs/conception/domain/diagrams/classes/content-library.md: the name does not follow ^classes\.md$ and the context is not known - not moved
+# F1 domain-classes docs/conception/domain/diagrams/classes/core.md: the name does not follow ^classes\.md$ and the context is not known - not moved
+# F1 domain-classes docs/conception/domain/diagrams/classes/identity-access.md: the name does not follow ^classes\.md$ and the context is not known - not moved
+# F1 domain-classes docs/conception/domain/diagrams/classes/session-conduct.md: the name does not follow ^classes\.md$ and the context is not known - not moved
+# F1 domain-classes docs/conception/domain/diagrams/classes/space-management.md: the name does not follow ^classes\.md$ and the context is not known - not moved
+# F1 domain-contexts docs/conception/domain/content-library.md: the name does not follow ^context\.md$ and the context is not known - not moved
+# F1 domain-contexts docs/conception/domain/identity-access.md: the name does not follow ^context\.md$ and the context is not known - not moved
+# F1 domain-contexts docs/conception/domain/session-conduct.md: the name does not follow ^context\.md$ and the context is not known - not moved
+# F1 domain-contexts docs/conception/domain/space-management.md: the name does not follow ^context\.md$ and the context is not known - not moved
+# F1 domain-flows docs/conception/domain/diagrams/flows/content-library.md: the name does not follow ^flows\.md$ and the context is not known - not moved
+# F1 domain-flows docs/conception/domain/diagrams/flows/identity-access.md: the name does not follow ^flows\.md$ and the context is not known - not moved
+# F1 domain-flows docs/conception/domain/diagrams/flows/session-conduct.md: the name does not follow ^flows\.md$ and the context is not known - not moved
+# F1 domain-flows docs/conception/domain/diagrams/flows/space-management.md: the name does not follow ^flows\.md$ and the context is not known - not moved
+# F1 domain-mcd docs/conception/domain/diagrams/mcd/content-library.md: the name does not follow ^conceptual-data\.md$ and the context is not known - not moved
+# F1 domain-mcd docs/conception/domain/diagrams/mcd/identity-access.md: the name does not follow ^conceptual-data\.md$ and the context is not known - not moved
+# F1 domain-mcd docs/conception/domain/diagrams/mcd/session-conduct.md: the name does not follow ^conceptual-data\.md$ and the context is not known - not moved
+# F1 domain-mcd docs/conception/domain/diagrams/mcd/space-management.md: the name does not follow ^conceptual-data\.md$ and the context is not known - not moved
+# F1 domain-mld docs/conception/domain/diagrams/mld/content-library.md: the name does not follow ^logical-data\.md$ and the context is not known - not moved
+# F1 domain-mld docs/conception/domain/diagrams/mld/identity-access.md: the name does not follow ^logical-data\.md$ and the context is not known - not moved
+# F1 domain-mld docs/conception/domain/diagrams/mld/session-conduct.md: the name does not follow ^logical-data\.md$ and the context is not known - not moved
+# F1 domain-mld docs/conception/domain/diagrams/mld/space-management.md: the name does not follow ^logical-data\.md$ and the context is not known - not moved
+# F1 reading-guide: a singleton found 2 times - every one is aimed at the same file
+# F1 screen-sheets docs/conception/interface: container - not moved
+# F1 technical-spec docs/context/cahier-specifications-techniques.md: ambiguous - not moved
+# F1 work-plan docs/gestion-projet/plan-de-travail.md: ambiguous - not moved
+
+== F2 templates
+# F2 note   1 modules not read (the check lists the first 30)
+F2 screen-sheetsF2 screen-sheets: a foldered module has no reader yet
+# F2 FAIL   36 titles that do not follow their declaration (the check lists the first 30)
+F2 docs/besoin/vision/vision.md: the title [Vision produit — Haversack] does not follow [Vision produit]
+F2 docs/besoin/vision/perimetre/matrice-de-priorites.md: the title [Priorisation MoSCoW — Haversack MVP] does not follow [Matrice de priorités]
+F2 docs/besoin/cas-d-utilisation/diagrammes.md: the title [Haversack — Diagrammes de cas d'utilisation] does not follow [Diagrammes des cas d'utilisation]
+F2 docs/besoin/vision/perimetre/exclusions.md: the title [Use Cases hors MVP — Vision produit long terme] does not follow [Exclusions]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md: the title [Epic — Mode local sans compte] does not follow [Epic — %s (UC-%02d)]
+F2 docs/besoin/stories/US-UC-02-creer-espace-jeu.md: the title [Epic — Créer un espace de jeu] does not follow [Epic — %s (UC-%02d)]
+F2 docs/besoin/stories/US-UC-03-structurer-scenario.md: the title [Epic — Structurer un scénario] does not follow [Epic — %s (UC-%02d)]
+F2 docs/besoin/stories/US-UC-04-gerer-documents-espace.md: the title [Epic — Créer et gérer des documents d'espace modulaires] does not follow [Epic — %s (UC-%02d)]
+F2 docs/besoin/stories/US-UC-05-organiser-contenu-dossiers.md: the title [Epic — Organiser le contenu en dossiers] does not follow [Epic — %s (UC-%02d)]
+F2 docs/besoin/parcours-utilisateur/UJ-UC-01-mode-local-sans-compte.md: the title [User Journey — Mode local sans compte] does not follow [User Journey — %s (UC-%s)]
+F2 docs/besoin/decouverte/guide-d-entretien.md: the title [Guide d'entretien utilisateur — Haversack] does not follow [Guide d'entretien]
+F2 docs/domaine/core/kernel.md: the title [Core — Shared Kernel] does not follow [Noyau partagé]
+F2 docs/glossaire.md: the title [Glossaire — Langage ubiquitaire Haversack] does not follow [Glossaire]
+F2 docs/interface/zonage.md: the title [Zoning d'interface — MVP Haversack] does not follow [Zonage de l'interface]
+F2 docs/interface/conventions.md: the title [Conventions de description basse-fidélité — Haversack MVP] does not follow [Conventions d'interface]
+F2 docs/interface/raisonnement-ux.md: the title [Réflexion UX/UI — MVP Haversack] does not follow [Raisonnement UX]
+F2 docs/architecture/stack.mdF2 docs/architecture/stack.md: the title [Stack technique — Haversack] does not follow [Stack technologique]
+F2 docs/architecture/structure-projets.mdF2 docs/architecture/structure-projets.md: the title [Structure des projets .NET et périmètre du mode local TypeScript] does not follow [Structure de la solution]
+F2 docs/architecture/fondations.md: the title [Fondations DDD] does not follow [Fondations architecturales]
+F2 docs/architecture/transverse.md: the title [Architecture détaillée : vue transverse par préoccupation] does not follow [Architecture transverse]
+F2 docs/securite/dossier-securite.mdF2 docs/securite/dossier-securite.md: the title [Dossier de sécurité — Haversack] does not follow [Dossier de sécurité]
+F2 docs/assurance/strategie-de-test.md: the title [Cahier de stratégie de test et de recette — Haversack] does not follow [Stratégie de test]
+F2 docs/reference/cahier-des-charges.md: the title [Cahier des charges — Haversack (MVP)] does not follow [Cahier des charges fonctionnel]
+F2 docs/context/cahier-specifications-techniques.mdF2 docs/context/cahier-specifications-techniques.md: the title [Cahier de spécifications techniques — Haversack] does not follow [Cahier des spécifications techniques]
+F2 docs/reference/dossier-architecture.md: the title [Dossier d'Architecture Technique — Haversack] does not follow [Dossier d'architecture]
+F2 docs/reference/conception-detaillee.md: the title [Dossier de conception détaillée — Haversack (MVP)] does not follow [Conception détaillée]
+F2 docs/reference/note-business.md: the title [Note business — coût, marché & go-to-market (Haversack)] does not follow [Note business]
+F2 docs/gestion-projet/note-de-cadrage.md: the title [Note de cadrage — Projet Haversack] does not follow [Note de cadrage du projet]
+F2 docs/pilotage/conventions-dod.md: the title [Guide de conventions et Definition of Done — Haversack] does not follow [Conventions et définition de fini]
+F2 docs/gestion-projet/roadmap-entree-build.mdF2 docs/gestion-projet/roadmap-entree-build.md: the title [Roadmap d'entrée en build — Haversack] does not follow [Roadmap de build]
+# F2 FAIL   247 sections missing, misplaced or left in the wrong place (the check lists the first 30)
+F2 docs/besoin/decouverte/personas/persona-01-thomas.md: section who-they-are: no level-2 heading [Qui il/elle est]
+F2 docs/besoin/decouverte/personas/persona-01-thomas.md: section would-use: no level-2 heading [Ce qu'il/elle utiliserait]
+F2 docs/besoin/decouverte/personas/persona-01-thomas.md: section ask-of-product: no level-2 heading [Ce qu'il/elle demande au produit]
+F2 docs/besoin/decouverte/personas/persona-02-emilie.md: section who-they-are: no level-2 heading [Qui il/elle est]
+F2 docs/besoin/decouverte/personas/persona-02-emilie.md: section would-use: no level-2 heading [Ce qu'il/elle utiliserait]
+F2 docs/besoin/decouverte/personas/persona-02-emilie.md: section ask-of-product: no level-2 heading [Ce qu'il/elle demande au produit]
+F2 docs/besoin/decouverte/personas/persona-03-lucas.md: section who-they-are: no level-2 heading [Qui il/elle est]
+F2 docs/besoin/decouverte/personas/persona-03-lucas.md: section would-use: no level-2 heading [Ce qu'il/elle utiliserait]
+F2 docs/besoin/decouverte/personas/persona-03-lucas.md: section ask-of-product: no level-2 heading [Ce qu'il/elle demande au produit]
+F2 docs/besoin/decouverte/personas/persona-04-nadia.md: section who-they-are: no level-2 heading [Qui il/elle est]
+F2 docs/besoin/decouverte/personas/persona-04-nadia.md: section would-use: no level-2 heading [Ce qu'il/elle utiliserait]
+F2 docs/besoin/decouverte/personas/persona-04-nadia.md: section ask-of-product: no level-2 heading [Ce qu'il/elle demande au produit]
+F2 docs/besoin/decouverte/personas/persona-05-antoine.md: section who-they-are: no level-2 heading [Qui il/elle est]
+F2 docs/besoin/decouverte/personas/persona-05-antoine.md: section would-use: no level-2 heading [Ce qu'il/elle utiliserait]
+F2 docs/besoin/decouverte/personas/persona-05-antoine.md: section ask-of-product: no level-2 heading [Ce qu'il/elle demande au produit]
+F2 docs/besoin/decouverte/personas/persona-06-remi.md: section who-they-are: no level-2 heading [Qui il/elle est]
+F2 docs/besoin/decouverte/personas/persona-06-remi.md: section would-use: no level-2 heading [Ce qu'il/elle utiliserait]
+F2 docs/besoin/decouverte/personas/persona-06-remi.md: section ask-of-product: no level-2 heading [Ce qu'il/elle demande au produit]
+F2 docs/besoin/decouverte/personas/persona-07-sonia.md: section who-they-are: no level-2 heading [Qui il/elle est]
+F2 docs/besoin/decouverte/personas/persona-07-sonia.md: section would-use: no level-2 heading [Ce qu'il/elle utiliserait]
+F2 docs/besoin/decouverte/personas/persona-07-sonia.md: section ask-of-product: no level-2 heading [Ce qu'il/elle demande au produit]
+F2 docs/besoin/vision/vision.md: section positioning: no level-2 heading [Positionnement]
+F2 docs/besoin/cas-d-utilisation/UC-07-creation-volee-session.md: section interview-questions: no level-2 heading [Questions à valider en interview]
+F2 docs/besoin/cas-d-utilisation/UC-12-consulter-espace-joueur.md: section interview-questions: no level-2 heading [Questions à valider en interview]
+F2 docs/besoin/cas-d-utilisation/UC-15-gel-espaces-downgrade-tier.md: section postconditions: no level-2 heading [Postconditions]
+F2 docs/besoin/cas-d-utilisation/UC-15-gel-espaces-downgrade-tier.md: section acceptance-criteria: no level-2 heading [Critères d'acceptation]
+F2 docs/besoin/cas-d-utilisation/UC-15-gel-espaces-downgrade-tier.md: section interview-questions: no level-2 heading [Questions à valider en interview]
+F2 docs/besoin/vision/perimetre/matrice-de-priorites.md: section must-have: no level-2 heading [Must Have]
+F2 docs/besoin/vision/perimetre/exclusions.md: section deprioritised: no level-2 heading [Fonctionnalités déprioritisées]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md: section bounded-contexts: present, and the selection leaves it absent (if:domain.model)
+# F2 FAIL   92 header fields missing or out of their values (the check lists the first 30)
+F2 docs/besoin/nfr/NFR-ACC-01-utilisabilite-sans-dispositif-de-pointage.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-ACC-02-compatibilite-lecteurs-ecran.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-ACC-03-lisibilite-faible-eclairage.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-ACC-04-tailles-texte-lecture-rapide-session.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-CONF-01-separation-notes-privees-vue-joueurs.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-CONF-03-suppression-effective-donnees-personnelles.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-CONF-04-transparence-risques-mode-local-partage.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-I18N-01-interface-en-francais.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-I18N-02-evolutivite-multilingue-sans-refonte.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-I18N-03-liberte-langue-contenu-mj.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-OFF-01-utilisation-integrale-sans-connexion.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-OFF-02-durabilite-donnees-locales.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-OFF-03-aucune-perte-silencieuse-donnees-locales.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-OFF-04-fonctionnement-partiel-perte-reseau-cloud.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-OFF-05-continuite-edition-preparation-cloud.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-PERF-01-fluidite-navigation-session.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-PERF-02-reactivite-premiere-interaction.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-PERF-03-continuite-sans-interruption-session.md: header [Famille] is absent
+F2 docs/besoin/nfr/NFR-PERF-04-resultats-recherche-immediats.md: header [Famille] is absent
+F2 docs/glossaire.md: header [Version] is absent
+F2 docs/glossaire.md: header [Nature] is absent
+F2 docs/decisions/ADR-001-execution-domaine-mode-local.md: header [Nature] is absent
+F2 docs/decisions/ADR-002-tout-est-document-gouvernance.md: header [Nature] is absent
+F2 docs/decisions/ADR-003-stack-front.md: header [Nature] is absent
+F2 docs/decisions/ADR-004-transport-temps-reel.md: header [Nature] is absent
+F2 docs/decisions/ADR-005-modele-monetisation.md: header [Nature] is absent
+F2 docs/decisions/ADR-006-perimetre-mvp.md: header [Nature] is absent
+F2 docs/decisions/ADR-007-rgpd-autorisation-api.md: header [Nature] is absent
+F2 docs/decisions/ADR-008-structure-solution.md: header [Nature] is absent
+# F2 FAIL   372 scenario steps outside the words of the project language (the check lists the first 30)
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:115: scenario step opens with [Feature], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:117: scenario step opens with [Scenario], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:118: scenario step opens with [Given], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:119: scenario step opens with [When], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:120: scenario step opens with [Then], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:121: scenario step opens with [And], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:122: scenario step opens with [And], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:124: scenario step opens with [Scenario], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:125: scenario step opens with [Given], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:126: scenario step opens with [When], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:127: scenario step opens with [Then], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:129: scenario step opens with [Scenario], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:130: scenario step opens with [Given], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:131: scenario step opens with [When], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:132: scenario step opens with [Then], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:133: scenario step opens with [And], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:172: scenario step opens with [Feature], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:174: scenario step opens with [Scenario], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:175: scenario step opens with [Given], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:176: scenario step opens with [And], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:177: scenario step opens with [When], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:178: scenario step opens with [Then], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:211: scenario step opens with [Feature], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:213: scenario step opens with [Scenario], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:214: scenario step opens with [Given], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:215: scenario step opens with [When], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:216: scenario step opens with [Then], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:217: scenario step opens with [And], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:218: scenario step opens with [And], which is not a word of the project language
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:220: scenario step opens with [Scenario], which is not a word of the project language
+# F2 FAIL   358 fields missing (the check lists the first 30)
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md: section priority: no field [Source de la priorité]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:97: story has no field [En tant que]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:154: story has no field [En tant que]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:193: story has no field [En tant que]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:241: story has no field [En tant que]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:306: story has no field [En tant que]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:359: story has no field [En tant que]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:407: story has no field [En tant que]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:97: story has no field [je veux]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:154: story has no field [je veux]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:193: story has no field [je veux]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:241: story has no field [je veux]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:306: story has no field [je veux]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:359: story has no field [je veux]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:407: story has no field [je veux]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:97: story has no field [afin de]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:154: story has no field [afin de]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:193: story has no field [afin de]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:241: story has no field [afin de]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:306: story has no field [afin de]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:359: story has no field [afin de]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:407: story has no field [afin de]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:97: story has no field [Critères d'acceptation]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:154: story has no field [Critères d'acceptation]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:193: story has no field [Critères d'acceptation]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:241: story has no field [Critères d'acceptation]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:306: story has no field [Critères d'acceptation]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:359: story has no field [Critères d'acceptation]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md:407: story has no field [Critères d'acceptation]
+F2 docs/besoin/stories/US-UC-02-creer-espace-jeu.md: section priority: no field [Source de la priorité]
+# F2 FAIL   50 columns missing, out of order or left empty (the check lists the first 30)
+F2 docs/besoin/vision/vision.md: section competition: no column [Limites]
+F2 docs/besoin/cas-d-utilisation/diagrammes.md: section legend: no column [Symbole]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md: section personas: no column [Motivation principale]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-01-mode-local-sans-compte.md: section coverage: no column [Story couvrant]
+F2 docs/besoin/stories/US-UC-02-creer-espace-jeu.md: section personas: no column [Motivation principale]
+F2 docs/besoin/stories/US-UC-02-creer-espace-jeu.md: section deferred: no table, and the declaration gives it columns
+F2 docs/besoin/stories/US-UC-02-creer-espace-jeu.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-02-creer-espace-jeu.md: section coverage: no column [Story couvrant]
+F2 docs/besoin/stories/US-UC-02-creer-espace-jeu.md: section deferred: no table
+F2 docs/besoin/stories/US-UC-03-structurer-scenario.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-04-gerer-documents-espace.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-05-organiser-contenu-dossiers.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-06-vue-session.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-07-creation-volee-session.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-08-partager-information.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-09-acces-session-joueur.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-10-compte-cloud.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-11-gerer-membres-espace-partage.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-12-consulter-espace-joueur.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-13-scenario-reutilisable.md: section coverage: no column [Cas]
+F2 docs/besoin/stories/US-UC-14-recherche.md: section coverage: no column [Cas]
+F2 docs/besoin/parcours-utilisateur/UJ-UC-01-mode-local-sans-compte.md: section personas: no column [Mode de travail]
+F2 docs/besoin/parcours-utilisateur/UJ-UC-01-mode-local-sans-compte.md: section personas: no column [Attente principale]
+F2 docs/besoin/parcours-utilisateur/UJ-UC-01-mode-local-sans-compte.md: section personas: no column [Risque de friction]
+F2 docs/besoin/parcours-utilisateur/UJ-UC-02-creer-espace-jeu.md: section personas: no column [Mode de travail]
+F2 docs/besoin/parcours-utilisateur/UJ-UC-02-creer-espace-jeu.md: section personas: no column [Attente principale]
+F2 docs/besoin/parcours-utilisateur/UJ-UC-02-creer-espace-jeu.md: section personas: no column [Risque de friction]
+F2 docs/besoin/parcours-utilisateur/UJ-UC-05-organiser-contenu-dossiers.md: section friction-points: no column [Friction]
+F2 docs/besoin/parcours-utilisateur/UJ-UC-06-vue-session.md: section friction-points: no column [Friction]
+
+== F3 folds
+# F3 FAIL   11 uses of a rejected term (the check lists the first 30)
+F3 docs/decisions/ADR-018-espace-personnel-generalisation-space.md:48  [scenariolibrary] is rejected, the glossary keeps [« bibliothèque personnelle »]
+F3 docs/decisions/ADR-018-espace-personnel-generalisation-space.md:98  [scenariolibrary] is rejected, the glossary keeps [« bibliothèque personnelle »]
+F3 docs/decisions/ADR-018-espace-personnel-generalisation-space.md:104  [scenariolibrary] is rejected, the glossary keeps [« bibliothèque personnelle »]
+F3 docs/decisions/ADR-018-espace-personnel-generalisation-space.md:168  [scenariolibrary] is rejected, the glossary keeps [« bibliothèque personnelle »]
+F3 docs/besoin/nfr/NFR-CONF-01-separation-notes-privees-vue-joueurs.md:23  [« visible par les joueurs »] is rejected, the glossary keeps [public]
+F3 docs/besoin/nfr/NFR-CONF-01-separation-notes-privees-vue-joueurs.md:48  [« visible par les joueurs »] is rejected, the glossary keeps [public]
+F3 docs/besoin/nfr/NFR-CONF-01-separation-notes-privees-vue-joueurs.md:56  [« visible par les joueurs »] is rejected, the glossary keeps [public]
+F3 docs/interface/zonage.md:430  [« visible par les joueurs »] is rejected, the glossary keeps [public]
+F3 docs/reference/conception-detaillee.md:750  [scenariolibrary] is rejected, the glossary keeps [« bibliothèque personnelle »]
+F3 docs/reference/conception-detaillee.md:756  [scenariolibrary] is rejected, the glossary keeps [« bibliothèque personnelle »]
+F3 docs/assurance/strategie-de-test.md:736  [« note privée mj »] is rejected, the glossary keeps [« privé mj » / gm_only]
+
+== F4 identifiers: a new identifier for the second carrier, the first keeps its own
+F4 docs/besoin/stories/US-UC-05-organiser-contenu-dossiers.md:162 RB-05-01 → RB-05-13
+
+== F5 registries
+F5 create docs/pilotage/plan-de-livraison.md (release-plan, generated, never edited by hand)
+F5 render the identifier and marker registers and the selection (corpus.sh render)
