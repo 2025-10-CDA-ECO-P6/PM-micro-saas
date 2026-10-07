@@ -1,24 +1,21 @@
-# Vue campagne (espace de travail)
+# Fiche d'écran — Vue campagne (espace de travail)
 
-> Fiche de description d'écran basse-fidélité — préparation espace partagé.
-> Hub de préparation d'un espace partagé — ancre la grammaire de préparation des autres fiches de la surface.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité — préparation espace partagé. Hub de préparation d'un espace partagé — ancre la grammaire de préparation des autres fiches de la surface.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Vue campagne (espace de travail)
-Surface      : MJ
-Contexte     : préparation
-Type d'espace: CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — voir AR-14 ; la version réduite
-               de cette surface pour l'espace personnel n'est pas wireframée ici)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-02, UC-04, UC-05, UC-06, UC-08, UC-11 ; AR-01, AR-09, AR-10, AR-11, AR-13, AR-18
-```
+- **Nom** : Vue campagne (espace de travail)
+- **Surface** : MJ
+- **Contexte** : préparation
+- **Type d'espace** : CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — voir AR-14 ; la version réduite
+  de cette surface pour l'espace personnel n'est pas wireframée ici)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-02, UC-04, UC-05, UC-06, UC-08, UC-11 ; AR-01, AR-09, AR-10, AR-11, AR-13, AR-18
 
 ---
 
@@ -217,7 +214,9 @@ Fonctions disponibles localement (non désactivées) :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

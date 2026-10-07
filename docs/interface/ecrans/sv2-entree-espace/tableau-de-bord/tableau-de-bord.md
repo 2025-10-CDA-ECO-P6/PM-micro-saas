@@ -1,24 +1,22 @@
-# Tableau de bord des espaces de jeu
+# Fiche d'écran — Tableau de bord des espaces de jeu
 
-> Fiche de description d'écran basse-fidélité — entrée espace MJ.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité — entrée espace MJ.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Tableau de bord des espaces de jeu
-Surface      : MJ
-Contexte     : transversal
-Type d'espace: n.a. (l'écran est indépendant du type — il liste tous les types)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-02 postcondition ; UC-06 A5 ; UC-01 (espace personnel hors quota — RB-02-10) ;
-               UC-02 §Règles métier RB-02-22, RB-02-23 (désarchivage) ;
-               AR-17 ; AR-15 ; AR-05 ; AR-20 ; AR-22 (accès aux espaces archivés)
-```
+- **Nom** : Tableau de bord des espaces de jeu
+- **Surface** : MJ
+- **Contexte** : transversal
+- **Type d'espace** : n.a. (l'écran est indépendant du type — il liste tous les types)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-02 postcondition ; UC-06 A5 ; UC-01 (espace personnel hors quota — RB-02-10) ;
+  UC-02 §Règles métier RB-02-22, RB-02-23 (désarchivage) ;
+  AR-17 ; AR-15 ; AR-05 ; AR-20 ; AR-22 (accès aux espaces archivés)
 
 ---
 
@@ -257,7 +255,9 @@ Fonctions cloud désactivées sur le tableau de bord en mode local :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

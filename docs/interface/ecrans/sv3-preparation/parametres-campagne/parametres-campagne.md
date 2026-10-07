@@ -1,27 +1,24 @@
-# Paramètres de campagne
+# Fiche d'écran — Paramètres de campagne
 
-> Fiche de description d'écran basse-fidélité — préparation espace partagé.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
-> Cet écran agrège des fonctions de plusieurs UC sans UC propre (S5 §Zones sans UC propre).
+> **Nature** : Fiche de description d'écran basse-fidélité — préparation espace partagé. Cet écran agrège des fonctions de plusieurs UC sans UC propre (S5 §Zones sans UC propre).
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Paramètres de campagne
-Surface      : MJ
-Contexte     : préparation
-Type d'espace: CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — pas de vue session,
-               pas de membres, AR-01 ; AR-14)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-06 Phase 2 (config vue session — accès depuis paramètres) ;
-               UC-02 (archivage, désarchivage — RB-02-21..23) ;
-               UC-01 A4a (export — MVP version minimale) ; UC-11 A4 (lien d'invitation de campagne) ;
-               AR-22 (désarchivage)
-```
+- **Nom** : Paramètres de campagne
+- **Surface** : MJ
+- **Contexte** : préparation
+- **Type d'espace** : CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — pas de vue session,
+  pas de membres, AR-01 ; AR-14)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-06 Phase 2 (config vue session — accès depuis paramètres) ;
+  UC-02 (archivage, désarchivage — RB-02-21..23) ;
+  UC-01 A4a (export — MVP version minimale) ; UC-11 A4 (lien d'invitation de campagne) ;
+  AR-22 (désarchivage)
 
 ---
 
@@ -244,7 +241,9 @@ Sources : UC-06 Phase 2 (accès à la configuration de la vue session via renvoi
 
 ## Sections conditionnelles
 
-### Modes (déclenché — AR-22 : l'écran a désormais deux modes selon le statut de l'espace)
+### Modes
+
+Déclenché — AR-22 : l'écran a désormais deux modes selon le statut de l'espace.
 
 ---
 
@@ -345,7 +344,9 @@ Fonctions disponibles localement (non désactivées) :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

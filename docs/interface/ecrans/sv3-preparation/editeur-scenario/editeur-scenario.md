@@ -1,23 +1,20 @@
-# Éditeur de scénario
+# Fiche d'écran — Éditeur de scénario
 
-> Fiche de description d'écran basse-fidélité — préparation espace partagé.
-> Cas spécialisé de l'éditeur de document — instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
-> Cas général : `docs/interface/ecrans/sv3-preparation/editeur-document/editeur-document.md`.
+> **Nature** : Fiche de description d'écran basse-fidélité — préparation espace partagé.
+> **Gabarit** : Cas spécialisé de l'éditeur de document — instancie le gabarit `docs/interface/gabarit-ecran.md`. Cas général : `docs/interface/ecrans/sv3-preparation/editeur-document/editeur-document.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Éditeur de scénario
-Surface      : MJ
-Contexte     : préparation
-Type d'espace: CAMPAIGN | ONE_SHOT | PERSONAL
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-03 ; AR-19
-```
+- **Nom** : Éditeur de scénario
+- **Surface** : MJ
+- **Contexte** : préparation
+- **Type d'espace** : CAMPAIGN | ONE_SHOT | PERSONAL
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-03 ; AR-19
 
 ---
 
@@ -205,7 +202,9 @@ Fonctions cloud désactivées sur l'éditeur de scénario en mode local :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

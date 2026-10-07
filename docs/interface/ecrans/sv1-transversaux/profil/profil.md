@@ -1,22 +1,20 @@
-# Profil utilisateur
+# Fiche d'écran — Profil utilisateur
 
-> Fiche de description d'écran basse-fidélité — écrans transversaux.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité — écrans transversaux.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Profil utilisateur
-Surface      : transversal
-Contexte     : transversal
-Type d'espace: n.a. (l'écran est indépendant du type d'espace)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-10 A2
-```
+- **Nom** : Profil utilisateur
+- **Surface** : transversal
+- **Contexte** : transversal
+- **Type d'espace** : n.a. (l'écran est indépendant du type d'espace)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-10 A2
 
 ---
 
@@ -145,7 +143,9 @@ Sources : UC-10 A2 ; UC-10 A4 (accès) ; UC-10 §Règles métier (RB-10-05) ;
 
 ## Sections conditionnelles
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

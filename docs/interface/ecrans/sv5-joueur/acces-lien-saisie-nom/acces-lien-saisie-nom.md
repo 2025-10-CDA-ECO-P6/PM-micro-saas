@@ -1,24 +1,22 @@
-# Accès par lien + saisie du nom d'affichage
+# Fiche d'écran — Accès par lien + saisie du nom d'affichage
 
-> Fiche de description d'écran basse-fidélité — surface joueur.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md` sur le point d'entrée joueur.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6 AR-01, AR-03, AR-06`.
+> **Nature** : Fiche de description d'écran basse-fidélité — surface joueur.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md` sur le point d'entrée joueur.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6 AR-01, AR-03, AR-06`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Accès par lien + saisie du nom d'affichage
-Surface      : joueur
-Contexte     : session
-Type d'espace: n.a. (l'écran est indépendant du type d'espace — le joueur n'a pas accès
-               à la structure de l'espace)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté
-               au MVP — AR-07)
-Traçabilité  : UC-09 scénario A ; RB-09-20 ; RB-09-21
-```
+- **Nom** : Accès par lien + saisie du nom d'affichage
+- **Surface** : joueur
+- **Contexte** : session
+- **Type d'espace** : n.a. (l'écran est indépendant du type d'espace — le joueur n'a pas accès
+  à la structure de l'espace)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté
+  au MVP — AR-07)
+- **Traçabilité** : UC-09 scénario A ; RB-09-20 ; RB-09-21
 
 ---
 
@@ -145,7 +143,9 @@ Sources : UC-09 scénario A ; UC-09 A2 ; UC-09 A3 ;
 
 ## Sections conditionnelles
 
-### Partage / visibilité (déclenché — AR-03 : cet écran touche la frontière joueur)
+### Partage et visibilité
+
+Déclenché — AR-03 : cet écran touche la frontière joueur.
 
 ```
 Règle de séparation : le joueur ne voit que les documents PUBLIC partagés par le MJ
@@ -165,7 +165,9 @@ Affordances de partage et d'épinglage :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

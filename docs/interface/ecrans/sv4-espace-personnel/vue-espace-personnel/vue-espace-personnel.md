@@ -1,26 +1,20 @@
-# Espace personnel
+# Fiche d'écran — Espace personnel
 
-> Déclinaison PERSONAL de la surface Préparation — pas un écran-UC autonome (mix assumé, zoning §S9 RÉSOLU).
-> Fiche de description d'écran basse-fidélité — espace personnel.
-> Démontre la règle d'absence au niveau section : les sections conditionnelles « Modes » et
-> « Partage / visibilité » ne se déclenchent pas pour un espace PERSONAL — elles n'apparaissent
-> pas dans cette fiche (AR-14 ; Famille 7 de conventions-wireframe.md).
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Déclinaison PERSONAL de la surface Préparation — pas un écran-UC autonome (mix assumé, zoning §S9 RÉSOLU). Fiche de description d'écran basse-fidélité — espace personnel. Démontre la règle d'absence au niveau section : les sections conditionnelles « Modes » et « Partage et visibilité » ne se déclenchent pas pour un espace PERSONAL — elles n'apparaissent pas dans cette fiche (AR-14 ; Famille 7 de conventions-wireframe.md).
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Espace personnel
-Surface      : MJ
-Contexte     : préparation
-Type d'espace: PERSONAL
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-01, UC-04 ; AR-14, AR-15, AR-16, AR-17, AR-20
-```
+- **Nom** : Espace personnel
+- **Surface** : MJ
+- **Contexte** : préparation
+- **Type d'espace** : PERSONAL
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-01, UC-04 ; AR-14, AR-15, AR-16, AR-17, AR-20
 
 ---
 
@@ -224,7 +218,9 @@ Fonctions cloud désactivées sur l'espace personnel en mode local :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

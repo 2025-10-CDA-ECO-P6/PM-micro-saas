@@ -1,23 +1,21 @@
-# Gate de migration local→cloud
+# Fiche d'écran — Gate de migration local→cloud
 
-> Fiche de description d'écran basse-fidélité — écrans transversaux.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité — écrans transversaux.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Gate de migration local→cloud
-Surface      : transversal
-Contexte     : transversal
-Type d'espace: n.a. (l'écran intervient lors de la création de compte — indépendant du type d'espace)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-01 A1 ; UC-10 §Scénario nominal (inscription depuis le mode local) ;
-               UC-10 §Règles métier (migration des données locales)
-```
+- **Nom** : Gate de migration local→cloud
+- **Surface** : transversal
+- **Contexte** : transversal
+- **Type d'espace** : n.a. (l'écran intervient lors de la création de compte — indépendant du type d'espace)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-01 A1 ; UC-10 §Scénario nominal (inscription depuis le mode local) ;
+  UC-10 §Règles métier (migration des données locales)
 
 ---
 
@@ -191,7 +189,9 @@ Sources : UC-01 A1 ; UC-10 §Scénario nominal (inscription depuis le mode local
 
 ## Sections conditionnelles
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

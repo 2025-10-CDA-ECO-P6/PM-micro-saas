@@ -22,15 +22,21 @@ Les **intitulés de section** de ce gabarit sont en langage de besoin (« Ce que
 ### En-tête de fiche
 
 ```
-# [Nom de l'écran]
-> Aligné sur l'inventaire S4 de zoning.md.
+# Fiche d'écran — [Nom de l'écran]
 
-Nom          : <nom exact tel qu'il figure dans l'inventaire S4>
-Surface      : MJ | joueur | transversal
-Contexte     : préparation | session | transversal
-Type d'espace: CAMPAIGN | ONE_SHOT | PERSONAL | n.a. (si l'écran est indépendant du type)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : <UC / US / NFR couverts, à la maille écran — source : colonne « UC / US / UJ couverts » de S4>
+> **Nature** : Fiche de description d'écran basse-fidélité. Aligné sur l'inventaire S4 de zoning.md.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : <sections et arbitrages du zonage que la fiche fige, par exemple `docs/interface/zonage.md §S6`, AR-xx>.
+
+## En-tête de fiche
+
+- **Nom** : <nom exact tel qu'il figure dans l'inventaire S4>
+- **Surface** : MJ | joueur | transversal
+- **Contexte** : préparation | session | transversal
+- **Type d'espace** : CAMPAIGN | ONE_SHOT | PERSONAL | n.a. (si l'écran est indépendant du type)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : <UC / US / NFR couverts, à la maille écran — source : colonne « UC / US / UJ couverts » de S4>
 ```
 
 **Règle** : les cinq axes reproduisent exactement les colonnes de S4 (`zoning.md §S4`). Ils ne créent pas de système parallèle. Si un axe est absent du tableau S4, il est noté `non spécifié en S4`.
@@ -131,7 +137,9 @@ Les sections ci-dessous n'apparaissent que si leur déclencheur est avéré. **L
 
 ---
 
-#### Modes (conditionnel)
+#### Modes
+
+Conditionnel.
 
 **Déclencheur : l'écran a plus d'un mode.** Source de référence : AR-09 (pour la vue session MJ) ou tout autre arbitrage nommant des modes.
 
@@ -151,7 +159,9 @@ Affordances spécifiques :
 
 ---
 
-#### Partage / visibilité (conditionnel)
+#### Partage et visibilité
+
+Conditionnel.
 
 **Déclencheur : l'écran touche la frontière joueur, c'est-à-dire qu'une action sur cet écran peut modifier ce que les joueurs voient.** Sources : AR-03, AR-12.
 
@@ -190,7 +200,9 @@ Si aucune fonction cloud n'est désactivée sur cet écran spécifiquement, note
 
 ---
 
-#### Hors-périmètre / différé / sous-spécifié (conditionnel)
+#### Hors périmètre, différé, sous-spécifié
+
+Conditionnel.
 
 **Déclencheur : l'écran contient des éléments listés en S8 ou en S9.**
 
@@ -230,14 +242,12 @@ La traçabilité descend à la maille **zone** uniquement lorsqu'une zone matér
 
 ### En-tête de fiche
 
-```
-Nom          : Vue session MJ
-Surface      : MJ
-Contexte     : session
-Type d'espace: CAMPAIGN | ONE_SHOT (réservé aux espaces partagés — AR-01 ; AR-14)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-06, UC-07, UC-08, UC-14 ; US-06-01 à US-06-10 ; UJ-UC-06
-```
+- **Nom** : Vue session MJ
+- **Surface** : MJ
+- **Contexte** : session
+- **Type d'espace** : CAMPAIGN | ONE_SHOT (réservé aux espaces partagés — AR-01 ; AR-14)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-06, UC-07, UC-08, UC-14 ; US-06-01 à US-06-10 ; UJ-UC-06
 
 ---
 
@@ -414,7 +424,9 @@ Sources : UC-06 ; UC-07 ; UC-08 ; UC-14 ;
 
 ---
 
-### Modes (déclenché — AR-09 : l'écran a 3 modes)
+### Modes
+
+Déclenché — AR-09 : l'écran a 3 modes.
 
 ---
 
@@ -510,7 +522,9 @@ Placement de l'affordance de génération de lien d'invitation :
 
 ---
 
-### Partage / visibilité (déclenché — AR-03 et AR-12 : la vue session MJ touche la frontière joueur)
+### Partage et visibilité
+
+Déclenché — AR-03 et AR-12 : la vue session MJ touche la frontière joueur.
 
 ```
 Règle de séparation : la vue session MJ n'expose aucune structure MJ à la vue joueur ;
@@ -558,7 +572,9 @@ Fonctions disponibles localement (non désactivées) :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :
@@ -576,4 +592,4 @@ Fonctions disponibles localement (non désactivées) :
     mais non entièrement spécifiée — trou de corpus
 ```
 
-*Contre-exemple d'absence au niveau section — pour un écran d'espace personnel : les sections conditionnelles « Modes » et « Partage / visibilité » ne se déclenchent pas (ni modes de session, ni frontière joueur) ; elles n'apparaissent donc pas dans la fiche — on ne les note jamais « S.O. » (AR-14).*
+*Contre-exemple d'absence au niveau section — pour un écran d'espace personnel : les sections conditionnelles « Modes » et « Partage et visibilité » ne se déclenchent pas (ni modes de session, ni frontière joueur) ; elles n'apparaissent donc pas dans la fiche — on ne les note jamais « S.O. » (AR-14).*

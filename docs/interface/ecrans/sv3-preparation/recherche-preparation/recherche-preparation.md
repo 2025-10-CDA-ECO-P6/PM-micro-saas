@@ -1,22 +1,20 @@
-# Recherche en préparation
+# Fiche d'écran — Recherche en préparation
 
-> Fiche de description d'écran basse-fidélité — préparation espace partagé.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité — préparation espace partagé.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Recherche en préparation
-Surface      : MJ
-Contexte     : préparation
-Type d'espace: CAMPAIGN | ONE_SHOT | PERSONAL (disponible pour tous les types d'espace — UC-14 §Contexte)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-14 ; US-UC-14
-```
+- **Nom** : Recherche en préparation
+- **Surface** : MJ
+- **Contexte** : préparation
+- **Type d'espace** : CAMPAIGN | ONE_SHOT | PERSONAL (disponible pour tous les types d'espace — UC-14 §Contexte)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-14 ; US-UC-14
 
 ---
 
@@ -155,7 +153,9 @@ La recherche est disponible en mode local :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

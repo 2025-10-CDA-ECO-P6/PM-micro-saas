@@ -1,4 +1,4 @@
-# Réflexion UX/UI — MVP Haversack
+# Raisonnement UX
 
 > Document de rationale de conception d'interface.
 > Couche : interface (en aval de zoning.md, en aval des fiches wireframe).
@@ -8,7 +8,7 @@
 
 ---
 
-## 1. Objet & méthode
+## 1. Statut
 
 Ce document restitue et structure une réflexion UI/UX globale menée sur l'ensemble des 20 écrans du MVP Haversack. Son rôle est d'exposer le raisonnement qui a conduit aux décisions d'interface consignées dans `zoning.md` et dans les fiches wireframe — pas de poser des règles nouvelles.
 
@@ -33,7 +33,7 @@ Il ne contredit pas le corpus amont. Toute décision mentionnée ici qui touche 
 
 ---
 
-## 2. L'espace personnel (question phare) — décision : le mix assumé
+## 2. Réflexion — L'espace personnel (question phare) — décision : le mix assumé
 
 ### Frontière fonctionnelle verrouillée
 
@@ -79,7 +79,7 @@ L'espace personnel ne se présente pas par un texte d'explication. Son modèle e
 
 ---
 
-## 3. Cohérence d'ensemble — architecture de l'information & navigation
+## 3. Réflexion — Cohérence d'ensemble — architecture de l'information & navigation
 
 ### Socle sain : 3 forces identifiées
 
@@ -116,7 +116,7 @@ L'accès au profil utilisateur passe actuellement uniquement par le tableau de b
 
 ---
 
-## 4. Charge informationnelle
+## 4. Réflexion — Charge informationnelle
 
 ### Verdict global
 
@@ -142,7 +142,7 @@ Pour chaque écran, ce principe se décline en trois niveaux :
 
 ---
 
-## 5. Zones sous-spécifiées — 68 marqueurs inventoriés
+## 5. Réflexion — Zones sous-spécifiées
 
 ### Trois familles
 
@@ -185,7 +185,7 @@ Les points suivants sont explicitement laissés à l'interview ou au corpus à v
 
 ---
 
-## 6. Adéquation aux personas
+## 6. Réflexion — Adéquation aux personas
 
 ### Bilan par persona
 
@@ -209,7 +209,7 @@ Aucun écran n'est surchargé pour un persona donné. La séparation des surface
 
 ---
 
-## 7. Décisions actées
+## 7. Réflexion — Décisions actées
 
 Les quatre décisions suivantes sont issues de cette réflexion. Elles font partie du rationale et sont à porter dans les documents amont concernés (voir §8).
 
@@ -233,50 +233,7 @@ La possibilité pour le MJ de prévisualiser ce que voit le joueur (aperçu lect
 
 ---
 
-## 8. Renvois — où les résolutions sont portées
-
-Ce document est le rationale. Les résolutions effectives sont consignées dans les documents suivants.
-
-### Arbitrages transversaux → `zoning.md`
-
-Les résolutions ci-dessous sont portées (ou à porter) dans `zoning.md` comme arbitrages AR :
-
-| Sujet | Section cible |
-|---|---|
-| Configuration vue session : paramètres pointe vers la surface session | S6 (nouvel AR, complémentaire à AR-02 et AR-09) |
-| Retour contextuel (tout détail retourne à sa surface appelante, état préservé) | S7 |
-| Recherche = composant de châssis (overlay, jamais un écran) | S7 |
-| Accès compte = composant de châssis (présent sur toutes les surfaces) | S7 |
-| Espace personnel : mix assumé + micro-copy d'intention neutre | S9 (question ouverte résolue) |
-| Dossiers entièrement libres + garde-fou « Non classés » | S6 (complémentaire à AR-16) |
-| Lien d'invitation : ponctuel (vue session) / permanent (paramètres/membres) | S6 (complémentaire à AR-10) |
-| Principe de densité : plancher garanti, plafond borné, divulgation progressive | S7 |
-
-### Fiches wireframe concernées
-
-| Fiche | Motif de mise à jour |
-|---|---|
-| `editeur-document` | Résolution Famille A/B (types de blocs, liens, backlinks — §5) ; repli des backlinks par défaut (§4) |
-| `editeur-scenario` | Hérite de `editeur-document` (même composant de base) |
-| `parametres-campagne` | Export passe au MVP (décision §7.3) ; archivage en repli ; config session pointe vers la surface session |
-| `tableau-de-bord` | Accès compte promu composant de châssis ; indicateur espace personnel hors-quota |
-| `gate-migration` | Cohérence avec le modèle d'espace personnel libre (dossiers libres, §7.2) |
-| `vue-espace-personnel` | Micro-copy d'intention neutre (§2) ; modèle capture-first confirmé |
-| `vue-session-mj` | Règle d'éviction des panneaux à poser (§4) ; lien d'invitation ponctuel (§5) ; config pointe vers surface session |
-| `navigation-dossiers` | Dossiers entièrement libres + garde-fou « Non classés » (§7.2) |
-| `panneau-creation-rapide` | Cohérence avec espace personnel capture-first et modèle de dossiers libres |
-
-### Document vision et MoSCoW
-
-| Sujet | Document cible |
-|---|---|
-| Export d'espace : passage de Should Have à Must Have | `vision/moscow.md` |
-
-Les résolutions de l'analyse initiale (§2 à §7) ont été appliquées au corpus. Les résolutions complémentaires (§9) sont appliquées aux wireframes et aux fiches concernées.
-
----
-
-## 9. Alignement wireframes ↔ corpus (2026-06-25)
+## 9. Réflexion — Alignement wireframes ↔ corpus (2026-06-25)
 
 ### Contexte
 
@@ -369,3 +326,46 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 3. **Micro-copy** : micro-label discret sous le titre (réconciliation fiche / §76 corpus).
 4. **Gate-migration** : granularité par espace (case par espace) ; fiche alignée.
 5. **Gate-migration — granularité globale (décision produit du 2026-07-09)** : **lot unique**. Tous les espaces éligibles migrent en un seul passage (une confirmation unique ; les espaces éligibles cochés par défaut, décochables individuellement). Périmètre : granularité **globale** seulement — le tout-ou-rien **par espace** (déjà acté, inchangé) reste en place. Justification : le contrat serveur (ADR-016 §3.1) est indifférent à la granularité globale ; l'option A privilégie la simplicité du récit d'onboarding. L'exclusion ponctuelle d'un espace n'est pas promue comme parcours de reprise nominal — elle relève du chemin d'échec/reprise E5 d'UC-10.
+
+---
+
+## 8. Résolutions
+
+Ce document est le rationale. Les résolutions effectives sont consignées dans les documents suivants.
+
+### Arbitrages transversaux → `zoning.md`
+
+Les résolutions ci-dessous sont portées (ou à porter) dans `zoning.md` comme arbitrages AR :
+
+| Question | Portée par |
+|---|---|
+| Configuration vue session : paramètres pointe vers la surface session | S6 (nouvel AR, complémentaire à AR-02 et AR-09) |
+| Retour contextuel (tout détail retourne à sa surface appelante, état préservé) | S7 |
+| Recherche = composant de châssis (overlay, jamais un écran) | S7 |
+| Accès compte = composant de châssis (présent sur toutes les surfaces) | S7 |
+| Espace personnel : mix assumé + micro-copy d'intention neutre | S9 (question ouverte résolue) |
+| Dossiers entièrement libres + garde-fou « Non classés » | S6 (complémentaire à AR-16) |
+| Lien d'invitation : ponctuel (vue session) / permanent (paramètres/membres) | S6 (complémentaire à AR-10) |
+| Principe de densité : plancher garanti, plafond borné, divulgation progressive | S7 |
+
+### Fiches wireframe concernées
+
+| Fiche | Motif de mise à jour |
+|---|---|
+| `editeur-document` | Résolution Famille A/B (types de blocs, liens, backlinks — §5) ; repli des backlinks par défaut (§4) |
+| `editeur-scenario` | Hérite de `editeur-document` (même composant de base) |
+| `parametres-campagne` | Export passe au MVP (décision §7.3) ; archivage en repli ; config session pointe vers la surface session |
+| `tableau-de-bord` | Accès compte promu composant de châssis ; indicateur espace personnel hors-quota |
+| `gate-migration` | Cohérence avec le modèle d'espace personnel libre (dossiers libres, §7.2) |
+| `vue-espace-personnel` | Micro-copy d'intention neutre (§2) ; modèle capture-first confirmé |
+| `vue-session-mj` | Règle d'éviction des panneaux à poser (§4) ; lien d'invitation ponctuel (§5) ; config pointe vers surface session |
+| `navigation-dossiers` | Dossiers entièrement libres + garde-fou « Non classés » (§7.2) |
+| `panneau-creation-rapide` | Cohérence avec espace personnel capture-first et modèle de dossiers libres |
+
+### Document vision et MoSCoW
+
+| Sujet | Document cible |
+|---|---|
+| Export d'espace : passage de Should Have à Must Have | `vision/moscow.md` |
+
+Les résolutions de l'analyse initiale (§2 à §7) ont été appliquées au corpus. Les résolutions complémentaires (§9) sont appliquées aux wireframes et aux fiches concernées.

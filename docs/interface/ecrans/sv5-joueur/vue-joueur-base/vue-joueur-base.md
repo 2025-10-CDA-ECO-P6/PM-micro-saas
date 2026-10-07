@@ -1,24 +1,22 @@
-# Vue joueur (post-accès, base)
+# Fiche d'écran — Vue joueur (post-accès, base)
 
-> Fiche de description d'écran basse-fidélité — surface joueur.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md` sur la vue joueur de base.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6 AR-03, AR-06, AR-10, AR-14`.
+> **Nature** : Fiche de description d'écran basse-fidélité — surface joueur.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md` sur la vue joueur de base.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6 AR-03, AR-06, AR-10, AR-14`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Vue joueur post-accès
-Surface      : joueur
-Contexte     : session
-Type d'espace: n.a. (l'écran est indépendant du type d'espace — le joueur n'a pas accès
-               à la structure de l'espace)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté
-               au MVP — AR-07)
-Traçabilité  : UC-12 ; UC-09 scénario A ; UC-06 §vue joueur ; US-06-07 ; US-06-08 ; RB-12-09
-```
+- **Nom** : Vue joueur post-accès
+- **Surface** : joueur
+- **Contexte** : session
+- **Type d'espace** : n.a. (l'écran est indépendant du type d'espace — le joueur n'a pas accès
+  à la structure de l'espace)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté
+  au MVP — AR-07)
+- **Traçabilité** : UC-12 ; UC-09 scénario A ; UC-06 §vue joueur ; US-06-07 ; US-06-08 ; RB-12-09
 
 ---
 
@@ -161,7 +159,9 @@ Sources : UC-12 scénario nominal ; UC-12 A1 ; UC-12 A2 ; UC-12 A3 ; UC-12 E1 ;
 
 ## Sections conditionnelles
 
-### Partage / visibilité (déclenché — AR-03 et NFR-CONF-01 : cet écran est la surface joueur séparée)
+### Partage et visibilité
+
+Déclenché — AR-03 et NFR-CONF-01 : cet écran est la surface joueur séparée.
 
 ```
 Règle de séparation : le joueur ne voit que les documents PUBLIC selon son périmètre
@@ -169,7 +169,7 @@ Règle de séparation : le joueur ne voit que les documents PUBLIC selon son pé
   aucune structure de l'espace n'est visible ni révélée — NFR-CONF-01 ; AR-03 ;
   RB-12-01. La séparation est une garantie de conception, pas un filtre.
 
-Conditionnelle Partage/visibilité côté joueur :
+Conditionnelle Partage et visibilité côté joueur :
   - Le joueur voit uniquement PUBLIC + ses propres PLAYER_PRIVATE.
   - L'apparition d'un document partagé est ambiante (repère de nouveauté discret)
     et immédiate — AR-06.
@@ -185,7 +185,9 @@ Affordances de partage et d'épinglage :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

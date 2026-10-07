@@ -1,22 +1,20 @@
-# Vue session MJ
+# Fiche d'écran — Vue session MJ
 
-> Fiche de description d'écran basse-fidélité — écran prioritaire.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md` sur l'écran le plus riche du MVP.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité — écran prioritaire.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md` sur l'écran le plus riche du MVP.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Vue session MJ
-Surface      : MJ
-Contexte     : session
-Type d'espace: CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — pas de vue session, AR-01 ; AR-14)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-06, UC-07, UC-08, UC-14 ; US-06-01 à US-06-10 ; UJ-UC-06
-```
+- **Nom** : Vue session MJ
+- **Surface** : MJ
+- **Contexte** : session
+- **Type d'espace** : CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — pas de vue session, AR-01 ; AR-14)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-06, UC-07, UC-08, UC-14 ; US-06-01 à US-06-10 ; UJ-UC-06
 
 ---
 
@@ -279,7 +277,9 @@ Sources : UC-06 ; UC-06 E3 (résumé et notes rétroactives en CLOSED) ; UC-07 ;
 
 ## Sections conditionnelles
 
-### Modes (déclenché — AR-09 : l'écran a 3 modes)
+### Modes
+
+Déclenché — AR-09 : l'écran a 3 modes.
 
 ---
 
@@ -401,7 +401,9 @@ Affordances spécifiques :
 
 ---
 
-### Partage / visibilité (déclenché — AR-03 et AR-12 : la vue session MJ touche la frontière joueur)
+### Partage et visibilité
+
+Déclenché — AR-03 et AR-12 : la vue session MJ touche la frontière joueur.
 
 ```
 Règle de séparation : la vue session MJ n'expose aucune structure MJ à la vue joueur ;
@@ -455,7 +457,9 @@ Fonctions disponibles localement (non désactivées) :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

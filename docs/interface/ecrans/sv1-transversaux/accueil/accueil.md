@@ -1,22 +1,20 @@
-# Accueil non authentifié
+# Fiche d'écran — Accueil non authentifié
 
-> Fiche de description d'écran basse-fidélité — écrans transversaux.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité — écrans transversaux.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Accueil non authentifié
-Surface      : transversal
-Contexte     : transversal
-Type d'espace: n.a. (l'écran est indépendant du type d'espace)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-01, UC-10
-```
+- **Nom** : Accueil non authentifié
+- **Surface** : transversal
+- **Contexte** : transversal
+- **Type d'espace** : n.a. (l'écran est indépendant du type d'espace)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-01, UC-10
 
 ---
 
@@ -139,7 +137,9 @@ Sources : UC-01 (scénario nominal, A1, A2, RB-01-01) ;
 
 ## Sections conditionnelles
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S9.
 
 ```
 Éléments sous-spécifiés (S9) :

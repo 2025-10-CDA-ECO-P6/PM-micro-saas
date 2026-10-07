@@ -50,55 +50,57 @@ Avant de lire les fiches, lire les sources de vérité dans cet ordre :
 
 ### Surface MJ — Session (SV-session)
 
-| Fiche | Écran | Rôle |
-|---|---|---|
-| [`vue-session-mj/vue-session-mj.md`](sv-session/vue-session-mj/vue-session-mj.md) | Vue session MJ | Hub central de pilotage de session — tableau de bord configurable à trois modes (configuration / LIVE / consultation CLOSED) ; écran prioritaire du MVP (hypothèse H2) |
-| [`panneau-creation-rapide/panneau-creation-rapide.md`](sv-session/panneau-creation-rapide/panneau-creation-rapide.md) | Panneau de création rapide à la volée | Sur-couche sans navigation propre, invoquée depuis la vue session en mode LIVE et en mode consultation CLOSED (UC-07) |
+| Fiche | Écran | Rôle | Surface | UC couverts |
+|---|---|---|---|---|
+| [`vue-session-mj/vue-session-mj.md`](sv-session/vue-session-mj/vue-session-mj.md) | Vue session MJ | Hub central de pilotage de session — tableau de bord configurable à trois modes (configuration / LIVE / consultation CLOSED) ; écran prioritaire du MVP (hypothèse H2) | MJ | UC-06, UC-07, UC-08, UC-14 ; US-06-01 à US-06-10 ; UJ-UC-06 |
+| [`panneau-creation-rapide/panneau-creation-rapide.md`](sv-session/panneau-creation-rapide/panneau-creation-rapide.md) | Panneau de création rapide à la volée | Sur-couche sans navigation propre, invoquée depuis la vue session en mode LIVE et en mode consultation CLOSED (UC-07) | MJ | UC-07 ; UJ-UC-07 |
 
 ### Écrans transversaux (SV1)
 
-| Fiche | Écran | Rôle |
-|---|---|---|
-| [`accueil/accueil.md`](sv1-transversaux/accueil/accueil.md) | Accueil non authentifié | Point d'entrée — présente les deux chemins (sans compte / avec compte) |
-| [`inscription/inscription.md`](sv1-transversaux/inscription/inscription.md) | Inscription | Création de compte (email + nom d'affichage, ou fournisseur externe) |
-| [`connexion/connexion.md`](sv1-transversaux/connexion/connexion.md) | Connexion | Authentification (email/mot de passe ou fournisseur externe) |
-| [`profil/profil.md`](sv1-transversaux/profil/profil.md) | Profil utilisateur | Modification du nom d'affichage, du mot de passe ; affichage du niveau de compte |
-| [`suppression-compte-rgpd/suppression-compte-rgpd.md`](sv1-transversaux/suppression-compte-rgpd/suppression-compte-rgpd.md) | Suppression de compte (RGPD) | Confirmation de suppression avec présentation des conséquences ; bloquée si campagnes actives avec membres |
-| [`gate-migration/gate-migration.md`](sv1-transversaux/gate-migration/gate-migration.md) | Gate de migration local→cloud | Présentation des espaces locaux détectés ; confirmation explicite avant migration ; signale que la configuration de vue session devra être reconfigurée |
+| Fiche | Écran | Rôle | Surface | UC couverts |
+|---|---|---|---|---|
+| [`accueil/accueil.md`](sv1-transversaux/accueil/accueil.md) | Accueil non authentifié | Point d'entrée — présente les deux chemins (sans compte / avec compte) | Transversal | UC-01, UC-10 |
+| [`inscription/inscription.md`](sv1-transversaux/inscription/inscription.md) | Inscription | Création de compte (email + nom d'affichage, ou fournisseur externe) | Transversal | UC-10, UC-01 A1 |
+| [`connexion/connexion.md`](sv1-transversaux/connexion/connexion.md) | Connexion | Authentification (email/mot de passe ou fournisseur externe) | Transversal | UC-10 |
+| [`profil/profil.md`](sv1-transversaux/profil/profil.md) | Profil utilisateur | Modification du nom d'affichage, du mot de passe ; affichage du niveau de compte | Transversal | UC-10 A2 |
+| [`suppression-compte-rgpd/suppression-compte-rgpd.md`](sv1-transversaux/suppression-compte-rgpd/suppression-compte-rgpd.md) | Suppression de compte (RGPD) | Confirmation de suppression avec présentation des conséquences ; bloquée si campagnes actives avec membres | Transversal | UC-10 A4 |
+| [`gate-migration/gate-migration.md`](sv1-transversaux/gate-migration/gate-migration.md) | Gate de migration local→cloud | Présentation des espaces locaux détectés ; confirmation explicite avant migration ; signale que la configuration de vue session devra être reconfigurée | Transversal | UC-10, UC-01 A1 |
 
 ### Surface MJ — Entrée espace (SV2)
 
-| Fiche | Écran | Rôle |
-|---|---|---|
-| [`tableau-de-bord/tableau-de-bord.md`](sv2-entree-espace/tableau-de-bord/tableau-de-bord.md) | Tableau de bord des espaces de jeu | Liste de tous les espaces dont le MJ est propriétaire ou membre ; espace personnel hors quota, visuellement distinct ; repère visuel « session en cours » si une session LIVE existe |
-| [`creation-espace/creation-espace.md`](sv2-entree-espace/creation-espace/creation-espace.md) | Création d'un espace de jeu | Formulaire de création (nom obligatoire, description et système optionnels) pour les espaces partagés (`CAMPAIGN` ou `ONE_SHOT`) |
+| Fiche | Écran | Rôle | Surface | UC couverts |
+|---|---|---|---|---|
+| [`tableau-de-bord/tableau-de-bord.md`](sv2-entree-espace/tableau-de-bord/tableau-de-bord.md) | Tableau de bord des espaces de jeu | Liste de tous les espaces dont le MJ est propriétaire ou membre ; espace personnel hors quota, visuellement distinct ; repère visuel « session en cours » si une session LIVE existe | MJ | UC-02 postcondition ; parcours-05 étapes 2 et 6 |
+| [`creation-espace/creation-espace.md`](sv2-entree-espace/creation-espace/creation-espace.md) | Création d'un espace de jeu | Formulaire de création (nom obligatoire, description et système optionnels) pour les espaces partagés (`CAMPAIGN` ou `ONE_SHOT`) | MJ | UC-02 scénario nominal |
 
 ### Surface MJ — Préparation (SV3)
 
-| Fiche | Écran | Rôle |
-|---|---|---|
-| [`vue-campagne/vue-campagne.md`](sv3-preparation/vue-campagne/vue-campagne.md) | Vue campagne (espace de travail) | Hub de l'espace partagé — point d'entrée vers les dossiers, les documents, la vue session, les paramètres et l'invitation de joueurs |
-| [`navigation-dossiers/navigation-dossiers.md`](sv3-preparation/navigation-dossiers/navigation-dossiers.md) | Navigation par dossiers | Arborescence des dossiers de l'espace ; affichage des documents en vue condensée ; accès à la création d'un document dans le dossier courant |
-| [`recherche-preparation/recherche-preparation.md`](sv3-preparation/recherche-preparation/recherche-preparation.md) | Recherche en préparation | Barre de recherche globale dans le contenu de l'espace ; titre seul au MVP ; résultats regroupés par type |
-| [`editeur-document/editeur-document.md`](sv3-preparation/editeur-document/editeur-document.md) | Éditeur de document | Création et modification d'un document (titre, type optionnel, propriétés structurées, blocs libres, visibilité, liens) |
-| [`editeur-scenario/editeur-scenario.md`](sv3-preparation/editeur-scenario/editeur-scenario.md) | Éditeur de scénario | Cas spécialisé de l'éditeur pour les documents de type scénario — structure narrative (scènes liées, documents associés) |
-| [`parametres-campagne/parametres-campagne.md`](sv3-preparation/parametres-campagne/parametres-campagne.md) | Paramètres de campagne | Configuration de la vue session (dossiers mis en avant, ordre) ; génération du lien d'invitation ; archivage de l'espace |
+| Fiche | Écran | Rôle | Surface | UC couverts |
+|---|---|---|---|---|
+| [`vue-campagne/vue-campagne.md`](sv3-preparation/vue-campagne/vue-campagne.md) | Vue campagne (espace de travail) | Hub de l'espace partagé — point d'entrée vers les dossiers, les documents, la vue session, les paramètres et l'invitation de joueurs | MJ | UC-02, UC-03, UC-04, UC-05, UC-06, UC-08, UC-11 |
+| [`navigation-dossiers/navigation-dossiers.md`](sv3-preparation/navigation-dossiers/navigation-dossiers.md) | Navigation par dossiers | Arborescence des dossiers de l'espace ; affichage des documents en vue condensée ; accès à la création d'un document dans le dossier courant | MJ | UC-05 scénario nominal ; UJ-UC-05 |
+| [`recherche-preparation/recherche-preparation.md`](sv3-preparation/recherche-preparation/recherche-preparation.md) | Recherche en préparation | Barre de recherche globale dans le contenu de l'espace ; titre seul au MVP ; résultats regroupés par type | MJ | UC-14 ; US-UC-14 |
+| [`editeur-document/editeur-document.md`](sv3-preparation/editeur-document/editeur-document.md) | Éditeur de document | Création et modification d'un document (titre, type optionnel, propriétés structurées, blocs libres, visibilité, liens) | MJ | UC-04, UC-07 |
+| [`editeur-scenario/editeur-scenario.md`](sv3-preparation/editeur-scenario/editeur-scenario.md) | Éditeur de scénario | Cas spécialisé de l'éditeur pour les documents de type scénario — structure narrative (scènes liées, documents associés) | MJ | UC-03 |
+| [`parametres-campagne/parametres-campagne.md`](sv3-preparation/parametres-campagne/parametres-campagne.md) | Paramètres de campagne | Configuration de la vue session (dossiers mis en avant, ordre) ; génération du lien d'invitation ; archivage de l'espace | MJ | UC-06 Phase 2 (config view) ; UC-02 (archivage) ; UC-11 (lien) |
 
 ### Surface MJ — Préparation, déclinaison espace personnel (PERSONAL)
 
 Déclinaison PERSONAL de la surface Préparation (branchée au tableau de bord) — pas une surface-UC distincte (AR-01/14/15/16/17).
 
-| Fiche | Écran | Rôle |
-|---|---|---|
-| [`vue-espace-personnel/vue-espace-personnel.md`](sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md) | Vue de l'espace personnel | Hub de l'espace personnel — accès à la navigation dossiers, à l'éditeur et à la recherche ; sans vue session, sans partage, sans gestion de membres |
+| Fiche | Écran | Rôle | Surface | UC couverts |
+|---|---|---|---|---|
+| [`vue-espace-personnel/vue-espace-personnel.md`](sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md) | Vue de l'espace personnel | Hub de l'espace personnel — accès à la navigation dossiers, à l'éditeur et à la recherche ; sans vue session, sans partage, sans gestion de membres | MJ | UC-01, UC-04 |
+
+L'inventaire S4 du zonage n'a pas de ligne pour cet écran : sa surface et ses cas d'utilisation sont repris de l'en-tête de sa fiche.
 
 ### Surface joueur (SV5)
 
-| Fiche | Écran | Rôle |
-|---|---|---|
-| [`acces-lien-saisie-nom/acces-lien-saisie-nom.md`](sv5-joueur/acces-lien-saisie-nom/acces-lien-saisie-nom.md) | Accès par lien + saisie du nom d'affichage | Première page visible par le joueur à l'ouverture du lien ; demande uniquement un nom d'affichage ; information RGPD sur la durée de conservation |
-| [`vue-joueur-base/vue-joueur-base.md`](sv5-joueur/vue-joueur-base/vue-joueur-base.md) | Vue joueur post-accès | Consultation des documents partagés par le MJ ; prise de notes personnelles pendant une session LIVE |
-| [`erreur-acces/erreur-acces.md`](sv5-joueur/erreur-acces/erreur-acces.md) | Page d'erreur d'accès | Message sobre en cas de lien expiré, révoqué ou invalide ; ne révèle pas l'existence de la campagne |
+| Fiche | Écran | Rôle | Surface | UC couverts |
+|---|---|---|---|---|
+| [`acces-lien-saisie-nom/acces-lien-saisie-nom.md`](sv5-joueur/acces-lien-saisie-nom/acces-lien-saisie-nom.md) | Accès par lien + saisie du nom d'affichage | Première page visible par le joueur à l'ouverture du lien ; demande uniquement un nom d'affichage ; information RGPD sur la durée de conservation | Joueur | UC-09 scénario A ; RB-09-20 |
+| [`vue-joueur-base/vue-joueur-base.md`](sv5-joueur/vue-joueur-base/vue-joueur-base.md) | Vue joueur post-accès | Consultation des documents partagés par le MJ ; prise de notes personnelles pendant une session LIVE | Joueur | UC-12, UC-06 §vue joueur ; US-06-07, US-06-08 |
+| [`erreur-acces/erreur-acces.md`](sv5-joueur/erreur-acces/erreur-acces.md) | Page d'erreur d'accès | Message sobre en cas de lien expiré, révoqué ou invalide ; ne révèle pas l'existence de la campagne | Joueur | UC-09 A3, E1, E2 |
 
 ---
 

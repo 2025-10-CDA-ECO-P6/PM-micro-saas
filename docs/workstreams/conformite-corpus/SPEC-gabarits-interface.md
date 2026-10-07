@@ -65,9 +65,34 @@ Le diff contre le gabarit : forme seulement, aucune perte de fond ?
 
 ## Notes de dev
 
-
+- Trois lots parallèles : le zonage, les conventions et le raisonnement UX ; les fiches d'écran 1 à 10 ; les fiches 11 à 20, avec le README des écrans et `gabarit-ecran.md`. Les 16 écarts du contrôle `template` sont corrigés, et le contrôle sort à 0 sur une racine minimale de la couche.
+- Le module `screen-sheets` n'a pas de lecteur dans le contrôle. Les 20 fiches ont donc été comparées à la recette à la main : titre « Fiche d'écran — X », bandeau à quatre labels, en-tête de fiche en six puces, titres conditionnels exacts, avec leur déclenchement en première ligne. VerifMailleAgregat indexe toujours 20 fiches.
+- `conform-verify-complet.sh dca4540 --declared docs/workstreams/conformite-corpus/declares-gabarits-interface.txt` : code 0. Les lignes déclarées sont des titres, des bandeaux, des en-têtes de fiche, des en-têtes de colonnes, plus la ligne de `reference.md` qui reçoit le hash de la tâche 8.
+- Décisions de l'orchestrateur, prises par délégation de l'opérateur :
+  - **Repères S1 à S10 du zonage.** La recette numérote les titres de 1 à 10, et le contrôle n'accepte que la forme « 6. Titre ». Une phrase du préambule pose que le repère S*n* désigne la section *n*. **Justification** : le numéro ne change pas, donc aucun identifiant n'est renuméroté (ADR-019). Les quelque 400 citations « §S6 » restent justes, sans réécriture de masse risquée (S1 à S9 désignent aussi les domaines du dossier de sécurité). C'est la finalité de la numérotation selon la recette, qui veut une référence stable. Même règle pour C1 à C3 dans les conventions ;
+  - **« Mode local »** est gardée telle quelle dans 11 fiches. **Justification** : `gabarit-ecran.md` la déclare comme section conditionnelle distincte (châssis sans compte), qui n'est pas un mode de l'écran. La ranger sous « Modes » changerait le fond. C'est un manque de la recette ;
+  - **README des écrans** : les colonnes Surface et UC couverts sont copiées de l'inventaire S4. Pour l'espace personnel, absent de S4, elles sont reprises de l'en-tête de la fiche, et la provenance est notée.
+- Restes, différés :
+  - les anciens noms de fichiers cités en prose (`zoning.md`, `conventions-wireframe.md`, `reflexion-ux-mvp.md`, une centaine d'occurrences sur plusieurs couches) ;
+  - les surfaces SV1 à SV5 sont déclarées dans le README des écrans, et non dans le zonage comme le veut la recette ;
+  - trois marqueurs hors liste dans le zonage ;
+  - des titres de niveau 3 de `raisonnement-ux.md` portent un compte ;
+  - le H1 de `vue-joueur-base` diffère de son champ Nom ;
+  - UC-03 est dans S4 mais pas dans la traçabilité de `vue-campagne`.
 
 ## Notes de revue
 
+Revue « forme seulement, aucune perte de fond ? », 2026-10-07 : neuf constats, plus deux hors lentille.
+
+- `fix` : la phrase des repères S était rangée sous « Principe directeur » ; elle passe dans l'introduction du préambule.
+- `fix` : la provenance des valeurs de l'espace personnel dans le README des écrans est notée.
+- `fix` : « Partage/visibilité » restait en prose dans `vue-joueur-base`.
+- `fix` : le modèle de `gabarit-ecran.md` figeait « Arbitrages figés : §S6 » ; la ligne devient un emplacement à remplir.
+- Gardés, car la recette impose ces libellés et cet ordre : l'en-tête « UC couverts » (`col.screen-sheets.covers`) ; Résolutions placées après la dernière réflexion ; « Question | Portée par » ; « 1. Statut » ; les qualificatifs perdus avec les titres renommés (décision 14).
+- `deferred` :
+  - `docs/projet/decisions-en-attente.md:146` cite le titre exact « S10 — Points ouverts sur le modèle de navigation (graphe S3) ». Le repère reste joignable, le libellé ne l'est plus, et le fichier est hors périmètre ;
+  - les entrées 0018 et 0065 citent « Partage / visibilité », ce qui revient à la tâche `backlog-interface`.
+
+Répartition : 4 `fix`, 5 gardés, 2 `deferred`.
 
 

@@ -1,22 +1,20 @@
-# Création d'un espace de jeu
+# Fiche d'écran — Création d'un espace de jeu
 
-> Fiche de description d'écran basse-fidélité — entrée espace MJ.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité — entrée espace MJ.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Création d'un espace de jeu
-Surface      : MJ
-Contexte     : transversal
-Type d'espace: CAMPAIGN | ONE_SHOT (l'espace personnel préexiste — non créé via ce parcours)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-02 scénario nominal ; UC-02 §Postconditions ; UC-02 §Règles métier
-```
+- **Nom** : Création d'un espace de jeu
+- **Surface** : MJ
+- **Contexte** : transversal
+- **Type d'espace** : CAMPAIGN | ONE_SHOT (l'espace personnel préexiste — non créé via ce parcours)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-02 scénario nominal ; UC-02 §Postconditions ; UC-02 §Règles métier
 
 ---
 
@@ -150,7 +148,9 @@ Fonctions cloud désactivées sur cet écran :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8.
 
 ```
 Éléments différés (S8) :

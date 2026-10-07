@@ -1,22 +1,20 @@
-# Éditeur de document
+# Fiche d'écran — Éditeur de document
 
-> Fiche de description d'écran basse-fidélité — préparation espace partagé.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité — préparation espace partagé.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Éditeur de document
-Surface      : MJ
-Contexte     : préparation
-Type d'espace: CAMPAIGN | ONE_SHOT | PERSONAL
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-04, UC-07 ; AR-11 ; AR-19
-```
+- **Nom** : Éditeur de document
+- **Surface** : MJ
+- **Contexte** : préparation
+- **Type d'espace** : CAMPAIGN | ONE_SHOT | PERSONAL
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-04, UC-07 ; AR-11 ; AR-19
 
 ---
 
@@ -252,7 +250,9 @@ Fonctions cloud désactivées sur l'éditeur de document en mode local :
 
 ---
 
-### Hors-périmètre / différé / sous-spécifié (déclenché — éléments S8 et S9)
+### Hors périmètre, différé, sous-spécifié
+
+Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :

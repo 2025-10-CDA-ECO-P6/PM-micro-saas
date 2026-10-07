@@ -1,13 +1,14 @@
-# Conventions de description basse-fidélité — Haversack MVP
+# Conventions d'interface
 
 > Couche réflexive de la sous-couche interface.
 > Ce fichier définit les conventions de notation et de nommage utilisées dans toutes les fiches de description d'écran (wireframes basse-fidélité).
 > Il ne contient pas de contenu d'écran et ne dicte pas le besoin — il documente la forme que prend la description de ce besoin.
 > Source d'autorité pour la cohérence inter-fiches : toute fiche de description d'écran suit ces conventions sans les redéfinir.
+> Les sections de ce document se citent par leur repère C1 à C3, qui est leur ordre : C2 désigne la section Les deux registres de nommage.
 
 ---
 
-## C1 — Discipline et test d'autoportance
+## Discipline et test d'autoportance
 
 ### Rôle de ce fichier
 
@@ -31,7 +32,7 @@ Ce test s'applique à chaque section de chaque fiche d'écran, avant toute inté
 
 ---
 
-## C2 — Les deux registres de nommage (garde-fou central)
+## Les deux registres de nommage
 
 Les descriptions d'écran mobilisent deux registres de nommage distincts. Les confondre, les mélanger ou en créer un troisième est interdit.
 
@@ -41,42 +42,11 @@ Un terme de domaine ne se renomme jamais en surface hors de l'arbitrage AR-05. U
 
 ---
 
-### Registre 1 — Termes de domaine
-
-**Autorité : glossaire** (`docs/glossaire.md`). Ces termes sont figés ; leur forme et leur sémantique sont celles du glossaire.
-
-| Terme de surface | Identifiant de domaine | Remarque |
-|---|---|---|
-| campagne | `CAMPAIGN` | Label de surface pour un espace de type CAMPAIGN — AR-05 |
-| espace personnel | `PERSONAL` / `SpaceType.PERSONAL` | Nommé « Espace personnel » en surface — AR-05 |
-| « espace de jeu » | terme de conception | N'apparaît jamais en surface — AR-05 |
-| document | `Document` | Unité fondamentale de contenu |
-| dossier | `Folder` | Conteneur organisationnel |
-| « Non classés » | dossier virtuel (`isVirtual = true`) | Dossier de repli, non supprimable |
-| note de session | `LIVE_NOTE` | Document de type LIVE_NOTE |
-| scénario | `Document` de type `SCENARIO` | Cas spécialisé de document |
-| visible par les joueurs | `PUBLIC` | Niveau de visibilité — cartographie dans glossaire §LIVE_NOTE |
-| privé MJ | `GM_ONLY` | Niveau de visibilité — idem |
-| note de session personnelle joueur | `PLAYER_PRIVATE` | Niveau de visibilité — idem |
-| session | `Session` | Séance de jeu |
-| en cours | `LIVE` | Statut de session |
-| terminée | `CLOSED` | Statut de session |
-| archivée | `ARCHIVED` | Statut de session, lecture seule |
-| MJ | `OWNER` ou `GM` | Maître du Jeu — rôle dans un espace partagé |
-| joueur | `PLAYER` / `GuestAccess` | Membre joueur — authentifié ou invité |
-| membre | `SpaceMembership` actif | Voir glossaire §Membre |
-| invité | `GuestAccess` | Joueur sans compte |
-| épinglé | `pinnedDocumentIds` | Document dans le panneau des épinglés |
-| partagé | `visibility = PUBLIC` | Document rendu visible par les joueurs |
-| quota FREE | `AccountTier.FREE` — 3 espaces partagés | Voir AR-17 ; l'espace personnel est hors quota |
-
----
-
 ### Registre 2 — Termes de région d'interface
 
 **Autorité : ce fichier.** Ces termes désignent des zones et éléments de l'interface ; ils sont stables inter-fiches et n'entrent pas au glossaire.
 
-| Terme de région | Description sommaire |
+| Terme de région | Sens |
 |---|---|
 | tableau de bord | Surface listant tous les espaces dont l'utilisateur est propriétaire ou membre |
 | vue campagne / espace de travail | Hub d'un espace partagé — point d'entrée vers les dossiers, les documents, la vue session |
@@ -113,9 +83,53 @@ Un terme de domaine ne se renomme jamais en surface hors de l'arbitrage AR-05. U
 
 ---
 
-## C3 — Légende de notation basse-fidélité
+### Registre 1 — Termes de domaine
+
+**Autorité : glossaire** (`docs/glossaire.md`). Ces termes sont figés ; leur forme et leur sémantique sont celles du glossaire.
+
+| Terme de surface | Identifiant de domaine | Remarque |
+|---|---|---|
+| campagne | `CAMPAIGN` | Label de surface pour un espace de type CAMPAIGN — AR-05 |
+| espace personnel | `PERSONAL` / `SpaceType.PERSONAL` | Nommé « Espace personnel » en surface — AR-05 |
+| « espace de jeu » | terme de conception | N'apparaît jamais en surface — AR-05 |
+| document | `Document` | Unité fondamentale de contenu |
+| dossier | `Folder` | Conteneur organisationnel |
+| « Non classés » | dossier virtuel (`isVirtual = true`) | Dossier de repli, non supprimable |
+| note de session | `LIVE_NOTE` | Document de type LIVE_NOTE |
+| scénario | `Document` de type `SCENARIO` | Cas spécialisé de document |
+| visible par les joueurs | `PUBLIC` | Niveau de visibilité — cartographie dans glossaire §LIVE_NOTE |
+| privé MJ | `GM_ONLY` | Niveau de visibilité — idem |
+| note de session personnelle joueur | `PLAYER_PRIVATE` | Niveau de visibilité — idem |
+| session | `Session` | Séance de jeu |
+| en cours | `LIVE` | Statut de session |
+| terminée | `CLOSED` | Statut de session |
+| archivée | `ARCHIVED` | Statut de session, lecture seule |
+| MJ | `OWNER` ou `GM` | Maître du Jeu — rôle dans un espace partagé |
+| joueur | `PLAYER` / `GuestAccess` | Membre joueur — authentifié ou invité |
+| membre | `SpaceMembership` actif | Voir glossaire §Membre |
+| invité | `GuestAccess` | Joueur sans compte |
+| épinglé | `pinnedDocumentIds` | Document dans le panneau des épinglés |
+| partagé | `visibility = PUBLIC` | Document rendu visible par les joueurs |
+| quota FREE | `AccountTier.FREE` — 3 espaces partagés | Voir AR-17 ; l'espace personnel est hors quota |
+
+---
+
+## Légende de notation
 
 Cette légende couvre les familles de marqueurs utilisées dans les fiches d'écran. Chaque marqueur est exprimé en notation textuelle, sans référence à un outil graphique.
+
+| Famille | Syntaxe | Sens |
+|---|---|---|
+| Zone | `[ NOM DE ZONE ]` | Délimite une région fonctionnelle de l'écran. |
+| Priorité | `priorité :` | Indique la hiérarchie de présence sur l'écran. |
+| État / mode | `état/mode :` | Décrit les modes ou états successifs de l'écran ou d'un élément. |
+| Visibilité | `visibilité :` | Décrit qui peut voir une zone ou un élément, en termes de besoin et de domaine. |
+| Affordance | `affordance :` | Décrit ce que l'utilisateur peut faire depuis la zone — en verbe de besoin, jamais en nom de widget. |
+| Différé / hors-MVP | `[HORS-MVP — <source S8>]` | Signale un élément présent dans le corpus mais explicitement hors périmètre wireframe MVP (S8). |
+| Absent par nature vs désactivé / grisé | `[ABSENT PAR NATURE]` ; `[DÉSACTIVÉ]` | Absent par nature : la fonction n'existe pas pour ce type d'espace ou ce contexte. Désactivé : la fonction existe mais n'est pas accessible dans l'état courant. |
+| Sous-spécifié | `[SOUS-SPÉCIFIÉ — <source S9>]` | Signale un élément dont la conception n'est pas encore tranchée dans le corpus (S9). |
+| Accessibilité | `accessibilité (delta) :` | Décrit les points d'accessibilité spécifiques à cet écran. |
+| Ancrage besoin | `ancrage :` | Trace la source de besoin d'une zone, d'une affordance ou d'un état. |
 
 ### Famille 1 — Zone
 

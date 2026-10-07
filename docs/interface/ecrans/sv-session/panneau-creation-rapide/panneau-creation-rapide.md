@@ -1,23 +1,20 @@
-# Panneau de création rapide à la volée
+# Fiche d'écran — Panneau de création rapide à la volée
 
-> Fiche de description d'écran basse-fidélité.
-> Sur-couche de la vue session MJ, invoquée sans quitter la surface.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md`.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S4 §S6`.
+> **Nature** : Fiche de description d'écran basse-fidélité. Sur-couche de la vue session MJ, invoquée sans quitter la surface.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S4 §S6`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Panneau de création rapide à la volée
-Surface      : MJ
-Contexte     : session
-Type d'espace: CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — pas de vue session, AR-01 ; AR-14)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
-Traçabilité  : UC-07 ; S4 §Vue session MJ
-```
+- **Nom** : Panneau de création rapide à la volée
+- **Surface** : MJ
+- **Contexte** : session
+- **Type d'espace** : CAMPAIGN | ONE_SHOT (PERSONAL : absent par nature — pas de vue session, AR-01 ; AR-14)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté au MVP — AR-07)
+- **Traçabilité** : UC-07 ; S4 §Vue session MJ
 
 ---
 

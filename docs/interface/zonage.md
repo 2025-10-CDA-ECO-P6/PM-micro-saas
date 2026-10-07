@@ -1,4 +1,4 @@
-# Zoning d'interface — MVP Haversack
+# Zonage de l'interface
 
 > Document de conception d'interface du MVP Haversack.
 > Couche réflexive : porte la cohérence d'ensemble avant la production des wireframes.
@@ -9,9 +9,11 @@
 
 ---
 
-## S1 — Préambule
+## 1. Préambule
 
 Ce document décrit le zoning d'interface du MVP Haversack. Il constitue la couche réflexive de la conception : son rôle est de porter la cohérence d'ensemble avant que les wireframes ne soient produits, écran par écran. Il ne contient pas de wireframes, pas de gabarits, pas de légendes visuelles.
+
+Les sections de ce document se citent par leur repère S1 à S10, qui est leur numéro : S6 désigne la section 6, Arbitrages tracés.
 
 ### Périmètre
 
@@ -35,7 +37,7 @@ Décliné dans le châssis applicatif — S7.
 
 ---
 
-## S2 — Colonne vertébrale et déterminants sourcés
+## 2. Colonne vertébrale et déterminants
 
 ### Ossature de navigation
 
@@ -79,7 +81,7 @@ La **séparation de la surface joueur est un déterminant de premier ordre** —
 
 ---
 
-## S3 — Modèle de navigation
+## 3. Modèle de navigation
 
 Le graphe ci-dessous couvre l'ensemble des surfaces et transitions du MVP, y compris le châssis de gestion de compte. Les transitions d'état de la vue session (configuration → LIVE → consultation CLOSED) et la séparation de la surface joueur sont représentées explicitement.
 
@@ -189,7 +191,7 @@ flowchart TD
 
 ---
 
-## S4 — Inventaire des écrans MVP
+## 4. Inventaire des écrans
 
 ### Écrans transversaux (hors espace)
 
@@ -259,9 +261,9 @@ flowchart TD
 
 ---
 
-## S5 — Table de couverture UC → écran(s)
+## 5. Couverture des cas d'utilisation
 
-| Use Case | Écran(s) porteur(s) |
+| Cas d'utilisation | Écran(s) |
 |---|---|
 | **UC-01** — Mode local sans compte | Accueil non authentifié ; Inscription (invite contextuelle A1) ; châssis mode local (bandeaux transversaux) ; espace personnel (capture immédiate, hors quota FREE — RB-01-01/RB-02-10) |
 | **UC-02** — Créer un espace de jeu | Tableau de bord des espaces de jeu ; Création d'un espace de jeu (espaces partagés uniquement — l'espace personnel préexiste, non créé via ce parcours) |
@@ -282,7 +284,7 @@ flowchart TD
 
 ---
 
-## S6 — Arbitrages tracés
+## 6. Arbitrages tracés
 
 ### AR-01 — Ossature de navigation — arbitrage du 2026-06-12 (révisé 2026-06-18)
 
@@ -567,7 +569,7 @@ Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans 
 
 ---
 
-## S7 — Châssis applicatif
+## 7. Châssis applicatif
 
 Le châssis applicatif est la structure persistante de l'application — pas un écran. C'est le cadre dans lequel tous les écrans (transversaux, MJ, joueur) s'affichent sans rupture de navigation (principe directeur — S1). Il porte le chrome transversal présent au-dessus du contenu.
 
@@ -650,7 +652,7 @@ Cette règle garantit qu'un MJ en flux capture-first (AR-15) — qui n'est pas p
 
 ---
 
-## S8 — Exclusions nommées
+## 8. Exclusions nommées
 
 Les éléments ci-dessous sont **hors périmètre wireframe MVP**. Chacun est listé avec sa source.
 
@@ -678,7 +680,7 @@ Les éléments ci-dessous sont **hors périmètre wireframe MVP**. Chacun est li
 
 ---
 
-## S9 — Trous de corpus / points d'interview
+## 9. Trous de corpus et points d'interview
 
 Les éléments suivants relèvent d'un entretien utilisateur ou d'un complément du corpus, et **non de décisions de zoning**. Ils sont listés ici pour mémoire.
 
@@ -700,7 +702,7 @@ Les éléments suivants relèvent d'un entretien utilisateur ou d'un complément
 
 ---
 
-## S10 — Points ouverts sur le modèle de navigation (graphe S3)
+## 10. Points ouverts
 
 Les points suivants sont des arbitrages sur le graphe de navigation lui-même (§S3) — distincts des trous de corpus et points d'interview de S9. Ils ne portent pas sur le besoin mais sur la fidélité du modèle `NODES`/`EDGES` à ce que S4 et S6 décrivent déjà par ailleurs. Aucun n'est tranché ici ; chacun reste `[À TRANCHER — graphe S3]`.
 

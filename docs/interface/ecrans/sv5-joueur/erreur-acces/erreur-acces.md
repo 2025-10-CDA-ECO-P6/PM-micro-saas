@@ -1,24 +1,22 @@
-# Page d'erreur d'accès
+# Fiche d'écran — Page d'erreur d'accès
 
-> Fiche de description d'écran basse-fidélité — surface joueur.
-> Instancie le gabarit `docs/interface/gabarit-ecran.md` sur la page d'erreur d'accès.
-> Notation et nommage : `docs/interface/conventions.md`.
-> Arbitrages figés : `docs/interface/zonage.md §S6 AR-03`.
+> **Nature** : Fiche de description d'écran basse-fidélité — surface joueur.
+> **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md` sur la page d'erreur d'accès.
+> **Notation et nommage** : `docs/interface/conventions.md`.
+> **Arbitrages figés** : `docs/interface/zonage.md §S6 AR-03`.
 
 ---
 
 ## En-tête de fiche
 
-```
-Nom          : Page d'erreur d'accès
-Surface      : joueur
-Contexte     : transversal
-Type d'espace: n.a. (l'écran est indépendant du type d'espace — aucune information
-               sur l'espace n'est révélée)
-Forme cible  : grand écran + tablette (mobile : pensé dans la structure, non implémenté
-               au MVP — AR-07)
-Traçabilité  : UC-09 A3 ; UC-09 E1 ; UC-09 E2
-```
+- **Nom** : Page d'erreur d'accès
+- **Surface** : joueur
+- **Contexte** : transversal
+- **Type d'espace** : n.a. (l'écran est indépendant du type d'espace — aucune information
+  sur l'espace n'est révélée)
+- **Forme cible** : grand écran + tablette (mobile : pensé dans la structure, non implémenté
+  au MVP — AR-07)
+- **Traçabilité** : UC-09 A3 ; UC-09 E1 ; UC-09 E2
 
 ---
 
@@ -112,7 +110,9 @@ Sources : UC-09 A3 ; UC-09 E1 ; UC-09 E2 ;
 
 ## Sections conditionnelles
 
-### Partage / visibilité (déclenché — AR-03 : cet écran est sur la surface joueur et ne révèle rien de la campagne)
+### Partage et visibilité
+
+Déclenché — AR-03 : cet écran est sur la surface joueur et ne révèle rien de la campagne.
 
 ```
 Règle de séparation : cet écran ne révèle pas l'existence de la campagne, ni la
