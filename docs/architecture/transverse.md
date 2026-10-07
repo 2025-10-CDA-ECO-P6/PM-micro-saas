@@ -2,7 +2,7 @@
 
 > **Nature** : Consolidation : elle ne tranche rien. Elle rassemble les préoccupations transverses et renvoie, pour chaque affirmation, au document qui la fixe.
 
-> Ce document est la **vue par préoccupation technique transverse**, complémentaire de la carte structurelle du système : il regroupe les décisions d'architecture déjà actées, organisées par axe technique (persistance, sécurité, RGPD, temps réel, mode local) plutôt que par ordre chronologique ou par ordre de lecture. Il **consolide et renvoie** — la source de vérité de chaque décision reste l'ADR ou le fichier de fondations cité en regard de chaque affirmation. Pour la carte structurelle du système (vues C4, choix de structure), voir le [Dossier d'Architecture Technique](../reference/dossier-architecture.md).
+> Ce document est la **vue par préoccupation technique transverse**, complémentaire de la carte structurelle du système : il regroupe les décisions d'architecture déjà actées, organisées par axe technique (persistance, sécurité, RGPD, temps réel, mode local) plutôt que par ordre chronologique ou par ordre de lecture. Il **consolide et renvoie** — la source de vérité de chaque décision reste l'ADR ou le fichier de fondations cité en regard de chaque affirmation. Pour la carte structurelle du système (vues C4, choix de structure), voir le [Dossier d'architecture](../reference/dossier-architecture.md).
 >
 > Ce document n'est **ni une nouvelle décision d'architecture, ni la conception détaillée en avant du build** : il ne tranche rien qui ne soit déjà tranché ailleurs, et il ne prépare pas de travail d'implémentation — cela reste un travail dédié différé, propre à l'entrée en build. Pour l'historique et le statut de chaque décision, voir le [registre ADR](../decisions/README.md) ; pour une découverte dans l'ordre pédagogique, voir l'[index d'architecture](README.md).
 
@@ -10,7 +10,7 @@
 
 ## 1 — Fondations & découpage
 
-La structure du système (Clean Architecture, découpage en bounded contexts DDD, architecture applicative front) est cartographiée par le [Dossier d'Architecture Technique](../reference/dossier-architecture.md) — voir [§1 Choix structurants](../reference/dossier-architecture.md) pour l'argumentaire de structure et [§4 Vue composants](../reference/dossier-architecture.md) pour la vue par bounded context. Les sections qui suivent s'appuient sur deux concepts de domaine que la carte structurelle nomme sans les développer ici : le pattern « tout est Document » ([ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md)) et la racine applicative généralisée `Space` ([ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md)).
+La structure du système (Clean Architecture, découpage en bounded contexts DDD, architecture applicative front) est cartographiée par le [Dossier d'architecture](../reference/dossier-architecture.md) — voir [§2 Choix et justification](../reference/dossier-architecture.md) pour l'argumentaire de structure et [§5 Composants](../reference/dossier-architecture.md) pour la vue par bounded context. Les sections qui suivent s'appuient sur deux concepts de domaine que la carte structurelle nomme sans les développer ici : le pattern « tout est Document » ([ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md)) et la racine applicative généralisée `Space` ([ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md)).
 
 ---
 

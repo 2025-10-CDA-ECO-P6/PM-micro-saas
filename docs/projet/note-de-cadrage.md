@@ -1,8 +1,8 @@
-# Note de cadrage — Projet Haversack
+# Note de cadrage du projet
 
 | Champ | Valeur |
 |---|---|
-| **Objet du document** | Note de cadrage / charte de projet — document de gouvernance de tête, consolidant sans réinvention le corpus de conception, de planification et de business existant |
+| **Objet** | Note de cadrage / charte de projet — document de gouvernance de tête, consolidant sans réinvention le corpus de conception, de planification et de business existant |
 | **Version** | 1.0 |
 | **Date** | 2026-07-16 |
 | **Porteur** | Pierre-Marie Marchio |
@@ -15,12 +15,12 @@ Ce document ne tranche aucune décision nouvelle et n'introduit aucune donnée n
 
 ## Sommaire
 
-1. [Raison d'être & résumé exécutif](#1-raison-dêtre--résumé-exécutif)
-2. [Objectifs & enjeux](#2-objectifs--enjeux)
+1. [Raison d'être et résumé exécutif](#1-raison-dêtre-et-résumé-exécutif)
+2. [Objectifs et enjeux](#2-objectifs-et-enjeux)
 3. [Périmètre](#3-périmètre)
-4. [Parties prenantes & rôles](#4-parties-prenantes--rôles)
+4. [Parties prenantes et rôles](#4-parties-prenantes-et-rôles)
 5. [Jalons](#5-jalons)
-6. [Organisation & gouvernance](#6-organisation--gouvernance)
+6. [Organisation et gouvernance](#6-organisation-et-gouvernance)
 7. [Hypothèses de validation](#7-hypothèses-de-validation)
 8. [Critères de succès](#8-critères-de-succès)
 9. [Points de décision go/no-go](#9-points-de-décision-gono-go)
@@ -29,7 +29,7 @@ Ce document ne tranche aucune décision nouvelle et n'introduit aucune donnée n
 
 ---
 
-## 1. Raison d'être & résumé exécutif
+## 1. Raison d'être et résumé exécutif
 
 Un Maître du Jeu (MJ) actif gère un volume d'information important — scénarios, historique de session, personnages non-joueurs, notes secrètes, informations partagées aux joueurs, lore — aujourd'hui dispersé sur des supports hétérogènes non conçus pour cet usage : fichiers texte, outils génériques (Notion, Obsidian), Discord, papier, PDF, tables virtuelles (Roll20, Foundry). Cette fragmentation a un coût direct en session : temps perdu à rechercher une information, rythme de jeu interrompu, charge mentale de préparation élevée.
 
@@ -37,7 +37,7 @@ Haversack se positionne sur un créneau non couvert par l'offre existante : un o
 
 Le produit se distingue par cinq éléments : une friction d'entrée nulle (aucun compte requis pour commencer) ; une vue de session dédiée au pilotage temps réel pendant la partie ; un agnosticisme total au système de jeu pratiqué ; un partage contrôlé, document par document, préservant les notes de préparation privées ; et un accès joueur sans compte. À ces éléments s'ajoute une possession effective des données par l'utilisateur — la capacité d'exporter l'intégralité d'un espace dans un format ouvert, en mode local comme avec un compte.
 
-## 2. Objectifs & enjeux
+## 2. Objectifs et enjeux
 
 **Objectif principal du MVP.** Permettre à un MJ de préparer une campagne, de structurer ses scénarios, de centraliser ses notes et d'accéder rapidement aux informations importantes en session — sans friction d'onboarding et sans compte obligatoire pour commencer.
 
@@ -70,7 +70,7 @@ Le périmètre du MVP est livré **en un seul bloc** : la brique cloud (compte, 
 
 Le détail complet des arbitrages de périmètre — critères de sortie, risques, dépendances par use case — fait foi dans `docs/besoin/vision/perimetre/matrice-de-priorites.md`. Cette section n'en constitue qu'une synthèse.
 
-## 4. Parties prenantes & rôles
+## 4. Parties prenantes et rôles
 
 | Partie prenante | Rôle |
 |---|---|
@@ -120,7 +120,7 @@ Le corpus portait une incohérence apparente : le symbole « J1 » avait deux r�
 
 Le corpus qualifie explicitement ce phasage d'**indicatif et non figé** : ni l'axe technique ni la trajectoire de valeur ne portent de date calendaire ferme. Le calendrier d'exécution est renvoyé à la [section 10](#10-éléments-à-compléter).
 
-## 6. Organisation & gouvernance
+## 6. Organisation et gouvernance
 
 **Instances de décision.** Deux points de décision go/no-go structurent la gouvernance de la trajectoire (détail en [section 9](#9-points-de-décision-gono-go)) : la DÉCISION MARCHÉ (décision produit sur la télémétrie du jalon J1) et la VALIDATION JURIDIQUE EU (avis d'un juriste sur cinq axes RGPD).
 
@@ -154,7 +154,7 @@ Le MVP doit démontrer cinq hypothèses (H1 à H5) auprès d'une cohorte pilote 
 | **H4** | L'accès joueur sans compte n'est pas un frein à l'adoption du groupe entier. | ≥ 70 % des sessions partagées comptent au moins un joueur ayant consulté le contenu ; moins de 2 joueurs sur 10 interrogés rapportent avoir renoncé. | 60 jours |
 | **H5** | La conversion du mode local vers un compte cloud se produit naturellement. | ≥ 10 % des MJ actifs en local créent un compte, le déclencheur constaté étant une intention de partage ou de sauvegarde. | 90 jours |
 
-Seuils et délais indiqués au 2026-07-02 ; valeurs volatiles, ajustables avant le lancement de l'observation, jamais pendant. Point de référence unique et daté : cahier des charges §12.4.
+Seuils et délais indiqués au 2026-07-02 ; valeurs volatiles, ajustables avant le lancement de l'observation, jamais pendant. Point de référence unique et daté : cahier des charges annexe « Valeurs de référence chiffrées ».
 
 ## 8. Critères de succès
 

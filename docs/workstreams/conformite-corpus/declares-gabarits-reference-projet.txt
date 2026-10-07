@@ -1,0 +1,255 @@
+# Glossaire — Langage ubiquitaire Haversack
+> Nature : outil de nommage dérivé — **autorité de forme**, pas d'autorité de fond.
+## 1. Termes transverses (Core / Shared Kernel)
+## 2. Identity & Access
+## 3. Space Management
+## 4. Content Library
+## 5. Session Conduct
+## 6. Termes écartés
+| Terme écarté | Terme retenu | Raison / source |
+## 7. Conventions transverses
+# Cahier des charges — Haversack (MVP)
+## Métadonnées
+| Porteur / responsable du document | Pierre-Marie Marchio |
+| Validation / approbation | Pierre-Marie Marchio — validé en conception ; volet architecture technique ([§7](#7-contraintes-techniques-rgpd--sécurité)) à re-confirmer à l'entrée en build |
+- [1. Présentation & contexte](#1-présentation--contexte)
+- [2. Objectifs, enjeux & hypothèses](#2-objectifs-enjeux--hypothèses)
+- [3. Périmètre (MoSCoW)](#3-périmètre-moscow)
+- [4. Acteurs & besoins](#4-acteurs--besoins)
+- [6. Exigences non-fonctionnelles](#6-exigences-non-fonctionnelles)
+- [7. Contraintes techniques, RGPD & sécurité](#7-contraintes-techniques-rgpd--sécurité)
+- [8. Modèle de données & domaine](#8-modèle-de-données--domaine)
+- [11. Phasage & jalons](#11-phasage--jalons)
+  - [12.1 Points à arbitrer et questions ouvertes](#121-points-à-arbitrer-et-questions-ouvertes)
+  - [12.2 Matrice de traçabilité](#122-matrice-de-traçabilité)
+  - [12.3 Index des décisions d'architecture (ADR)](#123-index-des-décisions-darchitecture-adr)
+  - [12.4 Valeurs de référence chiffrées](#124-valeurs-de-référence-chiffrées)
+## 1. Présentation & contexte
+## 2. Objectifs, enjeux & hypothèses
+Les seuils et délais des cinq hypothèses sont consolidés, avec leur date de validité, en [§12.4](#124-valeurs-de-référence-chiffrées).
+Les quotas des trois paliers et le tarif du palier Pro sont consolidés, avec leur date de validité, en [§12.4](#124-valeurs-de-référence-chiffrées).
+## 3. Périmètre (MoSCoW)
+## 4. Acteurs & besoins
+- L'épinglage n'affecte pas le document source dans la bibliothèque de contenu ; un document durable créé à la volée ou partagé est épinglé automatiquement, en session LIVE seulement ; une note de session n'est jamais épinglée (RB-06-15, RB-06-17) *(l'automaticité de l'épinglage d'un document créé à la volée reste à réconcilier — voir [§12.1](#121-points-à-arbitrer-et-questions-ouvertes))*.
+- Si le document est utile en séance, il est automatiquement ajouté aux documents épinglés *(formulation à réconcilier avec le modèle de domaine — voir [§12.1](#121-points-à-arbitrer-et-questions-ouvertes))*.
+## 6. Exigences non-fonctionnelles
+## 7. Contraintes techniques, RGPD & sécurité
+Le palier local persiste les données exclusivement dans le navigateur de l'appareil utilisé par le MJ, sans limite de volume propre au produit au-delà de celle de l'appareil lui-même. Les paliers gratuit et Pro disposent chacun d'un quota de stockage propre, le palier Pro offrant un volume sensiblement supérieur à celui du palier gratuit et sans limite du nombre d'espaces actifs ; l'espace personnel n'est, dans les deux cas, jamais décompté du quota du palier gratuit. Les valeurs chiffrées de ces quotas sont consolidées en [§2.4](#24-modèle-de-monétisation) et [§12.4](#124-valeurs-de-référence-chiffrées).
+Cette sous-section consolide, au niveau synthèse, l'état des décisions d'architecture actées pour le MVP — sans en reproduire le détail, dans le prolongement de la logique du reste de [§7](#7-contraintes-techniques-rgpd--sécurité). La vue transverse par préoccupation, qui recense les décisions actées du registre ADR ([§12.3](#123-index-des-décisions-darchitecture-adr)) sous un angle organisé par sujet plutôt que décision par décision, est consolidée dans **`docs/architecture/transverse.md`**.
+## 8. Modèle de données & domaine
+## 11. Phasage & jalons
+Les décisions d'architecture ([§12.3](#123-index-des-décisions-darchitecture-adr)) portent, dans leurs sections « Conséquences » ou « Points à trancher », des codes tels que `B1.x`, `M1`, `L1`, `P0.5`, `P6`, `P7`, `B3.2`, `B5.x`… Ces codes sont des **tags de renvoi** identifiant un travail détaillé (implémentation, test, spécification complémentaire) **rattaché à un jalon** — ils ne constituent en aucun cas un second schéma de phasage distinct du macro-ordonnancement ci-dessus.
+### 12.1 Points à arbitrer et questions ouvertes
+**Suivi des points de conception à trancher.** Le suivi des points de conception restant à trancher se fait via cette annexe ([§12.1](#121-points-à-arbitrer-et-questions-ouvertes)).
+### 12.2 Matrice de traçabilité
+| Section CdC | Sources principales |
+| 1. Présentation & contexte | `docs/besoin/vision/vision.md` |
+| 2. Objectifs, enjeux & hypothèses | `docs/besoin/vision/vision.md` |
+| 3. Périmètre (MoSCoW) | `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/besoin/vision/vision.md` |
+| 4. Acteurs & besoins | `docs/besoin/vision/vision.md`, `docs/besoin/decouverte/personas/README.md`, `docs/besoin/parcours-utilisateur/bout-en-bout/README.md` |
+| 6. Exigences non-fonctionnelles | `docs/besoin/nfr/README.md`, `docs/besoin/nfr/` (NFR-PERF, NFR-OFF, NFR-CONF, NFR-ACC, NFR-I18N) |
+| 7. Contraintes techniques, RGPD & sécurité | `docs/architecture/stack.md`, `docs/architecture/README.md`, `docs/architecture/fondations.md`, `docs/architecture/structure-projets.md`, `docs/decisions/` (ADR-001, 002, 003, 004, 007, 008, 012, 013, 014, 015, 016, 017) |
+| 8. Modèle de données & domaine | `docs/domaine/README.md`, `docs/domaine/core/kernel.md`, `docs/domaine/identity-access/context.md`, `docs/domaine/space-management/context.md`, `docs/domaine/content-library/context.md`, `docs/domaine/session-conduct/context.md`, `docs/decisions/ADR-018-espace-personnel-generalisation-space.md` |
+### 12.3 Index des décisions d'architecture (ADR)
+### 12.4 Valeurs de référence chiffrées
+# Cahier de spécifications techniques — Haversack
+## 0. Objet & cadre d'autorité
+## 1. Principes d'architecture
+## 2. Stack & choix technologiques
+## 3. Contraintes techniques
+Le palier local persiste les données exclusivement dans le navigateur, sans limite de volume propre au produit au-delà de celle de l'appareil. Les paliers gratuit et Pro disposent chacun d'un quota de stockage propre, le palier Pro offrant un volume sensiblement supérieur ; l'espace personnel n'est, dans les deux cas, jamais décompté du quota du palier gratuit. Les valeurs chiffrées de ces quotas restent en renvoi vers le cahier des charges (`docs/reference/cahier-des-charges.md` §12.4) — elles ne sont pas recopiées ici.
+| CdC §7.5 (+ renvoi §12.4) | synthèse produit | — | Quotas de stockage par palier, valeurs chiffrées en renvoi |
+## 4. Modèle de données & domaine
+## 5. Sécurité & autorisation
+## 6. Conformité RGPD technique
+## 8. Migration & sérialisation
+## 9. Observabilité & télémétrie
+## 10. Exigences non-fonctionnelles (dérivées)
+## 11. Points ouverts & confirmations attendues à l'entrée en build
+## 12. Traçabilité source → section
+| Source | Type | Section(s) du cahier | Nature/Statut |
+| Source | Type | Section(s) du cahier | Nature/Statut |
+| CdC §6 — Exigences non-fonctionnelles | §CdC | §10 | synthèse produit |
+| CdC §7 — Contraintes techniques, RGPD & sécurité | §CdC | §1, §2, §3, §5, §6 | synthèse produit, section provisoire |
+| CdC §8 — Modèle de données & domaine | §CdC | §4 | synthèse produit |
+| ADR | Section(s) du cahier | Nature/Statut |
+# Dossier de conception détaillée — Haversack (MVP)
+## Métadonnées
+| Porteur / responsable du document | Pierre-Marie Marchio |
+| Validation / approbation | Pierre-Marie Marchio |
+- [1 — Socle transverse](#1--socle-transverse)
+- [2 — Relations transverses](#2--relations-transverses)
+- [3 — Identity & Access](#3--identity--access)
+- [4 — Space Management](#4--space-management)
+- [5 — Content Library](#5--content-library)
+- [6 — Session Conduct](#6--session-conduct)
+- [7 — Authentification cloud et temps réel](#7--authentification-cloud-et-temps-réel)
+- [8 — Points ouverts et limites de vérifiabilité](#8--points-ouverts-et-limites-de-vérifiabilité)
+- [Sources et références](#sources-et-références)
+## 1 — Socle transverse
+## 2 — Relations transverses
+## 3 — Identity & Access
+## 4 — Space Management
+## 5 — Content Library
+## 6 — Session Conduct
+## 7 — Authentification cloud et temps réel
+## 8 — Points ouverts et limites de vérifiabilité
+## Sources et références
+# Dossier d'Architecture Technique — Haversack
+## §0 — Métadonnées & portée
+**Légende de statut** : sauf mention contraire, les décisions cartographiées dans ce document sont **actées en conception et à confirmer à l'entrée en build** — elles ne décrivent pas un système déjà construit. Les points explicitement ouverts sont signalés `[non tranché]` ou `[à ratifier]`.
+## §1 — Choix structurants & justification
+## §2 — Vue de contexte (C4 niveau 1)
+## §3 — Vue conteneurs (C4 niveau 2)
+## §4 — Vue composants (C4 niveau 3)
+## §5 — Vue déploiement (C4 niveau 4)
+## §6 — Traçabilité vue → ADR
+| Vue / section | ADR(s) et fichiers sources |
+| §1 — Choix structurants | ADR-001, ADR-002, ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, ADR-018, stack.md |
+| §2 — Vue de contexte | ADR-001, ADR-003, ADR-009, ADR-011, ADR-014 §1, ADR-015 §2.1/§2.2/§3.2, ADR-017 §1.1 |
+| §3 — Vue conteneurs | ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, structure-projets.md, stack.md |
+| §4 — Identity & Access | ADR-015 §5, identity-access.md |
+| §4 — Space Management | ADR-018, space-management.md |
+| §4 — Content Library | ADR-002, ADR-014 §Frontière fondamentale, content-library.md |
+| §4 — Session Conduct | session-conduct.md |
+| §4 — Transverse (couche Application) | ADR-011, ADR-014 §3/§6 |
+| §4 — Core/SharedKernel | core.md |
+| §5 — Vue déploiement | ADR-003, ADR-004, ADR-015, ADR-016, ADR-017, stack.md |
+## §7 — Limites cartographiques
+**Observabilité non consolidée.** Un document [`specs/telemetrie.md`](../architecture/specs/telemetrie.md) existe, mais son contenu relève du cahier de spécification technique — il n'est pas consolidé dans ce DAT. La vue déploiement (§5) reste muette sur ce point ; ce silence n'est pas comblé ici.
+**Statut pré-implémentation généralisé.** C'est le point le plus structurant de ce document : à l'exception des rares cas explicitement marqués autrement, chaque choix cartographié est une décision de conception à confirmer à l'entrée en build — voir la légende de statut en §0.
+# Note business — coût, marché & go-to-market (Haversack)
+## Lecteur cible et usage de ce document
+## Volet 1 — Coût d'infrastructure & break-even
+## Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU)
+## Volet 3 — Stratégie go-to-market
+# Guide de conventions et Definition of Done — Haversack
+| Statut | Guide de conventions dérivé du corpus de conception, à confirmer à l'entrée en build |
+| Audience | Développeur·se de build (y compris externe), à l'entrée en build (J0) |
+| Sources | `docs/architecture/**` (stack, ADR, structure des projets, spécifications), `docs/assurance/strategie-de-test.md`, `docs/projet/roadmap-de-build.md` |
+## 0. Objet, audience, autorité
+## 1. Stack et principes d'architecture
+## 2. Conventions de code C#
+## 3. Conventions de code TypeScript / Angular
+## 4. Structure des projets
+## 5. Conventions de commit et de branche
+## 6. Gates d'intégration continue
+## 7. Conventions de sécurité de code
+## 8. Conventions de maintenance du corpus documentaire
+Une règle de ce corpus s'écrit souvent en deux temps : un énoncé positif, puis une clause qui le dément, le borne ou l'excepte sur une partie de son domaine. [plan-de-travail.md, § Maille de désignation du périmètre d'écriture](plan-de-travail.md) en porte un exemple : « **Aucun namespace de bounded context n'apparaît comme module**, sauf sur la seule tranche qui les crée (TB-003) : un namespace est un tiroir, pas une unité d'écriture. » Citer, résumer ou indexer cette règle en ne retenant que son premier temps — « aucun namespace de bounded context n'apparaît comme module » — reconstruit exactement la lecture que la clause de démenti prenait soin d'écarter : une interdiction absolue, là où la source pose une interdiction sauf sur une tranche nommée. Le résultat n'est pas faux mot à mot, puisque chaque mot retenu appartient à la source ; il induit pourtant la lecture que la source avait pris soin d'interdire.
+Le mot « palier » l'illustre. Il a été envisagé comme synonyme d'« itération » pour la section « Itération » de [methode-de-ticket.md, § Itération](methode-de-ticket.md) — le document même où ce synonyme aurait été introduit l'emploie pourtant déjà comme terme de projet, dans cette section : « Un sous-ensemble **choisi** des tranches ouvrables du palier courant. » [plan-de-travail.md, § Lots parallélisables](plan-de-travail.md) l'emploie dans le même sens — un rang d'exécution du graphe de dépendances : « seuls les paliers ouvrant au moins deux tranches simultanément sont nommés `LOT-nn` ». Le terme est repris dans un second sens, sans rapport avec le premier, par [roadmap-produit.md, Annexe B — Glossaire](roadmap-produit.md), qui le définit en propre : « **Palier** | Une étape de la trajectoire de valeur du produit, regroupant un ensemble cohérent de capacités livrées ou envisagées. » — un palier de valeur produit et de monétisation, que [note-cadrage-projet.md, § Objectifs & enjeux](note-de-cadrage.md) emploie de la même façon (« un modèle en trois paliers (local → compte gratuit → payant) »). Cet examen l'a donc trouvé pris deux fois, dans deux sens incompatibles, dont l'un dans le document même qu'on s'apprêtait à amender.
+## 9. Definition of Done
+1. le build compile ;
+2. le gate de test d'architecture en intégration continue (section 6) est vert ;
+3. la revue de code est passée ;
+4. la documentation impactée par la tâche est à jour ;
+5. les critères de sécurité opposables de la section 7 sont satisfaits, là où la tâche y touche.
+# Décisions en attente — Haversack
+## Bandeau de cadrage — ce que ce document fait et ne fait pas
+**Où le manque vit.** `plan-de-travail.md § 2 — Maille de désignation du périmètre d'écriture` nomme `châssis` comme un seul module transverse. `zoning.md § S7 — Châssis applicatif` y range pourtant des préoccupations distinctes : recherche (composant de châssis omniprésent), bandeaux (durabilité, confidentialité), fonctions cloud visibles mais désactivées en mode local, accès compte.
+| Décision | Bloque | À savoir | Registre propriétaire |
+| Décision | Bloque | À savoir | Registre propriétaire |
+| Décision | Bloque | À savoir | Registre propriétaire |
+# Guide d'entrée par fonctionnalité — Haversack
+- **Statut** — Guide de renvoi dérivé du corpus de conception, d'architecture et de test.
+- **Audience** — Toute personne reprenant le projet sans connaître son auteur et sans pouvoir le joindre.
+- **Sources** — `docs/besoin/**`, `docs/domaine/**`, `docs/interface/**`, `docs/glossaire.md`, `docs/decisions/**`, `docs/architecture/specs/**`, `docs/assurance/strategie-de-test.md`, `docs/interface/ecrans/README.md`.
+## Comment lire une entrée
+## Les entrées
+# Méthode de ticket — Haversack
+## Bandeau de cadrage — frontière et autorité
+| Champ | Obligatoire | Pourquoi il n'est pas déjà porté par le plan |
+## 2. Definition of ready
+**Par jalon** — les jalons de build nommés par [`roadmap-entree-build.md §1`](roadmap-de-build.md), ligne « (a) Jalon de build » de son tableau des natures de nœuds :
+**Par nature de tranche** — dérivée des natures de module que pose la maille de désignation du plan ([`plan-de-travail.md §2`](plan-de-travail.md)). La valeur se **déduit du champ `Périmètre d'écriture`** de la tranche ; elle n'est jamais saisie à la main :
+**Par nature de vérification** — dérivée des niveaux et des axes transverses de [`cahier-strategie-test-et-recette.md §3`](../assurance/strategie-de-test.md) :
+## 4. Chemin d'entrée d'un nouvel arrivant
+## 5. Cycle de vie d'un ticket
+**États et transitions**, pour un ticket portant sur une tâche du plan :
+## 6. Où naissent les tickets, et ce qui fait foi
+**Ce qui la ferme.** Une itération est close quand chacune des tranches qu'elle contient est à l'état terminal du cycle de vie décrit au §5 — Cycle de vie d'un ticket — de ce document, jamais avant.
+# Note de cadrage — Projet Haversack
+| **Objet du document** | Note de cadrage / charte de projet — document de gouvernance de tête, consolidant sans réinvention le corpus de conception, de planification et de business existant |
+1. [Raison d'être & résumé exécutif](#1-raison-dêtre--résumé-exécutif)
+2. [Objectifs & enjeux](#2-objectifs--enjeux)
+4. [Parties prenantes & rôles](#4-parties-prenantes--rôles)
+6. [Organisation & gouvernance](#6-organisation--gouvernance)
+## 1. Raison d'être & résumé exécutif
+## 2. Objectifs & enjeux
+## 4. Parties prenantes & rôles
+## 6. Organisation & gouvernance
+# Plan de travail — Haversack
+## 1. Comment ce plan se lit
+## 2. Maille de désignation du périmètre d'écriture
+- un **agrégat du modèle de domaine**, désigné par son nom, parmi ceux que [`docs/domaine/`](../domaine/README.md) nomme en sections propres — `## Agrégats` dans les quatre fichiers de contexte. Les entités et value objects internes à un agrégat (`### X (entité dans Y)`, `### X (value object dans Y)`) n'en sont pas : **un agrégat est la frontière transactionnelle du modèle**, donc l'unité d'écriture ;
+- une **fiche d'écran**, par son slug, parmi celles de [`docs/interface/ecrans/`](../interface/ecrans/README.md) ;
+- un **module transverse nommé** : le noyau partagé `SharedKernel` ([`structure-projets.md §4`](../architecture/structure-projets.md)), `Haversack.Infrastructure.Notifications`, un projet .NET désigné par son rôle tant que son nom n'est pas tranché ([`structure-projets.md §3 § Convention de désignation`](../architecture/structure-projets.md)), ou — **sur la seule tranche qui les crée** — l'un des quatre namespaces de bounded context `IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct` ;
+- un **module de la couche cliente**, parmi les six que le corpus nomme par leur préoccupation — jamais par un répertoire, dont l'arborescence reste `[À TRANCHER — J0]` ;
+- un **module d'outillage**, désigné par son rôle selon la même convention que les projets .NET dont le nom n'est pas tranché : `le projet de test d'architecture`, `le projet de test de bout en bout`, `la configuration de la solution`, `la configuration d'intégration continue`.
+# Registre d'évaluation des risques — Haversack
+> **Statut** : v1 — évaluation baseline, à valider en comité des risques.
+> **Référentiel méthodologique** : ISO 31000 (management du risque — principes et lignes directrices).
+> **Audience** : pilotage de projet et présentation à un tiers (investisseur, auditeur, délégué à la protection des données), équipe de build comme référence de suivi.
+> **Date de production** : 2026-07-16.
+## Ce que ce document fait et ne fait pas
+## 1. Méthodologie
+## 2. Synthèse exécutive
+## 3. Registre détaillé par axe
+# Revue produit du plan de travail — Haversack
+## Bandeau de cadrage — ce que cette revue fait et ne fait pas
+## 1. Comment cette revue a été établie
+## 2. Ce que la mesure établit
+# Roadmap d'entrée en build — Haversack
+## 2. Vue de synthèse par jalon
+**Contenu** (source : [ADR-008](../decisions/ADR-008-structure-solution.md), [ADR-007 §Compléments](../decisions/ADR-007-rgpd-autorisation-api.md)) :
+**Contenu** (source : [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md), [ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md)) :
+**Nature** : `NON-VERIFIABLE-IN-BUILD`. Positionné **après J1, avant** d'engager le build lourd cloud + temps réel (J2/J3) — [ADR-006 §Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) l.67.
+**Critère de décision** (non-CI) : télémétrie instrumentée dès le périmètre MVP par pilier — activation préparation (**espace créé** + N documents, le contenu d'un espace personnel sans campagne ne comptant que partiellement s'il traduit un geste structurant — [CdC §12.4](../reference/cahier-des-charges.md#124-valeurs-de-référence-chiffrées)), activation vue session (session ouverte + usage réel), activation partage (document partagé + ≥ 1 joueur l'ayant ouvert) — croisée avec les hypothèses de validation **H1 à H4** ([CdC §2.3](../reference/cahier-des-charges.md#23-hypothèses-de-validation-h1-à-h5)). Les seuils de décision eux-mêmes ne sont pas fixés par cette roadmap — ils relèvent de l'instrumentation produit, hors périmètre technique de cet artefact.
+**Contenu** (source : [ADR-014](../decisions/ADR-014-modele-autorisation-api.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md), [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md)) :
+**Contenu — 5 axes, tous « à valider juriste »** (source unique de détail : [`docs/assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md), ce document n'en reproduit que la synthèse) :
+**Critère de sortie** : les 5 axes portent chacun un statut autre que « à valider juriste » (validé, mitigé avec mesure actée, ou refusé avec plan de remédiation) — critère de nature binaire par axe, pas un seuil chiffré.
+**Contenu** (source : [ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-014](../decisions/ADR-014-modele-autorisation-api.md)) :
+# Roadmap produit — Haversack
+- [Vue synoptique de la trajectoire](#vue-synoptique-de-la-trajectoire)
+<a id="vue-synoptique-de-la-trajectoire"></a>
+## Vue synoptique de la trajectoire
+| [Dossier d'Architecture Technique](../reference/dossier-architecture.md) | Carte structurelle du système : vues C4 (contexte, conteneurs, composants, déploiement) + choix de structure macro + justification par renvoi ADR | Qui veut la carte du système avant d'en lire le détail |
+> Ce document est la **vue par préoccupation technique transverse**, complémentaire de la carte structurelle du système : il regroupe les décisions d'architecture déjà actées, organisées par axe technique (persistance, sécurité, RGPD, temps réel, mode local) plutôt que par ordre chronologique ou par ordre de lecture. Il **consolide et renvoie** — la source de vérité de chaque décision reste l'ADR ou le fichier de fondations cité en regard de chaque affirmation. Pour la carte structurelle du système (vues C4, choix de structure), voir le [Dossier d'Architecture Technique](../reference/dossier-architecture.md).
+La structure du système (Clean Architecture, découpage en bounded contexts DDD, architecture applicative front) est cartographiée par le [Dossier d'Architecture Technique](../reference/dossier-architecture.md) — voir [§1 Choix structurants](../reference/dossier-architecture.md) pour l'argumentaire de structure et [§4 Vue composants](../reference/dossier-architecture.md) pour la vue par bounded context. Les sections qui suivent s'appuient sur deux concepts de domaine que la carte structurelle nomme sans les développer ici : le pattern « tout est Document » ([ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md)) et la racine applicative généralisée `Space` ([ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md)).
+Ces valeurs sont celles consolidées dans le corpus de conception à la date du 2026-07-02 (`vision-produit.md` §3, `cahier-des-charges.md` §12.4, pour le tarif mensuel ; `UC-01-mode-local-sans-compte.md` §Modèle d'accès et de monétisation, pour la valeur annuelle) ; le tarif du palier Pro y est désigné comme un tarif cible, non encore contractualisé. Toute modification de ces valeurs avant publication doit être vérifiée auprès de ces mêmes sources.
+- [`docs/reference/cahier-des-charges.md`](../../../reference/cahier-des-charges.md) §12.4 — valeurs chiffrées consolidées des paliers.
+**Statut du corpus : `[non tranché]`.** Le dossier d'architecture du produit marque explicitement l'hébergement comme une décision non arbitrée à ce stade : plusieurs options sont recensées (Railway, Supabase, Render, auto-hébergement) sans qu'aucune ne soit retenue. Voir [`docs/reference/dossier-architecture.md` §5 — Vue déploiement](../../../reference/dossier-architecture.md#5--vue-déploiement-c4-niveau-4) et [`docs/architecture/deploiement/README.md`](../../../architecture/deploiement/README.md).
+Les sources sont citées au fil du document, dans les rubriques 2 et 3 (renvois vers ADR-013 § 2 et vers le dossier d'architecture, § 5).
+Un MJ perd son tier premium — fin d'abonnement ou non-renouvellement — et se retrouve au-delà de la limite d'espaces `CAMPAIGN`/`ONE_SHOT` du tier gratuit (quota consolidé, valeur volatile — voir `vision-produit.md §3` / `cahier-des-charges.md §12.4`), qui n'est pas figée par ce use case.
+- `vision-produit.md §3` / `cahier-des-charges.md §12.4` — valeurs chiffrées du quota et des tiers (volatiles, non figées par ce use case).
+> Ces valeurs sont **volatiles** : consolidées et datées dans `docs/reference/cahier-des-charges.md` §12.4 (arrêtées au 2026-07-02). La présente section §3 reste la **source de vérité** ; toute révision se répercute d'abord ici, puis sur la table §12.4.
+**Gratuit = un avant-goût.** Le tier Gratuit donne accès à : 1 campagne cloud, partage avec un petit groupe. *[Valeur consolidée postérieure : le quota gratuit est de **3 espaces** `CAMPAIGN`/`ONE_SHOT` — voir vision §3 / CdC §12.4. Le présent ADR est une trace historique du 2026-06-10 ; l'autorité chiffrée est le corpus vision/CdC.]* L'accroche « le partage est gratuit » est maintenue, mais l'échelle de l'usage et du partage est ce qui est monétisé.
+  *[Mise à jour : valeur consolidée = **3 espaces** `CAMPAIGN`/`ONE_SHOT` (vision §3 / CdC §12.4) ; le point « 4 joueurs FREE » est **résolu** — la limite existe et est inscrite (invariant 11 réaligné, RB-09-21 fait foi). Cette ligne de Conséquences reflète l'état historique du 2026-06-10.]*
+- **A-09 à trancher avant l'entrée en construction.** Décider si la limite « 4 joueurs/session » pour le tier FREE existe. Si oui, l'inscrire dans la table de monétisation de la vision produit. Si non, la retirer des invariants de domaine. Ce point ne peut pas rester non tranché au démarrage du build. *[A-09 résolu : la limite « 4 joueurs/session » FREE existe et est inscrite (vision §3, CdC §12.4, invariant 11 de `space-management.md` réaligné, RB-09-21 fait foi pour la sémantique de comptage).]*
+- **Périmètre de conversion testé par le MVP.** La conversion testée par le MVP est local→gratuit (hypothèse 5a). La conversion payante (hypothèse 5b) n'est pas testée par le MVP : le seul déclencheur Pro atteignable est le passage au-delà d'une campagne cloud. *[Valeur consolidée postérieure : le seuil correspond au-delà de **3 espaces** `CAMPAIGN`/`ONE_SHOT` — voir vision §3 / CdC §12.4. Cette ligne reflète l'état historique du 2026-06-10.]*
+   > **NOTE — Valeur de référence du quota** : la limite `3` d'espaces actifs pour un utilisateur FREE est consolidée en CdC §12.4 ; cette valeur volatile doit être maintenue en source unique pour la cohérence métier/produit.
+Seuils et délais indiqués au 2026-07-02 ; valeurs volatiles, ajustables avant le lancement de l'observation, jamais pendant. Point de référence unique et daté : cahier des charges §12.4.
+| `docs/architecture/transverse.md` §1 | consolidation transverse | — | Renvoi vers le Dossier d'Architecture Technique pour la vue par bounded context |
+**Règles de gestion consolidées.** UC-15 ratifie la règle 6 (gel des espaces excédentaires, ordre du plus récent au plus ancien, espace `PERSONAL` jamais compté — invariant 15) et la règle 11 (dégel dans la limite du quota du tier cible, garde exprimée relativement plutôt qu'inconditionnellement pour rester correcte si un tier intermédiaire est introduit). Le quota chiffré lui-même n'est ni fixé ni répété ici : UC-15 § Contexte renvoie explicitement à « vision-produit.md §3 / cahier-des-charges.md §12.4 (quota consolidé, valeur volatile) » et signale qu'[ADR-005](../decisions/ADR-005-modele-monetisation.md) n'en est plus l'autorité — cet ADR porte lui-même la mention « décision produit — fusionnée … 2026-06-10 » en en-tête. Recopier la valeur ici violerait la discipline de fidélité de consolidation (borne normative non recopiée comme propre à ce dossier).
+**Titre** : Dossier d'Architecture Technique (DAT) — Haversack.
+**Ce que ce document fait** : décomposer la méthode de calcul du coût infra, du dimensionnement de marché et de la stratégie go-to-market (GTM), en s'appuyant strictement sur le corpus de conception existant (ADR-005, cahier des charges §12.4/§2.4, vision produit, MoSCoW).
+**Entrées connues** (seules valeurs chiffrées disponibles à ce stade, consolidées et datées dans `docs/reference/cahier-des-charges.md` §12.4, arrêtées au 2026-07-02) :
+| Quota d'espaces `CAMPAIGN`/`ONE_SHOT` (palier gratuit) | 3 espaces | CdC §12.4 |
+| Espace personnel décompté du quota | Non | CdC §12.4 |
+| Joueurs par session (palier gratuit) | 4 joueurs distincts, MJ non compté | CdC §12.4 |
+| Stockage — palier local | Aucun quota produit (limite = appareil) | CdC §12.4 |
+| Stockage — palier gratuit | 500 Mo | CdC §12.4 |
+| Stockage — palier Pro | 5 Go et plus | CdC §12.4 |
+| Tarif — palier Pro | Environ 7 €/mois | CdC §12.4 |
+Ces valeurs sont elles-mêmes qualifiées de **volatiles** par le corpus (CdC §12.4) — elles servent ici d'entrées de méthode, pas de constantes figées.
+| Stockage cloud | Quota 500 Mo par utilisateur gratuit (CdC §12.4) | Coût de stockage à la volumétrie effectivement occupée (pas au quota alloué) |
+| Trafic de partage joueurs | UC-08/UC-09 — diffusion temps réel vers des joueurs sans compte | Coût de bande passante et de connexions concurrentes, fonction du nombre de joueurs actifs simultanés (borné à 4 par session, CdC §12.4) |
+Le palier Pro (CdC §2.4/§12.4) : tarif ≈ 7 €/mois, tout le gratuit en illimité, stockage 5 Go et plus, espaces illimités.
+Revenu_net_utilisateur_Pro = Tarif_Pro (≈ 7 €/mois, CdC §12.4)
+Interprétation attendue (à confirmer une fois les coûts unitaires connus) : ce ratio unitaire exprime, indépendamment du volume total d'utilisateurs, combien d'utilisateurs gratuits un utilisateur Pro peut financer. Le déclencheur d'upgrade Gratuit→Pro identifié par le corpus (CdC §2.4 : *« déclenché lorsque le MJ dépasse le quota de trois espaces actifs »*) est le seul signal de conversion actuellement instrumenté (H5, CdC §12.4) — il n'existe pas aujourd'hui de mesure de taux de conversion réel à insérer dans ce ratio.
+`Tarif_Pro` est connu (≈ 7 €/mois, CdC §12.4). `N_Pro`, `N_gratuits` et donc l'ARPU ne peuvent être posés qu'après observation réelle d'une cohorte (les seuils H1-H5, CdC §12.4, mesurent l'activation et la conversion locale→gratuit, pas encore gratuit→Pro à l'échelle) — `[À TRANCHER — étude marché / observation post-lancement]`.
+Aucune de ces données n'est estimée dans ce document : le corpus de conception ne les porte pas, et ADR-005 les qualifie explicitement de travail post-MVP. Ce document fournit la méthode et les entrées connues (CdC §12.4) nécessaires pour les instruire dès qu'une mesure de coût infra et une étude marché seront disponibles.
+| `backlog-decisions-architecture-assurance` | le commit « docs(conformite-corpus): applique le backlog des couches décisions, architecture et assurance » | inscrit par la tâche `gabarits-reference-projet` |
+**Ce document n'énonce pas de Definition of Done.** Elle existe déjà, complète, dans [`guide-conventions-et-dod.md §9 — Definition of Done`](conventions-dod.md) ; elle n'est pas réécrite ici. Ce que ce document énonce est une **condition d'entrée** — ce qui doit être vrai avant de prendre une tâche — que rien dans le corpus ne porte encore. Condition d'entrée et Definition of Done décrivent deux moments distincts et complémentaires d'une même tâche : l'un avant qu'elle ne soit prise, l'autre avant qu'elle ne se ferme.
+5. **La prise du premier ticket** — choisir, dans le plan, une tâche dont la Definition of ready (§2) est satisfaite ; ouvrir un ticket dans le dépôt du projet en suivant le modèle du §1 ; renseigner `Pris par` au moment de la prise.
+- **Ouvert, non prêt** — le ticket existe, mais la Definition of ready (§2) n'est pas encore satisfaite pour la tâche qu'il porte.

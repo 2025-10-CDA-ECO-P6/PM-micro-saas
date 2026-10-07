@@ -18,7 +18,7 @@ Définir ce qu'il advient des espaces d'un MJ lorsqu'il repasse au tier gratuit 
 
 ## Contexte
 
-Un MJ perd son tier premium — fin d'abonnement ou non-renouvellement — et se retrouve au-delà de la limite d'espaces `CAMPAIGN`/`ONE_SHOT` du tier gratuit (quota consolidé, valeur volatile — voir `vision-produit.md §3` / `cahier-des-charges.md §12.4`), qui n'est pas figée par ce use case.
+Un MJ perd son tier premium — fin d'abonnement ou non-renouvellement — et se retrouve au-delà de la limite d'espaces `CAMPAIGN`/`ONE_SHOT` du tier gratuit (quota consolidé, valeur volatile — voir `vision-produit.md §3` / `cahier-des-charges.md annexe « Valeurs de référence chiffrées »`), qui n'est pas figée par ce use case.
 
 Ce scénario existe car le modèle de monétisation (voir [ADR-005](../../decisions/ADR-005-modele-monetisation.md), trace historique fusionnée dans la vision) autorise un MJ à créer des espaces au-delà du quota gratuit tant qu'il reste sur un tier payant ; le retour au tier gratuit peut donc laisser un MJ dans un état où son nombre d'espaces actifs dépasse ce que le tier gratuit autorise.
 
@@ -83,4 +83,4 @@ SOUS-SPÉCIFIÉ
 - [Glossaire — `SpaceStatus`](../../glossaire.md) — définition de la valeur `FROZEN`.
 - [ADR-005 — Modèle de monétisation](../../decisions/ADR-005-modele-monetisation.md) — trace historique du modèle de tiers (substance fusionnée dans la vision).
 - [UC-HORS-MVP — Gel de campagnes au downgrade de tier](../vision/perimetre/exclusions.md) — question ouverte dont ce UC est issu.
-- `vision-produit.md §3` / `cahier-des-charges.md §12.4` — valeurs chiffrées du quota et des tiers (volatiles, non figées par ce use case).
+- `vision-produit.md §3` / `cahier-des-charges.md annexe « Valeurs de référence chiffrées »` — valeurs chiffrées du quota et des tiers (volatiles, non figées par ce use case).

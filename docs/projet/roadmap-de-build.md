@@ -1,6 +1,7 @@
-# Roadmap d'entrée en build — Haversack
+# Roadmap de build
 
-> **Statut** : artefact de planification dédié, référencé par [CdC §11](../reference/cahier-des-charges.md#11-phasage--jalons) et [ADR-011 §Points à trancher](../decisions/ADR-011-cascade-integrite-referentielle.md) comme le document produit « en amont de l'entrée en construction ». Audience : équipe de build (développeur·se solo ou équipe restreinte prenant en charge l'implémentation) et responsable produit (arbitrages de point de décision).
+> **Nature** : Document dérivé : il ordonnance un périmètre déjà arrêté. Il n'ajoute aucune fonctionnalité, aucune décision ni aucun chiffre que ses sources ne portent.
+> **Statut** : artefact de planification dédié, référencé par [CdC §11](../reference/cahier-des-charges.md#11-phasage) et [ADR-011 §Points à trancher](../decisions/ADR-011-cascade-integrite-referentielle.md) comme le document produit « en amont de l'entrée en construction ». Audience : équipe de build (développeur·se solo ou équipe restreinte prenant en charge l'implémentation) et responsable produit (arbitrages de point de décision).
 > **Date de production** : 2026-07-15.
 
 ---
@@ -8,12 +9,12 @@
 ## Bandeau de cadrage — ce que ce document fait et ne fait pas
 
 Ce document **ordonnance** un périmètre déjà arrêté. Il ne redéfinit :
-- **ni le MoSCoW** ([CdC §3](../reference/cahier-des-charges.md#3-périmètre-moscow) — Must/Should/Could/Won't, [ADR-006](../decisions/ADR-006-perimetre-mvp.md) pour la trace des arbitrages fusionnés) ;
-- **ni le phasage macro** ([CdC §11](../reference/cahier-des-charges.md#11-phasage--jalons) — axe J0-J3 nommé par contenu, indicatif et non figé).
+- **ni le MoSCoW** ([CdC §3](../reference/cahier-des-charges.md#3-périmètre) — Must/Should/Could/Won't, [ADR-006](../decisions/ADR-006-perimetre-mvp.md) pour la trace des arbitrages fusionnés) ;
+- **ni le phasage macro** ([CdC §11](../reference/cahier-des-charges.md#11-phasage) — axe J0-J3 nommé par contenu, indicatif et non figé).
 
 Il ne tranche **aucun ADR** : chaque contrainte technique citée ci-dessous renvoie à sa décision d'origine, qui fait foi en cas de désaccord de lecture. Il n'invente **aucun seuil, aucune valeur chiffrée** différée par un ADR à l'implémentation — ces points sont reportés fidèlement sous la forme `[À TRANCHER — ticket <code>]`.
 
-Ce que ce document **fait** : il prend la séquence de jalons déjà nommée dans [ADR-006 §Conséquences](../decisions/ADR-006-perimetre-mvp.md) (J1 → J2 → J3) et le préalable J0 documenté dans [ADR-008 §Compléments post-revue](../decisions/ADR-008-structure-solution.md), et les assemble en une séquence unique typée, avec pour chaque jalon : les préalables bloquants déjà actés, les critères de sortie factuels déjà déductibles du corpus, l'ordre interne C#-first déjà acté par [ADR-001 §Compléments](../decisions/ADR-001-execution-domaine-mode-local.md) et [ADR-008 §Compléments](../decisions/ADR-008-structure-solution.md), et le rattachement des livrables/tests nommés par chaque ADR à leur jalon. Il porte enfin la réconciliation — ratifiée en décision produit (§5) — de la double lecture du symbole `J1` signalée comme incohérence ouverte par [CdC §11](../reference/cahier-des-charges.md#11-phasage--jalons).
+Ce que ce document **fait** : il prend la séquence de jalons déjà nommée dans [ADR-006 §Conséquences](../decisions/ADR-006-perimetre-mvp.md) (J1 → J2 → J3) et le préalable J0 documenté dans [ADR-008 §Compléments post-revue](../decisions/ADR-008-structure-solution.md), et les assemble en une séquence unique typée, avec pour chaque jalon : les préalables bloquants déjà actés, les critères de sortie factuels déjà déductibles du corpus, l'ordre interne C#-first déjà acté par [ADR-001 §Compléments](../decisions/ADR-001-execution-domaine-mode-local.md) et [ADR-008 §Compléments](../decisions/ADR-008-structure-solution.md), et le rattachement des livrables/tests nommés par chaque ADR à leur jalon. Il porte enfin la réconciliation — ratifiée en décision produit (§5) — de la double lecture du symbole `J1` signalée comme incohérence ouverte par [CdC §11](../reference/cahier-des-charges.md#11-phasage).
 
 **En cas de conflit entre ce document et un ADR, une US ou le CdC** : la source citée fait foi ; ce document est un artefact d'ordonnancement, pas une nouvelle autorité de corpus (même posture que [`cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md) vis-à-vis des ADR RGPD).
 
@@ -57,7 +58,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 ---
 
-## 2. Vue de synthèse par jalon
+## 2. Vue de synthèse
 
 | Jalon | Contenu | Dépend de | Livrable-signal |
 |---|---|---|---|
@@ -74,7 +75,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 ### 3.1 J0 — Socle
 
-**Contenu** (source : [ADR-008](../decisions/ADR-008-structure-solution.md), [ADR-007 §Compléments](../decisions/ADR-007-rgpd-autorisation-api.md)) :
+**Contenu** : (source : [ADR-008](../decisions/ADR-008-structure-solution.md), [ADR-007 §Compléments](../decisions/ADR-007-rgpd-autorisation-api.md))
 - Confirmation à l'entrée en build des **8 ADR de nature pré-implémentation ou mixte** : ADR-003 (stack front), ADR-004 (transport temps réel), ADR-008 (structure solution), ADR-011 (cascade RGPD), ADR-015 (sécurité authentification), ADR-016 (sérialisation locale/migration), ADR-017 (modèle IndexedDB), ADR-018 (généralisation Space). Chacun le signale dans son en-tête — la confirmation est un acte de build, pas de conception.
 - Squelette Domain/Application C# — Clean Architecture, 4 bounded contexts en frontières logiques (namespaces, pas d'assembly séparée au MVP), granularité multi-projets conservée sur Infrastructure/Présentation ([ADR-008 §Décision](../decisions/ADR-008-structure-solution.md)).
 - **Test d'architecture en CI = livrable J0** ([ADR-008 §Compléments post-revue](../decisions/ADR-008-structure-solution.md) l.56) : vérifie les frontières de bounded context, remplace la discipline de revue de code jugée insuffisante en contexte solo. Sa **définition exhaustive** (liste complète des handlers scopés/non-scopés, couverture `ITokenValidator`/`ITokenDenylist`) est un renvoi ultérieur (→ B3.2, voir Annexe A) ; le test lui-même, dans sa forme initiale (frontières BC), est bien un livrable J0.
@@ -92,7 +93,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 ### 3.2 J1 — Local-only
 
-**Contenu** (source : [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md), [ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md)) :
+**Contenu** : (source : [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md), [ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md))
 - Domaine/Application (C#), projection TS/IndexedDB et Angular minimal. L'ordre de **dépendance** entre ces trois étages est celui de la Clean Architecture ; leur ordre de **construction** ne l'est plus — la couche cliente se construit contre le contrat du service d'accès au store local, sans attendre l'implémentation du domaine (voir §4).
 - **`navigator.storage.persist()` (G-08) — préalable bloquant, à lever avant J1** ([ADR-001 §Compléments post-revue (2026-06-09), puce « G-08 »](../decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-017 §3.1](../decisions/ADR-017-modele-indexeddb-local.md)). Traité comme un état de première classe (booléen lu et traité, bandeau de durabilité affiché si refusé/best-effort) — pas une case cochée en silence.
 - **Invariant d'autorisation câblé** : le contrat `IResourceAccessPolicy` défini en J0 doit être intégré aux contrats Application « avant le début du jalon J1 » ([ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.48).
@@ -114,7 +115,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 **Nature** : `NON-VERIFIABLE-IN-BUILD`. Positionné **après J1, avant** d'engager le build lourd cloud + temps réel (J2/J3) — [ADR-006 §Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) l.67.
 
-**Critère de décision** (non-CI) : télémétrie instrumentée dès le périmètre MVP par pilier — activation préparation (**espace créé** + N documents, le contenu d'un espace personnel sans campagne ne comptant que partiellement s'il traduit un geste structurant — [CdC §12.4](../reference/cahier-des-charges.md#124-valeurs-de-référence-chiffrées)), activation vue session (session ouverte + usage réel), activation partage (document partagé + ≥ 1 joueur l'ayant ouvert) — croisée avec les hypothèses de validation **H1 à H4** ([CdC §2.3](../reference/cahier-des-charges.md#23-hypothèses-de-validation-h1-à-h5)). Les seuils de décision eux-mêmes ne sont pas fixés par cette roadmap — ils relèvent de l'instrumentation produit, hors périmètre technique de cet artefact.
+**Critère de décision** (non-CI) : télémétrie instrumentée dès le périmètre MVP par pilier — activation préparation (**espace créé** + N documents, le contenu d'un espace personnel sans campagne ne comptant que partiellement s'il traduit un geste structurant — [CdC annexe « Valeurs de référence chiffrées »](../reference/cahier-des-charges.md#valeurs-de-référence-chiffrées)), activation vue session (session ouverte + usage réel), activation partage (document partagé + ≥ 1 joueur l'ayant ouvert) — croisée avec les hypothèses de validation **H1 à H4** ([CdC §2.3](../reference/cahier-des-charges.md#23-hypothèses-de-validation-h1-à-h5)). Les seuils de décision eux-mêmes ne sont pas fixés par cette roadmap — ils relèvent de l'instrumentation produit, hors périmètre technique de cet artefact.
 
 **Ce que cette décision n'est pas** : ce n'est pas un jalon de build, elle ne produit aucun livrable technique. C'est une décision produit qui conditionne l'entrée en J2 — au même titre qu'un point de décision produit go/no-go usuel. Elle ne réintroduit pas de découplage *produit* (MVP unique) — le MVP reste unique, J1 → J2 → J3 restent enchaînés sans découplage produit entre eux (§1). Elle arbitre un découplage d'investissement : engager ou non le capital du build lourd cloud + temps réel (J2/J3), pas une nouvelle scission du périmètre fonctionnel.
 
@@ -122,7 +123,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 ### 3.4 J2 — Cloud + migration
 
-**Contenu** (source : [ADR-014](../decisions/ADR-014-modele-autorisation-api.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md), [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md)) :
+**Contenu** : (source : [ADR-014](../decisions/ADR-014-modele-autorisation-api.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md), [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md))
 - **Dépendance d'entrée** : J1 stable **et** `[DÉCISION MARCHÉ]` = go. Les deux conditions sont cumulatives, pas alternatives ([ADR-006 §Conséquences](../decisions/ADR-006-perimetre-mvp.md)).
 - **Préalable schéma — promotion ADR-002 (`characterId`/`guestAccessId` des `LIVE_NOTE`)** : ces deux champs passent de `documents.properties` (jsonb) à des **colonnes nullable indexées de premier niveau** sur `documents` ([ADR-002 §Compléments post-revue](../decisions/ADR-002-tout-est-document-gouvernance.md) l.58). C'est un préalable au mapping EF Core (query filters ci-dessous, mêmes colonnes de premier niveau) et une **dépendance bloquante de l'invariant d'autorisation** : ADR-002 documente explicitement que « ce changement débloque l'invariant d'autorisation décrit dans ADR-007 ».
 - **EF Core + query filters globaux** : `spaces.deleted_at IS NOT NULL` (soft-delete), `documents.is_deleted` — prédicats structurels P2/P3 du modèle d'autorisation, portés par des query filters EF Core globaux plutôt que par discipline de handler (→ B5.1, [ADR-014 §Points à trancher](../decisions/ADR-014-modele-autorisation-api.md) l.284).
@@ -146,7 +147,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 **Nature** : `NON-VERIFIABLE-IN-BUILD`. Bloque le **lancement EU** (mise en production commerciale), pas le build technique — distinction explicite à ne pas confondre avec un jalon de build ([`cadrage-validation-pre-lancement-eu.md` § Non vérifiable en CI](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md)).
 
-**Contenu — 5 axes, tous « à valider juriste »** (source unique de détail : [`docs/assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md), ce document n'en reproduit que la synthèse) :
+**Contenu** : 5 axes, tous « à valider juriste » (source unique de détail : [`docs/assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md), ce document n'en reproduit que la synthèse) :
 1. Art. 8 — qualification « service destiné aux mineurs » (attestation 16+ suffisante ou non).
 2. Art. 28 + périmètre DPA — posture sous-traitant pour le contenu MJ décrivant des tiers identifiables, y compris l'espace `PERSONAL`.
 3. Mise en balance de l'intérêt légitime — conservation post-effacement des documents partagés, base légale du `display_name` invité.
@@ -161,7 +162,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 ### 3.6 J3 — Partage + temps réel
 
-**Contenu** (source : [ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-014](../decisions/ADR-014-modele-autorisation-api.md)) :
+**Contenu** : (source : [ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-014](../decisions/ADR-014-modele-autorisation-api.md))
 - **Dépendance d'entrée** : J2 (le canal SignalR filtre par le même `IResourceAccessPolicy` que REST — dépendance structurelle, pas seulement calendaire).
 - **SignalR + repli polling** : transport forcé en SSE tant que la communication reste unidirectionnelle MJ→joueurs ; connexion fermée en fin de session LIVE ; heartbeat allongé. **Seuil de coût par session concurrente déclenchant le repli vers polling adaptatif = `[À TRANCHER — ticket]`** (critère de réversibilité, pas un commentaire de documentation, [ADR-004 §Compléments](../decisions/ADR-004-transport-temps-reel.md) l.47).
 - **Auth canal invité, token hors query-string** : le token `GuestAccess` n'est pas transmis en query-string — cookie court-lived ou échange de token avant négociation WebSocket ([ADR-004 §Compléments](../decisions/ADR-004-transport-temps-reel.md) l.49). Déconnexion forcée du hub sur `GuestAccessRevoked`/`GuestAccessExpired` (→ B1.7).
@@ -211,7 +212,7 @@ Le corpus portait deux usages distincts du symbole « J1 » :
 - **ADR-006** ([§Conséquences](../decisions/ADR-006-perimetre-mvp.md) l.46) : J1 = **local-only** (le jalon décrit en §3.2 de cette roadmap).
 - **ADR-007** ([§Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.48) : dans sa rédaction d'origine, un « jalon J1 » assorti d'un repère de jalon numéroté distinct (nomenclature aujourd'hui retirée du corpus) — appliqué à l'intégration de l'invariant d'autorisation API, une préoccupation **cloud**.
 
-[CdC §11](../reference/cahier-des-charges.md#11-phasage--jalons) constatait lui-même cette « incohérence apparente » et la renvoyait explicitement à « l'artefact de planification dédié » — c'est-à-dire au présent document.
+[CdC §11](../reference/cahier-des-charges.md#11-phasage) constatait lui-même cette « incohérence apparente » et la renvoyait explicitement à « l'artefact de planification dédié » — c'est-à-dire au présent document.
 
 ### 5.2 Axe canonique acté pour l'ensemble du corpus
 
@@ -275,7 +276,7 @@ L'axe **J0/J1/J2/J3**, nommé par contenu, est l'unique repère de phasage du co
 
 ## Renvois
 
-- [`docs/reference/cahier-des-charges.md` §11](../reference/cahier-des-charges.md#11-phasage--jalons) — macro-ordonnancement de référence (axe J0-J3 nommé par contenu), réconciliation de nomenclature ratifiée (§5).
+- [`docs/reference/cahier-des-charges.md` §11](../reference/cahier-des-charges.md#11-phasage) — macro-ordonnancement de référence (axe J0-J3 nommé par contenu), réconciliation de nomenclature ratifiée (§5).
 - [`docs/assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md) — détail des 5 axes de la `[VALIDATION JURIDIQUE EU]`.
 - ADR cités : [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md), [ADR-003](../decisions/ADR-003-stack-front.md), [ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-006](../decisions/ADR-006-perimetre-mvp.md), [ADR-007](../decisions/ADR-007-rgpd-autorisation-api.md), [ADR-008](../decisions/ADR-008-structure-solution.md), [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md), [ADR-014](../decisions/ADR-014-modele-autorisation-api.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md), [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md), [ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md).
 - [`docs/architecture/README.md`](../architecture/README.md) et [`docs/architecture/transverse.md`](../architecture/transverse.md) — vue transverse par préoccupation, non redondante avec l'ordonnancement temporel de ce document.

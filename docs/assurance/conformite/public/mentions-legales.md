@@ -31,7 +31,7 @@ Cette adresse est explicitement documentée comme un **placeholder d'exploitatio
 
 ## 3. Hébergeur
 
-**Statut du corpus : `[non tranché]`.** Le dossier d'architecture du produit marque explicitement l'hébergement comme une décision non arbitrée à ce stade : plusieurs options sont recensées (Railway, Supabase, Render, auto-hébergement) sans qu'aucune ne soit retenue. Voir [`docs/reference/dossier-architecture.md` §5 — Vue déploiement](../../../reference/dossier-architecture.md#5--vue-déploiement-c4-niveau-4) et [`docs/architecture/deploiement/README.md`](../../../architecture/deploiement/README.md).
+**Statut du corpus : `[non tranché]`.** Le dossier d'architecture du produit marque explicitement l'hébergement comme une décision non arbitrée à ce stade : plusieurs options sont recensées (Railway, Supabase, Render, auto-hébergement) sans qu'aucune ne soit retenue. Voir [`docs/reference/dossier-architecture.md` §6 — Déploiement](../../../reference/dossier-architecture.md#6-déploiement) et [`docs/architecture/deploiement/README.md`](../../../architecture/deploiement/README.md).
 
 Ce document reprend ce statut tel quel — il ne choisit pas d'hébergeur à la place de la conception technique.
 
@@ -49,4 +49,4 @@ Ce document reprend ce statut tel quel — il ne choisit pas d'hébergeur à la 
 
 ## Traçabilité — sources de ce document
 
-Les sources sont citées au fil du document, dans les rubriques 2 et 3 (renvois vers ADR-013 § 2 et vers le dossier d'architecture, § 5).
+Les sources sont citées au fil du document, dans les rubriques 2 et 3 (renvois vers ADR-013 § 2 et vers le dossier d'architecture, § 6).

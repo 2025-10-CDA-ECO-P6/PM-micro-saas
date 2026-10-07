@@ -1,13 +1,16 @@
-# Registre d'évaluation des risques — Haversack
+# Registre des risques
 
-> **Statut** : v1 — évaluation baseline, à valider en comité des risques.
-> **Référentiel méthodologique** : ISO 31000 (management du risque — principes et lignes directrices).
-> **Audience** : pilotage de projet et présentation à un tiers (investisseur, auditeur, délégué à la protection des données), équipe de build comme référence de suivi.
-> **Date de production** : 2026-07-16.
+| Champ | Valeur |
+|---|---|
+| Version | v1 |
+| Date | 2026-07-16 |
+| Statut | v1 — évaluation baseline, à valider en comité des risques. |
+| Référentiel méthodologique | ISO 31000 (management du risque — principes et lignes directrices). |
+| Audience | pilotage de projet et présentation à un tiers (investisseur, auditeur, délégué à la protection des données), équipe de build comme référence de suivi. |
 
 ---
 
-## Ce que ce document fait et ne fait pas
+## Nature et portée du document
 
 Ce document **consolide et évalue** des risques déjà identifiés dans le corpus de conception du projet (décisions d'architecture, spécifications techniques, cahier des charges, roadmap d'entrée en build, cadrage juridique). Il n'en **invente aucun** : chaque entrée renvoie à sa source d'origine, qui fait foi en cas de désaccord de lecture avec la formulation retenue ici. Ce registre est un artefact de synthèse transverse ; il ne constitue pas une nouvelle autorité de conception et ne renverse l'ordre d'autorité d'aucune décision citée.
 
@@ -21,7 +24,7 @@ Ce document ne tranche aucun seuil non fixé par le corpus source. Les valeurs d
 
 ---
 
-## 1. Méthodologie
+## 1. Méthode et échelles
 
 ### 1.0 Jalons de la trajectoire de build
 
@@ -155,83 +158,7 @@ Le tag `[NON-VÉRIFIABLE-EN-BUILD]` (§1.5), lorsqu'il s'applique, est affiché 
 
 ---
 
-## 2. Synthèse exécutive
-
-### 2.1 Matrice de criticité inhérente (risques uniquement)
-
-Seules les 32 entrées de type `risque` figurent sur cette matrice. Les 37 autres entrées (hypothèses, points de décision, dettes, questions ouvertes) sont présentées dans leurs vues dédiées ci-dessous.
-
-| Probabilité \ Impact | Mineur | Modéré | Majeur | Critique |
-|---|---|---|---|---|
-| **Quasi-certaine** | — | D-01 | T-01, D-02 | — |
-| **Élevée** | — | T-14 | T-02, T-05, T-07, T-16, P-08, P-14, D-03 | — |
-| **Modérée** | T-06, T-29 | T-03, T-12, T-15, T-19, T-25, D-04, D-05 | T-04, T-10 | — |
-| **Faible** | T-09 | T-08, T-11, T-13, T-17, T-28, D-08 | T-23, T-24, T-26 | — |
-
-Aucune entrée n'atteint la colonne "Critique" (voir plafond observé, §1.3). Ce plafond ne vaut que pour les entrées de type `risque` portées par cette matrice : le registre porte par ailleurs un unique impact de niveau critique, celui de l'hypothèse centrale H2 (P-03) — hors matrice par construction, puisqu'une `hypothèse` n'est pas cotée en probabilité (§1.1). Voir la vue Hypothèses (§2.3).
-
-### 2.2 Top risques (criticité inhérente Élevée ou Très élevée)
-
-Table exhaustive : les 13 entrées de type `risque` dont la criticité inhérente est de bande Élevée (score 6 à 9) ou Très élevée (score 12 à 16) — voir §1.2 pour les bandes. Règle d'inclusion uniforme : même score de criticité inhérente → même rang (ex. T-04, T-10 et T-14 partagent le score 6 et le rang 11). La colonne Dimension dominante reprend le descripteur porté par chaque entrée en section 3, et permet le filtrage par dimension annoncé en §1.3 (par exemple, ne retenir que les entrées à dominante « Conformité RGPD »).
-
-| Rang | Identifiant | Intitulé | Dimension dominante | Criticité inhérente | Criticité résiduelle cible |
-|---|---|---|---|---|---|
-| 1 | T-01 | `navigator.storage.persist()` non résolu avant le socle local | Valeur produit | Très élevée | Moyenne |
-| 1 | D-02 | Stabilisation du socle et confirmation des décisions d'architecture pré-implémentation | Coût & délai | Très élevée | Moyenne |
-| 3 | T-02 | Promotion de colonnes préalable au cloud (identifiants de personnage / d'accès invité) | Sécurité & données personnelles | Élevée | Faible |
-| 3 | T-05 | Câblage de l'autorisation, test d'architecture et frontières logiques de contexte | Sécurité & données personnelles | Élevée | Moyenne |
-| 3 | T-07 | Cascade d'effacement RGPD : complexité du graphe et reprise après incident | Conformité RGPD | Élevée | Moyenne |
-| 3 | T-16 | Filtres de requête (soft-delete par jointure) non arbitrés | Conformité RGPD | Élevée | Moyenne |
-| 3 | P-08 | Instrumentation d'activation non opérationnalisable en l'état | Valeur produit | Élevée | Moyenne |
-| 3 | P-14 | Dépendance à la cohorte pilote non traitée | Valeur produit | Élevée | Moyenne |
-| 3 | D-03 | Dépendance cumulative socle local stable et décision marché favorable | Coût & délai | Élevée | Moyenne |
-| 10 | D-01 | Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel) | Coût & délai | Élevée | Moyenne |
-| 11 | T-04 | Reclaim-in-place non ratifié `[À RATIFIER PRODUIT]` | Sécurité & données personnelles | Élevée | Moyenne |
-| 11 | T-10 | Valeurs de seuils de limitation de débit non fixées | Sécurité & données personnelles | Élevée | Moyenne |
-| 11 | T-14 | Schéma de propriétés des types de document système non modélisé | Coût & délai | Élevée | Élevée (aucune mitigation actée) |
-
-T-14 n'est pas un cas isolé : 15 autres entrées de type `risque` partagent la même caractéristique — une criticité résiduelle qui reste au niveau de l'inhérente faute de mitigation actée abaissant le score (T-03, T-06, T-08, T-09, T-11, T-12, T-13, T-15, T-17, T-19, T-24, T-25, T-28, T-29, D-08) —, soit 16 entrées sur les 32 que compte la matrice des risques (§2.1). Aucune de ces 15 autres n'atteint la bande Élevée ou Très élevée (elles restent en bande Faible ou Moyenne), ce qui explique qu'elles ne figurent pas dans la table ci-dessus ; seule T-14 cumule bande Élevée et résiduelle non abaissée.
-
-### 2.3 Vue Hypothèses de validation
-
-Cinq hypothèses de validation produit (H1 à H5), aucune n'est cotée en probabilité — voir typologie §1.1. Toutes portent l'échéance "décision marché" et le propriétaire "responsable produit".
-
-| Identifiant | Hypothèse | Seuil et délai | Classe de conséquence si infirmée |
-|---|---|---|---|
-| P-02 | H1 — activation (préparation) | ≥ 60 % de la cohorte, 14 jours. *Nuance (décision produit du 2026-07-09) : le contenu d'un espace personnel sans campagne ne compte que **partiellement** dans cette activation, s'il traduit un **geste structurant** ; seuil exact `[À TRANCHER — métrique produit]`.* | Activation de base compromise |
-| P-03 | **H2 — vue de session (hypothèse centrale)** | ≥ 50 % à l'activation, répétabilité ≥ 50 % sur deux sessions ou plus, 30 et 60 jours | **Invalidation de la proposition de valeur du produit dans son ensemble** — seule classe de conséquence de niveau "critique" de ce registre |
-| P-04 | H3 — fluidité du partage | ≥ 40 %, 60 jours | Affaiblissement du vecteur de croissance et de différenciation |
-| P-05 | H4 — accès joueur sans compte | ≥ 70 %, 60 jours | Un frein à l'entrée du joueur invité compromet l'adoption du groupe entier |
-| P-06 | H5 — conversion local vers compte | ≥ 10 %, 90 jours | Limite l'échelle de conversion, sans remettre en cause la valeur en usage local |
-
-### 2.4 Vue des points de décision (go/no-go)
-
-| Identifiant | Point de décision | Classe de conséquence | Vérifiabilité |
-|---|---|---|---|
-| P-01 | Décision marché — avant le build lourd (cloud, migration, partage temps réel) | Engage le capital du build lourd ; un no-go arrête la phase cloud, pas le socle local | `[NON-VÉRIFIABLE-EN-BUILD]` — décision produit sur interprétation de télémétrie |
-| J-01 | Validation juridique EU — validation pré-lancement sur 5 axes RGPD | Bloque le lancement commercial dans l'Union européenne, pas le build technique | `[NON-VÉRIFIABLE-EN-BUILD]` — dépend d'un avis juriste externe |
-
-La validation juridique EU est un **indicateur agrégé** des questions ouvertes J-02 à J-05 et de la facette RGPD du risque de reprise de compte fédérée (voir T-04) — il ne s'additionne pas à ces entrées dans une synthèse de criticité, il les enveloppe.
-
-### 2.5 Points à ratifier, dettes majeures et questions ouvertes à lacune réelle
-
-| Catégorie | Identifiant | Point |
-|---|---|---|
-| À ratifier par le responsable produit | T-04 | Reclaim-in-place (identité fédérée reprenant une coquille de compte non vérifiée) |
-| Résolu, résiduel à confirmer | D-01 | Double référent de nomenclature de jalon — **résolu** (axe canonique J0-J3 ratifié — décision produit, 2026-09-01) ; ancrage inféré `P0.5` résiduel, à confirmer |
-| Dette majeure (résiduel non abaissé) | D-07 | Compression du calendrier de build, charge concentrée en amont |
-| Dette majeure (résiduel non abaissé) | P-07 | Apprentissage produit non isolé, couplé à P-08 |
-| Question ouverte à lacune réelle | J-15 | Catégories particulières de données (article 9 RGPD) incidentes, non évaluées |
-| Question ouverte à lacune réelle | J-16 | Procédure de notification de violation de données non actée |
-| Question ouverte à lacune réelle | J-12 | Méthode de vérification d'identité des invités non retenue |
-
-Ces trois questions ouvertes juridiques se distinguent des quatorze autres de l'axe juridique par l'absence de toute mesure actée dans le corpus, même provisoire — les autres portent au moins une posture ou un squelette en attente de confirmation.
-
-`[À TRANCHER — COMITÉ DES RISQUES]` Cette frontière est un jugement de degré, pas une ligne nette, pour **J-12** : son entrée (§3.3) porte « un principe de proportionnalité posé », structurellement comparable aux postures jugées suffisantes ailleurs sur l'axe juridique (par exemple J-04, « des bases légales par défaut sont posées »). **J-15** et **J-16**, eux, ne portent clairement aucune posture. Ce registre ne tranche pas si J-12 relève de la « lacune réelle » ou de la « posture existante » — la question est signalée ici pour statuer en comité des risques, sans reclassement de J-12 par ce registre.
-
----
-
-## 3. Registre détaillé par axe
+## 3. Registre des risques
 
 Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-`), conservé depuis la version précédente du registre.
 
@@ -1087,6 +1014,82 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Échéance** : hors jalon de build, avant le lancement.
 - **Confiance** : sous réserve.
 - **Source** : roadmap d'entrée en build.
+
+---
+
+## 2. Vues de synthèse
+
+### 2.1 Matrice de criticité inhérente (risques uniquement)
+
+Seules les 32 entrées de type `risque` figurent sur cette matrice. Les 37 autres entrées (hypothèses, points de décision, dettes, questions ouvertes) sont présentées dans leurs vues dédiées ci-dessous.
+
+| Probabilité \ Impact | Mineur | Modéré | Majeur | Critique |
+|---|---|---|---|---|
+| **Quasi-certaine** | — | D-01 | T-01, D-02 | — |
+| **Élevée** | — | T-14 | T-02, T-05, T-07, T-16, P-08, P-14, D-03 | — |
+| **Modérée** | T-06, T-29 | T-03, T-12, T-15, T-19, T-25, D-04, D-05 | T-04, T-10 | — |
+| **Faible** | T-09 | T-08, T-11, T-13, T-17, T-28, D-08 | T-23, T-24, T-26 | — |
+
+Aucune entrée n'atteint la colonne "Critique" (voir plafond observé, §1.3). Ce plafond ne vaut que pour les entrées de type `risque` portées par cette matrice : le registre porte par ailleurs un unique impact de niveau critique, celui de l'hypothèse centrale H2 (P-03) — hors matrice par construction, puisqu'une `hypothèse` n'est pas cotée en probabilité (§1.1). Voir la vue Hypothèses (§2.3).
+
+### 2.2 Top risques (criticité inhérente Élevée ou Très élevée)
+
+Table exhaustive : les 13 entrées de type `risque` dont la criticité inhérente est de bande Élevée (score 6 à 9) ou Très élevée (score 12 à 16) — voir §1.2 pour les bandes. Règle d'inclusion uniforme : même score de criticité inhérente → même rang (ex. T-04, T-10 et T-14 partagent le score 6 et le rang 11). La colonne Dimension dominante reprend le descripteur porté par chaque entrée en section 3, et permet le filtrage par dimension annoncé en §1.3 (par exemple, ne retenir que les entrées à dominante « Conformité RGPD »).
+
+| Rang | Identifiant | Intitulé | Dimension dominante | Criticité inhérente | Criticité résiduelle cible |
+|---|---|---|---|---|---|
+| 1 | T-01 | `navigator.storage.persist()` non résolu avant le socle local | Valeur produit | Très élevée | Moyenne |
+| 1 | D-02 | Stabilisation du socle et confirmation des décisions d'architecture pré-implémentation | Coût & délai | Très élevée | Moyenne |
+| 3 | T-02 | Promotion de colonnes préalable au cloud (identifiants de personnage / d'accès invité) | Sécurité & données personnelles | Élevée | Faible |
+| 3 | T-05 | Câblage de l'autorisation, test d'architecture et frontières logiques de contexte | Sécurité & données personnelles | Élevée | Moyenne |
+| 3 | T-07 | Cascade d'effacement RGPD : complexité du graphe et reprise après incident | Conformité RGPD | Élevée | Moyenne |
+| 3 | T-16 | Filtres de requête (soft-delete par jointure) non arbitrés | Conformité RGPD | Élevée | Moyenne |
+| 3 | P-08 | Instrumentation d'activation non opérationnalisable en l'état | Valeur produit | Élevée | Moyenne |
+| 3 | P-14 | Dépendance à la cohorte pilote non traitée | Valeur produit | Élevée | Moyenne |
+| 3 | D-03 | Dépendance cumulative socle local stable et décision marché favorable | Coût & délai | Élevée | Moyenne |
+| 10 | D-01 | Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel) | Coût & délai | Élevée | Moyenne |
+| 11 | T-04 | Reclaim-in-place non ratifié `[À RATIFIER PRODUIT]` | Sécurité & données personnelles | Élevée | Moyenne |
+| 11 | T-10 | Valeurs de seuils de limitation de débit non fixées | Sécurité & données personnelles | Élevée | Moyenne |
+| 11 | T-14 | Schéma de propriétés des types de document système non modélisé | Coût & délai | Élevée | Élevée (aucune mitigation actée) |
+
+T-14 n'est pas un cas isolé : 15 autres entrées de type `risque` partagent la même caractéristique — une criticité résiduelle qui reste au niveau de l'inhérente faute de mitigation actée abaissant le score (T-03, T-06, T-08, T-09, T-11, T-12, T-13, T-15, T-17, T-19, T-24, T-25, T-28, T-29, D-08) —, soit 16 entrées sur les 32 que compte la matrice des risques (§2.1). Aucune de ces 15 autres n'atteint la bande Élevée ou Très élevée (elles restent en bande Faible ou Moyenne), ce qui explique qu'elles ne figurent pas dans la table ci-dessus ; seule T-14 cumule bande Élevée et résiduelle non abaissée.
+
+### 2.3 Vue Hypothèses de validation
+
+Cinq hypothèses de validation produit (H1 à H5), aucune n'est cotée en probabilité — voir typologie §1.1. Toutes portent l'échéance "décision marché" et le propriétaire "responsable produit".
+
+| Identifiant | Hypothèse | Seuil et délai | Classe de conséquence si infirmée |
+|---|---|---|---|
+| P-02 | H1 — activation (préparation) | ≥ 60 % de la cohorte, 14 jours. *Nuance (décision produit du 2026-07-09) : le contenu d'un espace personnel sans campagne ne compte que **partiellement** dans cette activation, s'il traduit un **geste structurant** ; seuil exact `[À TRANCHER — métrique produit]`.* | Activation de base compromise |
+| P-03 | **H2 — vue de session (hypothèse centrale)** | ≥ 50 % à l'activation, répétabilité ≥ 50 % sur deux sessions ou plus, 30 et 60 jours | **Invalidation de la proposition de valeur du produit dans son ensemble** — seule classe de conséquence de niveau "critique" de ce registre |
+| P-04 | H3 — fluidité du partage | ≥ 40 %, 60 jours | Affaiblissement du vecteur de croissance et de différenciation |
+| P-05 | H4 — accès joueur sans compte | ≥ 70 %, 60 jours | Un frein à l'entrée du joueur invité compromet l'adoption du groupe entier |
+| P-06 | H5 — conversion local vers compte | ≥ 10 %, 90 jours | Limite l'échelle de conversion, sans remettre en cause la valeur en usage local |
+
+### 2.4 Vue des points de décision (go/no-go)
+
+| Identifiant | Point de décision | Classe de conséquence | Vérifiabilité |
+|---|---|---|---|
+| P-01 | Décision marché — avant le build lourd (cloud, migration, partage temps réel) | Engage le capital du build lourd ; un no-go arrête la phase cloud, pas le socle local | `[NON-VÉRIFIABLE-EN-BUILD]` — décision produit sur interprétation de télémétrie |
+| J-01 | Validation juridique EU — validation pré-lancement sur 5 axes RGPD | Bloque le lancement commercial dans l'Union européenne, pas le build technique | `[NON-VÉRIFIABLE-EN-BUILD]` — dépend d'un avis juriste externe |
+
+La validation juridique EU est un **indicateur agrégé** des questions ouvertes J-02 à J-05 et de la facette RGPD du risque de reprise de compte fédérée (voir T-04) — il ne s'additionne pas à ces entrées dans une synthèse de criticité, il les enveloppe.
+
+### 2.5 Points à ratifier, dettes majeures et questions ouvertes à lacune réelle
+
+| Catégorie | Identifiant | Point |
+|---|---|---|
+| À ratifier par le responsable produit | T-04 | Reclaim-in-place (identité fédérée reprenant une coquille de compte non vérifiée) |
+| Résolu, résiduel à confirmer | D-01 | Double référent de nomenclature de jalon — **résolu** (axe canonique J0-J3 ratifié — décision produit, 2026-09-01) ; ancrage inféré `P0.5` résiduel, à confirmer |
+| Dette majeure (résiduel non abaissé) | D-07 | Compression du calendrier de build, charge concentrée en amont |
+| Dette majeure (résiduel non abaissé) | P-07 | Apprentissage produit non isolé, couplé à P-08 |
+| Question ouverte à lacune réelle | J-15 | Catégories particulières de données (article 9 RGPD) incidentes, non évaluées |
+| Question ouverte à lacune réelle | J-16 | Procédure de notification de violation de données non actée |
+| Question ouverte à lacune réelle | J-12 | Méthode de vérification d'identité des invités non retenue |
+
+Ces trois questions ouvertes juridiques se distinguent des quatorze autres de l'axe juridique par l'absence de toute mesure actée dans le corpus, même provisoire — les autres portent au moins une posture ou un squelette en attente de confirmation.
+
+`[À TRANCHER — COMITÉ DES RISQUES]` Cette frontière est un jugement de degré, pas une ligne nette, pour **J-12** : son entrée (§3.3) porte « un principe de proportionnalité posé », structurellement comparable aux postures jugées suffisantes ailleurs sur l'axe juridique (par exemple J-04, « des bases légales par défaut sont posées »). **J-15** et **J-16**, eux, ne portent clairement aucune posture. Ce registre ne tranche pas si J-12 relève de la « lacune réelle » ou de la « posture existante » — la question est signalée ici pour statuer en comité des risques, sans reclassement de J-12 par ce registre.
 
 ---
 

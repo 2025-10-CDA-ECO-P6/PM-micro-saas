@@ -1,4 +1,7 @@
-# Revue produit du plan de travail — Haversack
+# Revue — Revue produit du plan de travail
+
+- **Date** : 2026-09-03
+- **Nature** : Justification : cette revue ne tranche rien et n'est jamais citée comme source. Chaque chiffre porte la commande qui l'a mesuré et sa date.
 
 | Champ | Valeur |
 |---|---|
@@ -10,7 +13,7 @@
 
 ---
 
-## Bandeau de cadrage — ce que cette revue fait et ne fait pas
+## Périmètre revu
 
 Ce document **juge** un découpage déjà écrit et **propose** son remplacement. Il ne modifie rien : le plan de travail
 reste, à la date de cette revue, inchangé et seul opposable. Il ne redéfinit ni le périmètre MoSCoW
@@ -62,7 +65,7 @@ conclut et recommande.
 > - **En §5.3, le passage affirmant que le document est « touché »**. Exacte — la méthode de ticket a bien été modifiée.
 > - **En §6, dans la sous-section « Ajustements de règle »**, la recommandation énoncée comme « Remplacer l'axe « par couche »… ». Elle énonce ce que la revue **a recommandé** — de la même forme que celle portée en §3.10 (« Ce que la version par couche **garantissait** mieux ») : le passé, parce que la revue l'a énoncée avant la décision. Elle recommandait « par agrégat ». L'arbitrage a retenu « par nature de tranche » — une recommandation écartée. Historiquement exacte ; le passage demeure un témoin de cette recommandation.
 
-## 1. Comment cette revue a été établie
+## 1. Mesures
 
 Le dépôt n'a ni build, ni suite de tests, ni analyseur de code : toute vérification y est mécanique et construite
 pour l'occasion. Chaque constat de la §2 porte la commande qui l'établit, exécutable telle quelle depuis la racine
@@ -84,9 +87,14 @@ zéro renvoi à ancre inexistante, zéro fichier orphelin, zéro bloc de code d�
   n'était pas une anomalie du corpus mais une lecture trop naïve de l'instrument — le corpus, lui, dit exactement ce
   qu'il en est.
 
+
+| Chiffre | Commande | Mesuré le | Valeur |
+|---|---|---|---|
+| [SOUS-SPÉCIFIÉ — non tabulé dans la revue] | [SOUS-SPÉCIFIÉ — non tabulé dans la revue] | [SOUS-SPÉCIFIÉ — non tabulé dans la revue] | [SOUS-SPÉCIFIÉ — non tabulé dans la revue] |
+
 ---
 
-## 2. Ce que la mesure établit
+## 2. Constats
 
 ### 2.1 Le graphe sature à trois — au-delà, une personne de plus n'ouvre rien
 

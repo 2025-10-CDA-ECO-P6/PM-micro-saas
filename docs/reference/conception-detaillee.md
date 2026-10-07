@@ -1,14 +1,12 @@
-# Dossier de conception détaillée — Haversack (MVP)
-
-## Métadonnées
+# Conception détaillée
 
 | Champ | Valeur |
 |---|---|
 | Version | 1.0 |
 | Date | 2026-07-16 |
 | Statut | Version de travail — consolidation dérivée du corpus de conception ; ne tranche aucune décision. Points ouverts et limites de vérifiabilité recensés en §8, à traiter à l'entrée en build. |
-| Porteur / responsable du document | Pierre-Marie Marchio |
-| Validation / approbation | Pierre-Marie Marchio |
+| Porteur | Pierre-Marie Marchio |
+| Validation | Pierre-Marie Marchio |
 
 ### Historique des révisions
 
@@ -17,6 +15,8 @@
 | 1.0 | 2026-07-16 | Pierre-Marie Marchio | Rédaction initiale — consolidation relationnelle du corpus de conception (architecture, décisions, specs, domaine) |
 
 ## Nature et portée du document
+
+Consolidation : elle décrit les relations et dépendances entre décisions et ne tranche rien qu'une source ne fixe déjà. Une unité n'est admise que si elle relie au moins deux sources.
 
 Ce document **consolide et renvoie** — il ne tranche rien qui ne soit déjà tranché ailleurs. Sa valeur n'est pas de réénoncer les décisions actées dans les ADR, les specs ou le domaine, mais de porter les **relations et dépendances** entre elles : ce qui, dans une décision, en présuppose une autre, la raffine, ou la contraint. En cas de divergence apparente avec une source citée (ADR, spec, fichier de domaine), **la source fait autorité** — ce document est corrigé en conséquence, jamais l'inverse.
 
@@ -31,46 +31,47 @@ Ce document n'est **ni une nouvelle décision de conception, ni une décision d'
   - [Fidélité de consolidation — pas de re-décision](#fidélité-de-consolidation--pas-de-re-décision)
   - [Nommage des jalons dans ce dossier](#nommage-des-jalons-dans-ce-dossier)
   - [Comment lire ce document](#comment-lire-ce-document)
-- [1 — Socle transverse](#1--socle-transverse)
+- [1. Socle transverse](#1-socle-transverse)
   - [1.1 — Clean Architecture et quatre bounded contexts](#11--clean-architecture-et-quatre-bounded-contexts)
   - [1.2 — Pattern « tout est Document » et gouvernance de `properties`](#12--pattern--tout-est-document--et-gouvernance-de-properties)
   - [1.3 — Généralisation de `Space` et type `PERSONAL`](#13--généralisation-de-space-et-type-personal)
   - [1.4 — Contexte Core (Shared Kernel)](#14--contexte-core-shared-kernel)
-- [2 — Relations transverses](#2--relations-transverses)
+- [2. Relations transverses](#2-relations-transverses)
   - [2.1 — Cascade RGPD de `Space.Delete()` et purge différée *(chaîne canonique)*](#21--cascade-rgpd-de-spacedelete-et-purge-différée-chaîne-canonique)
   - [2.2 — Effacement de compte : routage de cascade différencié par type d'espace (`UserAnonymized`)](#22--effacement-de-compte--routage-de-cascade-différencié-par-type-despace-useranonymized)
   - [2.3 — Modèle d'autorisation composé P1 + P4 : non-divergence REST / SignalR](#23--modèle-dautorisation-composé-p1--p4--non-divergence-rest--signalr)
   - [2.4 — Frontière local ↔ cloud : migration one-shot et contrat de sérialisation](#24--frontière-local--cloud--migration-one-shot-et-contrat-de-sérialisation)
-- [3 — Identity & Access](#3--identity--access)
+- [3. Contexte Identity & Access](#3-contexte-identity--access)
   - [3.1 — UC-01 : absence d'authentification en mode local](#31--uc-01--absence-dauthentification-en-mode-local)
   - [3.2 — UC-10 : compte, opérations sensibles, cascade d'effacement](#32--uc-10--compte-opérations-sensibles-cascade-deffacement)
   - [3.3 — UC-11 (facette Identity & Access) : création de compte à la conversion d'un invité](#33--uc-11-facette-identity--access--création-de-compte-à-la-conversion-dun-invité)
-- [4 — Space Management](#4--space-management)
+- [4. Contexte Space Management](#4-contexte-space-management)
   - [4.1 — UC-02 : création d'espace et espace `PERSONAL` automatique](#41--uc-02--création-despace-et-espace-personal-automatique)
   - [4.2 — UC-11 / UC-09 : cycle d'invitation, `GuestAccess`, conversion en membre](#42--uc-11--uc-09--cycle-dinvitation-guestaccess-conversion-en-membre)
   - [4.3 — UC-15 : gel et dégel au changement de tier](#43--uc-15--gel-et-dégel-au-changement-de-tier)
   - [4.4 — Suppression d'espace (flux transverse)](#44--suppression-despace-flux-transverse)
   - [4.5 — Modèle du principal et appartenance P1 (flux transverse)](#45--modèle-du-principal-et-appartenance-p1-flux-transverse)
-- [5 — Content Library](#5--content-library)
+- [5. Contexte Content Library](#5-contexte-content-library)
   - [5.1 — UC-03 / UC-04 : cycle de vie du `Document`](#51--uc-03--uc-04--cycle-de-vie-du-document)
   - [5.2 — UC-04 / UC-08 : partage permanent d'un document](#52--uc-04--uc-08--partage-permanent-dun-document)
   - [5.3 — UC-13 : réutilisabilité (template → instance)](#53--uc-13--réutilisabilité-template--instance)
   - [5.4 — UC-05 : dossiers système conditionnels au type d'espace](#54--uc-05--dossiers-système-conditionnels-au-type-despace)
   - [5.5 — UC-04 / UC-14 : gouvernance de `properties` et visibilité domaine (P4)](#55--uc-04--uc-14--gouvernance-de-properties-et-visibilité-domaine-p4)
-- [6 — Session Conduct](#6--session-conduct)
+- [6. Contexte Session Conduct](#6-contexte-session-conduct)
   - [6.1 — UC-06 : machine d'états de session](#61--uc-06--machine-détats-de-session)
   - [6.2 — UC-07 : création à la volée — routage `PinDocument`/`AttachNote`](#62--uc-07--création-à-la-volée--routage-pindocumentattachnote)
   - [6.3 — UC-06 : tableau de bord configurable](#63--uc-06--tableau-de-bord-configurable)
   - [6.4 — UC-08 / UC-09 / UC-12 : diffusion temps réel (flux transverse)](#64--uc-08--uc-09--uc-12--diffusion-temps-réel-flux-transverse)
   - [6.5 — UC-09 : scope `GuestAccess SESSION`](#65--uc-09--scope-guestaccess-session)
-- [7 — Authentification cloud et temps réel](#7--authentification-cloud-et-temps-réel)
+- [7. Authentification cloud et temps réel](#7-authentification-cloud-et-temps-réel)
   - [7.a — Cycle de vie de l'authentification cloud (rotation, denylist, raccordement domaine)](#7a--cycle-de-vie-de-lauthentification-cloud-rotation-denylist-raccordement-domaine)
   - [7.b — Transport temps réel et repli](#7b--transport-temps-réel-et-repli)
-- [8 — Points ouverts et limites de vérifiabilité](#8--points-ouverts-et-limites-de-vérifiabilité)
+- [8. Points ouverts et limites de vérifiabilité](#8-points-ouverts-et-limites-de-vérifiabilité)
   - [8.1 — Registre des `[À TRANCHER]`](#81--registre-des-à-trancher)
   - [8.2 — Renvoi juridique](#82--renvoi-juridique)
   - [8.3 — Limites de vérifiabilité en build](#83--limites-de-vérifiabilité-en-build)
-- [Sources et références](#sources-et-références)
+- [9. Traçabilité](#9-traçabilité)
+- [10. Sources](#10-sources)
 
 ## Résumé exécutif
 
@@ -125,7 +126,7 @@ Trois renvois structurants pour situer ce dossier dans le corpus :
 - **Registre des décisions** (statut, nature, date de chaque ADR) → [decisions/README.md](../decisions/README.md).
 - **Découverte pédagogique** (ordre de lecture conseillé pour qui rejoint le projet) → [architecture/README.md](../architecture/README.md).
 
-## 1 — Socle transverse
+## 1. Socle transverse
 
 ### 1.1 — Clean Architecture et quatre bounded contexts
 
@@ -160,7 +161,7 @@ Le Core porte les briques transverses stables aux quatre bounded contexts : les 
 
 ---
 
-## 2 — Relations transverses
+## 2. Relations transverses
 
 Cette section porte quatre chaînes de décisions qui traversent plusieurs modules et qui, aujourd'hui, ne sont lisibles qu'en recomposant plusieurs fichiers. Chacune est enracinée sur un besoin porté par les use cases ; les ADR et specs cités précisent le mécanisme, ils ne le fondent pas. Les diagrammes ci-dessous sont des **vues de consolidation** — ils composent des décisions de plusieurs sources en une lecture unique et renvoient, quand ils existent, aux diagrammes de flux détaillés par module.
 
@@ -380,7 +381,7 @@ sequenceDiagram
 | Sanitisation XSS client + serveur | ADR-016 §2.4 ; ADR-017 §4.1, §4.3 ; sanitisation-csp.md | Plancher symétrique liste blanche positive, deux côtés de la frontière |
 | `PERSONAL` inclus dans le périmètre migré | ADR-016 §1.2 ; ADR-018 | Même traitement transactionnel que les espaces partagés ; même type traversant les chaînes 2.1/2.2 |
 
-## 3 — Identity & Access
+## 3. Contexte Identity & Access
 
 Ce module couvre trois use cases : [UC-01](../besoin/cas-d-utilisation/UC-01-mode-local-sans-compte.md) (mode local — en creux, Identity & Access n'y intervient pas), [UC-10](../besoin/cas-d-utilisation/UC-10-compte-cloud.md) (création de compte, connexion, opérations sensibles, effacement) et [UC-11](../besoin/cas-d-utilisation/UC-11-gerer-membres-espace-partage.md) (dont la facette « conversion d'un invité en compte » touche Identity & Access côté création du `User`). Deux des flux ci-dessous (3.b, 3.c) sont inter-modules ou transverses : ils renvoient à leur composition complète en §2 plutôt que d'être re-dessinés.
 
@@ -491,7 +492,7 @@ Quand un invité sans compte crée un compte pour rejoindre une campagne de faç
 
 ---
 
-## 4 — Space Management
+## 4. Contexte Space Management
 
 Ce module couvre cinq use cases : [UC-02](../besoin/cas-d-utilisation/UC-02-creer-espace-jeu.md) (créer un espace), [UC-11](../besoin/cas-d-utilisation/UC-11-gerer-membres-espace-partage.md) (gérer les membres), [UC-09](../besoin/cas-d-utilisation/UC-09-acces-session-joueur.md) (accès invité `GuestAccess`), [UC-12](../besoin/cas-d-utilisation/UC-12-consulter-espace-joueur.md) (vue joueur post-accès) et [UC-15](../besoin/cas-d-utilisation/UC-15-gel-espaces-downgrade-tier.md) (gel/dégel au changement de tier — **Post-MVP (spécifiés)**, classement arbitré, voir `moscow.md` §UC-15). Deux des points ci-dessous (4.d, 4.e) sont transverses et renvoient à leur composition complète en §2.
 
@@ -619,7 +620,7 @@ sequenceDiagram
 
 > Vue de consolidation. Diagramme de flux détaillé : [flows/space-management.md](../domaine/space-management/flows.md).
 
-**Règles de gestion consolidées.** UC-15 ratifie la règle 6 (gel des espaces excédentaires, ordre du plus récent au plus ancien, espace `PERSONAL` jamais compté — invariant 15) et la règle 11 (dégel dans la limite du quota du tier cible, garde exprimée relativement plutôt qu'inconditionnellement pour rester correcte si un tier intermédiaire est introduit). Le quota chiffré lui-même n'est ni fixé ni répété ici : UC-15 § Contexte renvoie explicitement à « vision-produit.md §3 / cahier-des-charges.md §12.4 (quota consolidé, valeur volatile) » et signale qu'[ADR-005](../decisions/ADR-005-modele-monetisation.md) n'en est plus l'autorité — cet ADR porte lui-même la mention « décision produit — fusionnée … 2026-06-10 » en en-tête. Recopier la valeur ici violerait la discipline de fidélité de consolidation (borne normative non recopiée comme propre à ce dossier).
+**Règles de gestion consolidées.** UC-15 ratifie la règle 6 (gel des espaces excédentaires, ordre du plus récent au plus ancien, espace `PERSONAL` jamais compté — invariant 15) et la règle 11 (dégel dans la limite du quota du tier cible, garde exprimée relativement plutôt qu'inconditionnellement pour rester correcte si un tier intermédiaire est introduit). Le quota chiffré lui-même n'est ni fixé ni répété ici : UC-15 § Contexte renvoie explicitement à « vision-produit.md §3 / cahier-des-charges.md annexe « Valeurs de référence chiffrées » (quota consolidé, valeur volatile) » et signale qu'[ADR-005](../decisions/ADR-005-modele-monetisation.md) n'en est plus l'autorité — cet ADR porte lui-même la mention « décision produit — fusionnée … 2026-06-10 » en en-tête. Recopier la valeur ici violerait la discipline de fidélité de consolidation (borne normative non recopiée comme propre à ce dossier).
 
 **`[À TRANCHER — ordre de dégel multi-tier]` reporté** : l'ordre de dégel lorsque le quota du tier cible est borné et inférieur au nombre d'espaces `FROZEN` (cas d'un futur tier intermédiaire) « n'est pas fixé au MVP » (space-management.md règle métier 11) — non pertinent tant que le tier reste binaire (PRO illimité), non comblé ici.
 
@@ -646,7 +647,7 @@ Space Management est la **racine** de la cascade RGPD de suppression d'espace : 
 
 Côté Space Management, le prédicat d'appartenance P1 (membre `ACTIVE` ou `GuestAccess` actif dont le scope inclut la ressource) se lit directement dans les données que ce module possède — `space_memberships`, `guest_accesses` — et la matrice ressource → règle d'appartenance (ADR-014 §4) n'est pas re-détaillée ici : elle est composée avec le prédicat de visibilité domaine P4 (Content Library) dans le service unique `IResourceAccessPolicy`, dont la composition complète (modèle du principal, service centralisé, non-divergence REST/SignalR) est développée en **§2.3**. Ce paragraphe n'en pose que le point d'ancrage côté Space Management, sans redessiner le diagramme ni reproduire le tableau des maillons.
 
-## 5 — Content Library
+## 5. Contexte Content Library
 
 Ce module couvre cinq use cases : [UC-03](../besoin/cas-d-utilisation/UC-03-structurer-scenario.md) (structurer un scénario), [UC-04](../besoin/cas-d-utilisation/UC-04-gerer-documents-espace.md) (gérer les documents), [UC-05](../besoin/cas-d-utilisation/UC-05-organiser-dossiers.md) (organiser par dossiers), [UC-13](../besoin/cas-d-utilisation/UC-13-scenario-reutilisable.md) (scénario réutilisable) et [UC-14](../besoin/cas-d-utilisation/UC-14-recherche.md) (recherche). Un volet du point 5.e (visibilité domaine `Document.CanBeReadBy`, P4) est transverse et renvoie à sa composition complète en §2.3.
 
@@ -818,7 +819,7 @@ La gouvernance du champ `properties` — value object `DocumentProperties`, deux
 | Recherche titre-seul (`properties` non indexées) | UC-14 § Données manipulées ; ADR-002 § Conséquences (finding CR-5) | Conséquence de la gouvernance §1.2 |
 | 6 types système sans `propertiesSchema` modélisé | `specs/document-properties-schemas.md` §5 ; content-library.md (absence de section dédiée) | `[À TRANCHER — modélisation domaine]` reporté |
 
-## 6 — Session Conduct
+## 6. Contexte Session Conduct
 
 Ce module couvre cinq use cases : [UC-06](../besoin/cas-d-utilisation/UC-06-vue-session.md) (vue session), [UC-07](../besoin/cas-d-utilisation/UC-07-creation-volee-session.md) (création à la volée), [UC-08](../besoin/cas-d-utilisation/UC-08-partager-information.md) (partage), [UC-09](../besoin/cas-d-utilisation/UC-09-acces-session-joueur.md) (temps réel joueur) et [UC-12](../besoin/cas-d-utilisation/UC-12-consulter-espace-joueur.md) (vue joueur). Le point 6.d est transverse et renvoie à sa composition complète en §2.3, avec un renvoi complémentaire à §7 pour le transport temps réel.
 
@@ -962,7 +963,7 @@ session-conduct.md règle métier 2 pose, côté session, que l'accès d'un joue
 | Déclencheur du countdown — `Session.Close()` | session-conduct.md règle métier 6 | Point de départ observable de la fenêtre |
 | Scope `SESSION` restreint à `guest_accesses.session_id` | ADR-014 §4 (matrice ressource) | Renvoi §2.3/§4.e, non répété |
 
-## 7 — Authentification cloud et temps réel
+## 7. Authentification cloud et temps réel
 
 Ce module couvre le cycle de vie de l'authentification cloud (renvoi §3, non redéveloppé) et le transport temps réel annoncé en **§6.4** pour la diffusion SignalR. Deux points transverses composent ici des décisions déjà posées ailleurs dans ce dossier, sans les re-trancher.
 
@@ -1048,7 +1049,7 @@ Ce cadre n'est, par la qualification de sa propre source, **pas implémentable e
 
 ---
 
-## 8 — Points ouverts et limites de vérifiabilité
+## 8. Points ouverts et limites de vérifiabilité
 
 Cette section consolide, en un registre unique, les points non tranchés déjà reportés ailleurs dans ce dossier ainsi que ceux du corpus source non encore listés. Elle ne tranche aucun de ces points — chacun reste à l'état où sa source l'a laissé.
 
@@ -1088,7 +1089,27 @@ Les propriétés suivantes du système cible ne sont pas vérifiables par test o
 
 ---
 
-## Sources et références
+## 9. Traçabilité
+
+| Section | Sources |
+|---|---|
+| Nature et portée du document | [registre ADR](../decisions/README.md), [index d'architecture](../architecture/README.md), [architecture-detaillee.md](../architecture/transverse.md) |
+| Sommaire | SOUS-SPÉCIFIÉ |
+| Résumé exécutif | décisions d'architecture (ADR), spécifications techniques, modèle de domaine |
+| Conventions de lecture | [docs/reference/ordre-d-autorite.md](ordre-d-autorite.md), [docs/domaine/README.md](../domaine/README.md), [docs/domaine/\<contexte\>/flows.md](../domaine/), [architecture-detaillee.md](../architecture/transverse.md), [decisions/README.md](../decisions/README.md), [architecture/README.md](../architecture/README.md) |
+| 1. Socle transverse | ADR-002, ADR-007, ADR-008, ADR-018, specs/document-properties-schemas.md, docs/domaine/README.md, docs/domaine/core/kernel.md, docs/domaine/space-management/context.md, docs/domaine/content-library/context.md, docs/domaine/session-conduct/context.md, structure-projets.md |
+| 2. Relations transverses | ADR-001, ADR-002, ADR-004, ADR-007, ADR-010, ADR-011, ADR-012, ADR-014, ADR-016, ADR-017, ADR-018, specs/contrat-openapi.md, specs/mapping-ef-core.md, specs/requete-effacement-non-partage.md, specs/sanitisation-csp.md, docs/domaine/core/kernel.md, docs/domaine/identity-access/context.md, docs/domaine/space-management/context.md, docs/domaine/content-library/context.md, docs/domaine/session-conduct/context.md |
+| 3. Contexte Identity & Access | ADR-001, ADR-005, ADR-013, ADR-014, ADR-015, ADR-018, specs/contrat-openapi.md, docs/domaine/identity-access/context.md, docs/domaine/identity-access/flows.md |
+| 4. Contexte Space Management | ADR-005, ADR-010, ADR-013, ADR-014, ADR-018, specs/contrat-openapi.md, specs/mapping-ef-core.md, docs/domaine/identity-access/context.md, docs/domaine/space-management/context.md, docs/domaine/space-management/flows.md |
+| 5. Contexte Content Library | ADR-002, ADR-014, ADR-018, specs/contrat-openapi.md, specs/document-properties-schemas.md, docs/domaine/content-library/context.md, docs/domaine/content-library/flows.md |
+| 6. Contexte Session Conduct | ADR-002, docs/domaine/space-management/context.md, docs/domaine/content-library/context.md, docs/domaine/session-conduct/context.md, docs/domaine/session-conduct/flows.md |
+| 7. Authentification cloud et temps réel | ADR-004, ADR-008, ADR-011, ADR-015, specs/contrat-openapi.md, specs/repli-temps-reel.md, specs/config-securite-migration.md, docs/domaine/identity-access/context.md |
+| 8. Points ouverts et limites de vérifiabilité | specs/telemetrie.md, specs/repli-temps-reel.md, docs/assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md |
+| 10. Sources | l'ensemble des sources citées dans ce dossier |
+
+---
+
+## 10. Sources
 
 Ce tableau recense, par famille, l'ensemble des sources citées dans ce dossier. Les chemins sont relatifs à `docs/architecture/`, à l'exception des sources situées ailleurs dans le corpus (chemins relatifs indiqués depuis `docs/architecture/`).
 

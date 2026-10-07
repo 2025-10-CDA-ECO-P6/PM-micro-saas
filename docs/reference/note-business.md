@@ -1,34 +1,52 @@
-# Note business — coût, marché & go-to-market (Haversack)
+# Note business
+
+| Champ | Valeur |
+|---|---|
+| Version | SOUS-SPÉCIFIÉ |
+| Date | 2026-09-02 |
+| Statut | SOUS-SPÉCIFIÉ |
+| Porteur | SOUS-SPÉCIFIÉ |
+| Validation | SOUS-SPÉCIFIÉ |
+
+### Historique des révisions
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
+## 1. Nature et portée du document
+
+Cadre de méthode : il fixe comment chiffrer le coût, dimensionner le marché et aller au marché, et ne tranche rien. Une valeur pas encore fournie est marquée à compléter.
 
 > **CADRE MÉTHODOLOGIQUE** — les valeurs chiffrées de coût et de marché sont différées (post-MVP / étude marché) ; ce document pose la méthode et les hypothèses, pas des chiffres définitifs.
 
 ---
 
-## Lecteur cible et usage de ce document
+## 2. Lecteur et usage
 
 Ce document s'adresse au **responsable produit** de Haversack — celui qui arbitre la trajectoire business (post-MVP, levée éventuelle, priorisation du plan d'étude marché). Il ne s'adresse pas à un exécutant technique : aucun artefact de code n'y figure, conformément à la phase de conception du repo.
 
-**Ce que ce document fait** : décomposer la méthode de calcul du coût infra, du dimensionnement de marché et de la stratégie go-to-market (GTM), en s'appuyant strictement sur le corpus de conception existant (ADR-005, cahier des charges §12.4/§2.4, vision produit, MoSCoW).
+**Ce que ce document fait** : décomposer la méthode de calcul du coût infra, du dimensionnement de marché et de la stratégie go-to-market (GTM), en s'appuyant strictement sur le corpus de conception existant (ADR-005, cahier des charges annexe « Valeurs de référence chiffrées »/§2.4, vision produit, MoSCoW).
 
 **Ce que ce document ne fait pas** : produire des chiffres de coût d'infrastructure, de taille de marché ou d'ARPU. Le corpus les diffère explicitement post-MVP (ADR-005, § Conséquences : *« Une note de coût d'infrastructure est à produire […] post-MVP »* ; *« Le dimensionnement du marché […] sont à instruire post-MVP »*). Toute valeur non présente dans le corpus est marquée `[À TRANCHER — donnée post-MVP / étude marché]` plutôt qu'estimée.
 
-**Entrées connues** (seules valeurs chiffrées disponibles à ce stade, consolidées et datées dans `docs/reference/cahier-des-charges.md` §12.4, arrêtées au 2026-07-02) :
+**Entrées connues** (seules valeurs chiffrées disponibles à ce stade, consolidées et datées dans `docs/reference/cahier-des-charges.md` annexe « Valeurs de référence chiffrées », arrêtées au 2026-07-02) :
 
 | Paramètre | Valeur connue | Source |
 |---|---|---|
-| Quota d'espaces `CAMPAIGN`/`ONE_SHOT` (palier gratuit) | 3 espaces | CdC §12.4 |
-| Espace personnel décompté du quota | Non | CdC §12.4 |
-| Joueurs par session (palier gratuit) | 4 joueurs distincts, MJ non compté | CdC §12.4 |
-| Stockage — palier local | Aucun quota produit (limite = appareil) | CdC §12.4 |
-| Stockage — palier gratuit | 500 Mo | CdC §12.4 |
-| Stockage — palier Pro | 5 Go et plus | CdC §12.4 |
-| Tarif — palier Pro | Environ 7 €/mois | CdC §12.4 |
+| Quota d'espaces `CAMPAIGN`/`ONE_SHOT` (palier gratuit) | 3 espaces | CdC annexe « Valeurs de référence chiffrées » |
+| Espace personnel décompté du quota | Non | CdC annexe « Valeurs de référence chiffrées » |
+| Joueurs par session (palier gratuit) | 4 joueurs distincts, MJ non compté | CdC annexe « Valeurs de référence chiffrées » |
+| Stockage — palier local | Aucun quota produit (limite = appareil) | CdC annexe « Valeurs de référence chiffrées » |
+| Stockage — palier gratuit | 500 Mo | CdC annexe « Valeurs de référence chiffrées » |
+| Stockage — palier Pro | 5 Go et plus | CdC annexe « Valeurs de référence chiffrées » |
+| Tarif — palier Pro | Environ 7 €/mois | CdC annexe « Valeurs de référence chiffrées » |
 
-Ces valeurs sont elles-mêmes qualifiées de **volatiles** par le corpus (CdC §12.4) — elles servent ici d'entrées de méthode, pas de constantes figées.
+Ces valeurs sont elles-mêmes qualifiées de **volatiles** par le corpus (CdC annexe « Valeurs de référence chiffrées ») — elles servent ici d'entrées de méthode, pas de constantes figées.
 
 ---
 
-## Volet 1 — Coût d'infrastructure & break-even
+## 3. Volet 1 — Coût d'infrastructure & break-even
 
 ### 1.1 Contexte et hypothèse de méthode
 
@@ -44,9 +62,9 @@ Les **drivers de coût** identifiables à partir de cette description fonctionne
 
 | Driver | Origine fonctionnelle | Nature du coût |
 |---|---|---|
-| Stockage cloud | Quota 500 Mo par utilisateur gratuit (CdC §12.4) | Coût de stockage à la volumétrie effectivement occupée (pas au quota alloué) |
+| Stockage cloud | Quota 500 Mo par utilisateur gratuit (CdC annexe « Valeurs de référence chiffrées ») | Coût de stockage à la volumétrie effectivement occupée (pas au quota alloué) |
 | Synchronisation cloud | UC-10 — migration locale→cloud, disponibilité multi-device | Coût de calcul/écriture à la fréquence de synchronisation |
-| Trafic de partage joueurs | UC-08/UC-09 — diffusion temps réel vers des joueurs sans compte | Coût de bande passante et de connexions concurrentes, fonction du nombre de joueurs actifs simultanés (borné à 4 par session, CdC §12.4) |
+| Trafic de partage joueurs | UC-08/UC-09 — diffusion temps réel vers des joueurs sans compte | Coût de bande passante et de connexions concurrentes, fonction du nombre de joueurs actifs simultanés (borné à 4 par session, CdC annexe « Valeurs de référence chiffrées ») |
 | Session temps réel | UC-06/UC-07 — vue de session, création à la volée | Coût de calcul/connexion pendant la durée de la session active |
 
 **Formule (méthode, pas de valeur)** :
@@ -62,12 +80,12 @@ Chaque terme de droite est `[À TRANCHER — mesure coût infra post-MVP]` : la 
 
 ### 1.3 Revenu net par utilisateur Pro
 
-Le palier Pro (CdC §2.4/§12.4) : tarif ≈ 7 €/mois, tout le gratuit en illimité, stockage 5 Go et plus, espaces illimités.
+Le palier Pro (CdC §2.4 et annexe « Valeurs de référence chiffrées ») : tarif ≈ 7 €/mois, tout le gratuit en illimité, stockage 5 Go et plus, espaces illimités.
 
 **Formule (méthode)** :
 
 ```
-Revenu_net_utilisateur_Pro = Tarif_Pro (≈ 7 €/mois, CdC §12.4)
+Revenu_net_utilisateur_Pro = Tarif_Pro (≈ 7 €/mois, CdC annexe « Valeurs de référence chiffrées »)
                             − Coût_infra_Pro(stockage 5 Go+, synchro, trafic de partage, sans plafond d'espaces)
 ```
 
@@ -94,13 +112,13 @@ Ou, en termes de ratio unitaire :
   N_Pro / N_gratuits ≥ Ratio_unitaire_break-even
 ```
 
-Interprétation attendue (à confirmer une fois les coûts unitaires connus) : ce ratio unitaire exprime, indépendamment du volume total d'utilisateurs, combien d'utilisateurs gratuits un utilisateur Pro peut financer. Le déclencheur d'upgrade Gratuit→Pro identifié par le corpus (CdC §2.4 : *« déclenché lorsque le MJ dépasse le quota de trois espaces actifs »*) est le seul signal de conversion actuellement instrumenté (H5, CdC §12.4) — il n'existe pas aujourd'hui de mesure de taux de conversion réel à insérer dans ce ratio.
+Interprétation attendue (à confirmer une fois les coûts unitaires connus) : ce ratio unitaire exprime, indépendamment du volume total d'utilisateurs, combien d'utilisateurs gratuits un utilisateur Pro peut financer. Le déclencheur d'upgrade Gratuit→Pro identifié par le corpus (CdC §2.4 : *« déclenché lorsque le MJ dépasse le quota de trois espaces actifs »*) est le seul signal de conversion actuellement instrumenté (H5, CdC annexe « Valeurs de référence chiffrées ») — il n'existe pas aujourd'hui de mesure de taux de conversion réel à insérer dans ce ratio.
 
 **Valeurs manquantes pour appliquer ce ratio** : `Coût_utilisateur_gratuit`, `Coût_infra_Pro`, et le taux de conversion réel gratuit→Pro observé — `[À TRANCHER — mesure coût infra post-MVP]`.
 
 ---
 
-## Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU)
+## 4. Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU)
 
 ### 2.1 Contexte et hypothèse de méthode
 
@@ -140,11 +158,11 @@ ADR-005 (§ Conséquences) diffère post-MVP le dimensionnement du marché (TAM/
 ARPU = (N_Pro × Tarif_Pro) / (N_Pro + N_gratuits)
 ```
 
-`Tarif_Pro` est connu (≈ 7 €/mois, CdC §12.4). `N_Pro`, `N_gratuits` et donc l'ARPU ne peuvent être posés qu'après observation réelle d'une cohorte (les seuils H1-H5, CdC §12.4, mesurent l'activation et la conversion locale→gratuit, pas encore gratuit→Pro à l'échelle) — `[À TRANCHER — étude marché / observation post-lancement]`.
+`Tarif_Pro` est connu (≈ 7 €/mois, CdC annexe « Valeurs de référence chiffrées »). `N_Pro`, `N_gratuits` et donc l'ARPU ne peuvent être posés qu'après observation réelle d'une cohorte (les seuils H1-H5, CdC annexe « Valeurs de référence chiffrées », mesurent l'activation et la conversion locale→gratuit, pas encore gratuit→Pro à l'échelle) — `[À TRANCHER — étude marché / observation post-lancement]`.
 
 ---
 
-## Volet 3 — Stratégie go-to-market
+## 5. Volet 3 — Stratégie go-to-market
 
 ### 3.1 Moteur d'adoption virale (dérivable du corpus)
 
@@ -179,7 +197,9 @@ Le corpus ne fixe pas de plan de canaux — finding **E-05** (ADR-005) est expli
 
 ---
 
-## Synthèse — ce qui reste à trancher post-MVP
+## 6. Ce qui reste à trancher
+
+*Synthèse — ce qui reste à trancher post-MVP*
 
 | Volet | Donnée manquante | Origine du différé |
 |---|---|---|
@@ -187,4 +207,17 @@ Le corpus ne fixe pas de plan de canaux — finding **E-05** (ADR-005) est expli
 | 2 — Marché | Taille TAM, taille SAM, ARPU observé | ADR-005, finding E-04 |
 | 3 — GTM | Plan de canaux et tactiques d'acquisition, périmètre géographique de lancement | ADR-005, finding E-05 |
 
-Aucune de ces données n'est estimée dans ce document : le corpus de conception ne les porte pas, et ADR-005 les qualifie explicitement de travail post-MVP. Ce document fournit la méthode et les entrées connues (CdC §12.4) nécessaires pour les instruire dès qu'une mesure de coût infra et une étude marché seront disponibles.
+Aucune de ces données n'est estimée dans ce document : le corpus de conception ne les porte pas, et ADR-005 les qualifie explicitement de travail post-MVP. Ce document fournit la méthode et les entrées connues (CdC annexe « Valeurs de référence chiffrées ») nécessaires pour les instruire dès qu'une mesure de coût infra et une étude marché seront disponibles.
+
+---
+
+## 7. Traçabilité
+
+| Section | Sources |
+|---|---|
+| 1. Nature et portée du document | SOUS-SPÉCIFIÉ |
+| 2. Lecteur et usage | ADR-005 ; cahier des charges annexe « Valeurs de référence chiffrées », §2.4 ; vision produit ; MoSCoW |
+| 3. Volet 1 — Coût d'infrastructure & break-even | ADR-005 (Décision, § Conséquences, finding E-02) ; cahier des charges §2.4, annexe « Valeurs de référence chiffrées » |
+| 4. Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU) | ADR-005 (§ Conséquences, findings E-04 et E-05) ; vision-produit.md §1, §4.1 ; cahier des charges annexe « Valeurs de référence chiffrées » |
+| 5. Volet 3 — Stratégie go-to-market | ADR-005 (Décision, § Compléments post-revue, finding E-05) ; vision-produit.md §2.2, §3, §5bis ; cahier des charges §2.4 ; moscow.md |
+| 6. Ce qui reste à trancher | ADR-005 (findings E-02, E-04, E-05) ; cahier des charges annexe « Valeurs de référence chiffrées » |

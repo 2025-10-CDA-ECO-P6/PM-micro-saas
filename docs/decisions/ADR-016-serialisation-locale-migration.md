@@ -273,4 +273,4 @@ Le gate de confirmation (§4) borne le risque d'appropriation sur poste partagé
 
 ## Compléments post-revue
 
-**§2.4 — liste des balises autorisées (2026-09-03).** La liste des balises que cet ADR renvoyait à B1.2 est sans objet depuis la décision d'entrée en build du 2026-09-03, inscrite au [guide de conventions, § 7](../projet/conventions-dod.md#7-conventions-de-sécurité-de-code) : le contenu d'un bloc est un arbre de nœuds typés, jamais du balisage. La bibliothèque de sanitisation côté serveur reste renvoyée à B1.2.
+**§2.4 — liste des balises autorisées (2026-09-03).** La liste des balises que cet ADR renvoyait à B1.2 est sans objet depuis la décision d'entrée en build du 2026-09-03, inscrite au [guide de conventions, § 7](../projet/conventions-dod.md#7-domaine-de-convention--conventions-de-sécurité-de-code) : le contenu d'un bloc est un arbre de nœuds typés, jamais du balisage. La bibliothèque de sanitisation côté serveur reste renvoyée à B1.2.

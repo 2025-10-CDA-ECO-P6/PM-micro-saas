@@ -1,8 +1,9 @@
-# Guide d'entrée par fonctionnalité — Haversack
+# Guide de lecture
 
-- **Statut** — Guide de renvoi dérivé du corpus de conception, d'architecture et de test.
-- **Audience** — Toute personne reprenant le projet sans connaître son auteur et sans pouvoir le joindre.
-- **Sources** — `docs/besoin/**`, `docs/domaine/**`, `docs/interface/**`, `docs/glossaire.md`, `docs/decisions/**`, `docs/architecture/specs/**`, `docs/assurance/strategie-de-test.md`, `docs/interface/ecrans/README.md`.
+> **Nature** : Document dérivé : chaque cellule de la seconde colonne est un renvoi, jamais un énoncé. Une cellule qui commence par « aucun » consigne une absence réelle.
+> **Statut** : Guide de renvoi dérivé du corpus de conception, d'architecture et de test.
+> **Audience** : Toute personne reprenant le projet sans connaître son auteur et sans pouvoir le joindre.
+> **Sources** : `docs/besoin/**`, `docs/domaine/**`, `docs/interface/**`, `docs/glossaire.md`, `docs/decisions/**`, `docs/architecture/specs/**`, `docs/assurance/strategie-de-test.md`, `docs/interface/ecrans/README.md`.
 
 ### Bandeau d'autorité
 
@@ -10,7 +11,7 @@
 
 ---
 
-## Comment lire une entrée
+## Lire le guide
 
 Chaque fonctionnalité du produit est une sous-section, avec une table à deux colonnes fixes : un axe de lecture, et où le lire. **Toute cellule « Où lire » est un renvoi, jamais un énoncé.** Aucune cellule ne porte de règle métier, de critère d'acceptation, de seuil, de décompte ou de priorité MoSCoW en clair — ce guide ne réénonce rien de ce que le corpus porte déjà.
 
@@ -37,7 +38,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 
 ---
 
-## Les entrées
+## Fonctionnalités
 
 ### Démarrage sans compte et persistance locale
 

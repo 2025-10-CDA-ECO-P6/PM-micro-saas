@@ -1,19 +1,27 @@
-# Cahier de spécifications techniques — Haversack
+# Cahier des spécifications techniques
 
 | Champ | Valeur |
 |---|---|
 | Version | 1.0 |
 | Date | 2026-07-16 |
 | Statut | Version de référence — consolidation du corpus |
+| Porteur | SOUS-SPÉCIFIÉ |
+| Validation | SOUS-SPÉCIFIÉ |
 | Périmètre | MVP — trajectoire technique actée pour UC-01 à UC-12, UC-14 ; post-MVP signalé où il apparaît |
 | Audiences | équipe de build, architecte, responsable produit (arbitrage des points non tranchés) |
 | Sources | `docs/decisions/**` (registre ADR), `docs/architecture/*.md` (fondations, structure, stack), `docs/architecture/specs/**` (spécifications pré-build), `docs/domaine/**` (modèle de domaine), `docs/reference/cahier-des-charges.md` §7/§8 |
 
 > Document dérivé du corpus, zéro décision technique neuve.
 
+### Historique des révisions
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| 1.0 | 2026-07-16 | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
 ---
 
-## 0. Objet & cadre d'autorité
+## 0. Objet et cadre d'autorité
 
 > **Section provisoire.** Les choix décrits dans ce cahier s'appuient sur des décisions d'architecture (ADR) de nature pré-implémentation : elles cadrent une trajectoire technique retenue à ce stade de conception, mais n'ont pas encore été confrontées à la construction effective du MVP. Les éléments consolidés ci-après sont donc provisoires et susceptibles d'ajustement à l'entrée en build. Ce statut n'affaiblit pas la portée normative de chaque décision citée pour la phase courante — il en situe seulement la maturité.
 
@@ -49,7 +57,7 @@ Tout point non tranché du corpus est reporté tel quel sous la forme `[À TRANC
 
 ---
 
-## 1. Principes d'architecture
+## 1. Principes
 
 Cette section consolide les principes fondateurs qui cadrent l'ensemble des choix techniques du MVP : la place du mode local, la structure documentaire du contenu, et l'organisation en Clean Architecture / monolithe modulaire.
 
@@ -79,12 +87,12 @@ Le découpage retenu est celui d'un **monolithe modulaire**, autour de **quatre 
 | ADR-002 — « Tout est Document » et gouvernance de `properties` | conception | Accepté | Identifiant unique `DocumentId` ; `DocumentProperties` gouverne l'écriture des propriétés structurées |
 | ADR-008 — Structure physique de la solution | pré-implémentation | Accepté | Clean Architecture, monolithe modulaire, 4 frontières logiques, multi-projets sur infrastructure/présentation |
 | `docs/architecture/fondations.md` | fondations (conception) | — | Justification DDD, langage ubiquitaire, frontières explicites, règles métier dans le domaine |
-| `docs/architecture/transverse.md` §1 | consolidation transverse | — | Renvoi vers le Dossier d'Architecture Technique pour la vue par bounded context |
+| `docs/architecture/transverse.md` §1 | consolidation transverse | — | Renvoi vers le Dossier d'architecture pour la vue par bounded context |
 | CdC §7.1 | synthèse produit | — | Formulation d'origine des trois principes ci-dessus |
 
 ---
 
-## 2. Stack & choix technologiques
+## 2. Stack
 
 Cette section nomme les technologies retenues pour le MVP et les mécanismes structurants associés — la nomination des technologies est pertinente à ce niveau du cahier, à la différence des sections centrées sur le besoin fonctionnel.
 
@@ -126,7 +134,7 @@ L'algorithme de hachage des mots de passe retenu est **Argon2id**, avec un repli
 
 ---
 
-## 3. Contraintes techniques
+## 3. Contraintes
 
 Cette section consolide les contraintes structurantes qui s'imposent à l'implémentation, au-delà du choix de stack : ce que le compilateur ne garantit pas, l'invariant de validation croisée local/serveur, l'intégrité référentielle, l'hébergement temps réel et les bornes du mode local.
 
@@ -154,7 +162,7 @@ Le mode local ne porte aucun plafond de création d'espace : sa seule contrainte
 
 ### Stockage : quotas et paliers
 
-Le palier local persiste les données exclusivement dans le navigateur, sans limite de volume propre au produit au-delà de celle de l'appareil. Les paliers gratuit et Pro disposent chacun d'un quota de stockage propre, le palier Pro offrant un volume sensiblement supérieur ; l'espace personnel n'est, dans les deux cas, jamais décompté du quota du palier gratuit. Les valeurs chiffrées de ces quotas restent en renvoi vers le cahier des charges (`docs/reference/cahier-des-charges.md` §12.4) — elles ne sont pas recopiées ici.
+Le palier local persiste les données exclusivement dans le navigateur, sans limite de volume propre au produit au-delà de celle de l'appareil. Les paliers gratuit et Pro disposent chacun d'un quota de stockage propre, le palier Pro offrant un volume sensiblement supérieur ; l'espace personnel n'est, dans les deux cas, jamais décompté du quota du palier gratuit. Les valeurs chiffrées de ces quotas restent en renvoi vers le cahier des charges (`docs/reference/cahier-des-charges.md`, annexe « Valeurs de référence chiffrées ») — elles ne sont pas recopiées ici.
 
 ### Tableau de renvoi — §3
 
@@ -167,11 +175,11 @@ Le palier local persiste les données exclusivement dans le navigateur, sans lim
 | ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | Configuration sobre (SSE forcé, fermeture fin de session, heartbeat allongé) |
 | `docs/architecture/specs/repli-temps-reel.md` §2-3 | spec pré-build | cadre à compléter | Mécanisme de repli vers polling adaptatif ; seuil, métrique, cadence non chiffrés — `[À TRANCHER]` |
 | ADR-017 — Modèle IndexedDB local | mixte (dominante pré-implémentation) | Accepté | Absence de plafond de création en mode local, posture migration-only, absence de synchronisation continue |
-| CdC §7.5 (+ renvoi §12.4) | synthèse produit | — | Quotas de stockage par palier, valeurs chiffrées en renvoi |
+| CdC §7.5 (+ renvoi annexe « Valeurs de référence chiffrées ») | synthèse produit | — | Quotas de stockage par palier, valeurs chiffrées en renvoi |
 
 ---
 
-## 4. Modèle de données & domaine
+## 4. Données
 
 Cette section consolide l'organisation du domaine métier — quatre contextes bornés adossés à un noyau partagé, principe « tout est document », ontologie de l'espace — sans reproduire le détail porté par le modèle de domaine lui-même, auquel elle renvoie systématiquement.
 
@@ -226,7 +234,7 @@ Les contextes bornés ne dépendent jamais directement les uns des autres : leur
 
 ---
 
-## 5. Sécurité & autorisation
+## 5. Sécurité
 
 Cette section consolide les planchers de sécurité opposables du MVP — politique de mot de passe, cycle de vie des jetons, rate limiting, liaison des fournisseurs d'identité externes, invariant d'autorisation, principe de non-révélation d'existence, plancher de sanitisation — sans en reproduire le déroulement algorithmique, renvoyé au dossier de conception détaillée. Aucune borne listée ci-après n'est adoucie par rapport à sa source ; là où la source renvoie une valeur exacte à l'implémentation, ce cahier reporte le renvoi tel quel plutôt que d'en inventer une.
 
@@ -291,7 +299,7 @@ Le stockage local IndexedDB n'est pas chiffré at-rest — aucun secret utilisat
 
 ---
 
-## 6. Conformité RGPD technique
+## 6. Conformité
 
 Cette section consolide le régime technique de conformité RGPD acté pour le MVP — effacement de compte, données des joueurs invités, cascade de suppression, instrumentation respectueuse — et signale, sans les requalifier, les axes que le corpus renvoie explicitement à une validation juridique préalable au lancement.
 
@@ -388,7 +396,7 @@ Le contrat d'échange local↔cloud (enveloppe `schemaVersion` / `exportedAt` / 
 
 ---
 
-## 8. Migration & sérialisation
+## 8. Migration
 
 Cette section consolide le contrat de données et le contrat d'échec de la frontière local↔cloud — format de sérialisation, frontière de confiance, parcours d'échec transactionnel, modèle de stockage local — sans reproduire l'algorithme d'import topologique, renvoyé au dossier de conception détaillée.
 
@@ -437,7 +445,7 @@ Le seuil de `schemaVersion` minimale maintenue côté serveur et l'horizon de r�
 
 ---
 
-## 9. Observabilité & télémétrie
+## 9. Observabilité
 
 Cette section consolide l'instrumentation compensatoire de validation du MVP et le suivi de coût du canal temps réel — deux mécanismes dont le corpus fixe l'intention et le principe sans en arrêter les valeurs.
 
@@ -470,7 +478,7 @@ Deux maillons ne sont, par nature, pas vérifiables par une validation continue 
 
 ---
 
-## 10. Exigences non-fonctionnelles (dérivées)
+## 10. Exigences non fonctionnelles
 
 Les vingt fiches NFR du corpus de conception (`docs/besoin/nfr/`) portent les identifiants stables et sont la **source unique** des critères d'expérience. Cette section ne les recopie pas : elle référence chaque identifiant et ne consolide que ce qu'une source technique fixe effectivement au-delà du critère produit — le reste reste renvoyé, jamais reformulé.
 
@@ -536,7 +544,7 @@ Les bornes suivantes sont des **décisions de périmètre assumées**, pas des t
 
 ---
 
-## 11. Points ouverts & confirmations attendues à l'entrée en build
+## 11. Points ouverts
 
 Le corpus technique consolidé dans ce cahier est de nature pré-implémentation : les points listés ci-dessous sont à confirmer ou à trancher à l'entrée en construction, section par section. Aucun n'est comblé par ce cahier — chacun est reporté tel qu'il apparaît dans sa source.
 
@@ -599,13 +607,13 @@ Le corpus technique consolidé dans ce cahier est de nature pré-implémentation
 
 ---
 
-## 12. Traçabilité source → section
+## 12. Traçabilité, source vers section
 
 Cette matrice prouve que chaque spec pré-build, chaque section technique du cahier des charges, et chaque décision d'architecture du registre trouve sa ou ses sections d'accueil dans ce cahier. Les ADR précurseurs raffinés par une décision ultérieure sont signalés comme tels — la relation de subsomption est portée, pas aplatie.
 
 ### Specs pré-build
 
-| Source | Type | Section(s) du cahier | Nature/Statut |
+| Source | Type | Section | Nature/Statut |
 |---|---|---|---|
 | `docs/architecture/specs/config-securite-migration.md` | spec | §3, §4, §5, §8 | cadre à compléter |
 | `docs/architecture/specs/contrat-openapi.md` | spec | §5, §7 | cadre à compléter |
@@ -618,15 +626,15 @@ Cette matrice prouve que chaque spec pré-build, chaque section technique du cah
 
 ### Cahier des charges
 
-| Source | Type | Section(s) du cahier | Nature/Statut |
+| Source | Type | Section | Nature/Statut |
 |---|---|---|---|
-| CdC §6 — Exigences non-fonctionnelles | §CdC | §10 | synthèse produit |
-| CdC §7 — Contraintes techniques, RGPD & sécurité | §CdC | §1, §2, §3, §5, §6 | synthèse produit, section provisoire |
-| CdC §8 — Modèle de données & domaine | §CdC | §4 | synthèse produit |
+| CdC §6 — Exigences non fonctionnelles | §CdC | §10 | synthèse produit |
+| CdC §7 — Contraintes | §CdC | §1, §2, §3, §5, §6 | synthèse produit, section provisoire |
+| CdC §8 — Modèle de données et domaine | §CdC | §4 | synthèse produit |
 
 ### Décisions d'architecture (18 ADR)
 
-| ADR | Section(s) du cahier | Nature/Statut |
+| ADR | Section | Nature/Statut |
 |---|---|---|
 | ADR-001 — Exécution du domaine en mode local | §1, §3, §8 | pré-implémentation, Accepté |
 | ADR-002 — « Tout est Document » et gouvernance de `properties` | §1, §4, §7 | conception, Accepté |

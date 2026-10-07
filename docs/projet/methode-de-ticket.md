@@ -1,16 +1,18 @@
-# Méthode de ticket — Haversack
+# Méthode de ticket
 
 | Champ | Valeur |
 |---|---|
+| Version | [SOUS-SPÉCIFIÉ — non écrit dans le document] |
+| Date | 2026-10-07 |
 | Statut | Méthode dérivée du plan de travail et du guide de conventions, à confirmer à l'entrée en build |
 | Audience | la ou les personnes qui prennent en charge une tâche du plan de travail, seules ou en petit collectif — y compris une personne découvrant le projet sans pouvoir en joindre l'auteur |
 | Sources | `docs/projet/plan-de-travail.md`, `docs/projet/conventions-dod.md`, `docs/assurance/strategie-de-test.md`, `docs/projet/roadmap-de-build.md`, `docs/architecture/structure-projets.md` |
 
 ---
 
-## Bandeau de cadrage — frontière et autorité
+## Nature et portée du document
 
-**Ce document n'énonce pas de Definition of Done.** Elle existe déjà, complète, dans [`guide-conventions-et-dod.md §9 — Definition of Done`](conventions-dod.md) ; elle n'est pas réécrite ici. Ce que ce document énonce est une **condition d'entrée** — ce qui doit être vrai avant de prendre une tâche — que rien dans le corpus ne porte encore. Condition d'entrée et Definition of Done décrivent deux moments distincts et complémentaires d'une même tâche : l'un avant qu'elle ne soit prise, l'autre avant qu'elle ne se ferme.
+**Ce document n'énonce pas de Definition of Done.** Elle existe déjà, complète, dans [`guide-conventions-et-dod.md §9 — Définition de fini`](conventions-dod.md) ; elle n'est pas réécrite ici. Ce que ce document énonce est une **condition d'entrée** — ce qui doit être vrai avant de prendre une tâche — que rien dans le corpus ne porte encore. Condition d'entrée et Definition of Done décrivent deux moments distincts et complémentaires d'une même tâche : l'un avant qu'elle ne soit prise, l'autre avant qu'elle ne se ferme.
 
 > **En cas de conflit entre ce document et une source citée** (plan de travail, guide de conventions et DoD, cahier de stratégie de test et de recette, roadmap d'entrée en build), **la source citée fait foi.** Ce document est un artefact de méthode, pas une nouvelle autorité de corpus — il ne redéfinit aucun but, aucune dépendance, aucun critère d'acceptation, il décrit comment les faire transiter par un ticket.
 
@@ -26,7 +28,7 @@
 
 Champs attendus au minimum :
 
-| Champ | Obligatoire | Pourquoi il n'est pas déjà porté par le plan |
+| Champ | Requis | Sens |
 |---|---|---|
 | **Titre** | oui | Le plan porte un intitulé de tâche, pas un titre d'issue — c'est un artefact distinct, qui doit rester comparable littéralement au premier pour détecter une divergence. |
 | **Tâche de plan** | oui | C'est l'unique lien vers le but, les dépendances, le périmètre d'écriture, la taille et les critères d'acceptation de la tâche — des champs déjà portés par `plan-de-travail.md`, qu'aucun ticket ne **recopie à la main** : ceux d'entre eux qui gagnent en actionnabilité à être projetés le sont par dérivation engendrée (corps engendré, plus bas), jamais par recopie. |
@@ -42,6 +44,19 @@ Champs attendus au minimum :
 **Tâche de plan.** Le champ porte l'identifiant `TB-nnn` seul. Le ticket ne **recopie à la main** aucun des champs qu'il pointe (but, dépendances, périmètre d'écriture, taille, critères d'acceptation) : un champ recopié à deux endroits est un champ qui dérive dès que l'un des deux change sans l'autre — exactement la famille de défaut que [`guide-conventions-et-dod.md §8`](conventions-dod.md) a nommée pour le reste du corpus documentaire, et que ce modèle de ticket étend au report plan → ticket.
 
 Recopier et dériver ne sont pas le même geste, et seul le premier est proscrit. **Recopier**, c'est écrire à la main, dans le ticket, une valeur qui vit déjà dans le plan : la copie a deux auteurs distincts dans le temps, sans rien qui la relie mécaniquement à sa source une fois écrite — elle dérive au sens défavorable du terme. **Dériver**, c'est engendrer une projection depuis la source, avec régénération : la projection garde une source unique, jamais une main qui la retape à côté. Ce document porte déjà cette distinction pour le lien plan → ticket, au §6 : « un renvoi qui pointe ne dérive pas quand sa cible bouge, une donnée recopiée doit être resynchronisée à chaque changement de la source ». Le corpus l'applique par ailleurs déjà au couple Gherkin → recette : [`cahier-strategie-test-et-recette.md §1 § Posture consommateur Gherkin`](../assurance/strategie-de-test.md) pose une **clause de re-dérivation** — si le scénario source change, la ligne de recette qui en dérive doit être re-dérivée, et une divergence constatée y est un défaut à corriger dans le document dérivé, jamais une variante à documenter. La zone engendrée décrite ci-dessous applique la même clause au couple plan → ticket.
+
+**Estampille de provenance.** Porte, dans un seul champ, la révision de `plan-de-travail.md` dont dérive la zone engendrée et l'identifiant `TB-nnn` de la tranche — les deux valeurs ensemble, pour qu'un contrôle de fraîcheur se fasse sans rouvrir un autre champ du ticket. La révision se lit sur le suivi de versions que porte déjà le dépôt : `git log -1 --format=%H -- docs/projet/plan-de-travail.md` donne le commit courant du fichier ; l'estampille est ce commit au moment où la zone engendrée a été produite. Un écart entre l'estampille et ce commit courant est le signal de péremption — ce que le §6 précise en clause du gel assumé.
+
+**Notes d'exécution et Écart constaté, répétés : un signal, jamais une rétrospective à part.** Un seul ticket portant l'un de ces champs ne dit rien au-delà de sa propre tâche. Plusieurs tickets qui en portent un du même ordre changent sa portée sans changer sa nature : le champ devient une **trace d'apprentissage** — un motif qui dépasse la tâche qui l'a écrit. Ce document ne crée aucun artefact pour la capter : la remontée suit une destination que le corpus porte déjà, selon ce que le motif concerne. Un point qui appelle un arbitrage remonte vers [`decisions-en-attente.md`](decisions-en-attente.md), qui les regroupe par décideur. Une dette ou un point ouvert propre à une source du corpus remonte vers le registre propriétaire de cette source, que [`decisions-en-attente.md § Registres propriétaires`](decisions-en-attente.md) énumère déjà. Le champ ne change pas de nature en se répétant sur plusieurs tickets — sa répétition désigne seulement où le regarder.
+
+**Ce qu'un ticket fait du marqueur `TROU`.** Une tranche dont les critères d'acceptation portent ce marqueur n'est pas prête au sens de la quatrième condition du §2 — le ticket qui lui correspond reste à l'état non prêt (§5) jusqu'à ce que le corpus source referme le trou, indépendamment de toute autre condition par ailleurs satisfaite. Ce qu'un ticket ouvert sur une telle tranche doit faire : refléter cette absence plutôt que la masquer.
+
+**À distinguer du marqueur `HORS MAILLE`** en périmètre d'écriture, qui ne signale aucun manque : la tranche ne vise simplement aucun module de code, et cela ne l'empêche ni d'être prête, ni d'être close.
+
+
+---
+
+## Zone générée
 
 **Corps engendré, et ce qui ne l'est pas.** Un ticket porte, à la suite des champs ci-dessus, une zone **engendrée** : une projection régénérée depuis `plan-de-travail.md`, jamais retapée à la main. Un ticket qui ne la porte pas est à régénérer ; le §7 renvoie vers l'outillage concret de cette régénération. Une ligne de séparation textuelle marque la frontière dans le corps du ticket — au-dessus, du contenu engendré, régénérable, écrasé à chaque exécution ; en dessous, du contenu écrit à la main (notamment `Notes d'exécution` et `Écart constaté`), que la régénération ne touche jamais :
 
@@ -59,17 +74,9 @@ Les autres champs de la fiche de tranche n'y entrent pas, faute du même gain. `
 
 La zone engendrée porte donc, au minimum : les renvois dérivés vers les tickets de `Dépend de` et de `En conflit avec`, le `But` et les `Critères d'acceptation` de la tranche, et l'estampille de provenance.
 
-**Estampille de provenance.** Porte, dans un seul champ, la révision de `plan-de-travail.md` dont dérive la zone engendrée et l'identifiant `TB-nnn` de la tranche — les deux valeurs ensemble, pour qu'un contrôle de fraîcheur se fasse sans rouvrir un autre champ du ticket. La révision se lit sur le suivi de versions que porte déjà le dépôt : `git log -1 --format=%H -- docs/projet/plan-de-travail.md` donne le commit courant du fichier ; l'estampille est ce commit au moment où la zone engendrée a été produite. Un écart entre l'estampille et ce commit courant est le signal de péremption — ce que le §6 précise en clause du gel assumé.
-
-**Notes d'exécution et Écart constaté, répétés : un signal, jamais une rétrospective à part.** Un seul ticket portant l'un de ces champs ne dit rien au-delà de sa propre tâche. Plusieurs tickets qui en portent un du même ordre changent sa portée sans changer sa nature : le champ devient une **trace d'apprentissage** — un motif qui dépasse la tâche qui l'a écrit. Ce document ne crée aucun artefact pour la capter : la remontée suit une destination que le corpus porte déjà, selon ce que le motif concerne. Un point qui appelle un arbitrage remonte vers [`decisions-en-attente.md`](decisions-en-attente.md), qui les regroupe par décideur. Une dette ou un point ouvert propre à une source du corpus remonte vers le registre propriétaire de cette source, que [`decisions-en-attente.md § Registres propriétaires`](decisions-en-attente.md) énumère déjà. Le champ ne change pas de nature en se répétant sur plusieurs tickets — sa répétition désigne seulement où le regarder.
-
-**Ce qu'un ticket fait du marqueur `TROU`.** Une tranche dont les critères d'acceptation portent ce marqueur n'est pas prête au sens de la quatrième condition du §2 — le ticket qui lui correspond reste à l'état non prêt (§5) jusqu'à ce que le corpus source referme le trou, indépendamment de toute autre condition par ailleurs satisfaite. Ce qu'un ticket ouvert sur une telle tranche doit faire : refléter cette absence plutôt que la masquer.
-
-**À distinguer du marqueur `HORS MAILLE`** en périmètre d'écriture, qui ne signale aucun manque : la tranche ne vise simplement aucun module de code, et cela ne l'empêche ni d'être prête, ni d'être close.
-
 ---
 
-## 2. Definition of ready
+## 2. Définition de prêt
 
 Une tâche du plan est **prête à être prise** quand, cumulativement, les conditions suivantes sont satisfaites. Chacune se vérifie en ouvrant un document, sans avoir à demander l'avis de quiconque — c'est le critère qui fixe la liste : une condition qu'on ne pourrait pas trancher seul n'a pas sa place ici.
 
@@ -92,7 +99,7 @@ Une tâche du plan est **prête à être prise** quand, cumulativement, les cond
 
 Trois axes orthogonaux, à valeurs fermées, chacun ancré sur une source du corpus.
 
-**Par jalon** — les jalons de build nommés par [`roadmap-entree-build.md §1`](roadmap-de-build.md), ligne « (a) Jalon de build » de son tableau des natures de nœuds :
+**Par jalon** : les jalons de build nommés par [`roadmap-entree-build.md §1`](roadmap-de-build.md), ligne « (a) Jalon de build » de son tableau des natures de nœuds :
 
 | Valeur | Ancrage |
 |---|---|
@@ -103,7 +110,7 @@ Trois axes orthogonaux, à valeurs fermées, chacun ancré sur une source du cor
 
 Les deux points de décision qui séparent ces jalons — `[DÉCISION MARCHÉ]` et `[VALIDATION JURIDIQUE EU]` — ne sont pas des valeurs de cet axe : `roadmap-entree-build.md §1` les qualifie de `NON-VERIFIABLE-IN-BUILD`, donc par construction non vérifiables par une tâche de code, donc par aucun ticket de cette taxonomie.
 
-**Par nature de tranche** — dérivée des natures de module que pose la maille de désignation du plan ([`plan-de-travail.md §2`](plan-de-travail.md)). La valeur se **déduit du champ `Périmètre d'écriture`** de la tranche ; elle n'est jamais saisie à la main :
+**Par nature de tranche** : dérivée des natures de module que pose la maille de désignation du plan ([`plan-de-travail.md §2`](plan-de-travail.md)). La valeur se **déduit du champ `Périmètre d'écriture`** de la tranche ; elle n'est jamais saisie à la main :
 
 | Valeur | Déduite quand le périmètre porte… | Ancrage |
 |---|---|---|
@@ -118,7 +125,7 @@ Les deux points de décision qui séparent ces jalons — `[DÉCISION MARCHÉ]` 
 
 **Cet axe ne recopie pas le périmètre.** Il en donne la **catégorie**, pas le contenu : le module exact vit dans le champ `Périmètre d'écriture` de la tranche, que le ticket pointe déjà par son champ `Tâche de plan`. Reproduire ici les noms d'agrégats ou de fiches d'écran serait la duplication que [`guide-conventions-et-dod.md §8`](conventions-dod.md) proscrit ; en donner la nature est une lecture transverse que le plan ne porte pas en champ.
 
-**Par nature de vérification** — dérivée des niveaux et des axes transverses de [`cahier-strategie-test-et-recette.md §3`](../assurance/strategie-de-test.md) :
+**Par nature de vérification** : dérivée des niveaux et des axes transverses de [`cahier-strategie-test-et-recette.md §3`](../assurance/strategie-de-test.md) :
 
 | Valeur | Ancrage |
 |---|---|
@@ -133,11 +140,11 @@ Les deux points de décision qui séparent ces jalons — `[DÉCISION MARCHÉ]` 
 
 La valeur `Anomalie` n'est pas un niveau de test : c'est le type de ticket que présuppose déjà le cycle de vie et l'échelle de sévérité décrits par `cahier-strategie-test-et-recette.md §7` (renvoi seul — voir §5 ci-dessous). Sans cette valeur, un ticket signalant un défaut constaté en cours de build n'aurait aucune nature à porter dans cette taxonomie.
 
-**Interdiction nommée : aucun axe « priorité ».** [`cahier-strategie-test-et-recette.md §7`](../assurance/strategie-de-test.md) écrit littéralement que « l'échelle de priorité elle-même (ex. P1-P4, ou tout autre barème) reste à la main de l'équipe de build — aucun barème de priorité n'est dérivable du corpus ». Poser un tel axe ici contredirait cette non-décision explicite. `[À TRANCHER — J0]` : si un axe de priorité s'avère nécessaire à l'usage, il reste à définir par l'équipe de build — ce document n'en propose aucune valeur. Noter que l'espace `P-nn` est par ailleurs déjà pris par le registre des risques du dossier.
+**Interdiction nommée** : **aucun axe « priorité ».** [`cahier-strategie-test-et-recette.md §7`](../assurance/strategie-de-test.md) écrit littéralement que « l'échelle de priorité elle-même (ex. P1-P4, ou tout autre barème) reste à la main de l'équipe de build — aucun barème de priorité n'est dérivable du corpus ». Poser un tel axe ici contredirait cette non-décision explicite. `[À TRANCHER — J0]` : si un axe de priorité s'avère nécessaire à l'usage, il reste à définir par l'équipe de build — ce document n'en propose aucune valeur. Noter que l'espace `P-nn` est par ailleurs déjà pris par le registre des risques du dossier.
 
 ---
 
-## 4. Chemin d'entrée d'un nouvel arrivant
+## 4. Chemin d'entrée
 
 Le [`README.md`](../../README.md) racine porte déjà, en sa section [« Reprendre le projet — Écrire la première ligne de code (J0) »](../../README.md#écrire-la-première-ligne-de-code-j0), un ordre de lecture pour une personne qui reprend le projet en vue d'écrire la première ligne de code. Ce document ne le refait pas — il le prolonge, jusqu'à la prise du premier ticket :
 
@@ -145,13 +152,13 @@ Le [`README.md`](../../README.md) racine porte déjà, en sa section [« Reprend
 2. **[`guide-lecture-par-fonctionnalite.md`](guide-de-lecture.md)** — apporte l'entrée par fonctionnalité produit : pour toute capacité du périmètre, le renvoi vers son besoin, ses règles métier, sa maquette, les décisions d'architecture qui la contraignent, sa spécification technique et ses cas de recette.
 3. **[`plan-de-travail.md`](plan-de-travail.md)** — apporte la décomposition en épiques et en tâches exécutables du périmètre engagé, avec dépendances techniques, périmètre d'écriture et conflits calculés depuis ce périmètre.
 4. **Ce document** — apporte le modèle de ticket, la condition d'entrée à vérifier avant de prendre une tâche (§2), et le cycle de vie à suivre jusqu'à sa clôture (§5).
-5. **La prise du premier ticket** — choisir, dans le plan, une tâche dont la Definition of ready (§2) est satisfaite ; ouvrir un ticket dans le dépôt du projet en suivant le modèle du §1 ; renseigner `Pris par` au moment de la prise.
+5. **La prise du premier ticket** — choisir, dans le plan, une tâche dont la Définition de prêt (§2) est satisfaite ; ouvrir un ticket dans le dépôt du projet en suivant le modèle du §1 ; renseigner `Pris par` au moment de la prise.
 
 ---
 
-## 5. Cycle de vie d'un ticket
+## 5. Cycle de vie
 
-**États et transitions**, pour un ticket portant sur une tâche du plan :
+**États et transitions** : pour un ticket portant sur une tâche du plan :
 
 ```
 Ouvert, non prêt  →  Prêt  →  Pris  →  En cours  →  En revue  →  Terminé
@@ -160,7 +167,7 @@ Ouvert, non prêt  →  Prêt  →  Pris  →  En cours  →  En revue  →  Ter
                                      en cours si elle ne le clôt pas)
 ```
 
-- **Ouvert, non prêt** — le ticket existe, mais la Definition of ready (§2) n'est pas encore satisfaite pour la tâche qu'il porte.
+- **Ouvert, non prêt** — le ticket existe, mais la Définition de prêt (§2) n'est pas encore satisfaite pour la tâche qu'il porte.
 - **Prêt** — la Definition of ready est satisfaite ; personne ne l'a encore pris.
 - **Pris** — une personne l'a pris en charge ; le champ `Pris par` est renseigné.
 - **En cours** — l'implémentation est engagée.
@@ -171,7 +178,7 @@ Ouvert, non prêt  →  Prêt  →  Pris  →  En cours  →  En revue  →  Ter
 
 ---
 
-## 6. Où naissent les tickets, et ce qui fait foi
+## 6. Où naissent les tickets
 
 Les tickets sont ouverts dans les issues du dépôt du projet — le dépôt distant dont ce clone est issu.
 
@@ -202,7 +209,7 @@ Les tickets sont ouverts dans les issues du dépôt du projet — le dépôt dis
 
 **Ce qu'une itération est.** Un sous-ensemble **choisi** des tranches ouvrables du palier courant ([`plan-de-travail.md §9`](plan-de-travail.md)) : sa largeur est un choix de l'effectif, jamais une conséquence automatique de celle du palier. Sur un palier ouvrant plusieurs tranches à la fois, une itération qui épouserait systématiquement le palier entier n'aurait aucune fonction de cadencement propre — ce serait une seule et même traite, avec un unique événement de clôture, sous un autre nom. Sur un palier n'ouvrant qu'une seule tranche, l'itération et le palier coïncident nécessairement ; ce n'est pas une exception à la règle, puisque le choix reste entier — il n'a simplement rien d'autre à choisir.
 
-**Ce qui la ferme.** Une itération est close quand chacune des tranches qu'elle contient est à l'état terminal du cycle de vie décrit au §5 — Cycle de vie d'un ticket — de ce document, jamais avant.
+**Ce qui la ferme.** Une itération est close quand chacune des tranches qu'elle contient est à l'état terminal du cycle de vie décrit au §5 — Cycle de vie — de ce document, jamais avant.
 
 **Pourquoi ce critère n'en énonce pas un en propre.** Le corpus porte déjà trois autorités de complétude, chacune propriétaire d'un grain distinct : la Definition of Done de code ([`guide-conventions-et-dod.md §9`](conventions-dod.md)), la Definition of Done de test ([`cahier-strategie-test-et-recette.md §8`](../assurance/strategie-de-test.md)) et les critères de sortie de jalon — propriétaires conjoints [`roadmap-entree-build.md §3`](roadmap-de-build.md) et [`cahier-strategie-test-et-recette.md §9 — Critères de sortie par jalon`](../assurance/strategie-de-test.md). Énoncer ici un critère de clôture propre en ferait une quatrième, concurrente des trois autres sur le sort d'une même tranche. Ce n'est pas le cas : fermer une itération ne fait que constater, tranche par tranche, un état déjà décidé ailleurs. Le corpus déclare d'ailleurs déjà cette frontière entre grains : « la DoD de code de ce guide s'applique à chaque incrément livré, quelle que soit sa taille. Les critères de sortie de jalon opèrent à une granularité supérieure — ils agrègent plusieurs incréments et des vérifications propres au jalon (recette fonctionnelle, points de décision hors intégration continue). Un incrément peut satisfaire la DoD de code de ce guide sans que le jalon auquel il appartient satisfasse encore ses propres critères de sortie » ([`guide-conventions-et-dod.md §9 § Frontière explicite`](conventions-dod.md)). Une itération se loge à un grain intermédiaire, entre l'incrément et le jalon, sans ajouter de critère au-dessus de ceux qui existent déjà.
 
@@ -223,6 +230,9 @@ Ces deux traces s'écrivent dans le registre de trajectoire (§9) : l'ouverture 
 ---
 
 ## 9. Registre de trajectoire
+
+| Itération | Ouverte le | Composition | Choisie par | Close le | Appris |
+|---|---|---|---|---|---|
 
 **Pourquoi il existe.** La composition d'une itération (§8) est une jointure de deux sources invariantes à l'effectif — le palier courant et le dispositif de départage de [`plan-de-travail.md §1`](plan-de-travail.md) — et d'une troisième qui ne l'est pas : le choix effectivement fait par l'effectif qui exécute. Cette troisième source ne vit dans aucun fichier versionné ; son conteneur est le support de suivi (§8). Si rien n'est écrit ici, une personne qui reprend le projet depuis le seul clone dispose du découpage — et de rien d'autre : ni quelles tranches ont été prises, dans quel ordre, ni pourquoi.
 

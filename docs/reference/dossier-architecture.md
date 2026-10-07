@@ -1,8 +1,24 @@
-# Dossier d'Architecture Technique — Haversack
+# Dossier d'architecture
 
-## §0 — Métadonnées & portée
+| Champ | Valeur |
+|---|---|
+| Version | SOUS-SPÉCIFIÉ |
+| Date | 2026-09-02 |
+| Statut | SOUS-SPÉCIFIÉ |
+| Porteur | SOUS-SPÉCIFIÉ |
+| Validation | SOUS-SPÉCIFIÉ |
 
-**Titre** : Dossier d'Architecture Technique (DAT) — Haversack.
+### Historique des révisions
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
+## 0. Métadonnées et nature du document
+
+Consolidation : elle ne tranche rien. Elle est une carte du système dessinée à partir des décisions ; la décision citée fait foi.
+
+**Titre** : Dossier d'architecture (DAT) — Haversack.
 
 **Nature** : document de consolidation, zéro décision neuve. Ce dossier ne tranche rien qui ne soit déjà tranché ailleurs — il assemble en un point d'entrée unique la carte structurelle du système (structure statique, choix macro, frontières), déjà actée dans le registre des décisions d'architecture (ADR) et les documents de structure existants.
 
@@ -12,11 +28,19 @@
 
 **Note d'autorité de la carte** : la carte structurelle du système (vues de contexte, conteneurs, composants, déploiement) vit dans ce DAT. Le document [`architecture-detaillee.md`](../architecture/transverse.md) l'indexe par préoccupation technique transverse (sécurité, RGPD, persistance, temps réel, mode local) sans ré-énoncer la structure présentée ici — il renvoie aux mêmes ADR sous un angle différent (thématique plutôt que structurel), sans redondance d'autorité.
 
-**Légende de statut** : sauf mention contraire, les décisions cartographiées dans ce document sont **actées en conception et à confirmer à l'entrée en build** — elles ne décrivent pas un système déjà construit. Les points explicitement ouverts sont signalés `[non tranché]` ou `[à ratifier]`.
+---
+
+## 1. Légende des statuts
+
+| Statut | Signification |
+|---|---|
+| Sauf mention contraire | les décisions cartographiées dans ce document sont **actées en conception et à confirmer à l'entrée en build** — elles ne décrivent pas un système déjà construit |
+| `[non tranché]` | point explicitement ouvert |
+| `[à ratifier]` | point explicitement ouvert |
 
 ---
 
-## §1 — Choix structurants & justification
+## 2. Choix et justification
 
 Haversack est un monolithe modulaire organisé selon les principes de la Clean Architecture (inversion de dépendances, domaine au centre), structuré en quatre bounded contexts DDD — Identity & Access, Space Management, Content Library, Session Conduct — et opère une dualité d'exécution local/cloud : un mode local navigateur (persistance IndexedDB, sans compte) coexiste avec un mode cloud serveur-autoritaire, reliés exclusivement par une migration one-shot. Les quatorze choix structurants ci-dessous portent cette forme et renvoient chacun à l'ADR ou au document de structure qui les justifie en détail.
 
@@ -39,7 +63,9 @@ Haversack est un monolithe modulaire organisé selon les principes de la Clean A
 
 ---
 
-## §2 — Vue de contexte (C4 niveau 1)
+## 3. Contexte du système
+
+*Vue de contexte (C4 niveau 1).*
 
 Le système Haversack met en relation cinq natures d'acteurs et cinq systèmes externes autour de l'application. Aucun stockage objet externe n'est prévu au MVP — tout média associé à un document est stocké inline en base ([ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md)).
 
@@ -88,7 +114,9 @@ graph TD
 
 ---
 
-## §3 — Vue conteneurs (C4 niveau 2)
+## 4. Conteneurs
+
+*Vue conteneurs (C4 niveau 2).*
 
 | Conteneur | Techno | Source ADR/fichier |
 |---|---|---|
@@ -148,7 +176,9 @@ graph TD
 
 ---
 
-## §4 — Vue composants (C4 niveau 3)
+## 5. Composants
+
+*Vue composants (C4 niveau 3).*
 
 ### Core / SharedKernel
 
@@ -178,7 +208,9 @@ Consomme ce que Content Library prépare, sans posséder de contenu propre. Agr�
 
 ---
 
-## §5 — Vue déploiement (C4 niveau 4)
+## 6. Déploiement
+
+*Vue déploiement (C4 niveau 4).*
 
 Deux lieux d'exécution structurent le déploiement :
 
@@ -220,30 +252,30 @@ graph TD
 
 ---
 
-## §6 — Traçabilité vue → ADR
+## 7. Vue de traçabilité, sections vers décisions
 
-| Vue / section | ADR(s) et fichiers sources |
+| Section | Décisions |
 |---|---|
-| §1 — Choix structurants | ADR-001, ADR-002, ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, ADR-018, stack.md |
-| §2 — Vue de contexte | ADR-001, ADR-003, ADR-009, ADR-011, ADR-014 §1, ADR-015 §2.1/§2.2/§3.2, ADR-017 §1.1 |
-| §3 — Vue conteneurs | ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, structure-projets.md, stack.md |
-| §4 — Identity & Access | ADR-015 §5, identity-access.md |
-| §4 — Space Management | ADR-018, space-management.md |
-| §4 — Content Library | ADR-002, ADR-014 §Frontière fondamentale, content-library.md |
-| §4 — Session Conduct | session-conduct.md |
-| §4 — Transverse (couche Application) | ADR-011, ADR-014 §3/§6 |
-| §4 — Core/SharedKernel | core.md |
-| §5 — Vue déploiement | ADR-003, ADR-004, ADR-015, ADR-016, ADR-017, stack.md |
+| Choix et justification | ADR-001, ADR-002, ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, ADR-018, stack.md |
+| Contexte du système | ADR-001, ADR-003, ADR-009, ADR-011, ADR-014 §1, ADR-015 §2.1/§2.2/§3.2, ADR-017 §1.1 |
+| Conteneurs | ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, structure-projets.md, stack.md |
+| Composants — Identity & Access | ADR-015 §5, identity-access.md |
+| Composants — Space Management | ADR-018, space-management.md |
+| Composants — Content Library | ADR-002, ADR-014 §Frontière fondamentale, content-library.md |
+| Composants — Session Conduct | session-conduct.md |
+| Composants — Transverse (couche Application) | ADR-011, ADR-014 §3/§6 |
+| Composants — Core/SharedKernel | core.md |
+| Déploiement | ADR-003, ADR-004, ADR-015, ADR-016, ADR-017, stack.md |
 
 ---
 
-## §7 — Limites cartographiques
+## 8. Limites cartographiques
 
 **Hébergeur non tranché.** [`stack.md`](../architecture/stack.md) liste des options d'hébergement (Railway, Supabase, Render, auto-hébergé) sans arbitrage. Ce document cartographie la contrainte imposée par le transport temps réel (sticky sessions) sans inventer de topologie.
 
-**Observabilité non consolidée.** Un document [`specs/telemetrie.md`](../architecture/specs/telemetrie.md) existe, mais son contenu relève du cahier de spécification technique — il n'est pas consolidé dans ce DAT. La vue déploiement (§5) reste muette sur ce point ; ce silence n'est pas comblé ici.
+**Observabilité non consolidée.** Un document [`specs/telemetrie.md`](../architecture/specs/telemetrie.md) existe, mais son contenu relève du cahier de spécification technique — il n'est pas consolidé dans ce DAT. La vue déploiement (§6) reste muette sur ce point ; ce silence n'est pas comblé ici.
 
-**Statut pré-implémentation généralisé.** C'est le point le plus structurant de ce document : à l'exception des rares cas explicitement marqués autrement, chaque choix cartographié est une décision de conception à confirmer à l'entrée en build — voir la légende de statut en §0.
+**Statut pré-implémentation généralisé.** C'est le point le plus structurant de ce document : à l'exception des rares cas explicitement marqués autrement, chaque choix cartographié est une décision de conception à confirmer à l'entrée en build — voir la légende des statuts en §1.
 
 **Points ouverts, non tranchés dans ce document** :
 - [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[à ratifier]` en décision produit.

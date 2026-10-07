@@ -1,7 +1,9 @@
-# Glossaire — Langage ubiquitaire Haversack
+# Glossaire
 
-> Version : 2026-06-12
-> Nature : outil de nommage dérivé — **autorité de forme**, pas d'autorité de fond.
+> **Version** : 2026-06-12
+> **Nature** : Autorité de forme uniquement : ce glossaire fixe la forme des termes, jamais leur sens. Une entrée qui contredit un cas d'utilisation est celle à corriger.
+>
+> Outil de nommage dérivé — **autorité de forme**, pas d'autorité de fond.
 > Ordre d'autorité (du plus faisant foi au moins) : personas → vision produit → use cases → user journeys / user stories / NFR → domaine → glossaire.
 > En cas de conflit sur le fond (le besoin), l'artefact le plus en amont fait foi. Le glossaire n'arbitre jamais un conflit de besoin. Une entrée de glossaire qui contredit un use case est l'entrée à corriger, pas le use case.
 
@@ -21,52 +23,7 @@ Ce glossaire est la **source de référence terminologique** de la conception Ha
 
 ---
 
-## 1. Termes transverses (Core / Shared Kernel)
-
-### `Document`
-
-Unité fondamentale de contenu dans Haversack. Tout contenu créé dans le système — note, scénario, scène, PNJ, lieu, objet, personnage joueur, règle maison, révélation — est un `Document`. Un `Document` est composé de blocs de contenu libre (`DocumentBlock[]`) et de références ordonnées vers d'autres `Document` (`DocumentLink[]`). Le type du document (`documentTypeId`) est optionnel et spécialise sans contraindre.
-
-- Propriétaire : **Content Library** (creation, stockage, visibilité).
-- Consommé par : **Session Conduct** (épinglage, notes de session).
-- Relation clé : un `Document` appartient toujours à exactement un `Folder` dans exactement un `Espace`.
-
-> Gouvernance « tout est Document » : il n'existe pas de type « Scénario » ou « Scène » séparé du système documentaire. La hiérarchie Scénario → Scènes → PNJ est un cas d'usage parmi d'autres, pas une structure imposée.
-
----
-
-### `Visibility` (niveau de visibilité)
-
-Propriété portée par chaque `Document`. Détermine qui peut lire le document. Trois valeurs exhaustives :
-
-| Valeur domaine | Sémantique |
-|---|---|
-| `PUBLIC` | Visible par tous les membres de l'espace et tous les `GuestAccess` actifs. |
-| `GM_ONLY` | Visible uniquement par les membres avec le rôle `OWNER` ou `GM`, et, par exception (RB-12-01), par le joueur auquel est associé le personnage dont c'est la fiche. C'est la valeur par défaut à la création. |
-| `PLAYER_PRIVATE` | Lisible uniquement par l'auteur du document : le membre identifié par `createdById`, ou l'invité identifié par `guestAccessId`. Les membres `OWNER` et `GM` n'y ont aucun accès — ni lecture, ni énumération, ni métadonnées. |
-
-La confidentialité `PLAYER_PRIVATE` est absolue quel que soit le chemin d'accès (direct, via personnage associé, ou via accès invité).
-
-> **Résolution (espace `PERSONAL`)** : sur un espace `PERSONAL` mono-membre, `PUBLIC`/`GM_ONLY`/`PLAYER_PRIVATE` collapsent tous à « visible du propriétaire uniquement » via la résolution de visibilité existante (l'ensemble des membres = {propriétaire}) — **aucun code spécifique**. L'enum `Visibility` (Core) est **inchangé** (partagé, stable). Les documents d'un `PERSONAL` portent une **valeur par défaut réelle** (`GM_ONLY`), non `null` : aucune garde de domaine n'interdit `PLAYER_PRIVATE` (une telle garde couplerait Content Library à `SpaceType` pour zéro gain, et nuirait au déplacement inter-espaces `PERSONAL → partagé`). Le contrôle de visibilité est **masqué à l'UI** sur un `PERSONAL` (concern de présentation).
-
-- Défini dans le **Core** comme enum partagé `Visibility`.
-- Utilisé dans : **Content Library** (tous les documents), **Session Conduct** (notes de session).
-
----
-
-### `AuditInfo`
-
-Primitive de traçabilité portée par tous les agrégats : `createdAt`, `updatedAt`, `createdById: UserId`. Défini dans le **Core**.
-
----
-
-### `SoftDelete`
-
-Suppression logique : `isDeleted: bool`, `deletedAt: DateTime?`. Un document soft-deleted disparaît des vues mais n'est pas effacé. Défini dans le **Core**, utilisé dans **Content Library** et **Space Management**.
-
----
-
-## 2. Identity & Access
+## 2. Termes du contexte — Identity & Access
 
 ### `User`
 
@@ -125,7 +82,7 @@ Opération applicative qui importe les espaces et documents du mode local vers l
 
 ---
 
-## 3. Space Management
+## 3. Termes du contexte — Space Management
 
 ### `Espace`
 
@@ -251,7 +208,7 @@ Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, c
 
 ---
 
-## 4. Content Library
+## 4. Termes du contexte — Content Library
 
 ### `Folder` (dossier)
 
@@ -347,7 +304,7 @@ Capacité permettant au MJ d'exporter l'ensemble d'un espace — documents, note
 
 ---
 
-## 5. Session Conduct
+## 5. Termes du contexte — Session Conduct
 
 ### `Session`
 
@@ -404,9 +361,54 @@ Vue accessible au joueur (authentifié ou invité) dès que son `GuestAccess` ou
 
 ---
 
-## 6. Termes écartés
+## 6. Termes transverses
 
-| Terme écarté | Terme retenu | Raison / source |
+### `Document`
+
+Unité fondamentale de contenu dans Haversack. Tout contenu créé dans le système — note, scénario, scène, PNJ, lieu, objet, personnage joueur, règle maison, révélation — est un `Document`. Un `Document` est composé de blocs de contenu libre (`DocumentBlock[]`) et de références ordonnées vers d'autres `Document` (`DocumentLink[]`). Le type du document (`documentTypeId`) est optionnel et spécialise sans contraindre.
+
+- Propriétaire : **Content Library** (creation, stockage, visibilité).
+- Consommé par : **Session Conduct** (épinglage, notes de session).
+- Relation clé : un `Document` appartient toujours à exactement un `Folder` dans exactement un `Espace`.
+
+> Gouvernance « tout est Document » : il n'existe pas de type « Scénario » ou « Scène » séparé du système documentaire. La hiérarchie Scénario → Scènes → PNJ est un cas d'usage parmi d'autres, pas une structure imposée.
+
+---
+
+### `Visibility` (niveau de visibilité)
+
+Propriété portée par chaque `Document`. Détermine qui peut lire le document. Trois valeurs exhaustives :
+
+| Valeur domaine | Sémantique |
+|---|---|
+| `PUBLIC` | Visible par tous les membres de l'espace et tous les `GuestAccess` actifs. |
+| `GM_ONLY` | Visible uniquement par les membres avec le rôle `OWNER` ou `GM`, et, par exception (RB-12-01), par le joueur auquel est associé le personnage dont c'est la fiche. C'est la valeur par défaut à la création. |
+| `PLAYER_PRIVATE` | Lisible uniquement par l'auteur du document : le membre identifié par `createdById`, ou l'invité identifié par `guestAccessId`. Les membres `OWNER` et `GM` n'y ont aucun accès — ni lecture, ni énumération, ni métadonnées. |
+
+La confidentialité `PLAYER_PRIVATE` est absolue quel que soit le chemin d'accès (direct, via personnage associé, ou via accès invité).
+
+> **Résolution (espace `PERSONAL`)** : sur un espace `PERSONAL` mono-membre, `PUBLIC`/`GM_ONLY`/`PLAYER_PRIVATE` collapsent tous à « visible du propriétaire uniquement » via la résolution de visibilité existante (l'ensemble des membres = {propriétaire}) — **aucun code spécifique**. L'enum `Visibility` (Core) est **inchangé** (partagé, stable). Les documents d'un `PERSONAL` portent une **valeur par défaut réelle** (`GM_ONLY`), non `null` : aucune garde de domaine n'interdit `PLAYER_PRIVATE` (une telle garde couplerait Content Library à `SpaceType` pour zéro gain, et nuirait au déplacement inter-espaces `PERSONAL → partagé`). Le contrôle de visibilité est **masqué à l'UI** sur un `PERSONAL` (concern de présentation).
+
+- Défini dans le **Core** comme enum partagé `Visibility`.
+- Utilisé dans : **Content Library** (tous les documents), **Session Conduct** (notes de session).
+
+---
+
+### `AuditInfo`
+
+Primitive de traçabilité portée par tous les agrégats : `createdAt`, `updatedAt`, `createdById: UserId`. Défini dans le **Core**.
+
+---
+
+### `SoftDelete`
+
+Suppression logique : `isDeleted: bool`, `deletedAt: DateTime?`. Un document soft-deleted disparaît des vues mais n'est pas effacé. Défini dans le **Core**, utilisé dans **Content Library** et **Space Management**.
+
+---
+
+## 7. Termes écartés
+
+| Terme écarté | Terme retenu | Raison ou source |
 |---|---|---|
 | `propriétés structurées.guestAccessId` | `guestAccessId` (champ de premier niveau) | Promu depuis les propriétés structurées vers un champ de premier niveau du `Document` (ADR-002) — `domain/content-library.md` §DocumentType (entité de référence) et `domain/session-conduct.md` §Notes de session — Documents de type LIVE_NOTE. Dérive résorbée : l'ancien chemin `propriétés structurées.guestAccessId` n'est plus observable dans `UC-06-vue-session.md`. |
 | « note privée MJ » | « privé MJ » / `GM_ONLY` | Forme longue non normalisée. Le terme retenu dans la prose de besoin est « privé MJ » ; le terme domaine est `GM_ONLY`. Les deux formes coexistaient dans les UC et US (observable dans `UC-06-vue-session.md` et `US-UC-06-vue-session.md`). Cartographie explicite dans `US-UC-06-vue-session.md` §Mapping de visibilité. |
@@ -421,7 +423,7 @@ Vue accessible au joueur (authentifié ou invité) dès que son `GuestAccess` ou
 
 ---
 
-## 7. Conventions transverses
+## 8. Conventions transverses
 
 ### Casse des identifiants de domaine
 

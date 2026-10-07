@@ -1,4 +1,4 @@
-# Décisions en attente — Haversack
+# Décisions en attente
 
 | Champ | Valeur |
 |---|---|
@@ -20,11 +20,13 @@ En cas de conflit entre ce document et un registre cité, le registre cité fait
 
 ---
 
-## Groupe 1 — Équipe de build : structure (condition d'entrée en J0)
+## Décisions ouvertes
+
+### Groupe 1 — Équipe de build : structure (condition d'entrée en J0)
 
 Les décisions de ce groupe sont déclarées bloquantes avant l'ouverture de J0.
 
-### 1.a — Arborescence interne des couches .NET et TypeScript / Angular du mode local
+#### 1.a — Arborescence interne des couches .NET et TypeScript / Angular du mode local
 
 **Où le manque vit, côté .NET.** `docs/architecture/structure-projets.md § 3 — Granularité des projets .NET (MVP)` marque `[À TRANCHER — J0]` la séparation en projets à l'intérieur de chaque couche — combien, et lesquels —, les noms de projet, et le contenu de chacun. Restent tranchés, et ne se rouvrent pas à J0 : les principes de granularité par couche (Domaine et Application en projets uniques, Infrastructure et Présentation en multi-projets), les namespaces de bounded context du Domaine, le noyau partagé `SharedKernel` (§ 4), l'isolation du module `Haversack.Infrastructure.Notifications` dès J0 (ADR-008 § Conséquences), et la Clean Architecture.
 
@@ -38,7 +40,7 @@ Les décisions de ce groupe sont déclarées bloquantes avant l'ouverture de J0.
 
 **Registre propriétaire.** `structure-projets.md § 3` pour la couche .NET ; `structure-projets.md § 7` pour la couche TypeScript / Angular ; `plan-de-travail.md § 2` pour l'effet sur le plan de travail.
 
-### 1.b — Nom du projet de test d'architecture, et plateforme d'intégration continue
+#### 1.b — Nom du projet de test d'architecture, et plateforme d'intégration continue
 
 Un des `Critères de sortie factuels` de `roadmap-entree-build.md § 3.1 — J0 — Socle` exige que « Le test d'archi CI existe, tourne en pipeline, et échoue si une référence traverse une frontière de bounded context non autorisée. ». Deux tâches du plan de travail (`TB-006`, `TB-009`) déclarent un recouvrement d'écriture « à confirmer à J0 » précisément parce que le projet de test d'architecture qu'elles écrivent toutes deux n'est nommé par aucun document du corpus.
 
@@ -46,9 +48,9 @@ Un des `Critères de sortie factuels` de `roadmap-entree-build.md § 3.1 — J0 
 
 **Registre propriétaire.** `docs/architecture/deploiement/README.md` ; `roadmap-entree-build.md § 3.1` pour le critère de sortie ; `plan-de-travail.md`, tâches `TB-006` et `TB-009`, pour le recouvrement en attente.
 
-### 1.c — Redécoupage du module `châssis` dans la maille de désignation
+#### 1.c — Redécoupage du module `châssis` dans la maille de désignation
 
-**Où le manque vit.** `plan-de-travail.md § 2 — Maille de désignation du périmètre d'écriture` nomme `châssis` comme un seul module transverse. `zoning.md § S7 — Châssis applicatif` y range pourtant des préoccupations distinctes : recherche (composant de châssis omniprésent), bandeaux (durabilité, confidentialité), fonctions cloud visibles mais désactivées en mode local, accès compte.
+**Où le manque vit.** `plan-de-travail.md § 2 — Natures du périmètre d'écriture` nomme `châssis` comme un seul module transverse. `zoning.md § S7 — Châssis applicatif` y range pourtant des préoccupations distinctes : recherche (composant de châssis omniprésent), bandeaux (durabilité, confidentialité), fonctions cloud visibles mais désactivées en mode local, accès compte.
 
 **Ce que ça bloque.** La grappe de tranches déclarées en conflit sur ce seul module est passée de deux (`TB-058`, `TB-093`) à cinq (`TB-058`, `TB-093`, `TB-078`, `TB-097`, `TB-103`) au fil des dernières vagues de ce plan — mesuré en `plan-de-travail.md § 9`. Chacune est sérialisée avec les quatre autres faute d'un découpage plus fin, alors que leurs préoccupations réelles (recherche, instrumentation de validation, châssis mode local) ne se recouvrent pas fonctionnellement. Le levier de largeur de graphe qu'un découpage par préoccupation ouvrirait n'est pas exploité.
 
@@ -56,11 +58,11 @@ Un des `Critères de sortie factuels` de `roadmap-entree-build.md § 3.1 — J0 
 
 **Registre propriétaire.** `plan-de-travail.md § 2` pour la maille ; `zoning.md § S7` pour les préoccupations distinctes qu'un découpage nommerait ; `plan-de-travail.md § 9` pour la grappe de conflit mesurée.
 
-### Autres décisions de structure et de détail technique
+#### Autres décisions de structure et de détail technique
 
 Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du corpus.
 
-| Décision | Bloque | À savoir | Registre propriétaire |
+| Où le manque vit | Ce que cela bloque | Ce qu'il faut savoir | Registre propriétaire |
 |---|---|---|---|
 | Contrôle de l'appariement `But` d'épique / paragraphe `Critère de sortie` du use case porté (`plan-de-travail.md § 4`) | Aucun test, aucun linter ne le vérifie aujourd'hui | Défaut trouvé et corrigé à la main trois fois dans ce plan (`US-UC-14`, `US-UC-01`, deux fois) ; candidat naturel pour un vérificateur, sur le modèle de `tools/VerifCouvertureRecette` | `plan-de-travail.md § 4` ; `moscow.md`, paragraphes `Critère de sortie` par use case |
 | Épique départageant un couple de tranches inter-épiques (`plan-de-travail.md § 1`, règle (b bis)) | — (aucun usage actuel ne l'invoque) | La règle ne dit pas quelle épique départage un couple dont les deux tranches appartiennent à deux épiques distinctes ; une invocation fautive de ce cas a été retirée de `TB-069` le 2026-09-04 (le couple était en réalité départagé par dépendance directe, la règle ne s'y appliquait pas) | `plan-de-travail.md § 1`, règle (b bis) |
@@ -76,9 +78,9 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 
 ---
 
-## Groupe 2 — Responsable produit (condition d'entrée en J2, et une décision bloquante avant J0)
+### Groupe 2 — Responsable produit (condition d'entrée en J2, et une décision bloquante avant J0)
 
-### 2.a — Instrumentation de validation du MVP : aucun critère d'acceptation
+#### 2.a — Instrumentation de validation du MVP : aucun critère d'acceptation
 
 **Déclarée bloquante avant l'ouverture de J0.**
 
@@ -92,9 +94,9 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 
 **Registre propriétaire.** `moscow.md § Instrumentation de validation du MVP` ; `vision-produit.md § 2.3` ; `telemetrie.md` (bandeau `Statut` et § 6) ; `roadmap-entree-build.md § 3.3` et `§ 3.4` ; `plan-de-travail.md § 10`.
 
-### Autres décisions produit
+#### Autres décisions produit
 
-| Décision | Bloque | À savoir | Registre propriétaire |
+| Où le manque vit | Ce que cela bloque | Ce qu'il faut savoir | Registre propriétaire |
 |---|---|---|---|
 | Seuils de réactivité perçue (exigences non fonctionnelles de performance) | La recette de performance reste une observation qualitative tant que non tranché | Seuil chiffré non dérivable du corpus | `cahier-strategie-test-et-recette.md § 12`, entrée `PO-01` |
 | Seuil de repli du transport temps réel (SSE) vers l'interrogation périodique | La clôture opérationnelle du jalon Partage + temps réel, pas son entrée | Seuil chiffré non dérivable du corpus | `cahier-strategie-test-et-recette.md § 12`, entrée `PO-02` |
@@ -111,9 +113,9 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 
 ---
 
-## Groupe 3 — Modélisation domaine
+### Groupe 3 — Modélisation domaine
 
-| Décision | Bloque | À savoir | Registre propriétaire |
+| Où le manque vit | Ce que cela bloque | Ce qu'il faut savoir | Registre propriétaire |
 |---|---|---|---|
 | ~~Champs des schémas `propertiesSchema` des six types système~~ | **Tranché le 2026-09-03** — **vide au MVP**, absence actée sur le précédent de `live_note` ; leur contenu vit dans les blocs | ne bloque plus TB-066 | `docs/architecture/specs/document-properties-schemas.md § 5 — Champs de propertiesSchema par type — dérivés du domaine ou marqués à trancher` |
 | ~~Comportement de `SetProperties()` sans type déclaré~~ | **Tranché le 2026-09-03** — `properties` **n'existe pas sans type**, l'écriture est refusée | reste ouvert le contenu exact de la validation « permissive par défaut » des types custom | `document-properties-schemas.md § 1` |
@@ -121,7 +123,7 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 
 ---
 
-## Groupe 4 — Cadrage juridique interne (bloque le lancement dans l'Union européenne, pas le build de J3)
+### Groupe 4 — Cadrage juridique interne (bloque le lancement dans l'Union européenne, pas le build de J3)
 
 **Axes du dossier juridique marqués `[À TRANCHER — FLAG JURISTE]`.** `cahier-specifications-techniques.md § 11 § 6 — Conformité RGPD technique` les énumère sous sa section consacrée à la conformité au règlement sur la protection des données (qualification mineurs, qualification sous-traitant et périmètre du contrat associé, mise en balance de l'intérêt légitime, suffisance du hard-delete de l'espace personnel, sort du contenu d'une coquille reprise par reclaim-in-place). Registre propriétaire : cette même section.
 
@@ -131,7 +133,7 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 
 ---
 
-## Groupe 5 — Comité des risques
+### Groupe 5 — Comité des risques
 
 **Statut de l'entrée `J-12` du registre des risques — non arbitrable aujourd'hui, axe juridique.** L'entrée `J-12` (méthode de vérification d'identité des invités, article 12 §6 du RGPD) est marquée `[À TRANCHER — COMITÉ DES RISQUES]` : le registre signale lui-même que la frontière entre « lacune réelle » et « posture existante » n'est pas tranchée par lui, et attend un statut en comité des risques.
 
@@ -139,7 +141,7 @@ Sans hiérarchie entre elles ; chacune est déjà nommée par un registre du cor
 
 ---
 
-## Groupe 6 — Conception d'interface (préalable hors jalon)
+### Groupe 6 — Conception d'interface (préalable hors jalon)
 
 **Identité graphique — non arbitrable aujourd'hui, axe conception d'interface.** Logo, charte graphique/typo/grille et ressources visuelles constituent un préalable hors jalon porté par `docs/interface/**`. Registre propriétaire : `roadmap-entree-build.md § Annexe B — Prérequis hors jalon`.
 

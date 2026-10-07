@@ -208,7 +208,7 @@ l'upgrade est une décision rationnelle déclenchée par un besoin concret.
 | **Gratuit** | Email + mot de passe | Cloud sync, partage joueurs, accès multi-device | 3 espaces `CAMPAIGN`/`ONE_SHOT` en cloud, 4 joueurs par session, 500 Mo |
 | **Pro** | Abonnement (~7 €/mois) | Tout le gratuit + illimité | Espaces `CAMPAIGN`/`ONE_SHOT` illimités, 5 Go+ |
 
-> Ces valeurs sont **volatiles** : consolidées et datées dans `docs/reference/cahier-des-charges.md` §12.4 (arrêtées au 2026-07-02). La présente section §3 reste la **source de vérité** ; toute révision se répercute d'abord ici, puis sur la table §12.4.
+> Ces valeurs sont **volatiles** : consolidées et datées dans `docs/reference/cahier-des-charges.md` annexe « Valeurs de référence chiffrées » (arrêtées au 2026-07-02). La présente section §3 reste la **source de vérité** ; toute révision se répercute d'abord ici, puis sur la table annexe « Valeurs de référence chiffrées ».
 
 **Déclencheurs naturels d'upgrade :**
 - Local → Gratuit : le MJ veut partager une information avec ses joueurs (UC-08), ou il a peur

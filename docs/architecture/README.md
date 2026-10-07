@@ -10,7 +10,7 @@ pour une première découverte, ou aller directement au fichier pertinent.
 
 | Fichier | Contenu | Pour qui |
 |---|---|---|
-| [Dossier d'Architecture Technique](../reference/dossier-architecture.md) | Carte structurelle du système : vues C4 (contexte, conteneurs, composants, déploiement) + choix de structure macro + justification par renvoi ADR | Qui veut la carte du système avant d'en lire le détail |
+| [Dossier d'architecture](../reference/dossier-architecture.md) | Carte structurelle du système : vues C4 (contexte, conteneurs, composants, déploiement) + choix de structure macro + justification par renvoi ADR | Qui veut la carte du système avant d'en lire le détail |
 | [ddd-fondations.md](fondations.md) | Pourquoi DDD, vocabulaire et concepts appliqués au projet | Toute personne qui rejoint le projet |
 | [stack.md](stack.md) | Choix technologiques, justifications, points forts/faibles, roadmap clients | Développeur qui veut comprendre la stack retenue |
 | [structure-projets.md](structure-projets.md) | Structure des projets .NET + périmètre du mode local TypeScript | Développeur qui échafaude ou navigue la solution |

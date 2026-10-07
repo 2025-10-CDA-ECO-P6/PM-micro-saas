@@ -1,14 +1,16 @@
-# Plan de travail — Haversack
+# Plan de travail
 
 | Champ | Valeur |
 |---|---|
+| Version | [SOUS-SPÉCIFIÉ — non écrit dans le document] |
+| Date | 2026-09-04 |
 | Statut | Décomposition en tranches du périmètre J0-J1, en épiques seules pour J2-J3 |
 | Audience | la ou les personnes qui prennent en charge l'implémentation — **une à trois**, seules ou en petit collectif |
 | Sources | `docs/projet/roadmap-de-build.md`, `docs/projet/conventions-dod.md`, `docs/architecture/structure-projets.md`, `docs/besoin/vision/perimetre/matrice-de-priorites.md`, les fiches `usecases/UC-NN`, `user-stories/US-UC-NN`, `docs/domaine/*/context.md`, `docs/decisions/ADR-NNN`, `docs/architecture/specs/*.md`, `docs/interface/ecrans/**`, `docs/assurance/strategie-de-test.md` |
 
 ---
 
-## Bandeau de cadrage — ce que ce document fait et ne fait pas
+## Nature et portée du document
 
 Ce document **décompose** un ordonnancement déjà arrêté. Il ne redéfinit :
 - **ni le périmètre MoSCoW** ([`vision/moscow.md`](../besoin/vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour attribuer une priorité Must/Should/Could/Won't) ;
@@ -26,7 +28,7 @@ Ce que ce document **fait** : il prend la séquence de jalons J0-J3 et, pour J0 
 
 ---
 
-## 1. Comment ce plan se lit
+## 1. Règles de lecture
 
 Cinq règles opposables, quel que soit l'effectif qui exécute ce plan :
 
@@ -70,15 +72,17 @@ Une règle métier se prouve sur l'agrégat ; un scénario Gherkin décrit un co
 
 ---
 
-## 2. Maille de désignation du périmètre d'écriture
+## 2. Natures du périmètre d'écriture
 
 Le champ `Périmètre d'écriture` de chaque tranche est une liste de **modules**, séparés par `;`. Un module est exactement l'une de ces natures, et rien d'autre :
 
-- un **agrégat du modèle de domaine**, désigné par son nom, parmi ceux que [`docs/domaine/`](../domaine/README.md) nomme en sections propres — `## Agrégats` dans les quatre fichiers de contexte. Les entités et value objects internes à un agrégat (`### X (entité dans Y)`, `### X (value object dans Y)`) n'en sont pas : **un agrégat est la frontière transactionnelle du modèle**, donc l'unité d'écriture ;
-- une **fiche d'écran**, par son slug, parmi celles de [`docs/interface/ecrans/`](../interface/ecrans/README.md) ;
-- un **module transverse nommé** : le noyau partagé `SharedKernel` ([`structure-projets.md §4`](../architecture/structure-projets.md)), `Haversack.Infrastructure.Notifications`, un projet .NET désigné par son rôle tant que son nom n'est pas tranché ([`structure-projets.md §3 § Convention de désignation`](../architecture/structure-projets.md)), ou — **sur la seule tranche qui les crée** — l'un des quatre namespaces de bounded context `IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct` ;
-- un **module de la couche cliente**, parmi les six que le corpus nomme par leur préoccupation — jamais par un répertoire, dont l'arborescence reste `[À TRANCHER — J0]` ;
-- un **module d'outillage**, désigné par son rôle selon la même convention que les projets .NET dont le nom n'est pas tranché : `le projet de test d'architecture`, `le projet de test de bout en bout`, `la configuration de la solution`, `la configuration d'intégration continue`.
+| Nature | Modules |
+|---|---|
+| un **agrégat du modèle de domaine** | désigné par son nom, parmi ceux que [`docs/domaine/`](../domaine/README.md) nomme en sections propres — `## Agrégats` dans les quatre fichiers de contexte. Les entités et value objects internes à un agrégat (`### X (entité dans Y)`, `### X (value object dans Y)`) n'en sont pas : **un agrégat est la frontière transactionnelle du modèle**, donc l'unité d'écriture ; |
+| une **fiche d'écran** | par son slug, parmi celles de [`docs/interface/ecrans/`](../interface/ecrans/README.md) ; |
+| un **module transverse nommé** | le noyau partagé `SharedKernel` ([`structure-projets.md §4`](../architecture/structure-projets.md)), `Haversack.Infrastructure.Notifications`, un projet .NET désigné par son rôle tant que son nom n'est pas tranché ([`structure-projets.md §3 § Convention de désignation`](../architecture/structure-projets.md)), ou — **sur la seule tranche qui les crée** — l'un des quatre namespaces de bounded context `IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct` ; |
+| un **module de la couche cliente** | parmi les six que le corpus nomme par leur préoccupation — jamais par un répertoire, dont l'arborescence reste `[À TRANCHER — J0]` ; |
+| un **module d'outillage** | désigné par son rôle selon la même convention que les projets .NET dont le nom n'est pas tranché : `le projet de test d'architecture`, `le projet de test de bout en bout`, `la configuration de la solution`, `la configuration d'intégration continue`. |
 
 **Les six modules de la couche cliente et leur ancrage.** [`structure-projets.md §7`](../architecture/structure-projets.md) renvoie l'emplacement de cette couche à l'ouverture de J0 et n'en nomme aucun répertoire. Ce document ne tranche pas cette arborescence : il désigne les modules par la **préoccupation** que le corpus leur donne déjà ailleurs.
 

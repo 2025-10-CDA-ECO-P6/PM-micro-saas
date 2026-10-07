@@ -1,4 +1,6 @@
-# Roadmap produit — Haversack
+# Roadmap produit
+
+> **Nature** : Document dérivé : il classe en paliers la valeur donnée aux utilisateurs. Il n'ajoute aucune fonctionnalité, aucune priorité ni aucun chiffre que ses sources ne portent.
 
 ## Trajectoire de valeur, jalon de validation et paliers d'évolution du produit
 
@@ -10,6 +12,8 @@
 | **Émetteur** | Équipe produit — Haversack |
 | **Audience** | Communication externe : investisseurs, partenaires, parties prenantes non techniques |
 | **Confidentialité** | Confidentiel — diffusion restreinte |
+
+## Objet et sources
 
 Cette roadmap présente les paliers de valeur du produit Haversack, dans l'ordre où ils sont
 livrés aux utilisateurs — maîtres du jeu (MJ) et joueurs. Elle répond à une question simple :
@@ -34,7 +38,7 @@ modèle d'affaires détaillé sont traités dans un document dédié.
 ## Sommaire
 
 - [Résumé exécutif](#résumé-exécutif)
-- [Vue synoptique de la trajectoire](#vue-synoptique-de-la-trajectoire)
+- [Paliers de valeur](#paliers-de-valeur)
 - [1. Proposition de valeur](#1-proposition-de-valeur)
 - [2. Le socle](#2-le-socle)
 - [3. Le jalon de validation](#3-le-jalon-de-validation)
@@ -86,8 +90,8 @@ ou négatif sur un pilier oriente la priorité vers la consolidation avant l'él
 
 ---
 
-<a id="vue-synoptique-de-la-trajectoire"></a>
-## Vue synoptique de la trajectoire
+<a id="paliers-de-valeur"></a>
+## Paliers de valeur
 
 | Palier | Valeur livrée (résumé) | Bénéficiaire principal | Nature |
 |---|---|---|---|

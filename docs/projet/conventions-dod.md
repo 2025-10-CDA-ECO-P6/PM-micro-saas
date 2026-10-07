@@ -1,14 +1,13 @@
-# Guide de conventions et Definition of Done — Haversack
+# Conventions et définition de fini
 
-| Champ | Valeur |
-|---|---|
-| Statut | Guide de conventions dérivé du corpus de conception, à confirmer à l'entrée en build |
-| Audience | Développeur·se de build (y compris externe), à l'entrée en build (J0) |
-| Sources | `docs/architecture/**` (stack, ADR, structure des projets, spécifications), `docs/assurance/strategie-de-test.md`, `docs/projet/roadmap-de-build.md` |
+> **Nature** : Consolidation : elle ne tranche rien et n'introduit aucune valeur absente de ses sources. Chaque impératif cite la décision ou la section dont il est issu.
+> **Statut** : Guide de conventions dérivé du corpus de conception, à confirmer à l'entrée en build
+> **Audience** : Développeur·se de build (y compris externe), à l'entrée en build (J0)
+> **Sources** : `docs/architecture/**` (stack, ADR, structure des projets, spécifications), `docs/assurance/strategie-de-test.md`, `docs/projet/roadmap-de-build.md`
 
 ---
 
-## 0. Objet, audience, autorité
+## 0. Objet, audience et autorité
 
 ### Objet
 
@@ -35,7 +34,9 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 
 ---
 
-## 1. Stack et principes d'architecture
+## 1. Domaine de convention — Stack et principes d'architecture
+
+### Dérivable du corpus
 
 **Frontend — un seul écosystème Angular.** L'application (SPA) et la landing page (SSR/prerender, SSG au MVP) partagent le même écosystème Angular ; il n'y a pas de second framework front. Blazor WASM et Next.js ont été évalués et écartés.
 *Source : [ADR-003 — Stack front, § Décision](../decisions/ADR-003-stack-front.md), § Compléments post-revue (l.51, landing SSG/prerender statique au MVP).*
@@ -49,9 +50,13 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 **Quatre bounded contexts en frontières logiques.** Identity & Access, Space Management, Content Library, Session Conduct sont des frontières logiques — organisées en namespaces distincts et contrats internes clairs — pas une assembly séparée par contexte au MVP. Un bounded context peut être promu en projet physique séparé à tout moment si un besoin réel émerge (montée en équipe, dépendances incompatibles, performance de build).
 *Source : [ADR-008, § Décision](../decisions/ADR-008-structure-solution.md) ; [structure-projets.md, § Domaine et Application : projets uniques](../architecture/structure-projets.md) et [§ 5 — Promotion ultérieure des bounded contexts](../architecture/structure-projets.md).*
 
+### Non couvert par le corpus
+
+[SOUS-SPÉCIFIÉ — contenu absent du document]
+
 ---
 
-## 2. Conventions de code C#
+## 2. Domaine de convention — Conventions de code C#
 
 ### Dérivable du corpus
 
@@ -84,7 +89,7 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 
 ---
 
-## 3. Conventions de code TypeScript / Angular
+## 3. Domaine de convention — Conventions de code TypeScript / Angular
 
 ### Dérivable du corpus
 
@@ -105,7 +110,9 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 
 ---
 
-## 4. Structure des projets
+## 4. Domaine de convention — Structure des projets
+
+### Dérivable du corpus
 
 La structure concrète des projets .NET — granularité, noms de projets, responsabilités de chacun, organisation des namespaces — est intégralement décrite dans **[structure-projets.md](../architecture/structure-projets.md)**, qui en est la source de vérité. Ce guide n'en reproduit pas le contenu ; il y renvoie.
 
@@ -114,9 +121,19 @@ Un seul point est énoncé ici en propre, parce qu'il clôt un report explicite 
 
 Convention consommatrice qui en découle : tout nouveau code se place dans le namespace de son bounded context ; aucune référence ne traverse une frontière de bounded context non autorisée. Cette convention est garantie par le gate outillé en intégration continue décrit en section 6.
 
+### Non couvert par le corpus
+
+[SOUS-SPÉCIFIÉ — contenu absent du document]
+
 ---
 
-## 5. Conventions de commit et de branche
+## 5. Domaine de convention — Conventions de commit et de branche
+
+### Dérivable du corpus
+
+[SOUS-SPÉCIFIÉ — contenu absent du document]
+
+### Non couvert par le corpus
 
 **Tranché** (décision d'entrée en build du 2026-09-03) — la proposition que le corpus signalait « à ratifier » est ratifiée.
 
@@ -128,7 +145,7 @@ Convention consommatrice qui en découle : tout nouveau code se place dans le na
 
 ---
 
-## 6. Gates d'intégration continue
+## 6. Domaine de convention — Gates d'intégration continue
 
 ### Dérivable du corpus
 
@@ -159,7 +176,9 @@ Les trois règles du test d'architecture, dans sa forme initiale :
 
 ---
 
-## 7. Conventions de sécurité de code
+## 7. Domaine de convention — Conventions de sécurité de code
+
+### Dérivable du corpus
 
 Les points suivants sont des **critères d'acceptation non négociables**, dérivés fidèlement de la spécification de sanitisation et de politique CSP.
 
@@ -189,11 +208,17 @@ Les points suivants sont des **critères d'acceptation non négociables**, déri
 
 ---
 
-## 8. Conventions de maintenance du corpus documentaire
+## 8. Domaine de convention — Conventions de maintenance du corpus documentaire
 
 Les points qui suivent ne relèvent pas du même registre que les sections 1 à 7 : ils ne dérivent pas d'une décision de conception déjà actée (ADR, document de structure, spécification), mais de défauts effectivement constatés dans le corpus documentaire. Cette section ne fait donc pas exception au bandeau d'autorité de la section 0 : elle en respecte l'esprit en le disant explicitement, plutôt qu'en habillant une pratique de méthode d'une fausse source de conception. Elle porte sur la maintenance du corpus `docs/besoin/**`, `docs/domaine/**`, `docs/interface/**` et des autres documents normatifs du dépôt, que l'équipe de build continuera d'éditer pendant le build — amender un use case, une décision d'architecture, une spécification. Elle ne concerne ni le code C#, ni le TypeScript, ni la CI.
 
-### 8.1 Vérifier la chaîne citée au moment où l'on réécrit
+### Dérivable du corpus
+
+[SOUS-SPÉCIFIÉ — contenu absent du document]
+
+### Non couvert par le corpus
+
+#### 8.1 Vérifier la chaîne citée au moment où l'on réécrit
 
 Un document peut citer entre guillemets une phrase d'un autre document, exactement au moment où la citation est écrite. Puis la source est réécrite, et la citation devient une attribution à un texte qui n'existe plus. Ce défaut est invisible à tout outillage de vérification de liens ou d'ancres, et invisible à la relecture du document fautif lui-même, qui reste parfaitement cohérent avec lui-même : il faut ouvrir la source pour voir le manque. Les guillemets sont précisément la marque typographique par laquelle un lecteur s'autorise à ne pas vérifier.
 
@@ -203,7 +228,7 @@ Un balayage automatique global de cette famille de défaut a été tenté et a �
 
 Note pour qui ferait une comparaison littérale automatisée : ajouter du gras à l'intérieur d'une citation la rend non littérale au sens strict — le corpus le fait par endroits, sans conséquence pratique, mais une comparaison automatisée doit normaliser l'emphase avant de comparer.
 
-### 8.2 Renvoyer par nom de section plutôt que par numéro de ligne
+#### 8.2 Renvoyer par nom de section plutôt que par numéro de ligne
 
 Un numéro de ligne désigne une position, pas une identité : il se périme à chaque édition de sa cible, y compris une édition qui ne touche pas à la substance visée par le renvoi. La réécriture d'une seule section d'un ADR a ainsi périmé une dizaine de renvois pointant dans ce fichier. La même propriété rend le défaut difficile à vérifier automatiquement sans bruit — un vérificateur écrit pour cette famille de renvoi s'est trompé dans les deux sens et n'a pas pu établir avec certitude combien de renvois étaient réellement faux.
 
@@ -215,7 +240,7 @@ Le corpus applique déjà ce principe à ses index : un renvoi qui pointe ne dé
 
 **Bilan de la résorption sur les sections 1 à 7** : les 34 renvois par numéro de ligne que portaient les sections 1 à 7 ont été rouverts un par un contre leur cible. 22 ont été convertis en renvoi par nom de section — le renvoi désignait une plage ou une section entière, dont le nom rend compte aussi bien que le numéro. 12 conservent leur numéro de ligne, chacun parce qu'il désigne un fait précis à l'intérieur d'une section qui porte plusieurs faits distincts (par exemple une clause parmi plusieurs dans une même liste, ou un paragraphe sans sous-titre propre au milieu d'une section plus large) — c'est exactement la dérogation posée ci-dessus, pas un oubli. Cette réouverture a aussi révélé une attribution de section imprécise dans un renvoi vers `ddd-fondations.md` (une citation étiquetée § Les Id typés désignait en réalité deux lignes vivant dans § Entité) ; elle a été corrigée en scindant le renvoi vers ses deux sections réelles. Aucun des 34 renvois initiaux n'est resté non examiné.
 
-### 8.3 Chercher par revendication, pas par périmètre de lecture
+#### 8.3 Chercher par revendication, pas par périmètre de lecture
 
 Une vérification du corpus découpée par dossier, avec lecture intégrale de chaque fichier, peut manquer un défaut qui traverse les périmètres de lecture — un use case entier resté non généralisé pendant qu'une décision voisine l'était, une décision d'architecture actée qui contredit le modèle de domaine sur un point précis. Le lecteur de chaque dossier peut avoir lu son fichier en entier sans rien y voir d'anormal : une lecture intégrale par périmètre ne peut structurellement pas détecter une contradiction qui se noue entre deux périmètres.
 
@@ -228,7 +253,7 @@ Deux contreparties, mesurées elles aussi :
 
 Il en découle une règle simple : un défaut uniforme sur N fichiers ne se corrige pas sur un sous-ensemble — un corpus à demi corrigé est cohérent avec rien, ni avec son ancien état ni avec le nouveau.
 
-### 8.4 Ouvrir la cible au moment d'écrire un renvoi, pas seulement au moment de le relire
+#### 8.4 Ouvrir la cible au moment d'écrire un renvoi, pas seulement au moment de le relire
 
 Un renvoi peut être faux sans avoir jamais été juste. Ce défaut est d'une autre nature que ceux de 8.1 et 8.2, qui raisonnent tous deux sur la **dérive** : une citation ou un numéro de ligne justes à l'écriture, rendus faux par une édition ultérieure de leur cible. Ici, rien n'a bougé dans la cible — c'est le renvoi lui-même qui, dès son écriture, désignait mal sa cible. Comme la citation fabriquée de 8.1, ce défaut est invisible à la relecture du document citant : celui-ci reste parfaitement cohérent avec lui-même, il faut ouvrir la cible pour voir l'écart. Il concerne aussi bien un renvoi par numéro de ligne qu'un renvoi par nom de section — le nom peut être aussi mal attribué que le numéro.
 
@@ -238,7 +263,7 @@ En rouvrant un par un, dans ce guide, les 34 renvois par numéro de ligne mentio
 
 **Pratique** : au moment d'écrire un renvoi — pas seulement au moment de le relire — ouvrir la cible et vérifier que le nom de section (ou la ligne) annoncé est bien celui sous lequel la substance visée vit réellement, pas celui sous lequel on croit qu'elle vit. Le bornage d'une plage de lignes fait partie de cette vérification : une plage qui déborde dans la section suivante annonce une cible plus large que celle réellement visée — un renvoi juste s'arrête où s'arrête la substance qu'il désigne, pas où s'arrête la lecture de celui qui l'écrit.
 
-### 8.5 Proscrire un terme de gestion de projet qui présuppose une grandeur ou une pratique que le corpus ne tient pas
+#### 8.5 Proscrire un terme de gestion de projet qui présuppose une grandeur ou une pratique que le corpus ne tient pas
 
 **Provenance.** Cette pratique est d'une nature différente des quatre précédentes : elle ne dérive ni d'une décision de conception déjà actée, ni d'un défaut effectivement constaté dans le corpus documentaire — c'est une contrainte de rédaction posée par le porteur du projet. Le dire explicitement ici respecte l'esprit du paragraphe d'ouverture de cette section : nommer une provenance qui n'est ni l'une ni l'autre des deux qu'il pose, plutôt que de laisser croire qu'elle s'y range par défaut.
 
@@ -254,9 +279,9 @@ Une grandeur que le corpus définit et documente en propre n'est pas visée par 
 
 **Responsable et fréquence d'application.** Même discipline que le balayage posé par [docs/reference/ordre-d-autorite.md, § Motifs interdits — détection par balayage](../reference/ordre-d-autorite.md), étendue à un second périmètre : chaque contributeur applique ce critère au document `docs/projet/**` qu'il vient de rédiger ou de modifier, avant toute intégration. Pas d'outillage imposé — la détection est manuelle et rapide.
 
-### 8.6 Restituer la clause de démenti d'une règle en deux temps
+#### 8.6 Restituer la clause de démenti d'une règle en deux temps
 
-Une règle de ce corpus s'écrit souvent en deux temps : un énoncé positif, puis une clause qui le dément, le borne ou l'excepte sur une partie de son domaine. [plan-de-travail.md, § Maille de désignation du périmètre d'écriture](plan-de-travail.md) en porte un exemple : « **Aucun namespace de bounded context n'apparaît comme module**, sauf sur la seule tranche qui les crée (TB-003) : un namespace est un tiroir, pas une unité d'écriture. » Citer, résumer ou indexer cette règle en ne retenant que son premier temps — « aucun namespace de bounded context n'apparaît comme module » — reconstruit exactement la lecture que la clause de démenti prenait soin d'écarter : une interdiction absolue, là où la source pose une interdiction sauf sur une tranche nommée. Le résultat n'est pas faux mot à mot, puisque chaque mot retenu appartient à la source ; il induit pourtant la lecture que la source avait pris soin d'interdire.
+Une règle de ce corpus s'écrit souvent en deux temps : un énoncé positif, puis une clause qui le dément, le borne ou l'excepte sur une partie de son domaine. [plan-de-travail.md, § Natures du périmètre d'écriture](plan-de-travail.md) en porte un exemple : « **Aucun namespace de bounded context n'apparaît comme module**, sauf sur la seule tranche qui les crée (TB-003) : un namespace est un tiroir, pas une unité d'écriture. » Citer, résumer ou indexer cette règle en ne retenant que son premier temps — « aucun namespace de bounded context n'apparaît comme module » — reconstruit exactement la lecture que la clause de démenti prenait soin d'écarter : une interdiction absolue, là où la source pose une interdiction sauf sur une tranche nommée. Le résultat n'est pas faux mot à mot, puisque chaque mot retenu appartient à la source ; il induit pourtant la lecture que la source avait pris soin d'interdire.
 
 Ce défaut diffère par son mécanisme de ceux que nomment 8.1 et 8.4. Ces deux sous-sections raisonnent sur un renvoi ou une citation dont la **cible** est en cause — une source réécrite après coup pour 8.1, un renvoi mal formé dès l'origine pour 8.4. Ici, la cible ne bouge pas et le renvoi la désigne correctement : la faute porte sur la **restitution** de ce que la cible dit, amputée de la moitié qui la borne. Une citation littérale du premier temps de la règle, sans la clause qui le suit, est un extrait exact d'un texte devenu inexact quant à ce qu'il fait dire à sa source.
 
@@ -264,11 +289,11 @@ Aucun outillage ne l'attrape. Le vérificateur de liens et d'ancres de ce corpus
 
 **Pratique** : ne jamais tronquer la clause de démenti en citant, résumant ou indexant une règle. Quand la brièveté impose de résumer, le résumé porte l'exception ou la borne au même titre que l'énoncé positif — pas l'un sans l'autre.
 
-### 8.7 Vérifier la disponibilité d'un terme par son registre d'emploi, pas par son compte d'occurrences
+#### 8.7 Vérifier la disponibilité d'un terme par son registre d'emploi, pas par son compte d'occurrences
 
 Pour savoir si un terme candidat est disponible, compter ses occurrences répond à la mauvaise question : un compte dit si le terme **apparaît**, pas dans quel **sens** ni avec quelle **autorité** il est déjà employé. Un terme rare peut être déjà pris comme terme de projet ; un terme fréquent peut n'apparaître que dans des sens étrangers au projet, et rester disponible.
 
-Le mot « palier » l'illustre. Il a été envisagé comme synonyme d'« itération » pour la section « Itération » de [methode-de-ticket.md, § Itération](methode-de-ticket.md) — le document même où ce synonyme aurait été introduit l'emploie pourtant déjà comme terme de projet, dans cette section : « Un sous-ensemble **choisi** des tranches ouvrables du palier courant. » [plan-de-travail.md, § Lots parallélisables](plan-de-travail.md) l'emploie dans le même sens — un rang d'exécution du graphe de dépendances : « seuls les paliers ouvrant au moins deux tranches simultanément sont nommés `LOT-nn` ». Le terme est repris dans un second sens, sans rapport avec le premier, par [roadmap-produit.md, Annexe B — Glossaire](roadmap-produit.md), qui le définit en propre : « **Palier** | Une étape de la trajectoire de valeur du produit, regroupant un ensemble cohérent de capacités livrées ou envisagées. » — un palier de valeur produit et de monétisation, que [note-cadrage-projet.md, § Objectifs & enjeux](note-de-cadrage.md) emploie de la même façon (« un modèle en trois paliers (local → compte gratuit → payant) »). Cet examen l'a donc trouvé pris deux fois, dans deux sens incompatibles, dont l'un dans le document même qu'on s'apprêtait à amender.
+Le mot « palier » l'illustre. Il a été envisagé comme synonyme d'« itération » pour la section « Itération » de [methode-de-ticket.md, § Itération](methode-de-ticket.md) — le document même où ce synonyme aurait été introduit l'emploie pourtant déjà comme terme de projet, dans cette section : « Un sous-ensemble **choisi** des tranches ouvrables du palier courant. » [plan-de-travail.md, § Lots parallélisables](plan-de-travail.md) l'emploie dans le même sens — un rang d'exécution du graphe de dépendances : « seuls les paliers ouvrant au moins deux tranches simultanément sont nommés `LOT-nn` ». Le terme est repris dans un second sens, sans rapport avec le premier, par [roadmap-produit.md, Annexe B — Glossaire](roadmap-produit.md), qui le définit en propre : « **Palier** | Une étape de la trajectoire de valeur du produit, regroupant un ensemble cohérent de capacités livrées ou envisagées. » — un palier de valeur produit et de monétisation, que [note-cadrage-projet.md, § Objectifs et enjeux](note-de-cadrage.md) emploie de la même façon (« un modèle en trois paliers (local → compte gratuit → payant) »). Cet examen l'a donc trouvé pris deux fois, dans deux sens incompatibles, dont l'un dans le document même qu'on s'apprêtait à amender.
 
 Un compte d'occurrences aurait signalé que le terme apparaît — information vraie et inutilisable, qui ne distingue ni les deux sens ni leur statut. Ce qui a décidé l'indisponibilité, à cet examen, c'est que deux de ces emplois se sont révélés **normatifs** : l'un pose la convention de nommage des `LOT-nn`, l'autre est une entrée de glossaire qui définit le terme pour tout le document qui le porte — ni l'un ni l'autre n'était une occurrence incidente au fil d'une phrase de prose. Une lecture du registre d'emploi voit cette différence de statut ; un compte ne la voit pas, quel que soit le total qu'il rend.
 
@@ -276,7 +301,7 @@ Cette pratique complète 8.5 sans la remplacer : 8.5 dit quels termes sont **pro
 
 **Pratique** : vérifier la disponibilité d'un terme candidat en lisant son registre d'emploi — les sens dans lesquels il est effectivement employé, et l'autorité des documents qui l'emploient — jamais par son compte d'occurrences.
 
-### 8.8 Conventions de tenue du corpus
+#### 8.8 Conventions de tenue du corpus
 
 Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Conventions de tenue du corpus](../decisions/ADR-019-conventions-de-tenue-du-corpus.md), qui fait foi. En résumé :
 
@@ -306,17 +331,19 @@ Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Co
 
 ---
 
-## 9. Definition of Done
+## 9. Définition de fini
 
 ### DoD de code
 
 Une tâche de développement est **terminée** quand, cumulativement, les 5 critères suivants sont satisfaits. Deux registres distincts s'y mêlent, distingués ici pour respecter le bandeau d'autorité de la section 0 : les items 2 et 5 sont **ancrés dans le corpus de conception**, cités avec leur source (sections 6 et 7 de ce guide) ; les items 1, 3 et 4 forment un **socle d'ingénierie assumé par ce guide lui-même**, non dérivé d'une décision de conception actée — ce guide ne prétend pas qu'ils proviennent d'une source de conception.
 
-1. le build compile ;
-2. le gate de test d'architecture en intégration continue (section 6) est vert ;
-3. la revue de code est passée ;
-4. la documentation impactée par la tâche est à jour ;
-5. les critères de sécurité opposables de la section 7 sont satisfaits, là où la tâche y touche.
+| # | Critère | Fondement | Source |
+|---|---|---|---|
+| 1 | le build compile ; | socle d'ingénierie | ce guide lui-même |
+| 2 | le gate de test d'architecture en intégration continue (section 6) est vert ; | ancré dans le corpus | section 6 de ce guide |
+| 3 | la revue de code est passée ; | socle d'ingénierie | ce guide lui-même |
+| 4 | la documentation impactée par la tâche est à jour ; | socle d'ingénierie | ce guide lui-même |
+| 5 | les critères de sécurité opposables de la section 7 sont satisfaits, là où la tâche y touche. | ancré dans le corpus | section 7 de ce guide |
 
 **Réconciliation avec la section 6** : l'item 3 (revue de code) désigne une pratique complémentaire et résiduelle, non substituable au gate de test d'architecture — c'est ce gate outillé, et non la revue manuelle, qui remplace la discipline de revue jugée insuffisante en contexte d'équipe restreinte (section 6).
 
