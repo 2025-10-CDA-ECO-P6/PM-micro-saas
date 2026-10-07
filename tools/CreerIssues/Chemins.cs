@@ -9,7 +9,7 @@ namespace CreerIssues;
 /// </summary>
 internal static class Chemins
 {
-    public const string PlanRelatif = "docs/gestion-projet/plan-de-travail.md";
-    public const string MethodeRelatif = "docs/gestion-projet/methode-de-ticket.md";
-    public const string WireframesRelatif = "docs/conception/interface/wireframes";
+    public const string PlanRelatif = "docs/projet/plan-de-travail.md";
+    public const string MethodeRelatif = "docs/projet/methode-de-ticket.md";
+    public const string WireframesRelatif = "docs/interface/ecrans";
 }

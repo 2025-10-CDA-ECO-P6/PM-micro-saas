@@ -114,9 +114,9 @@ internal static class FixturesCreerIssues
     public static void EcrireDepotMinimal(string depot, string planMd, string? methodeMd = null)
     {
         Helpers.InitialiserDepotGit(depot);
-        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/methode-de-ticket.md"), methodeMd ?? MethodeMd);
-        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/plan-de-travail.md"), planMd);
-        Helpers.Ecrire(Path.Combine(depot, "docs/conception/domain/personnage.md"), DomaineMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/projet/methode-de-ticket.md"), methodeMd ?? MethodeMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/projet/plan-de-travail.md"), planMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/domaine/personnage/context.md"), DomaineMd);
     }
 
     /// <summary>
@@ -254,11 +254,11 @@ public class ZoneEngendreeSansIssueExistantePourLaDependance : IDisposable
         string corps = FixturesCreerIssues.ExtraireCorpsIssue(resultat.Stdout, "TB-014");
 
         Assert.Contains(
-            $"**Tâche de plan** : [`docs/gestion-projet/plan-de-travail.md`]({urlBlobPlan}) — TB-014", corps);
+            $"**Tâche de plan** : [`docs/projet/plan-de-travail.md`]({urlBlobPlan}) — TB-014", corps);
         Assert.Contains("**Dépend de** : TB-099 (pas encore d'issue)", corps);
         Assert.Contains("**En conflit avec** : —", corps);
         Assert.Contains(
-            $"**Estampille de provenance** : docs/gestion-projet/plan-de-travail.md@{revisionPlan} — TB-014", corps);
+            $"**Estampille de provenance** : docs/projet/plan-de-travail.md@{revisionPlan} — TB-014", corps);
         Assert.Contains(FixturesCreerIssues.MarqueurSeparationCorps, corps);
         Assert.EndsWith(FixturesCreerIssues.ZoneManuelleParDefaut, corps);
     }
@@ -426,7 +426,7 @@ public class PreservationCaracterePourCaractereDeLaZoneManuelle : IDisposable
     public void DevraitPreserverCaracterePourCaractereLeTexteEcritALaMainSousLeMarqueur()
     {
         string ancienCorps =
-            "**Tâche de plan** : [`docs/gestion-projet/plan-de-travail.md`](url-perimee) — TB-014\n"
+            "**Tâche de plan** : [`docs/projet/plan-de-travail.md`](url-perimee) — TB-014\n"
             + "**Estampille de provenance** : ancienne révision, à écraser\n\n"
             + FixturesCreerIssues.MarqueurSeparationCorps
             + "\n\n## Pris par\n\nPierre-Marie, à partir du 2026-08-20.\n\n"
@@ -668,11 +668,11 @@ public class CodeDeSortieUnSurMethodeDeTicketMalformee : IDisposable
     public CodeDeSortieUnSurMethodeDeTicketMalformee()
     {
         Helpers.InitialiserDepotGit(_tmp.Chemin);
-        Helpers.Ecrire(Path.Combine(_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"), "# Plan de travail (fixture)\n");
+        Helpers.Ecrire(Path.Combine(_tmp.Chemin, "docs/projet/plan-de-travail.md"), "# Plan de travail (fixture)\n");
         // Méthode de ticket sans le marqueur « **Par jalon** » attendu par
         // Taxonomie.Extraire() — structure changée, extraction impossible.
         Helpers.Ecrire(
-            Path.Combine(_tmp.Chemin, "docs/gestion-projet/methode-de-ticket.md"),
+            Path.Combine(_tmp.Chemin, "docs/projet/methode-de-ticket.md"),
             "# Méthode de ticket (fixture volontairement malformée)\n\nAucune taxonomie ici.\n");
         Helpers.CommiterTout(_tmp.Chemin, "méthode malformée");
     }
@@ -791,7 +791,7 @@ public class RegenerationDuCorpsDUneIssueExistanteSousAppliquer : IDisposable
     public void DevraitMettreAJourLeCorpsPreserverLaZoneManuelleEtNeRienEcrireALaSecondePasseIdentique()
     {
         string ancienCorps =
-            "**Tâche de plan** : [`docs/gestion-projet/plan-de-travail.md`](url-perimee) — TB-014\n"
+            "**Tâche de plan** : [`docs/projet/plan-de-travail.md`](url-perimee) — TB-014\n"
             + "**Dépend de** : —\n"
             + "**En conflit avec** : —\n"
             + "**Estampille de provenance** : ancienne révision, à écraser\n\n"

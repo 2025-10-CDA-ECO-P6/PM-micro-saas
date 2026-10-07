@@ -10,13 +10,13 @@ pour une première découverte, ou aller directement au fichier pertinent.
 
 | Fichier | Contenu | Pour qui |
 |---|---|---|
-| [Dossier d'Architecture Technique](../context/dossier-architecture.md) | Carte structurelle du système : vues C4 (contexte, conteneurs, composants, déploiement) + choix de structure macro + justification par renvoi ADR | Qui veut la carte du système avant d'en lire le détail |
-| [ddd-fondations.md](ddd-fondations.md) | Pourquoi DDD, vocabulaire et concepts appliqués au projet | Toute personne qui rejoint le projet |
+| [Dossier d'Architecture Technique](../reference/dossier-architecture.md) | Carte structurelle du système : vues C4 (contexte, conteneurs, composants, déploiement) + choix de structure macro + justification par renvoi ADR | Qui veut la carte du système avant d'en lire le détail |
+| [ddd-fondations.md](fondations.md) | Pourquoi DDD, vocabulaire et concepts appliqués au projet | Toute personne qui rejoint le projet |
 | [stack.md](stack.md) | Choix technologiques, justifications, points forts/faibles, roadmap clients | Développeur qui veut comprendre la stack retenue |
 | [structure-projets.md](structure-projets.md) | Structure des projets .NET + périmètre du mode local TypeScript | Développeur qui échafaude ou navigue la solution |
 | [specs/](specs/) | Spécifications techniques pré-build dérivées des ADR (contrats API, sanitisation/CSP, mapping EF Core, schémas de propriétés, télémétrie, config, repli temps réel, effacement) | Développeur en entrée de build |
-| [architecture-detaillee.md](architecture-detaillee.md) | Vue par préoccupation technique transverse (sécurité, RGPD, persistance, temps réel, mode local), complémentaire de la carte structurelle | Qui explore les décisions d'archi par sujet transverse |
-| [decisions/README.md](decisions/README.md) | Registre des décisions d'architecture (ADR) | Toute personne qui veut comprendre les arbitrages structurels |
+| [architecture-detaillee.md](transverse.md) | Vue par préoccupation technique transverse (sécurité, RGPD, persistance, temps réel, mode local), complémentaire de la carte structurelle | Qui explore les décisions d'archi par sujet transverse |
+| [decisions/README.md](../decisions/README.md) | Registre des décisions d'architecture (ADR) | Toute personne qui veut comprendre les arbitrages structurels |
 
 ---
 
@@ -24,7 +24,7 @@ pour une première découverte, ou aller directement au fichier pertinent.
 
 | Document | Contenu |
 |---|---|
-| [../gestion-projet/roadmap-entree-build.md](../gestion-projet/roadmap-entree-build.md) | Roadmap d'ordonnancement du build (jalons J0→J3, décision marché et validation juridique EU) — **distinct de l'architecture** : explique le *quand* et le *dans quel ordre construire*, pas le *comment c'est construit* |
+| [../gestion-projet/roadmap-entree-build.md](../projet/roadmap-de-build.md) | Roadmap d'ordonnancement du build (jalons J0→J3, décision marché et validation juridique EU) — **distinct de l'architecture** : explique le *quand* et le *dans quel ordre construire*, pas le *comment c'est construit* |
 
 ---
 

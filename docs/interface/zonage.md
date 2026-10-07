@@ -1,0 +1,758 @@
+# Zoning d'interface — MVP Haversack
+
+> Document de conception d'interface du MVP Haversack.
+> Couche réflexive : porte la cohérence d'ensemble avant la production des wireframes.
+> Périmètre : tout le MVP (décision produit du 2026-06-12, étendant l'arbitrage T-09 du 2026-06-10 initialement limité à la vue session).
+> La vue session MJ reste l'écran prioritaire — support de validation de l'hypothèse H2.
+> Statut : les wireframes du périmètre décrit ici sont produits (voir `wireframes/README.md`).
+> Discipline : langage besoin, aucun nom de technologie.
+
+---
+
+## S1 — Préambule
+
+Ce document décrit le zoning d'interface du MVP Haversack. Il constitue la couche réflexive de la conception : son rôle est de porter la cohérence d'ensemble avant que les wireframes ne soient produits, écran par écran. Il ne contient pas de wireframes, pas de gabarits, pas de légendes visuelles.
+
+### Périmètre
+
+Le périmètre couvre l'intégralité du MVP (décision produit du 2026-06-12, qui étend l'arbitrage T-09 du 2026-06-10 — initialement limité à la vue session — à l'ensemble des surfaces du produit). Parmi ces surfaces, la **vue session MJ reste l'écran prioritaire** : c'est le support de validation de l'hypothèse centrale du produit (H2 — un MJ paiera pour une vue dédiée qui réduit la friction de pilotage en session).
+
+### Statut
+
+Toute décision d'arbitrage consignée ici (section S6) est figée et a servi de base à la production des wireframes ; les conditions de retour éventuelles sont explicitement nommées.
+
+### Discipline
+
+Tout ce document est rédigé en langage de besoin et de comportement observable. Aucun nom de technologie, de format de stockage, de bibliothèque ou de protocole n'y figure. Les formes cibles (grand écran, tablette, mobile) sont décrites en termes de contexte d'usage, pas d'implémentation.
+
+### Principe directeur — fluidité de navigation
+
+L'application offre une navigation sans rupture : passer d'une vue à l'autre — tableau de bord ↔ espace ↔ vue session, et au sein de chacune — est instantané ; les données restent à l'écran sans attente perceptible lors d'un changement de vue, et l'état de travail est préservé. Ce principe cadre tous les écrans du zoning. Il est la traduction, à l'échelle de l'application entière, de ce qu'AR-02 et AR-09 posent à l'échelle de la vue session : une surface qui change de mode, non un écran qui se recharge.
+
+Ancrage besoin : NFR-PERF-01 (fluidité de navigation en session), NFR-PERF-02 (réactivité de la première interaction), NFR-PERF-03 (continuité sans interruption).
+
+Décliné dans le châssis applicatif — S7.
+
+---
+
+## S2 — Colonne vertébrale et déterminants sourcés
+
+### Ossature de navigation
+
+L'ossature retenue est :
+
+**Tableau de bord (espaces de jeu) → Espace → {Préparation | Vue session MJ}**
+
+L'espace se décline en trois types : `CAMPAIGN` (campagne longue), `ONE_SHOT`, `PERSONAL` (espace personnel). **L'espace personnel mène uniquement à Préparation** — il n'a pas de vue session (surface mono-membre, sans joueurs). La **surface joueur** constitue un point d'entrée parallèle, séparé — accessible par lien direct, hors de l'arborescence espace. Le **mode local** est un état transversal, présent sur toutes les surfaces MJ tant que l'utilisateur n'a pas créé de compte.
+
+### Les quatre déterminants
+
+Ces quatre déterminants convergent tous vers la même ossature ; aucun ne la contredit.
+
+**Déterminant (a) — Le contenu est scopé par espace**
+
+Le contenu est rattaché à un espace (`Document.spaceId`). Dans la bibliothèque de contenu, tout document appartient à exactement un espace. Dans la conduite de session, toute session appartient à un espace partagé (`CAMPAIGN` ou `ONE_SHOT`). L'espace personnel (`SpaceType.PERSONAL`) est le conteneur par défaut qui reçoit tout contenu créé hors d'un espace partagé explicite — en mode local comme après création de compte. L'espace (`Space`) est l'agrégat racine et la frontière de cohérence.
+
+Sources : domaine `content-library` (`Document.spaceId`) ; domaine `session-conduct` (`Session.spaceId`) ; domaine `space-management` (`Space` — agrégat racine, frontière de cohérence) ; UC-01 (contenu atterrit dans l'espace personnel par défaut, sans créer de campagne) ; UC-02 (l'espace personnel préexiste, non créé via ce parcours) ; vision §2.2.
+
+**Déterminant (b) — La postcondition d'UC-02 exige un tableau de bord multi-espaces**
+
+Après création d'une campagne, depuis le point d'entrée de l'application (tableau de bord), le MJ retrouve l'ensemble des espaces dont il est propriétaire ou membre, jusqu'à la limite de son niveau de compte. L'espace personnel figure dans cette liste (hors quota). Il peut passer de l'un à l'autre sans rupture.
+
+Source : UC-02, postconditions — *« depuis le tableau de bord le MJ retrouve l'ensemble des espaces de jeu… passe de l'un à l'autre sans rupture »* ; UC-02 §Postconditions (l'espace personnel figure dans la liste).
+
+**Déterminant (c) — Le lancement de session depuis la campagne est universel pour les MJ, mais le persona joueur entre par lien**
+
+Pour les six parcours MJ (UC-06 §Déclencheur — « Le MJ clique sur "Lancer la session" »), le lancement s'effectue depuis la campagne. Cela vaut pour Antoine (multi-campagnes — parcours-05) et Sonia (one-shot MVP via campagne — parcours-07). Lucas, seul persona non-MJ, entre par un lien de session direct — hors arborescence espace — et accède immédiatement à la vue joueur sans passer par un tableau de bord ou un espace.
+
+Sources : UC-06 §Déclencheur ; parcours-05 (Antoine, étapes 1-6) ; parcours-07 (Sonia, étape 1) ; UC-09 scénario A (Lucas, parcours-03 étape 1 — *« Lucas clique sur le lien. L'application affiche immédiatement les informations partagées »*).
+
+**Déterminant (d) — Antoine multi-campagnes valide le besoin de tableau de bord**
+
+Antoine mène trois campagnes simultanées avec trois groupes distincts. Son parcours (parcours-05) valide que le tableau de bord multi-espaces est une nécessité fonctionnelle, pas un confort : sans lui, le passage d'une campagne à l'autre en cours de semaine impose une navigation sans repère.
+
+Source : persona-05 (Antoine) — *« trois campagnes simultanément »* ; parcours-05 étapes 2 et 6 — *« Antoine accède à son tableau de bord. Ses trois campagnes sont visibles »*.
+
+### Précision fondamentale
+
+La **séparation de la surface joueur est un déterminant de premier ordre** — corollaire direct du déterminant (c), confirmé par NFR-CONF-01. La vue joueur n'est pas une vue filtrée de la surface MJ ; c'est une surface construite séparément, qui n'expose aucune structure MJ et ne révèle pas l'existence d'un contenu non partagé. Cette séparation n'est pas une option d'implémentation — c'est une garantie de conception.
+
+---
+
+## S3 — Modèle de navigation
+
+Le graphe ci-dessous couvre l'ensemble des surfaces et transitions du MVP, y compris le châssis de gestion de compte. Les transitions d'état de la vue session (configuration → LIVE → consultation CLOSED) et la séparation de la surface joueur sont représentées explicitement.
+
+```mermaid
+flowchart TD
+    %% Châssis non authentifié
+    Accueil["Accueil\n(non authentifié)"]
+    ModeLocal["Démarrer sans compte\n(mode local)"]
+    Inscription["Créer un compte"]
+    Connexion["Se connecter\n(email / fournisseur externe)"]
+
+    Accueil --> ModeLocal
+    Accueil --> Inscription
+    Accueil --> Connexion
+    Inscription --> Tableau["Tableau de bord\n(espaces de jeu)"]
+    Connexion --> Tableau
+
+    %% Espace de travail en mode local : capture immédiate dans l'espace personnel
+    ModeLocal -->|"Capture immédiate\n(espace personnel par défaut)"| EspacePerso["Espace personnel\n(préparation / capture)"]
+
+    %% Gate de migration : chemin local → cloud quand espaces locaux existent
+    ModeLocal -->|"Espaces locaux détectés\nlors du passage au compte"| GateMigration["Gate de migration\nlocal→cloud"]
+    GateMigration --> Tableau
+    ModeLocal -->|"Aucun espace local\nou passage direct"| Tableau
+
+    %% Invite contextuelle sans-compte → compte
+    ModeLocal -.->|"Invite contextuelle\n(action cloud déclenchée)"| Inscription
+
+    %% Châssis de gestion de compte (accessible depuis le tableau de bord)
+    Tableau --> Profil["Profil utilisateur\n(nom, mot de passe, niveau de compte)"]
+    Tableau --> SuppressionRGPD["Suppression de compte\n(RGPD)"]
+
+    %% Surface MJ
+    subgraph SurfaceMJ["Surface MJ"]
+        direction TB
+
+        Tableau --> NouvelEspace["Créer un espace de jeu\n(CAMPAIGN ou ONE_SHOT)"]
+        Tableau --> EspacePerso
+        Tableau --> Campagne["Vue campagne\n(espace de travail)"]
+
+        %% Espace personnel : préparation uniquement, pas de vue session
+        subgraph PreparationPerso["Préparation (espace personnel)"]
+            direction TB
+            EspacePerso --> NavDossiersPerso["Navigation par dossiers\n(dossier virtuel « Non classés »)"]
+            EspacePerso --> EditeurDocPerso["Éditeur de document"]
+            EspacePerso --> RecherchePerso["Recherche\n(titre seul — MVP)"]
+            NavDossiersPerso --> EditeurDocPerso
+        end
+
+        subgraph Preparation["Préparation (espaces partagés)"]
+            direction TB
+            Campagne --> NavDossiers["Navigation par dossiers"]
+            Campagne --> EditeurDoc["Éditeur de document"]
+            Campagne --> EditeurScenario["Éditeur de scénario\n(cas spécialisé)"]
+            Campagne --> Recherche["Recherche\n(titre seul — MVP)"]
+            Campagne --> ParamsCampagne["Paramètres de campagne\n(dont config vue session)"]
+            NavDossiers --> EditeurDoc
+        end
+
+        subgraph VueSessionGroup["Vue session MJ"]
+            direction TB
+            VSConfig["Mode configuration\n(aucune session active)"]
+            VSLIVE["Mode LIVE\n(session en cours)"]
+            VSClosed["Mode consultation\n(session CLOSED)"]
+
+            VSConfig -->|"Lancer la session"| VSLIVE
+            VSLIVE -->|"Terminer"| VSClosed
+            VSClosed -.->|"Archiver"| Archive["Session ARCHIVED\n(lecture seule)"]
+        end
+
+        Campagne -->|"Accéder à la vue session"| VSConfig
+        Campagne -->|"Lancer la session"| VSLIVE
+        Tableau -->|"Reprendre session en cours\n(repère 'session en cours')"| VSLIVE
+
+        VSLIVE --> PanneauCreation["Panneau création rapide\nà la volée (UC-07)"]
+    end
+
+    %% Surface joueur (séparée)
+    subgraph SurfaceJoueur["Surface joueur (séparée — entrée par lien)"]
+        direction TB
+        LienSession["Lien de session reçu"]
+        SaisieNom["Saisie nom d'affichage\n+ information RGPD"]
+        VueJoueur["Vue joueur\n(documents partagés + notes personnelles)"]
+        ErreurAcces["Page d'erreur d'accès\n(lien expiré, révoqué, invalide)"]
+
+        LienSession --> SaisieNom
+        SaisieNom --> VueJoueur
+        LienSession --> ErreurAcces
+    end
+
+    %% Connexion entre surfaces
+    VSLIVE -.->|"Partage en direct —\ncontenu visible immédiatement"| VueJoueur
+    ParamsCampagne -.->|"Génération du lien d'invitation"| LienSession
+    VSLIVE -.->|"Génération du lien d'invitation\n(affordance vue session)"| LienSession
+
+    %% Légende
+    classDef mj fill:#dbeafe,stroke:#3b82f6
+    classDef joueur fill:#dcfce7,stroke:#22c55e
+    classDef transversal fill:#fef9c3,stroke:#eab308
+
+    class Tableau,NouvelEspace,Campagne,NavDossiers,EditeurDoc,EditeurScenario,Recherche,ParamsCampagne,VSConfig,VSLIVE,VSClosed,Archive,PanneauCreation,EspacePerso,NavDossiersPerso,EditeurDocPerso,RecherchePerso mj
+    class LienSession,SaisieNom,VueJoueur,ErreurAcces joueur
+    class Accueil,ModeLocal,Inscription,Connexion,GateMigration,Profil,SuppressionRGPD transversal
+```
+
+> Légende : fond bleu — surface MJ ; fond vert — surface joueur ; fond jaune — écrans transversaux.
+
+---
+
+## S4 — Inventaire des écrans MVP
+
+### Écrans transversaux (hors espace)
+
+Écrans non rattachés à un espace ; ils s'affichent dans le châssis applicatif (S7).
+
+| Nom | Rôle | Surface | Contexte | Forme cible | UC / US / UJ couverts |
+|---|---|---|---|---|---|
+| **Accueil non authentifié** | Point d'entrée — présente les deux chemins (sans compte / avec compte) | Transversal | Transversal | Grand écran + tablette | UC-01, UC-10 |
+| **Inscription** | Création de compte (email + nom d'affichage, ou fournisseur externe) | Transversal | Transversal | Grand écran + tablette | UC-10, UC-01 A1 |
+| **Connexion** | Authentification (email/mot de passe ou fournisseur externe) | Transversal | Transversal | Grand écran + tablette | UC-10 |
+| **Profil utilisateur** | Modification du nom d'affichage, du mot de passe ; affichage du niveau de compte | Transversal | Transversal | Grand écran + tablette | UC-10 A2 |
+| **Suppression de compte (RGPD)** | Confirmation de suppression avec présentation des conséquences ; bloquée si campagnes actives avec membres | Transversal | Transversal | Grand écran + tablette | UC-10 A4 |
+| **Gate de migration local→cloud** | Présentation des espaces locaux détectés ; confirmation explicite avant migration ; signale que la configuration de vue session n'est pas reprise et devra être reconfigurée | Transversal | Transversal | Grand écran + tablette | UC-10, UC-01 A1 |
+
+> **Note migration** : après migration local→cloud, la configuration de la vue session (choix des panneaux affichés) n'est pas reprise — elle est recréée et le MJ la reconfigure. Source : UC-10 (règle de migration — la config vue session est recréée).
+
+---
+
+### Surface MJ — Tableau de bord
+
+| Nom | Rôle | Surface | Contexte | Forme cible | UC / US / UJ couverts |
+|---|---|---|---|---|---|
+| **Tableau de bord des espaces de jeu** | Liste de tous les espaces dont le MJ est propriétaire ou membre ; inclut l'espace personnel (**hors quota**, visuellement distinct) et les espaces partagés décomptés du quota FREE ; accès rapide à chaque espace ; repère visuel « session en cours » si une session LIVE existe dans un espace partagé. **Sous-spécifié dans le corpus** — UC-02 énonce la postcondition mais ne décrit pas l'interface du tableau. | MJ | Transversal | Grand écran + tablette | UC-02 postcondition ; parcours-05 étapes 2 et 6 |
+| **Création d'un espace de jeu** | Formulaire de création (nom obligatoire, description et système optionnels) pour les espaces partagés (`CAMPAIGN` ou `ONE_SHOT`) ; crée aussi les quatre dossiers système. L'espace personnel préexiste — il n'est pas créé via ce parcours. | MJ | Transversal | Grand écran + tablette | UC-02 scénario nominal |
+
+---
+
+### Surface MJ — Préparation
+
+| Nom | Rôle | Surface | Contexte | Forme cible | UC / US / UJ couverts |
+|---|---|---|---|---|---|
+| **Vue campagne (espace de travail)** | Hub de l'espace partagé — point d'entrée vers les dossiers, les documents, la vue session, les paramètres et l'invitation de joueurs. La même surface de préparation (navigation dossiers, éditeur, recherche) sert l'espace personnel en **version réduite** : sans configuration de vue session, sans invitation de joueurs. | MJ | Préparation | Grand écran + tablette | UC-02, UC-03, UC-04, UC-05, UC-06, UC-08, UC-11 |
+| **Navigation par dossiers** | Arborescence des dossiers de l'espace ; affichage des documents en vue condensée ; accès à la création d'un document dans le dossier courant. Pour l'espace personnel : arborescence débutant avec le seul dossier virtuel « Non classés » à la création, complétée des dossiers créés librement par le propriétaire (aucun dossier système nommé). | MJ | Préparation | Grand écran + tablette | UC-05 scénario nominal ; UJ-UC-05 |
+| **Éditeur de document** | Création et modification d'un document (titre, type optionnel, propriétés structurées optionnelles, blocs libres, visibilité, liens) ; **non spécifié visuellement dans le corpus** — la structure de contenu est décrite par UC-04 mais l'interface de l'éditeur n'est pas détaillée | MJ | Préparation | Grand écran + tablette | UC-04, UC-07 |
+| **Éditeur de scénario** | Cas spécialisé de l'éditeur pour les documents de type scénario — structure narrative (scènes liées, documents associés) ; cas d'usage documenté par UC-03. Disponible dans les espaces partagés comme dans l'espace personnel. | MJ | Préparation | Grand écran + tablette | UC-03 |
+| **Recherche en préparation** | Barre de recherche globale dans le contenu de l'espace ; **titre seul au MVP** ; résultats regroupés par type. Disponible pour tous les types d'espace, y compris l'espace personnel. | MJ | Préparation + session | Grand écran + tablette | UC-14 ; US-UC-14 |
+| **Paramètres de campagne** | Renvoi vers la configuration de la vue session (mode configuration de la surface session — AR-18) ; export d'espace (MVP — version minimale) ; archivage de l'espace ; génération du lien d'invitation de campagne (`SpaceMembership` — AR-10). Réservé aux espaces partagés (`CAMPAIGN`/`ONE_SHOT`). | MJ | Préparation | Grand écran + tablette | UC-06 Phase 2 (config view) ; UC-02 (archivage) ; UC-11 (lien) |
+
+---
+
+### Surface MJ — Vue session (hub central)
+
+| Nom | Rôle | Surface | Contexte | Forme cible | UC / US / UJ couverts |
+|---|---|---|---|---|---|
+| **Vue session MJ** *(livrable prioritaire)* | Hub central de pilotage de session — tableau de bord configurable avec panneaux de dossiers, zone de notes co-présente, recherche, épinglage, partage ; disponible en trois modes (configuration / LIVE / consultation CLOSED) selon le statut de la session ; en mode consultation CLOSED, le MJ peut encore ajouter des notes rétroactives et modifier le résumé de la session (`Session.summary`). Réservé aux espaces partagés (`CAMPAIGN`/`ONE_SHOT`). | MJ | Session | Grand écran + tablette | UC-06, UC-07, UC-08, UC-14 ; US-06-01 à US-06-10 ; UJ-UC-06 |
+| **Panneau de création rapide à la volée** | Formulaire minimal (titre seul obligatoire) permettant de créer un document ou une note de session sans quitter la vue session ; le document créé est automatiquement épinglé | MJ | Session | Grand écran + tablette | UC-07 ; UJ-UC-07 |
+
+---
+
+### Surface joueur (séparée)
+
+| Nom | Rôle | Surface | Contexte | Forme cible | UC / US / UJ couverts |
+|---|---|---|---|---|---|
+| **Accès par lien + saisie du nom d'affichage** | Première page visible par le joueur à l'ouverture du lien ; présente les informations partagées par le MJ ; demande uniquement un nom d'affichage ; information RGPD sur la durée de conservation | Joueur | Session | Grand écran + tablette (mobile structuré non implémenté au MVP) | UC-09 scénario A ; RB-09-20 |
+| **Vue joueur post-accès** | Consultation des documents partagés par le MJ ; prise de notes personnelles pendant une session LIVE ; fiche du personnage associé si disponible | Joueur | Session | Grand écran + tablette | UC-12, UC-06 §vue joueur ; US-06-07, US-06-08 |
+| **Page d'erreur d'accès** | Message sobre en cas de lien expiré, révoqué ou invalide ; ne révèle pas l'existence de la campagne | Joueur | Transversal | Grand écran + tablette | UC-09 A3, E1, E2 |
+
+---
+
+### Surface MJ — Accès (périmètre Should, fraction Must wireframée)
+
+| Nom | Rôle | Surface | Contexte | Forme cible | UC / US / UJ couverts |
+|---|---|---|---|---|---|
+| **Affordance de génération de lien d'invitation** | Action logée dans la vue session ou la vue campagne ; génère le lien de session ponctuel partageable ; correspond à la fraction Must tirée d'UC-08/09 | MJ | Session / Préparation | Grand écran + tablette | UC-06 (lien ponctuel), UC-11 A4 |
+
+> **Différé, inventorié non wireframé** : l'écran Membres complet (UC-11 — gestion de l'ensemble des membres, révocations, associations joueur-personnage) est inventorié mais non wireframé au MVP (Should Have — voir AR-10). L'enrichissement de la vue joueur au niveau campagne (UC-12 complet) est également différé.
+
+---
+
+## S5 — Table de couverture UC → écran(s)
+
+| Use Case | Écran(s) porteur(s) |
+|---|---|
+| **UC-01** — Mode local sans compte | Accueil non authentifié ; Inscription (invite contextuelle A1) ; châssis mode local (bandeaux transversaux) ; espace personnel (capture immédiate, hors quota FREE — RB-01-01/RB-02-10) |
+| **UC-02** — Créer un espace de jeu | Tableau de bord des espaces de jeu ; Création d'un espace de jeu (espaces partagés uniquement — l'espace personnel préexiste, non créé via ce parcours) |
+| **UC-03** — Structurer un scénario | Éditeur de scénario |
+| **UC-04** — Gérer les documents d'un espace | Éditeur de document ; Navigation par dossiers |
+| **UC-05** — Organiser par dossiers | Navigation par dossiers ; Vue campagne (espace de travail) ; Paramètres de campagne |
+| **UC-06** — Utiliser la vue session | Vue session MJ (tous modes) ; Panneau de création rapide à la volée |
+| **UC-07** — Créer un élément à la volée | Panneau de création rapide à la volée |
+| **UC-08** — Partager une information aux joueurs | Vue session MJ (mode LIVE) ; Affordance de génération de lien d'invitation |
+| **UC-09** — Accès joueur via lien | Accès par lien + saisie du nom d'affichage ; Vue joueur post-accès ; Page d'erreur d'accès |
+| **UC-10** — Créer un compte et synchroniser dans le cloud | Inscription ; Connexion ; Profil utilisateur ; Suppression de compte (RGPD) ; Gate de migration local→cloud |
+| **UC-11** — Gérer les membres d'une campagne | Affordance de génération de lien d'invitation (fraction Must) ; *Écran Membres complet = différé* |
+| **UC-12** — Consulter sa campagne en tant que joueur (vue post-accès) | Vue joueur post-accès (fraction de base ; enrichissement campagne différé — AR-10) |
+| **UC-13** — Utiliser un scénario réutilisable | Hors périmètre wireframe MVP (post-MVP) — l'interface de bibliothèque « Mes scénarios » se logera dans l'espace personnel (AR-08 révisé) |
+| **UC-14** — Rechercher rapidement une information | Recherche en préparation ; Vue session MJ (recherche omniprésente) |
+
+> **Zones sans UC propre** : le Tableau de bord des espaces de jeu est porté par la postcondition d'UC-02, sans UC qui lui soit dédié. Les Paramètres de campagne agrègent des fonctions de plusieurs UC (config vue session = UC-06 Phase 2, export = MVP (version minimale), archivage = UC-02, lien d'invitation = UC-11) sans UC propre. L'espace personnel est porté par UC-01 (capture hors campagne), UC-04 (gestion documents, tout espace) et moscow §Espace personnel (Must Have), sans UC dédié.
+
+---
+
+## S6 — Arbitrages tracés
+
+### AR-01 — Ossature de navigation — arbitrage du 2026-06-12 (révisé 2026-06-18)
+
+**Décision** : l'ossature retenue est **Tableau de bord (espaces de jeu) → Espace → {Préparation | Vue session MJ}**, l'espace se déclinant en trois types (`CAMPAIGN`, `ONE_SHOT`, `PERSONAL`). L'**espace personnel se branche uniquement sur Préparation** (mono-membre, pas de session — `session-conduct.md` ; invariant 5). Le tableau de bord le liste **hors quota** (UC-01, RB-02-10). La **surface joueur** constitue un point d'entrée parallèle par lien. Le **mode local** est un état transversal.
+
+**Raison d'être produit** : les quatre déterminants (S2) convergent sans exception vers cette ossature. Le contenu est scopé par espace (`Document.spaceId`) — l'espace personnel est le conteneur par défaut pour tout contenu créé hors espace partagé explicite (UC-01 ; UC-02). La postcondition d'UC-02 exige un tableau de bord multi-espaces lisible où l'espace personnel figure (UC-02 §Postconditions), validé par le persona Antoine (trois campagnes simultanées). Le lancement de session depuis la campagne est universel pour les MJ (six parcours) — ce qui positionne l'espace comme nœud de transit naturel. Lucas entre par lien direct — ce qui sépare structurellement la surface joueur de l'arborescence MJ. L'espace personnel n'a pas de vue session : `session-conduct.md` (invariant : pas de `SessionViewConfig` pour PERSONAL) établit qu'un espace `PERSONAL` n'a pas de `SessionViewConfig` ni de session — le partage temps réel et la vue joueur présupposent un groupe de jeu absent d'un espace mono-membre. H1 (vision §2.3) confirme.
+
+**Alternatives considérées** : entrée directe sur l'espace sans tableau de bord — écartée, car elle contredirait la postcondition d'UC-02 et bloquerait Antoine. Surface joueur intégrée sous l'espace — écartée, car elle violerait NFR-CONF-01 (la séparation est une garantie de conception, pas un filtre). Doter l'espace personnel d'une vue session — écarté, car `session-conduct.md` l'exclut explicitement (pas de `SessionViewConfig` sur `PERSONAL`). Masquer l'espace personnel du tableau de bord — écarté, car UC-02 §Postconditions l'y inscrit explicitement et H1 le confirme.
+
+**Condition de retour** : aucune sur l'ossature.
+
+---
+
+### AR-02 — Préparation et vue session = surfaces distinctes ; vue session = une surface à modes — arbitrage du 2026-06-12
+
+**Décision** : la préparation et la vue session sont **deux surfaces distinctes**. La configuration de la vue session hors-LIVE est un **mode de la vue session** (mode configuration), pas une troisième surface ni un panneau de réglages séparé.
+
+> *Note d'articulation* : la branche « Vue session » de l'ossature est **absente pour l'espace personnel** — conséquence directe d'AR-01 (espace `PERSONAL` sans `SessionViewConfig` ni session).
+
+**Raison d'être produit** : NFR-PERF-01 exige que la navigation en session soit fluide et ne casse pas le rythme de table — ce qui impose une surface optimisée pour la vitesse, distincte de la préparation posée. NFR-ACC-04 confirme l'opposition des contextes de lecture (lecture rapide à distance en session, lecture posée en préparation). US-06-02 prescrit que la configuration de la vue session soit accessible en mode édition sans lancer de session, sans créer de session, et sans panneau paramètres séparé : *« Pas de panneau paramètres séparé — la config se fait directement dans la vue session »* ; *« La vue session est accessible en mode édition sans lancer de session »*. Ces contraintes font de la configuration un mode de la vue session, non une surface indépendante.
+
+**Alternatives considérées** : un seul écran préparation + session — écarté, car les contextes de lecture sont opposés et la confusion entre les deux modes serait une source de friction (UJ-UC-06 §friction). Un écran de réglages séparé — écarté, car US-06-02 l'interdit explicitement.
+
+**Condition de retour** : aucune.
+
+---
+
+### AR-03 — Séparation radicale surface MJ / surface joueur — arbitrage du 2026-06-12
+
+**Décision** : la vue joueur **n'expose aucune structure MJ** et **ne révèle pas l'existence d'un document non partagé**.
+
+**Raison d'être produit** : NFR-CONF-01 garantit que la séparation entre les notes privées du MJ et la vue des joueurs est permanente et ne dépend d'aucune action supplémentaire du MJ — c'est une *garantie de conception*, pas une configuration utilisateur. Les règles métier RB-06-08, RB-06-24 et RB-06-25 précisent que les documents non partagés sont invisibles depuis la vue joueur, quels que soient le rôle, le type de document ou le mode d'accès, et que toute tentative d'accès direct ne révèle pas l'existence du document. Cette garantie conditionne la confiance des MJ qui préparent des informations secrètes : Thomas ne confierait pas 10 % de ses notes à un outil dont la frontière privé/visible dépend de son attention constante (NFR-CONF-01 §Raison d'être).
+
+**Alternatives considérées** : vue joueur = vue MJ filtrée — écartée, car la garantie de conception serait réduite à une garantie d'exécution, insuffisante pour NFR-CONF-01.
+
+**Condition de retour** : aucune (invariant de confidentialité).
+
+---
+
+### AR-04 — Vue session épurée par défaut, zone de notes co-présente — arbitrage du 2026-06-12
+
+**Décision** : par défaut (vue non configurée), la vue session est **épurée** ; la **zone de notes de session est co-présente et jamais masquée par défilement** ; la densité est construite par configuration ; le défaut est calibré pour qui ne configure pas (Émilie, Nadia). Le défaut épuré reste **assez informatif** pour retrouver un élément dans un dossier dense : un panneau condensé montre titre et repère de type, afin de ne pas desservir le besoin d'accès rapide.
+
+**Raison d'être produit** : UJ-UC-06 §friction identifie explicitement que la zone de notes peut être noyée si les panneaux occupent tout l'espace : *« Zone de saisie non visible sans scroll si les panneaux occupent tout l'espace »* — ce point de friction justifie que la zone de notes soit co-présente par construction, indépendamment de la configuration. Les personas Émilie (improvisatrice, notes intensives, pas de configuration initiale) et Nadia (lancement rapide, peu de configuration) constituent les profils qui définissent le défaut : si le défaut ne leur convient pas, le produit les exclut dès la première session. La tension « épuré mais informatif » est également signalée par UJ-UC-06 §friction (scénario Nadia : trouver un PNJ dans un dossier dense ; *« vue mal organisée / condensée pas assez informative »*) et confirmée par NFR-ACC-04.
+
+**Alternatives considérées** : vue dense multi-panneaux par défaut — écartée, car elle pénalise les profils qui ne configurent pas et amplifie la friction de démarrage pour Nadia et Émilie.
+
+**Condition de retour** : si l'usage révèle que la majorité des MJ configure dès la première session, le défaut pourra être enrichi.
+
+---
+
+### AR-05 — Vocabulaire « campagne » et « espace personnel » — arbitrage du 2026-06-12 (révisé 2026-06-18)
+
+**Décision** : le terme **« campagne »** est utilisé en surface (boutons, titres, labels) pour les espaces de type `CAMPAIGN` ; le terme « espace de jeu » ne figure jamais dans l'interface — c'est un terme de conception. **L'espace personnel est nommé « Espace personnel » en surface** — ni « campagne », ni « espace de jeu », ni « bibliothèque ».
+
+**Raison d'être produit** : UC-02 scénario nominal utilise « Nouvelle campagne » comme intitulé du bouton de création ; US-UC-02 confirme ce vocabulaire. Exposer « espace de jeu » en surface créerait un décalage entre la langue des personas et la langue de l'interface, sans bénéfice utilisateur. Pour l'espace personnel : le glossaire (entrée `Espace personnel`) fait autorité sur la forme ; nommer cet espace « campagne » est factuellement faux (mono-membre, pas de jeu partagé) ; « espace de jeu » est faux (ni session ni joueurs) ; « bibliothèque » anticipe une fonction post-MVP.
+
+**Alternatives considérées** : « espace de jeu » en label — écartée, car le terme n'est pas naturel pour les personas cibles. Libellé d'usage « Mes notes » ou « Brouillons » pour l'espace personnel — écarté, car il diverge du glossaire (autorité de forme) ; à n'ouvrir qu'en interview.
+
+**Condition de retour** : libellé de surface de l'espace personnel = point d'interview (UC-02 §Questions à valider en interview). À l'arrivée du point d'entrée one-shot dédié (UC-13, post-MVP), réexaminer le seul libellé du bouton de ce point d'entrée.
+
+---
+
+### AR-06 — Partage temps réel côté joueur : apparition ambiante, disparition symétrique, pas de notification active MVP — arbitrage du 2026-06-12
+
+**Décision** : l'apparition d'un document partagé est **immédiate et ambiante** (repère de nouveauté discret) ; le retrait d'un partage fait **disparaître le contenu en direct** côté joueur (symétrique) ; **aucune notification active** (toast, badge) au MVP. Cette « apparition ambiante » concerne la couche **visuelle** ; le changement de visibilité côté joueur **reste annoncé** aux outils de lecture d'écran sans action de l'utilisateur (annonce assistive ≠ notification UX visuelle) — NFR-ACC-02.
+
+**Raison d'être produit** : UC-06 précise que les joueurs voient immédiatement les documents partagés lors d'une session LIVE. UC-08 A1 et UC-06 précisent que le retrait d'un partage rend le document invisible pour les joueurs — la symétrie est une conséquence directe du modèle de visibilité. NFR-ACC-04 précise que la vue joueur est utilisée pendant une session, potentiellement sur mobile, dans des conditions de lecture rapide — une notification active serait intrusive et distrairait de la table. La question d'une notification active est explicitement ouverte dans US-06 (*« non décidé MVP »*). NFR-ACC-02 §Critères impose que les changements d'état dynamiques soient annoncés aux outils de lecture d'écran sans action de l'utilisateur — cette exigence est orthogonale à l'absence de notification UX visuelle.
+
+**Alternatives considérées** : notification active (toast, badge) au moment du partage — écartée, car elle n'est pas décidée dans le corpus et constitue un angle d'interview (US-06 §Questions ouvertes).
+
+**Condition de retour** : la notification active est un point d'interview (US-06 §Questions ouvertes) ; si les entretiens révèlent que les joueurs ratent systématiquement les nouveaux partages, elle sera réévaluée.
+
+---
+
+### AR-07 — Forme cible : laptop/tablette + responsive, mobile pensé non implémenté — arbitrage du 2026-06-12
+
+**Décision** : la cible de référence est **grand écran laptop + tablette** ; la logique responsive s'applique entre les deux ; le mobile est **pensé dans la structure (non bloqué) mais non implémenté au MVP** — aucun wireframe mobile. La vue session est conçue comme un ensemble de **panneaux dont le nombre visible se réduit** quand la largeur diminue (repli vers un panneau focus + rail de bascule), la **zone de notes restant prioritaire** — pour que le wireframe mobile futur soit une adaptation, pas une refonte.
+
+**Raison d'être produit** : NFR-ACC-04 décrit l'usage à *« distance normale de l'écran »* lors d'une session à table — contexte qui correspond à un laptop ou une tablette, pas à un smartphone tenu à la main. Le corpus signale la vue joueur mobile comme angle d'interview (NFR-ACC-04, INTERVIEW_GUIDE Q8) mais ne la prescrit pas comme exigence MVP. La décision produit (2026-06-12) est de reporter les wireframes mobiles sans bloquer l'implémentation mobile future. La contrainte de disposition repliable (panneaux réductibles, zone de notes prioritaire) ancre la structure responsive dès le design laptop — NFR-ACC-04 (lecture à distance) conforte la hiérarchie des zones.
+
+**Alternatives considérées** : vue joueur mobile critique dès le MVP — écartée par décision produit, le corpus la signalait comme angle d'interview non tranché ; ne rien présupposer sur la forme (wireframes uniquement desktop) — écartée, car la structure doit rester compatible avec le mobile pour ne pas créer de dette.
+
+**Condition de retour** : si les entretiens révèlent un accès joueur majoritairement par smartphone (INTERVIEW_GUIDE Q8), les wireframes mobiles seront produits en priorité lors d'une version ultérieure.
+
+---
+
+### AR-08 — UC-13 et espace personnel — arbitrage du 2026-06-12 (ré-arbitré 2026-06-18)
+
+**Décision** : l'ancienne « réservation logique zéro pixel » du tableau de bord est **caduque**. Au MVP : l'espace personnel **est** le foyer réutilisable réel, visible et accessible au tableau de bord — plus rien à « réserver » : la place est occupée par un espace réel. Post-MVP : l'**interface de bibliothèque « Mes scénarios »** (vue filtrée `isReusable = true`, parcours « Rejouer », instanciation cross-espace, historique des runs) reste hors première livraison — elle se logera **dans** l'espace personnel (pas un nouveau nœud de navigation), ce qui résout par construction la dette de navigation que l'ancien AR-08 prévenait. Au point d'entrée « Mes scénarios » décrit par UC-13 (tableau de bord), cette interface post-MVP se présentera comme un **raccourci vers une vue filtrée interne à l'espace personnel** (documents `isReusable = true`), et non comme une surface de premier ordre distincte — d'où l'absence de nouveau nœud d'arborescence. La prétention « résout la dette par construction » s'entend exactement ainsi. Dans la table de couverture S5, UC-13 (post-MVP) est articulé avec cet arbitrage.
+
+**Raison d'être produit** : UC-13 (bibliothèque = espace personnel, subsomption) ; moscow §UC-13 (interface bibliothèque post-MVP) ; vision §5bis (espace personnel réel au MVP).
+
+**Alternatives considérées** : conserver la réservation invisible dans le tableau de bord — factuellement faux dès lors que l'espace personnel existe et y figure ; wireframer l'interface bibliothèque au MVP — UC-13 post-MVP.
+
+**Condition de retour** : à la promotion d'UC-13 (interface bibliothèque).
+
+---
+
+### AR-09 — Modèle de transition d'état de la vue session — arbitrage du 2026-06-12
+
+**Décision** : la vue session est **une surface unique à 3 modes** (configuration / LIVE / consultation CLOSED) ; la machine d'états est **unidirectionnelle** (LIVE → CLOSED → ARCHIVED, sans pause ni retour) ; **« Lancer la session » est accessible depuis la vue session (mode configuration) ET depuis la vue campagne** ; une session LIVE interrompue **reste LIVE** et se **reprend en un clic** depuis le tableau de bord ou la vue campagne (repère « session en cours ») ; la disposition configurée **persiste** entre les modes ; un **indicateur de statut omniprésent** matérialise le mode courant.
+
+**Raison d'être produit** : US-06-02 précise que la vue session est accessible en mode édition sans lancer de session (mode configuration). UC-06 §Déclencheur indique que le bouton « Lancer la session » est présent dans la vue campagne. RB-06-21 prescrit la machine d'états unidirectionnelle. UC-06 A5 décrit la reprise depuis le tableau de bord ou la vue campagne : *« Le MJ accède à la session depuis la vue campagne. La session est déjà au statut LIVE. »* UJ-UC-06 §friction identifie la confusion entre les modes comme source de friction : *« Statut CLOSED peu visible — MJ peut penser être en LIVE »* — ce point justifie l'indicateur de statut omniprésent.
+
+**Alternatives considérées** : 3 écrans distincts (configuration, session, consultation) — écarté, car US-06-02 interdit le panneau de réglages séparé et la mise en session impose un changement d'écran injustifié. Pause/reprise d'une session close — écarté, car la machine d'états RB-06-21 est explicitement unidirectionnelle.
+
+**Condition de retour** : aucune (contraint par la machine d'états du domaine).
+
+---
+
+### AR-10 — Périmètre UC-11 / UC-12 : fraction Must wireframée, placement du lien d'invitation tranché par nature de l'acte — arbitrage du 2026-06-12 (révisé 2026-06-25)
+
+**Décision** : wireframer la **fraction tirée dans le Must** (affordance de génération de lien d'invitation + vue joueur de base + page d'erreur) ; **différer** l'écran Membres complet (UC-11) et l'enrichissement de la vue joueur au niveau campagne (UC-12).
+
+Le **placement de l'affordance d'invitation est tranché par la nature de l'acte** :
+
+- **Lien de session ponctuel** (`GuestAccess SESSION`) → logé dans la **vue session** (acte de pilotage, effectué en séance, par un MJ qui a déjà lancé ou est en train de lancer la session).
+- **Invitation ou lien de campagne permanent** (`SpaceMembership`) → logé dans les **paramètres de campagne / gestion des membres** (acte de préparation, antérieur à la session).
+
+Cette décision lève les marqueurs [SOUS-SPÉCIFIÉ] dupliqués présents dans les fiches wireframe qui mentionnaient l'affordance sans en fixer le logement.
+
+**Raison d'être produit** : UC-08 et UC-09 sont Must Have et nécessitent tous deux un mécanisme de génération de lien de session (logé dans la vue session ou la vue campagne) et une vue joueur de base permettant la consultation des documents partagés. Ces éléments sont le minimum indispensable pour valider l'hypothèse H2 (partage et accès joueur). En revanche, l'écran Membres complet (révocations, associations joueur-personnage, gestion des invitations permanentes) et l'enrichissement de la vue joueur (historique de campagne, sélection de personnage) relèvent d'UC-11 et UC-12 qui sont Should Have. Le placement par nature de l'acte résout la duplication entre fiches wireframe : le lien ponctuel appartient à l'acte de conduite de session ; l'invitation permanente appartient à l'acte de préparation.
+
+**Alternatives considérées** : tout wireframer (UC-11 complet + UC-12 enrichi) — écarté, car cela étend le périmètre wireframe au-delà du Must sans validation préalable des flux prioritaires. Ne rien wireframer pour UC-11/12 — écarté, car UC-08/09 Must Have ne peuvent pas fonctionner sans lien d'invitation ni vue joueur de base. Laisser le placement non figé / dupliqué — écarté, car la duplication sur 3+ fiches wireframe génère des incohérences de détail sans autorité de référence.
+
+**Condition de retour** : à la promotion d'UC-11 et UC-12 en livraison.
+
+---
+
+### AR-11 — Navigation contenu : dossier épine dorsale + recherche + backlink — arbitrage du 2026-06-12 (retouché 2026-07-15 — placement backlinks figé)
+
+**Décision** : la navigation par dossiers est l'épine dorsale (un document appartient à **exactement un dossier** ; le dossier virtuel « Non classés » fait office de repli) ; la recherche est un **accélérateur omniprésent** (MVP : titre seul) ; les backlinks sont **consultables depuis la fiche cible**. **Le placement « Référencé par » est désormais figé** : zone latérale secondaire, sous la zone des documents liés, repliée par défaut (divulgation progressive — AR-19c). Dans l'espace personnel, l'arborescence démarre **sans dossiers nommés** — seul « Non classés » à la création ; le propriétaire organise librement (voir AR-16 pour le détail). En session, les résultats de recherche s'ouvrent dans un **panneau latéral sans interrompre le contexte** de la vue session.
+
+**Raison d'être produit** : UC-05 prescrit qu'un document appartient toujours à exactement un dossier (`dossier associé` non-nullable) — ce qui fonde l'unicité d'appartenance. UC-05 A4 mentionne le dossier virtuel « Non classés » comme repli pour les documents sans dossier explicite. UC-14 prescrit la recherche par titre seul au MVP, omniprésente (préparation et session). La vision produit §2.2 mentionne les backlinks comme élément du système documentaire. UJ-UC-04 utilise le label « Référencé par » dans la description des opportunités UX, mais US-UC-04 restait plus souple sur ce point — ce qui avait initialement justifié de traiter le placement comme recommandation révisable. **Ratification** : le wireframe [editeur-document](ecrans/sv3-preparation/editeur-document/editeur-document.md) a rendu et livré un placement précis (zone latérale secondaire, sous les documents liés, repliée par défaut), conforme à cette prescription. Le zoning ratifie ce rendu plutôt que de maintenir une recommandation ouverte sans bénéfice — aucune source n'entre en tension avec ce placement. Le rendu non disruptif des résultats de recherche en session est sourcé par UJ-UC-06 §Opportunités UX (*« résultats de recherche ouverts dans un panneau latéral sans interrompre le contexte de session »*) et NFR-PERF-04.
+
+**Alternatives considérées** : multi-dossiers par document — écartée, car UC-05 prescrit explicitement l'unicité d'appartenance. Maintenir le placement « révisable » sans le figer — écarté : le wireframe conforme donne un rendu stable et sans tension corpus, prolonger l'ouverture n'aurait plus de justification.
+
+**Condition de retour** : aucune sur le placement — figé par ratification du rendu conforme (`editeur-document`). Renvoi : `docs/interface/ecrans/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »).
+
+---
+
+### AR-12 — Partager ≠ épingler : deux affordances, auto-épinglage en LIVE — arbitrage du 2026-06-12
+
+**Décision** : deux affordances **distinctes** dans l'interface ; en session LIVE, partager **auto-épingle** (sens unique partage → épingle, jamais l'inverse) ; un **indicateur permanent « visible par les joueurs »** est distinct de l'état épinglé.
+
+**Raison d'être produit** : UC-08 prescrit que l'épinglage et la visibilité sont des opérations indépendantes — retirer le partage d'un document épinglé ne le retire pas du panneau des documents épinglés. UC-08 A3 prescrit l'auto-épinglage en LIVE : *« Lorsque la session est en statut LIVE, le document partagé est automatiquement ajouté aux documents épinglés »* — sens unique. UC-06 confirme qu'un document épinglé mais non partagé n'est pas visible dans la vue joueur : l'épinglage n'est pas un partage implicite. Ces deux règles rendent indispensable la distinction visuelle entre « partagé » et « épinglé » dans l'interface.
+
+**Alternatives considérées** : fusionner partager + épingler (épingler = partager implicitement) — écartée, car UC-08 prescrit explicitement l'indépendance des deux opérations.
+
+**Condition de retour** : aucune.
+
+---
+
+### AR-13 — Sans-compte → compte : invite contextuelle — arbitrage du 2026-06-12
+
+**Décision** : la transition du mode local vers le compte s'effectue au **point de friction**, par une invite contextuelle ; les fonctions cloud sont **visibles mais désactivées** avec une invite explicite ; **jamais de watermark** ; l'invite met en avant la connexion via fournisseur externe (un geste) pour minimiser le coût d'inscription à l'instant de bascule. En mode local, **la capture atterrit immédiatement dans l'espace personnel par défaut, sans création de compte ni d'espace préalable** ; l'invite contextuelle ne se déclenche qu'au franchissement d'une frontière cloud (partage, multi-device), **jamais à la capture**.
+
+**Raison d'être produit** : UC-01 A1 prescrit que l'invite apparaît lorsque le MJ déclenche une action nécessitant un compte : *« L'application affiche une invite contextuelle : 'Cette fonctionnalité nécessite un compte.' »* La vision produit §3 décrit le modèle de monétisation non-agressif : la valeur est perçue avant l'engagement. Imposer un compte au démarrage ou cacher les fonctions cloud priverait le MJ de la visibilité sur ce qu'il obtiendrait, et violerait le différenciant « friction d'entrée nulle ». UC-10 offre la connexion via fournisseur externe en un geste — c'est le chemin le moins coûteux à l'instant de bascule. La capture immédiate dans l'espace personnel est sourcée par UC-01 et RB-01-01 — elle renforce le différenciant « friction d'entrée nulle » en rendant la valeur immédiatement perceptible.
+
+**Alternatives considérées** : watermark ou fonctions cachées — écartées, car elles réduisent la surface de valeur perçue avant engagement. Imposer le compte au démarrage — écarté, car cela contredit UC-01 et le différenciant n°1 de la vision. Déclencher l'invite à la capture — écarté, la capture est la proposition de valeur de départ ; déclencher une friction au premier acte est contraire à l'onboarding capture-first.
+
+**Condition de retour** : aucune.
+
+---
+
+### AR-14 — Espace personnel opérationnel au MVP, à surface réduite — arbitrage du 2026-06-18
+
+**Décision** : l'espace personnel est une **destination réelle dès le MVP**, dotée de la surface Préparation (navigation dossiers, éditeur, recherche). Il est **privé de vue session, surface joueur, partage et gestion de membres** — sa surface est un sous-ensemble strict de celle d'un espace partagé. L'espace personnel n'est pas une « campagne amputée » avec des fonctions grisées : la vue session et la surface joueur sont **absentes**, pas désactivées (elles n'ont pas de sens pour un espace mono-membre).
+
+**Raison d'être produit** : moscow §Espace personnel (Must Have) et vision §5bis tranchent le timing MVP. L'invariant 13 de `space-management.md` établit le mono-membre (pas d'`AddMember`, pas de `CreateInvitation`, pas de `GuestAccess`). `session-conduct.md` (invariant : pas de `SessionViewConfig` pour PERSONAL) établit qu'un espace `PERSONAL` n'a pas de `SessionViewConfig` — il n'y a ni joueurs, ni vue session joueur, ni partage temps réel. H1 (vision §2.3) confirme.
+
+**Alternatives considérées** : schéma anticipé + comportement post-MVP (timing MVP déjà tranché). Surface identique à un espace partagé avec vue session grisée — écarté : la session n'a pas de sens pour un espace mono-membre ; grisé crée de la confusion là où l'absence est la bonne réponse.
+
+**Condition de retour** : aucune — le seul report domaine identifié (sémantique `ARCHIVED`/`FROZEN` d'un espace `PERSONAL`) est désormais résolu, cf. S9.
+
+---
+
+### AR-15 — Onboarding capture-first — arbitrage du 2026-06-18
+
+**Décision** : à la première ouverture (mode local comme compte), l'utilisateur arrive sur une surface où il **crée du contenu immédiatement** ; ce contenu atterrit dans l'espace personnel **sans étape de création d'espace** ; créer un espace partagé est un acte distinct et optionnel, proposé non imposé.
+
+**Raison d'être produit** : UC-01 et RB-01-01 établissent que tout contenu créé sans espace explicite atterrit dans l'espace personnel par défaut, dès le mode local. La vision §2.2 et les personas Nadia (lancement rapide) et Rémi (MJ en découverte) illustrent le besoin de démarrer sans friction.
+
+**Alternatives considérées** : atterrissage sur tableau de bord vide invitant à créer une campagne — réintroduit la friction d'entrée que le différenciant n°1 cherche à éliminer. Micro-choix « capturer / créer une campagne » à l'arrivée — friction à l'entrée, écarté ; point d'interview (UC-01).
+
+**Condition de retour** : point d'interview (UC-01) — le parcours d'onboarding exact reste à valider en entretien.
+
+---
+
+### AR-16 — Dossiers de l'espace personnel — arbitrage du 2026-06-18 (retouché 2026-07-15 — visibilité de « Non classés »)
+
+**Décision** : un espace personnel est créé avec **uniquement le dossier virtuel « Non classés »** ; aucun des quatre dossiers système nommés (Personnages, Joueurs, Scénarios, Notes) ; le propriétaire crée ses propres dossiers selon son organisation.
+
+**Raison d'être produit** : `content-library.md` (agrégat `Folder`) fait autorité : à la réception de `SpaceCreated`, pour `PERSONAL`, seul le dossier virtuel « Non classés » est créé automatiquement — les quatre dossiers système nommés sont réservés aux espaces `CAMPAIGN` et `ONE_SHOT`. Invariant 4 de `content-library.md` ; glossaire entrée `Espace personnel` confirment. Les concepts « Personnages » et « Joueurs » présupposent un groupe de jeu absent d'un espace mono-membre.
+
+**Alternatives considérées** : doter l'espace personnel des quatre dossiers système — sémantiquement vide (pas de joueurs, pas de groupe) et contraire aux sources. Aucun dossier du tout — « Non classés » virtuel est obligatoire : il garantit qu'un document créé sans dossier explicite dispose toujours d'un rattachement.
+
+**Condition de retour** : aucune (contraint par le domaine — `content-library.md`).
+
+**Précision dérivée (2026-07-15) — visibilité de « Non classés » quand il est vide** : la règle générale rendue par les wireframes ([navigation-dossiers](ecrans/sv3-preparation/navigation-dossiers/navigation-dossiers.md), [vue-espace-personnel](ecrans/sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md)) est que le dossier « Non classés » est **masqué s'il est vide, affiché dès qu'il contient des documents** — règle générale sourcée par le rendu conforme de ces wireframes, et non par `content-library.md` : `Folder.isVirtual = true` garantit uniquement l'existence d'un réceptacle unique par espace, pas cette nuance de visibilité conditionnelle. Cette règle générale s'applique telle quelle aux espaces partagés (`CAMPAIGN`/`ONE_SHOT`). **En espace `PERSONAL`, elle se dérive différemment** : « Non classés » y est la **seule vue de départ** (ci-dessus — aucun dossier système nommé n'existe pour occuper la zone de navigation) ; masquer ce dossier vide laisserait un espace personnel fraîchement créé sans aucun repère de navigation. « Non classés » **reste donc visible même vide, tant qu'il est le seul dossier de l'espace** — dérivation directe d'AR-16 (seul dossier existant à la création) et de `content-library.md` (`isVirtual`, un seul réceptacle garanti par espace). **Dès que le propriétaire crée d'autres dossiers dans l'espace personnel, « Non classés » suit la règle générale** (masqué si vide, affiché si non vide) : la visibilité inconditionnelle ne vaut que pour l'espace personnel qui n'a encore aucun autre dossier. Cette distinction n'introduit pas de nouvelle règle métier : elle explicite, pour l'espace `PERSONAL`, la conséquence structurelle d'AR-16 sur une règle de rendu déjà tranchée ailleurs.
+
+**Condition de retour (précision)** : aucune — dérivation structurelle, pas un point ouvert.
+
+---
+
+### AR-17 — Expression en surface du quota FREE excluant l'espace personnel — arbitrage du 2026-06-18
+
+**Décision** : le quota FREE (3 espaces `CAMPAIGN`/`ONE_SHOT`) **n'inclut jamais l'espace personnel** ; en surface, l'espace personnel est un conteneur permanent **hors-compteur, visuellement distinct**, **jamais bloqué ni grisé** ; le compteur visible (ex. « X / 3 ») ne porte que sur les espaces partagés.
+
+**Raison d'être produit** : `space-management.md` invariant 6 et règle 6 établissent que l'espace `PERSONAL` n'est pas décompté du quota. Moscow §Quota FREE et UC-01 (RB-02-10) confirment. Afficher l'espace personnel dans le compteur induirait le MJ en erreur sur le quota restant.
+
+**Alternatives considérées** : espace personnel dans le compteur — induirait en erreur sur le quota restant. Même liste sans badge de décompte — ambigu sur ce qui compte et ce qui ne compte pas.
+
+**Condition de retour** : l'expression exacte (badge, section, libellé) **`[À TRANCHER — wireframe]`** — **renvoi vers `docs/interface/ecrans/` (fiches wireframe), zone lecture seule ici** ; l'arbitrage AR-17 fixe l'invariant « PERSONAL hors quota, jamais bloqué », pas la forme de surface.
+
+---
+
+### AR-18 — Configuration de la vue session : logée dans la surface session, paramètres de campagne = renvoi — arbitrage du 2026-06-25
+
+**Décision** : la **configuration de la vue session** (choix des panneaux, ordre, disposition) s'effectue **dans la surface session** en mode configuration — conformément à US-06-02. Les **paramètres de campagne ne configurent pas la vue session en propre** : ils **renvoient** vers le mode configuration de la vue session (lien ou accès direct). La zone de configuration visible dans `paramètres-campagne` est donc un **point d'entrée vers la surface session (mode configuration)**, non une surface de configuration autonome.
+
+**Raison d'être produit** : US-06-02 prescrit explicitement : *« Pas de panneau paramètres séparé — la config se fait directement dans la vue session »* et *« La vue session est accessible en mode édition sans lancer de session »*. AR-02 fonde la vue session comme surface unique à modes ; la configuration en est le premier mode. Une configuration dupliquée dans `paramètres-campagne` créerait deux sources d'autorité pour le même état (disposition de la vue session), ce qui génère une incohérence potentielle. Le renvoi depuis `paramètres-campagne` vers la surface session résout la tension sans supprimer le point d'entrée familier pour les MJ qui cherchent la configuration en phase de préparation.
+
+**Alternatives considérées** : `paramètres-campagne` contient une zone de configuration propre — écarté, car cela duplique la configuration et contredit US-06-02 ; deux zones contradictoires peuvent produire un état incohérent. Supprimer tout accès depuis `paramètres-campagne` — écarté, car certains MJ cherchent naturellement la configuration dans la zone préparation ; le renvoi préserve l'accessibilité.
+
+**Condition de retour** : aucune.
+
+---
+
+### AR-19 — Principe de densité : plancher garanti, plafond borné, le reste en divulgation progressive — arbitrage du 2026-06-25
+
+**Décision** : ce principe prolonge AR-04 (« épuré par défaut ») en posant trois niveaux de présence des zones sur chaque écran :
+
+**(a) Plancher garanti** — un petit ensemble de zones **jamais masquées**, quelle que soit la configuration ou la saturation de l'écran. En vue session : statut de session, affordance de partage, zone de notes, recherche. Ces zones sont invariantes — elles ne cèdent leur place à aucune configuration ou action de l'utilisateur.
+
+**(b) Plafond borné** — au-delà d'un seuil de saturation, toute zone supplémentaire **se replie ou cède la place** selon une **priorité déclarée**. En vue session LIVE : quand les panneaux de dossiers, les résultats de recherche et les documents épinglés saturent simultanément, une règle d'éviction s'applique — la hiérarchie de priorité est déclarée dans le wireframe de la vue session et ne dépend pas du contexte de navigation.
+
+**(c) Divulgation progressive** — tout le reste (zones hors-MVP, zones sous-spécifiées, fonctions secondaires) est **en divulgation progressive** : jamais au premier plan, accessible mais non projeté.
+
+**Raison d'être produit** : AR-04 posait « épuré par défaut » comme principe directeur, mais sans borner explicitement la saturation ni garantir les zones toujours présentes. UJ-UC-06 §friction identifie que la zone de notes peut être noyée si les panneaux occupent tout l'espace — ce point de friction motive le plancher garanti. La tension entre densité de configuration et lisibilité (NFR-ACC-04) motive le plafond borné avec priorité déclarée : sans règle d'éviction explicite, chaque wireframe résout la saturation différemment, produisant une incohérence de comportement entre états.
+
+**Alternatives considérées** : laisser AR-04 sans prolongement formel — écarté, car les wireframes multi-panneaux (vue session LIVE avec dossiers + recherche + épinglés) nécessitent une règle d'éviction explicite, sous peine de décisions ad hoc incohérentes. Règle d'éviction globale unique sans plancher — écarté, car cela permet de masquer la zone de notes, point de friction identifié par UJ-UC-06.
+
+**Condition de retour** : la hiérarchie de priorité en cas de saturation (volet b) est déclarée au niveau du wireframe de la vue session — elle peut être ajustée à ce niveau sans rouvrir cet arbitrage.
+
+---
+
+### AR-20 — Dossiers système : gabarit de départ entièrement modifiable, réceptacle « Non classés » garanti — arbitrage du 2026-06-25
+
+**Décision** : les dossiers proposés par défaut dans un espace partagé à la création (Personnages, Joueurs, Scénarios, Notes) constituent un **gabarit de départ entièrement modifiable** : ils sont **renommables et supprimables** par le propriétaire de l'espace. Le système ne revendique aucune sémantique fixe sur ces dossiers — il les crée pour réduire le coût de démarrage, pas pour imposer une organisation. **Un seul réceptacle est garanti par construction** : le dossier virtuel « Non classés », présent à la création de tout espace (partagé ou personnel) et toujours actif — il peut être renommé mais ne peut pas disparaître, afin qu'un document créé sans dossier explicite dispose toujours d'un rattachement. Cette décision s'articule avec AR-16 (espace personnel : « Non classés » seul à la création, aucun dossier système nommé) et étend le principe d'agnosticisme système aux espaces partagés.
+
+**Raison d'être produit** : les personas varient dans leur organisation (Thomas organise par Acte, Nadia n'organise pas du tout, Antoine a ses propres catégories) — imposer une arborescence fixe désavantage ceux dont l'organisation naturelle diverge. UC-05 établit l'appartenance d'un document à exactement un dossier et mentionne « Non classés » comme repli obligatoire (UC-05 A4) — ce repli doit être garanti quelle que soit la suppression éventuelle des dossiers système. L'agnosticisme système (possibilité de supprimer les dossiers par défaut) est une décision produit confirmée.
+
+**Alternatives considérées** : dossiers système non supprimables (renommables seulement) — écarté par décision produit ; la rigidité ne bénéficie pas aux personas qui ont une organisation naturelle différente. Aucun dossier par défaut — écarté, car le coût de démarrage augmente pour les MJ qui n'ont pas d'organisation établie. Garantir plusieurs réceptacles intouchables — écarté, car un seul réceptacle nommé « Non classés » (ou son renommage) suffit à garantir que tout document dispose d'un rattachement.
+
+**Condition de retour** : aucune sur le principe. La liste exacte des dossiers système proposés à la création d'un espace partagé (Personnages, Joueurs, Scénarios, Notes) et leur libellé de surface relèvent du wireframe Création d'espace.
+
+---
+
+### AR-21 — Libellé de surface « Pro » — arbitrage du 2026-07-15
+
+**Décision** : le tier payant (`AccountTier.PRO`) est nommé **« Pro »** en surface (profil utilisateur, tout affichage du niveau de compte) — ni « Premium », ni « Payant », ni l'énoncé technique `PRO` tel quel. Ce libellé clôt la veille terminologique restée ouverte depuis le rendu du wireframe [profil](ecrans/sv1-transversaux/profil/profil.md), qui employait déjà le libellé « Pro » en surface sans que ce choix soit encore figé comme définitif.
+
+**Raison d'être produit** : le glossaire §AccountTier nomme la valeur d'énumération `PRO` (« abonnement payant — espaces illimités, joueurs illimités, 5 Go+ ») ; `moscow.md` emploie déjà « Pro » en langage produit dans la trajectoire de conversion (*« local gratuit → compte gratuit (cloud + partage) → Pro (illimité) »*). Le libellé de surface « Pro » est donc directement dérivé du vocabulaire déjà en usage dans le corpus de conception — pas une invention de ce zoning. Fixer ce libellé respecte la discipline de langage de surface (S1 §Discipline).
+
+**Alternatives considérées** : « Premium » — écarté, absent du corpus, introduirait un second terme pour le même tier. « Payant » — écarté, moins engageant et absent du vocabulaire déjà employé par moscow. Énoncé technique `PRO` tel quel en surface — écarté, casse la discipline de langage de besoin (aucun nom technique en interface).
+
+**Condition de retour** : aucune sur le libellé. **Renvoi** : la répercussion de ce libellé dans le wireframe `profil` (et tout autre écran mentionnant le niveau de compte) relève des fiches wireframe (`docs/interface/ecrans/`) — hors périmètre d'écriture de ce document (zone lecture seule).
+
+---
+
+### AR-22 — Accès aux espaces archivés au tableau de bord, désarchivage sur les paramètres de campagne — arbitrage du 2026-09-02
+
+**Décision** : le **point d'entrée vers les espaces archivés** vit au **tableau de bord** — la seule surface qui donne au MJ une vue d'ensemble de ses espaces (déterminant b, S2 ; AR-17 : compteur d'espaces partagés et traitement hors-quota de l'espace personnel déjà logés là). L'**affordance de désarchivage** elle-même vit sur `parametres-campagne.md`, **symétrique** de l'affordance d'archivage déjà logée sur cette même fiche (zone d'archivage de l'espace). Un espace `ARCHIVED` restant consultable — en lecture seule, pas inaccessible (`space-management.md` règle métier 7 ; `content-library.md` — `SpaceArchived` passe les documents en lecture seule, un soft-lock, pas un verrou d'accès) —, ses paramètres de campagne restent atteignables ; la fiche `parametres-campagne.md` porte désormais un second mode (« espace archivé ») symétrique du mode par défaut. Le refus du désarchivage au quota (RB-02-23 ; `space-management.md` règle métier 12) reprend le même registre d'invite contextuelle non bloquante que celui déjà en place sur la création d'espace bloquée au quota (`tableau-de-bord.md` §Ce que l'utilisateur peut faire — carte « + Créer une campagne »).
+
+**Raison d'être produit** : UC-02 §Règles métier RB-02-22 (réversibilité de l'archivage) et RB-02-23 (garde de quota anti-contournement au désarchivage) rendent le geste de désarchivage une opération produit décidée, jusqu'ici sans surface porteuse (S9 §Affordance de désarchivage). Le déterminant (b) de S2 établit le tableau de bord comme unique surface à vue d'ensemble des espaces — condition nécessaire pour qu'un MJ « retrouve » un espace qu'il ne voit plus dans sa navigation courante. AR-12 a déjà posé le patron « un geste et son inverse au même endroit » (partager/retirer le partage, épingler) ; l'appliquer à archiver/désarchiver évite d'introduire un second point d'autorité pour le même geste. `space-management.md` règle métier 7 (« Tant qu'il reste `ARCHIVED`, l'espace est en lecture seule ») et `content-library.md` (`SpaceArchived` → documents en lecture seule, soft-lock) établissent que la lecture seule n'est pas une mise hors d'accès — le patron corpus déjà en usage pour les autres états de lecture seule (`UC-15` RB-15-03 : « son contenu reste consultable normalement, mais aucune écriture n'y est plus possible » ; `gabarit-ecran.md` mode consultation CLOSED : « navigation possible, pas de modification ») confirme cette lecture. Le refus au quota est calqué sur le précédent de blocage à la création (même garde métier — invariant 6 et règle 12 de `space-management.md` partagent le même patron anti-contournement) : réemployer la formulation déjà éprouvée évite une seconde formulation concurrente pour la même contrainte de fond.
+
+**Alternatives considérées** : loger le geste de désarchivage directement au tableau de bord (à côté du point d'entrée) — écarté, car cela romprait le patron « geste et son inverse au même endroit » déjà établi par l'archivage sur `parametres-campagne.md`, et dupliquerait l'affordance sur deux fiches sans bénéfice. Loger le point d'entrée vers les espaces archivés sur `parametres-campagne.md` plutôt qu'au tableau de bord — écarté, car cette fiche est celle d'un espace déjà identifié : un MJ qui ne se souvient plus où se trouve un espace archivé n'a besoin que de la vue d'ensemble du tableau de bord pour le retrouver, pas d'une fiche par-espace. Bloquer entièrement la navigation vers un espace archivé — écarté, contredit `space-management.md` règle métier 7 (lecture seule, pas verrou d'accès) et le patron corpus déjà en usage pour les autres états lecture seule.
+
+**Condition de retour** : aucune.
+
+---
+
+## S7 — Châssis applicatif
+
+Le châssis applicatif est la structure persistante de l'application — pas un écran. C'est le cadre dans lequel tous les écrans (transversaux, MJ, joueur) s'affichent sans rupture de navigation (principe directeur — S1). Il porte le chrome transversal présent au-dessus du contenu.
+
+Les composants ci-dessous constituent ce chrome transversal. Les zoner une seule fois évite les divergences entre surfaces.
+
+### Indicateur de statut de session
+
+Cet indicateur est **omniprésent dans la barre de la vue session** — visible quelle que soit la position de défilement. Il matérialise le mode courant de la vue session : configuration (aucune session active), LIVE (session en cours), consultation CLOSED (session terminée, annotations rétroactives possibles).
+
+Sa présence répond directement à la friction identifiée dans UJ-UC-06 §friction : *« Statut CLOSED peu visible — MJ peut penser être en LIVE »*. Sans lui, le MJ peut prendre des notes qu'il croit visibles en session alors que la session est terminée.
+
+Lié à AR-09 (modèle de transition d'état de la vue session).
+
+### Indicateur de partage
+
+Cet élément constitue un **récapitulatif permanent de ce que les joueurs voient en ce moment**. Il est distinct du panneau des documents épinglés : un document peut être épinglé sans être partagé, et réciproquement.
+
+Sa présence répond à la décision AR-12 (partager ≠ épingler) : l'interface doit permettre au MJ de distinguer d'un coup d'œil ce qui est visible côté joueur, sans avoir à consulter la visibilité de chaque document individuellement.
+
+Lié à AR-12 (deux affordances distinctes).
+
+### Châssis mode local
+
+Le châssis mode local comprend **deux bandeaux distincts et non fusionnés** :
+
+- **Bandeau de durabilité** : affiché si les données locales ne bénéficient pas d'une garantie de conservation permanente de l'appareil. Signale un risque futur de disparition des données sous pression. Non bloquant. Propose la création d'un compte comme action de sécurisation.
+- **Bandeau de confidentialité** : affiché systématiquement en mode local. Signale que les données ne sont pas protégées par des identifiants et qu'une personne ayant accès à ce navigateur sur cet appareil pourrait les lire. Non bloquant. Propose la création d'un compte.
+
+Ces deux bandeaux **ne doivent pas être fusionnés** : ils portent des risques distincts (perte future vs accès non autorisé) avec des déclencheurs différents.
+
+Les fonctions cloud (partage, synchronisation) sont **visibles mais désactivées** dans ce mode, avec une invite contextuelle non bloquante. En mode local, **le conteneur par défaut est l'espace personnel** — tout contenu créé sans espace explicite y atterrit directement (UC-01 ; RB-01-01).
+
+Ce châssis est transversal à **toutes les surfaces MJ en mode local**.
+
+Sources : UC-01 §Règles métier (bandeaux distincts) ; NFR-OFF-03 (aucune perte silencieuse) ; NFR-CONF-04 (transparence en mode local partagé) ; RB-01-14 (non-fusion des bandeaux).
+
+Lié à AR-13 (invite contextuelle sans-compte → compte).
+
+### Accessibilité transversale
+
+Ce composant de châssis couvre les garanties d'accessibilité valables sur l'ensemble des surfaces et écrans :
+
+- **Focus clavier visible en permanence** : à tout moment, l'élément ayant le focus au clavier est visuellement identifiable. Aucune étape de navigation ne laisse le focus dans un état invisible ou ambigu.
+- **Ordre de navigation cohérent** : l'ordre dans lequel le clavier passe d'un élément interactif au suivant suit la logique visuelle de la page, sans sauts incohérents entre des zones sans rapport.
+- **Changements d'état annoncés sans action de l'utilisateur** : lorsqu'une note est créée, lorsque la visibilité d'un document bascule vers visible par les joueurs, lorsqu'un résultat de recherche se charge, ou lorsqu'une notification non bloquante apparaît — le changement est annoncé par le produit sans que l'utilisateur ait à déplacer son focus pour le découvrir.
+
+Sources : NFR-ACC-01 §Critères (« focus visible en permanence », « ordre de navigation cohérent ») ; NFR-ACC-02 §Énoncé + §Critères (« changements d'état… annoncés sans action »).
+
+### Notification d'état de synchronisation (mode cloud uniquement)
+
+Ce composant est **distinct** des bandeaux mode local. Il signale l'état de synchronisation réseau en cours de session cloud (synchronisation en attente, reconnexion après coupure) de manière **non bloquante** :
+
+- **Ne couvre pas la vue session** : la notification n'est pas un bandeau superposé à la vue session.
+- **Ne suspend pas l'interface** : le MJ peut continuer à saisir des notes et à naviguer pendant l'affichage de la notification.
+- Les changements d'état de synchronisation sont **annoncés aux outils de lecture d'écran** sans action de l'utilisateur (perte de connexion, stockage sous pression).
+
+Sources : NFR-OFF-04 §Critère (« la notification… ne couvre pas la vue session ») ; NFR-ACC-02 (perte de connexion, stockage sous pression annoncés assistivement).
+
+### Règle de retour contextuel
+
+Tout écran de détail — éditeur de document, éditeur de scénario — **retourne à sa surface appelante** en préservant son état à la fermeture, quelle que soit la surface depuis laquelle il a été ouvert (vue campagne, navigation par dossiers, panneau de création rapide en session, espace personnel). Il n'existe pas de cible de retour fixe : la destination est la surface qui a appelé l'écran de détail.
+
+Cette règle est une déclinaison du principe directeur de fluidité de navigation (S1) à l'échelle des chemins d'entrée multiples dans les éditeurs. Elle évite que l'utilisateur perde son contexte de travail (position dans la navigation dossiers, état de la vue session) en revenant d'un éditeur.
+
+### Recherche — composant de châssis omniprésent
+
+La recherche est un **composant de châssis**, présent sur toutes les surfaces MJ (préparation et session) sous forme d'overlay co-présent non disruptif. Elle **n'est pas un écran navigable distinct** — elle ne provoque pas de changement de surface, ne rompt pas le contexte de travail en cours.
+
+En session, les résultats s'ouvrent dans un panneau latéral sans interrompre la vue session (AR-11, UJ-UC-06 §Opportunités UX). En préparation, la recherche est accessible sans navigation préalable.
+
+Conséquence sur l'inventaire S4 : la « Recherche en préparation » listée dans S4 désigne la fonctionnalité de recherche disponible en surface de préparation — pas un écran de recherche autonome. Le composant est de châssis ; son rendu contextuel (panneau latéral en session, résultats intégrés en préparation) est défini au niveau du wireframe de chaque surface.
+
+Lié à AR-11 (recherche = accélérateur omniprésent).
+
+### Accès compte (profil) — composant de châssis sur toute surface MJ
+
+L'accès au profil utilisateur (consultation, modification du nom, mot de passe, niveau de compte) est un **composant de châssis présent sur toute surface MJ**, y compris en mode local. Il n'est pas accessible uniquement depuis le tableau de bord.
+
+Cette règle garantit qu'un MJ en flux capture-first (AR-15) — qui n'est pas passé par le tableau de bord lors de sa session — dispose toujours d'un accès à son compte et à la création de compte si nécessaire. En mode local, ce point d'accès propose la création de compte (en cohérence avec le châssis mode local).
+
+---
+
+## S8 — Exclusions nommées
+
+Les éléments ci-dessous sont **hors périmètre wireframe MVP**. Chacun est listé avec sa source.
+
+| Élément exclu | Source |
+|---|---|
+| Point d'entrée one-shot dédié / parcours express « Lancer un one-shot » | UC-02 A1 §périmètre post-MVP ; vision §5bis arbitrage « Contexte one-shot — arbitrage du 2026-06-10 » |
+| Interface de bibliothèque « Mes scénarios » (UC-13) | UC-13 en-tête — Should Have hors première livraison ; vision §5bis ; AR-08 révisé (logée dans l'espace personnel post-MVP) |
+| Création de scénario en bibliothèque (UC-F07) | UC-HORS-MVP |
+| Éditeur de types de document personnalisés | moscow.md §Could Have (Types personnalisés) |
+| Réimport de fichier de sauvegarde | UC-01 A4b §Post-MVP ; moscow.md §Could Have |
+| Notes personnelles joueur persistantes inter-sessions sans compte | moscow.md §Could Have (Notes personnelles joueur) |
+| Partage sélectif par joueur ou personnage | UC-08 §Règles métier (arbitrage du 2026-06-10) ; vision §5bis (granularité du partage) |
+| Invitation par **email** (hors MVP — le lien d'invitation = fraction Must couverte, AR-10) | UC-11 scénario nominal |
+| Recherche par tag / contenu des blocs | UC-14 §Scénarios alternatifs A3 (Could Have) ; UC-14 scénario nominal (titre seul au MVP) |
+| Relations typées entre documents / moteur de règles (UC-F06) | moscow.md §Won't Have |
+| Transfert de propriété de campagne | UC-10 A4 §Note MVP (hors MVP) |
+| Gel / dégel d'espaces au downgrade | space-management.md §Ce que ce contexte fait (gestion interne) |
+| Clôture formelle de session | moscow.md §Won't Have |
+| Inventaire personnage | moscow.md §Won't Have |
+| Table visuelle | moscow.md §Won't Have |
+| Assistant IA | moscow.md §Won't Have |
+| Templates communautaires | moscow.md §Won't Have |
+| Écran Membres complet (UC-11 — gestion complète : révocations, associations joueur-personnage) | Should Have — différé (AR-10) |
+| Enrichissement vue joueur au niveau campagne (UC-12 complet) | Should Have — différé (AR-10) |
+
+---
+
+## S9 — Trous de corpus / points d'interview
+
+Les éléments suivants relèvent d'un entretien utilisateur ou d'un complément du corpus, et **non de décisions de zoning**. Ils sont listés ici pour mémoire.
+
+| Point | Nature |
+|---|---|
+| **Surface de présentation de l'offre payante — [À TRANCHER]** | Le palier payant est documenté ([ADR-005](../decisions/ADR-005-modele-monetisation.md), vision §3), mais aucune surface ne le présente à l'utilisateur : l'écran « Voir l'offre Pro » n'est ni dans l'inventaire S4, ni dans les exclusions S8. À trancher — surface MVP à wireframer, ou exclusion à nommer explicitement. |
+| **Vue mobile joueur — DIFFÉRÉ (version ultérieure)** | AR-07 pose le mobile comme pensé dans la structure (non bloqué) mais non implémenté au MVP — aucun wireframe mobile produit. Ce report n'est pas un trou de corpus : c'est une décision produit explicite (AR-07), non forcée au MVP. Angle d'interview maintenu (NFR-ACC-04 §Raison d'être ; INTERVIEW_GUIDE Q8) pour arbitrer la priorité d'une version ultérieure si les entretiens révèlent un accès joueur majoritairement mobile. |
+| **Interface de l'éditeur de document (blocs, types, liens) — RÉSOLU** | **RÉSOLU** — spécifié et rendu par le wireframe `editeur-document`. Renvoi : `docs/interface/ecrans/sv3-preparation/editeur-document/editeur-document.md`. |
+| **Comportement de l'éditeur de document en perte de connexion / reprise (préparation cloud) — RÉSOLU** | NFR-OFF-04 couvre le fonctionnement partiel en perte de réseau **en session** (vue session, saisie de notes) ; il ne couvrait pas l'éditeur de document en préparation cloud (sauvegarde locale automatique, indicateur de brouillon, reprise). Le wireframe `editeur-document` (et `editeur-scenario`) signalait ce point `[SOUS-SPÉCIFIÉ]` sans le trancher, au-delà d'UC-03 E2 (conserve les données localement si possible). **Le trou corpus amont est comblé** : [`NFR-OFF-05`](../besoin/nfr/NFR-OFF-05-continuite-edition-preparation-cloud.md) porte désormais la continuité d'édition en préparation cloud. Le wireframe d'état de synchronisation sur cet écran est débloqué. |
+| **Écran de consultation des backlinks « Référencé par » — RÉSOLU** | **RÉSOLU** — placement figé en AR-11 (§S6), rendu par le wireframe `editeur-document`. Renvoi : `docs/interface/ecrans/sv3-preparation/editeur-document/editeur-document.md` (zone « Référencé par »). |
+| **Vue « Non classés » — RÉSOLUE** | Décision : « Non classés » n'est pas une vue dédiée séparée — c'est un dossier ordinaire de l'arborescence (filtre du dossier virtuel), rendu par le wireframe `navigation-dossiers`. La tension UC-05 A4 (« vue 'Non classés' dédiée ») est close par ce rendu. Précision de visibilité (masqué si vide en espace partagé ; en `PERSONAL`, visible même vide car seule vue de départ) figée en §S6 (retouche AR-16). Renvoi : `docs/interface/ecrans/sv3-preparation/navigation-dossiers/navigation-dossiers.md`. |
+| **Interface de l'espace personnel — RÉSOLU** | Décision : mix assumé — entrée distincte hors-quota au tableau de bord (AR-17), atterrissage capture-first (AR-15), conteneur de transit. Libellé « Espace personnel » confirmé (AR-05). Micro-copy d'intention neutre retenue : « Vos notes et contenus, hors campagne » — sert les deux modèles mentaux (capture-first et foyer réutilisable) sans les nommer. L'espace personnel ne se présente pas par un texte d'explication, il se découvre par l'usage. Points d'interview restants (perçu comme naturel ou à expliquer, libellé de surface) : relèvent d'interview et ne bloquent pas le wireframe. Renvoi : réflexion-ux-mvp.md. |
+| **Notification active côté joueur** | US-06 §Questions ouvertes — *« non décidé pour le MVP »*. Angle d'interview (Famille C). Laissé ouvert. |
+| **Persistance des notes invité inter-sessions sans compte** | La mécanique de récupération des notes `PLAYER_PRIVATE` d'un invité via un nouveau lien vers le même personnage est évoquée dans UC-06 §Règles métier mais non entièrement spécifiée. Parcours-03 §Couture C5 identifie ce point comme zone muette. Angle d'interview (Famille C). Laissé ouvert — trou de corpus. |
+| **Sémantique `ARCHIVED PERSONAL` — RÉSOLUE** | Le glossaire §SpaceStatus et `space-management.md` invariant 14 tranchent : un espace `PERSONAL` est toujours `ACTIVE` — `ARCHIVED` et `FROZEN` ne lui sont pas applicables (`FROZEN` = gel des espaces excédentaires au downgrade, `PERSONAL` est hors quota ; `ARCHIVED` contredirait l'invariant 14). Cohérent avec l'absence d'UI d'archivage pour l'espace personnel déjà en place dans ce zoning (§Paramètres de campagne, réservé aux espaces partagés). |
+| **Affordance de désarchivage — RÉSOLUE (zoning)** | **Résolue pour la partie zoning** par AR-22 (§S6) : le point d'entrée vers les espaces archivés vit au tableau de bord (`tableau-de-bord.md` §Zones et hiérarchie §Accès aux espaces archivés) ; l'affordance de désarchivage elle-même, symétrique de l'archivage, vit sur `parametres-campagne.md` (nouveau mode « espace archivé »), avec le traitement du refus au quota (RB-02-23 ; règle métier 12). L'accessibilité des paramètres d'un espace archivé (lecture seule, pas hors d'accès) est établie par `space-management.md` règle métier 7 et `content-library.md` (`SpaceArchived` → soft-lock des documents, pas un verrou de navigation). Renvoi : `docs/interface/ecrans/sv2-entree-espace/tableau-de-bord/tableau-de-bord.md` ; `docs/interface/ecrans/sv3-preparation/parametres-campagne/parametres-campagne.md`. |
+| **Fournisseurs d'identité — RÉSOLU** | MVP : Google et Discord. Règle de confiance par fournisseur : ADR-015 (Sécurité authentification MVP). Surface : les éléments interactifs (boutons, libellés) relèvent du wireframe présentation (hors périmètre zoning). |
+| **Hiérarchie de lecture visuelle hors session — [SOUS-SPÉCIFIÉ]** | NFR-ACC-04 borne explicitement son périmètre (§Portée et hors-portée) à la vue session, aux notes de session `LIVE`, aux résultats de recherche depuis la vue session et à la vue joueur pendant la session — elle exclut nommément la phase de préparation. NFR-ACC-01 couvre l'ordre de tabulation clavier, objet distinct. Aucune exigence du corpus ne couvre la hiérarchie de lecture visuelle hors session. Quinze fiches wireframe citaient à tort NFR-ACC-04 pour ce point ; corrigé par un marqueur `[SOUS-SPÉCIFIÉ]` uniforme (correction du 2026-09-01). Le patron fautif provenait de l'exemple-pilote de `gabarit-ecran.md`, désormais mis en garde sur ce point. |
+
+---
+
+## S10 — Points ouverts sur le modèle de navigation (graphe S3)
+
+Les points suivants sont des arbitrages sur le graphe de navigation lui-même (§S3) — distincts des trous de corpus et points d'interview de S9. Ils ne portent pas sur le besoin mais sur la fidélité du modèle `NODES`/`EDGES` à ce que S4 et S6 décrivent déjà par ailleurs. Aucun n'est tranché ici ; chacun reste `[À TRANCHER — graphe S3]`.
+
+### Transitions non modélisées dans le graphe
+
+Les transitions suivantes ne figurent pas comme arêtes du graphe S3, alors qu'elles paraissent nécessaires au fonctionnement des écrans déjà inventoriés en S4 (retour d'un écran de détail, résultat de recherche ouvrant un document, etc.) :
+
+- `Recherche → EditeurDoc`, `RecherchePerso → EditeurDocPerso` (un résultat de recherche ouvre le document ciblé — cf. S7 §Recherche)
+- retour `Inscription ↔ Connexion`
+- retour `Profil ↔ Tableau`
+- retour `SuppressionRGPD ↔ Profil`
+- retour `VSConfig / VSLIVE / VSClosed ↔ Campagne`
+- `SuppressionRGPD → Accueil`
+- retour `NouvelEspace → Tableau`
+- `ParamsCampagne → VSConfig` (renvoi vers le mode configuration de la vue session — cf. AR-18)
+
+`[À TRANCHER — graphe S3]` : faut-il ajouter ces arêtes au graphe pour qu'il reflète l'ensemble des transitions nécessaires, ou certaines relèvent-elles d'un niveau de détail que le graphe ne cherche pas à représenter (par exemple les retours contextuels génériques déjà couverts par la règle de S7 §Règle de retour contextuel) ?
+
+### Granularité de deux arêtes à préciser
+
+`GateMigration → Tableau` et `Campagne → ParamsCampagne` recouvrent chacune, dans l'inventaire S4, deux actions distinctes de nature différente (migrer vers le cloud vs différer la migration ; inviter des joueurs vs paramétrer l'espace) sous une seule arête du graphe.
+
+`[À TRANCHER — graphe S3]` : faut-il scinder chacune de ces arêtes en deux arêtes distinctes portant chacune son action, ou une arête unique suffit-elle à la granularité que ce graphe cherche à représenter ?
+
+### `Tableau → SuppressionRGPD` : arête directe ou atteinte par composition ?
+
+Le graphe S3 modélise aujourd'hui `Tableau → SuppressionRGPD` comme une arête directe. Rien dans l'inventaire S4 ni dans le châssis S7 ne précise si la suppression de compte doit rester une action directement accessible depuis le tableau de bord, ou si elle n'est atteinte que par composition, en passant par le Profil utilisateur (`Tableau → Profil → SuppressionRGPD`) — auquel cas l'arête directe du graphe serait à retirer ou à requalifier.
+
+`[À TRANCHER — graphe S3]` : conserver l'arête directe, ou la requalifier en chemin de composition via Profil ?
+
+### `NavDossiers` / `NavDossiersPerso` : écran distinct ou interaction in-page ?
+
+Le graphe S3 modélise `Campagne → NavDossiers` et `EspacePerso → NavDossiersPerso` comme des transitions vers un écran distinct ; S4 les inventorie de même, sous « Navigation par dossiers ».
+
+`[À TRANCHER — graphe S3]` : ces deux nœuds doivent-ils rester des écrans à part entière du graphe et de l'inventaire S4, ou être requalifiés en interaction in-page (navigation embarquée dans l'écran hôte, sans changement de surface) ? Une requalification impliquerait de retirer ces deux arêtes du graphe et d'ajuster l'entrée correspondante de S4.
+
+### Libellés à harmoniser entre le graphe et les wireframes
+
+Les libellés portés par le graphe S3 (nom de nœud ou d'arête) divergent, pour les transitions suivantes, du libellé retenu par le wireframe correspondant :
+
+| Arête | Libellé porté par le graphe S3 | Libellé porté par le wireframe |
+|---|---|---|
+| `Accueil → ModeLocal` | « Démarrer sans compte » (libellé du nœud `ModeLocal`) | « Commencer › » (`wireframes/sv1-transversaux/accueil/`) |
+| `Tableau → VSLIVE` | « Reprendre session en cours » | « Reprendre la session › » (`wireframes/sv2-entree-espace/tableau-de-bord/`) |
+| `Campagne → VSConfig` | « Accéder à la vue session » | « Configurer la vue » (`wireframes/sv3-preparation/vue-campagne/`) |
+| `Campagne → VSLIVE` | « Lancer la session » | « Reprendre la session › » (`wireframes/sv3-preparation/vue-campagne/` — bouton distinct de « Configurer la vue » sur le même écran) |
+| `VSLIVE → PanneauCreation` | « Panneau création rapide à la volée (UC-07) » (libellé du nœud) | « + créer à la volée » (`wireframes/sv-session/vue-session-mj/`) |
+
+`[À TRANCHER — graphe S3]` : harmoniser le libellé du graphe sur celui du wireframe pour chacune de ces arêtes, ou l'inverse si le graphe porte l'intitulé de référence à répercuter vers le wireframe.
+
+### Second point de passage joueur → MJ (`SaisieNom → Inscription`)
+
+AR-03 (§S6) pose la séparation radicale entre surface MJ et surface joueur, sans figer le nombre de points de passage autorisés d'une surface à l'autre. Le graphe S3 ne modélise aujourd'hui aucune arête joueur → MJ depuis l'écran de saisie du nom d'affichage (`SaisieNom`).
+
+`[À TRANCHER — graphe S3]` : `SaisieNom → Inscription` (permettre de créer un compte pour conserver ses notes, avant même d'entrer en vue joueur) relève-t-il de la même exception à AR-03 que celle qui couvre `VueJoueur → Inscription`, et doit-il être ajouté au graphe comme second point de passage joueur → MJ ?

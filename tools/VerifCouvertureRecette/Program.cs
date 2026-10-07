@@ -14,8 +14,8 @@ CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 string racine = Path.GetFullPath(args.Length > 0 ? args[0] : ".");
-string cheminCahier = args.Length > 1 ? args[1] : "docs/test/cahier-strategie-test-et-recette.md";
-string cheminPlan = args.Length > 2 ? args[2] : "docs/gestion-projet/plan-de-travail.md";
+string cheminCahier = args.Length > 1 ? args[1] : "docs/assurance/strategie-de-test.md";
+string cheminPlan = args.Length > 2 ? args[2] : "docs/projet/plan-de-travail.md";
 
 // UTF-8 sans marque d'ordre d'octets, séparateur de ligne forcé à '\n' — le
 // séparateur par défaut de l'environnement vaut \r\n sur Windows et suffirait

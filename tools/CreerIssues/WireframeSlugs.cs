@@ -2,7 +2,7 @@ namespace CreerIssues;
 
 /// <summary>
 /// Slugs de fiches d'écran indexés sur disque sous
-/// `docs/conception/interface/wireframes/&lt;groupe&gt;/&lt;slug&gt;/` — hors
+/// `docs/interface/ecrans/&lt;groupe&gt;/&lt;slug&gt;/` — hors
 /// socle « lecture du plan » : `CreerProjet` ne les consomme pas.
 /// </summary>
 internal static class WireframeSlugs

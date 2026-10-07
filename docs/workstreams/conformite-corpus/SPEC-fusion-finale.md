@@ -28,7 +28,7 @@ Les tâches 1 à 23 ont été commitées une à une sur `chantier/conformite-cor
 
 ### À lire avant de commencer
 
-- `docs/architecture/decisions/ADR-023-le-chantier-conformite-corpus-s-execute-sur-une-branche-dedi.md`
+- `docs/decisions/ADR-023-le-chantier-conformite-corpus-s-execute-sur-une-branche-dedi.md`
 - `docs/workstreams/conformite-corpus/TACHES.md`
 
 ## Lots

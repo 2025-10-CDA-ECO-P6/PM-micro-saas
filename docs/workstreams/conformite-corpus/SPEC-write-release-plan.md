@@ -8,7 +8,7 @@ Le module est sélectionné comme attendu (`docs/corpus.md`), et l'opérateur a 
 
 ### État actuel
 
-Aucune instance n'existe. Source disponible : la roadmap d'entrée en build et le plan de travail (`docs/gestion-projet/roadmap-entree-build.md:117`).
+Aucune instance n'existe. Source disponible : la roadmap d'entrée en build et le plan de travail (`docs/projet/roadmap-de-build.md:117`).
 
 ### Ce qui doit être vrai à la fin
 

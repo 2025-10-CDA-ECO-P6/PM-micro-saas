@@ -8,7 +8,7 @@ Chaque type de document a un gabarit déclaré (ADR-019, § Gabarits). Les gabar
 
 ### État actuel
 
-Le plan calculé relève, sur tout le corpus, 247 sections manquantes ou mal placées, 358 champs manquants, 372 étapes Gherkin hors de la langue du projet, 92 champs d'en-tête et 36 titres (`docs/workstreams/conformite-corpus/plan-conformite-calcule-2026-10-07.txt:1`). Index de départ : `docs/architecture/decisions/README.md:46`.
+Le plan calculé relève, sur tout le corpus, 247 sections manquantes ou mal placées, 358 champs manquants, 372 étapes Gherkin hors de la langue du projet, 92 champs d'en-tête et 36 titres (`docs/workstreams/conformite-corpus/plan-conformite-calcule-2026-10-07.txt:1`). Index de départ : `docs/decisions/README.md:46`.
 
 ### Ce qui doit être vrai à la fin
 

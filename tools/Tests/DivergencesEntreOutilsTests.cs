@@ -58,9 +58,9 @@ internal static class FixturesDivergences
     public static void ConstruireDepot(string depot, string planMd)
     {
         Helpers.InitialiserDepotGit(depot);
-        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/methode-de-ticket.md"), FixturesCreerIssues.MethodeMd);
-        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/plan-de-travail.md"), planMd);
-        Helpers.Ecrire(Path.Combine(depot, "docs/conception/domain/personnage.md"), DomaineMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/projet/methode-de-ticket.md"), FixturesCreerIssues.MethodeMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/projet/plan-de-travail.md"), planMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/domaine/personnage/context.md"), DomaineMd);
         Helpers.CommiterTout(depot, "fixture de divergence");
         // Révision simulée déjà poussée uniquement pour que l'AVERTISSEMENT
         // sur la révision, hors sujet ici, n'ajoute pas de bruit à la
@@ -116,7 +116,7 @@ public class DivergenceA_FormatDuTitreDeTranche : IDisposable
     public void ArbitrageOuvert_LeVerificateurVoitUneTacheQueLeGenerateurNeVoitPas()
     {
         var resultatVerificateur = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/projet/plan-de-travail.md"]);
         Assert.Contains("tâches du plan                        : 1", resultatVerificateur.Stdout);
 
         var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
@@ -181,7 +181,7 @@ public class DivergenceB_NombreDeChiffresDansLIdentifiant : IDisposable
         Assert.Contains("Tâches lues dans le plan : 2", resultatGenerateur.Stdout);
 
         var resultatVerificateur = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/projet/plan-de-travail.md"]);
         // TB-1000 est tronqué en TB-100 et écrase la vraie TB-100 dans le
         // dictionnaire des tâches ; le vérificateur n'en compte plus qu'une.
         // Ce test rougira le jour où l'un des deux motifs sera aligné sur
@@ -236,7 +236,7 @@ public class DivergenceC_MailleLueOuCodeeEnDur : IDisposable
         Assert.Contains("Tâches sans libellé de nature déductible (0)", resultatGenerateur.Stdout);
 
         var resultatVerificateur = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/projet/plan-de-travail.md"]);
         // Le vérificateur (maille codée en dur) refuse toujours le nouveau
         // libellé. Ce test rougira le jour où l'un des deux sera aligné sur
         // l'autre.
@@ -291,7 +291,7 @@ public class DivergenceD_VerrouDuNamespaceSurLaTrancheDeCreation : IDisposable
     public void ArbitrageOuvert_LeVerificateurResoutTB003AlorsQueLeGenerateurLaClasseSansNatureDeductible()
     {
         var resultatVerificateur = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/projet/plan-de-travail.md"]);
         Assert.Contains("périmètre entièrement résolu        : 1", resultatVerificateur.Stdout);
 
         var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);

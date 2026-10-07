@@ -79,10 +79,15 @@ internal static class MailleDuPlan
     private static HashSet<string> ExtraireAgregats(string racine)
     {
         var agregats = new HashSet<string>(StringComparer.Ordinal);
-        string dossier = Path.Combine(racine, "docs/conception/domain");
+        string dossier = Path.Combine(racine, "docs/domaine");
         if (!Directory.Exists(dossier)) return agregats;
 
+        // Un contexte a son dossier docs/domaine/<contexte>/ : sa description est
+        // context.md, celle du noyau partagé kernel.md.
         var fichiers = Directory.EnumerateFiles(dossier, "*.md")
+            .Concat(Directory.EnumerateDirectories(dossier)
+                .SelectMany(d => new[] { "context.md", "kernel.md" }.Select(n => Path.Combine(d, n)))
+                .Where(File.Exists))
             .Where(f => !Path.GetFileName(f).StartsWith('.'))
             .ToList();
         fichiers.Sort(ComparateurCodePoints.Instance);

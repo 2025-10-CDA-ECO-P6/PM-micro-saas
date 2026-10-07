@@ -16,7 +16,7 @@ CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 string racine = Path.GetFullPath(args.Length > 0 ? args[0] : ".");
-string planRelatif = args.Length > 1 ? args[1] : "docs/gestion-projet/plan-de-travail.md";
+string planRelatif = args.Length > 1 ? args[1] : "docs/projet/plan-de-travail.md";
 
 // UTF-8 sans marque d'ordre d'octets, séparateur de ligne forcé à '\n' — le
 // séparateur par défaut de l'environnement vaut \r\n sur Windows et suffirait

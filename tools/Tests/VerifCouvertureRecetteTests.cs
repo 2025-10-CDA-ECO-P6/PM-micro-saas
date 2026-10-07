@@ -16,8 +16,8 @@ namespace CaracterisationOutils;
 /// </summary>
 internal static class FixturesCouvertureRecette
 {
-    public const string CheminCahier = "docs/test/cahier-strategie-test-et-recette.md";
-    public const string CheminPlan = "docs/gestion-projet/plan-de-travail.md";
+    public const string CheminCahier = "docs/assurance/strategie-de-test.md";
+    public const string CheminPlan = "docs/projet/plan-de-travail.md";
 
     public static void ConstruireRacine(string racine, string corpsCahier, string corpsPlan)
     {

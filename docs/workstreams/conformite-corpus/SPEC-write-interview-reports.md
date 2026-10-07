@@ -8,7 +8,7 @@ Le module est sélectionné comme attendu (`docs/corpus.md`), et l'opérateur a 
 
 ### État actuel
 
-Aucune instance n'existe. Source disponible : les entretiens terrain, qui n'ont pas eu lieu au 2026-10-07 (entrée 0038) (`docs/conception/INTERVIEW_GUIDE.md:223`).
+Aucune instance n'existe. Source disponible : les entretiens terrain, qui n'ont pas eu lieu au 2026-10-07 (entrée 0038) (`docs/besoin/decouverte/guide-d-entretien.md:223`).
 
 ### Ce qui doit être vrai à la fin
 

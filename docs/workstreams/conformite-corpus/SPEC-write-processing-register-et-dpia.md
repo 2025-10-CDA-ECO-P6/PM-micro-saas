@@ -8,7 +8,7 @@ Le module est sélectionné comme attendu (`docs/corpus.md`), et l'opérateur a 
 
 ### État actuel
 
-Aucune instance n'existe. Source disponible : les ADR RGPD (ADR-007, ADR-012, ADR-013), le dossier de sécurité et les cadrages de conformité (`docs/architecture/decisions/ADR-012-rgpd-effacement-compte.md:147`).
+Aucune instance n'existe. Source disponible : les ADR RGPD (ADR-007, ADR-012, ADR-013), le dossier de sécurité et les cadrages de conformité (`docs/decisions/ADR-012-rgpd-effacement-compte.md:147`).
 
 ### Ce qui doit être vrai à la fin
 

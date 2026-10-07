@@ -107,7 +107,7 @@ jobs:
           # Historique COMPLET, jamais la profondeur par défaut (1 seul
           # commit) : CreerIssues date l'estampille de provenance qu'il grave
           # dans chaque corps d'issue par le dernier commit ayant modifié
-          # `docs/gestion-projet/plan-de-travail.md` (RevisionGuard.
+          # `docs/projet/plan-de-travail.md` (RevisionGuard.
           # LireRevisionPlan, `git log -1 -- <chemin>`), pas par le commit de
           # tête. Mesuré : sous un clone superficiel, git traite le commit
           # limite du clone comme une racine sans parent connu — tout chemin

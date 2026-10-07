@@ -8,7 +8,7 @@ Les modules conventions, event-catalogue, traceability et corpus-changelog sont 
 
 ### État actuel
 
-Les règles du corpus sont tranchées dans `docs/architecture/decisions/ADR-019-conventions-de-tenue-du-corpus.md:21` et résumées au guide de conventions (`docs/gestion-projet/guide-conventions-et-dod.md:298`). Aucun de ces quatre documents n'existe.
+Les règles du corpus sont tranchées dans `docs/decisions/ADR-019-conventions-de-tenue-du-corpus.md:21` et résumées au guide de conventions (`docs/projet/conventions-dod.md:298`). Aucun de ces quatre documents n'existe.
 
 ### Ce qui doit être vrai à la fin
 

@@ -1,7 +1,7 @@
 # Requête « document non partagé » — RGPD effacement de compte, §3(b)
 
 - **Statut** : Spec pré-build — illustrative, non normative. ADR-012 renvoie explicitement l'écriture précise de cette requête à l'implémentation (« la définition donnée ici est fonctionnelle ; la requête SQL précise est à écrire lors de l'implémentation », ADR-012:224, section *Points à trancher*). Cette note produit une première formulation fidèle au critère fixé, sans le clore.
-- **Sources** : [ADR-012](../decisions/ADR-012-rgpd-effacement-compte.md) (l.92, 94, 118-124, 189) ; matrice FK [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md) (§Schéma et MLD).
+- **Sources** : [ADR-012](../../decisions/ADR-012-rgpd-effacement-compte.md) (l.92, 94, 118-124, 189) ; matrice FK [ADR-011](../../decisions/ADR-011-cascade-integrite-referentielle.md) (§Schéma et MLD).
 - **Périmètre** : la sélection des documents « non partagés » au sens de l'étape 5 de la saga `UserAnonymized` (ADR-012 §3(b)), l'instant de référence de l'évaluation, et le séquençage déliaison-puis-DELETE aligné sur le mécanisme de saga ADR-011.
 
 ---

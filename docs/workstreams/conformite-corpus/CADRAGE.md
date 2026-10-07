@@ -13,9 +13,9 @@
 
 ## 1. Intention et utilisateurs
 
-Le corpus de conception doit pouvoir être repris par une autre personne que son auteur, et tenu par l'outillage `/write` et `/refresh` sans exception. Aujourd'hui, il range le besoin, le domaine et l'interface sous `docs/conception/` (`docs/corpus.md:12`), les décisions sous `docs/architecture/decisions/` (`docs/corpus.md:29`), et mêle méthode, plans et registres dans `docs/gestion-projet/` (`docs/gestion-projet/README.md:1`).
+Le corpus de conception doit pouvoir être repris par une autre personne que son auteur, et tenu par l'outillage `/write` et `/refresh` sans exception. Aujourd'hui, il range le besoin, le domaine et l'interface sous `docs/conception/` (`docs/corpus.md:12`), les décisions sous `docs/architecture/decisions/` (`docs/corpus.md:29`), et mêle méthode, plans et registres dans `docs/gestion-projet/` (`docs/projet/README.md:1`).
 
-L'onboarding du 2026-10-07 a cartographié le corpus sans rien déplacer, et a laissé 92 entrées d'alignement (`docs/project/backlog/README.md:1`). Ce chantier les traite et amène le corpus à la forme validée le 2026-10-05 (D11, D12), arrêtée par l'ADR-020 (`docs/architecture/decisions/ADR-020-le-corpus-est-reorganise-selon-l-arborescence-un-dossier-par.md:13`).
+L'onboarding du 2026-10-07 a cartographié le corpus sans rien déplacer, et a laissé 92 entrées d'alignement (`docs/project/backlog/README.md:1`). Ce chantier les traite et amène le corpus à la forme validée le 2026-10-05 (D11, D12), arrêtée par l'ADR-020 (`docs/decisions/ADR-020-le-corpus-est-reorganise-selon-l-arborescence-un-dossier-par.md:13`).
 
 Utilisateurs : le porteur du projet, un repreneur éventuel, et les sessions d'assistance qui écrivent dans le corpus.
 
@@ -34,7 +34,7 @@ Utilisateurs : le porteur du projet, un repreneur éventuel, et les sessions d'a
 
 **Hors du chantier :**
 
-- tout changement de fond qui ne vient ni d'une entrée du backlog, ni d'une décision de l'opérateur (ADR-019, `docs/architecture/decisions/ADR-019-conventions-de-tenue-du-corpus.md:21`) ;
+- tout changement de fond qui ne vient ni d'une entrée du backlog, ni d'une décision de l'opérateur (ADR-019, `docs/decisions/ADR-019-conventions-de-tenue-du-corpus.md:21`) ;
 - la renumérotation d'un identifiant ;
 - le code produit ;
 - les sujets du plan de travail sans lien avec la tenue du corpus.
@@ -61,7 +61,7 @@ L'architecte a validé le chemin à trois conditions, reprises dans l'ADR-022 ([
 
 - Un commit par tâche sur la branche dédiée, vérifié par :
   - `bash .claude/skills/onboard/conform.sh verify <commit de départ>` ;
-  - les quatre contrôles du guide de conventions (`docs/gestion-projet/guide-conventions-et-dod.md:298`).
+  - les quatre contrôles du guide de conventions (`docs/projet/conventions-dod.md:298`).
 - Le commit de départ est épinglé à la tâche 1, puis réépinglé après chaque tâche « backlog » (ADR-022, condition 3).
 - Aucun identifiant n'est renuméroté ni réutilisé (ADR-019, § Identifiants).
 

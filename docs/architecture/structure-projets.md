@@ -2,7 +2,7 @@
 
 > Ce document est la source de vérité de la structure concrète des projets .NET (granularité, noms, responsabilités)
 > et du périmètre du mode local TypeScript dans le navigateur.
-> Il s'appuie sur [ADR-008](decisions/ADR-008-structure-solution.md), [ADR-001](decisions/ADR-001-execution-domaine-mode-local.md) et [ADR-003](decisions/ADR-003-stack-front.md).
+> Il s'appuie sur [ADR-008](../decisions/ADR-008-structure-solution.md), [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md) et [ADR-003](../decisions/ADR-003-stack-front.md).
 
 ---
 
@@ -11,7 +11,7 @@
 Ce document décrit comment les limites architecturales DDD se concrétisent dans la structure physique des projets .NET
 et comment le mode local TypeScript s'inscrit dans l'architecture globale.
 
-La source de vérité des décisions structurelles est le [registre ADR](decisions/README.md) —
+La source de vérité des décisions structurelles est le [registre ADR](../decisions/README.md) —
 en particulier les trois ADR cités ci-dessus. Ce document synthétise leurs conséquences pour le développeur
 qui échafaude ou navigue la solution.
 
@@ -28,7 +28,7 @@ L'architecture suit le principe de **Clean Architecture** (Robert C. Martin) ave
 Ce principe s'applique **indépendamment de la granularité physique** des projets. Même si plusieurs bounded contexts
 coexistent dans un même assembly, les dépendances vont toujours domaine → application → infrastructure, jamais inverse.
 
-*Source : [ADR-008, § Décision](decisions/ADR-008-structure-solution.md)*
+*Source : [ADR-008, § Décision](../decisions/ADR-008-structure-solution.md)*
 
 ---
 
@@ -40,7 +40,7 @@ bounded context du Domaine, le noyau partagé (§ 4), l'isolation du module de n
 Clean Architecture (§ 2). Relèvent de l'ouverture de J0 : la séparation en projets à l'intérieur de chaque couche
 — combien, et lesquels —, les noms de projet, et le contenu de chacun — dossiers, fichiers, classes, sous-dossiers
 (`[À TRANCHER — J0]`, convention de balisage reprise de
-[guide-conventions-et-dod.md, § Convention de balisage](../gestion-projet/guide-conventions-et-dod.md)).
+[guide-conventions-et-dod.md, § Convention de balisage](../projet/conventions-dod.md)).
 
 **Convention de désignation.** Un projet dont le nom n'est pas tranché se désigne par son rôle — « le projet
 Domaine unique », « le projet Application unique » ; un namespace se désigne par son nom, tranché. Tout document
@@ -73,7 +73,7 @@ Cette approche permet une montée en équipe sans cérémonie de configuration d
 Si un contexte doit être isolé pour des raisons réelles (équipe, dépendances incompatibles, performance de build),
 il peut être extrait en projet `.Domain.<ContextName>` sans rupture architecturale.
 
-*Source : [ADR-008, § Décision](decisions/ADR-008-structure-solution.md)*
+*Source : [ADR-008, § Décision](../decisions/ADR-008-structure-solution.md)*
 
 ### Infrastructure et Présentation : multi-projets conservé
 
@@ -97,7 +97,7 @@ temps réel (ADR-004). Combien de projets composent chaque couche au-delà de ce
 de chacun — dossiers, fichiers — ne sont fixés ni par ADR-008 ni par aucune autre section du présent document ;
 ils relèvent du build (`[À TRANCHER — J0]`).
 
-*Source : [ADR-008, § Décision](decisions/ADR-008-structure-solution.md)*
+*Source : [ADR-008, § Décision](../decisions/ADR-008-structure-solution.md)*
 
 ---
 
@@ -105,7 +105,7 @@ ils relèvent du build (`[À TRANCHER — J0]`).
 
 **Tranché** (décision d'entrée en build du 2026-09-03). Les points où les couches se composent — enregistrement des cas d'usage de la couche Application, table de routage, déclaration du schéma du store local — sont portés **par agrégat**, et non rassemblés dans un fichier commun.
 
-**Pourquoi ce point est structurel.** La maille de désignation du périmètre d'écriture du [plan de travail](../gestion-projet/plan-de-travail.md) distingue les travaux par agrégat. Un fichier de composition commun serait écrit par tous et vu par aucun : deux travaux déclarés sans recouvrement s'y rencontreraient. Un point d'enregistrement par agrégat supprime ce fichier partagé, et rend vraie la garantie que la maille énonce.
+**Pourquoi ce point est structurel.** La maille de désignation du périmètre d'écriture du [plan de travail](../projet/plan-de-travail.md) distingue les travaux par agrégat. Un fichier de composition commun serait écrit par tous et vu par aucun : deux travaux déclarés sans recouvrement s'y rencontreraient. Un point d'enregistrement par agrégat supprime ce fichier partagé, et rend vraie la garantie que la maille énonce.
 
 *Source : cette décision clôt un point que le § 3 laissait `[À TRANCHER — J0]` sur le contenu des projets.*
 
@@ -122,7 +122,7 @@ Le `SharedKernel` héberge les abstractions métier communes :
 - exceptions métier
 - spécifications (si Query Object Pattern)
 
-*Source : [ADR-008, § Conséquences](decisions/ADR-008-structure-solution.md)*
+*Source : [ADR-008, § Conséquences](../decisions/ADR-008-structure-solution.md)*
 
 ---
 
@@ -138,7 +138,7 @@ Un bounded context peut être extrait en projet physique séparé à tout moment
 Il n'y a pas de garantie du compilateur sur le respect des dépendances entre namespaces — ce risque est mitigé
 par un test d'architecture automatisé (voir § 6).
 
-*Source : [ADR-008, § Décision et Conséquences](decisions/ADR-008-structure-solution.md)*
+*Source : [ADR-008, § Décision et Conséquences](../decisions/ADR-008-structure-solution.md)*
 
 ---
 
@@ -156,9 +156,9 @@ Ce test remplace la « discipline de revue de code » (insuffisante en contexte 
 
 Ce test est un **livrable de J0** (avant la première livraison à production).
 
-**Outillage tranché** (décision d'entrée en build du 2026-09-03) : **les deux mécanismes, chacun sur les règles qu'il vérifie honnêtement**. La règle 2 — les frontières entre namespaces d'un même projet — relève de **NetArchTest**, qui parcourt le graphe des types de l'assemblage compilé ; un contrôle sur le texte source raterait en silence les noms pleinement qualifiés, les `global using`, les alias et les dépendances portées par une signature. Les règles 1 et 3 — les références entre projets — relèvent d'un **contrôle du graphe des fichiers de projet**, sans ambiguïté de syntaxe et exécutable avant la compilation. *Détail et limites de chacun : [`guide-conventions-et-dod.md §6`](../gestion-projet/guide-conventions-et-dod.md).*
+**Outillage tranché** (décision d'entrée en build du 2026-09-03) : **les deux mécanismes, chacun sur les règles qu'il vérifie honnêtement**. La règle 2 — les frontières entre namespaces d'un même projet — relève de **NetArchTest**, qui parcourt le graphe des types de l'assemblage compilé ; un contrôle sur le texte source raterait en silence les noms pleinement qualifiés, les `global using`, les alias et les dépendances portées par une signature. Les règles 1 et 3 — les références entre projets — relèvent d'un **contrôle du graphe des fichiers de projet**, sans ambiguïté de syntaxe et exécutable avant la compilation. *Détail et limites de chacun : [`guide-conventions-et-dod.md §6`](../projet/conventions-dod.md).*
 
-*Source : [ADR-008, § Compléments post-revue](decisions/ADR-008-structure-solution.md)*
+*Source : [ADR-008, § Compléments post-revue](../decisions/ADR-008-structure-solution.md)*
 
 ---
 
@@ -179,11 +179,11 @@ Le domaine C#/.NET côté serveur reste la **source de vérité unique**.
 
 ### Accès au store : un service par agrégat
 
-**Tranché** (décision d'entrée en build du 2026-09-03). Aucun composant de la couche cliente n'accède au store local directement : tout accès passe par un **service d'accès dédié à l'agrégat concerné**, un par agrégat persisté côté client — `Space`, `Folder`, `Document`, `DocumentType`, `Session`, `SessionViewConfig` ([`plan-de-travail.md §2`](../gestion-projet/plan-de-travail.md) porte le rattachement des object stores aux agrégats).
+**Tranché** (décision d'entrée en build du 2026-09-03). Aucun composant de la couche cliente n'accède au store local directement : tout accès passe par un **service d'accès dédié à l'agrégat concerné**, un par agrégat persisté côté client — `Space`, `Folder`, `Document`, `DocumentType`, `Session`, `SessionViewConfig` ([`plan-de-travail.md §2`](../projet/plan-de-travail.md) porte le rattachement des object stores aux agrégats).
 
-**Deux conséquences, et la seconde est structurelle.** D'abord, la couche cliente se construit contre ce contrat sans attendre l'implémentation du domaine ([ADR-001, § Compléments post-revue (2026-09-03)](decisions/ADR-001-execution-domaine-mode-local.md)) : une doublure qui rend des jeux de données le satisfait. Ensuite, **deux travaux portant sur deux agrégats distincts n'écrivent jamais le même fichier d'accès au store** — il n'existe pas de service de façade partagé.
+**Deux conséquences, et la seconde est structurelle.** D'abord, la couche cliente se construit contre ce contrat sans attendre l'implémentation du domaine ([ADR-001, § Compléments post-revue (2026-09-03)](../decisions/ADR-001-execution-domaine-mode-local.md)) : une doublure qui rend des jeux de données le satisfait. Ensuite, **deux travaux portant sur deux agrégats distincts n'écrivent jamais le même fichier d'accès au store** — il n'existe pas de service de façade partagé.
 
-**Contrôle opposable** : une règle de style interdit tout import direct de l'API du store hors de ces services ([`guide-conventions-et-dod.md §3`](../gestion-projet/guide-conventions-et-dod.md)).
+**Contrôle opposable** : une règle de style interdit tout import direct de l'API du store hors de ces services ([`guide-conventions-et-dod.md §3`](../projet/conventions-dod.md)).
 
 ### Projection dérivée du serveur
 
@@ -198,7 +198,7 @@ est la revalidation par les value objects à l'import, avec rapport de rejets. R
 qui refuse ce que le domaine serveur accepte est un **défaut à retirer du client**, non une protection supplémentaire.
 
 *La formulation antérieure de cet invariant, incompatible avec la § Décision d'ADR-001, est requalifiée en visée dirigée
-par [ADR-001, § Compléments post-revue (2026-09-03)](decisions/ADR-001-execution-domaine-mode-local.md).*
+par [ADR-001, § Compléments post-revue (2026-09-03)](../decisions/ADR-001-execution-domaine-mode-local.md).*
 
 ### Format de sérialisation unique
 
@@ -211,7 +211,7 @@ Le format inclut un champ `schemaVersion` obligatoire ; les versions inconnues s
 Le parcours de migration est tout-ou-rien par espace, avec un gate de reconnaissance anti-appropriation
 (présentation des données détectées + confirmation explicite) et un rapport de rejets.
 
-*Sources : [ADR-001, § Décision](decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-016 — Sérialisation locale et contrat de migration local→cloud](decisions/ADR-016-serialisation-locale-migration.md) ; [ADR-017 — Modèle IndexedDB local et sécurité du mode local](decisions/ADR-017-modele-indexeddb-local.md) (object stores, posture migration-only, `navigator.storage.persist()`, sécurité F-09)*
+*Sources : [ADR-001, § Décision](../decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-016 — Sérialisation locale et contrat de migration local→cloud](../decisions/ADR-016-serialisation-locale-migration.md) ; [ADR-017 — Modèle IndexedDB local et sécurité du mode local](../decisions/ADR-017-modele-indexeddb-local.md) (object stores, posture migration-only, `navigator.storage.persist()`, sécurité F-09)*
 
 ### Frontend : Angular SPA + Angular SSR/prerender
 
@@ -228,17 +228,17 @@ C'est un choix accepté, documenté dans la vision produit et dans les use cases
 
 L'emplacement de la couche Angular et TypeScript du mode local — répertoires et découpage interne, pour la persistance locale comme pour les deux surfaces frontend décrites ci-dessus — doit être nommé à l'ouverture de `J0`. Ce nommage porte le marqueur `[À TRANCHER — J0]` et ne relève d'aucune section du présent document.
 
-*Source : [ADR-003, § Alternatives et Conséquences](decisions/ADR-003-stack-front.md) ; [ADR-001, § Décision](decisions/ADR-001-execution-domaine-mode-local.md)*
+*Source : [ADR-003, § Alternatives et Conséquences](../decisions/ADR-003-stack-front.md) ; [ADR-001, § Décision](../decisions/ADR-001-execution-domaine-mode-local.md)*
 
 ---
 
 ## 8 — Ordre de construction : C#-first, au sens de l'autorité du contrat
 
 La structure des projets .NET est échafaudée **en premier** : elle demeure le premier livrable de structure, avant tout
-projet Angular ou TypeScript ([ADR-008, § Compléments post-revue](decisions/ADR-008-structure-solution.md), non amendé).
+projet Angular ou TypeScript ([ADR-008, § Compléments post-revue](../decisions/ADR-008-structure-solution.md), non amendé).
 
 **C#-first désigne l'autorité du contrat, non l'ordre de construction de la couche cliente**
-([ADR-001, § Compléments post-revue (2026-09-03)](decisions/ADR-001-execution-domaine-mode-local.md)). Le domaine C# est
+([ADR-001, § Compléments post-revue (2026-09-03)](../decisions/ADR-001-execution-domaine-mode-local.md)). Le domaine C# est
 la source de vérité des règles métier et du contrat de données ; la couche cliente se construit contre le contrat du
 service d'accès au store local, sans attendre l'implémentation du domaine.
 
@@ -249,23 +249,23 @@ cliente qui cesse d'être dérivé de cet ordre de dépendance.
 Ce que cette révision ne change pas :
 - la persistance EF Core cloud de J2 ne précède jamais l'interface locale de J1 ;
 - une doublure de service côté client ne porte **aucune** règle métier — les seules validations autorisées sont celles
-  que le § 7 énumère, et l'alternative écartée par [ADR-001, § Alternatives considérées](decisions/ADR-001-execution-domaine-mode-local.md)
+  que le § 7 énumère, et l'alternative écartée par [ADR-001, § Alternatives considérées](../decisions/ADR-001-execution-domaine-mode-local.md)
   — réimplémenter le domaine en TypeScript — le reste écartée.
 
 Cet ordre s'applique à l'intérieur d'un même jalon ; il ne s'applique jamais en travers de la séquence des jalons.
-L'application de cet ordre jalon par jalon relève de la [Roadmap d'entrée en build, § 4. Ordre C#-first — interne à chaque jalon](../gestion-projet/roadmap-entree-build.md).
+L'application de cet ordre jalon par jalon relève de la [Roadmap d'entrée en build, § 4. Ordre C#-first — interne à chaque jalon](../projet/roadmap-de-build.md).
 
-*Source : [ADR-001, § Compléments post-revue](decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-008, § Compléments post-revue](decisions/ADR-008-structure-solution.md)*
+*Source : [ADR-001, § Compléments post-revue](../decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-008, § Compléments post-revue](../decisions/ADR-008-structure-solution.md)*
 
 ---
 
 ## Prochaines étapes
 
-- **Statué (ADR-008)** : nommage `SharedKernel` acté et documenté (§4) — clôt le report explicitement laissé à J0 par [ADR-008, § Conséquences](decisions/ADR-008-structure-solution.md)
+- **Statué (ADR-008)** : nommage `SharedKernel` acté et documenté (§4) — clôt le report explicitement laissé à J0 par [ADR-008, § Conséquences](../decisions/ADR-008-structure-solution.md)
 - **J0** : test d'architecture en CI (NetArchTest ou convention namespace)
 - **Post-MVP** : extraction de bounded contexts en projets séparés si besoin réel (équipe, dépendances)
-- **Statué (ADR-016)** : migration locale → cloud — format de sérialisation, gate de reconnaissance, parcours d'échec par espace (voir [ADR-016](decisions/ADR-016-serialisation-locale-migration.md))
-- **Statué (ADR-017)** : modèle IndexedDB local — object stores, versionnement du store, `navigator.storage.persist()`, sécurité mode local (bandeaux durabilité/confidentialité, import JSON, sanitisation client) (voir [ADR-017](decisions/ADR-017-modele-indexeddb-local.md))
-- **J2** : configuration EF Core (voir [ADR-008, § Conséquences](decisions/ADR-008-structure-solution.md))
+- **Statué (ADR-016)** : migration locale → cloud — format de sérialisation, gate de reconnaissance, parcours d'échec par espace (voir [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md))
+- **Statué (ADR-017)** : modèle IndexedDB local — object stores, versionnement du store, `navigator.storage.persist()`, sécurité mode local (bandeaux durabilité/confidentialité, import JSON, sanitisation client) (voir [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md))
+- **J2** : configuration EF Core (voir [ADR-008, § Conséquences](../decisions/ADR-008-structure-solution.md))
 
-Voir le [registre ADR](decisions/README.md) pour le détail complet de chaque décision.
+Voir le [registre ADR](../decisions/README.md) pour le détail complet de chaque décision.

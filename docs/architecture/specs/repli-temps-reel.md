@@ -2,7 +2,7 @@
 
 > **Nature** : spec pré-build (approche de report fidèle au corpus). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucune formule de coût non explicitement actée dans le corpus n'est introduite ici. Les extraits de configuration ci-dessous sont **illustratifs et non normatifs** — ils balisent la forme du livrable de configuration attendu, pas son contenu.
 >
-> **Source normative** : [ADR-004 — Transport temps réel : SignalR](../decisions/ADR-004-transport-temps-reel.md), notamment les lignes 36 et 47 (« Compléments post-revue »).
+> **Source normative** : [ADR-004 — Transport temps réel : SignalR](../../decisions/ADR-004-transport-temps-reel.md), notamment les lignes 36 et 47 (« Compléments post-revue »).
 >
 > **Lecteur visé** : l'équipe qui configurera le module `Haversack.Infrastructure.Notifications` (ADR-004 §Décision, ADR-008:24) à l'entrée en build, et l'exploitant qui suivra le coût d'hébergement en production une fois le mécanisme en place.
 >
@@ -12,7 +12,7 @@
 
 ## 1. Pourquoi ce mécanisme existe
 
-[ADR-004](../decisions/ADR-004-transport-temps-reel.md) acte SignalR comme transport temps réel dès le MVP, avec fallback natif WebSocket → SSE → long-polling. Cette décision a une conséquence de coût assumée mais non chiffrée :
+[ADR-004](../../decisions/ADR-004-transport-temps-reel.md) acte SignalR comme transport temps réel dès le MVP, avec fallback natif WebSocket → SSE → long-polling. Cette décision a une conséquence de coût assumée mais non chiffrée :
 
 > « Coût d'infrastructure temps réel dès le MVP : connexions persistantes, sticky sessions à prévoir côté hébergement. Ce coût est à chiffrer explicitement, en particulier l'impact sur le tier gratuit d'hébergement (J3). » (ADR-004, section Conséquences, ligne 34)
 
@@ -96,6 +96,6 @@ Ces quatre points bloquent le passage de cette spec à un ticket de développeme
 
 | Artefact | Nature du lien |
 |---|---|
-| [ADR-004 — Transport temps réel : SignalR](../decisions/ADR-004-transport-temps-reel.md) | Source normative du seuil de réversibilité, du contexte de configuration sobre, et du renvoi de chiffrage (lignes 36, 47) |
-| [ADR-008 — Structure solution](../decisions/ADR-008-structure-solution.md) | Isolation du module `Haversack.Infrastructure.Notifications`, périmètre d'implémentation du mécanisme de repli |
-| [ADR-007 — RGPD et autorisation API](../decisions/ADR-007-rgpd-autorisation-api.md) | Invariant d'autorisation qui s'applique intégralement au canal SignalR (ADR-004:49) — contexte adjacent, hors périmètre du seuil traité ici |
+| [ADR-004 — Transport temps réel : SignalR](../../decisions/ADR-004-transport-temps-reel.md) | Source normative du seuil de réversibilité, du contexte de configuration sobre, et du renvoi de chiffrage (lignes 36, 47) |
+| [ADR-008 — Structure solution](../../decisions/ADR-008-structure-solution.md) | Isolation du module `Haversack.Infrastructure.Notifications`, périmètre d'implémentation du mécanisme de repli |
+| [ADR-007 — RGPD et autorisation API](../../decisions/ADR-007-rgpd-autorisation-api.md) | Invariant d'autorisation qui s'applique intégralement au canal SignalR (ADR-004:49) — contexte adjacent, hors périmètre du seuil traité ici |

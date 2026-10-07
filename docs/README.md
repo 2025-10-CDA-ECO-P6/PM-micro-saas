@@ -6,7 +6,7 @@ Outil d'assistance au Maître du Jeu pour la préparation et la conduite de part
 
 ## Comment ce corpus est organisé
 
-Ce corpus distingue deux paliers. [`context/`](context/README.md) rassemble les documents
+Ce corpus distingue deux paliers. [`context/`](reference/README.md) rassemble les documents
 **de référence** — autoportants, lisibles seuls, exportables hors de ce dépôt (on peut en
 remettre un à un prestataire ou dans un dossier de due diligence sans joindre le reste). Les
 autres dossiers portent le **corpus de traçabilité détaillé** dont ces documents de référence
@@ -21,14 +21,14 @@ le contenu.
 
 | Dossier | Nature | Index |
 |---|---|---|
-| `context/` | Documents de référence de premier rang — le quoi fonctionnel, le quoi technique, la carte du système, le comment, le cadrage business | [context/README.md](context/README.md) |
-| `gestion-projet/` | Pilotage du projet — cadrage, planification, organisation, risques, conventions de travail | [gestion-projet/README.md](gestion-projet/README.md) |
-| `securite/` | Sécurité technique consolidée, distincte des cadrages de conformité légale (RGPD) internes en attente de validation juriste | [securite/README.md](securite/README.md) |
-| `test/` | Stratégie de test et de recette | [test/README.md](test/README.md) |
-| `deploiement/` | Environnements, pipelines et procédures de déploiement — dossier réservé, à remplir pendant le développement | [deploiement/README.md](deploiement/README.md) |
-| `ecoconception/` | Démarche d'écoconception — dossier réservé, sujet non engagé à ce jour | [ecoconception/README.md](ecoconception/README.md) |
+| `context/` | Documents de référence de premier rang — le quoi fonctionnel, le quoi technique, la carte du système, le comment, le cadrage business | [reference/README.md](reference/README.md) |
+| `gestion-projet/` | Pilotage du projet — cadrage, planification, organisation, risques, conventions de travail | [projet/README.md](projet/README.md) |
+| `securite/` | Sécurité technique consolidée, distincte des cadrages de conformité légale (RGPD) internes en attente de validation juriste | [assurance/securite/README.md](assurance/securite/README.md) |
+| `test/` | Stratégie de test et de recette | [assurance/README.md](assurance/README.md) |
+| `deploiement/` | Environnements, pipelines et procédures de déploiement — dossier réservé, à remplir pendant le développement | [architecture/deploiement/README.md](architecture/deploiement/README.md) |
+| `ecoconception/` | Démarche d'écoconception — dossier réservé, sujet non engagé à ce jour | [assurance/ecoconception/README.md](assurance/ecoconception/README.md) |
 | `architecture/` | Corpus détaillé de traçabilité technique — décisions d'architecture (ADR), structure des projets, spécifications pré-build | [architecture/README.md](architecture/README.md) |
-| `conception/` | Corpus détaillé de traçabilité produit et domaine, organisé selon l'ordre d'autorité besoin → domaine → interface | [conception/README.md](conception/README.md) |
+| `besoin/`, `domaine/`, `interface/` | Corpus détaillé de traçabilité produit et domaine, organisé selon l'ordre d'autorité besoin → domaine → interface | [reference/ordre-d-autorite.md](reference/ordre-d-autorite.md) |
 | `project/backlog/` | Backlog issu de l'onboarding du corpus (2026-10-07) — écarts à aligner et réponses à reporter dans les documents sources | [project/backlog/README.md](project/backlog/README.md) |
 
 La sélection des modules du corpus, lue par l'outillage d'assistance (`.claude/`), est tenue dans [corpus.md](corpus.md).

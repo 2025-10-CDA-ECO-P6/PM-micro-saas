@@ -66,8 +66,8 @@ internal static class FixturesCreerProjet
     public static void EcrireDepotMinimal(string depot)
     {
         Helpers.InitialiserDepotGit(depot);
-        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/methode-de-ticket.md"), MethodeMd);
-        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/plan-de-travail.md"), PlanMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/projet/methode-de-ticket.md"), MethodeMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/projet/plan-de-travail.md"), PlanMd);
     }
 
     public static string ReponseProjetExistant() => JsonSerializer.Serialize(new
@@ -477,8 +477,8 @@ internal static class FixturesRenommageEpique
     public static void EcrireDepotMinimal(string depot)
     {
         Helpers.InitialiserDepotGit(depot);
-        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/methode-de-ticket.md"), FixturesCreerProjet.MethodeMd);
-        Helpers.Ecrire(Path.Combine(depot, "docs/gestion-projet/plan-de-travail.md"), PlanMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/projet/methode-de-ticket.md"), FixturesCreerProjet.MethodeMd);
+        Helpers.Ecrire(Path.Combine(depot, "docs/projet/plan-de-travail.md"), PlanMd);
     }
 
     public static string ReponseChampsExistants() => JsonSerializer.Serialize(new

@@ -42,9 +42,9 @@ internal static class FixturesMailleAgregat
     {
         if (avecDomaine)
         {
-            Helpers.Ecrire(Path.Combine(racine, "docs/conception/domain/personnage.md"), ModeleDomaine);
+            Helpers.Ecrire(Path.Combine(racine, "docs/domaine/personnage/context.md"), ModeleDomaine);
         }
-        Helpers.Ecrire(Path.Combine(racine, "docs/gestion-projet/plan-de-travail.md"), PreambulePlan + planMd);
+        Helpers.Ecrire(Path.Combine(racine, "docs/projet/plan-de-travail.md"), PreambulePlan + planMd);
     }
 }
 
@@ -110,7 +110,7 @@ public class ExclusionHorsMaille : IDisposable
     public void DevraitExclureLaTacheHorsMailleDuDecompteResoluEtLaCompterAPart()
     {
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         string stdout = resultat.Stdout;
         Assert.Contains("tâches du plan                        : 2", stdout);
         Assert.Contains("périmètre entièrement résolu        : 1", stdout);
@@ -146,7 +146,7 @@ public class ZeroConflitFantomeEntreHorsMailleIdentiques : IDisposable
     public void NeDevraitProduireAucunEcartDeConflitEntreDeuxTachesHorsMailleAuLibelleIdentique()
     {
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         Assert.Contains(
             "écarts entre `En conflit avec` déclaré et l'intersection recalculée : 0", resultat.Stdout);
     }
@@ -175,7 +175,7 @@ public class RejetDuModuleFantome : IDisposable
     public void DevraitRefuserUnModuleAbsentDuCorpusEtLeClasserNonResolu()
     {
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         string stdout = resultat.Stdout;
         Assert.Contains("item ne se résolvant pas la maille  : 1", stdout);
         Assert.Contains("[NON RÉSOLU] TB-091 -> [\"le projet Domaine fantôme qui n'existe pas\"]", stdout);
@@ -215,7 +215,7 @@ public class DesignationDeRoleEnAttenteDeJ0 : IDisposable
     public void DevraitResoudreLesDeuxFormesCanoniquesEtMettreEnAttenteJ0LaMentionDeRoleInfrastructurePresentation()
     {
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         string stdout = resultat.Stdout;
         Assert.Contains("périmètre entièrement résolu        : 2", stdout);
         Assert.Contains("périmètre en attente de J0 (rôle)   : 1", stdout);
@@ -248,7 +248,7 @@ public class ContratCodeDeSortieVerifMailleAgregat : IDisposable
     public void DevraitTerminerEnCodeDeSortieNonNulQuandUnItemNeSeResoutPas()
     {
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         // Le défaut est bien rapporté en sortie standard — et, désormais, le
         // code de sortie le reflète.
         Assert.Contains("item ne se résolvant pas la maille  : 1", resultat.Stdout);
@@ -280,7 +280,7 @@ public class PlanSain : IDisposable
     public void DevraitTerminerEnCodeDeSortieZeroQuandAucunDefautNEstRapporte()
     {
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         Assert.Contains("item ne se résolvant pas la maille  : 0", resultat.Stdout);
         Assert.Contains("écarts entre `En conflit avec` déclaré et l'intersection recalculée : 0", resultat.Stdout);
         Assert.Contains("identifiants à la fois fiche vivante et retirés (intersection)     : 0", resultat.Stdout);
@@ -319,7 +319,7 @@ public class IdentifiantAmbigu : IDisposable
     public void DevraitCompterUnIdentifiantALaFoisFicheVivanteEtRetireDansLIntersection()
     {
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         Assert.Contains(
             "identifiants à la fois fiche vivante et retirés (intersection)     : 1", resultat.Stdout);
         // Aucun renvoi mort dans cette fixture : les deux compteurs de la
@@ -363,7 +363,7 @@ public class RenvoiVersIdentifiantRetire : IDisposable
     public void DevraitSignalerUnRenvoiMortParChampToucheVersUnIdentifiantRetire()
     {
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         string stdout = resultat.Stdout;
         // Un renvoi mort par champ touché : « Dépend de » et « En conflit
         // avec » comptent chacun pour un, jamais fusionnés en une seule ligne.
@@ -395,7 +395,7 @@ public class PanneEnvironnement : IDisposable
     {
         // Racine existante mais sans plan-de-travail.md à l'emplacement attendu.
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         Assert.Equal(2, resultat.CodeSortie);
         Assert.Contains("panne d'exécution", resultat.Stderr);
     }
@@ -410,7 +410,7 @@ public class PanneUtf8InvalideDansLePlan : IDisposable
         // Séquence UTF-8 invalide (0xFF n'est un octet de tête d'aucune
         // séquence UTF-8 valide) — décodage strict, throwOnInvalidBytes.
         Helpers.EcrireOctets(
-            Path.Combine(_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"),
+            Path.Combine(_tmp.Chemin, "docs/projet/plan-de-travail.md"),
             [0x23, 0x20, 0x50, 0x6C, 0x61, 0x6E, 0x0A, 0x0A, 0xFF, 0x0A]);
     }
 
@@ -420,7 +420,7 @@ public class PanneUtf8InvalideDansLePlan : IDisposable
     public void DevraitTerminerEnCodeDeSortieDeuxQuandLePlanContientUneSequenceUtf8Invalide()
     {
         var resultat = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmp.Chemin, "docs/gestion-projet/plan-de-travail.md"]);
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         Assert.Equal(2, resultat.CodeSortie);
         Assert.Contains("panne d'exécution", resultat.Stderr);
     }

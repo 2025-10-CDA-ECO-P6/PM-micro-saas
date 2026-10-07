@@ -14,7 +14,7 @@ internal static class AutresNatures
     public static HashSet<string> FichesEcran(string racine)
     {
         var resultat = new HashSet<string>(StringComparer.Ordinal);
-        string basePath = Path.Combine(racine, "docs/conception/interface/wireframes");
+        string basePath = Path.Combine(racine, "docs/interface/ecrans");
         if (!Directory.Exists(basePath)) return resultat;
 
         foreach (var svDir in Directory.EnumerateDirectories(basePath, "sv*"))
@@ -35,7 +35,7 @@ internal static class AutresNatures
     public static HashSet<string> StoresLocaux(string racine)
     {
         var resultat = new HashSet<string>(StringComparer.Ordinal);
-        string chemin = Path.Combine(racine, "docs/architecture/decisions/ADR-017-modele-indexeddb-local.md");
+        string chemin = Path.Combine(racine, "docs/decisions/ADR-017-modele-indexeddb-local.md");
         if (!File.Exists(chemin)) return resultat;
 
         string texte = LecteurTexte.LireTexteIntegral(chemin);

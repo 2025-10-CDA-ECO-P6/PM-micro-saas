@@ -3,7 +3,8 @@ using System.Text.RegularExpressions;
 namespace VerifMailleAgregat;
 
 /// <summary>
-/// Extrait la liste fermée des agrégats depuis <c>docs/conception/domain/*.md</c> —
+/// Extrait la liste fermée des agrégats depuis <c>docs/domaine/*.md</c>, <c>docs/domaine/*/context.md</c> et
+/// <c>docs/domaine/*/kernel.md</c> —
 /// la source de vérité que le reste de la maille de désignation consulte.
 /// </summary>
 internal static class ModeleDomaine
@@ -20,18 +21,26 @@ internal static class ModeleDomaine
     public static Dictionary<string, string> Extraire(string racine)
     {
         var trouves = new Dictionary<string, string>(StringComparer.Ordinal);
-        string dossier = Path.Combine(racine, "docs/conception/domain");
+        string dossier = Path.Combine(racine, "docs/domaine");
         if (!Directory.Exists(dossier)) return trouves;
 
+        // Un contexte a son dossier docs/domaine/<contexte>/ : sa description est
+        // context.md, celle du noyau partagé kernel.md. Le nom rapporté est le chemin
+        // relatif au dossier du domaine (« content-library/context.md »).
         // glob.glob ignore par défaut les entrées de tête pointée sur le segment
         // générique « *.md » — une énumération .NET brute ne les exclut pas.
         var fichiers = Directory.EnumerateFiles(dossier, "*.md")
+            .Concat(Directory.EnumerateDirectories(dossier)
+                .SelectMany(d => new[] { "context.md", "kernel.md" }.Select(n => Path.Combine(d, n)))
+                .Where(File.Exists))
             .Where(f => !Path.GetFileName(f).StartsWith('.'))
+            .Select(f => Path.GetRelativePath(dossier, f).Replace('\\', '/'))
             .ToList();
         fichiers.Sort(ComparateurCodePoints.Instance);
 
-        foreach (var chemin in fichiers)
+        foreach (var relatif in fichiers)
         {
+            string chemin = Path.Combine(dossier, relatif);
             bool sousAgregats = false;
             foreach (var ligne in LecteurTexte.LireLignes(chemin))
             {
@@ -44,7 +53,7 @@ internal static class ModeleDomaine
                     var m = MotifAgregatUnique.Match(titre);
                     if (m.Success)
                     {
-                        trouves[m.Groups[1].Value] = Path.GetFileName(chemin);
+                        trouves[m.Groups[1].Value] = relatif;
                     }
                     continue;
                 }
@@ -62,7 +71,7 @@ internal static class ModeleDomaine
                         || qual.Contains("agrégat", StringComparison.Ordinal)
                         || qual.Contains("référence", StringComparison.Ordinal))
                     {
-                        trouves[nom] = Path.GetFileName(chemin);
+                        trouves[nom] = relatif;
                     }
                 }
             }

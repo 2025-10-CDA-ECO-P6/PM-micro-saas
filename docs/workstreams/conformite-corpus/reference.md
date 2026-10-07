@@ -1,6 +1,6 @@
 # Référence de départ du chantier conformite-corpus
 
-Cet état figé sert de point de comparaison à toutes les tâches suivantes (ADR-022, condition 3). Le suivi GitHub est suspendu pendant le chantier (ADR-022, condition 6) : voir [ADR-022](../../architecture/decisions/ADR-022-le-chantier-de-conformite-s-execute-sous-six-conditions.md).
+Cet état figé sert de point de comparaison à toutes les tâches suivantes (ADR-022, condition 3). Le suivi GitHub est suspendu pendant le chantier (ADR-022, condition 6) : voir [ADR-022](../../decisions/ADR-022-le-chantier-de-conformite-s-execute-sous-six-conditions.md).
 
 ## Commit de départ
 
@@ -24,7 +24,7 @@ dotnet run --project tools/VerifMailleAgregat
 dotnet run --project tools/VerifCouvertureRecette
 ```
 
-Ces commandes sont les quatre contrôles du [guide de conventions, § 8.8](../../gestion-projet/guide-conventions-et-dod.md#88-conventions-de-tenue-du-corpus). Seules deux parties de la sortie varient d'un poste ou d'une exécution à l'autre : les chemins absolus de la compilation et la durée des tests (`Duration`). Tout le reste doit être identique.
+Ces commandes sont les quatre contrôles du [guide de conventions, § 8.8](../../projet/conventions-dod.md#88-conventions-de-tenue-du-corpus). Seules deux parties de la sortie varient d'un poste ou d'une exécution à l'autre : les chemins absolus de la compilation et la durée des tests (`Duration`). Tout le reste doit être identique.
 
 ## Sorties consignées
 

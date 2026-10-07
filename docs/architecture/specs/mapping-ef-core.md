@@ -1,7 +1,7 @@
 # Note de mapping EF Core — cluster données & persistance
 
 - **Statut** : Spec pré-build — à confirmer à l'entrée en build (même statut que les ADR sources).
-- **Sources** : [ADR-008](../decisions/ADR-008-structure-solution.md) (§Conséquences) ; [ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md) (l.22, 24, 46, 58) ; [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md) (§1 Mécanisme de cascade, l.132-133, 158) ; [ADR-014](../decisions/ADR-014-modele-autorisation-api.md) (l.98-99) ; [content-library.md](../../conception/domain/content-library.md) ; [diagrams/classes/content-library.md](../../conception/domain/diagrams/classes/content-library.md) ; [diagrams/mld/content-library.md](../../conception/domain/diagrams/mld/content-library.md).
+- **Sources** : [ADR-008](../../decisions/ADR-008-structure-solution.md) (§Conséquences) ; [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (l.22, 24, 46, 58) ; [ADR-011](../../decisions/ADR-011-cascade-integrite-referentielle.md) (§1 Mécanisme de cascade, l.132-133, 158) ; [ADR-014](../../decisions/ADR-014-modele-autorisation-api.md) (l.98-99) ; [content-library.md](../../domaine/content-library/context.md) ; [diagrams/classes/content-library.md](../../domaine/content-library/classes.md) ; [diagrams/mld/content-library.md](../../domaine/content-library/logical-data.md).
 - **Périmètre** : les 5 éléments listés par ADR-008:48 comme livrable de mapping EF Core, complétés fidèlement par les décisions de gouvernance ADR-002 et les invariants de cascade/lecture ADR-011/ADR-014 qui portent directement sur le mapping physique.
 
 Cette note ne tranche rien qui ne soit pas déjà fixé par un ADR. Ce qui n'est pas fixé est marqué `[À TRANCHER — ticket]`.

@@ -1,8 +1,8 @@
 # VO `DocumentProperties` & `propertiesSchema` par type système — cluster données & persistance
 
 - **Statut** : Spec pré-build — à confirmer à l'entrée en build.
-- **Sources** : [ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md) (l.24, 26, 46, 60, 62).
-- **Companion domaine (lecture seule)** : [content-library.md](../../conception/domain/content-library.md), [diagrams/mld/content-library.md](../../conception/domain/diagrams/mld/content-library.md).
+- **Sources** : [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (l.24, 26, 46, 60, 62).
+- **Companion domaine (lecture seule)** : [content-library.md](../../domaine/content-library/context.md), [diagrams/mld/content-library.md](../../domaine/content-library/logical-data.md).
 - **Périmètre** : le contrat du value object `DocumentProperties`, le régime de validation par catégorie de type, et l'énumération des 8 types système seedés. Pour les champs concrets de chaque `propertiesSchema`, cette note dérive fidèlement ce que le domaine modélise déjà et marque `[À TRANCHER — modélisation domaine]` ce qu'il ne modélise pas encore. **ADR-002 ne fixe pas les champs — ils ne sont pas inventés ici.**
 
 ---

@@ -31,7 +31,7 @@ Aujourd'hui : 1 864 liens relatifs et 258 liens à ancre (sortie de `dotnet run 
 ### À lire avant de commencer
 
 - `docs/workstreams/conformite-corpus/CADRAGE.md`
-- `docs/architecture/decisions/ADR-022-le-chantier-de-conformite-s-execute-sous-six-conditions.md`
+- `docs/decisions/ADR-022-le-chantier-de-conformite-s-execute-sous-six-conditions.md`
 - `.github/workflows/recalcul-suivi-projet.yml`
 
 ## Périmètre

@@ -8,7 +8,7 @@ Un identifiant n'a qu'une origine (ADR-019, § Identifiants). Le plan calculé r
 
 ### État actuel
 
-RB-05-01 est défini à `docs/conception/besoin/user-stories/US-UC-05-organiser-contenu-dossiers.md:122` et à `:162`. Le plan propose RB-05-13 pour le second.
+RB-05-01 est défini à `docs/besoin/stories/US-UC-05-organiser-contenu-dossiers.md:122` et à `:162`. Le plan propose RB-05-13 pour le second.
 
 ### Ce qui doit être vrai à la fin
 

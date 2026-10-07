@@ -8,7 +8,7 @@ Le plan calculé par `conform.sh` ne peut pas servir d'oracle : il envoie un REA
 
 ### État actuel
 
-Le plan calculé est conservé dans `plan-conformite-calcule-2026-10-07.txt` : 148 déplacements et 31 cas écartés. Les fichiers du domaine sont rangés par type de diagramme (`docs/conception/domain/diagrams/mld/content-library.md:1`). Les fiches écran sont rangées par surface (`docs/conception/interface/wireframes/README.md:17`).
+Le plan calculé est conservé dans `plan-conformite-calcule-2026-10-07.txt` : 148 déplacements et 31 cas écartés. Les fichiers du domaine sont rangés par type de diagramme (`docs/domaine/content-library/logical-data.md:1`). Les fiches écran sont rangées par surface (`docs/interface/ecrans/README.md:17`).
 
 ### Ce qui doit être vrai à la fin
 
