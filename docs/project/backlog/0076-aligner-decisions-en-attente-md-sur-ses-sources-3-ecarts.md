@@ -2,7 +2,8 @@
 
 - **Id** : 0076
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-reference-projet (chantier conformite-corpus)
+- **Appliqué dans** : docs/projet/decisions-en-attente.md, docs/projet/registre-des-risques.md (T-06 et ses vues § 2.1 et § 2.2), docs/projet/guide-de-lecture.md
 
 - [pending-decisions:contradicted-1 — stale] Réécrire decisions-en-attente.md:89 : seul reste ouvert le critère d'acceptation au niveau use case, plus le statut non implémentable de la spec
 - [pending-decisions:contradicted-2 — stale] Retirer de decisions-en-attente.md:33 l'affirmation « aucune tâche ne porte TROU » ou la remplacer par la mention de TB-104

@@ -218,7 +218,7 @@ La mise à jour effective du corpus relève d'un travail de conception séparé.
 
 - **Sémantique de `Visibility` sur un espace `PERSONAL`** : `GM_ONLY` et `PLAYER_PRIVATE` n'ont pas de sens naturel sur un espace mono-membre. Valider à la modélisation si ces valeurs sont interdites à l'interface (validation applicative) ou simplement équivalentes à « visible du propriétaire uniquement ».
 - **Instanciation dans un espace `PERSONAL` vs espace partagé** : `Document.Instantiate(spaceId, folderId)` crée une copie indépendante. Préciser si une instance dans un espace partagé peut pointer vers un document source dans un espace personnel d'un autre utilisateur — et si oui, quel est le comportement à la purge de l'espace source (ADR-011 §4 — `source_document_id` cross-espace).
-- **Activation de l'espace personnel en mode local** : l'espace personnel comme zone d'atterrissage par défaut en mode local (sans `ownerId` assigné) est une recommandation — sa validation explicite reste requise avant que `UC-01` et `UC-02` ne soient arrêtés.
+- **Activation de l'espace personnel en mode local** : l'espace personnel comme zone d'atterrissage par défaut en mode local (sans `ownerId` assigné) est un comportement opérationnel en MVP — DÉCIDÉ 2026-06-12 ([matrice de priorités, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md#espace-personnel--conteneur-par-défaut-et-capture-first-must-have--adr-018)), arbitré explicitement.
 - **Qualification juridique du contenu personnel au regard de l'Art. 17** : voir section « Conformité conçue, non certifiée ».
 
 ---
@@ -256,5 +256,7 @@ Décisions tranchées en cours de propagation (réversibles, à confirmer à l'e
 - purge **inconditionnelle** de l'espace `PERSONAL` à `UserDeleted`, **sous le même invariant de claim/reprise** que la purge J+30 (garantie Art.17, ADR-011).
 
 > **Note de lecture** : les références de ce document à `campaign-management.md` et aux numéros de ligne reflètent l'état du corpus **au moment de la décision (2026-06-12)** ; elles ne sont pas réactualisées post-renommage. Se reporter aux fichiers `space-management.md` et au domaine courant pour l'état effectif. Le travail de zoning (`interface/**`, suspendu) réalignera ses propres références à sa reprise.
+
+**§ Geste capture-first — décidé (2026-06-12).** La recommandation « espace personnel comme zone d'atterrissage par défaut » est décidée : comportement opérationnel en MVP, arbitré explicitement. La décision est portée par la [matrice de priorités, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md#espace-personnel--conteneur-par-défaut-et-capture-first-must-have--adr-018), qui fait foi ; la section « Geste capture-first » ci-dessus garde le texte de la recommandation.
 
 **Points de validation juridique toujours ouverts** (avant lancement EU) : qualification Art.17 du hard-delete inconditionnel du contenu personnel ; périmètre DPA Art.28 pour un contenu personnel décrivant des tiers. Non tranchés ici — flaggés pour un juriste.

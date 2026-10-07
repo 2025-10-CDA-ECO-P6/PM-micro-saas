@@ -3,15 +3,15 @@
 - 0001 — 2026-10-07 — [Recouper reflexion-ux-mvp §2-§4 et §6 avec les fiches écran](0001-a-verifier-recouper-reflexion-ux-mvp-md-2-a-4-et-6-lignes-36.md) — fait
 - 0002 — 2026-10-07 — [Recouper le corps des 20 fiches écran entre elles](0002-recouper-le-corps-des-20-fiches-ecran-entre-elles.md) — fait
 - 0003 — 2026-10-07 — [Recouper les 45 contre-mesures du dossier sécurité avec leurs ADR](0003-recouper-les-45-contre-mesures-du-dossier-securite-avec-leur.md) — fait
-- 0004 — 2026-10-07 — [Recouper le corps de roadmap-produit avec moscow et la roadmap build](0004-recouper-le-corps-de-roadmap-produit-avec-moscow-et-la-roadm.md) — ouvert
-- 0005 — 2026-10-07 — [Vérifier si le CdC §12.1 est toujours à jour (épinglage, migration)](0005-verifier-si-le-cdc-12-1-est-toujours-a-jour-epinglage-migrat.md) — ouvert
-- 0006 — 2026-10-07 — [Trancher le décompte des FK inter-modules : 19 ou 17](0006-trancher-le-decompte-des-fk-inter-modules.md) — ouvert
+- 0004 — 2026-10-07 — [Recouper le corps de roadmap-produit avec moscow et la roadmap build](0004-recouper-le-corps-de-roadmap-produit-avec-moscow-et-la-roadm.md) — fait
+- 0005 — 2026-10-07 — [Vérifier si le CdC §12.1 est toujours à jour (épinglage, migration)](0005-verifier-si-le-cdc-12-1-est-toujours-a-jour-epinglage-migrat.md) — fait
+- 0006 — 2026-10-07 — [Trancher le décompte des FK inter-modules : 19 ou 17](0006-trancher-le-decompte-des-fk-inter-modules.md) — fait
 - 0007 — 2026-10-07 — [Vérifier l'unicité de la session LIVE pour un espace PERSONAL](0007-verifier-l-unicite-de-la-session-live-pour-un-espace-persona.md) — fait
 - 0008 — 2026-10-07 — [Vérifier le traitement par VerifCorpus du lien vers un répertoire](0008-verifier-le-traitement-par-verifcorpus-du-lien-vers-un-reper.md) — fait
 - 0009 — 2026-10-07 — [Reconstruire VerifCorpus et vérifier que la DLL suit la source](0009-reconstruire-verifcorpus-et-verifier-que-la-dll-suit-la-sour.md) — fait
 - 0010 — 2026-10-07 — [Vérifier la définition de GuestAccess, Non classés et LIVE_NOTE](0010-verifier-la-definition-de-guestaccess-non-classes-et-live-no.md) — fait
 - 0011 — 2026-10-07 — [Expliquer l'absence de RB-02-21..23 dans les tables de US-UC-02](0011-expliquer-l-absence-de-rb-02-21-23-dans-les-tables-de-us-uc.md) — fait
-- 0012 — 2026-10-07 — [Identifier le document « 06 » cité par le dossier d'architecture](0012-identifier-le-document-06-cite-par-le-dossier-d-architecture.md) — ouvert
+- 0012 — 2026-10-07 — [Identifier le document « 06 » cité par le dossier d'architecture](0012-identifier-le-document-06-cite-par-le-dossier-d-architecture.md) — fait
 - 0013 — 2026-10-07 — [Identifier les « 6 surfaces MJ » de l'accès compte](0013-identifier-les-6-surfaces-mj-de-l-acces-compte.md) — fait
 - 0014 — 2026-10-07 — [Corriger le renvoi « item 1 du cadrage juridique » de la spec d'effacement](0014-corriger-le-renvoi-item-1-du-cadrage-juridique-de-la-spec-d.md) — fait
 - 0015 — 2026-10-07 — [Vérifier si VerifCouvertureRecette contrôle l'intégrité des citations Gherkin](0015-verifier-si-verifcouverturerecette-controle-l-integrite-des.md) — fait
@@ -50,7 +50,7 @@
 - 0048 — 2026-10-07 — [Étendre la règle de pureté du domaine aux diagrammes](0048-etendre-la-regle-de-purete-du-domaine-aux-diagrammes.md) — fait
 - 0049 — 2026-10-07 — [Corriger PO-05 : le délai d'effacement de compte est de 1 mois, extensible à 2 (ADR-012:147)](0049-corriger-po-05-le-delai-d-effacement-de-compte-est-de-1-mois.md) — fait
 - 0050 — 2026-10-07 — [Inscrire la variante one-shot express dans moscow, en post-MVP comme dans UC-02](0050-inscrire-la-variante-one-shot-express-dans-moscow-en-post-mv.md) — fait
-- 0051 — 2026-10-07 — [Ajouter à la DoD la mise à jour du guide de lecture par fonctionnalité](0051-ajouter-a-la-dod-la-mise-a-jour-du-guide-de-lecture-par-fonc.md) — ouvert
+- 0051 — 2026-10-07 — [Ajouter à la DoD la mise à jour du guide de lecture par fonctionnalité](0051-ajouter-a-la-dod-la-mise-a-jour-du-guide-de-lecture-par-fonc.md) — fait
 - 0052 — 2026-10-07 — [Aligner moscow.md sur ses sources (4 écarts)](0052-aligner-moscow-md-sur-ses-sources-4-ecarts.md) — fait
 - 0053 — 2026-10-07 — [Aligner les use cases sur leurs sources (5 écarts)](0053-aligner-les-use-cases-sur-leurs-sources-5-ecarts.md) — fait
 - 0054 — 2026-10-07 — [Aligner persona-05-antoine.md sur ses sources (1 écart)](0054-aligner-persona-05-antoine-md-sur-ses-sources-1-ecart.md) — fait
@@ -69,16 +69,16 @@
 - 0067 — 2026-10-07 — [Aligner architecture-detaillee.md sur ses sources (1 écart)](0067-aligner-architecture-detaillee-md-sur-ses-sources-1-ecart.md) — fait
 - 0068 — 2026-10-07 — [Aligner dossier-securite.md sur ses sources (1 écart)](0068-aligner-dossier-securite-md-sur-ses-sources-1-ecart.md) — fait
 - 0069 — 2026-10-07 — [Aligner telemetrie.md sur ses sources (1 écart)](0069-aligner-telemetrie-md-sur-ses-sources-1-ecart.md) — fait
-- 0070 — 2026-10-07 — [Aligner cahier-des-charges.md sur ses sources (1 écart)](0070-aligner-cahier-des-charges-md-sur-ses-sources-1-ecart.md) — ouvert
-- 0071 — 2026-10-07 — [Aligner note-cadrage-projet.md sur ses sources (1 écart)](0071-aligner-note-cadrage-projet-md-sur-ses-sources-1-ecart.md) — ouvert
-- 0072 — 2026-10-07 — [Aligner registre-risques.md sur ses sources (3 écarts)](0072-aligner-registre-risques-md-sur-ses-sources-3-ecarts.md) — ouvert
-- 0073 — 2026-10-07 — [Aligner cahier-specifications-techniques.md sur ses sources (6 écarts)](0073-aligner-cahier-specifications-techniques-md-sur-ses-sources.md) — ouvert
-- 0074 — 2026-10-07 — [Aligner dossier-conception-detaillee.md sur ses sources (2 écarts)](0074-aligner-dossier-conception-detaillee-md-sur-ses-sources-2-ec.md) — ouvert
-- 0075 — 2026-10-07 — [Aligner README.md sur ses sources (1 écart)](0075-aligner-readme-md-sur-ses-sources-1-ecart.md) — ouvert
-- 0076 — 2026-10-07 — [Aligner decisions-en-attente.md sur ses sources (3 écarts)](0076-aligner-decisions-en-attente-md-sur-ses-sources-3-ecarts.md) — ouvert
-- 0077 — 2026-10-07 — [Aligner plan-de-travail.md sur ses sources (2 écarts)](0077-aligner-plan-de-travail-md-sur-ses-sources-2-ecarts.md) — ouvert
-- 0078 — 2026-10-07 — [Aligner roadmap-entree-build.md sur ses sources (1 écart)](0078-aligner-roadmap-entree-build-md-sur-ses-sources-1-ecart.md) — ouvert
-- 0079 — 2026-10-07 — [Aligner dossier-architecture.md sur ses sources (1 écart)](0079-aligner-dossier-architecture-md-sur-ses-sources-1-ecart.md) — ouvert
+- 0070 — 2026-10-07 — [Aligner cahier-des-charges.md sur ses sources (1 écart)](0070-aligner-cahier-des-charges-md-sur-ses-sources-1-ecart.md) — fait
+- 0071 — 2026-10-07 — [Aligner note-cadrage-projet.md sur ses sources (1 écart)](0071-aligner-note-cadrage-projet-md-sur-ses-sources-1-ecart.md) — fait
+- 0072 — 2026-10-07 — [Aligner registre-risques.md sur ses sources (3 écarts)](0072-aligner-registre-risques-md-sur-ses-sources-3-ecarts.md) — fait
+- 0073 — 2026-10-07 — [Aligner cahier-specifications-techniques.md sur ses sources (6 écarts)](0073-aligner-cahier-specifications-techniques-md-sur-ses-sources.md) — fait
+- 0074 — 2026-10-07 — [Aligner dossier-conception-detaillee.md sur ses sources (2 écarts)](0074-aligner-dossier-conception-detaillee-md-sur-ses-sources-2-ec.md) — fait
+- 0075 — 2026-10-07 — [Aligner README.md sur ses sources (1 écart)](0075-aligner-readme-md-sur-ses-sources-1-ecart.md) — fait
+- 0076 — 2026-10-07 — [Aligner decisions-en-attente.md sur ses sources (3 écarts)](0076-aligner-decisions-en-attente-md-sur-ses-sources-3-ecarts.md) — fait
+- 0077 — 2026-10-07 — [Aligner plan-de-travail.md sur ses sources (2 écarts)](0077-aligner-plan-de-travail-md-sur-ses-sources-2-ecarts.md) — fait
+- 0078 — 2026-10-07 — [Aligner roadmap-entree-build.md sur ses sources (1 écart)](0078-aligner-roadmap-entree-build-md-sur-ses-sources-1-ecart.md) — fait
+- 0079 — 2026-10-07 — [Aligner dossier-architecture.md sur ses sources (1 écart)](0079-aligner-dossier-architecture-md-sur-ses-sources-1-ecart.md) — fait
 - 0080 — 2026-10-07 — [Amender la vision et use-cases.md](0080-amender-la-vision-et-use-cases-md.md) — fait
 - 0081 — 2026-10-07 — [Sortir du MVP toutes les notes de session du joueur (Could Have)](0081-sortir-du-mvp-toutes-les-notes-de-session-du-joueur-could-ha.md) — fait
 - 0082 — 2026-10-07 — [Aligner persona-03-lucas.md:6](0082-aligner-persona-03-lucas-md-6.md) — fait
@@ -89,6 +89,6 @@
 - 0087 — 2026-10-07 — [Amender l'invariant 4 de Content Library](0087-amender-l-invariant-4-de-content-library.md) — fait
 - 0088 — 2026-10-07 — [Ajouter la colonne Type d'espace à l'inventaire S4 du zoning](0088-ajouter-la-colonne-type-d-espace-a-l-inventaire-s4-du-zoning.md) — fait
 - 0089 — 2026-10-07 — [Ajouter la ligne Espace personnel à l'inventaire S4 du zoning](0089-ajouter-la-ligne-espace-personnel-a-l-inventaire-s4-du-zonin.md) — fait
-- 0090 — 2026-10-07 — [Retirer l'activation du partage du critère de la décision de marché post-J1](0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md) — ouvert
-- 0091 — 2026-10-07 — [Déclarer B3.2 à cheval sur J0 et J2](0091-declarer-b3-2-a-cheval-sur-j0-et-j2.md) — ouvert
-- 0092 — 2026-10-07 — [Nommer dans methode-de-ticket §7 les outils qui existent](0092-nommer-dans-methode-de-ticket-7-les-outils-qui-existent.md) — ouvert
+- 0090 — 2026-10-07 — [Retirer l'activation du partage du critère de la décision de marché post-J1](0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md) — fait
+- 0091 — 2026-10-07 — [Déclarer B3.2 à cheval sur J0 et J2](0091-declarer-b3-2-a-cheval-sur-j0-et-j2.md) — fait
+- 0092 — 2026-10-07 — [Nommer dans methode-de-ticket §7 les outils qui existent](0092-nommer-dans-methode-de-ticket-7-les-outils-qui-existent.md) — fait

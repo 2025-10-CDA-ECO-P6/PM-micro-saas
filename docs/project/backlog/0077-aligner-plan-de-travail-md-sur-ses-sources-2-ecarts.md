@@ -2,7 +2,8 @@
 
 - **Id** : 0077
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-reference-projet (chantier conformite-corpus)
+- **Appliqué dans** : docs/projet/plan-de-travail.md, docs/projet/guide-de-lecture.md
 
 - [work-plan:contradicted-1 — stale] Réécrire plan-de-travail.md:120 pour dire que le marqueur TROU est porté aujourd'hui par TB-104
 - [work-plan:contradicted-2 — stale] Retirer le seuil H1 des points ouverts de plan-de-travail.md:1382 et corriger le renvoi « moscow y renvoie sans le fixer »

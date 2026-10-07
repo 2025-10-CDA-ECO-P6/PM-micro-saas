@@ -121,7 +121,7 @@ La parade est tranchée et vit à sa source : [`structure-projets.md §3 § Poin
 **Deux marqueurs, à ne pas confondre.**
 
 - **`HORS MAILLE`** — la tranche ne vise **aucun module de code** : confirmer un ADR, retenir un outil, arrêter une convention, renseigner une colonne de verdict. Ce n'est pas un manque du corpus, c'est la maille qui ne parle que de code. Une tranche `HORS MAILLE` n'a pas de conflit d'écriture par construction, et **satisfait la cinquième condition d'entrée** ([`methode-de-ticket.md §2`](methode-de-ticket.md)) au même titre qu'un module nommé.
-- **`TROU`** — la tranche vise un module de code que le corpus ne nomme pas ; le marqueur reste défini pour le cas où une tranche future en aurait besoin.
+- **`TROU`** — la tranche vise un module de code que le corpus ne nomme pas. Aujourd'hui `TB-104` (échafaudage du projet Angular) le porte seule : l'emplacement de la couche cliente n'est pas nommé par `structure-projets.md § 7`.
 
 Le marqueur `TROU` s'applique de la même façon aux **critères d'acceptation** : il y signale une absence réelle du corpus source ; le marqueur reste défini pour le cas où une tranche future en aurait besoin sur ce champ. Le périmètre d'écriture et les critères d'acceptation sont deux conditions d'entrée distinctes : nommer un module ne fournit pas un critère.
 
@@ -165,14 +165,14 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | EP-01 — Confirmation des décisions pré-implémentation | chaque ADR pré-implémentation ou mixte reçoit sa validation de décideur, datée | J0 | — | TB-001 |
 | EP-02 — Échafaudage de la solution .NET | les projets .NET existent, s'assemblent, et portent les abstractions communes du Domaine | J0 | EP-01 | TB-002, TB-003, TB-004, TB-005 |
 | EP-03 — Contrôle d'architecture en intégration continue | toute violation de frontière entre bounded contexts est détectée et bloquante, sans intervention humaine | J0 | EP-02 | TB-006, TB-007, TB-008, TB-009, TB-095 |
-| EP-04 — Contrat d'autorisation en couche Application | le contrat d'autorisation applicative est déclaré, puis câblé aux contrats Application avant l'ouverture de J1 | J0-J1 | EP-02 | TB-010 |
+| EP-04 — Contrat d'autorisation en couche Application | le contrat d'autorisation applicative est déclaré, puis intégré aux contrats Application avant l'ouverture de J1 | J0-J1 | EP-02 | TB-010 |
 | EP-05 — Conventions outillées et socle d'ingénierie | les conventions de format, de style et de commit/branche sont arrêtées et opposables en revue | J0 | EP-02 | TB-011, TB-012 |
 
 ### J1
 
 | Épique | But | Jalon | Dépend de | Tranches |
 |---|---|---|---|---|
-| EP-04 — Contrat d'autorisation en couche Application | le contrat d'autorisation applicative est déclaré, puis câblé aux contrats Application avant l'ouverture de J1 | J0-J1 | EP-02 | TB-080 |
+| EP-04 — Contrat d'autorisation en couche Application | le contrat d'autorisation applicative est déclaré, puis intégré aux contrats Application avant l'ouverture de J1 | J0-J1 | EP-02 | TB-080 |
 | EP-29 — Couture cliente et socle du store local | un projet Angular existe et son build réussit, le contrat du service d'accès au store est déclaré et satisfait par une doublure, et le store local s'ouvre, s'indexe et se versionne | J1 | EP-02 | TB-056, TB-057, TB-104 |
 | EP-10 — Châssis applicatif transverse | indicateurs, bandeaux, accès compte et accessibilité transversale sont présents sur toute surface MJ | J1 | EP-29 | TB-058 |
 | US-UC-01 — Mode local sans compte | le MJ commence sans compte depuis l'écran d'accueil, retrouve ses données au retour — ou en est informé si elles ont disparu — et voit les fonctionnalités cloud inaccessibles sans compte | J1 | EP-10, EP-08, US-UC-02, EP-29 | TB-079, TB-101, TB-102, TB-103 |
@@ -426,7 +426,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 
 ## 6. J1 — épiques et tranches
 
-**Préalables bloquants d'entrée en J1**, nommés par [`roadmap-entree-build.md §3.2 § Préalable bloquant rattaché`](roadmap-de-build.md) (renvoi seul) : J0 stabilisé ; `navigator.storage.persist()` (G-08) levé ; invariant d'autorisation API câblé dans les contrats Application.
+**Préalables bloquants d'entrée en J1**, nommés par [`roadmap-entree-build.md §3.2 § Préalable bloquant rattaché`](roadmap-de-build.md) (renvoi seul) : J0 stabilisé ; `navigator.storage.persist()` (G-08) levé ; invariant d'autorisation API intégré aux contrats Application.
 
 ### EP-04 — Contrat d'autorisation en couche Application
 
@@ -1133,7 +1133,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Taille | M — un module, 4 renvois |
 | Critères d'acceptation | `vision/moscow.md § Instrumentation de validation du MVP`, pilier 1 — activation préparation : un espace créé et au moins trois documents, ou un geste structurant (un dossier créé, ou un document déplacé hors de « Non classés ») ; `vision/moscow.md § Instrumentation de validation du MVP`, pilier 2 — activation vue session : au moins une action du MJ pendant la session ; `vision/moscow.md § Instrumentation de validation du MVP`, mention « Comment cette mesure sort du navigateur » — compteurs écrits dans le store local, transmis à la création de compte, aucun appel sortant en mode local ; `vision/vision-produit.md §2.3`, encadré « Limite structurelle de l'instrument » — le biais en faveur des convertis est nommé et doit être rappelé à toute lecture des résultats |
 | Code de renvoi | — |
-| Préalable, non dette | le pilier « activation partage » que `moscow.md § Instrumentation de validation du MVP` nomme suppose un partage aux joueurs, livré en J3 — deux jalons après le point de décision qu'il alimente. Point remonté, non résolu par ce plan. |
+| Préalable, non dette | le pilier « activation partage » que `moscow.md § Instrumentation de validation du MVP` nomme suppose un partage aux joueurs, livré en J3 — deux jalons après le point de décision. Ce pilier est donc retiré du critère de la décision de marché, qui ne mesure que ce que J1 livre, et mesuré après elle (DÉCIDÉ 2026-10-07, [entrée de backlog 0090](../project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md)). |
 
 ##### TB-093 — Capture de contact non bloquante en mode local
 
@@ -1380,10 +1380,9 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 
 **Le post-MVP.** `UC-13` (scénario réutilisable) et `UC-15` (gel d'espaces au downgrade de tier) sont classés hors MoSCoW du MVP par `vision/moscow.md § UC-13` (paragraphe « hors première livraison ») et `§ UC-15 — Classement arbitré`, seule autorité du corpus pour cette classification. Ce plan ne leur ouvre aucune tâche ni épique décomposée, cohérent avec `moscow.md § Dépendances § Convention actée`, qui les exclut par construction de son propre diagramme.
 
-**Trois points qui doivent rester ouverts, chacun sur un axe distinct — ce plan ne prend position sur aucune de leurs issues.**
+**Deux points qui doivent rester ouverts, chacun sur un axe distinct — ce plan ne prend position sur aucune de leurs issues.**
 
 - **Identité graphique, et le design system codé qui en dépend** (axe conception d'interface) — `roadmap-entree-build.md § Annexe B` fait de l'identité graphique un préalable hors jalon, porté par `docs/interface/**`, non modifié par ce document. Tant que ce préalable n'est pas produit, aucune tranche de ce plan ne porte le design system **codé** (composants Angular, Storybook, CSS vars) : une tranche qui le viserait échouerait les quatrième et cinquième conditions d'entrée de [`methode-de-ticket.md §2`](methode-de-ticket.md) — ni critère d'acceptation tranchant, ni module nommable dans la maille (§2). Suivi de ce préalable : [`decisions-en-attente.md § Groupe 6`](decisions-en-attente.md).
-- **Seuil chiffré de l'hypothèse `H1`** (axe métrique produit) — `vision/vision-produit.md §2.3` en est propriétaire ; `vision/moscow.md § Instrumentation de validation du MVP` y renvoie sans le fixer.
 - **L'entrée `J-12` du registre des risques** (axe juridique) — `registre-risques.md §3.3`, méthode de vérification d'identité des invités non retenue ; le registre signale lui-même que la frontière entre « lacune réelle » et « posture existante » n'est pas tranchée par ce registre et attend un statut en comité des risques.
 
 

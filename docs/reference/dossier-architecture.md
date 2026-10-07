@@ -46,9 +46,9 @@ Haversack est un monolithe modulaire organisé selon les principes de la Clean A
 
 | # | Choix macro | Alternative écartée | ADR autorité |
 |---|---|---|---|
-| 1 | Clean Architecture — inversion de dépendances, domaine au centre | Monorepo plat (perte des garanties de sens de dépendance vérifiables par le compilateur) | ADR-008, 06 §2 |
-| 2 | Monolithe modulaire ; 4 bounded contexts = frontières logiques (namespaces), pas d'assemblies séparées au MVP ; frontières outillées par test d'architecture CI (NetArchTest) | 6 assemblies isolées dès le démarrage | ADR-008, 06 §3/§5/§6 |
-| 3 | Domaine et Application en projets .NET uniques ; Infrastructure et Présentation en multi-projets ; noyau partagé `SharedKernel` | — | ADR-008, 06 §3/§4 |
+| 1 | Clean Architecture — inversion de dépendances, domaine au centre | Monorepo plat (perte des garanties de sens de dépendance vérifiables par le compilateur) | ADR-008, [structure-projets.md §2](../architecture/structure-projets.md) |
+| 2 | Monolithe modulaire ; 4 bounded contexts = frontières logiques (namespaces), pas d'assemblies séparées au MVP ; frontières outillées par test d'architecture CI (NetArchTest) | 6 assemblies isolées dès le démarrage | ADR-008, [structure-projets.md §3](../architecture/structure-projets.md) / [structure-projets.md §5](../architecture/structure-projets.md) / [structure-projets.md §6](../architecture/structure-projets.md) |
+| 3 | Domaine et Application en projets .NET uniques ; Infrastructure et Présentation en multi-projets ; noyau partagé `SharedKernel` | — | ADR-008, [structure-projets.md §3](../architecture/structure-projets.md) / [structure-projets.md §4](../architecture/structure-projets.md) |
 | 4 | Mono-écosystème Angular (SPA principale + SSR/prerender pour la landing) | Blazor WASM ; Next.js comme second écosystème front pour la landing | ADR-003 |
 | 5 | Mode local = couche de persistance TypeScript + validations minimales, pas le domaine C# complet ; source de vérité serveur ; invariant « validation locale ⊆ validation serveur » ; C#-first comme autorité du contrat | Réimplémenter le domaine en TypeScript côté navigateur ; cloud-first avec mode local reporté post-MVP | ADR-001 |
 | 6 | Store local IndexedDB structuré en aggregate-rooted (racine `Space`), jeu d'index restreint aux chemins de lecture requis, versionnement du store découplé du `schemaVersion` du payload | Structure miroir relationnel des tables serveur ; versions couplées ; moteur de synchronisation delta | ADR-017 |
@@ -120,12 +120,12 @@ graph TD
 
 | Conteneur | Techno | Source ADR/fichier |
 |---|---|---|
-| Landing page | Angular SSR/prerender (SSG au MVP), CDN | [ADR-003](../decisions/ADR-003-stack-front.md), [stack.md](../architecture/stack.md), [06 §7](../architecture/structure-projets.md) |
+| Landing page | Angular SSR/prerender (SSG au MVP), CDN | [ADR-003](../decisions/ADR-003-stack-front.md), [stack.md](../architecture/stack.md), [structure-projets.md §7](../architecture/structure-projets.md) |
 | Application principale | Angular SPA (PWA-capable) | [ADR-003](../decisions/ADR-003-stack-front.md), [stack.md](../architecture/stack.md) |
 | Persistance locale | IndexedDB, store aggregate-rooté | [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-017 §1](../decisions/ADR-017-modele-indexeddb-local.md) |
-| API | ASP.NET Core (Kestrel), MediatR | [stack.md](../architecture/stack.md), [06 §3](../architecture/structure-projets.md), [ADR-014 §3](../decisions/ADR-014-modele-autorisation-api.md) |
-| Persistance serveur | EF Core → PostgreSQL (FTS, JSONB, UUID) | [stack.md](../architecture/stack.md), [06 §3](../architecture/structure-projets.md), [ADR-008](../decisions/ADR-008-structure-solution.md) |
-| Notifications temps réel | SignalR (`Haversack.Infrastructure.Notifications`) | [ADR-004](../decisions/ADR-004-transport-temps-reel.md), [06 §3](../architecture/structure-projets.md) |
+| API | ASP.NET Core (Kestrel), MediatR | [stack.md](../architecture/stack.md), [structure-projets.md §3](../architecture/structure-projets.md), [ADR-014 §3](../decisions/ADR-014-modele-autorisation-api.md) |
+| Persistance serveur | EF Core → PostgreSQL (FTS, JSONB, UUID) | [stack.md](../architecture/stack.md), [structure-projets.md §3](../architecture/structure-projets.md), [ADR-008](../decisions/ADR-008-structure-solution.md) |
+| Notifications temps réel | SignalR (`Haversack.Infrastructure.Notifications`) | [ADR-004](../decisions/ADR-004-transport-temps-reel.md), [structure-projets.md §3](../architecture/structure-projets.md) |
 | Denylist tokens | Store externe (Redis ou table SQL) | [ADR-015 §3.4](../decisions/ADR-015-securite-authentification-mvp.md) |
 
 **Frontières et protocoles** :

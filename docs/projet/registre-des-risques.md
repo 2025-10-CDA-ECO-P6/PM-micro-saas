@@ -237,10 +237,10 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Confiance** : ferme.
 - **Source** : décision d'architecture sur le modèle d'autorisation API ; décision d'architecture sur l'autorisation RGPD ; décision d'architecture sur la structure de la solution ; roadmap d'entrée en build.
 
-**T-06 — Résidu de nommage de l'espace de stockage local (résolu)**
+**T-06 — Résidu de nommage de l'espace de stockage local** — DÉCIDÉ 2026-09-03 ([ADR-017 § 1.1](../decisions/ADR-017-modele-indexeddb-local.md))
 *Type : risque.*
 - **Description** : le renommage de la notion de campagne vers celle d'espace a été propagé sur le corpus de conception fonctionnelle (domaine, glossaire, cas d'usage). **Ce point est résolu** : la dénomination technique de l'espace de stockage local est confirmée cohérente — `ADR-017 §1.1 § Object stores` nomme la racine de l'agrégat `spaces`.
-- **Probabilité** : Modérée — résidu de nommage présent dans la documentation technique au moment de la cotation *(cotation portée à la prochaine revue du comité des risques : la cause est résolue, la dénomination technique étant confirmée cohérente)*.
+- **Probabilité** : Modérée — résidu de nommage présent dans la documentation technique au moment de la cotation *(risque clos par la décision du 2026-09-03 : la cause est résolue, la dénomination technique étant confirmée cohérente ; cotation conservée à titre de trace, non recotée)*.
 - **Impact** : Mineur — dimension dominante : coût & délai.
 - **Criticité inhérente** : Faible.
 - **Criticité résiduelle cible** : Faible.
@@ -350,29 +350,29 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Confiance** : ferme.
 - **Source** : spécification du contrat OpenAPI ; décision d'architecture sur le modèle d'autorisation API.
 
-**T-14 — Schéma de propriétés des types de document système non modélisé**
+**T-14 — Schéma de propriétés des types de document système non modélisé** — DÉCIDÉ 2026-09-03 ([document-properties-schemas.md § 5](../architecture/specs/document-properties-schemas.md))
 *Type : risque.*
-- **Description** : le schéma de propriétés des types de document système n'est pas modélisé, ce qui bloque l'amorçage de ces types tant que le point n'est pas résolu.
-- **Probabilité** : Élevée — aucune mitigation actée, bloque l'amorçage des types système.
+- **Description** : le schéma de propriétés des types de document système n'était pas modélisé, ce qui bloquait l'amorçage de ces types. **Ce point est résolu** : `document-properties-schemas.md § 5` acte `propertiesSchema` vide au MVP pour les six types système sans champ modélisé (absence actée, non un trou), et dérive du domaine `scenarioStatus` pour `scenario` et l'absence de champ pour `live_note`.
+- **Probabilité** : Élevée — aucune mitigation actée, bloque l'amorçage des types système *(risque clos par la décision du 2026-09-03 ; cotation conservée à titre de trace, non recotée)*.
 - **Impact** : Modéré — dimension dominante : coût & délai.
 - **Criticité inhérente** : Élevée.
-- **Criticité résiduelle cible** : Élevée — aucune mitigation actée à ce stade.
+- **Criticité résiduelle cible** : sans objet — risque clos.
 - **Traitement** : Réduire.
-- **Mitigation** : aucune actée à ce stade.
+- **Mitigation** : décision du 2026-09-03 — `propertiesSchema` vide au MVP pour les six types sans champ modélisé ; plus un point de vigilance ouvert pour l'amorçage des types système.
 - **Propriétaire** : Architecte / Lead technique.
 - **Échéance** : socle, modélisation de domaine.
 - **Confiance** : ferme.
 - **Source** : spécification des schémas de propriétés de document.
 
-**T-15 — Comportement du réglage de propriétés sans type de document non fixé**
+**T-15 — Comportement du réglage de propriétés sans type de document non fixé** — DÉCIDÉ 2026-09-03 ([document-properties-schemas.md § 1](../architecture/specs/document-properties-schemas.md))
 *Type : risque.*
-- **Description** : le comportement de l'opération de réglage de propriétés lorsqu'aucun type de document n'est défini n'est pas fixé — enjeu de gouvernance des propriétés et, potentiellement, de visibilité au sens RGPD.
-- **Probabilité** : Modérée — aucune mitigation, comportement de bord sans type non fixé.
+- **Description** : le comportement de l'opération de réglage de propriétés lorsqu'aucun type de document n'est défini n'était pas fixé — enjeu de gouvernance des propriétés et, potentiellement, de visibilité au sens RGPD. **Ce point est résolu** : `document-properties-schemas.md § 1` acte que `properties` n'existe pas sans type ; `SetProperties()` sur un document sans `documentTypeId` est refusé.
+- **Probabilité** : Modérée — aucune mitigation, comportement de bord sans type non fixé *(risque clos par la décision du 2026-09-03 ; cotation conservée à titre de trace, non recotée)*.
 - **Impact** : Modéré — dimension dominante : sécurité & données personnelles.
 - **Criticité inhérente** : Moyenne.
-- **Criticité résiduelle cible** : Moyenne.
+- **Criticité résiduelle cible** : sans objet — risque clos.
 - **Traitement** : Réduire.
-- **Mitigation** : aucune actée à ce stade.
+- **Mitigation** : décision du 2026-09-03 — l'écriture de propriétés sans type est refusée ; plus un point de vigilance ouvert.
 - **Propriétaire** : Architecte / Lead technique.
 - **Échéance** : socle, modélisation de domaine.
 - **Confiance** : ferme.
@@ -581,7 +581,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 
 **P-02 — Hypothèse H1 (activation préparation) non confirmée**
 *Type : hypothèse.*
-- **Description** : seuil de 60 % ou plus de la cohorte pilote atteignant l'activation de préparation, sur un délai de 14 jours.
+- **Description** : seuil de 60 % ou plus de la cohorte pilote atteignant l'activation de préparation, sur un délai de 14 jours. Le contenu d'un espace personnel sans campagne ne compte que partiellement dans cette activation, s'il traduit un geste structurant ; le critère du geste structurant est DÉCIDÉ 2026-09-03 ([matrice de priorités, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md#instrumentation-de-validation-du-mvp)) : un dossier créé, ou un document déplacé hors de « Non classés ».
 - **Classe de conséquence si infirmée** : activation de base compromise.
 - **Dispositif de suivi** : activation instrumentée avec un critère de falsifiabilité explicite — un seuil non atteint impose un constat, jamais une réinterprétation a posteriori.
 - **Propriétaire** : Responsable produit.
@@ -633,24 +633,24 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 *Type : dette / arbitrage accepté.*
 - **Description** : le MVP unique n'isole pas expérimentalement l'apprentissage par pilier — un choix de conception délibéré, assumé par le responsable produit, et non un aléa à réduire. Un échec d'une hypothèse (H1 à H4) ne peut donc pas être attribué avec certitude à un pilier précis du produit.
 - **Impact conditionnel** : Majeur (modéré à élevé) — dimension dominante : valeur produit.
-- **Résiduel** : Élevé, non abaissable en l'état — la mitigation envisagée (télémétrie isolant la mesure par pilier) est précisément ce que P-08 documente comme non implémentable en l'état.
+- **Résiduel** : Élevé, non abaissable en l'état — la mitigation envisagée (télémétrie isolant la mesure par pilier) est précisément ce dont P-08 documente que le schéma d'événements n'est pas encore formalisé.
 - **Traitement** : Accepter, avec une réduction partielle attendue via P-08.
 - **Condition de réactivation** : n/a — risque assumé au moment de l'arbitrage du périmètre du MVP.
 - **Propriétaire** : Responsable produit.
 - **Échéance** : décision marché.
 - **Confiance** : ferme — le choix est assumé, sa conséquence sur l'attribution des causes est certaine par construction, sans dépendance à un jugement externe.
 - **Source** : décision d'architecture sur le périmètre du MVP ; spécification de télémétrie.
-- **Recoupements** : couplé directement à P-08 — la mitigation prévue pour ce risque est précisément ce que P-08 documente comme non implémentable en l'état. Les deux entrées ne se neutralisent pas : l'une cause un besoin de mitigation que l'autre empêche de satisfaire.
+- **Recoupements** : couplé directement à P-08 — la mitigation prévue pour ce risque est précisément ce dont P-08 documente que le schéma d'événements n'est pas encore formalisé. Les deux entrées ne se neutralisent pas : l'une cause un besoin de mitigation que l'autre n'a pas encore achevé de satisfaire.
 
-**P-08 — Instrumentation d'activation non opérationnalisable en l'état (télémétrie par pilier)**
+**P-08 — Instrumentation d'activation : schéma d'événements non formalisé (télémétrie par pilier)**
 *Type : risque.*
-- **Description** : sans cette instrumentation, les hypothèses H1 à H4 et la décision marché reposent sur une mesure incomplète ou absente. Une contrainte RGPD est posée (mesure d'occurrence sans contenu narratif), mais celle-ci contraint la conception de l'instrumentation sans fournir le cadre technique nécessaire à sa mise en œuvre : six points bloquants restent ouverts dans la spécification.
-- **Probabilité** : Élevée — non implémentable en l'état, six points bloquants.
+- **Description** : sans cette instrumentation, les hypothèses H1 à H4 et la décision marché reposent sur une mesure incomplète ou absente. Une contrainte RGPD est posée (mesure d'occurrence sans contenu narratif), mais celle-ci contraint la conception de l'instrumentation sans fournir le cadre technique nécessaire à sa mise en œuvre. Cinq des six points qui bloquaient la spécification sont tranchés (2026-09-03) ; seul le schéma d'événements formalisé reste ouvert, il se dérive de ces décisions au moment de l'implémentation.
+- **Probabilité** : Modérée — décisions actées (2026-09-03), schéma d'événements formalisé non fixé *(même situation que T-03 : « principe acté, paramètres non fixés »)*.
 - **Impact** : Majeur — dimension dominante : valeur produit.
 - **Criticité inhérente** : Élevée.
-- **Criticité résiduelle cible** : Moyenne — trancher les six points ouverts est un travail interne maîtrisable, qui débloque également P-07.
+- **Criticité résiduelle cible** : Moyenne — formaliser le schéma d'événements est un travail interne maîtrisable, qui débloque également P-07.
 - **Traitement** : Réduire.
-- **Mitigation** : contrainte RGPD posée (mesure d'occurrence sans contenu narratif) ; cadre technique à compléter.
+- **Mitigation** : contrainte RGPD posée (mesure d'occurrence sans contenu narratif) ; cinq des six points sont tranchés (2026-09-03) ; seul le schéma d'événements reste ouvert, à formaliser à l'implémentation.
 - **Propriétaire** : Responsable produit pour les critères, Architecte / Lead technique pour l'implémentation.
 - **Échéance** : local-only.
 - **Confiance** : ferme.
@@ -1021,20 +1021,20 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 
 ### 2.1 Matrice de criticité inhérente (risques uniquement)
 
-Seules les 32 entrées de type `risque` figurent sur cette matrice. Les 37 autres entrées (hypothèses, points de décision, dettes, questions ouvertes) sont présentées dans leurs vues dédiées ci-dessous.
+Seules les 29 entrées de type `risque` encore ouvertes figurent sur cette matrice : T-06, T-14 et T-15, closes (DÉCIDÉ 2026-09-03, voir §3.1), n'y figurent plus. Les 37 autres entrées (hypothèses, points de décision, dettes, questions ouvertes) sont présentées dans leurs vues dédiées ci-dessous.
 
 | Probabilité \ Impact | Mineur | Modéré | Majeur | Critique |
 |---|---|---|---|---|
 | **Quasi-certaine** | — | D-01 | T-01, D-02 | — |
-| **Élevée** | — | T-14 | T-02, T-05, T-07, T-16, P-08, P-14, D-03 | — |
-| **Modérée** | T-06, T-29 | T-03, T-12, T-15, T-19, T-25, D-04, D-05 | T-04, T-10 | — |
+| **Élevée** | — | — | T-02, T-05, T-07, T-16, P-14, D-03 | — |
+| **Modérée** | T-29 | T-03, T-12, T-19, T-25, D-04, D-05 | T-04, T-10, P-08 | — |
 | **Faible** | T-09 | T-08, T-11, T-13, T-17, T-28, D-08 | T-23, T-24, T-26 | — |
 
 Aucune entrée n'atteint la colonne "Critique" (voir plafond observé, §1.3). Ce plafond ne vaut que pour les entrées de type `risque` portées par cette matrice : le registre porte par ailleurs un unique impact de niveau critique, celui de l'hypothèse centrale H2 (P-03) — hors matrice par construction, puisqu'une `hypothèse` n'est pas cotée en probabilité (§1.1). Voir la vue Hypothèses (§2.3).
 
 ### 2.2 Top risques (criticité inhérente Élevée ou Très élevée)
 
-Table exhaustive : les 13 entrées de type `risque` dont la criticité inhérente est de bande Élevée (score 6 à 9) ou Très élevée (score 12 à 16) — voir §1.2 pour les bandes. Règle d'inclusion uniforme : même score de criticité inhérente → même rang (ex. T-04, T-10 et T-14 partagent le score 6 et le rang 11). La colonne Dimension dominante reprend le descripteur porté par chaque entrée en section 3, et permet le filtrage par dimension annoncé en §1.3 (par exemple, ne retenir que les entrées à dominante « Conformité RGPD »).
+Table exhaustive : les 12 entrées de type `risque` dont la criticité inhérente est de bande Élevée (score 6 à 9) ou Très élevée (score 12 à 16) — voir §1.2 pour les bandes. Règle d'inclusion uniforme : même score de criticité inhérente → même rang (ex. T-04, T-10 et P-08 partagent le score 6 et le rang 10). La colonne Dimension dominante reprend le descripteur porté par chaque entrée en section 3, et permet le filtrage par dimension annoncé en §1.3 (par exemple, ne retenir que les entrées à dominante « Conformité RGPD »).
 
 | Rang | Identifiant | Intitulé | Dimension dominante | Criticité inhérente | Criticité résiduelle cible |
 |---|---|---|---|---|---|
@@ -1044,15 +1044,14 @@ Table exhaustive : les 13 entrées de type `risque` dont la criticité inhérent
 | 3 | T-05 | Câblage de l'autorisation, test d'architecture et frontières logiques de contexte | Sécurité & données personnelles | Élevée | Moyenne |
 | 3 | T-07 | Cascade d'effacement RGPD : complexité du graphe et reprise après incident | Conformité RGPD | Élevée | Moyenne |
 | 3 | T-16 | Filtres de requête (soft-delete par jointure) non arbitrés | Conformité RGPD | Élevée | Moyenne |
-| 3 | P-08 | Instrumentation d'activation non opérationnalisable en l'état | Valeur produit | Élevée | Moyenne |
 | 3 | P-14 | Dépendance à la cohorte pilote non traitée | Valeur produit | Élevée | Moyenne |
 | 3 | D-03 | Dépendance cumulative socle local stable et décision marché favorable | Coût & délai | Élevée | Moyenne |
-| 10 | D-01 | Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel) | Coût & délai | Élevée | Moyenne |
-| 11 | T-04 | Reclaim-in-place non ratifié `[À RATIFIER PRODUIT]` | Sécurité & données personnelles | Élevée | Moyenne |
-| 11 | T-10 | Valeurs de seuils de limitation de débit non fixées | Sécurité & données personnelles | Élevée | Moyenne |
-| 11 | T-14 | Schéma de propriétés des types de document système non modélisé | Coût & délai | Élevée | Élevée (aucune mitigation actée) |
+| 9 | D-01 | Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel) | Coût & délai | Élevée | Moyenne |
+| 10 | T-04 | Reclaim-in-place non ratifié `[À RATIFIER PRODUIT]` | Sécurité & données personnelles | Élevée | Moyenne |
+| 10 | T-10 | Valeurs de seuils de limitation de débit non fixées | Sécurité & données personnelles | Élevée | Moyenne |
+| 10 | P-08 | Instrumentation d'activation : schéma d'événements non formalisé | Valeur produit | Élevée | Moyenne |
 
-T-14 n'est pas un cas isolé : 15 autres entrées de type `risque` partagent la même caractéristique — une criticité résiduelle qui reste au niveau de l'inhérente faute de mitigation actée abaissant le score (T-03, T-06, T-08, T-09, T-11, T-12, T-13, T-15, T-17, T-19, T-24, T-25, T-28, T-29, D-08) —, soit 16 entrées sur les 32 que compte la matrice des risques (§2.1). Aucune de ces 15 autres n'atteint la bande Élevée ou Très élevée (elles restent en bande Faible ou Moyenne), ce qui explique qu'elles ne figurent pas dans la table ci-dessus ; seule T-14 cumule bande Élevée et résiduelle non abaissée.
+13 entrées de type `risque` conservent une criticité résiduelle qui reste au niveau de l'inhérente faute de mitigation actée abaissant le score (T-03, T-08, T-09, T-11, T-12, T-13, T-17, T-19, T-24, T-25, T-28, T-29, D-08) —, soit 13 entrées sur les 29 que compte la matrice des risques (§2.1). Aucune n'atteint la bande Élevée ou Très élevée (elles restent en bande Faible ou Moyenne), ce qui explique qu'aucune ne figure dans la table ci-dessus ; depuis la clôture de T-14, cette table ne porte plus d'entrée à résiduelle non abaissée.
 
 ### 2.3 Vue Hypothèses de validation
 
@@ -1060,7 +1059,7 @@ Cinq hypothèses de validation produit (H1 à H5), aucune n'est cotée en probab
 
 | Identifiant | Hypothèse | Seuil et délai | Classe de conséquence si infirmée |
 |---|---|---|---|
-| P-02 | H1 — activation (préparation) | ≥ 60 % de la cohorte, 14 jours. *Nuance (décision produit du 2026-07-09) : le contenu d'un espace personnel sans campagne ne compte que **partiellement** dans cette activation, s'il traduit un **geste structurant** ; seuil exact `[À TRANCHER — métrique produit]`.* | Activation de base compromise |
+| P-02 | H1 — activation (préparation) | ≥ 60 % de la cohorte, 14 jours. *Nuance (décision produit du 2026-07-09) : le contenu d'un espace personnel sans campagne ne compte que **partiellement** dans cette activation, s'il traduit un **geste structurant** ; critère DÉCIDÉ 2026-09-03 (voir P-02, §3.2).* | Activation de base compromise |
 | P-03 | **H2 — vue de session (hypothèse centrale)** | ≥ 50 % à l'activation, répétabilité ≥ 50 % sur deux sessions ou plus, 30 et 60 jours | **Invalidation de la proposition de valeur du produit dans son ensemble** — seule classe de conséquence de niveau "critique" de ce registre |
 | P-04 | H3 — fluidité du partage | ≥ 40 %, 60 jours | Affaiblissement du vecteur de croissance et de différenciation |
 | P-05 | H4 — accès joueur sans compte | ≥ 70 %, 60 jours | Un frein à l'entrée du joueur invité compromet l'adoption du groupe entier |
@@ -1113,7 +1112,7 @@ Ces trois questions ouvertes juridiques se distinguent des quatorze autres de l'
 
 Cette section porte les relations entre entrées qui touchent plusieurs axes ou se conditionnent mutuellement. Chaque entrée reste inscrite une seule fois dans la section 3, sous l'axe où elle est classée ; ce qui suit ne duplique aucune entrée.
 
-- **P-07 ↔ P-08** — le MVP unique n'isole pas l'apprentissage produit par pilier (P-07, risque assumé par le responsable produit), et la télémétrie censée compenser cet effet en mesurant chaque pilier séparément n'est pas opérationnalisable en l'état documenté (P-08). La mitigation prévue pour l'un est précisément ce que l'autre empêche de fonctionner : une dépendance de mitigation non satisfaite, pas un doublon.
+- **P-07 ↔ P-08** — le MVP unique n'isole pas l'apprentissage produit par pilier (P-07, risque assumé par le responsable produit), et la télémétrie censée compenser cet effet en mesurant chaque pilier séparément n'a pas encore son schéma d'événements formalisé (P-08). La mitigation prévue pour l'un dépend de l'achèvement de l'autre : une dépendance de mitigation non satisfaite, pas un doublon.
 - **T-04 (reclaim-in-place)** porte trois faces distinctes sur trois axes : la résolution de sécurité elle-même (axe technique), le sort RGPD du contenu de la coquille reprise (enveloppé par la validation juridique EU, J-01), et son statut de point à ratifier (décision produit, gouvernance de build). Les trois faces sont nommées dans l'entrée T-04 ; elles ne constituent pas trois risques séparés.
 - **T-07 ↔ J-05** — la complexité du mécanisme de cascade d'effacement et la qualification juridique du hard-delete inconditionnel de l'espace personnel portent sur le même sujet (article 17 du RGPD) sous deux angles distincts : l'un implémente, l'autre qualifie. Une clarification sur l'un peut modifier les contraintes de l'autre.
 - **D-01 (nomenclature)** est la face délai-coût d'une incohérence documentée directement par la roadmap d'entrée en build — ce registre n'ajoute rien à ce constat, il le reprend comme point de pilotage.
@@ -1187,7 +1186,7 @@ Ces traçabilités doivent être rouvertes à la source avant toute décision en
 - **Maître du jeu (MJ)** : joueur qui anime la partie et dispose de droits de visibilité et d'édition étendus sur le contenu de campagne.
 - **Espace (Space)** : conteneur générique de contenu de jeu, généralisant la notion antérieure de campagne ; inclut notamment l'espace personnel d'un utilisateur.
 - **Campagne** : partie de jeu de rôle continue, réunissant un maître du jeu et des joueurs sur la durée.
-- **One-shot (scénario réutilisable en une fois)** : partie de jeu de rôle jouée en une seule séance.
+- **One-shot** : type d'espace (`ONE_SHOT`), partie de jeu de rôle jouée en une seule séance. Définition : [glossaire, § Espace](../glossaire.md#espace).
 - **Joueur invité** : joueur accédant à un espace sans détenir de compte utilisateur complet.
 - **Reclaim-in-place** : opération consistant à faire reprendre par un utilisateur, via une preuve d'identité fédérée, un compte préexistant non vérifié portant la même adresse email.
 

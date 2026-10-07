@@ -302,7 +302,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | La maquette | aucune — cette unité n'a aucun UC porteur et ne figure dans aucune ligne de [wireframes/README.md, § Table de couverture UC → fiche(s)](../interface/ecrans/README.md) |
 | Les exigences non fonctionnelles | aucune — aucune exigence non fonctionnelle n'est nommée pour cette unité dans le besoin |
 | Les décisions qui la contraignent | [ADR-006 — Périmètre MVP, § Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) |
-| La spécification technique | [Spec — Instrumentation par pilier, capture email, analytics RGPD](../architecture/specs/telemetrie.md) — déclarée non implémentable en l'état (voir son en-tête) |
+| La spécification technique | [Spec — Instrumentation par pilier, capture email, analytics RGPD](../architecture/specs/telemetrie.md) — cinq de ses six points bloquants sont tranchés (2026-09-03) ; seul le schéma d'événements formalisé reste ouvert (voir son en-tête) |
 | Les cas de recette | aucun — [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) est structurée par use case et cette unité n'en a aucun |
 | Le statut dans le périmètre | [moscow.md, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
@@ -342,10 +342,9 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 
 **Les points ouverts** du corpus, hors ceux nommés ci-dessous, sont recensés dans [le cahier de stratégie de test et de recette, § Registre des points ouverts](../assurance/strategie-de-test.md).
 
-Trois points restent ouverts et le demeurent à l'issue de ce guide — aucune opinion n'est exprimée ici sur leur issue :
+Deux points restent ouverts et le demeurent à l'issue de ce guide — aucune opinion n'est exprimée ici sur leur issue :
 
 - **L'identité graphique** (logo, charte graphique, ressources visuelles), axe de conception d'interface — [`roadmap-entree-build.md`, § Annexe B — Prérequis hors jalon](roadmap-de-build.md).
-- **Le seuil chiffré du geste structurant de l'hypothèse H1**, axe métrique produit — [`vision-produit.md`, § Ce que le MVP doit démontrer](../besoin/vision/vision.md) en est propriétaire ; [`moscow.md`, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md) y renvoie.
 - **L'entrée J-12 du registre des risques** (méthode de vérification d'identité des invités), axe juridique — [`registre-risques.md`, § Axe juridique](registre-des-risques.md).
 
 ---

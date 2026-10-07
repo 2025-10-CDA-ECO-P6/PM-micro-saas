@@ -480,7 +480,7 @@ valeur, pas vers l'outillage de conception.
 
 | Capacité (roadmap) | Référence conception | Catégorie / condition de retour |
 |---|---|---|
-| Contexte one-shot complet (scénario réutilisable, parcours express) | UC-13 | Should Have, explicitement hors première livraison — arbitrage du 2026-06-10 |
+| Contexte one-shot complet (scénario réutilisable, parcours express) | UC-13 ; UC-02 §A1 (parcours express) | UC-13 : Should Have, explicitement hors première livraison — arbitrage du 2026-06-10 ; UC-02 §A1 : Post-MVP (spécifiés), hors catégorisation MoSCoW du MVP (voir `moscow.md` § Variante one-shot express) |
 | Granularité de partage par joueur ou personnage | vision-produit.md §5bis — arbitrage « Granularité du partage » | Horizon vision, condition de retour du 2026-06-10 |
 | Portabilité entrante (réimport de fichier de sauvegarde) | moscow.md — section « Réimport de fichier de sauvegarde » | Could Have |
 | Types de document personnalisés | moscow.md — section « Types de document personnalisés » | Could Have |

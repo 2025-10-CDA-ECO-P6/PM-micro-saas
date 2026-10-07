@@ -53,6 +53,8 @@ Les 18 entrées de la couche sont listées dans l'index `docs/project/backlog/RE
 - `README.md`
 - `docs/project/backlog/**`
 - `docs/workstreams/conformite-corpus/reference.md`
+- hors couche, pour la seule source que nomme l'entrée 0075 : `docs/decisions/ADR-018-espace-personnel-generalisation-space.md` (contrat : « appliquée en entier ici »)
+- hors couche, pour les seuls consommateurs de 0070 et 0073 (décision de l'orchestrateur, par délégation de l'opérateur) : `docs/besoin/stories/US-UC-01-mode-local-sans-compte.md`, `docs/architecture/specs/document-properties-schemas.md`, `docs/assurance/strategie-de-test.md` (consommateur de 0090), `docs/architecture/specs/telemetrie.md` (source du décompte « cinq des six »)
 
 ## Revue
 
@@ -77,9 +79,29 @@ Le contrat et les entrées : chaque modification correspond-elle à une entrée,
 
 ## Notes de dev
 
-
+- Les 18 entrées sont « fait », dans leur fichier et dans l'index. Deux lots parallèles : la couche référence (0005, 0006, 0012, 0070, 0073, 0074, 0075, 0079) et la couche projet (0004, 0051, 0071, 0072, 0076, 0077, 0078, 0090, 0091, 0092). Fusion à trois voies sans conflit. 0079 était déjà appliquée par la tâche 12 : elle est marquée « fait » avec sa preuve.
+- Vérifications : 0005, l'annexe « Points à arbitrer » était périmée (`6ce3e66`) ; 0006, le décompte est de 17 FK inter-modules (`f4214d1`) ; 0012, « 06 » est l'ancien `06-structure-projets.md` (`dbb181e`) ; 0004, un seul écart (UC-02 §A1).
+- Périmètre élargi aux seules sources et consommateurs des entrées : ADR-018 (0075), US-UC-01 (0070), `document-properties-schemas.md` (0073), `strategie-de-test.md` (0090), `telemetrie.md` (source du décompte).
+- Décisions de l'orchestrateur, prises par délégation de l'opérateur :
+  - **ADR-018 reçoit un complément post-revue** (geste capture-first, 2026-06-12). **Justification** : la matrice de priorités, plus haute dans l'ordre d'autorité, porte la décision ; patron d'ADR-014, 016 et 017 ;
+  - **P-08 est recoté Modérée**. **Justification** : le registre a un précédent, T-03, « principe acté, paramètres non fixés », et c'est l'état de la télémétrie ;
+  - **la décision de marché est croisée avec H1 et H2**, et non plus avec H1 à H4. **Justification** : H3 et H4 portent sur le partage (J3) et H5 sur la conversion cloud (J2) ; selon la réponse de l'opérateur en 0090, la décision ne mesure que ce que J1 livre ;
+  - **T-14 et T-15 du registre sont clos**. **Justification** : leur objet est tranché le 2026-09-03 (schéma vide au MVP, écriture refusée sans type), et T-06 est le précédent du registre ;
+  - **le marqueur `[À TRANCHER — J0]` du § 7 de la méthode de ticket est gardé**. **Justification** : il porte sur le dépôt du produit au J0, que l'outillage du corpus ne tranche pas.
+- Différés : « campagne par campagne » (parcours-01, parcours-02, RB-01-11), terme rejeté qui revient à la tâche 15 ; le `TRANCHÉ` préexistant de US-UC-01 et le « (résolu) » de D-01, à convertir avec les autres marqueurs.
+- Hash : `reference.md` porte la ligne de cette tâche, que la tâche 15 complétera.
 
 ## Notes de revue
 
+Revue « chaque modification correspond-elle à une entrée, et une seule ? », 2026-10-07 : neuf constats.
 
+- `fix` : « six points tranchés » contredisait le § 6 de la spec de télémétrie (cinq sur six). La source (bandeau de `telemetrie.md`) est corrigée d'abord, puis le guide de lecture, le registre, les décisions en attente, le cahier des spécifications et 0072.
+- `intent`, tranché par délégation : T-14 et T-15 sont clos (voir les notes de dev).
+- `fix` : la description de CreerIssues dit maintenant la zone engendrée et l'estampille de provenance, et celle de VerifMailleAgregat son contrôle des identifiants ambigus. La phrase qui ouvrait une question hors de l'index unique est réécrite en constat.
+- `fix` : le compte de renvois de 0012 est corrigé (sept renvois, dix numéros de section).
+- `fix` : le périmètre et le § 5 de `document-properties-schemas.md` sont alignés.
+- `fix` : T-06, la date de résolution est distinguée de celle du retrait de la matrice.
+- `fix` : « câblé » devient « intégré aux contrats » dans EP-04, comme le veut 0078.
+- Gardés : 0051 dans la DoD (l'entrée le demande, et la règle nomme les UC, ADR et specs) ; le marqueur `[À TRANCHER — J0]`.
 
+Répartition : 1 `intent` tranché, 6 `fix`, 2 gardés.

@@ -349,6 +349,8 @@ Une tâche de développement est **terminée** quand, cumulativement, les 5 crit
 
 **Réconciliation avec la section 8** : quand une tâche réécrit un énoncé normatif du corpus documentaire cité ailleurs, l'item 4 (documentation à jour) se vérifie par la pratique de la section 8.1 — chercher dans le corpus la chaîne distinctive que la réécriture vient de supprimer. Ce n'est pas un sixième critère : c'est la façon dont l'item 4 se satisfait dans ce cas précis.
 
+**Réconciliation avec le guide de lecture** : quand un changement ajoute ou modifie un use case, un ADR ou une spec, l'item 4 (documentation à jour) comprend la mise à jour du [guide de lecture par fonctionnalité](guide-de-lecture.md) dans le même changement. Ce n'est pas non plus un sixième critère : c'est la façon dont l'item 4 se satisfait dans ce cas précis.
+
 Cette DoD de code s'applique à chaque incrément livré. Son accumulation, incrément après incrément, nourrit les critères de sortie de jalon dont le cahier de stratégie de test et la roadmap d'entrée en build sont les auteurs — elle ne s'y substitue pas.
 
 ### Renvoi — DoD de test et critères de sortie par jalon

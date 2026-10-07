@@ -3,7 +3,7 @@
 - **Statut** : Spec pré-build — à confirmer à l'entrée en build.
 - **Sources** : [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (l.24, 26, 46, 60, 62).
 - **Companion domaine (lecture seule)** : [content-library.md](../../domaine/content-library/context.md), [diagrams/mld/content-library.md](../../domaine/content-library/logical-data.md).
-- **Périmètre** : le contrat du value object `DocumentProperties`, le régime de validation par catégorie de type, et l'énumération des 8 types système seedés. Pour les champs concrets de chaque `propertiesSchema`, cette note dérive fidèlement ce que le domaine modélise déjà et marque `[À TRANCHER — modélisation domaine]` ce qu'il ne modélise pas encore. **ADR-002 ne fixe pas les champs — ils ne sont pas inventés ici.**
+- **Périmètre** : le contrat du value object `DocumentProperties`, le régime de validation par catégorie de type, et l'énumération des 8 types système seedés. Pour les champs concrets de chaque `propertiesSchema`, cette note dérive fidèlement ce que le domaine modélise déjà et acte vide au MVP, sans l'inventer, ce qu'il ne modélise pas (DÉCIDÉ 2026-09-03, § 5). **ADR-002 ne fixe pas les champs — ils ne sont pas inventés ici.**
 
 ---
 
@@ -61,7 +61,7 @@ Contraintes d'unicité du `slug` pour ces types système : `UNIQUE (slug) WHERE 
 
 ---
 
-## 5. Champs de `propertiesSchema` par type — dérivés du domaine ou marqués à trancher
+## 5. Champs de `propertiesSchema` par type — dérivés du domaine ou vides au MVP (DÉCIDÉ 2026-09-03)
 
 ### `scenario` — dérivé du domaine
 
@@ -96,17 +96,20 @@ Cette décision n'interdit rien pour la suite : un type custom peut porter un `p
 | # | Type système | `propertiesSchema` |
 |---|---|---|
 | 1 | `scenario` | Dérivé — `scenarioStatus` (enum 4 valeurs) |
-| 2 | `scene` | `[À TRANCHER — modélisation domaine]` |
-| 3 | `npc` | `[À TRANCHER — modélisation domaine]` |
-| 4 | `location` | `[À TRANCHER — modélisation domaine]` |
-| 5 | `note` | `[À TRANCHER — modélisation domaine]` |
-| 6 | `player_character` | `[À TRANCHER — modélisation domaine]` |
+| 2 | `scene` | Vide au MVP — DÉCIDÉ 2026-09-03 (§ 5) |
+| 3 | `npc` | Vide au MVP — DÉCIDÉ 2026-09-03 (§ 5) |
+| 4 | `location` | Vide au MVP — DÉCIDÉ 2026-09-03 (§ 5) |
+| 5 | `note` | Vide au MVP — DÉCIDÉ 2026-09-03 (§ 5) |
+| 6 | `player_character` | Vide au MVP — DÉCIDÉ 2026-09-03 (§ 5) |
 | 7 | `live_note` | Dérivé — aucun champ structuré au MVP (absence actée, `characterId`/`guestAccessId` promus hors `properties`) |
-| 8 | `reveal` | `[À TRANCHER — modélisation domaine]` |
+| 8 | `reveal` | Vide au MVP — DÉCIDÉ 2026-09-03 (§ 5) |
+
+Points tranchés :
+
+- Comportement de `SetProperties()` sur un `Document` sans `documentTypeId` — DÉCIDÉ 2026-09-03 (§ 1) : l'écriture est refusée ; ADR-002 ne le fixait pas.
 
 Points ouverts additionnels :
 
-- Comportement de `SetProperties()` sur un `Document` sans `documentTypeId` — non fixé par ADR-002.
 - Contenu exact de la validation « permissive par défaut » pour les types custom/modifiés — le principe est acté (ADR-002:60), sa forme précise ne l'est pas.
 
 ---

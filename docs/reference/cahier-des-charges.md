@@ -486,7 +486,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 **Règles de gestion** :
 - La vue session MJ est réservée au MJ de la campagne ; le mode local ne connaît ni vue joueur ni accès invité.
 - Une note de session créée par le MJ est privée par défaut et peut être basculée vers visible par les joueurs (RB-06-11, RB-06-12).
-- L'épinglage n'affecte pas le document source dans la bibliothèque de contenu ; un document durable créé à la volée ou partagé est épinglé automatiquement, en session LIVE seulement ; une note de session n'est jamais épinglée (RB-06-15, RB-06-17) *(l'automaticité de l'épinglage d'un document créé à la volée reste à réconcilier — voir [annexe « Points à arbitrer »](#points-à-arbitrer))*.
+- L'épinglage n'affecte pas le document source dans la bibliothèque de contenu ; un document durable créé à la volée ou partagé est épinglé automatiquement, en session LIVE seulement ; une note de session n'est jamais épinglée (RB-06-15, RB-06-17). Le MJ peut désépingler d'un geste un document épinglé automatiquement (UC-07).
 - Le passage de l'état actif à l'état clos est irréversible ; une fois close, seul le MJ peut encore ajouter des notes rétroactives (RB-06-18, RB-06-19).
 - Un document non partagé aux joueurs n'apparaît jamais dans la vue joueur, même s'il est épinglé dans la session.
 - Il est possible de constater a posteriori, de façon anonyme et sans accès au contenu narratif, qu'une session a été réellement utilisée en partie — instrument de mesure de l'hypothèse H2.
@@ -508,7 +508,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 - Le MJ ouvre le panneau de création rapide depuis la vue session.
 - Il choisit le mode de création — note de session, document libre, document typé — et saisit un titre minimal, seul champ obligatoire.
 - Il valide ; le document est créé avec une visibilité privée par défaut, lié à l'espace de la session en cours.
-- Si le document est utile en séance, il est automatiquement ajouté aux documents épinglés *(formulation à réconcilier avec le modèle de domaine — voir [annexe « Points à arbitrer »](#points-à-arbitrer))*.
+- En session LIVE, un document durable est automatiquement ajouté aux documents épinglés, et le MJ peut le désépingler d'un geste ; en session close, l'épinglage n'est pas automatique ; une note de session n'est jamais épinglée (RB-06-17).
 - Le MJ peut l'enrichir plus tard, en dehors de la session.
 
 **Règles de gestion** :
@@ -1146,11 +1146,9 @@ Le corpus de conception (`docs/besoin/`, `docs/domaine/`, `docs/interface/`, `do
 
 Les points listés dans cette annexe sont explicitement **non tranchés** : ils restent à instruire, notamment en entretiens utilisateurs, avant ou pendant la construction du MVP. Ils sont à distinguer des éléments que le périmètre a déjà **tranchés mais différés** — le contenu Should Have, Could Have et Won't Have du MoSCoW ([§3](#3-périmètre)), UC-13 exclu de la première livraison, et plus largement les fonctionnalités post-MVP décrites en [§3](#3-périmètre) : ces éléments sont des décisions de périmètre assumées, non des points ouverts.
 
-**Divergences de conception à réconcilier** (signalées dans le corpus, non tranchées) :
+**Divergence de conception à réconcilier** (signalée dans le corpus, non tranchée) :
 
-1. Épinglage en session : la fiche UC-07 décrit un épinglage *conditionnel* — un document créé à la volée n'est épinglé automatiquement que s'il se révèle utile en séance — tandis que le contexte de domaine Session Conduct (règle métier 7) décrit un épinglage *systématique* de tout document créé à la volée. Ces deux formulations sont à réconcilier.
-2. Vocabulaire de la migration : UC-01 décrit une migration « espace par espace », UC-10 une migration « campagne par campagne ». Le modèle sous-jacent est le même (traitement tout-ou-rien par unité d'espace) ; seule la terminologie diffère et reste à unifier.
-3. Inventaire d'écran : la table des wireframes ([§9.2](#92-inventaire-des-écrans)) distingue un écran « Vue de l'espace personnel » propre, alors que l'inventaire des écrans du zoning (§S5), en version réduite, fond cette vue dans la « Vue campagne ». Ces deux lectures de l'inventaire d'écrans sont à aligner.
+- Inventaire d'écran : la table des wireframes ([§9.2](#92-inventaire-des-écrans)) distingue un écran « Vue de l'espace personnel » propre, alors que l'inventaire des écrans du zoning (§S5), en version réduite, fond cette vue dans la « Vue campagne ». Ces deux lectures de l'inventaire d'écrans sont à aligner.
 
 **Questions ouvertes — famille C** (entretiens utilisateurs, recensées au zoning d'interface §S9) :
 
@@ -1214,7 +1212,7 @@ Les valeurs consolidées dans cette annexe sont **volatiles** : elles sont susce
 | Stockage — palier gratuit | 500 Mo | `docs/besoin/vision/vision.md §3` |
 | Stockage — palier Pro | 5 Go et plus | `docs/besoin/vision/vision.md §3` |
 | Tarif — palier Pro | Environ 7 €/mois | `docs/besoin/vision/vision.md §3` |
-| H1 — seuil et délai | Seuil : ≥ 60 % des MJ de la cohorte pilote atteignent l'activation préparation. *Nuance (décision produit du 2026-07-09) : le contenu d'un espace personnel sans campagne n'est comptabilisé que **partiellement** dans cette activation, lorsqu'il traduit un **geste structurant** (au-delà d'une capture triviale) ; seuil exact du geste structurant `[À TRANCHER — métrique produit]`.* Délai : 14 jours après le premier usage. | `docs/besoin/vision/vision.md §2.3` |
+| H1 — seuil et délai | Seuil : ≥ 60 % des MJ de la cohorte pilote atteignent l'activation préparation. *Nuance (décision produit du 2026-07-09) : le contenu d'un espace personnel sans campagne n'est comptabilisé que **partiellement** dans cette activation, lorsqu'il traduit un **geste structurant** (au-delà d'une capture triviale) ; le geste structurant est un dossier créé, ou un document déplacé hors de « Non classés » — DÉCIDÉ 2026-09-03 ([matrice de priorités, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md#instrumentation-de-validation-du-mvp)).* Délai : 14 jours après le premier usage. | `docs/besoin/vision/vision.md §2.3` |
 | H2 (centrale) — seuil et délai | Seuil : ≥ 50 % des MJ ayant atteint l'activation préparation atteignent l'activation vue session ; signal de répétabilité si ≥ 50 % d'entre eux l'utilisent sur deux sessions ou plus. Délai : 30 jours pour la première activation, 60 jours pour le signal de répétabilité. | `docs/besoin/vision/vision.md §2.3` |
 | H3 — seuil et délai | Seuil : ≥ 40 % des MJ ayant animé une session avec joueurs atteignent l'activation partage ; perception de fluidité supérieure confirmée par au moins 3 MJ interrogés sur 5. Délai : 60 jours pour l'activation partage. | `docs/besoin/vision/vision.md §2.3` |
 | H4 — seuil et délai | Seuil : sur les sessions avec partage, ≥ 70 % comptent au moins un joueur ayant consulté le contenu partagé ; moins de 2 joueurs sur 10 interrogés rapportent avoir renoncé à l'étape d'entrée. Délai : 60 jours. | `docs/besoin/vision/vision.md §2.3` |

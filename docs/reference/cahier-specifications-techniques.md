@@ -83,7 +83,7 @@ Le découpage retenu est celui d'un **monolithe modulaire**, autour de **quatre 
 
 | Source | Nature | Statut | Ce qu'elle porte |
 |---|---|---|---|
-| ADR-001 — Exécution du domaine en mode local | pré-implémentation | Accepté | Mode local = persistance + validations minimales ; domaine serveur = source de vérité ; invariant validation locale ⊆ serveur ; ordre C#-first |
+| ADR-001 — Exécution du domaine en mode local | conception | Accepté | Mode local = persistance + validations minimales ; domaine serveur = source de vérité ; invariant validation locale ⊆ serveur ; ordre C#-first |
 | ADR-002 — « Tout est Document » et gouvernance de `properties` | conception | Accepté | Identifiant unique `DocumentId` ; `DocumentProperties` gouverne l'écriture des propriétés structurées |
 | ADR-008 — Structure physique de la solution | pré-implémentation | Accepté | Clean Architecture, monolithe modulaire, 4 frontières logiques, multi-projets sur infrastructure/présentation |
 | `docs/architecture/fondations.md` | fondations (conception) | — | Justification DDD, langage ubiquitaire, frontières explicites, règles métier dans le domaine |
@@ -170,7 +170,7 @@ Le palier local persiste les données exclusivement dans le navigateur, sans lim
 |---|---|---|---|
 | ADR-008 — Structure physique de la solution | pré-implémentation | Accepté | Test d'architecture CI comme garde-fou des frontières logiques |
 | `docs/architecture/structure-projets.md` §6 | synthèse structurelle | — | Détail du test d'architecture, règles à mettre en place |
-| ADR-001 — Exécution du domaine en mode local | pré-implémentation | Accepté | Invariant validation locale ⊆ serveur, ordre C#-first |
+| ADR-001 — Exécution du domaine en mode local | conception | Accepté | Invariant validation locale ⊆ serveur, ordre C#-first |
 | ADR-011 — Cascade & intégrité référentielle | pré-implémentation | Accepté | Toutes FK `RESTRICT`, sagas `SpaceDeleted`/`UserAnonymized`, transaction par espace, idempotence |
 | ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | Configuration sobre (SSE forcé, fermeture fin de session, heartbeat allongé) |
 | `docs/architecture/specs/repli-temps-reel.md` §2-3 | spec pré-build | cadre à compléter | Mécanisme de repli vers polling adaptatif ; seuil, métrique, cadence non chiffrés — `[À TRANCHER]` |
@@ -191,7 +191,7 @@ Il n'existe plus de type `Scénario`, `Scène` ou `Personnage` distinct au sens 
 
 Les propriétés structurées d'un document (dont sa visibilité) sont gouvernées par un value object dédié, `DocumentProperties`, dont l'écriture passe exclusivement par une méthode de domaine validée contre le schéma déclaré (`propertiesSchema`) du type de document concerné. Aucune écriture directe dans le champ libre sous-jacent n'est permise.
 
-Huit types de document système sont seedés pour le MVP : scénario, scène, PNJ, lieu, note, personnage joueur, note live, révélation. Parmi ces huit, le schéma structuré du type **scénario** (un statut éditorial à quatre valeurs) et l'absence de schéma structuré supplémentaire pour le type **note live** (ses deux champs distinctifs sont promus en colonnes de premier niveau, hors du périmètre du VO) sont dérivés du modèle de domaine. Les schémas structurés des six autres types système restent `[À TRANCHER — modélisation domaine, spec document-properties-schemas.md §5]` : ce cahier ne les invente pas.
+Huit types de document système sont seedés pour le MVP : scénario, scène, PNJ, lieu, note, personnage joueur, note live, révélation. Parmi ces huit, le schéma structuré du type **scénario** (un statut éditorial à quatre valeurs) et l'absence de schéma structuré supplémentaire pour le type **note live** (ses deux champs distinctifs sont promus en colonnes de premier niveau, hors du périmètre du VO) sont dérivés du modèle de domaine. Les schémas structurés des six autres types système sont **vides au MVP** — DÉCIDÉ 2026-09-03 ([document-properties-schemas.md, § 5](../architecture/specs/document-properties-schemas.md)) : leur contenu vit dans les blocs du document.
 
 ### Ontologie de l'espace (`Space`)
 
@@ -201,7 +201,7 @@ L'agrégat central du modèle est l'**espace** (`Space`), frontière de cohéren
 
 Le graphe de cascade compte **38 clés étrangères**, toutes déclarées `ON DELETE RESTRICT` (§3). Sur ce total, la matrice de cascade recense **17 FK cross-module** (16 « Cross » pures + 1 mixte « Intra+Cross », `documents.source_document_id`).
 
-`[À TRANCHER — réconcilier le décompte de FK cross-module entre ADR-009 (19 FK cross-module annoncées, en renvoi vers ADR-011) et ADR-011 (17 FK cross-module recensées dans sa propre matrice)]`. Ce cahier reporte la divergence telle qu'elle apparaît dans le corpus, sans arbitrer laquelle des deux valeurs est exacte.
+Le décompte est de **17** : [ADR-009](../decisions/ADR-009-fk-campaign-owner.md) et [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md) concordent. ADR-009 annonçait 19 avant d'être corrigé le 2026-09-02 (commit `f4214d1`) ; la matrice d'ADR-011 recense 17 lignes « Cross » ou « Intra+Cross ».
 
 ### Core (noyau partagé)
 
@@ -223,9 +223,9 @@ Les contextes bornés ne dépendent jamais directement les uns des autres : leur
 | Source | Nature | Statut | Ce qu'elle porte |
 |---|---|---|---|
 | ADR-002 — « Tout est Document » et gouvernance de `properties` | conception | Accepté | `DocumentId` unique, `DocumentProperties`, régime de validation par type |
-| `docs/architecture/specs/document-properties-schemas.md` | spec pré-build | — | 8 types système seedés ; schémas dérivés (scenario, live_note) et non modélisés (6 autres types) |
-| ADR-018 — Généralisation Campaign en Space | conception | Accepté | `SpaceType ∈ {CAMPAIGN, ONE_SHOT, PERSONAL}`, espace personnel mono-membre, hors quota |
-| ADR-009 — FK `spaces.ownerId → users` | conception | Accepté | FK cross-module fondatrice ; décompte 19 FK cross-module annoncé (renvoi ADR-011) |
+| `docs/architecture/specs/document-properties-schemas.md` | spec pré-build | — | 8 types système seedés ; schémas dérivés (scenario, live_note) ; `propertiesSchema` vide au MVP pour les 6 autres types |
+| ADR-018 — Généralisation Campaign en Space | mixte (dominante pré-implémentation) | Accepté | `SpaceType ∈ {CAMPAIGN, ONE_SHOT, PERSONAL}`, espace personnel mono-membre, hors quota |
+| ADR-009 — FK `spaces.ownerId → users` | conception | Accepté | FK cross-module fondatrice ; décompte 17 FK cross-module (renvoi ADR-011) |
 | ADR-010 — Suppression d'espace (soft-delete + purge + saga) | conception | Accepté | Distinction `Archive()` / `Delete()`, corbeille 30 jours, événement `SpaceDeleted` |
 | ADR-011 — Cascade & intégrité référentielle | pré-implémentation | Accepté | Matrice des 38 FK, 17 FK cross-module recensées, deux sagas, deux cycles traités |
 | `docs/architecture/specs/mapping-ef-core.md` | spec pré-build | — | Converters d'IDs typés, owned types, `jsonb`, query filters, colonnes promues, FK `RESTRICT` |
@@ -277,7 +277,7 @@ Un principe transverse, énoncé une seule fois ici : l'accès à un document no
 
 ### Plancher de sanitisation et CSP
 
-La sanitisation du contenu est une **liste blanche positive des deux côtés** (serveur et client) : les balises `<script>` et les attributs gestionnaires d'événements (`on*`) sont interdits et supprimés **sans exception**, quels que soient la bibliothèque ou la liste exacte de balises retenus — ce plancher est un critère d'acceptation non négociable. La politique CSP retenue restreint par défaut à l'origine de l'application (`default-src 'self'`), interdit tout script inline (`script-src 'self'`), et restreint les connexions sortantes à l'origine ou à l'API (`connect-src 'self'`) — cette dernière directive rend observable l'absence d'envoi réseau en mode local. Les listes blanches exhaustives de balises et les directives CSP complètes restent `[À TRANCHER — B1.2 côté serveur / P6 côté client]`. À l'import d'un fichier local comme au parcours de migration, l'ordre est impératif : validation structurelle **puis** sanitisation, l'une et l'autre **avant** toute écriture (détail du parcours de migration en §8).
+La sanitisation du contenu est une **liste blanche positive des deux côtés** (serveur et client) : les balises `<script>` et les attributs gestionnaires d'événements (`on*`) sont interdits et supprimés **sans exception**, quels que soient la bibliothèque ou la liste exacte de balises retenus — ce plancher est un critère d'acceptation non négociable. La politique CSP retenue restreint par défaut à l'origine de l'application (`default-src 'self'`), interdit tout script inline (`script-src 'self'`), et restreint les connexions sortantes à l'origine ou à l'API (`connect-src 'self'`) — cette dernière directive rend observable l'absence d'envoi réseau en mode local. Seule reste ouverte la bibliothèque de sanitisation exacte côté serveur, `[À TRANCHER — B1.2]` ([sanitisation-csp.md, § 5](../architecture/specs/sanitisation-csp.md)) ; les listes blanches (énumération fermée des types de nœuds), la bibliothèque côté client et les directives CSP complètes sont tranchées. À l'import d'un fichier local comme au parcours de migration, l'ordre est impératif : validation structurelle **puis** sanitisation, l'une et l'autre **avant** toute écriture (détail du parcours de migration en §8).
 
 ### Risques résiduels assumés
 
@@ -376,7 +376,7 @@ Les garanties de sécurité liées aux jetons sont portées par des contrats app
 
 ### Contrat de propriétés de document
 
-Toute écriture des propriétés structurées d'un document — dont sa visibilité — passe exclusivement par une méthode de domaine validée contre le schéma déclaré du type de document concerné ; aucune écriture directe dans le champ sous-jacent n'est permise. Deux régimes de validation coexistent : un schéma figé pour les types système non modifiés, une validation permissive par défaut pour les types personnalisés ou modifiés — choix délibéré pour ne pas bloquer l'extensibilité. Parmi les huit types système du MVP, seul le schéma du type scénario (un statut éditorial à quatre valeurs) et l'absence de schéma structuré du type note live (ses champs distinctifs étant promus en colonnes de premier niveau) sont dérivés du modèle de domaine ; les schémas des six autres types système restent `[À TRANCHER — modélisation domaine]`. Le comportement de cette méthode d'écriture en l'absence de type déclaré sur un document reste également `[À TRANCHER — modélisation domaine]`.
+Toute écriture des propriétés structurées d'un document — dont sa visibilité — passe exclusivement par une méthode de domaine validée contre le schéma déclaré du type de document concerné ; aucune écriture directe dans le champ sous-jacent n'est permise. Deux régimes de validation coexistent : un schéma figé pour les types système non modifiés, une validation permissive par défaut pour les types personnalisés ou modifiés — choix délibéré pour ne pas bloquer l'extensibilité. Parmi les huit types système du MVP, seul le schéma du type scénario (un statut éditorial à quatre valeurs) et l'absence de schéma structuré du type note live (ses champs distinctifs étant promus en colonnes de premier niveau) sont dérivés du modèle de domaine ; les schémas des six autres types système sont vides au MVP (DÉCIDÉ 2026-09-03, [document-properties-schemas.md, § 5](../architecture/specs/document-properties-schemas.md)). En l'absence de type déclaré sur un document, cette méthode d'écriture est refusée (DÉCIDÉ 2026-09-03, [document-properties-schemas.md, § 1](../architecture/specs/document-properties-schemas.md)).
 
 ### Contrat de payload versionné
 
@@ -436,8 +436,8 @@ Le seuil de `schemaVersion` minimale maintenue côté serveur et l'horizon de r�
 |---|---|---|---|
 | ADR-016 — Sérialisation locale et contrat de migration | mixte, dominante pré-implémentation | Accepté | Format versionné, frontière de confiance, parcours d'échec transactionnel par espace, gate de confirmation |
 | ADR-017 — Modèle IndexedDB local | mixte, dominante pré-implémentation | Accepté | Structure aggregate-rooted, index restreints, versionnement du store distinct du payload, absence de plafond de création en mode local |
-| ADR-001 — Exécution du domaine en mode local | pré-implémentation | Accepté | Fondation — invariant validation locale ⊆ serveur, migration comme import revalidé |
-| ADR-018 — Généralisation de `Campaign` en `Space` | conception | Accepté | Inclusion de l'espace `PERSONAL` dans le périmètre sérialisé et la transactionnalité par espace |
+| ADR-001 — Exécution du domaine en mode local | conception | Accepté | Fondation — invariant validation locale ⊆ serveur, migration comme import revalidé |
+| ADR-018 — Généralisation de `Campaign` en `Space` | mixte (dominante pré-implémentation) | Accepté | Inclusion de l'espace `PERSONAL` dans le périmètre sérialisé et la transactionnalité par espace |
 | `docs/architecture/specs/sanitisation-csp.md` §2 | spec pré-build | cadre à compléter | Ordre validation puis sanitisation à l'import JSON local |
 | `docs/architecture/specs/config-securite-migration.md` | spec pré-build | cadre à compléter | Seuil `schemaVersion` et rétention du lot de migration renvoyés P7 |
 | `docs/architecture/structure-projets.md` §7 | synthèse structurelle | — | Structure de solution mobilisée par le handler d'import |
@@ -461,7 +461,7 @@ Un seuil de coût par session concurrente constitue le critère de réversibilit
 
 ### Points ouverts
 
-Les points suivants restent `[À TRANCHER — telemetrie.md §6 / repli-temps-reel.md §5]`, non comblés par ce cahier : la valeur du seuil N du pilier préparation, l'opérationnalisation du critère « usage réel constaté » du pilier vue de session, l'outil analytics retenu, le schéma d'événements formalisé (noms techniques, propriétés), la technique d'anonymisation RGPD appliquée à ces événements, le mécanisme de capture email non bloquante, la définition même de la métrique de coût par session concurrente, la valeur du seuil de repli, la cadence cible du polling adaptatif, et le mécanisme de détection du dépassement de seuil.
+Les points suivants restent `[À TRANCHER — telemetrie.md §6 / repli-temps-reel.md §5]`, non comblés par ce cahier : le schéma d'événements formalisé (noms techniques, propriétés), la définition même de la métrique de coût par session concurrente, la valeur du seuil de repli, la cadence cible du polling adaptatif, et le mécanisme de détection du dépassement de seuil.
 
 Deux maillons ne sont, par nature, pas vérifiables par une validation continue applicative : le comportement de coût et de repli réel sous charge (dépend de conditions d'hébergement en production) et le comportement de persistance/éviction du stockage navigateur (renvoi §8) — ces maillons sont nommés pour éviter une fausse confiance dans la couverture des vérifications automatisées, pas pour signaler un manque à corriger.
 
@@ -469,7 +469,7 @@ Deux maillons ne sont, par nature, pas vérifiables par une validation continue 
 
 | Source | Nature | Statut | Ce qu'elle porte |
 |---|---|---|---|
-| `docs/architecture/specs/telemetrie.md` | spec pré-build | cadre à compléter | Trois piliers d'activation composites, principe occurrence sans contenu narratif, six points ouverts |
+| `docs/architecture/specs/telemetrie.md` | spec pré-build | cadre à compléter | Trois piliers d'activation composites, principe occurrence sans contenu narratif, cinq des six points tranchés (2026-09-03), seul le schéma d'événements ouvert |
 | `docs/architecture/specs/repli-temps-reel.md` §4-5 | spec pré-build | cadre à compléter | Seuil de coût comme livrable de configuration, configuration sobre actée, quatre points ouverts |
 | ADR-006 — Périmètre MVP | décision produit, fusionnée en vision | Accepté | Origine de l'instrumentation compensatoire par pilier et de la capture email/analytics anonyme |
 | ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | Origine du seuil de coût par session concurrente et de la configuration sobre |
@@ -554,8 +554,7 @@ Le corpus technique consolidé dans ce cahier est de nature pré-implémentation
 
 ### §4 — Modèle de données & domaine
 
-- Contradiction non arbitrée sur le décompte de FK cross-module : 19 FK (ADR-009, en renvoi vers ADR-011) contre 17 FK recensées dans la matrice propre d'ADR-011.
-- Schémas de `propertiesSchema` des six types de document système restant à modéliser (scène, PNJ, lieu, note, personnage joueur, révélation) — `[À TRANCHER — modélisation domaine, document-properties-schemas.md §5]`.
+- Schémas de `propertiesSchema` des six types de document système (scène, PNJ, lieu, note, personnage joueur, révélation) — DÉCIDÉ 2026-09-03 : vides au MVP, leur contenu vit dans les blocs ([document-properties-schemas.md, § 5](../architecture/specs/document-properties-schemas.md)).
 
 ### §5 — Sécurité & autorisation
 
@@ -565,7 +564,7 @@ Le corpus technique consolidé dans ce cahier est de nature pré-implémentation
 - Fraîcheur maximale et déclenchement de la ré-authentification IdP pour la définition d'un premier mot de passe sur compte fédéré — `[À TRANCHER — B1.5]`.
 - Résolution reclaim-in-place du cas email OAuth = compte préexistant non vérifié — `[À TRANCHER — à ratifier produit]`.
 - Ajout futur d'un fournisseur OAuth à email de relais non canonique — dette nommée, non déclenchée par le périmètre MVP.
-- Listes blanches exhaustives de balises de sanitisation (serveur et client) et directives CSP complètes — `[À TRANCHER — B1.2 serveur / P6 client]`.
+- Bibliothèque de sanitisation exacte côté serveur — `[À TRANCHER — B1.2]` ([sanitisation-csp.md, § 5](../architecture/specs/sanitisation-csp.md)) ; le reste du point (listes blanches, bibliothèque côté client, directives CSP complètes) est tranché.
 
 ### §6 — Conformité RGPD technique
 
@@ -574,7 +573,7 @@ Le corpus technique consolidé dans ce cahier est de nature pré-implémentation
 - Qualification juridique de l'instant de référence figé en cas de déplacement d'un document entre espace personnel et espace partagé, dans les deux sens — non arbitrée par le mécanisme technique de figement.
 - Trou nommé sur les références nullable entrantes non couvertes par le critère de sélection (colonnes portées par d'autres documents ou par des accès invités pointant vers un document sélectionné pour suppression).
 - Les 5 axes du dossier juridique — `[À TRANCHER — FLAG JURISTE]` : qualification Art. 8 (mineurs), qualification sous-traitant Art. 28 et périmètre du contrat associé (y compris l'espace personnel), mise en balance de l'intérêt légitime (documents conservés + nom d'affichage invité), suffisance Art. 17 du hard-delete inconditionnel de l'espace personnel, sort du contenu d'une coquille reprise par reclaim-in-place.
-- Activation de l'espace personnel comme zone d'atterrissage par défaut et redéfinition de l'hypothèse H1 associée — point de décision produit explicitement requis par ADR-018, non tranché dans ce cahier.
+- Activation de l'espace personnel comme zone d'atterrissage par défaut et redéfinition de l'hypothèse H1 associée — DÉCIDÉ 2026-06-12 : comportement opérationnel en MVP, arbitré explicitement ([matrice de priorités, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md#espace-personnel--conteneur-par-défaut-et-capture-first-must-have--adr-018)).
 
 ### §7 — Contrats d'API
 
@@ -585,7 +584,7 @@ Le corpus technique consolidé dans ce cahier est de nature pré-implémentation
 - Schéma exact du corps de réponse 429 — `[À TRANCHER — B1.10]`.
 - Code HTTP exact du rejet silencieux de liaison OAuth — `[À TRANCHER — B1.10]`.
 - Format de l'annotation de sécurité portée par le contrat OpenAPI — `[À TRANCHER — B1.10]`.
-- Comportement de la méthode d'écriture des propriétés en l'absence de type de document déclaré — `[À TRANCHER — modélisation domaine]`.
+- Comportement de la méthode d'écriture des propriétés en l'absence de type de document déclaré — DÉCIDÉ 2026-09-03 : l'écriture est refusée sans type ([document-properties-schemas.md, § 1](../architecture/specs/document-properties-schemas.md)).
 
 ### §8 — Migration & sérialisation
 
@@ -595,9 +594,10 @@ Le corpus technique consolidé dans ce cahier est de nature pré-implémentation
 
 ### §9 — Observabilité & télémétrie
 
-- Valeur du seuil N du pilier préparation — `[À TRANCHER — telemetrie.md §6]`.
-- Opérationnalisation du critère « usage réel constaté » du pilier vue de session — `[À TRANCHER — telemetrie.md §6]`.
-- Outil analytics retenu, schéma d'événements formalisé, technique d'anonymisation RGPD, mécanisme de capture email non bloquante — `[À TRANCHER — telemetrie.md §6]`.
+- Valeur du seuil N du pilier préparation — DÉCIDÉ 2026-09-03 : N = 3 documents ([matrice de priorités, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md#instrumentation-de-validation-du-mvp)).
+- Opérationnalisation du critère « usage réel constaté » du pilier vue de session — DÉCIDÉ 2026-09-03 : au moins une action du MJ en session ([matrice de priorités, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md#instrumentation-de-validation-du-mvp)).
+- Outil analytics retenu (sans objet en mode local), technique de traitement des données, mécanisme de capture email non bloquante — DÉCIDÉ 2026-09-03 ([telemetrie.md, § 6](../architecture/specs/telemetrie.md)).
+- Schéma d'événements formalisé (noms exacts, typage) — `[À TRANCHER — telemetrie.md §6]`.
 - Définition de la métrique de coût, valeur du seuil de repli, cadence cible du polling adaptatif, mécanisme de détection du dépassement — `[À TRANCHER — repli-temps-reel.md §5]`.
 
 ### §10 — Exigences non-fonctionnelles
@@ -636,7 +636,7 @@ Cette matrice prouve que chaque spec pré-build, chaque section technique du cah
 
 | ADR | Section | Nature/Statut |
 |---|---|---|
-| ADR-001 — Exécution du domaine en mode local | §1, §3, §8 | pré-implémentation, Accepté |
+| ADR-001 — Exécution du domaine en mode local | §1, §3, §8 | conception, Accepté |
 | ADR-002 — « Tout est Document » et gouvernance de `properties` | §1, §4, §7 | conception, Accepté |
 | ADR-003 — Stack front : mono-écosystème Angular | §2 | pré-implémentation, Accepté |
 | ADR-004 — Transport temps réel : SignalR | §2, §3, §9 | pré-implémentation, Accepté |
@@ -653,6 +653,6 @@ Cette matrice prouve que chaque spec pré-build, chaque section technique du cah
 | ADR-015 — Sécurité authentification MVP | §2, §5, §7 | pré-implémentation, Accepté |
 | ADR-016 — Sérialisation locale et contrat de migration | §5, §7, §8 | mixte, dominante pré-implémentation, Accepté |
 | ADR-017 — Modèle IndexedDB local | §3, §5, §8 | mixte, dominante pré-implémentation, Accepté |
-| ADR-018 — Généralisation de `Campaign` en `Space` | §4, §6, §11 | conception, Accepté |
+| ADR-018 — Généralisation de `Campaign` en `Space` | §4, §6, §11 | mixte (dominante pré-implémentation), Accepté |
 
 *Fin de la présente version. Ce cahier consolide §0 à §12 du corpus technique. Toute évolution ultérieure du corpus (nouvelle décision, levée d'un point `[À TRANCHER]`, ADR post-MVP) est répercutée dans ce cahier lors de sa prochaine mise à jour, jamais anticipée ici.*

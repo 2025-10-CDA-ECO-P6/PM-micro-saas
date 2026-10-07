@@ -79,13 +79,13 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 - Confirmation à l'entrée en build des **8 ADR de nature pré-implémentation ou mixte** : ADR-003 (stack front), ADR-004 (transport temps réel), ADR-008 (structure solution), ADR-011 (cascade RGPD), ADR-015 (sécurité authentification), ADR-016 (sérialisation locale/migration), ADR-017 (modèle IndexedDB), ADR-018 (généralisation Space). Chacun le signale dans son en-tête — la confirmation est un acte de build, pas de conception.
 - Squelette Domain/Application C# — Clean Architecture, 4 bounded contexts en frontières logiques (namespaces, pas d'assembly séparée au MVP), granularité multi-projets conservée sur Infrastructure/Présentation ([ADR-008 §Décision](../decisions/ADR-008-structure-solution.md)).
 - **Test d'architecture en CI = livrable J0** ([ADR-008 §Compléments post-revue](../decisions/ADR-008-structure-solution.md) l.56) : vérifie les frontières de bounded context, remplace la discipline de revue de code jugée insuffisante en contexte solo. Sa **définition exhaustive** (liste complète des handlers scopés/non-scopés, couverture `ITokenValidator`/`ITokenDenylist`) est un renvoi ultérieur (→ B3.2, voir Annexe A) ; le test lui-même, dans sa forme initiale (frontières BC), est bien un livrable J0.
-- Contrat d'autorisation Application : positionnement de `IResourceAccessPolicy` en couche Application, avant tout jalon applicatif ([ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.48 : « doit être intégré dans les contrats de la couche Application avant le début du jalon J1 » — la définition du contrat est donc un livrable J0, son câblage effectif un livrable J1, voir §3.2).
+- Contrat d'autorisation Application : positionnement de `IResourceAccessPolicy` en couche Application, avant tout jalon applicatif ([ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.49 : « doit être intégré dans les contrats de la couche Application avant le début du jalon J1 ; son application effective relève de J2 » — la définition du contrat et son intégration aux contrats sont donc des livrables avant J1, son application effective un livrable J2, voir §3.4).
 
 **Critères de sortie factuels** :
 - Les 8 ADR listés portent une confirmation explicite (date + décideur) à l'entrée en build.
 - Le squelette Domain/Application compile et respecte la structure décrite dans `structure-projets.md`.
 - Le test d'archi CI existe, tourne en pipeline, et échoue si une référence traverse une frontière de bounded context non autorisée.
-- L'interface `IResourceAccessPolicy` (ou son équivalent tranché à l'implémentation) est déclarée en couche Application — son câblage complet (pipeline behavior REST + filtre SignalR) reste un critère de J1/J2, pas de J0.
+- L'interface `IResourceAccessPolicy` (ou son équivalent tranché à l'implémentation) est déclarée en couche Application — son application effective (pipeline behavior REST + filtre SignalR) relève de J2, pas de J0.
 
 **Préalable bloquant rattaché** : aucun préalable n'est bloquant *pour entrer* dans J0 — J0 est le point de départ de la séquence.
 
@@ -96,7 +96,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 **Contenu** : (source : [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md), [ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md))
 - Domaine/Application (C#), projection TS/IndexedDB et Angular minimal. L'ordre de **dépendance** entre ces trois étages est celui de la Clean Architecture ; leur ordre de **construction** ne l'est plus — la couche cliente se construit contre le contrat du service d'accès au store local, sans attendre l'implémentation du domaine (voir §4).
 - **`navigator.storage.persist()` (G-08) — préalable bloquant, à lever avant J1** ([ADR-001 §Compléments post-revue (2026-06-09), puce « G-08 »](../decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-017 §3.1](../decisions/ADR-017-modele-indexeddb-local.md)). Traité comme un état de première classe (booléen lu et traité, bandeau de durabilité affiché si refusé/best-effort) — pas une case cochée en silence.
-- **Invariant d'autorisation câblé** : le contrat `IResourceAccessPolicy` défini en J0 doit être intégré aux contrats Application « avant le début du jalon J1 » ([ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.48).
+- **Invariant d'autorisation intégré aux contrats** : le contrat `IResourceAccessPolicy` défini en J0 doit être intégré aux contrats Application « avant le début du jalon J1 » ; son application effective relève de J2 ([ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.49).
 - **Export au format `schemaVersion`** : enveloppe versionnée (`schemaVersion`, `exportedAt`, `appVersion`, `spaces`), champs gouvernés vs libres, couture de projection `store local → payload` ([ADR-016 §1](../decisions/ADR-016-serialisation-locale-migration.md)).
 - **Invariant `validation locale ⊆ validation serveur`, au sens des règles** ([ADR-001 §Compléments post-revue (2026-09-03), puce d'invariant requalifiée](../decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-016 §Conséquences](../decisions/ADR-016-serialisation-locale-migration.md)) — discipline de conception, non garantie outillée (pas de test cross-langage TS/C#).
 - **Pas d'EF Core cloud en J1.** Le mode local est un store IndexedDB aggregate-rooted, sans aucune synchronisation continue, sans persistance serveur ([ADR-017 §1-2](../decisions/ADR-017-modele-indexeddb-local.md)). Toute apparition d'un accès EF Core / cloud dans le périmètre livré à J1 signale une confusion d'ordonnancement avec J2.
@@ -107,7 +107,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 - Un export au format `schemaVersion` peut être produit depuis le store local et est structurellement rejouable (dry-run de validation possible côté contrat, sans nécessiter de serveur cloud actif pour cette vérification structurelle).
 - Aucun appel réseau vers l'API Haversack n'existe dans le périmètre mode local livré (observable via la CSP `connect-src 'self'`, [ADR-017 §4.2](../decisions/ADR-017-modele-indexeddb-local.md)).
 
-**Préalable bloquant rattaché** : `navigator.storage.persist()` avant J1 (G-08) ; invariant d'autorisation API câblé dans les contrats Application avant J1 ; stabilisation de J0 (« CR-1 est un préalable bloquant à la partie cloud/migration du MVP », [ADR-006 §Compléments](../decisions/ADR-006-perimetre-mvp.md) l.65 — J1 ne peut débuter sans J0 stabilisé).
+**Préalable bloquant rattaché** : `navigator.storage.persist()` avant J1 (G-08) ; invariant d'autorisation API intégré aux contrats Application avant J1 ; stabilisation de J0 (« CR-1 est un préalable bloquant à la partie cloud/migration du MVP », [ADR-006 §Compléments](../decisions/ADR-006-perimetre-mvp.md) l.65 — J1 ne peut débuter sans J0 stabilisé).
 
 ---
 
@@ -115,7 +115,7 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 **Nature** : `NON-VERIFIABLE-IN-BUILD`. Positionné **après J1, avant** d'engager le build lourd cloud + temps réel (J2/J3) — [ADR-006 §Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) l.67.
 
-**Critère de décision** (non-CI) : télémétrie instrumentée dès le périmètre MVP par pilier — activation préparation (**espace créé** + N documents, le contenu d'un espace personnel sans campagne ne comptant que partiellement s'il traduit un geste structurant — [CdC annexe « Valeurs de référence chiffrées »](../reference/cahier-des-charges.md#valeurs-de-référence-chiffrées)), activation vue session (session ouverte + usage réel), activation partage (document partagé + ≥ 1 joueur l'ayant ouvert) — croisée avec les hypothèses de validation **H1 à H4** ([CdC §2.3](../reference/cahier-des-charges.md#23-hypothèses-de-validation-h1-à-h5)). Les seuils de décision eux-mêmes ne sont pas fixés par cette roadmap — ils relèvent de l'instrumentation produit, hors périmètre technique de cet artefact.
+**Critère de décision** (non-CI) : télémétrie instrumentée dès le périmètre MVP par pilier — activation préparation (**espace créé** + N documents, le contenu d'un espace personnel sans campagne ne comptant que partiellement s'il traduit un geste structurant — [CdC annexe « Valeurs de référence chiffrées »](../reference/cahier-des-charges.md#valeurs-de-référence-chiffrées)), activation vue session (session ouverte + usage réel) — croisée avec les hypothèses de validation **H1 et H2** ([CdC §2.3](../reference/cahier-des-charges.md#23-hypothèses-de-validation-h1-à-h5)). L'activation partage (document partagé + ≥ 1 joueur l'ayant ouvert) ne fait pas partie de ce critère : la décision ne mesure que ce que J1 livre, et le pilier partage, livré en J3, est mesuré après elle (DÉCIDÉ 2026-10-07, [entrée de backlog 0090](../project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md)). Les seuils de décision eux-mêmes ne sont pas fixés par cette roadmap — ils relèvent de l'instrumentation produit, hors périmètre technique de cet artefact.
 
 **Ce que cette décision n'est pas** : ce n'est pas un jalon de build, elle ne produit aucun livrable technique. C'est une décision produit qui conditionne l'entrée en J2 — au même titre qu'un point de décision produit go/no-go usuel. Elle ne réintroduit pas de découplage *produit* (MVP unique) — le MVP reste unique, J1 → J2 → J3 restent enchaînés sans découplage produit entre eux (§1). Elle arbitre un découplage d'investissement : engager ou non le capital du build lourd cloud + temps réel (J2/J3), pas une nouvelle scission du périmètre fonctionnel.
 
@@ -210,7 +210,7 @@ Domain / Application (C#)  →  EF Core (persistance)  →  TS mode local  →  
 
 Le corpus portait deux usages distincts du symbole « J1 » :
 - **ADR-006** ([§Conséquences](../decisions/ADR-006-perimetre-mvp.md) l.46) : J1 = **local-only** (le jalon décrit en §3.2 de cette roadmap).
-- **ADR-007** ([§Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.48) : dans sa rédaction d'origine, un « jalon J1 » assorti d'un repère de jalon numéroté distinct (nomenclature aujourd'hui retirée du corpus) — appliqué à l'intégration de l'invariant d'autorisation API, une préoccupation **cloud**.
+- **ADR-007** ([§Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.49) : dans sa rédaction d'origine, un « jalon J1 » assorti d'un repère de jalon numéroté distinct (nomenclature aujourd'hui retirée du corpus) — appliqué à l'intégration de l'invariant d'autorisation API, une préoccupation **cloud**.
 
 [CdC §11](../reference/cahier-des-charges.md#11-phasage) constatait lui-même cette « incohérence apparente » et la renvoyait explicitement à « l'artefact de planification dédié » — c'est-à-dire au présent document.
 
@@ -218,7 +218,7 @@ Le corpus portait deux usages distincts du symbole « J1 » :
 
 L'axe **J0/J1/J2/J3**, avec **J1 = local-only** (au sens ADR-006), est acté comme **axe canonique unique de phasage pour l'ensemble du corpus** — ratifié en décision produit le **2026-09-01**. Raison retenue : c'est l'usage le plus densément documenté (ADR-001, ADR-006, ADR-016, ADR-017 s'y réfèrent tous de façon cohérente), et c'est celui qui structure la dépendance technique explicite « pas d'EF cloud en J1 » (§1, §4).
 
-La formulation d'origine d'ADR-007 a été clarifiée en conséquence ([§Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.48) : l'invariant d'autorisation API est intégré aux contrats de la couche Application avant J1, son application effective relevant de J2 — sans changement de la décision, de sa justification ni de ses conséquences.
+La formulation d'origine d'ADR-007 a été clarifiée en conséquence ([§Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.49) : l'invariant d'autorisation API est intégré aux contrats de la couche Application avant J1, son application effective relevant de J2 — sans changement de la décision, de sa justification ni de ses conséquences.
 
 ### 5.3 Rattachement des codes de renvoi à l'axe J0-J3
 
@@ -230,7 +230,8 @@ Le tableau suivant rattache chaque code de renvoi le plus fréquemment cité par
 | J0 | — | Non ancré littéralement dans le corpus documenté ; cette roadmap le nomme J0 pour compléter la séquence macro (§1). |
 | J1 (local-only) | **M1** (ADR-016/017, format sérialisation + IndexedDB + sécurité mode local), **L1** (sous-lot de M1, ADR-017 — schéma IndexedDB détaillé), **P6** (implémentation Angular des services IndexedDB) | Ancrage par **contenu** (les codes M1/L1/P6 portent tous sur le mode local), pas par citation explicite d'un jalon dans les ADR sources. |
 | J1 → J2 (bascule migration) | **P7** (handler d'import serveur, tests e2e multi-versions IndexedDB) | P7 porte à la fois sur du code serveur (J2) et sur la validation du contrat local (J1) — code de frontière, pas assignable à un seul jalon. |
-| J2 (cloud + migration) | **B1.x** (B1.4 RGPD étendu, B1.5 auth + `ReclaimViaFederatedProof`, B1.6 données invité espace vivant, B1.7 runtime SignalR, B1.9 chaîne média, B1.10 contrat OpenAPI), **B3.2** (test archi CI, définition exhaustive), **B5.1/B5.2** (query filters, tests IDOR) | Ancrage par **contenu** (auth cloud, migration, cascade RGPD étendue). L'ancrage documenté dans [ADR-011 §Points à trancher](../decisions/ADR-011-cascade-integrite-referentielle.md) rattachait littéralement B1.x à un jalon nommé numériquement dans une nomenclature aujourd'hui retirée du corpus — le rattachement retenu ici suit le contenu de B1.x, conformément à la règle de résolution actée en §5.2. |
+| J0 → J2 (à cheval) | **B3.2** (définition exhaustive des tests d'architecture en J0, `TB-009` ; tests de sécurité de l'authentification en J2 — annexe A) | B3.2 porte sur deux livrables de jalons distincts — code de frontière, pas assignable à un seul jalon. |
+| J2 (cloud + migration) | **B1.x** (B1.4 RGPD étendu, B1.5 auth + `ReclaimViaFederatedProof`, B1.6 données invité espace vivant, B1.7 runtime SignalR, B1.9 chaîne média, B1.10 contrat OpenAPI), **B5.1/B5.2** (query filters, tests IDOR) | Ancrage par **contenu** (auth cloud, migration, cascade RGPD étendue). L'ancrage documenté dans [ADR-011 §Points à trancher](../decisions/ADR-011-cascade-integrite-referentielle.md) rattachait littéralement B1.x à un jalon nommé numériquement dans une nomenclature aujourd'hui retirée du corpus — le rattachement retenu ici suit le contenu de B1.x, conformément à la règle de résolution actée en §5.2. |
 | J3 (partage + temps réel) | **B1.7** (runtime SignalR, également listé J2 — recoupement), **B8.2** (tests anti-fuite SignalR) | Ancrage par **contenu** (temps réel) ; non ancré littéralement dans le corpus documenté. |
 | Lancement EU (`[VALIDATION JURIDIQUE EU]`) | cadrage juridique interne (cf. [`cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md)) | Hors séquence de jalons techniques — le cadrage juridique conditionne le lancement, pas un jalon de build. |
 
@@ -238,7 +239,7 @@ Le tableau suivant rattache chaque code de renvoi le plus fréquemment cité par
 
 ### 5.4 Règle ratifiée
 
-L'axe **J0/J1/J2/J3**, nommé par contenu, est l'unique repère de phasage du corpus. La nomenclature de jalon antérieure, numérotée indépendamment du contenu, en est retirée : toute référence à un jalon de build se fait par son contenu (socle / local-only / cloud + migration / partage + temps réel), jamais par cette ancienne numérotation. La divergence historique d'ADR-007 est résolue (§5.2 ci-dessus ; voir [ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.48).
+L'axe **J0/J1/J2/J3**, nommé par contenu, est l'unique repère de phasage du corpus. La nomenclature de jalon antérieure, numérotée indépendamment du contenu, en est retirée : toute référence à un jalon de build se fait par son contenu (socle / local-only / cloud + migration / partage + temps réel), jamais par cette ancienne numérotation. La divergence historique d'ADR-007 est résolue (§5.2 ci-dessus ; voir [ADR-007 §Conséquences](../decisions/ADR-007-rgpd-autorisation-api.md) l.49).
 
 ---
 
@@ -264,7 +265,7 @@ L'axe **J0/J1/J2/J3**, nommé par contenu, est l'unique repère de phasage du co
 | J3 | Test anti-fuite SignalR (cas de référence : push vers invité après révocation) | B8.2 | [ADR-014 §Points à trancher](../decisions/ADR-014-modele-autorisation-api.md) l.286 |
 | Post-MVP (dette nommée, hors jalons J0-J3) | Chaîne média externalisée (câblage purge `SpaceDeleted`) | B1.9 | [ADR-011 §Contenu LIVE_NOTE](../decisions/ADR-011-cascade-integrite-referentielle.md) l.268-272 |
 
-**Note de lecture** : cette annexe rattache chaque livrable/test au jalon de l'axe canonique (§5.2). Certains codes (P7, B1.7) apparaissent à cheval sur deux jalons — reflet direct de la tension documentée en §5.3, pas une imprécision de cette annexe.
+**Note de lecture** : cette annexe rattache chaque livrable/test au jalon de l'axe canonique (§5.2). Certains codes (P7, B1.7, B3.2) apparaissent à cheval sur deux jalons — reflet direct de la tension documentée en §5.3, pas une imprécision de cette annexe.
 
 ---
 

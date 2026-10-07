@@ -295,7 +295,7 @@ Quatre jalons de build et deux points de décision non vérifiables en CI, nomm�
 
 ### [DÉCISION MARCHÉ] — hors-CI, ne pas convertir en dette de test
 
-Décision go/no-go du responsable produit sur la télémétrie des trois piliers d'activation (préparation, vue session, partage), croisée avec les hypothèses de validation H1-H4. Les seuils de décision ne sont pas fixés par la roadmap — ils relèvent de l'instrumentation produit. **Critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
+Décision go/no-go du responsable produit sur la télémétrie des piliers d'activation que J1 livre (préparation, vue session), croisée avec les hypothèses de validation H1 et H2 ; le pilier partage, livré en J3, est mesuré après la décision. Les seuils de décision ne sont pas fixés par la roadmap — ils relèvent de l'instrumentation produit. **Critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
 
 ### Jalon « Cloud + migration »
 
