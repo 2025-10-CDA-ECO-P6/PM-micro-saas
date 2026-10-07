@@ -24,7 +24,8 @@ Prompt de départ :
 | 5 | gabarits-besoin | `5071d48` | close |
 | 6 | backlog-besoin | `e99aa88` | close |
 | 7 | gabarits-domaine | `e1a54a0` | close |
-| 8 à 24 | — | — | à faire, dans l'ordre de [TACHES.md](../TACHES.md) |
+| 8 à 18, 21 à 24 | — | — | à faire, dans l'ordre de [TACHES.md](../TACHES.md) |
+| 19, 20 | — | — | **reportées** hors du chantier (décision de l'opérateur, voir plus bas) |
 
 - **Commit de départ de `conform-verify`** : `e99aa88`. Il sera réépinglé sur le commit de la tâche 8, la prochaine tâche backlog. Voir la table de [reference.md](../reference.md).
 - **Workflow GitHub `recalcul-suivi-projet`** : désactivé par `gh workflow disable` ; son fichier n'est pas modifié. La tâche 23 le réactive.
@@ -34,6 +35,7 @@ Prompt de départ :
 Ces décisions valent pour le reste du chantier.
 
 - **Exécution** : tout le chantier se fait dans une seule session orchestratrice, et non une session par tâche comme le disait le cadrage.
+- **Entretiens, 2026-10-07** : les tâches 19 (`write-operating-model-et-content-guide`) et 20 (`write-interview-reports`) sont reportées hors du chantier, car aucun entretien n'aura lieu. Elles ne sont pas émulées par des agents IA : des entretiens simulés produiraient des verbatims et des validations d'hypothèses inventés, et un modèle de fonctionnement écrit sans l'opérateur inventerait ses choix. Les modules `interview-reports`, `operating-model` et `content-guide` restent déclarés « attendus, non écrits » (`-`) dans la sélection. Au moment de la tâche 21 (solde du backlog), ces deux tâches deviennent des TB du plan de travail. La tâche 24 liste alors 21 tâches commitées, et non 23, en nommant les deux tâches reportées.
 - **Outillage** : l'opérateur n'est pas satisfait de l'outillage `.claude/` (close, gardes, contrôles) et le refera dans un cadrage séparé. Pendant le chantier, on ne s'y applique que des contournements minimaux, et on n'ouvre aucun chantier d'outillage.
 - **Gabarits** :
   - l'élision « Étant donné qu'un… » est gardée ; le contrôle `template` la refuse à tort, et 85 étapes restent signalées pour cette seule raison ;
@@ -100,7 +102,7 @@ git worktree add --detach <scratchpad>/wt-NX <commit>
 - **Ambigus non tranchés** : les « notes partagées » du membre (RB-11-13, RB-11-21, UC-11).
 - **À reprendre sur le fond** : les « Transitions inter-UC » des UJ-04 à 06, à migrer vers les parcours bout-en-bout ; les opportunités des UJ-08 à 14, à rapprocher de leurs frictions.
 - **Tâche 15 (doublons)** : RB-06-26 double RB-06-25.
-- **Bloqués** : la tâche 20 (comptes rendus d'entretien) attend un entretien réel. La tâche 19 demande un entretien avec l'opérateur. La tâche 23 publie sur GitHub et demande sa confirmation.
+- **Reportées** : les tâches 19 et 20 (voir les décisions). **À confirmer** : la tâche 23 publie sur GitHub et demande l'accord de l'opérateur.
 - **Défauts de l'outillage à reporter dans son futur cadrage** :
   - le contrôle `template` est global, lent, coupé à 30 lignes, et refuse l'élision ;
   - `verify` est coupé à 20 lignes ;
