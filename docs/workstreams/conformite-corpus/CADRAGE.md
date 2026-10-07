@@ -5,8 +5,9 @@
 | Chantier | `conformite-corpus` |
 | Date | 2026-10-07 |
 | Profondeur | 3 — complet |
-| Décisions | ADR-020 (arborescence cible), ADR-021 (ordre du chantier), ADR-022 (conditions d'exécution) |
-| Tâches | [TACHES.md](TACHES.md) — 23 tâches, une spec chacune |
+| Décisions | ADR-020 (arborescence cible), ADR-021 (ordre du chantier), ADR-022 (conditions d'exécution), ADR-023 (branche dédiée et fusion finale) |
+| Tâches | [TACHES.md](TACHES.md) — 24 tâches, une spec chacune |
+| Branche | `chantier/conformite-corpus`, fusionnée en un seul commit à la fin (ADR-023) |
 | Études | [etudes/](etudes/README.md) |
 | Exécution | une tâche par session (`claude -n conformite-corpus-<tâche>`), jamais dans la session de cadrage |
 
@@ -58,7 +59,7 @@ L'architecte a validé le chemin à trois conditions, reprises dans l'ADR-022 ([
 
 ## 6. Invariants de toute tâche
 
-- Un commit par tâche, vérifié par :
+- Un commit par tâche sur la branche dédiée, vérifié par :
   - `bash .claude/skills/onboard/conform.sh verify <commit de départ>` ;
   - les quatre contrôles du guide de conventions (`docs/gestion-projet/guide-conventions-et-dod.md:298`).
 - Le commit de départ est épinglé à la tâche 1, puis réépinglé après chaque tâche « backlog » (ADR-022, condition 3).

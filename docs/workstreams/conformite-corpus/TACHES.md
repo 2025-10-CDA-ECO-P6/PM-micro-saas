@@ -1,6 +1,6 @@
 # Tâches — Mise en conformité du corpus
 
-Ordre imposé par l'ADR-021 et l'ADR-022 : chaque tâche est un commit, exécuté dans sa propre session (`claude -n conformite-corpus-<tâche>`).
+Ordre imposé par l'ADR-021 et l'ADR-022 : chaque tâche est un commit sur la branche dédiée `chantier/conformite-corpus` (ADR-023), exécuté dans sa propre session ; la tâche 24 fusionne le tout en un seul commit (`claude -n conformite-corpus-<tâche>`).
 
 ## 1. reference-de-depart
 
@@ -185,3 +185,11 @@ Reprise du suivi GitHub.
 **Figé si** : le workflow `recalcul-suivi-projet` est réactivé, une exécution a régénéré les issues, et chaque issue ouverte pointe vers le nouveau chemin du plan de travail.
 
 Spec : [SPEC-reprise-du-suivi-github.md](SPEC-reprise-du-suivi-github.md)
+
+## 24. fusion-finale
+
+Fusion finale.
+
+**Figé si** : la branche de travail porte un seul commit pour tout le chantier, dont l'arbre est identique à celui de la dernière tâche de `chantier/conformite-corpus`, et dont le message liste les 23 tâches avec leur hash.
+
+Spec : [SPEC-fusion-finale.md](SPEC-fusion-finale.md)
