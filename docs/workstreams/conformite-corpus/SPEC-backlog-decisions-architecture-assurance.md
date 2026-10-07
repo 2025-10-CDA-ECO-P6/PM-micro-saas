@@ -57,6 +57,8 @@ Les 10 entrées de la couche sont listées dans l'index `docs/project/backlog/RE
 
 Le contrat et les entrées : chaque modification correspond-elle à une entrée, et une seule ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on ouvre chaque entrée de la couche, son statut est « fait » avec un hash, ou « ouvert » avec une raison.

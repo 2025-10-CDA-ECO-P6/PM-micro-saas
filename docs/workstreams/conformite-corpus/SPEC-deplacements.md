@@ -56,6 +56,8 @@ L'outillage code des chemins en dur : `tools/VerifMailleAgregat/Program.cs:19`, 
 
 Le diff seul, puis le contrat : rien d'autre qu'un déplacement ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on lance VerifCorpus, le nombre de liens relatifs est celui de la référence, avec 0 lien mort, 0 ancre morte et 0 orphelin.

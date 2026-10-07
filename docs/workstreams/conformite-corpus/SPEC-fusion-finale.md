@@ -47,6 +47,8 @@ Les tâches 1 à 23 ont été commitées une à une sur `chantier/conformite-cor
 
 Le contrat : l'arbre fusionné est-il exactement celui de la branche dédiée ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on compare l'arbre du commit fusionné à celui du dernier commit de la branche dédiée (`git diff <fusion> <dernier>`), le diff est vide.

@@ -45,6 +45,8 @@ Le backlog est indexé à `docs/project/backlog/README.md:1`. Le système code s
 
 Le contrat : rien de perdu, rien en double ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on liste `docs/project/`, le dossier n'existe pas.

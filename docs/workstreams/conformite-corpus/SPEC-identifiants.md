@@ -48,6 +48,8 @@ RB-05-01 est défini à `docs/conception/besoin/user-stories/US-UC-05-organiser-
 
 Le contrat : un seul porteur par identifiant ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on cherche les définitions d'identifiants dupliquées (même identifiant en tête de deux règles), on n'en trouve aucune.

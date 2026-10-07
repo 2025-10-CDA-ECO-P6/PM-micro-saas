@@ -49,6 +49,8 @@ Le plan calculé est conservé dans `plan-conformite-calcule-2026-10-07.txt` : 1
 
 Le contrat et l'ADR-020 : la table réalise-t-elle l'arborescence décidée ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on compare la colonne « ancien » à `git ls-files docs` (hors `docs/workstreams/` et `docs/project/`), aucun fichier ne manque.

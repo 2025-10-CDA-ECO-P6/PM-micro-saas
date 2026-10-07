@@ -42,6 +42,8 @@ Le workflow a été désactivé par la tâche « Référence de départ ». Cree
 
 Le contrat : le suivi reflète-t-il le plan déplacé ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on ferme puis rouvre une issue de test, le workflow s'exécute.

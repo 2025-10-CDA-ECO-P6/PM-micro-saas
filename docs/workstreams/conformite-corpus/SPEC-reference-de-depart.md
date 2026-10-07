@@ -43,6 +43,8 @@ Aujourd'hui : 1 864 liens relatifs et 258 liens à ancre (sortie de `dotnet run 
 
 Le contrat seul : la référence est-elle rejouable par un tiers ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on lit `reference.md`, on y trouve un hash de commit qui existe dans l'historique, et le compteur de liens relatifs qu'imprime VerifCorpus à ce commit.
@@ -59,9 +61,14 @@ Le contrat seul : la référence est-elle rejouable par un tiers ?
 
 ## Notes de dev
 
-
+Le workflow est désactivé par `gh workflow disable` (choix de l'opérateur). Les événements d'issues lisent le fichier de la branche par défaut : modifier le fichier sur la branche du chantier ne l'aurait pas arrêté.
 
 ## Notes de revue
 
+Revue « le contrat seul », 2026-10-07 : trois constats.
 
+- `TACHES.md:9`, hors périmètre et hors contrat (2 constats) : `intent`. L'opérateur a choisi ce lien pour que `reference.md` ne soit pas orphelin, sans quoi VerifCorpus sortait en code 1.
+- Sortie de `dotnet test` tronquée : `fix`, la sortie complète est consignée.
+
+Répartition : 1 `fix`, 2 `intent` (tranchés par l'opérateur).
 

@@ -41,6 +41,8 @@ Aucune instance n'existe. Source disponible : les ADR RGPD (ADR-007, ADR-012, AD
 
 Le contrat et les sources : aucune valeur inventée ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on lance `write.sh check <module>` sur chaque nouvelle instance, il sort `CLEAN`.

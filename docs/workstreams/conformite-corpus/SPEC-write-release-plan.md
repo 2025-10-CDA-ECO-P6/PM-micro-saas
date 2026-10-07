@@ -41,6 +41,8 @@ Aucune instance n'existe. Source disponible : la roadmap d'entrée en build et l
 
 Le contrat et les sources : aucune valeur inventée ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on lance `write.sh check <module>` sur chaque nouvelle instance, il sort `CLEAN`.

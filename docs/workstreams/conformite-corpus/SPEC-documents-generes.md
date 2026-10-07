@@ -51,6 +51,8 @@ Les règles du corpus sont tranchées dans `docs/architecture/decisions/ADR-019-
 
 Le contrat : les documents générés reflètent-ils les sources, sans valeur inventée ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on lance `write.sh check conventions docs/conventions.md`, il sort `CLEAN`.

@@ -6,7 +6,7 @@ Ordre imposé par l'ADR-021 et l'ADR-022 : chaque tâche est un commit sur la br
 
 Référence de départ.
 
-**Figé si** : un commit contient `docs/workstreams/conformite-corpus/reference.md` avec le commit de départ et les compteurs des quatre contrôles, et le workflow `recalcul-suivi-projet` ne se déclenche plus.
+**Figé si** : un commit contient [`docs/workstreams/conformite-corpus/reference.md`](reference.md) avec le commit de départ et les compteurs des quatre contrôles, et le workflow `recalcul-suivi-projet` ne se déclenche plus.
 
 Spec : [SPEC-reference-de-depart.md](SPEC-reference-de-depart.md)
 

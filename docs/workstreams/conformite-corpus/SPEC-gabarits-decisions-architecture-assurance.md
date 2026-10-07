@@ -52,6 +52,8 @@ Le plan calculé relève, sur tout le corpus, 247 sections manquantes ou mal pla
 
 Le diff contre le gabarit : forme seulement, aucune perte de fond ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on lance `write.sh check` sur chaque document de les couches décisions, architecture et assurance, aucun finding `template` ne subsiste.

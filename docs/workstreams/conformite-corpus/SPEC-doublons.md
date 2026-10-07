@@ -40,6 +40,8 @@ Le plan calculé relève 11 termes rejetés : « scenariolibrary » dans l'ADR-0
 
 Le diff : un seul propriétaire par définition, aucun fond changé ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand on cherche chaque terme rejeté dans le corpus, on ne le trouve plus qu'au glossaire, comme alias.

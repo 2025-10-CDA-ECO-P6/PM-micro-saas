@@ -49,6 +49,8 @@ Le seul workflow existant lance CreerIssues et CreerProjet (`.github/workflows/r
 
 Le contrat seul : chaque contrôle peut-il échouer ?
 
+- general-purpose
+
 ## Vérités
 
 1. Quand une branche modifie `docs/` et casse un lien, le workflow échoue et nomme le lien.
