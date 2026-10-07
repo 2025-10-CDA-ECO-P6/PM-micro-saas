@@ -1,6 +1,6 @@
 # Reprise du chantier conformite-corpus
 
-État au 2026-10-07, à la fin de la tâche 7. Ce document sert à reprendre le chantier dans une nouvelle session, où un orchestrateur exécute toutes les tâches restantes l'une après l'autre.
+État au 2026-10-07, à la fin de la tâche 10. Ce document sert à reprendre le chantier dans une nouvelle session, où un orchestrateur exécute toutes les tâches restantes l'une après l'autre.
 
 ## Pour reprendre
 
@@ -11,7 +11,7 @@ claude -n conformite-corpus-reprise
 
 Prompt de départ :
 
-> Reprends le chantier conformite-corpus en orchestrateur, à la tâche 8 (`backlog-domaine`). Lis d'abord `docs/workstreams/conformite-corpus/reprise/REPRISE.md`, puis `TACHES.md`. Une tâche, un commit, sur `chantier/conformite-corpus`.
+> Reprends le chantier conformite-corpus en orchestrateur, à la tâche 11 (`gabarits-decisions-architecture-assurance`). Lis d'abord `docs/workstreams/conformite-corpus/reprise/REPRISE.md`, puis `TACHES.md`. Une tâche, un commit, sur `chantier/conformite-corpus`.
 
 ## Où on en est
 
@@ -24,15 +24,22 @@ Prompt de départ :
 | 5 | gabarits-besoin | `5071d48` | close |
 | 6 | backlog-besoin | `e99aa88` | close |
 | 7 | gabarits-domaine | `e1a54a0` | close |
-| 8 à 18, 21 à 24 | — | — | à faire, dans l'ordre de [TACHES.md](../TACHES.md) |
+| 8 | backlog-domaine | `dca4540` | close |
+| 9 | gabarits-interface | `f23dd91` | close |
+| 10 | backlog-interface | `4ce7faa` | close |
+| 11 à 18, 21 à 24 | — | — | à faire, dans l'ordre de [TACHES.md](../TACHES.md) |
 | 19, 20 | — | — | **reportées** hors du chantier (décision de l'opérateur, voir plus bas) |
 
-- **Commit de départ de `conform-verify`** : `e99aa88`. Il sera réépinglé sur le commit de la tâche 8, la prochaine tâche backlog. Voir la table de [reference.md](../reference.md).
+- **Commit de départ de `conform-verify`** : `4ce7faa` (tâche 10). La tâche 11 inscrit ce hash dans la ligne `backlog-interface` de la table de réépinglage. Voir la table de [reference.md](../reference.md).
 - **Workflow GitHub `recalcul-suivi-projet`** : désactivé par `gh workflow disable` ; son fichier n'est pas modifié. La tâche 23 le réactive.
 
 ## Décisions de l'opérateur
 
 Ces décisions valent pour le reste du chantier.
+
+- **Autonomie, 2026-10-07** : « si il y a un choix à faire je te laisse le prendre mais il doit être justifié ». Chaque choix pris par l'orchestrateur est écrit, avec sa justification, dans les notes de dev de la spec de sa tâche.
+- **Périmètre** : une entrée qui touche une autre couche s'applique en entier, et ses consommateurs s'alignent. Le périmètre de la spec est élargi aux seuls fichiers qu'elle nomme, et l'élargissement est écrit dans la spec (tâches 8 et 10).
+- **Domaine, 2026-10-07** : la garde de session `LIVE` avant `Archive()` passe par un contrat applicatif ; l'exception de RB-12-01 est limitée aux fiches `GM_ONLY` ou `PUBLIC` ; `Folder` porte un rôle système `NOTES`.
 
 - **Exécution** : tout le chantier se fait dans une seule session orchestratrice, et non une session par tâche comme le disait le cadrage.
 - **Entretiens, 2026-10-07** : les tâches 19 (`write-operating-model-et-content-guide`) et 20 (`write-interview-reports`) sont reportées hors du chantier, car aucun entretien n'aura lieu. Elles ne sont pas émulées par des agents IA : des entretiens simulés produiraient des verbatims et des validations d'hypothèses inventés, et un modèle de fonctionnement écrit sans l'opérateur inventerait ses choix. Les modules `interview-reports`, `operating-model` et `content-guide` restent déclarés « attendus, non écrits » (`-`) dans la sélection. Au moment de la tâche 21 (solde du backlog), ces deux tâches deviennent des TB du plan de travail. La tâche 24 liste alors 21 tâches commitées, et non 23, en nommant les deux tâches reportées.
@@ -98,12 +105,22 @@ git worktree add --detach <scratchpad>/wt-NX <commit>
 
 ## Restes connus
 
-- **Tâche 8 (backlog-domaine)** : `docs/domaine/content-library/context.md` (règles 2 et 3, `CanBeReadBy`) contredit l'exception de RB-12-01, qui rend la fiche du personnage associé lisible par son joueur (entrée 0024). Le domaine est en aval : c'est lui qui s'aligne.
+- **Différés des tâches 8 à 10**, à reprendre au solde du backlog (tâche 21) ou à remonter à l'opérateur :
+  - `space-management/context.md`, consommateur de `CharacterAssociated` : « Session Conduct (accès aux notes PLAYER_PRIVATE du personnage) » contredit l'invariant 6 de Content Library ;
+  - « Non classés » : UC-02 le dit non renommable, AR-20 et les fiches le disent renommable ; UC-05 parle encore d'une « vue dédiée », close par le zonage ;
+  - UC-06 (épinglage automatique sans distinguer la note de session) et parcours-02, en retard sur RB-06-17 et RB-07-04 ;
+  - les six contradictions entre fiches d'écran listées dans l'entrée 0002 ; ce que voit un joueur d'un espace ARCHIVED (0018, SOUS-SPÉCIFIÉ) ;
+  - les maquettes `acces-lien-saisie-nom.dc.html` et `parametres-campagne.dc.html` divergent de leurs fiches, qui prévalent ;
+  - les anciens noms de fichiers cités en prose (`zoning.md`, `conventions-wireframe.md`, `reflexion-ux-mvp.md`…, une centaine d'occurrences) ; `decisions-en-attente.md:146` cite l'ancien titre de S10 ; « Vue de l'espace personnel » dans `cahier-des-charges.md` ;
+  - les surfaces SV1 à SV5 sont déclarées dans le README des écrans, et non dans le zonage comme le veut la recette ; trois marqueurs hors liste dans le zonage ; des titres de `raisonnement-ux.md` portent un compte.
 - **Ambigus non tranchés** : les « notes partagées » du membre (RB-11-13, RB-11-21, UC-11).
 - **À reprendre sur le fond** : les « Transitions inter-UC » des UJ-04 à 06, à migrer vers les parcours bout-en-bout ; les opportunités des UJ-08 à 14, à rapprocher de leurs frictions.
 - **Tâche 15 (doublons)** : RB-06-26 double RB-06-25.
 - **Reportées** : les tâches 19 et 20 (voir les décisions). **À confirmer** : la tâche 23 publie sur GitHub et demande l'accord de l'opérateur.
 - **Défauts de l'outillage à reporter dans son futur cadrage** :
+  - le module `screen-sheets` n'a pas de lecteur dans le contrôle `template`, et sa recette ignore la section « Mode local » que déclare le gabarit d'écran du projet ;
+  - les libellés de l'outillage donnent `[RÉSOLU — source]`, alors que l'ADR-019 veut `DÉCIDÉ` avec date et renvoi ;
+  - le contrôle `template` n'accepte qu'un numéro « N. » devant un titre, si bien que les repères S1 à S10 du zonage vivent dans une phrase du préambule ;
   - le contrôle `template` est global, lent, coupé à 30 lignes, et refuse l'élision ;
   - `verify` est coupé à 20 lignes ;
   - le motif de comptage des tests était sensible à la casse (corrigé dans `state/`) ;
