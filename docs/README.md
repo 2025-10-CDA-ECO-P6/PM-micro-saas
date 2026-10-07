@@ -29,3 +29,6 @@ le contenu.
 | `ecoconception/` | Démarche d'écoconception — dossier réservé, sujet non engagé à ce jour | [ecoconception/README.md](ecoconception/README.md) |
 | `architecture/` | Corpus détaillé de traçabilité technique — décisions d'architecture (ADR), structure des projets, spécifications pré-build | [architecture/README.md](architecture/README.md) |
 | `conception/` | Corpus détaillé de traçabilité produit et domaine, organisé selon l'ordre d'autorité besoin → domaine → interface | [conception/README.md](conception/README.md) |
+| `project/backlog/` | Backlog issu de l'onboarding du corpus (2026-10-07) — écarts à aligner et réponses à reporter dans les documents sources | [project/backlog/README.md](project/backlog/README.md) |
+
+La sélection des modules du corpus, lue par l'outillage d'assistance (`.claude/`), est tenue dans [corpus.md](corpus.md).
