@@ -640,8 +640,8 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Dépend de | TB-059 |
 | Périmètre d'écriture | Folder |
 | En conflit avec | TB-057 — module partagé : Folder |
-| Taille | L — un seul agrégat, mais la plage RB-05-01 → RB-05-12 engage douze preuves distinctes, indivisibles de l'agrégat `Folder` |
-| Critères d'acceptation | RB-05-01 → RB-05-12 ; `cahier-strategie-test-et-recette.md §3.1` — « `isSystem` est informatif : les dossiers système sont renommables et supprimables » |
+| Taille | L — un seul agrégat, mais la plage RB-05-01 → RB-05-13 engage treize preuves distinctes, indivisibles de l'agrégat `Folder` |
+| Critères d'acceptation | RB-05-01 → RB-05-13 ; `cahier-strategie-test-et-recette.md §3.1` — « `isSystem` est informatif : les dossiers système sont renommables et supprimables » |
 | Code de renvoi | — |
 
 ##### TB-064 — Navigation par dossiers

@@ -67,9 +67,18 @@ Le contrat : un seul porteur par identifiant ?
 
 ## Notes de dev
 
-
+- RB-05-01 : le second porteur (`US-UC-05:162`) devient RB-05-13, valeur donnée par `corpus.sh next-id . user-stories business-rule US-UC-05`. La plage de TB-063 passe à RB-05-01 → RB-05-13.
+- Doublons trouvés en plus : RB-09-18 à RB-09-22, définies à la fois dans US-UC-09 et dans UC-09, avec des textes qui divergent. Décision de l'opérateur : US-UC-09 garde les définitions, avec le texte de l'UC (plus riche) et les apports propres à l'US ; UC-09 n'y renvoie plus que par une ligne. EP-04, répété d'un jalon à l'autre dans le plan de travail, est un faux positif.
+- Contrôle rejouable : `python3 -I docs/workstreams/conformite-corpus/controle-doublons-identifiants.py` (0 doublon). Familles non couvertes : voir l'en-tête du script.
+- `conform.sh verify 282e2b6 --declared docs/workstreams/conformite-corpus/declares-identifiants.txt` : code 0. Ce fichier cumule les lignes déclarées depuis le commit de départ.
 
 ## Notes de revue
 
+Revue « un seul porteur par identifiant ? », 2026-10-07 : quatre constats.
 
+- Script et lignes déclarées dans `docs/workstreams/` : rejeté. C'est l'outillage du chantier, nécessaire pour rejouer la tâche.
+- RB-09 rapatriées au lieu d'être renumérotées : `intent`, tranché par l'opérateur.
+- Ancre du renvoi UC-09 → US-09-01 : rejeté, VerifCorpus la valide (0 ancre morte).
+
+Répartition : 1 `intent`, 3 rejetés.
 

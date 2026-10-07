@@ -159,7 +159,7 @@ Scénario : Le MJ tente de créer un dossier avec un nom vide
 - Cas d'usage clé : Thomas renomme "Personnages" en "Factions" pour Blades in the Dark.
 
 **Règles métier** :
-- RB-05-01 : Le nom est obligatoire et non vide.
+- RB-05-13 : Le nom est obligatoire et non vide.
 - RB-05-04 : Tous les dossiers visibles sont renommables, y compris les dossiers système.
 - RB-05-05 : Le dossier virtuel "Non classés" n'est pas renommable.
 
