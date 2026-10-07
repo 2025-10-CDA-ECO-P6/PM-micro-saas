@@ -1,4 +1,4 @@
-# Identity & Access
+# Contexte — Identity & Access
 
 > **Responsabilité** : gérer les comptes utilisateurs authentifiés.
 > Création, connexion, mise à jour du profil, tier de compte, suppression RGPD.
@@ -30,9 +30,11 @@
 
 ---
 
-## Agrégat unique : `User`
+## Agrégats
 
-### Champs
+Ce contexte n'a qu'un agrégat, `User`.
+
+### User
 
 | Champ | Type | Description |
 |---|---|---|
@@ -45,7 +47,7 @@
 | `createdAt` | `DateTime` | Date de création |
 | `updatedAt` | `DateTime` | Date de dernière modification |
 
-### Méthodes
+**Méthodes** :
 
 | Méthode | Événement produit | Description |
 |---|---|---|
@@ -60,7 +62,9 @@
 | `Anonymize()` | `UserAnonymized` | Remplace les données nominatives par `[Compte supprimé]`. |
 | `Suspend()` | `AccountSuspended` | Désactive temporairement le compte. |
 
-### Enums
+---
+
+## Enums
 
 **`AccountStatus`**
 | Valeur | Description |

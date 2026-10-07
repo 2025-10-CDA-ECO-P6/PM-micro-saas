@@ -1,6 +1,6 @@
 # Session Conduct — Diagrammes de flux
 
-## 1. Initialisation de SessionViewConfig à la création d'espace
+## Flux 1 — Initialisation de SessionViewConfig à la création d'espace
 
 ```mermaid
 sequenceDiagram
@@ -16,7 +16,7 @@ sequenceDiagram
     SC-->>App: SessionViewConfig initialisé avec les dossiers système
 ```
 
-## 2. Configurer les panneaux de la vue session
+## Flux 2 — Configurer les panneaux de la vue session
 
 ```mermaid
 sequenceDiagram
@@ -35,7 +35,7 @@ sequenceDiagram
     App-->>MJ: Panneau retiré
 ```
 
-## 3. Démarrer une session
+## Flux 3 — Démarrer une session
 
 ```mermaid
 sequenceDiagram
@@ -51,7 +51,7 @@ sequenceDiagram
     App-->>MJ: Vue session ouverte avec les panneaux configurés
 ```
 
-## 4. Épingler un document en session
+## Flux 4 — Épingler un document en session
 
 ```mermaid
 sequenceDiagram
@@ -66,7 +66,7 @@ sequenceDiagram
     Note over App: Épingler ne change pas la visibility du document.<br/>Partager (rendre visible aux joueurs) est une opération séparée<br/>déclenchée sur Content Library.
 ```
 
-## 5. Partager un document depuis la vue session
+## Flux 5 — Partager un document depuis la vue session
 
 ```mermaid
 sequenceDiagram
@@ -84,7 +84,7 @@ sequenceDiagram
     Note over App: Le partage est permanent (Content Library).<br/>L'épingle est locale à la session.
 ```
 
-## 6. Créer une note de session
+## Flux 6 — Créer une note de session
 
 ```mermaid
 sequenceDiagram
@@ -103,7 +103,7 @@ sequenceDiagram
     Note over App: La note est un Document — elle peut être liée<br/>à d'autres documents via linkedDocuments.
 ```
 
-## 7. Création à la volée en session (UC-07)
+## Flux 7 — Création à la volée en session (UC-07)
 
 ```mermaid
 sequenceDiagram
@@ -120,7 +120,7 @@ sequenceDiagram
     App-->>MJ: PNJ créé et épinglé dans la vue session
 ```
 
-## 8. Clôturer une session
+## Flux 8 — Clôturer une session
 
 ```mermaid
 sequenceDiagram
@@ -137,7 +137,7 @@ sequenceDiagram
     App-->>MJ: Session clôturée — résumé éditable
 ```
 
-## 9. Accès joueur à la session (sans compte)
+## Flux 9 — Accès joueur à la session (sans compte)
 
 ```mermaid
 sequenceDiagram

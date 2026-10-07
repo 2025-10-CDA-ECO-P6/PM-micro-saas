@@ -1,5 +1,7 @@
 # Identity & Access — Diagramme de classes
 
+## Diagramme
+
 ```mermaid
 classDiagram
     class User {
@@ -37,12 +39,14 @@ classDiagram
     }
 
     class UserRegistered {
+        <<domainEvent>>
         +identifiant userId
         +Email email
         +horodatage occurredAt
     }
 
     class AccountTierChanged {
+        <<domainEvent>>
         +identifiant userId
         +AccountTier previousTier
         +AccountTier newTier
@@ -50,33 +54,39 @@ classDiagram
     }
 
     class UserDeleted {
+        <<domainEvent>>
         +identifiant userId
         +horodatage occurredAt
     }
 
     class UserAnonymized {
+        <<domainEvent>>
         +identifiant userId
         +horodatage occurredAt
     }
 
     class DisplayNameUpdated {
+        <<domainEvent>>
         +identifiant userId
         +texte newDisplayName
         +horodatage occurredAt
     }
 
     class EmailVerified {
+        <<domainEvent>>
         +identifiant userId
         +horodatage occurredAt
     }
 
     class EmailChangeRequested {
+        <<domainEvent>>
         +identifiant userId
         +Email newEmail
         +horodatage occurredAt
     }
 
     class FederatedIdentityLinked {
+        <<domainEvent>>
         +identifiant userId
         +texte provider
         +texte externalId
@@ -84,11 +94,13 @@ classDiagram
     }
 
     class InitialPasswordSet {
+        <<domainEvent>>
         +identifiant userId
         +horodatage occurredAt
     }
 
     class AccountSuspended {
+        <<domainEvent>>
         +identifiant userId
         +horodatage occurredAt
     }

@@ -1,4 +1,4 @@
-# Session Conduct
+# Contexte — Session Conduct
 
 > **Responsabilité** : gérer le déroulement d'une session de jeu.
 > Cycle de vie de la session, tableau de bord MJ configurable, documents épinglés,
@@ -68,7 +68,7 @@ LIVE ──► CLOSED ──► ARCHIVED
 | `closedAt` | `DateTime?` | |
 | `AuditInfo` | | `createdAt`, `updatedAt`, `createdById: UserId` |
 
-**Méthodes**
+**Méthodes** :
 
 | Méthode | Événement produit | Condition |
 |---|---|---|
@@ -100,7 +100,7 @@ Créé automatiquement à `SpaceCreated` (espaces partagés uniquement) avec les
 | `focusedFolders` | `SessionViewFolder[]` | Dossiers mis en avant dans la vue session |
 | `updatedAt` | `DateTime` | |
 
-**Méthodes**
+**Méthodes** :
 
 | Méthode | Description |
 |---|---|
@@ -109,6 +109,8 @@ Créé automatiquement à `SpaceCreated` (espaces partagés uniquement) avec les
 | `ReorderFolders(orderedFolderIds)` | Réordonne les dossiers |
 
 ---
+
+## Value Objects
 
 ### SessionViewFolder (value object dans SessionViewConfig)
 
@@ -119,28 +121,6 @@ Créé automatiquement à `SpaceCreated` (espaces partagés uniquement) avec les
 
 > Le rendu visuel (colonnes, onglets, accordéon…) est une décision UI.
 > Le domaine expose uniquement une liste ordonnée de dossiers.
-
----
-
-### Notes de session — Documents de type LIVE_NOTE
-
-Les notes de session sont des **Documents** de Content Library avec `documentTypeId = LIVE_NOTE`.
-La session référence leurs IDs dans `sessionNoteIds`.
-
-Créer une note de session = deux opérations applicatives :
-1. `Document.Create()` dans Content Library (type LIVE_NOTE, folder = "Notes" de l'espace)
-2. `Session.AttachNote(documentId)`
-
-Les métadonnées spécifiques aux notes de session sont portées par deux **champs de premier niveau** du Document, promus depuis les propriétés structurées (ADR-002) :
-
-| Champ | Type | Description |
-|---|---|---|
-| `characterId` | `DocumentId?` | Personnage associé — pour les notes PLAYER_PRIVATE joueur |
-| `guestAccessId` | `GuestAccessId?` | Auteur invité sans compte — quand l'auteur n'est pas un utilisateur enregistré |
-
-> Ce modèle permet à une note de session de référencer d'autres documents via `linkedDocuments`
-> (lier un PNJ, une scène, un lieu à la note) sans aucune modélisation supplémentaire.
-> Voir Règles métier n°8 (suppression physique des notes privées à la suppression de compte).
 
 ---
 
@@ -236,6 +216,28 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 ### Utilisation par les autres contextes
 
 Session Conduct ne publie pas d'identifiants consommés par d'autres contextes. Il est le contexte terminal de la chaîne.
+
+---
+
+## Notes de session — Documents de type LIVE_NOTE
+
+Les notes de session sont des **Documents** de Content Library avec `documentTypeId = LIVE_NOTE`.
+La session référence leurs IDs dans `sessionNoteIds`.
+
+Créer une note de session = deux opérations applicatives :
+1. `Document.Create()` dans Content Library (type LIVE_NOTE, folder = "Notes" de l'espace)
+2. `Session.AttachNote(documentId)`
+
+Les métadonnées spécifiques aux notes de session sont portées par deux **champs de premier niveau** du Document, promus depuis les propriétés structurées (ADR-002) :
+
+| Champ | Type | Description |
+|---|---|---|
+| `characterId` | `DocumentId?` | Personnage associé — pour les notes PLAYER_PRIVATE joueur |
+| `guestAccessId` | `GuestAccessId?` | Auteur invité sans compte — quand l'auteur n'est pas un utilisateur enregistré |
+
+> Ce modèle permet à une note de session de référencer d'autres documents via `linkedDocuments`
+> (lier un PNJ, une scène, un lieu à la note) sans aucune modélisation supplémentaire.
+> Voir Règles métier n°8 (suppression physique des notes privées à la suppression de compte).
 
 ---
 

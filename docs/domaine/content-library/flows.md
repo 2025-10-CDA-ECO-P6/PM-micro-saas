@@ -1,6 +1,6 @@
 # Content Library — Diagrammes de flux
 
-## 1. Création des dossiers système à la création d'espace
+## Flux 1 — Création des dossiers système à la création d'espace
 
 ```mermaid
 sequenceDiagram
@@ -18,7 +18,7 @@ sequenceDiagram
     CL-->>App: 4 dossiers système visibles + 1 dossier virtuel technique créés
 ```
 
-## 2. Créer un document simple (PNJ, note…)
+## Flux 2 — Créer un document simple (PNJ, note…)
 
 ```mermaid
 sequenceDiagram
@@ -32,7 +32,7 @@ sequenceDiagram
     App-->>MJ: Document créé — éditeur ouvert
 ```
 
-## 3. Créer un scénario avec scènes
+## Flux 3 — Créer un scénario avec scènes
 
 ```mermaid
 sequenceDiagram
@@ -55,7 +55,7 @@ sequenceDiagram
     App-->>MJ: Scénario structuré
 ```
 
-## 4. Référencer un PNJ depuis une scène
+## Flux 4 — Référencer un PNJ depuis une scène
 
 ```mermaid
 sequenceDiagram
@@ -70,7 +70,7 @@ sequenceDiagram
     App-->>MJ: PNJ référencé depuis la scène
 ```
 
-## 5. Instancier un scénario réutilisable (UC-13)
+## Flux 5 — Instancier un scénario réutilisable (UC-13)
 
 ```mermaid
 sequenceDiagram
@@ -85,7 +85,7 @@ sequenceDiagram
     App-->>MJ: Instance indépendante créée dans l'espace
 ```
 
-## 6. Partager un document avec les joueurs
+## Flux 6 — Partager un document avec les joueurs
 
 ```mermaid
 sequenceDiagram
@@ -102,7 +102,7 @@ sequenceDiagram
     Note over App: Permanent — le joueur peut y accéder<br/>entre les sessions
 ```
 
-## 7. Création à la volée en session (UC-07)
+## Flux 7 — Création à la volée en session (UC-07)
 
 ```mermaid
 sequenceDiagram
@@ -119,7 +119,7 @@ sequenceDiagram
     App-->>MJ: PNJ créé et visible dans la vue session (< 10 secondes)
 ```
 
-## 8. Consulter les backlinks d'un document
+## Flux 8 — Consulter les backlinks d'un document
 
 > **Hors MVP** — les backlinks arrivent avec les relations structurées (UC-F06, voir [exclusions](../../besoin/vision/perimetre/exclusions.md)) ; ce flux est conservé pour la reprise (US-04-06).
 

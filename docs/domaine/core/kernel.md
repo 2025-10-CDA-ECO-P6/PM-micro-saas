@@ -1,4 +1,4 @@
-# Core — Shared Kernel
+# Noyau partagé
 
 > Le Core est le noyau partagé entre tous les bounded contexts.
 > Il contient uniquement des abstractions techniques, des IDs typés et des value objects stables.
@@ -14,16 +14,16 @@ il dépend du Core, qui est une dépendance stable et agnostique.
 
 ---
 
-## Ce qui est dans le Core
+## Ce qui est dans le noyau
 
 ### Abstractions DDD
 
-| Classe | Rôle |
-|---|---|
-| `AggregateRoot` | Classe de base pour tous les agrégats. Porte la collection d'événements domaine non publiés. |
-| `Entity` | Classe de base pour les entités (identité par ID). |
-| `ValueObject` | Classe de base pour les value objects (identité par valeur). |
-| `DomainEvent` | Classe de base pour les événements domaine. |
+| Concept | Description | Utilisé dans |
+|---|---|---|
+| `AggregateRoot` | Classe de base pour tous les agrégats. Porte la collection d'événements domaine non publiés. | SOUS-SPÉCIFIÉ |
+| `Entity` | Classe de base pour les entités (identité par ID). | SOUS-SPÉCIFIÉ |
+| `ValueObject` | Classe de base pour les value objects (identité par valeur). | SOUS-SPÉCIFIÉ |
+| `DomainEvent` | Classe de base pour les événements domaine. | SOUS-SPÉCIFIÉ |
 
 ### IDs typés
 
@@ -73,7 +73,7 @@ Tous les identifiants sont des types forts encapsulant un identifiant unique glo
 
 ---
 
-## Ce qui n'est PAS dans le Core
+## Ce qui n'est PAS dans le noyau
 
 | Concept | Appartient à | Raison |
 |---|---|---|

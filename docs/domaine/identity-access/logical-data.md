@@ -1,6 +1,7 @@
 # Identity & Access — Modèle Logique de Données (MLD)
 
-> **Nature : vue physique assumée** — quatrième vue de la suite de modélisation du domaine (prose → classes → MCD → MLD). Les types SQL et index sont la fonction de ce document ; il reste dans la couche conception par arbitrage T-08 (2026-06-10), sans nommer de produit d'infrastructure.
+> **Nature** : Vue physique assumée
+> — quatrième vue de la suite de modélisation du domaine (prose → classes → MCD → MLD). Les types SQL et index sont la fonction de ce document ; il reste dans la couche conception par arbitrage T-08 (2026-06-10), sans nommer de produit d'infrastructure.
 
 ## Table `users` (domaine I&A)
 
@@ -12,8 +13,8 @@
 | `display_name` | `varchar(100)` | NOT NULL | Nom d'affichage |
 | `status` | `varchar(20)` | NOT NULL, DEFAULT 'ACTIVE' | ACTIVE / SUSPENDED / DELETED |
 | `tier` | `varchar(10)` | NOT NULL, DEFAULT 'FREE' | FREE / PRO |
-| `created_at` | `timestamptz` | NOT NULL | |
-| `updated_at` | `timestamptz` | NOT NULL | |
+| `created_at` | `timestamptz` | NOT NULL | Date de création |
+| `updated_at` | `timestamptz` | NOT NULL | Date de dernière modification |
 
 ## Table du référentiel d'identité (infrastructure — composant d'identité, référence)
 

@@ -1,5 +1,7 @@
 # Content Library — Modèle Conceptuel de Données (MCD)
 
+## Diagramme
+
 ```mermaid
 erDiagram
     FOLDER {

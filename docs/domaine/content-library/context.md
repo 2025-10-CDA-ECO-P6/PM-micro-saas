@@ -1,4 +1,4 @@
-# Content Library
+# Contexte — Content Library
 
 > **Responsabilité** : gérer tout le contenu durable d'un espace.
 > Documents, dossiers, types de documents. Ce contexte est le référentiel de tout
@@ -78,7 +78,7 @@ le document sans contraindre sa structure libre.
 | `AuditInfo` | | `createdAt`, `updatedAt`, `createdById: UserId` |
 | `SoftDelete` | | `isDeleted`, `deletedAt` |
 
-**Méthodes**
+**Méthodes** :
 
 | Méthode | Événement produit | Description |
 |---|---|---|
@@ -105,27 +105,15 @@ Unité atomique de contenu. L'ensemble des blocs d'un document forme son corps.
 | `content` | `structure` | Contenu structuré selon le type de bloc |
 | `isLocked` | `bool` | Modélisé, valeur `false` par défaut, non activé MVP |
 
+**Méthodes** :
+
+SOUS-SPÉCIFIÉ
+
 **Format de `content` — tranché** (décision d'entrée en build du 2026-09-03). Le contenu d'un bloc est un **arbre de nœuds typés**, jamais une chaîne de balisage. Un nœud porte son type et, selon ce type, ses enfants ou sa valeur textuelle. L'interface rend cet arbre en construisant ses éléments ; elle n'injecte aucune chaîne de balisage.
 
 **Pourquoi ce point relevait de la conception et non de la sécurité.** La spécification de sanitisation présupposait une liste de balises HTML autorisées — donc un contenu balisé — que rien ici n'établissait. La « liste blanche positive » du plancher de sanitisation porte désormais sur l'**énumération fermée des types de nœuds** que ce modèle définit, ce qui réduit la surface d'injection aux seules feuilles textuelles.
 
 *Voir [`specs/sanitisation-csp.md`](../../architecture/specs/sanitisation-csp.md) pour le plancher, inchangé.*
-
----
-
-### DocumentLink (value object dans Document)
-
-Référence ordonnée d'un Document vers un autre.
-C'est ce qui permet à un scénario de lister ses scènes, à une scène de lister ses PNJ,
-ou à n'importe quel document de pointer vers n'importe quel autre.
-
-| Champ | Type | Description |
-|---|---|---|
-| `targetDocumentId` | `DocumentId` | Document cible |
-| `order` | `int` | Position dans la liste des références |
-
-> **Note** : les backlinks (documents qui pointent vers un document donné) ne sont pas
-> stockés — ils sont calculés à la lecture via `DocumentLink.targetDocumentId`.
 
 ---
 
@@ -146,7 +134,7 @@ Conteneur organisationnel. Structure l'arborescence du contenu dans un espace.
 | `order` | `int` | Ordre d'affichage dans le dossier parent. `0` par défaut. |
 | `AuditInfo` | | |
 
-**Méthodes**
+**Méthodes** :
 
 | Méthode | Événement produit | Description |
 |---|---|---|
@@ -196,6 +184,10 @@ et ne peuvent pas être modifiés. Les types personnalisés (Could Have) permett
 | `isSystem` | `bool` | Type built-in non modifiable |
 | `spaceId` | `SpaceId?` | `null` pour les types système, renseigné pour les types custom |
 
+**Méthodes** :
+
+SOUS-SPÉCIFIÉ
+
 > **Types système built-in** : `SCENARIO`, `SCENE`, `NPC`, `LOCATION`, `NOTE`, `PLAYER_CHARACTER`, `LIVE_NOTE`, `REVEAL`
 >
 > **Décision de conception** : entité de référence plutôt que liste fermée — permet les types
@@ -222,6 +214,24 @@ les **propriétés structurées (`properties`) du type `SCENARIO`**. Il n'y a pa
 > `scenarioStatus` est porté par `Document.properties` et est invisible au modèle générique `Document`.
 > Il n'est accessible qu'en présence d'un `documentTypeId = SCENARIO`.
 > La valeur par défaut à la création est `DRAFT`.
+
+---
+
+## Value Objects
+
+### DocumentLink (value object dans Document)
+
+Référence ordonnée d'un Document vers un autre.
+C'est ce qui permet à un scénario de lister ses scènes, à une scène de lister ses PNJ,
+ou à n'importe quel document de pointer vers n'importe quel autre.
+
+| Champ | Type | Description |
+|---|---|---|
+| `targetDocumentId` | `DocumentId` | Document cible |
+| `order` | `int` | Position dans la liste des références |
+
+> **Note** : les backlinks (documents qui pointent vers un document donné) ne sont pas
+> stockés — ils sont calculés à la lecture via `DocumentLink.targetDocumentId`.
 
 ---
 

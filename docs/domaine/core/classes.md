@@ -1,5 +1,7 @@
 # Core — Diagramme de classes
 
+## Diagramme
+
 ```mermaid
 classDiagram
     class AggregateRoot {

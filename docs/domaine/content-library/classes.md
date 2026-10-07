@@ -1,5 +1,7 @@
 # Content Library — Diagramme de classes
 
+## Diagramme
+
 ```mermaid
 classDiagram
     class Document {
@@ -78,12 +80,14 @@ classDiagram
     }
 
     class DocumentCreated {
+        <<domainEvent>>
         +identifiant documentId
         +identifiant spaceId
         +horodatage occurredAt
     }
 
     class DocumentVisibilityChanged {
+        <<domainEvent>>
         +identifiant documentId
         +Visibility previousVisibility
         +Visibility newVisibility
@@ -91,12 +95,14 @@ classDiagram
     }
 
     class DocumentDeleted {
+        <<domainEvent>>
         +identifiant documentId
         +identifiant spaceId
         +horodatage occurredAt
     }
 
     class DocumentInstantiated {
+        <<domainEvent>>
         +identifiant sourceDocumentId
         +identifiant newDocumentId
         +identifiant spaceId
@@ -104,6 +110,7 @@ classDiagram
     }
 
     class DocumentLinked {
+        <<domainEvent>>
         +identifiant sourceDocumentId
         +identifiant targetDocumentId
         +entier order
@@ -111,18 +118,21 @@ classDiagram
     }
 
     class DocumentUnlinked {
+        <<domainEvent>>
         +identifiant sourceDocumentId
         +identifiant targetDocumentId
         +horodatage occurredAt
     }
 
     class FolderCreated {
+        <<domainEvent>>
         +identifiant folderId
         +identifiant spaceId
         +horodatage occurredAt
     }
 
     class FolderDeleted {
+        <<domainEvent>>
         +identifiant folderId
         +identifiant spaceId
         +horodatage occurredAt

@@ -65,9 +65,21 @@ Le diff contre le gabarit : forme seulement, aucune perte de fond ?
 
 ## Notes de dev
 
-
+- 80 écarts de gabarit corrigés dans les 22 fichiers du domaine. Le contrôle `template` sur racine minimale sort à 0. VerifMailleAgregat donne une sortie identique ; les titres `## Agrégats` et `### Nom` sont lus comme avant.
+- 20 marqueurs `SOUS-SPÉCIFIÉ` posés (méthodes de DocumentBlock, DocumentType et Invitation ; « Utilisé dans » du noyau ; descriptions de colonnes sans source). Les 5 descriptions de colonnes remplies reprennent le `context.md` du même contexte.
+- Citations des titres renommés réécrites hors de la couche : `docs/reference/conception-detaillee.md:157` (§ Ce qui est dans le noyau) et `docs/projet/plan-de-travail.md:77` (`## Agrégats` dans les quatre contextes). La revue datée du 2026-09-03 n'est pas touchée.
+- `conform.sh verify e99aa88 --declared docs/workstreams/conformite-corpus/declares-gabarits-domaine.txt` : code 0.
+- Laissés hors liste : les 35 descriptions vides des autres tableaux des MLD (le contrôle ne lit que le premier), et la classe `SpaceUnarchived` absente du diagramme de space-management.
 
 ## Notes de revue
 
+Revue « forme seulement, aucune perte de fond ? », 2026-10-07 : six constats.
 
+- `fix` : « Agrégat unique » rétabli en phrase sous `## Agrégats` (identity-access).
+- `fix` : `plan-de-travail.md:77` décrivait l'ancien titre ; aligné.
+- Rejeté : les descriptions de colonnes des MLD reprennent mot pour mot le `context.md` du même contexte, par exemple « Unique par propriétaire » (`space-management/context.md:45`).
+- Rejeté : aucun lien entrant vers les ancres renommées (VerifCorpus, 0 ancre morte).
+- Optionnels gardés : colonne du noyau, stéréotypes `<<domainEvent>>` (exigés par le gabarit), fichier des lignes déclarées.
+
+Répartition : 2 `fix`, 2 rejetés, 2 optionnels gardés.
 

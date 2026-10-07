@@ -1,5 +1,7 @@
 # Space Management — Modèle Conceptuel de Données (MCD)
 
+## Diagramme
+
 ```mermaid
 erDiagram
     SPACE {

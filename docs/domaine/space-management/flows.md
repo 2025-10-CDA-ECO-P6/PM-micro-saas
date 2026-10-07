@@ -1,6 +1,6 @@
 # Space Management — Diagrammes de flux
 
-## 1. Créer un espace
+## Flux 1 — Créer un espace
 
 ```mermaid
 sequenceDiagram
@@ -21,7 +21,7 @@ sequenceDiagram
     end
 ```
 
-## 2. Inviter un joueur (via lien)
+## Flux 2 — Inviter un joueur (via lien)
 
 ```mermaid
 sequenceDiagram
@@ -36,7 +36,7 @@ sequenceDiagram
     MJ->>MJ: Partage le lien (Discord, email, etc.)
 ```
 
-## 3. Rejoindre via invitation — utilisateur connecté
+## Flux 3 — Rejoindre via invitation — utilisateur connecté
 
 ```mermaid
 sequenceDiagram
@@ -57,7 +57,7 @@ sequenceDiagram
     end
 ```
 
-## 4. Rejoindre en tant qu'invité (sans compte)
+## Flux 4 — Rejoindre en tant qu'invité (sans compte)
 
 ```mermaid
 sequenceDiagram
@@ -79,7 +79,7 @@ sequenceDiagram
     end
 ```
 
-## 5. Gel des espaces excédentaires (downgrade PRO → FREE)
+## Flux 5 — Gel des espaces excédentaires (downgrade PRO → FREE)
 
 ```mermaid
 sequenceDiagram
@@ -100,7 +100,7 @@ sequenceDiagram
     App-->>Billing: Confirmé
 ```
 
-## 6. Conversion GuestAccess → SpaceMembership
+## Flux 6 — Conversion GuestAccess → SpaceMembership
 
 ```mermaid
 sequenceDiagram
@@ -120,7 +120,7 @@ sequenceDiagram
     App-->>Joueur: Compte créé — membre permanent de l'espace
 ```
 
-## 7. Associer un personnage à un membre
+## Flux 7 — Associer un personnage à un membre
 
 ```mermaid
 sequenceDiagram

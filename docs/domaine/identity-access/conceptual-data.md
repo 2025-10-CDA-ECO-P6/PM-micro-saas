@@ -1,5 +1,7 @@
 # Identity & Access — Modèle Conceptuel de Données (MCD)
 
+## Diagramme
+
 Le bounded context Identity & Access a un seul concept central : le compte utilisateur.
 Les détails d'authentification (mot de passe, tokens) sont délégués à l'infrastructure d'identité
 et ne font pas partie du modèle conceptuel de domaine.

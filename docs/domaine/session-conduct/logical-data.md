@@ -1,21 +1,22 @@
 # Session Conduct — Modèle Logique de Données (MLD)
 
-> **Nature : vue physique assumée** — quatrième vue de la suite de modélisation du domaine (prose → classes → MCD → MLD). Les types SQL et index sont la fonction de ce document ; il reste dans la couche conception par arbitrage T-08 (2026-06-10), sans nommer de produit d'infrastructure.
+> **Nature** : Vue physique assumée
+> — quatrième vue de la suite de modélisation du domaine (prose → classes → MCD → MLD). Les types SQL et index sont la fonction de ce document ; il reste dans la couche conception par arbitrage T-08 (2026-06-10), sans nommer de produit d'infrastructure.
 
 ## Table `sessions`
 
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
-| `id` | `uuid` | PK, NOT NULL | |
+| `id` | `uuid` | PK, NOT NULL | SOUS-SPÉCIFIÉ |
 | `space_id` | `uuid` | NOT NULL | FK physique réelle → `spaces.id` (Space Management) — exception assumée inter-module, voir note ci-dessous |
-| `title` | `varchar(300)` | NOT NULL | |
+| `title` | `varchar(300)` | NOT NULL | SOUS-SPÉCIFIÉ |
 | `status` | `varchar(20)` | NOT NULL, DEFAULT `'LIVE'` | `LIVE` / `CLOSED` / `ARCHIVED` |
 | `scenario_id` | `uuid` | nullable | FK physique réelle → `documents.id` (Content Library) — exception assumée inter-module, voir note ci-dessous |
 | `summary` | `text` | nullable | Éditable en CLOSED |
-| `started_at` | `timestamptz` | NOT NULL | |
-| `closed_at` | `timestamptz` | nullable | |
-| `created_at` | `timestamptz` | NOT NULL | |
-| `updated_at` | `timestamptz` | NOT NULL | |
+| `started_at` | `timestamptz` | NOT NULL | SOUS-SPÉCIFIÉ |
+| `closed_at` | `timestamptz` | nullable | SOUS-SPÉCIFIÉ |
+| `created_at` | `timestamptz` | NOT NULL | SOUS-SPÉCIFIÉ |
+| `updated_at` | `timestamptz` | NOT NULL | SOUS-SPÉCIFIÉ |
 | `created_by_id` | `uuid` | NOT NULL | FK physique réelle → `users.id` (Identity & Access) — exception assumée inter-module, voir note ci-dessous |
 
 **Contrainte partielle** : `UNIQUE (space_id) WHERE status = 'LIVE'` — une seule session au statut LIVE par espace. *(C-14, décision B1)*

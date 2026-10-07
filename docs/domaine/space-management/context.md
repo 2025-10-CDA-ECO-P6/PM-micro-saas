@@ -1,4 +1,4 @@
-# Space Management
+# Contexte — Space Management
 
 > **Responsabilité** : gérer les espaces de jeu (campagnes, one-shots et espace personnel), leur configuration,
 > leurs membres, leurs accès invités et leurs invitations.
@@ -50,7 +50,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `createdAt` | `DateTime` | |
 | `updatedAt` | `DateTime` | |
 
-**Méthodes**
+**Méthodes** :
 
 | Méthode | Événement produit | Description |
 |---|---|---|
@@ -85,7 +85,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 >
 > La sélection du « personnage actif » (personnage actuellement joué par le membre) est une **préférence de vue côté client, non persistée au MVP** dans le modèle Space Management. Cette préférence n'introduit aucun attribut `activeCharacterId` persisté ni aucune modification de `SpaceMembership`. Elle relève entièrement de la présentation (couche client) et du contexte de session, cohérent avec US-12-02.
 
-**Méthodes**
+**Méthodes** :
 
 | Méthode | Événement produit | Description |
 |---|---|---|
@@ -120,6 +120,10 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `usedCount` | `int` | |
 | `status` | `InvitationStatus` | `ACTIVE` \| `REVOKED` \| `EXPIRED` |
 | `createdAt` | `DateTime` | |
+
+**Méthodes** :
+
+SOUS-SPÉCIFIÉ
 
 > Une invitation est le mécanisme d'entrée. Son utilisation crée soit un `SpaceMembership`
 > (utilisateur connecté), soit un `GuestAccess` (utilisateur anonyme).
@@ -158,7 +162,7 @@ depuis Session Conduct par son lien d'accès.
 > non du modèle de domaine. Cette conception est cohérente avec la décision d'identification joueur 
 > (nom d'affichage seul, sans pseudo/code unique obligatoire).
 
-**Méthodes**
+**Méthodes** :
 
 | Méthode | Événement produit | Description |
 |---|---|---|
@@ -171,7 +175,7 @@ depuis Session Conduct par son lien d'accès.
 
 ---
 
-### Scénario réutilisable — subsumé (ADR-018)
+## Scénario réutilisable — subsumé (ADR-018)
 
 Il n'existe pas d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry`. La réutilisabilité
 est portée par `Document.isReusable` + `Document.Instantiate` (Content Library) ; la bibliothèque

@@ -1,5 +1,7 @@
 # Session Conduct — Modèle Conceptuel de Données (MCD)
 
+## Diagramme
+
 ```mermaid
 erDiagram
     SESSION {

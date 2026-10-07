@@ -1,6 +1,6 @@
 # Identity & Access — Diagrammes de flux
 
-## 1. Inscription depuis le mode local
+## Flux 1 — Inscription depuis le mode local
 
 ```mermaid
 sequenceDiagram
@@ -19,7 +19,7 @@ sequenceDiagram
     App-->>MJ: Compte créé, données migrées
 ```
 
-## 2. Connexion
+## Flux 2 — Connexion
 
 > Durées et révocation définies dans [ADR-015](../../decisions/ADR-015-securite-authentification-mvp.md) §3 : access token ≤ 15 min, refresh token ≤ 7 j absolu avec rotation et détection de réutilisation (denylist JTI). La révocation de la famille de tokens est déclenchée par `AccountSuspended` et `UserAnonymized` via `ITokenDenylist.RevokeFamilyAsync`.
 
@@ -44,7 +44,7 @@ sequenceDiagram
     Note over App,Denylist: AccountSuspended / UserAnonymized → RevokeFamilyAsync(userId)<br/>invalide tous les refresh tokens actifs (denylist JTI)
 ```
 
-## 3. Réinitialisation du mot de passe
+## Flux 3 — Réinitialisation du mot de passe
 
 ```mermaid
 sequenceDiagram
@@ -64,7 +64,7 @@ sequenceDiagram
     App-->>Utilisateur: Mot de passe mis à jour
 ```
 
-## 4. Suppression de compte (RGPD)
+## Flux 4 — Suppression de compte (RGPD)
 
 ```mermaid
 sequenceDiagram
@@ -89,7 +89,7 @@ sequenceDiagram
     end
 ```
 
-## 5. Changement de tier (upgrade ou résiliation)
+## Flux 5 — Changement de tier (upgrade ou résiliation)
 
 ```mermaid
 sequenceDiagram
@@ -112,7 +112,7 @@ sequenceDiagram
     App-->>Billing: Confirmé
 ```
 
-## 6. Conversion GuestAccess → User
+## Flux 6 — Conversion GuestAccess → User
 
 ```mermaid
 sequenceDiagram

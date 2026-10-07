@@ -137,4 +137,4 @@ Après chaque tâche « backlog », le commit de départ de `conform-verify` pas
 
 | Après la tâche | Commit de départ | Hash |
 |---|---|---|
-| `backlog-besoin` | le commit « docs(conformite-corpus): applique le backlog de la couche besoin » | inscrit par la tâche `gabarits-domaine` |
+| `backlog-besoin` | le commit « docs(conformite-corpus): applique le backlog de la couche besoin » | `e99aa88` |

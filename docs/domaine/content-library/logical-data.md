@@ -1,22 +1,23 @@
 # Content Library — Modèle Logique de Données (MLD)
 
-> **Nature : vue physique assumée** — quatrième vue de la suite de modélisation du domaine (prose → classes → MCD → MLD). Les types SQL et index sont la fonction de ce document ; il reste dans la couche conception par arbitrage T-08 (2026-06-10), sans nommer de produit d'infrastructure.
+> **Nature** : Vue physique assumée
+> — quatrième vue de la suite de modélisation du domaine (prose → classes → MCD → MLD). Les types SQL et index sont la fonction de ce document ; il reste dans la couche conception par arbitrage T-08 (2026-06-10), sans nommer de produit d'infrastructure.
 
 ## Table `folders`
 
 | Colonne | Type SQL | Contraintes | Description |
 |---|---|---|---|
-| `id` | `uuid` | PK, NOT NULL | |
+| `id` | `uuid` | PK, NOT NULL | SOUS-SPÉCIFIÉ |
 | `space_id` | `uuid` | NOT NULL | FK physique réelle → `spaces.id` (Space Management) — exception assumée inter-module, voir note ci-dessous |
 | `parent_folder_id` | `uuid` | FK → `folders.id`, nullable | Self-référence pour l'arborescence |
-| `name` | `varchar(200)` | NOT NULL | |
+| `name` | `varchar(200)` | NOT NULL | SOUS-SPÉCIFIÉ |
 | `is_system` | `bool` | NOT NULL, DEFAULT `false` | Créé automatiquement à `SpaceCreated` — informatif uniquement, non restrictif |
 | `is_virtual` | `bool` | NOT NULL, DEFAULT `false` | Dossier "Non classés" — invisible dans la navigation, non supprimable, un seul par espace |
-| `default_document_type_id` | `uuid` | FK → `document_types.id`, nullable | |
+| `default_document_type_id` | `uuid` | FK → `document_types.id`, nullable | Type proposé par défaut pour les nouveaux docs dans ce dossier |
 | `default_template_document_id` | `uuid` | FK → `documents.id`, nullable | Template utilisé pour initialiser les nouveaux documents créés dans ce dossier |
 | `order` | `int` | NOT NULL DEFAULT 0 | Ordre d'affichage dans le dossier parent |
-| `created_at` | `timestamptz` | NOT NULL | |
-| `updated_at` | `timestamptz` | NOT NULL | |
+| `created_at` | `timestamptz` | NOT NULL | SOUS-SPÉCIFIÉ |
+| `updated_at` | `timestamptz` | NOT NULL | SOUS-SPÉCIFIÉ |
 | `created_by_id` | `uuid` | NOT NULL | FK physique réelle → `users.id` (Identity & Access) — exception assumée inter-module, voir note ci-dessous |
 
 ---

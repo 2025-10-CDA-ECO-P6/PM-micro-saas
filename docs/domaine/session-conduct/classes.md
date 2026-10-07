@@ -1,5 +1,7 @@
 # Session Conduct — Diagramme de classes
 
+## Diagramme
+
 ```mermaid
 classDiagram
     class Session {
@@ -47,29 +49,34 @@ classDiagram
     }
 
     class SessionStarted {
+        <<domainEvent>>
         +identifiant sessionId
         +identifiant spaceId
         +horodatage occurredAt
     }
 
     class SessionClosed {
+        <<domainEvent>>
         +identifiant sessionId
         +identifiant spaceId
         +horodatage occurredAt
     }
 
     class SessionArchived {
+        <<domainEvent>>
         +identifiant sessionId
         +horodatage occurredAt
     }
 
     class DocumentPinned {
+        <<domainEvent>>
         +identifiant sessionId
         +identifiant documentId
         +horodatage occurredAt
     }
 
     class DocumentUnpinned {
+        <<domainEvent>>
         +identifiant sessionId
         +identifiant documentId
         +horodatage occurredAt

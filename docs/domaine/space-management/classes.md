@@ -1,5 +1,7 @@
 # Space Management — Diagramme de classes
 
+## Diagramme
+
 ```mermaid
 classDiagram
     class Space {
