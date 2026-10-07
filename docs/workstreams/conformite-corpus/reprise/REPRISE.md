@@ -1,6 +1,6 @@
 # Reprise du chantier conformite-corpus
 
-État au 2026-10-07, à la fin de la tâche 10. Ce document sert à reprendre le chantier dans une nouvelle session, où un orchestrateur exécute toutes les tâches restantes l'une après l'autre.
+État au 2026-10-07, à la fin de la tâche 14. Ce document sert à reprendre le chantier dans une nouvelle session, où un orchestrateur exécute toutes les tâches restantes l'une après l'autre.
 
 ## Pour reprendre
 
@@ -11,7 +11,7 @@ claude -n conformite-corpus-reprise
 
 Prompt de départ :
 
-> Reprends le chantier conformite-corpus en orchestrateur, à la tâche 11 (`gabarits-decisions-architecture-assurance`). Lis d'abord `docs/workstreams/conformite-corpus/reprise/REPRISE.md`, puis `TACHES.md`. Une tâche, un commit, sur `chantier/conformite-corpus`.
+> Reprends le chantier conformite-corpus en orchestrateur, à la tâche 15 (`doublons`). Lis d'abord `docs/workstreams/conformite-corpus/reprise/REPRISE.md`, puis `TACHES.md`. Une tâche, un commit, sur `chantier/conformite-corpus`.
 
 ## Où on en est
 
@@ -27,10 +27,14 @@ Prompt de départ :
 | 8 | backlog-domaine | `dca4540` | close |
 | 9 | gabarits-interface | `f23dd91` | close |
 | 10 | backlog-interface | `4ce7faa` | close |
-| 11 à 18, 21 à 24 | — | — | à faire, dans l'ordre de [TACHES.md](../TACHES.md) |
+| 11 | gabarits-decisions-architecture-assurance | `110c0b8` | close |
+| 12 | backlog-decisions-architecture-assurance | `3037a00` | close |
+| 13 | gabarits-reference-projet | `be6c45b` | close |
+| 14 | backlog-reference-projet | `775a1db` | close |
+| 15 à 18, 21 à 24 | — | — | à faire, dans l'ordre de [TACHES.md](../TACHES.md) |
 | 19, 20 | — | — | **reportées** hors du chantier (décision de l'opérateur, voir plus bas) |
 
-- **Commit de départ de `conform-verify`** : `4ce7faa` (tâche 10). La tâche 11 inscrit ce hash dans la ligne `backlog-interface` de la table de réépinglage. Voir la table de [reference.md](../reference.md).
+- **Commit de départ de `conform-verify`** : `775a1db` (tâche 14). La tâche 15 inscrit ce hash dans la ligne `backlog-reference-projet` de la table de réépinglage. Voir la table de [reference.md](../reference.md).
 - **Workflow GitHub `recalcul-suivi-projet`** : désactivé par `gh workflow disable` ; son fichier n'est pas modifié. La tâche 23 le réactive.
 
 ## Décisions de l'opérateur
@@ -105,6 +109,11 @@ git worktree add --detach <scratchpad>/wt-NX <commit>
 
 ## Restes connus
 
+- **Différés des tâches 11 à 14** :
+  - **à la tâche 15 (doublons)** : les critères de sortie par jalon, portés à la fois par la roadmap de build, le §9 de la stratégie de test et la section « Jalons » de la note de cadrage ; « campagne par campagne » (parcours-01, parcours-02, RB-01-11) ;
+  - **à la conversion des marqueurs** : des `RÉSOLU`, `TRANCHÉ` et « (résolu) » préexistants (PO-04 et PO-06 de la stratégie de test, US-UC-01, D-01 du registre, titres du §9 du zonage), plus le marqueur du reclaim-in-place (« à ratifier produit » contre « PRODUIT ») ;
+  - **écarts de gabarit assumés** (le contrôle les signale ; justification dans les notes de dev des specs 11 et 13) : le §9 de la stratégie de test, le champ Sources d'UC-15, les fiches TB du plan (tableaux lus par l'outillage), les 7 colonnes du registre, les nœuds de décision de la roadmap, la Version de la note business ;
+  - divers : les sous-titres « ### §N — … » du §11 du cahier des spécifications ; « ordre de build C#-first » (cadrage juridique, cahier des spécifications) ; l'outil d'intégrité des citations Gherkin que décrit le §13 de la stratégie de test, à prévoir à la tâche 22.
 - **Différés des tâches 8 à 10**, à reprendre au solde du backlog (tâche 21) ou à remonter à l'opérateur :
   - `space-management/context.md`, consommateur de `CharacterAssociated` : « Session Conduct (accès aux notes PLAYER_PRIVATE du personnage) » contredit l'invariant 6 de Content Library ;
   - « Non classés » : UC-02 le dit non renommable, AR-20 et les fiches le disent renommable ; UC-05 parle encore d'une « vue dédiée », close par le zonage ;
@@ -121,6 +130,8 @@ git worktree add --detach <scratchpad>/wt-NX <commit>
   - le module `screen-sheets` n'a pas de lecteur dans le contrôle `template`, et sa recette ignore la section « Mode local » que déclare le gabarit d'écran du projet ;
   - les libellés de l'outillage donnent `[RÉSOLU — source]`, alors que l'ADR-019 veut `DÉCIDÉ` avec date et renvoi ;
   - le contrôle `template` n'accepte qu'un numéro « N. » devant un titre, si bien que les repères S1 à S10 du zonage vivent dans une phrase du préambule ;
+  - le contrôle refuse `SOUS-SPÉCIFIÉ` dans un champ à format imposé (Date, Version) et attend des champs « **Libellé** : » là où l'outillage du projet lit des tableaux (fiches TB) ;
+  - `VueDesEpiques` (VerifCouvertureRecette) borne sa lecture sur un titre « ## 5. » : tout changement de niveau de titre du plan déplace silencieusement son périmètre ;
   - le contrôle `template` est global, lent, coupé à 30 lignes, et refuse l'élision ;
   - `verify` est coupé à 20 lignes ;
   - le motif de comptage des tests était sensible à la casse (corrigé dans `state/`) ;
