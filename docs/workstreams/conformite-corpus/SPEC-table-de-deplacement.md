@@ -65,9 +65,19 @@ Le contrat et l'ADR-020 : la table réalise-t-elle l'arborescence décidée ?
 
 ## Notes de dev
 
-
+- 233 lignes : 220 déplacements et 13 fichiers laissés en place (ancien = nouveau). La vérité 2 exempte ces 13 lignes, sans quoi la vérité 1 ne pourrait pas être tenue pour `docs/corpus.md`. La tâche `deplacements` doit sauter les lignes ancien = nouveau et les lignes `#`.
+- Décisions de l'opérateur (2026-10-07) : `docs/conception/README.md` va à `docs/reference/ordre-d-autorite.md` ; les fichiers du domaine gardent les noms reconnus par les modules `domain-*` (R10) ; `securite/` et `ecoconception/` passent sous `docs/assurance/`, `deploiement/` sous `docs/architecture/`.
+- Contrôle rejouable : `python3 -I docs/workstreams/conformite-corpus/controle-table-deplacement.py --plan docs/workstreams/conformite-corpus/plan-conformite-calcule-2026-10-07.txt`, à lancer avant les déplacements.
+- Défauts de `conform.sh` à remonter à condor : après déplacement, `plan --map` renvoie `security-dossier` vers son chemin par défaut, au lieu du chemin de la sélection.
 
 ## Notes de revue
 
+Revue « le contrat et l'ADR-020 », 2026-10-07 : quatre constats.
 
+- Le script de contrôle est hors périmètre : `wrong-spec` mineur. La section Vérification exige ce script, que le périmètre omet. Gardé.
+- `docs/workstreams/` et `docs/project/` sont exclus : ce n'est pas un écart. La vérité 1 et le critère « Figé si » les excluent en toutes lettres ; `docs/project/` est consommé par la tâche `solde-du-backlog`.
+- Noms anglais du domaine : `intent`, tranché par l'opérateur (R10).
+- Module `conventions` désactivé : `deferred`, c'est la tâche `documents-generes` qui écrit `docs/conventions.md` et active le module.
+
+Répartition : 1 `wrong-spec`, 1 `intent`, 1 `deferred`, 1 rejeté.
 
