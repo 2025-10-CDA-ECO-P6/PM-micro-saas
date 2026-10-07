@@ -136,7 +136,7 @@ La règle est à reformuler ainsi dans le domaine I&A : « les contenus appartie
 
 #### Dossiers — portée
 
-**Réécrit** : les dossiers passent de campagne-scopés à espace-scopés. Un espace personnel dispose de sa propre arborescence de dossiers, créée à la création de l'espace (dossiers système + dossier virtuel « Non classés »). Cette arborescence est un bénéfice direct : la structuration du contenu personnel est gratuite, elle reprend le même mécanisme.
+**Réécrit** : les dossiers passent de campagne-scopés à espace-scopés. Un espace personnel dispose de sa propre arborescence de dossiers, créée à la création de l'espace (le seul dossier virtuel « Non classés » ; les quatre dossiers système nommés restent réservés aux espaces partagés, voir Compléments post-revue). Cette arborescence est un bénéfice direct : la structuration du contenu personnel est gratuite, elle reprend le même mécanisme.
 
 #### Quotas — stockage
 

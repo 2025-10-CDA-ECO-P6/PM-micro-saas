@@ -2,19 +2,19 @@
 
 - 0001 — 2026-10-07 — [Recouper reflexion-ux-mvp §2-§4 et §6 avec les fiches écran](0001-a-verifier-recouper-reflexion-ux-mvp-md-2-a-4-et-6-lignes-36.md) — fait
 - 0002 — 2026-10-07 — [Recouper le corps des 20 fiches écran entre elles](0002-recouper-le-corps-des-20-fiches-ecran-entre-elles.md) — fait
-- 0003 — 2026-10-07 — [Recouper les 45 contre-mesures du dossier sécurité avec leurs ADR](0003-recouper-les-45-contre-mesures-du-dossier-securite-avec-leur.md) — ouvert
+- 0003 — 2026-10-07 — [Recouper les 45 contre-mesures du dossier sécurité avec leurs ADR](0003-recouper-les-45-contre-mesures-du-dossier-securite-avec-leur.md) — fait
 - 0004 — 2026-10-07 — [Recouper le corps de roadmap-produit avec moscow et la roadmap build](0004-recouper-le-corps-de-roadmap-produit-avec-moscow-et-la-roadm.md) — ouvert
 - 0005 — 2026-10-07 — [Vérifier si le CdC §12.1 est toujours à jour (épinglage, migration)](0005-verifier-si-le-cdc-12-1-est-toujours-a-jour-epinglage-migrat.md) — ouvert
 - 0006 — 2026-10-07 — [Trancher le décompte des FK inter-modules : 19 ou 17](0006-trancher-le-decompte-des-fk-inter-modules.md) — ouvert
 - 0007 — 2026-10-07 — [Vérifier l'unicité de la session LIVE pour un espace PERSONAL](0007-verifier-l-unicite-de-la-session-live-pour-un-espace-persona.md) — fait
-- 0008 — 2026-10-07 — [Vérifier le traitement par VerifCorpus du lien vers un répertoire](0008-verifier-le-traitement-par-verifcorpus-du-lien-vers-un-reper.md) — ouvert
-- 0009 — 2026-10-07 — [Reconstruire VerifCorpus et vérifier que la DLL suit la source](0009-reconstruire-verifcorpus-et-verifier-que-la-dll-suit-la-sour.md) — ouvert
+- 0008 — 2026-10-07 — [Vérifier le traitement par VerifCorpus du lien vers un répertoire](0008-verifier-le-traitement-par-verifcorpus-du-lien-vers-un-reper.md) — fait
+- 0009 — 2026-10-07 — [Reconstruire VerifCorpus et vérifier que la DLL suit la source](0009-reconstruire-verifcorpus-et-verifier-que-la-dll-suit-la-sour.md) — fait
 - 0010 — 2026-10-07 — [Vérifier la définition de GuestAccess, Non classés et LIVE_NOTE](0010-verifier-la-definition-de-guestaccess-non-classes-et-live-no.md) — fait
 - 0011 — 2026-10-07 — [Expliquer l'absence de RB-02-21..23 dans les tables de US-UC-02](0011-expliquer-l-absence-de-rb-02-21-23-dans-les-tables-de-us-uc.md) — fait
 - 0012 — 2026-10-07 — [Identifier le document « 06 » cité par le dossier d'architecture](0012-identifier-le-document-06-cite-par-le-dossier-d-architecture.md) — ouvert
 - 0013 — 2026-10-07 — [Identifier les « 6 surfaces MJ » de l'accès compte](0013-identifier-les-6-surfaces-mj-de-l-acces-compte.md) — fait
-- 0014 — 2026-10-07 — [Corriger le renvoi « item 1 du cadrage juridique » de la spec d'effacement](0014-corriger-le-renvoi-item-1-du-cadrage-juridique-de-la-spec-d.md) — ouvert
-- 0015 — 2026-10-07 — [Vérifier si VerifCouvertureRecette contrôle l'intégrité des citations Gherkin](0015-verifier-si-verifcouverturerecette-controle-l-integrite-des.md) — ouvert
+- 0014 — 2026-10-07 — [Corriger le renvoi « item 1 du cadrage juridique » de la spec d'effacement](0014-corriger-le-renvoi-item-1-du-cadrage-juridique-de-la-spec-d.md) — fait
+- 0015 — 2026-10-07 — [Vérifier si VerifCouvertureRecette contrôle l'intégrité des citations Gherkin](0015-verifier-si-verifcouverturerecette-controle-l-integrite-des.md) — fait
 - 0016 — 2026-10-07 — [Corriger le renvoi de NFR-OFF-03 vers le README des NFR](0016-corriger-le-renvoi-de-nfr-off-03-vers-le-readme-des-nfr.md) — fait
 - 0017 — 2026-10-07 — [Aligner le nombre d'hypothèses centrales du guide d'entretien sur la vision](0017-aligner-le-nombre-d-hypotheses-centrales-du-guide-d-entretie.md) — fait
 - 0018 — 2026-10-07 — [Vérifier si Paramètres de campagne touche la frontière joueur](0018-verifier-si-parametres-de-campagne-touche-la-frontiere-joueu.md) — fait
@@ -48,7 +48,7 @@
 - 0046 — 2026-10-07 — [Préciser dans le zoning S8 que la clôture formelle est le workflow d'après-session](0046-preciser-dans-le-zoning-s8-que-la-cloture-formelle-est-le-wo.md) — fait
 - 0047 — 2026-10-07 — [Afficher le niveau PLAYER_PRIVATE sous un terme générique, « Privé (joueur) »](0047-afficher-le-niveau-player-private-sous-un-terme-generique-pr.md) — fait
 - 0048 — 2026-10-07 — [Étendre la règle de pureté du domaine aux diagrammes](0048-etendre-la-regle-de-purete-du-domaine-aux-diagrammes.md) — fait
-- 0049 — 2026-10-07 — [Corriger PO-05 : le délai d'effacement de compte est de 1 mois, extensible à 2 (ADR-012:147)](0049-corriger-po-05-le-delai-d-effacement-de-compte-est-de-1-mois.md) — ouvert
+- 0049 — 2026-10-07 — [Corriger PO-05 : le délai d'effacement de compte est de 1 mois, extensible à 2 (ADR-012:147)](0049-corriger-po-05-le-delai-d-effacement-de-compte-est-de-1-mois.md) — fait
 - 0050 — 2026-10-07 — [Inscrire la variante one-shot express dans moscow, en post-MVP comme dans UC-02](0050-inscrire-la-variante-one-shot-express-dans-moscow-en-post-mv.md) — fait
 - 0051 — 2026-10-07 — [Ajouter à la DoD la mise à jour du guide de lecture par fonctionnalité](0051-ajouter-a-la-dod-la-mise-a-jour-du-guide-de-lecture-par-fonc.md) — ouvert
 - 0052 — 2026-10-07 — [Aligner moscow.md sur ses sources (4 écarts)](0052-aligner-moscow-md-sur-ses-sources-4-ecarts.md) — fait
@@ -65,10 +65,10 @@
 - 0063 — 2026-10-07 — [Aligner reflexion-ux-mvp.md sur ses sources (5 écarts)](0063-aligner-reflexion-ux-mvp-md-sur-ses-sources-5-ecarts.md) — fait
 - 0064 — 2026-10-07 — [Aligner gabarit-ecran.md sur ses sources (2 écarts)](0064-aligner-gabarit-ecran-md-sur-ses-sources-2-ecarts.md) — fait
 - 0065 — 2026-10-07 — [Aligner les fiches écran sur leurs sources (6 écarts)](0065-aligner-les-fiches-ecran-sur-leurs-sources-6-ecarts.md) — fait
-- 0066 — 2026-10-07 — [Aligner ADR-018-espace-personnel-generalisation-space.md sur ses sources (1 écart)](0066-aligner-adr-018-espace-personnel-generalisation-space-md-sur.md) — ouvert
-- 0067 — 2026-10-07 — [Aligner architecture-detaillee.md sur ses sources (1 écart)](0067-aligner-architecture-detaillee-md-sur-ses-sources-1-ecart.md) — ouvert
-- 0068 — 2026-10-07 — [Aligner dossier-securite.md sur ses sources (1 écart)](0068-aligner-dossier-securite-md-sur-ses-sources-1-ecart.md) — ouvert
-- 0069 — 2026-10-07 — [Aligner telemetrie.md sur ses sources (1 écart)](0069-aligner-telemetrie-md-sur-ses-sources-1-ecart.md) — ouvert
+- 0066 — 2026-10-07 — [Aligner ADR-018-espace-personnel-generalisation-space.md sur ses sources (1 écart)](0066-aligner-adr-018-espace-personnel-generalisation-space-md-sur.md) — fait
+- 0067 — 2026-10-07 — [Aligner architecture-detaillee.md sur ses sources (1 écart)](0067-aligner-architecture-detaillee-md-sur-ses-sources-1-ecart.md) — fait
+- 0068 — 2026-10-07 — [Aligner dossier-securite.md sur ses sources (1 écart)](0068-aligner-dossier-securite-md-sur-ses-sources-1-ecart.md) — fait
+- 0069 — 2026-10-07 — [Aligner telemetrie.md sur ses sources (1 écart)](0069-aligner-telemetrie-md-sur-ses-sources-1-ecart.md) — fait
 - 0070 — 2026-10-07 — [Aligner cahier-des-charges.md sur ses sources (1 écart)](0070-aligner-cahier-des-charges-md-sur-ses-sources-1-ecart.md) — ouvert
 - 0071 — 2026-10-07 — [Aligner note-cadrage-projet.md sur ses sources (1 écart)](0071-aligner-note-cadrage-projet-md-sur-ses-sources-1-ecart.md) — ouvert
 - 0072 — 2026-10-07 — [Aligner registre-risques.md sur ses sources (3 écarts)](0072-aligner-registre-risques-md-sur-ses-sources-3-ecarts.md) — ouvert

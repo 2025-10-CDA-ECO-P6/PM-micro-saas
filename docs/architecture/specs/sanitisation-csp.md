@@ -70,7 +70,7 @@ Cette séquence — structure puis sanitisation, sanitisation avant écriture �
 | `script-src` | `'self'`, sans inline | Anti-XSS — aucun script inline ni tiers non approuvé |
 | `connect-src` | `'self'` (ou restreint à l'API) | Rend observable « aucun envoi serveur en mode local » |
 
-Ces trois directives sont **actées** par ADR-017 comme posture — elles ne sont pas illustratives. Le détail complet (directives exhaustives restantes, valeurs de nonce) reste ouvert (§5).
+Ces trois directives sont **actées** par ADR-017 comme posture — elles ne sont pas illustratives. Le détail complet (directives exhaustives restantes, valeurs de nonce) est tranché : voir §5 et [`conventions-dod.md §7`](../../projet/conventions-dod.md).
 
 ---
 

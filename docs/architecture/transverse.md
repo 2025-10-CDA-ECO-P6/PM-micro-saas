@@ -46,7 +46,7 @@ Le transport temps réel (partage MJ → joueurs) retient SignalR dès le dépar
 
 ## 6 — Mode local & frontière local↔cloud
 
-Le mode local est une couche de persistance et de validations TypeScript minimales côté navigateur — il n'exécute pas le domaine C# complet, qui reste la source de vérité unique. Ce principe fondateur, l'invariant « validation locale ⊆ validation serveur » et le choix C#-first pour l'ordre de construction sont actés dans [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md).
+Le mode local est une couche de persistance et de validations TypeScript minimales côté navigateur — il n'exécute pas le domaine C# complet, qui reste la source de vérité unique. Ce principe fondateur, l'invariant « validation locale ⊆ validation serveur » et le choix C#-first comme autorité du contrat sont actés dans [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md).
 
 La frontière entre le mode local et le cloud est traversée exclusivement par une migration one-shot, jamais par une synchronisation continue. Le contrat de sérialisation (enveloppe versionnée, champs gouvernés vs libres, champs jamais honorés depuis le payload, parcours d'échec transactionnel par espace, gate de confirmation anti-appropriation) est spécifié dans [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md). Le pendant client de cette frontière — modèle IndexedDB, posture de synchronisation migration-only, persistance best-effort (`navigator.storage.persist()`), sanitisation XSS côté client et non-chiffrement at-rest assumé — est spécifié dans [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md).
 

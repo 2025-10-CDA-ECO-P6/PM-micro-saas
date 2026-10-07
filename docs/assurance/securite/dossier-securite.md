@@ -51,7 +51,7 @@ Neuf surfaces d'attaque sont identifiées dans le corpus de conception.
 | **S5** — Stockage local | IndexedDB, XSS persistant, absence de chiffrement au repos, poste partagé | ADR-017 §4 ; `sanitisation-csp.md` |
 | **S6** — Migration et import local → cloud | Frontière de confiance, appropriation de poste partagé, revalidation | ADR-016 §2 / §3 / §4 |
 | **S7** — Import JSON local | Fichier externe non fiable importé en régime local | ADR-017 §4.3 ; `sanitisation-csp.md` §2 |
-| **S8** — Télémétrie / analytique | Minimisation, non-captation du contenu narratif | `telemetrie.md` ; ADR-006 §Périmètre MVP ; NFR-CONF-02 |
+| **S8** — Télémétrie / analytique | Minimisation, non-captation du contenu narratif | `telemetrie.md` ; ADR-006 §Compléments post-revue ; NFR-CONF-02 |
 | **S9** — Effacement et cascade RGPD | Résidus de données, accès résiduel, intégrité référentielle | ADR-011 ; ADR-012 ; ADR-013 ; `requete-effacement-non-partage.md` |
 
 ---
@@ -65,14 +65,14 @@ Cette section ne présente, par surface, que les catégories STRIDE effectivemen
 | Surface | S | T | R | I | D | E |
 |---|---|---|---|---|---|---|
 | S1 — Authentification cloud | ✓ (→ #1, #4, #10) | ✓ (→ #4, #11) | lacune (→ L2) | ✓ (→ #5) | ✓ (→ #9, #10) | ✓ (→ #6, #42) |
-| S2 — Liaison OAuth | ✓ (→ #12, #13, #14) | — | lacune (→ L2) | ✓ (→ #15) | — | ✓ (→ #16, non ratifié) |
+| S2 — Liaison OAuth | ✓ (→ #12, #13) | — | lacune (→ L2) | ✓ (→ #15) | — | ✓ (→ #14, #16 non ratifié) |
 | S3 — API / autorisation | — | ✓ (→ #17) | lacune (→ L2) | ✓ (→ #20, #21, #22, #24) | — | ✓ (→ #17, #23) |
 | S4 — Canal temps réel invité | ✓ (→ #25) | — | lacune (→ L2) | ✓ (→ #19, #20) | — | ✓ (→ #26) |
 | S5 — Stockage local | — | ✓ (→ #27, #30) | lacune (→ L2) | ✓ (→ #30, #36) | — | — |
 | S6 — Migration et import local → cloud | ✓ (→ #33) | ✓ (→ #28, #31, #32, #34) | lacune (→ L2) | — | — | — |
 | S7 — Import JSON local | — | ✓ (→ #29) | lacune (→ L2) | — | — | — |
 | S8 — Télémétrie / analytique | — | — | lacune (→ L2) | ✓ (→ #45) | — | — |
-| S9 — Effacement et cascade RGPD | — | ✓ (→ #37, #38, #43) | lacune (→ L2) | ✓ (→ #39, #41, #42) | — | — |
+| S9 — Effacement et cascade RGPD | — | ✓ (→ #37, #38, #43) | lacune (→ L2) | ✓ (→ #39, #41) | — | ✓ (→ #42) |
 
 Les cases « — » signifient hors-périmètre du corpus consolidé pour cette surface, non une absence de risque non évaluée.
 
@@ -91,16 +91,16 @@ Les cases « — » signifient hors-périmètre du corpus consolidé pour cette 
 
 | Catégorie STRIDE | Traitement | Ancre |
 |---|---|---|
-| Spoofing | Verrou anti-préemption de compte : liaison uniquement si l'email préexistant est prouvé vérifié, avec correspondance canonique ; preuve d'identité alternative exigée pour la définition d'un premier mot de passe sur un compte fédéré uniquement | ADR-015 §2.3 ; §1.4 |
+| Spoofing | Verrou anti-préemption de compte : liaison uniquement si l'email préexistant est prouvé vérifié, avec correspondance canonique | ADR-015 §2.3 |
 | Information disclosure | Rejet silencieux de la liaison, non-révélation de l'existence d'un compte | ADR-015 §2.3 ; `contrat-openapi.md` §6 |
-| Elevation of Privilege | Mécanisme de reprise en place (« reclaim-in-place »), **statut non ratifié** — voir section 5.2 | ADR-015 §2.3 |
+| Elevation of Privilege | Preuve d'identité alternative exigée pour la définition d'un premier mot de passe sur un compte fédéré uniquement ; mécanisme de reprise en place (« reclaim-in-place »), **statut non ratifié** — voir section 5.2 | ADR-015 §1.4 ; §2.3 |
 
 ### S3 — API / autorisation
 
 | Catégorie STRIDE | Traitement | Ancre |
 |---|---|---|
 | Tampering / Elevation of Privilege | Verrou d'appartenance non contournable (`IResourceAccessPolicy`) intégré au pipeline de traitement des requêtes ; suppression en `RESTRICT` pilotée par saga applicative, jamais de cascade SQL silencieuse | ADR-014 §3 ; ADR-011 §1 |
-| Information disclosure | Non-révélation d'existence (réponses 403 / 404 différenciées) ; exclusion silencieuse des liens retour non lisibles ; filtres de requête appliqués systématiquement | ADR-014 §Conséquences, §Fuite d'existence par backlink, §2 ; `contrat-openapi.md` §1-4 |
+| Information disclosure | Non-révélation d'existence (403 acté pour un refus connu ; code du refus opposé à un non-membre, 404 proposé, non tranché — section 5.1) ; exclusion silencieuse des liens retour non lisibles ; filtres de requête appliqués systématiquement | ADR-014 §Conséquences, §Fuite d'existence par backlink, §2 ; `contrat-openapi.md` §1-4 |
 | Elevation of Privilege | Verrou anti-saut de privilège invité → utilisateur enregistré | ADR-014 §1 / §5 |
 
 ### S4 — Canal temps réel invité
@@ -145,7 +145,8 @@ Sanitisation applicative (#27) et CSP (#30) forment une défense en profondeur a
 
 | Catégorie STRIDE | Traitement | Ancre |
 |---|---|---|
-| Information disclosure (résidu) | Suppression physique définitive des documents `PLAYER_PRIVATE` ; purge des journaux de corrélation identifiant technique ↔ email ; révocation des jetons actifs au sein de la saga d'anonymisation | ADR-012 §3(a) / §4 / §5 ; ADR-015 §3.6 |
+| Information disclosure (résidu) | Suppression physique définitive des documents `PLAYER_PRIVATE` ; purge des journaux de corrélation identifiant technique ↔ email | ADR-012 §3(a) / §4 / §5 |
+| Elevation of Privilege (accès résiduel) | Révocation des jetons actifs au sein de la saga d'anonymisation | ADR-015 §3.6 ; ADR-012 §Conséquences |
 | Intégrité référentielle | Saga applicative en ordre topologique, mécanisme de réservation (« claim ») et reprise idempotents | ADR-011 |
 | Tampering (cohérence temporelle / TOCTOU) | Figement de la sélection des données à l'instant de la demande d'effacement, jeu de données matérialisé, étape de relocation obligatoire | ADR-012 §7 ; `requete-effacement-non-partage.md` §2 |
 
@@ -165,7 +166,7 @@ Les quarante-cinq contre-mesures documentées dans le corpus sont regroupées ci
 | 4 | Signature JWT asymétrique (RS256 / ES256) ; interdiction explicite de l'algorithme `none` dans les paramètres de validation | S1 / Tampering | ADR-015 §3.2 |
 | 5 | Rotation de la clé de signature sans redéploiement ; clé jamais versionnée, gestion via gestionnaire de secrets obligatoire | S1 / Information disclosure | ADR-015 §3.2 |
 | 6 | Rotation des jetons de rafraîchissement par famille, avec détection de réutilisation entraînant la révocation de la famille entière | S1 / Elevation of Privilege | ADR-015 §3.3 |
-| 7 | Liste de révocation de jetons (JTI) externe et partagée : conséquence de la topologie scale-out multi-instances déjà actée par ADR-004 (sticky sessions) — une conservation en mémoire mono-instance y est incompatible, pas seulement en cas de montée en charge future | S1 / Elevation of Privilege | ADR-015 §3.4 ; ADR-004 §Compléments post-revue |
+| 7 | Liste de révocation de jetons (JTI) externe et partagée : conséquence de la topologie à connexions persistantes et sticky sessions actée par ADR-004, dont ADR-015 §3.4 tire l'exigence de scale-out multi-instances — une conservation en mémoire mono-instance y est incompatible, pas seulement en cas de montée en charge future | S1 / Elevation of Privilege | ADR-015 §3.4 ; ADR-004 §Conséquences |
 | 8 | Purge périodique des identifiants de jeton (JTI) expirés, tâche idempotente | S1 / hygiène opérationnelle | ADR-015 §3.5 |
 | 9 | Limitation de débit hybride, par adresse IP et par compte, seuils indépendants et cumulatifs, borne supérieure de sécurité obligatoire, sur les points d'entrée de connexion, rafraîchissement, validation de jeton et réinitialisation de mot de passe | S1 / Denial of Service | ADR-015 §4.1 / §4.2 ; `contrat-openapi.md` §5 |
 | 10 | Jeton de réinitialisation de mot de passe : durée de vie ≤ 15 minutes, usage unique, invalidation des jetons antérieurs | S1 / Denial of Service, Spoofing | ADR-015 §4.3 |
@@ -192,7 +193,7 @@ Les quarante-cinq contre-mesures documentées dans le corpus sont regroupées ci
 | 21 | Exclusion silencieuse des liens retour non lisibles par l'appelant | S3 / Information disclosure | ADR-014 §Fuite d'existence par backlink ; `contrat-openapi.md` §3.2 |
 | 22 | Filtres de requête globaux (dates de suppression et de purge, indicateur de suppression) appliqués sur tous les chemins de lecture, y compris la lecture par identifiant direct | S3 / Information disclosure | ADR-014 §2 ; ADR-011 §Invariant de visibilité du soft-delete |
 | 23 | Verrou anti-saut de privilège invité → utilisateur enregistré : la conversion conserve le périmètre de l'accès invité d'origine | S3 / Elevation of Privilege | ADR-014 §1 / §5 |
-| 24 | Non-révélation d'existence par différenciation des codes de réponse (403 pour un refus connu, 404 pour un non-membre) | S3 / Information disclosure | ADR-014 §Conséquences ; `contrat-openapi.md` §2 / §4 |
+| 24 | Non-révélation d'existence par différenciation des codes de réponse : 403 pour un refus connu (membre ou invité actif), acté ; 404 pour un non-membre, proposition dérivée du principe de non-révélation, **non tranchée** (section 5.1) | S3 / Information disclosure | ADR-014 §Conséquences ; `contrat-openapi.md` §2 / §4 |
 | 25 | Transmission du jeton d'accès invité hors chaîne de requête sur le canal temps réel | S4 / Spoofing | ADR-004 §Compléments post-revue |
 | 26 | Déconnexion forcée du canal temps réel sur révocation ou expiration de l'accès invité | S4 / révocation en session | ADR-004 §Compléments post-revue |
 
@@ -203,7 +204,7 @@ Les quarante-cinq contre-mesures documentées dans le corpus sont regroupées ci
 | 27 | Sanitisation côté client par liste blanche positive : balises `<script>` et attributs gestionnaires d'événement supprimés sans exception, appliquée avant injection dans le DOM et avant persistance | S5 / S7 Tampering | ADR-017 §4.1 ; `sanitisation-csp.md` §1 / §3 |
 | 28 | Sanitisation côté serveur par liste blanche positive à l'import de migration, avec le même plancher de règles | S6 / Tampering | ADR-016 §2.4 ; `sanitisation-csp.md` §1 |
 | 29 | Ordre impératif de traitement de l'import JSON local : validation structurelle, puis sanitisation, puis écriture | S7 / Tampering | ADR-017 §4.3 ; `sanitisation-csp.md` §2 |
-| 30 | Politique de sécurité de contenu stricte (`default-src 'self'`, `script-src 'self'` sans exécution en ligne, `connect-src 'self'`) | S5 / Information disclosure | ADR-017 §4.2 ; `sanitisation-csp.md` §4 |
+| 30 | Politique de sécurité de contenu stricte (`default-src 'self'`, `script-src 'self'` sans exécution en ligne, `connect-src 'self'` ou restreint à l'API) | S5 / Information disclosure | ADR-017 §4.2 ; `sanitisation-csp.md` §4 |
 
 ### 4.5 Frontière de confiance de la migration (surface S6)
 
@@ -238,11 +239,11 @@ Les quarante-cinq contre-mesures documentées dans le corpus sont regroupées ci
 
 | # | Contre-mesure | Surface / menace | Ancre |
 |---|---|---|---|
-| 45 | Minimisation : mesure d'occurrence sans captation du contenu narratif ; exigence de résultat d'anonymisation actée, moyen technique non tranché — cohérent avec NFR-CONF-02 | S8 / Information disclosure | `telemetrie.md` §5 ; `cahier-des-charges.md` |
+| 45 | Minimisation : mesure d'occurrence sans captation du contenu narratif ; transport DÉCIDÉ 2026-09-03 (`telemetrie.md` §6) — les compteurs sont écrits dans le store local et ne quittent le navigateur qu'à la création d'un compte, sans appel sortant en mode local — cohérent avec NFR-CONF-02 | S8 / Information disclosure | `telemetrie.md` §3.4 / §5 / §6 ; `cahier-des-charges.md` |
 
 ### 4.9 Chaînes structurantes
 
-La topologie scale-out multi-instances actée par ADR-004 (§Compléments post-revue — sticky sessions, connexions persistantes) est la racine commune de plusieurs mesures de ce dossier, présentées ailleurs comme si elles étaient indépendantes : au minimum la denylist JTI externe et partagée (#7) et le comportement d'exécution du canal SignalR / backplane, renvoyé en section 5.1. Le risque évité : sans magasin de révocation partagé hors-process, une révocation opérée sur une instance resterait invisible des autres jusqu'à l'expiration naturelle du jeton. Ancres : ADR-015 §3.4 ; ADR-004 §Compléments post-revue.
+La topologie à connexions persistantes et sticky sessions actée par ADR-004 (§Contexte, §Conséquences), dont ADR-015 §3.4 tire l'exigence de scale-out multi-instances, est la racine commune de plusieurs mesures de ce dossier, présentées ailleurs comme si elles étaient indépendantes : au minimum la denylist JTI externe et partagée (#7) et le choix de signature asymétrique (#4). Le risque évité : sans magasin de révocation partagé hors-process, une révocation opérée sur une instance resterait invisible des autres jusqu'à l'expiration naturelle du jeton. Ancres : ADR-015 §3.4 et §Croisements ; ADR-004 §Conséquences.
 
 ---
 
@@ -258,14 +259,14 @@ La topologie scale-out multi-instances actée par ADR-004 (§Compléments post-r
 | Valeurs exactes des seuils de limitation de débit et borne supérieure de sécurité | ADR-015 §4.2 ; `config-securite-migration.md` | `[À TRANCHER — B1.5]` |
 | Durée de vie exacte du jeton de réinitialisation (dans la plage 10 à 15 minutes) | ADR-015 §4.3 | `[À TRANCHER — B1.5]` |
 | Fraîcheur maximale et déclenchement de la ré-authentification auprès du fournisseur d'identité | ADR-015 §1.4 | `[À TRANCHER — B1.5]` |
-| Liste exhaustive des balises autorisées et bibliothèque de sanitisation (serveur et client) | `sanitisation-csp.md` §5 | `[À TRANCHER — B1.2 / P6]` |
-| Directives CSP complètes et valeurs de nonce | ADR-017 §4.2 ; `sanitisation-csp.md` §5 | `[À TRANCHER — P6]` |
+| Bibliothèque de sanitisation côté serveur | `sanitisation-csp.md` §5 | `[À TRANCHER — B1.2]` |
+| Liste des balises autorisées (remplacée par l'énumération fermée des types de nœuds d'un bloc), bibliothèque de sanitisation côté client (`DomSanitizer` d'Angular, complété de DOMPurify sur l'import de fichier JSON) et directives CSP complètes (sans valeur de nonce) | ADR-017 §4.2 et §Compléments post-revue ; `sanitisation-csp.md` §5 ; `conventions-dod.md` §7 | DÉCIDÉ 2026-09-03 (`conventions-dod.md` §7) |
 | Chiffrement au repos d'IndexedDB — impossible sans secret utilisateur en régime sans compte | ADR-017 §4.4 | post-MVP |
 | Sémantique 403 / 404 pour un non-membre inter-espaces, schémas de requête et de réponse, corps de la réponse 429, code du rejet OAuth silencieux, format d'annotation de sécurité OpenAPI | `contrat-openapi.md` §Récapitulatif | `[À TRANCHER — B1.10]` |
 | Comportement d'exécution SignalR (gestion de groupes, reconnexion, propagation des révocations et expirations d'accès invité) et vérification du jeton en connexion persistante | ADR-014 §Périmètre ; ADR-015 §Points à trancher | `[À TRANCHER — B1.7]` |
 | Codes de test dédiés : **B3.2** (test d'architecture), **B5.2** (test IDOR), **B8.2** (test anti-fuite SignalR), **B5.1** (filtres de requête) | ADR-014 §Points à trancher | renvois de test |
 | Seuil de coût de session concurrente, métrique associée, cadence de sondage adaptatif, mécanisme de détection | `repli-temps-reel.md` §3 / §5 ; ADR-004 §Compléments post-revue | `[À TRANCHER — ticket]` |
-| Télémétrie : valeur de seuil d'usage réel constaté, opérationnalisation de ce seuil, outil analytique, schéma d'événements, technique d'anonymisation RGPD, mécanisme de capture d'email non bloquant | `telemetrie.md` §6 | `[À TRANCHER — ticket]` |
+| Télémétrie : schéma d'événements formalisé (noms exacts, typage) ; les cinq autres points (seuil, usage réel constaté, outil analytique, technique de traitement des données, capture d'email non bloquante) sont DÉCIDÉ 2026-09-03 (`telemetrie.md` §6) | `telemetrie.md` §3.4 / §6 | `[À TRANCHER — ticket]` |
 | Durée de la réservation de purge, seuil minimal de version de schéma, durée de rétention de l'identifiant de lot de migration | `config-securite-migration.md` ; ADR-011 ; ADR-016 | `[À TRANCHER — B1 / P7]` |
 | Références nullables entrantes non couvertes (`documents.character_id`, `guest_accesses.character_id`, `folders.default_template_document_id` entrants) | `requete-effacement-non-partage.md` §5 ; ADR-012 §4 | `[À TRANCHER — ticket]` |
 | Câblage de la purge des médias externalisés sur les deux chemins d'effacement (suppression d'espace et purge de l'espace personnel) | ADR-011 §Contenu LIVE_NOTE et médias externalisés | `[À TRANCHER — B1.9]` |

@@ -52,6 +52,7 @@ Les 10 entrées de la couche sont listées dans l'index `docs/project/backlog/RE
 - `docs/assurance/**`
 - `docs/project/backlog/**`
 - `docs/workstreams/conformite-corpus/reference.md`
+- hors couche, pour les seuls consommateurs des entrées 0015, 0049 et 0067 (contrat : « appliquée en entier ici ») : `docs/projet/conventions-dod.md`, `docs/projet/decisions-en-attente.md`, `docs/reference/dossier-architecture.md`
 
 ## Revue
 
@@ -76,9 +77,29 @@ Le contrat et les entrées : chaque modification correspond-elle à une entrée,
 
 ## Notes de dev
 
-
+- Les 10 entrées sont « fait », dans leur fichier et dans l'index. Deux lots parallèles : le dossier de sécurité (0003, 0068) ; les ADR, les specs, la stratégie de test et les vérifications d'outillage (0008, 0009, 0014, 0015, 0049, 0066, 0067, 0069). Fusion à trois voies sans conflit.
+- 0003 : les 45 contre-mesures sont recoupées avec leurs sources ; 4 sont corrigées, ainsi que deux renvois du dossier.
+- Périmètre élargi aux seuls consommateurs des entrées : `conventions-dod.md` (0015), `decisions-en-attente.md` (0049), `dossier-architecture.md` (0067).
+- Décisions de l'orchestrateur, prises par délégation de l'opérateur :
+  - **classement STRIDE des n° 14 et 42** : la matrice et les tables S2 et S9 sont alignées sur le § 4. **Justification** : elles résument l'analyse du § 4, et aucune source amont ne fixe ce classement ;
+  - **§ 4.9 du dossier** : le texte est ramené à ce que porte ADR-015 §Croisements (signature asymétrique), et l'ancre est ajoutée. **Justification** : l'aval se corrige vers sa source ;
+  - **ADR-016 et ADR-017 reçoivent un complément post-revue daté du 2026-09-03**, qui renvoie au § 7 du guide de conventions (bibliothèque côté client, directives CSP, liste des balises sans objet). **Justification** : la décision existait déjà, datée (`04f16eb`, `fd9124f`), mais l'amont renvoyait encore ces points à P6 et B1.2. L'ADR-019 veut la source d'abord ; c'est le patron suivi pour ADR-014 à la tâche 8 ;
+  - **§ 13 de la stratégie de test** : laissé tel quel. **Justification** : il énonce une exigence par jalon sans l'attribuer à un outil. L'outil manquant est différé à la tâche 22 (contrôles en CI).
+- Différés :
+  - le marqueur du reclaim-in-place (« à ratifier produit » contre « PRODUIT » dans ADR-015), dont les autres porteurs sont hors couche ;
+  - les `RÉSOLU` de PO-04 et PO-06 dans la stratégie de test, à convertir avec les autres marqueurs ;
+  - la télémétrie, encore dite ouverte dans `cahier-specifications-techniques.md` et `conception-detaillee.md` (tâche 14) ;
+  - « ordre de build C#-first » dans `cadrage-validation-pre-lancement-eu.md` et `cahier-specifications-techniques.md`.
+- Hash : `reference.md` porte la ligne de cette tâche, que la tâche 13 complétera.
 
 ## Notes de revue
 
+Revue « chaque modification correspond-elle à une entrée, et une seule ? », 2026-10-07 : sept constats.
 
+- `intent`, tranché par délégation : l'aval (dossier, guide de conventions) devançait ADR-016 et ADR-017. Les deux ADR reçoivent un complément post-revue (voir les notes de dev).
+- `fix` : l'ancre « ADR-015 §Croisements » manquait au § 4.9.
+- `fix` : les numéros de ligne de la conclusion de 0008 sont corrigés (`nRel++` l. 97, `Path.Exists` l. 102).
+- `fix` (optionnel pris) : la preuve de 0009 repose sur l'argument chronologique. La comparaison de sorties opposait deux DLL reconstruites, et elle est reformulée.
+- Optionnels gardés : les statuts « fait » sans hash (règle du hash différé) ; la ligne de périmètre de la spec ; « ordre de build C#-first » (différé).
 
+Répartition : 1 `intent` tranché, 3 `fix`, 3 gardés.

@@ -2,7 +2,8 @@
 
 - **Id** : 0066
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-decisions-architecture-assurance (chantier conformite-corpus)
+- **Appliqué dans** : docs/decisions/ADR-018-espace-personnel-generalisation-space.md (§ Conséquences, Dossiers — portée)
 
 - [adr:contradicted-1 — stale] Amender le corps ADR-018:136 pour dire seul dossier virtuel Non classés en PERSONAL, ou y renvoyer au complément
 

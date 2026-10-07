@@ -81,12 +81,12 @@ Deux éléments à retenir fidèlement :
 
 ### 4.1 Ce qui est fixé
 
-Rien au-delà du champ d'application et de la qualification (« non bloquante », « anonyme RGPD ») cité ci-dessus. Le corpus ne décrit ni le mécanisme de capture email, ni le moment précis de sollicitation, ni le traitement de l'email capturé.
+L'ADR-006 ne fixe que le champ d'application et la qualification (« non bloquante », « anonyme RGPD ») cités ci-dessus. Le mécanisme de capture email, le moment de sollicitation et le traitement de l'email capturé ne sont pas décrits par l'ADR-006 ; ils sont décidés depuis le 2026-09-03 et se lisent en §4.2.
 
-### 4.2 Ce qui reste ouvert
+### 4.2 Ce qui est décidé depuis
 
-- **Mécanisme de capture email non bloquante — tranché (2026-09-03)** : sollicitation unique, affichée **après** que le MJ a atteint l'activation préparation ; un refus ou une absence de réponse vaut refus définitif ; l'adresse part avec les compteurs à la création de compte et reste effaçable sur demande. Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md).
-- **Traitement des données — tranché (2026-09-03)** par le transport : rien ne sort du navigateur avant la création d'un compte, moment où la donnée entre dans le périmètre de traitement du compte. Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md).
+- **Mécanisme de capture email non bloquante** — DÉCIDÉ 2026-09-03 ([`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md)) : sollicitation unique, affichée **après** que le MJ a atteint l'activation préparation ; un refus ou une absence de réponse vaut refus définitif ; l'adresse part avec les compteurs à la création de compte et reste effaçable sur demande. Renvoi seul.
+- **Traitement des données** — DÉCIDÉ 2026-09-03 ([`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md)) par le transport : rien ne sort du navigateur avant la création d'un compte, moment où la donnée entre dans le périmètre de traitement du compte. Renvoi seul.
 
 ---
 

@@ -302,7 +302,7 @@ Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Co
 | `dotnet test tools/Tests/CaracterisationOutils.csproj` | Les golden masters de l'outillage, y compris sur le corpus réel | tous les tests passent |
 | `dotnet run --project tools/VerifCorpus` | Les liens, ancres et orphelins, ainsi que l'équilibre des blocs de code | code 0 |
 | `dotnet run --project tools/VerifMailleAgregat` | La maille du plan de travail et les conflits recalculés | code 0 |
-| `dotnet run --project tools/VerifCouvertureRecette` | La couverture des cas de recette et l'intégrité de leurs citations | code 1 tant que des `TROU` ou `SOURCE RETIRÉE` sont assumés ; ils sont listés en sortie |
+| `dotnet run --project tools/VerifCouvertureRecette` | La couverture des cas de recette par le plan de travail, et les sources déclarées retirées dans le cahier (il ne compare pas les citations de scénarios Gherkin à leur source) | code 1 tant que des `TROU` ou `SOURCE RETIRÉE` sont assumés ; ils sont listés en sortie |
 
 ---
 

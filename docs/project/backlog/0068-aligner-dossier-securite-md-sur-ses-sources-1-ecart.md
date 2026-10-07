@@ -2,7 +2,8 @@
 
 - **Id** : 0068
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-decisions-architecture-assurance (chantier conformite-corpus)
+- **Appliqué dans** : docs/assurance/securite/dossier-securite.md
 
 - [security-dossier:contradicted-1 — stale] Réduire la ligne de docs/securite/dossier-securite.md:268 au seul schéma d'événements ouvert, les cinq autres points renvoyant à telemetrie.md §6
 
