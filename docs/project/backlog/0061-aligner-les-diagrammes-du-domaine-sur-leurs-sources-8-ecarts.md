@@ -2,7 +2,8 @@
 
 - **Id** : 0061
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-domaine (chantier conformite-corpus)
+- **Appliqué dans** : `docs/domaine/core/classes.md`, `docs/domaine/space-management/classes.md`, `docs/domaine/identity-access/logical-data.md`, `docs/domaine/content-library/conceptual-data.md`, `docs/domaine/identity-access/flows.md`, `docs/domaine/content-library/flows.md`, `docs/domaine/session-conduct/flows.md`, `docs/domaine/space-management/flows.md`
 
 - [domain-classes:contradicted-1 — stale, core.md] Ajouter la classe GuestAccessId au diagramme de classes du Core
 - [domain-classes:contradicted-2 — stale, space-management.md] Ajouter Unarchive() à Space et la classe SpaceUnarchived produite par Space dans le diagramme de classes SM

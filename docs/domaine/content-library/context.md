@@ -74,7 +74,7 @@ le document sans contraindre sa structure libre.
 | `isReusable` | `bool` | Ce document peut servir de template |
 | `sourceDocumentId` | `DocumentId?` | Renseigné si instancié depuis un template |
 | `characterId` | `DocumentId?` | Référence intra-module vers un Document de type `player_character` — personnage associé d'un LIVE_NOTE (promu depuis `properties`, ADR-002) |
-| `guestAccessId` | `GuestAccessId?` | Référence cross-module vers les accès invités (Space Management) — auteur invité d'un LIVE_NOTE quand `createdById` est null (promu depuis `properties`, ADR-002) |
+| `guestAccessId` | `GuestAccessId?` | Post-MVP. Référence cross-module vers les accès invités (Space Management) — auteur invité d'un LIVE_NOTE (promu depuis `properties`, ADR-002). Aucun document d'invité n'existe au MVP (les notes de session du joueur sont hors MVP) : `createdById` reste NOT NULL |
 | `AuditInfo` | | `createdAt`, `updatedAt`, `createdById: UserId` |
 | `SoftDelete` | | `isDeleted`, `deletedAt` |
 
@@ -90,6 +90,7 @@ le document sans contraindre sa structure libre.
 | `Unshare()` | `DocumentVisibilityChanged` | Repasse `visibility` à `GM_ONLY` |
 | `Delete()` | `DocumentDeleted` | Soft-delete |
 | `Instantiate(spaceId, folderId)` | `DocumentInstantiated` | Crée une copie indépendante depuis un template |
+| `CanBeReadBy(reader, documentType)` | — | Dit si le document est lisible par `reader`, selon les règles métier 1 à 3. `reader` est un membre (`UserId` et rôle) ou un invité (`GuestAccessId`) |
 
 ---
 
@@ -111,9 +112,7 @@ SOUS-SPÉCIFIÉ
 
 **Format de `content` — tranché** (décision d'entrée en build du 2026-09-03). Le contenu d'un bloc est un **arbre de nœuds typés**, jamais une chaîne de balisage. Un nœud porte son type et, selon ce type, ses enfants ou sa valeur textuelle. L'interface rend cet arbre en construisant ses éléments ; elle n'injecte aucune chaîne de balisage.
 
-**Pourquoi ce point relevait de la conception et non de la sécurité.** La spécification de sanitisation présupposait une liste de balises HTML autorisées — donc un contenu balisé — que rien ici n'établissait. La « liste blanche positive » du plancher de sanitisation porte désormais sur l'**énumération fermée des types de nœuds** que ce modèle définit, ce qui réduit la surface d'injection aux seules feuilles textuelles.
-
-*Voir [`specs/sanitisation-csp.md`](../../architecture/specs/sanitisation-csp.md) pour le plancher, inchangé.*
+*Voir [`specs/sanitisation-csp.md`](../../architecture/specs/sanitisation-csp.md) pour le plancher de sanitisation, qui porte sur l'énumération fermée des types de nœuds.*
 
 ---
 
@@ -128,7 +127,8 @@ Conteneur organisationnel. Structure l'arborescence du contenu dans un espace.
 | `parentFolderId` | `FolderId?` | `null` = niveau racine |
 | `name` | `string` | |
 | `isSystem` | `bool` | Créé automatiquement à `SpaceCreated` — simple point de départ, renommable et supprimable |
-| `isVirtual` | `bool` | `true` pour le dossier "Non classés" — créé automatiquement par espace, invisible dans la navigation MJ, non supprimable. Garantit que `folderId` reste non-nullable sur `Document`. |
+| `systemRole` | `string?` | Rôle système du dossier, fixé à la création et indépendant du nom. Seule valeur définie : `NOTES`. `null` pour tout autre dossier (décision de l'opérateur, 2026-10-07) |
+| `isVirtual` | `bool` | `true` pour le dossier "Non classés" — créé automatiquement par espace, affiché dans la navigation MJ selon l'invariant 4, non supprimable. Garantit que `folderId` reste non-nullable sur `Document`. |
 | `defaultDocumentTypeId` | `DocumentTypeId?` | Type proposé par défaut pour les nouveaux docs dans ce dossier |
 | `defaultTemplateDocumentId` | `DocumentId?` | Document réutilisable (`isReusable = true`) utilisé pour initialiser le contenu des nouveaux documents créés dans ce dossier. Optionnel. |
 | `order` | `int` | Ordre d'affichage dans le dossier parent. `0` par défaut. |
@@ -153,8 +153,8 @@ La création des dossiers est conditionnelle au type d'espace.
 | Personnages | Documents PLAYER_CHARACTER |
 | Joueurs | Documents joueurs partagés |
 | Scénarios | Documents SCENARIO |
-| Notes | Documents NOTE |
-| (Non classés) | Dossier virtuel invisible. Reçoit les documents sans dossier explicite. `isVirtual = true`, `isSystem = true`. |
+| Notes | Documents NOTE. `systemRole = NOTES` |
+| (Non classés) | Dossier virtuel, affiché selon l'invariant 4. Reçoit les documents sans dossier explicite. `isVirtual = true`, `isSystem = true`. |
 
 > Ces noms sont système-agnostiques et ne sont que le point de départ.
 > Le MJ peut renommer, réorganiser ou supprimer ces dossiers à sa guise.
@@ -164,7 +164,7 @@ La création des dossiers est conditionnelle au type d'espace.
 
 | Nom | Rôle par défaut |
 |---|---|
-| (Non classés) | Dossier virtuel invisible. Reçoit les documents sans dossier explicite. `isVirtual = true`, `isSystem = true`. |
+| (Non classés) | Dossier virtuel, affiché selon l'invariant 4. Reçoit les documents sans dossier explicite. `isVirtual = true`, `isSystem = true`. |
 
 > L'espace personnel démarre sans dossiers nommés : les concepts « Joueurs » et « Personnages » n'ont pas de sens dans un espace mono-membre. Le propriétaire organise son espace avec ses propres dossiers (organisation libre). L'invariant 4 — un dossier virtuel par espace — reste valide pour tous les types.
 
@@ -293,7 +293,7 @@ Document (SCENE) "Entrée de la crypte"
 1. Un `Document` appartient toujours à exactement un `Folder`. Si le dossier d'un document est supprimé, le document est automatiquement déplacé vers le dossier virtuel "Non classés" de l'espace.
 2. Un `Folder` appartient toujours à exactement un `Space`.
 3. Les dossiers système (`isSystem = true`) sont le point de départ d'un espace. Le MJ peut les renommer ou les supprimer librement — `isSystem` est informatif, pas restrictif.
-4. Un `Folder` avec `isVirtual = true` n'est pas supprimable et n'est pas affiché dans la navigation. Il en existe exactement un par espace. Il reçoit tout document dont le dossier explicite a été supprimé.
+4. Un `Folder` avec `isVirtual = true` n'est pas supprimable. Il en existe exactement un par espace. Il reçoit tout document dont le dossier explicite a été supprimé. Il est affiché dans la navigation dès qu'il n'est pas vide, et masqué tant qu'il est vide. Dans un espace `PERSONAL` qui n'a pas d'autre dossier, il est toujours affiché, même vide : sans lui l'espace n'aurait aucun repère de navigation (AR-16 du [zonage](../../interface/zonage.md)).
 5. Le `slug` d'un Document est unique par `(spaceId, documentTypeId)`.
 6. Un Document `PLAYER_PRIVATE` n'est lisible que par son auteur (`createdById` pour un membre, ou `guestAccessId` pour un invité). Les membres `OWNER` et `GM` n'y ont aucun accès — ni lecture directe, ni énumération, ni métadonnées. Cette règle s'applique aussi à la résolution transitive : un Document `PLAYER_PRIVATE` peut être retrouvé via son association à un personnage (`characterId`) ou un accès invité (`guestAccessId`), mais seul son auteur, via ces mêmes chemins de résolution, est autorisé à le lire. Le rôle d'un personnage ou la simple association à une LIVE_NOTE n'ouvre aucune lecture — l'invariant de confidentialité reste absolu, quel que soit le chemin d'accès (direct, via personnage, ou via invité).
 7. La suppression d'un `Folder` déplace ses Documents vers le dossier virtuel "Non classés" de l'espace, ou vers un autre dossier choisi par le MJ au moment de la suppression. Aucun Document n'est supprimé implicitement par la suppression de son dossier.
@@ -306,8 +306,8 @@ Document (SCENE) "Entrée de la crypte"
 ## Règles métier
 
 1. `visibility = PUBLIC` : le document est visible par tous les membres de l'espace et les GuestAccess actifs.
-2. `visibility = GM_ONLY` : visible uniquement par les membres `OWNER` et `GM`.
-3. `visibility = PLAYER_PRIVATE` : lisible uniquement par l'auteur du document — `createdById` pour un membre, `guestAccessId` pour un invité. Les membres `OWNER` et `GM` n'y ont aucun accès, quel que soit le type de document. Cette règle est encodée dans `Document.CanBeReadBy(userId, memberRole, documentType)` et non dans un service applicatif. La suppression en cascade (purge d'espace, ADR-011) n'est pas affectée — la confidentialité porte sur la lecture, pas sur la suppression administrative.
+2. `visibility = GM_ONLY` : visible uniquement par les membres `OWNER` et `GM`. Exception (RB-12-01, [UC-12](../../besoin/cas-d-utilisation/UC-12-consulter-espace-joueur.md)) : la fiche d'un personnage (Document de type `player_character`) est aussi lisible par le joueur, membre ou invité, auquel ce personnage est associé, tant qu'elle est `GM_ONLY` ou `PUBLIC` (décision de l'opérateur, 2026-10-07). L'association est portée par Space Management (`Space.AssociateCharacter()`) : la couche application la résout auprès de lui et la passe dans le lecteur, qui porte, pour un membre comme pour un invité, les identifiants des personnages qui lui sont associés dans l'espace (décision de l'orchestrateur, 2026-10-07, par délégation de l'opérateur : même patron de contrat applicatif que l'invariant 16 de Space Management ; Content Library ne connaît pas Space Management).
+3. `visibility = PLAYER_PRIVATE` : lisible uniquement par l'auteur du document — `createdById` pour un membre, `guestAccessId` pour un invité. Les membres `OWNER` et `GM` n'y ont aucun accès, quel que soit le type de document. Aucune exception, y compris pour la fiche d'un personnage associé à un joueur : l'exception de RB-12-01 ne vaut que pour les fiches `GM_ONLY` ou `PUBLIC` (règle 2). Cette règle est encodée dans `Document.CanBeReadBy(reader, documentType)`, où `reader` est un membre (`UserId` et rôle) ou un invité (`GuestAccessId`), avec dans les deux cas ses personnages associés (règle 2), et non dans un service applicatif. La suppression en cascade (purge d'espace, ADR-011) n'est pas affectée — la confidentialité porte sur la lecture, pas sur la suppression administrative.
 4. Partager un document (`Share()`) change sa visibilité de façon permanente. Ce n'est pas un partage temporaire de session — le joueur peut y accéder entre les séances.
 5. L'instanciation d'un document réutilisable crée une copie profonde (blocs + liens + propriétés). Les modifications ultérieures du source n'affectent pas les instances. L'instance est créée avec `isReusable = false` : elle n'est pas elle-même marquée réutilisable à sa création. La réutilisabilité reste une propriété du document source dans l'espace `PERSONAL` du MJ (la bibliothèque personnelle est la vue filtrée `isReusable = true` de cet espace) ; une instance vivant dans un espace `CAMPAIGN`/`ONE_SHOT` n'a pas vocation à apparaître dans cette bibliothèque. Rien n'empêche un MJ de marquer explicitement une instance comme réutilisable par la suite, au même titre que tout document.
 6. Les backlinks ne sont pas stockés — ils sont calculés à la lecture via `DocumentLink.targetDocumentId`.
@@ -316,6 +316,7 @@ Document (SCENE) "Entrée de la crypte"
 9. Si un `Folder.defaultTemplateDocumentId` est défini, tout nouveau `Document` créé dans ce dossier est initialisé en appelant `Document.Instantiate()` sur le template. Si le template est supprimé, le champ passe à `null` — les documents existants ne sont pas affectés.
 10. **Effacement physique sous obligation RGPD** : les Documents avec `visibility = PLAYER_PRIVATE` qui tombent sous une obligation d'effacement légal (suppression de compte utilisateur, fin définitive d'un `GuestAccess` non converti) sont supprimés **physiquement**, et non via le mécanisme `SoftDelete`. La suppression logique réversible ne constitue pas un effacement au sens de l'article 17 du RGPD — elle ne fait que masquer le contenu. Pour ces populations, la suppression est définitive et non réversible. Les Documents avec `visibility = PUBLIC` ou `GM_ONLY` ne sont pas concernés : ils restent attachés à l'espace sous intérêt légitime (continuité d'espace).
 11. Un document `SCENE` peut être lié depuis plusieurs scénarios (cardinalité n↔n via `DocumentLink`, aucune contrainte d'unicité sur `targetDocumentId`) — le même mécanisme qu'un PNJ partagé entre plusieurs scènes. « Ajouter une scène » crée toujours une scène fraîche possédée (create+link) ; le partage multi-parent n'est atteignable que via « lier un document existant » (SCENE est un type cible éligible de ce chemin). Retirer une scène d'un scénario supprime le lien, pas le document — la scène survit pour les autres scénarios qui la référencent ; pas de suppression en cascade. Le backlink calculé « référencée par N scénarios » est surfacé pour signaler le partage. Une scène partagée au niveau template n'affecte pas les instances (`Document.Instantiate`, UC-13) — chaque instance reste indépendante.
+12. Le dossier « Notes » d'un espace `CAMPAIGN` ou `ONE_SHOT` porte `systemRole = NOTES`, fixé à sa création : le rôle est indépendant du nom, renommer le dossier est donc sans effet (décision de l'opérateur, 2026-10-07). Une `LIVE_NOTE` créée en session est placée dans le dossier de rôle `NOTES` de l'espace. Si ce dossier a été supprimé, elle est placée dans le dossier virtuel « Non classés » (invariants 4 et 7) ; le dossier « Notes » n'est pas recréé automatiquement.
 
 ---
 
@@ -343,6 +344,8 @@ Document (SCENE) "Entrée de la crypte"
 | `SpaceCreated` | Space Management | Pour `CAMPAIGN`/`ONE_SHOT` : créer les 4 dossiers système nommés (Personnages, Joueurs, Scénarios, Notes) + le dossier virtuel (Non classés). Pour `PERSONAL` : créer uniquement le dossier virtuel (Non classés). |
 | `SpaceArchived` | Space Management | Passer tous les documents en lecture seule (soft-lock) |
 | `SpaceUnarchived` | Space Management | Repasser tous les documents en écriture (lever le soft-lock) |
+| `SpaceDeleted` | Space Management | Purge à J+30 ([ADR-011](../../decisions/ADR-011-cascade-integrite-referentielle.md), saga `SpaceDeleted`), dans la transaction unique de l'espace. Passe 1, déliaison : toutes les références qui traversent le contenu de l'espace (invité auteur, personnage associé, document source d'une instance, y compris depuis d'autres espaces, gabarit par défaut et dossier parent d'un dossier) sont remises à vide. Passe 2, suppression des liens, étiquettes, blocs, documents et dossiers de l'espace, puis de ses types de document personnalisés (les types système ne sont pas touchés). Le détail par table est dans ADR-011, § saga `SpaceDeleted`. Espace `PERSONAL` : mêmes passes, déclenchées par `UserDeleted` sans attendre J+30, après relocalisation hors de l'espace des documents conservés (ADR-011, § Exception PERSONAL ; ADR-012, § 7) |
+| `UserDeleted` | Identity & Access | Effacement physique, hors `SoftDelete`, des Documents `PLAYER_PRIVATE` de l'utilisateur (règle métier 10) : ceux qu'il a créés (`createdById`), et ceux qu'il a créés et qui sont rattachés aux personnages qu'il incarnait dans les espaces vivants où il était membre (`characterId`). Les Documents `PUBLIC` et `GM_ONLY` sont conservés. Périmètre arbitré par ADR-012 |
 
 ### Ce que Content Library publie
 

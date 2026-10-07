@@ -22,6 +22,7 @@ classDiagram
         +RevokeInvitation(invitationId)
         +AssociateCharacter(userId, characterId)
         +Archive()
+        +Unarchive()
         +Freeze()
         +Unfreeze()
         +Delete()
@@ -115,6 +116,11 @@ classDiagram
     }
 
     class SpaceArchived {
+        <<domainEvent>>
+        +identifiant spaceId
+    }
+
+    class SpaceUnarchived {
         <<domainEvent>>
         +identifiant spaceId
     }
@@ -239,6 +245,7 @@ classDiagram
     Space ..> InvitationRevoked : produces
     Space ..> CharacterAssociated : produces
     Space ..> SpaceArchived : produces
+    Space ..> SpaceUnarchived : produces
     Space ..> SpaceFrozen : produces
     Space ..> SpaceUnfrozen : produces
     Space ..> SpaceDeleted : produces

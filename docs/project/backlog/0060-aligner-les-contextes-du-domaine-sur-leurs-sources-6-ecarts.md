@@ -2,7 +2,8 @@
 
 - **Id** : 0060
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-domaine (chantier conformite-corpus)
+- **Appliqué dans** : `docs/domaine/session-conduct/context.md`, `docs/domaine/space-management/context.md`, `docs/domaine/identity-access/context.md`, `docs/domaine/content-library/context.md` ; `docs/architecture/specs/sanitisation-csp.md`
 
 - [shared-kernel:contradicted-1 — stale, session-conduct.md] Corriger session-conduct.md:238 : SessionId est publié et référencé par Space Management (Invitation, GuestAccess)
 - [identity-access:contradicted-2 — stale, identity-access.md] Réécrire l'invariant 11 de space-management.md au grain de la séance défini par RB-09-21 (accès distincts atteignant une séance donnée)
@@ -10,5 +11,7 @@
 - [content-library:contradicted-1 — gap, content-library.md] Ajouter UserDeleted (source I&A, effacement physique des PLAYER_PRIVATE de l'utilisateur, règle 10) à la table de réception de content-library.md
 - [content-library:contradicted-2 — stale, content-library.md] Déplacer la mention des balises HTML vers la spec de sanitisation et ne garder dans content-library.md que l'arbre de nœuds typés et un renvoi
 - [space-management:contradicted-2 — gap, space-management.md] Dire dans l'invariant 16 par quel canal (événement SessionStarted/SessionClosed projeté, ou contrat applicatif) Space Management connaît l'existence d'une session LIVE
+
+- **Note item 6** : canal tranché par l'opérateur le 2026-10-07 — contrat applicatif ; la couche application interroge Session Conduct avant `Archive()`. Appliqué dans `docs/domaine/space-management/context.md` (invariant 16, méthode `Archive()`) et `docs/domaine/session-conduct/context.md` (`SessionClosed` : destinataire Application). Ce second point est la conséquence directe du canal retenu : avec un contrat applicatif, Space Management ne consomme aucun événement de session, et la règle métier 6 de Session Conduct confiait déjà à l'application l'expiration des `GuestAccess SESSION`.
 
 **Raison.** Contradictions triées stale/gap, tri validé en bloc par l'opérateur le 2026-10-07, regroupées par document à corriger

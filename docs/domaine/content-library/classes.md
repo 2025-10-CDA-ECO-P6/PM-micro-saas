@@ -30,6 +30,7 @@ classDiagram
         +Unshare()
         +Delete()
         +Instantiate(spaceId, folderId)
+        +CanBeReadBy(reader, documentType)
     }
 
     class DocumentBlock {
@@ -52,6 +53,7 @@ classDiagram
         +identifiant parentFolderId
         +texte name
         +booléen isSystem
+        +texte systemRole
         +booléen isVirtual
         +identifiant defaultDocumentTypeId
         +identifiant defaultTemplateDocumentId
@@ -152,4 +154,5 @@ classDiagram
     DocumentBlock --> BlockType
     Folder "1" o-- "0..*" Document : contains
     Folder "0..1" o-- "0..*" Folder : parent
+    note for Document "CanBeReadBy : reader est un membre (UserId et rôle) ou un invité (GuestAccessId), avec ses personnages associés (règle 2)"
 ```

@@ -14,7 +14,7 @@
 
 - Créer et configurer un espace (campagne, one-shot ou espace personnel).
 - Gérer les membres : inviter, associer à un personnage, retirer.
-- Gérer les co-MJs (rôle GM).
+- Gérer les co-MJs (rôle GM). **Hors MVP** : le rôle `GM` n'est pas attribuable (UC-F08, voir [exclusions](../../besoin/vision/perimetre/exclusions.md#uc-f08--rôle-gm-co-mj)).
 - Créer et révoquer des invitations (par lien ou email).
 - Gérer les accès invités sans compte (GuestAccess).
 - Convertir un GuestAccess en SpaceMembership lors de la création de compte.
@@ -55,12 +55,12 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | Méthode | Événement produit | Description |
 |---|---|---|
 | `Create(ownerId, name, type)` | `SpaceCreated` | Crée l'espace. L'owner est automatiquement ajouté comme membre OWNER. |
-| `AddMember(userId, role)` | `MemberJoined` | Ajoute un membre (GM ou PLAYER). Bloqué pour `type = PERSONAL` (voir invariant 13). |
+| `AddMember(userId, role)` | `MemberJoined` | Ajoute un membre (GM ou PLAYER ; au MVP, `PLAYER` seulement — rôle `GM` hors MVP, UC-F08). Bloqué pour `type = PERSONAL` (voir invariant 13). |
 | `RemoveMember(userId)` | `MemberRemoved` | Retire un membre. Bloqué si userId == ownerId. |
 | `CreateInvitation(type, scope, options)` | `InvitationCreated` | Crée une invitation enfant. Bloqué pour `type = PERSONAL` (voir invariant 13). |
 | `RevokeInvitation(invitationId)` | `InvitationRevoked` | Passe l'invitation en REVOKED. |
 | `AssociateCharacter(userId, characterId)` | `CharacterAssociated` | Associe un personnage (référence Content Library) à un membre. Le paramètre `characterId` est un `DocumentId` pointant vers un `Document` de type `player_character`. |
-| `Archive()` | `SpaceArchived` | Archivage manuel par le MJ. Réversible (voir `Unarchive()`). Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). Refusée si l'espace porte une session `LIVE` (garde d'agrégat, invariant 16 — UC-02). |
+| `Archive()` | `SpaceArchived` | Archivage manuel par le MJ. Réversible (voir `Unarchive()`). Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). Refusée si l'espace porte une session `LIVE` (garde applicative, invariant 16 — UC-02). |
 | `Unarchive()` | `SpaceUnarchived` | Désarchivage manuel par le MJ. Repasse l'espace de `ARCHIVED` à `ACTIVE`. Sans objet pour `type = PERSONAL` (invariant 15 — un `PERSONAL` n'est jamais `ARCHIVED`). Refusée pour un propriétaire FREE si elle porterait à 4 le nombre de ses espaces actifs de type `CAMPAIGN` ou `ONE_SHOT` (garde de quota, même patron que l'invariant 6 — règle métier 12). |
 | `Freeze()` | `SpaceFrozen` | Gel automatique lors d'un downgrade de tier. Passe en lecture seule. Refusée si `type = PERSONAL` (garde d'agrégat, invariant 15). |
 | `Unfreeze()` | `SpaceUnfrozen` | Dégel automatique lors d'une montée de tier, dans la limite du quota du tier cible (règle 11). |
@@ -95,8 +95,8 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 
 | Rôle | Cardinalité | Droits |
 |---|---|---|
-| `OWNER` | Exactement 1 | Tout : supprimer l'espace, gérer les GMs, responsabilité billing/RGPD |
-| `GM` | 0..* | Gérer le contenu, lancer/piloter des sessions, inviter des joueurs — ne peut pas supprimer l'espace ni gérer d'autres GMs |
+| `OWNER` | Exactement 1 | Tout : supprimer l'espace, gérer les GMs (hors MVP, UC-F08), responsabilité billing/RGPD |
+| `GM` | 0..* — **hors MVP** (UC-F08, non attribuable) | Gérer le contenu, lancer/piloter des sessions, inviter des joueurs — ne peut pas supprimer l'espace ni gérer d'autres GMs |
 | `PLAYER` | 0..* | Accès aux contenus partagés, consultation de sa fiche personnage |
 
 > Le MJ propriétaire est aussi en membership avec `role = OWNER` pour la cohérence des requêtes.
@@ -111,7 +111,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | Champ | Type | Description |
 |---|---|---|
 | `id` | `InvitationId` | |
-| `token` | `InvitationToken` | Identifiant du lien d'invitation, globalement unique, non prédictible. |
+| `token` | `InvitationToken` | Identifiant du lien d'invitation, globalement unique, non prédictible : UUID v4 tiré d'un générateur cryptographique (122 bits aléatoires). |
 | `type` | `InvitationType` | `LINK` \| `EMAIL` |
 | `scope` | `InvitationScope` | `SPACE` \| `SESSION` |
 | `sessionId` | `SessionId?` | Renseigné si scope = SESSION |
@@ -147,7 +147,7 @@ depuis Session Conduct par son lien d'accès.
 | `spaceId` | `SpaceId` | |
 | `scope` | `GuestAccessScope` | `SESSION` \| `SPACE` |
 | `sessionId` | `SessionId?` | Renseigné si scope = SESSION |
-| `token` | `GuestAccessToken` | Identifiant du lien d'accès invité, globalement unique, non prédictible. |
+| `token` | `GuestAccessToken` | Identifiant du lien d'accès invité, globalement unique, non prédictible : UUID v4 tiré d'un générateur cryptographique (122 bits aléatoires). |
 | `displayName` | `string` | Saisi par le joueur à l'arrivée |
 | `characterId` | `DocumentId?` | Associé par le MJ (référence Content Library) — alias sémantique vers un `Document` de type `player_character` ; la cohérence de type est garantie par validation runtime. |
 | `status` | `GuestAccessStatus` | `ACTIVE` \| `EXPIRED` \| `REVOKED` \| `CONVERTED` |
@@ -188,8 +188,8 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 
 | VO | Validation | Description |
 |---|---|---|
-| `InvitationToken` | Globalement unique, non prédictible | Identifiant porté par le lien d'invitation. Généré à la création. Non modifiable. |
-| `GuestAccessToken` | Globalement unique, non prédictible | Identifiant porté par le lien d'accès invité. Généré à la création. Non modifiable. |
+| `InvitationToken` | Globalement unique, non prédictible | Identifiant porté par le lien d'invitation. UUID v4 tiré d'un générateur cryptographique (122 bits aléatoires) ; l'UUID v7, dont le préfixe temporel est prévisible, est exclu. Généré à la création. Non modifiable. |
+| `GuestAccessToken` | Globalement unique, non prédictible | Identifiant porté par le lien d'accès invité. UUID v4 tiré d'un générateur cryptographique (122 bits aléatoires) ; l'UUID v7, dont le préfixe temporel est prévisible, est exclu. Généré à la création. Non modifiable. |
 
 ---
 
@@ -240,12 +240,12 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 8. Un `GuestAccess` avec `status = CONVERTED` ne peut plus être utilisé pour accéder à l'espace.
 9. Un `GuestAccess` avec `status = EXPIRED` ou `REVOKED` ne donne plus accès.
 10. Un `DocumentId` référençant un personnage ne peut être associé qu'à un seul `SpaceMembership` actif à la fois dans un espace (RB-11-18). Le `DocumentId` associé doit référencer un `Document` de type `player_character` — cette validation est appliquée à l'écriture dans l'invariant de domaine de `SpaceMembership`. La même contrainte s'applique au champ `characterId` de `GuestAccess` : le `DocumentId` fourni doit également référencer un `Document` de type `player_character`. **Clarification : une association de personnage effectuée sur un membership `PENDING` réserve ce personnage** — il ne peut pas être ré-associé à un autre membership (`PENDING` ou `ACTIVE`) tant que le membership `PENDING` initial n'est pas abandonné (p. ex. révocation de l'invitation associée, ou passage à `REMOVED`). Cette réservation prévient la double-association d'un même personnage en attente d'activation.
-11. Pour un `Space` dont l'`ownerId` référence un utilisateur FREE, le nombre de détenteurs d'accès distincts en capacité joueur ne peut pas dépasser **4**, comptés au moment de l'octroi (refus du 5e octroi) — ce n'est pas une mesure de présence temps réel. Le comptage est agnostique au type d'accès : il porte sur les identités-joueur distinctes disposant d'un accès atteignant la séance, quelle que soit la forme de cet accès (aujourd'hui `SpaceMembership PLAYER` ou `GuestAccess`, demain tout nouveau type d'accès) — l'objectif est d'empêcher tout contournement par composition entre types d'accès. Le MJ (`OWNER`/`GM`), quelle que soit sa forme d'accès, n'est jamais compté : le plafond ne porte que sur la capacité joueur. La sémantique de besoin est portée par **UC-09 / RB-09-21, qui fait foi**. (Note de modélisation : aucun agrégat d'accès unifié n'est introduit au MVP — deux types d'accès seulement, par choix de simplicité ; une projection unifiée « accès atteignant une séance » ne se justifierait qu'à l'arrivée d'un 3e type d'accès.)
+11. Pour une séance d'un `Space` dont l'`ownerId` référence un utilisateur FREE, le nombre d'identités-joueur distinctes disposant d'un accès atteignant cette séance ne peut pas dépasser **4**, comptées au moment de l'octroi (refus du 5e octroi) — ce n'est pas une mesure de présence temps réel. Le comptage est agnostique au type d'accès : il porte sur les accès distincts atteignant la séance donnée, quelle que soit la forme de cet accès (aujourd'hui `SpaceMembership PLAYER` ou `GuestAccess`, demain tout nouveau type d'accès) — l'objectif est d'empêcher tout contournement par composition entre types d'accès. Le MJ (`OWNER`/`GM`), quelle que soit sa forme d'accès, n'est jamais compté : le plafond ne porte que sur la capacité joueur. La sémantique de besoin est portée par **UC-09 / RB-09-21, qui fait foi**. (Note de modélisation : aucun agrégat d'accès unifié n'est introduit au MVP — deux types d'accès seulement, par choix de simplicité ; une projection unifiée « accès atteignant une séance » ne se justifierait qu'à l'arrivée d'un 3e type d'accès.)
 12. *(retiré — `ScenarioLibraryEntry` subsumé sous ADR-018 : la bibliothèque personnelle est une vue de l'espace `PERSONAL`, pas un agrégat de pont)*
 13. Un espace `PERSONAL` est mono-membre : seul le propriétaire (`role = OWNER`) y est membre. Les opérations `AddMember()`, `CreateInvitation()` et tout octroi de `GuestAccess` sont bloqués pour `type = PERSONAL`.
 14. Un compte actif possède toujours un et un seul espace `PERSONAL` **actif**. À la création du compte, le flux **applicatif** — à réception de l'événement `UserRegistered` — invoque de façon synchrone la commande `Space.Create(ownerId, type = PERSONAL)` dans Space Management. Identity & Access ne crée pas l'espace (frontière de contexte : I&A ne connaît pas la notion d'espace). En mode local, il n'y a ni `User` ni `ownerId` ; le conteneur par défaut local **est** l'espace `PERSONAL` (sans `ownerId`), lié à l'espace `PERSONAL` cloud à la création du compte / migration (mapping 1:1). L'invariant 14 est régi par le régime compte.
 15. Un espace `PERSONAL` est toujours `ACTIVE`. `Archive()` et `Freeze()` sont refusées pour `type = PERSONAL` (garde d'agrégat, même patron que l'invariant 13). `FROZEN` est sans objet (l'espace `PERSONAL` est hors quota, jamais excédentaire) ; `ARCHIVED` contredirait l'invariant 14 (un `PERSONAL` actif à tout moment). Par construction, `Unarchive()` est donc lui aussi sans objet pour ce type : un `PERSONAL` n'entre jamais en `ARCHIVED`, il n'y a donc jamais rien à désarchiver.
-16. `Archive()` est refusée si l'espace porte une session avec `status = LIVE` (garde d'agrégat) : un espace `ARCHIVED` passe en lecture seule (règle métier 7), ce qui empêcherait l'écriture des notes de la session en cours dans Session Conduct. Le porteur de la session doit d'abord la clôturer (`Session.Close()`) pour que l'archivage devienne possible. Ancrage amont : UC-02.
+16. L'archivage est refusé si l'espace porte une session avec `status = LIVE` : un espace `ARCHIVED` passe en lecture seule (règle métier 7), ce qui empêcherait l'écriture des notes de la session en cours dans Session Conduct. Cette garde est **applicative**, non une garde d'agrégat : Space Management ne connaît pas les sessions (frontière de contexte). Avant d'appeler `Archive()`, la couche application interroge Session Conduct sur l'existence d'une session `LIVE` de l'espace — même patron que le contrôle de quota à la création (flux 1 de [flows.md](flows.md)) — et refuse l'archivage le cas échéant. Le porteur de la session doit d'abord la clôturer (`Session.Close()`) pour que l'archivage devienne possible. Canal retenu : contrat applicatif, décision de l'opérateur, 2026-10-07. Ancrage amont : UC-02.
 
 > **NOTE — implémentation de l'invariant 14**
 >
@@ -255,10 +255,10 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 
 ## Règles métier
 
-1. Seul l'OWNER peut inviter ou retirer des GMs.
-2. Un GM peut inviter ou retirer des PLAYER.
+1. Seul l'OWNER peut inviter ou retirer des GMs. **Hors MVP** : le rôle `GM` n'est pas attribuable (UC-F08, voir [exclusions](../../besoin/vision/perimetre/exclusions.md#uc-f08--rôle-gm-co-mj)). Une invitation ne porte aucun rôle ; l'adhésion par invitation ajoute toujours un `PLAYER` (flux 3 de [flows.md](flows.md)).
+2. Un GM peut inviter ou retirer des PLAYER. **Hors MVP** : le rôle `GM` n'est pas attribuable (UC-F08, voir [exclusions](../../besoin/vision/perimetre/exclusions.md#uc-f08--rôle-gm-co-mj)) ; au MVP, seul l'OWNER invite et retire des PLAYER.
 3. Retirer un membre ne supprime pas ses données dans l'espace (personnages, notes partagées restent).
-4. Un membre retiré peut être réinvité.
+4. Un membre retiré peut être réinvité. La réinvitation réutilise sa ligne d'adhésion : le `SpaceMembership` repasse de `REMOVED` à `PENDING`, puis `ACTIVE`, sans nouvelle ligne — la clé `(space_id, user_id)` du [MCD](conceptual-data.md) et du [MLD](logical-data.md) reste unique (US-11-03).
 5. Un `GuestAccess SESSION` expire à la fermeture de la session + 24h de grâce.
 6. Quand `AccountTierChanged` (PRO → FREE) et que le MJ propriétaire a > 3 espaces `CAMPAIGN` ou `ONE_SHOT` à l'état `ACTIVE` (l'espace `PERSONAL` n'est pas compté) : les espaces excédentaires sont gelés dans l'ordre de création (les plus récents en premier). (le use case dédié **UC-15** ratifie et détaille ce comportement de gel/dégel)
    > **NOTE — Valeur de référence du quota** : la limite `3` d'espaces actifs pour un utilisateur FREE est consolidée en CdC §12.4 ; cette valeur volatile doit être maintenue en source unique pour la cohérence métier/produit.
@@ -280,7 +280,7 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 | `MemberActivated` | `SpaceMembership.Activate()` | Session Conduct (autoriser l'accès en session), Application |
 | `MemberRemoved` | `Space.RemoveMember()` | Session Conduct (retirer l'accès actif si session en cours) |
 | `InvitationCreated` | `Space.CreateInvitation()` | Application (fourniture du lien au MJ) |
-| `InvitationRevoked` | `Space.RevokeInvitation()` | Identity & Access (invalider le lien d'invitation immédiatement) |
+| `InvitationRevoked` | `Space.RevokeInvitation()` | Aucun contexte externe — l'invalidation du lien d'invitation reste interne à Space Management |
 | `CharacterAssociated` | `Space.AssociateCharacter()` | Session Conduct (accès aux notes PLAYER_PRIVATE du personnage) |
 | `SpaceFrozen` | `Space.Freeze()` | Application (notification au MJ) |
 | `SpaceUnfrozen` | `Space.Unfreeze()` | Application (notification au MJ) |

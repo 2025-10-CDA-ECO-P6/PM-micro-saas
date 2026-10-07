@@ -2,7 +2,8 @@
 
 - **Id** : 0086
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-domaine (chantier conformite-corpus)
+- **Appliqué dans** : `docs/domaine/content-library/context.md`, `docs/domaine/content-library/conceptual-data.md`, `docs/domaine/content-library/logical-data.md`, `docs/domaine/session-conduct/context.md`, `docs/glossaire.md`
 
 Garder documents.created_by_id NOT NULL au MVP. Plus aucun document d'invité n'existe au MVP (0081) : marquer guestAccessId post-MVP et retirer « quand createdById est null » (content-library.md:77, diagrams/mld/content-library.md:62-64). La question reviendra avec les notes joueur.
 

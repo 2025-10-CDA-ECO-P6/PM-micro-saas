@@ -38,11 +38,11 @@ ADR-014 repose sur une frontière stricte entre deux couches. Les confondre ou l
 La couche Application répond à la question : « L'appelant a-t-il accès à l'*espace* de cette ressource ? » C'est le gate antérieur, commun à toutes les ressources d'un espace, indépendant du type de document.
 
 **Couche Domaine — visibilité document** (hors périmètre de cet ADR)
-Le domaine répond à la question : « Ce document précis est-il *visible* pour cet appelant ? » Les règles sont encodées dans `Document.CanBeReadBy(userId, memberRole, documentType)` (Content Library — signature domaine souveraine sur sa propre forme). ADR-014 délègue la visibilité à cette méthode ; il ne la ré-exprime pas.
+Le domaine répond à la question : « Ce document précis est-il *visible* pour cet appelant ? » Les règles sont encodées dans `Document.CanBeReadBy(reader, documentType)` (Content Library — signature domaine souveraine sur sa propre forme) : `reader` est un membre (`UserId` et rôle) ou un invité (`GuestAccessId`). ADR-014 délègue la visibilité à cette méthode ; il ne la ré-exprime pas.
 
 Règles `CanBeReadBy` actées (décision produit, alignée Content Library) :
 - `PUBLIC` : lisible par tous les membres actifs et les invités selon leur scope.
-- `GM_ONLY` : lisible par `OWNER` et `GM` uniquement.
+- `GM_ONLY` : lisible par `OWNER` et `GM` uniquement, plus le joueur auquel la fiche d'un personnage est associée (exception de RB-12-01, décision de l'opérateur du 2026-10-07).
 - `PLAYER_PRIVATE` : lisible par l'auteur seul (`createdById` / `guest_access_id`) — `OWNER` et `GM` exclus, **pour tout type de document** (il n'y a pas d'exception par type ; la règle est uniforme).
 
 **Décision actée** : `PLAYER_PRIVATE` est auteur-seul, MJ exclu, uniformément. Cette règle est portée par le domaine `CanBeReadBy` (mis à jour en parallèle dans Content Library). Toute révision ultérieure des règles de visibilité est un changement **domaine**, hors périmètre de cet ADR.
@@ -67,7 +67,7 @@ AND space_memberships.user_id = <userId appelant>
 AND space_memberships.status = 'ACTIVE'
 ```
 
-Son rôle (`OWNER` / `GM` / `PLAYER`) est lu depuis `space_memberships.role`. Ce rôle est transmis à `Document.CanBeReadBy` pour résoudre la visibilité.
+Son rôle (`OWNER` / `GM` / `PLAYER`) est lu depuis `space_memberships.role`. Ce rôle est transmis à `Document.CanBeReadBy`, dans `reader`, pour résoudre la visibilité.
 
 **Invité (GuestAccess, sans compte)**
 
@@ -288,3 +288,5 @@ Les éléments suivants sont explicitement renvoyés sans être traités dans ce
 ## Compléments post-revue
 
 *(Section réservée aux clarifications post-implémentation — vide à la date de l'ADR.)*
+
+- **2026-10-07** — la signature de `Document.CanBeReadBy` devient `(reader, documentType)`, où `reader` est un membre (`UserId` et rôle) ou un invité (`GuestAccessId`) ; l'exception de RB-12-01 s'ajoute à la règle `GM_ONLY` (fiche du personnage associé) ; `reader` porte aussi les personnages associés au lecteur, que la couche application résout auprès de Space Management avant l'appel ; `PLAYER_PRIVATE` reste auteur seul, sans exception. Sens inchangé pour le reste de cet ADR.

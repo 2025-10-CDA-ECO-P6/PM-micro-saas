@@ -68,7 +68,7 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 
 **Périmètre** :
 - Machine d'états `Session` unidirectionnelle `LIVE → CLOSED → ARCHIVED` : chaque transition est irréversible, `ARCHIVED` refuse toute modification (`docs/domaine/session-conduct/context.md`).
-- `Document.CanBeReadBy(userId, memberRole, documentType)` : un document `visibility = PLAYER_PRIVATE` est inaccessible même au MJ (`OWNER`/`GM`), sans exception — y compris pour les `LIVE_NOTE` (`docs/domaine/content-library/context.md`, `docs/domaine/session-conduct/context.md`).
+- `Document.CanBeReadBy(reader, documentType)` : un document `visibility = PLAYER_PRIVATE` est inaccessible même au MJ (`OWNER`/`GM`), sans exception — y compris pour les `LIVE_NOTE` (`docs/domaine/content-library/context.md`, `docs/domaine/session-conduct/context.md`).
 - Visibilité privée par défaut à la création d'un document (RB-04-01) et d'une note de session MJ (RB-06-11).
 - Quota de 3 espaces `CAMPAIGN`/`ONE_SHOT` actifs pour un compte `FREE` ; l'espace `PERSONAL` est hors quota, pour tous les plans (RB-02-19, `docs/domaine/space-management/context.md`).
 - `isSystem` est informatif : les dossiers système sont renommables et supprimables ; le dossier virtuel « Non classés » est protégé (non renommable, non supprimable).

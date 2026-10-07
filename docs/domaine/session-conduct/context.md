@@ -91,7 +91,7 @@ Un seul `SessionViewConfig` par espace.
 > `SessionViewConfig` n'existe que pour les **espaces partagés** (`CAMPAIGN` ou `ONE_SHOT`).
 > Un espace `PERSONAL` n'a pas de `SessionViewConfig` : il n'y a ni joueurs, ni vue session joueur.
 
-Créé automatiquement à `SpaceCreated` (espaces partagés uniquement) avec les dossiers système de l'espace comme point de départ. Le MJ peut ensuite ajouter, retirer ou réordonner librement.
+Créé automatiquement à `SpaceCreated` (espaces partagés uniquement) avec les quatre dossiers système nommés de l'espace (Personnages, Joueurs, Scénarios, Notes) comme point de départ. Le dossier virtuel « Non classés » n'y figure jamais. Le MJ peut ensuite ajouter, retirer ou réordonner librement.
 
 | Champ | Type | Description |
 |---|---|---|
@@ -144,7 +144,7 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 3. `AttachNote` et `UpdateSummary` sont autorisés en état CLOSED.
 4. Tout Document avec `visibility = PLAYER_PRIVATE` n'est lisible que par son auteur : le membre identifié par `createdById`, ou l'invité identifié par `guestAccessId`. Les membres `OWNER` et `GM` n'y ont aucun accès, quel que soit le type de document — y compris les Documents de type `LIVE_NOTE`. Le lien vers le personnage (`characterId`) est un **lien d'affichage et de routage** : il permet d'associer la note à un personnage dans l'interface. Il ne confère aucune propriété sur la note et ne fait pas hériter la note à un futur joueur incarnant le même personnage. Un joueur ultérieur jouant le même personnage ne peut pas accéder aux notes `PLAYER_PRIVATE` d'un ancien joueur — même si le `characterId` est identique.
 5. Il existe exactement un `SessionViewConfig` par espace partagé (`CAMPAIGN` ou `ONE_SHOT`). Un espace `PERSONAL` n'en a pas.
-6. Un `SessionViewFolder` référence un dossier qui appartient au même espace.
+6. Un `SessionViewFolder` référence un dossier qui appartient au même espace et qui n'est pas le dossier virtuel « Non classés » (`isVirtual = true`).
 7. `Session.summary` n'est modifiable que si `status = CLOSED`. Il peut être null. Il représente un résumé narratif libre rédigé par le MJ après la séance — distinct des notes de session (`sessionNoteIds`) qui sont des Documents LIVE_NOTE.
 8. Il ne peut y avoir qu'une seule session au statut `LIVE` par espace. La création d'une nouvelle session en `LIVE` est bloquée si une session `LIVE` existe déjà pour l'espace. *(C-14)*
 
@@ -154,14 +154,14 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 
 1. Démarrer une session (`Start()`) est réservé aux membres `OWNER` ou `GM`.
 2. Un joueur accède à la session via son `SpaceMembership` ou un `GuestAccess` actif — la validation est faite en couche application.
-3. Un joueur ne voit que les documents avec `visibility = PUBLIC` et ses propres documents avec `visibility = PLAYER_PRIVATE` (dont les Documents de type `LIVE_NOTE`). Le MJ ne voit pas les documents `PLAYER_PRIVATE` dont il n'est pas l'auteur.
+3. Un joueur ne voit que les documents avec `visibility = PUBLIC` et ses propres documents avec `visibility = PLAYER_PRIVATE` (dont les Documents de type `LIVE_NOTE`), ainsi que la fiche `GM_ONLY` du personnage qui lui est associé (exception de RB-12-01, règle métier 2 de [content-library](../content-library/context.md#règles-métier)). Le MJ ne voit pas les documents `PLAYER_PRIVATE` dont il n'est pas l'auteur.
 4. Épingler un document (`PinDocument`) n'en change pas la visibilité — c'est une organisation locale à la session.
 5. Partager un document avec les joueurs (`Document.Share()`) est une opération Content Library déclenchée depuis la couche application — Session Conduct ne possède pas cette opération.
 6. À la clôture de session (`Close()`), la couche application notifie Space Management pour déclencher le countdown d'expiration des `GuestAccess SESSION`.
 7. La création à la volée (UC-07) crée un Document dans Content Library via la couche application. Le rattachement à la session dépend du type créé :
    - **Document durable** (note, PNJ, lieu, faction, personnage joueur, objet, contenu libre) : en séance LIVE, ce Document est **épinglé par défaut** dans la session (`Session.PinDocument()`) ; le MJ peut le désépingler ensuite (`Session.UnpinDocument()`, cf. règle 4). En séance CLOSED, l'épinglage n'est pas automatique — il reste optionnel, à la main du MJ.
    - **`LIVE_NOTE`** (note de session créée à la volée) : elle est **rattachée à la session via `Session.AttachNote()`** (`sessionNoteIds`) — jamais épinglée, quel que soit le statut de la session (cf. RB-07-04).
-8. **Règle F-08 — Effacement effectif des documents privés sous obligation RGPD** (RGPD, article 17 — droit à l'effacement) : les Documents `PLAYER_PRIVATE` sous obligation d'effacement sont supprimés **physiquement** — pas via le mécanisme `SoftDelete` (suppression logique réversible). Pour ces populations, « supprimé » signifie « effacé », pas « masqué ». Cette portée n'est **pas restreinte au type `LIVE_NOTE`** : l'obligation d'effacement porte sur la confidentialité (`visibility = PLAYER_PRIVATE`), pas sur le type de document (cohérent avec content-library.md invariant 10 et identity-access.md règle métier n°4). Session Conduct manipule directement la population `LIVE_NOTE` via `sessionNoteIds` ; les autres types `PLAYER_PRIVATE` relèvent de Content Library. Deux déclencheurs :
+8. **Règle F-08 — Effacement effectif des documents privés sous obligation RGPD** (RGPD, article 17 — droit à l'effacement) : les Documents `PLAYER_PRIVATE` sous obligation d'effacement sont supprimés **physiquement** — pas via le mécanisme `SoftDelete` (suppression logique réversible). Pour ces populations, « supprimé » signifie « effacé », pas « masqué ». Cette portée n'est **pas restreinte au type `LIVE_NOTE`** : l'obligation d'effacement porte sur la confidentialité (`visibility = PLAYER_PRIVATE`), pas sur le type de document (cohérent avec content-library.md règle métier 10 et identity-access.md règle métier n°4). Session Conduct manipule directement la population `LIVE_NOTE` via `sessionNoteIds` ; les autres types `PLAYER_PRIVATE` relèvent de Content Library. Deux déclencheurs :
    - **Suppression de compte utilisateur** : deux populations de Documents `PLAYER_PRIVATE` sont effacées : (a) ceux créés par cet utilisateur (`createdById`), et (b) ceux créés par cet utilisateur et rattachés aux personnages incarnés par l'utilisateur dans les espaces où il était membre. Cette extension couvre le risque de résidu : un personnage pouvant être réassocié à un autre joueur, un document `PLAYER_PRIVATE` résiduel serait exposé au nouveau propriétaire.
    - **Fin définitive d'un `GuestAccess` non converti** : les Documents `PLAYER_PRIVATE` créés par cet invité (`guestAccessId`) sont effacés physiquement — uniquement les siens.
    Les contenus partagés (`PUBLIC`, `GM_ONLY`) sont conservés sous intérêt légitime pour assurer la continuité de l'espace. La mise en œuvre de cette obligation est arbitrée par ADR-012 et ADR-013.
@@ -175,7 +175,7 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 | Événement | Producteur | Consommateurs |
 |---|---|---|
 | `SessionStarted` | `Session.Start()` | Application (notification membres) |
-| `SessionClosed` | `Session.Close()` | Space Management (expiration GuestAccess SESSION) |
+| `SessionClosed` | `Session.Close()` | Application (déclenche l'expiration des `GuestAccess SESSION` dans Space Management — règle métier 6) |
 | `SessionArchived` | `Session.Archive()` | — |
 | `DocumentPinned` | `Session.PinDocument()` | Application (épinglage automatique UC-07, UC-08) |
 | `DocumentUnpinned` | `Session.UnpinDocument()` | — |
@@ -188,7 +188,8 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 
 | Événement / Requête | Source | Action |
 |---|---|---|
-| `SpaceCreated` | Space Management | Créer le `SessionViewConfig` avec les dossiers système (espaces partagés uniquement — `CAMPAIGN` ou `ONE_SHOT`) |
+| `SpaceCreated` | Space Management | Créer le `SessionViewConfig` avec les quatre dossiers système nommés, sans le dossier virtuel « Non classés » (espaces partagés uniquement — `CAMPAIGN` ou `ONE_SHOT`) |
+| `SpaceDeleted` | Space Management | Purge à J+30 ([ADR-011](../../decisions/ADR-011-cascade-integrite-referentielle.md), saga `SpaceDeleted`), dans la transaction unique de l'espace. Passe 1, déliaison : le scénario référencé par chaque session est remis à vide. Passe 2, suppression des configurations de vue et de leurs dossiers, des documents épinglés, des notes en direct, puis des sessions. Le détail par table est dans ADR-011, § saga `SpaceDeleted`. Espace `PERSONAL` : sans objet, il n'a ni session ni `SessionViewConfig` (invariant 5) |
 | `GuestAccessCreated` | Space Management | Autoriser l'entrée du joueur invité |
 | `GuestAccessRevoked` | Space Management | Couper l'accès de l'invité si une session est en cours |
 | `GuestAccessExpired` | Space Management | Couper l'accès de l'invité si une session est en cours |
@@ -207,15 +208,15 @@ La `SessionViewConfig` est la traduction domaine de cette philosophie : elle mé
 > 2. L'archivage d'un espace est réversible (voir space-management.md), alors que `ARCHIVED` est ici un état terminal en lecture seule complète (invariant 2). Faire transiter la session sur un événement réversible créerait une asymétrie : l'espace peut redevenir actif, la session resterait figée sans retour possible.
 > 3. Puisque `SpaceArchived` ne produit déjà aucune transition, il n'y a rien à défaire au désarchivage : `SpaceUnarchived` reste sans effet sur `Session`, pour le même motif que celui qui le rend sans effet à l'aller.
 >
-> État `LIVE` : déjà couvert en amont — la garde posée sur `Space.Archive()` (space-management.md) refuse l'archivage tant qu'une session `LIVE` subsiste sur l'espace. Seul l'état `CLOSED` était concerné par cette convention.
+> État `LIVE` : déjà couvert en amont — la garde applicative posée avant `Space.Archive()` (space-management.md, invariant 16) refuse l'archivage tant qu'une session `LIVE` subsiste sur l'espace. Seul l'état `CLOSED` était concerné par cette convention.
 
 ### Ce que Session Conduct publie
 
-- `SessionClosed` → Space Management
+- `SessionClosed` → Application, qui déclenche l'expiration des `GuestAccess SESSION` dans Space Management (règle métier 6)
 
 ### Utilisation par les autres contextes
 
-Session Conduct ne publie pas d'identifiants consommés par d'autres contextes. Il est le contexte terminal de la chaîne.
+Session Conduct publie `SessionId` comme identifiant de référence : Space Management le référence (`Invitation.sessionId`, `GuestAccess.sessionId`). Il n'en publie aucun autre.
 
 ---
 
@@ -225,7 +226,7 @@ Les notes de session sont des **Documents** de Content Library avec `documentTyp
 La session référence leurs IDs dans `sessionNoteIds`.
 
 Créer une note de session = deux opérations applicatives :
-1. `Document.Create()` dans Content Library (type LIVE_NOTE, folder = "Notes" de l'espace)
+1. `Document.Create()` dans Content Library (type LIVE_NOTE, dossier de rôle système `NOTES` de l'espace, quel que soit son nom ; si ce dossier a été supprimé, dossier virtuel « Non classés » — règle métier 12 de [Content Library](../content-library/context.md))
 2. `Session.AttachNote(documentId)`
 
 Les métadonnées spécifiques aux notes de session sont portées par deux **champs de premier niveau** du Document, promus depuis les propriétés structurées (ADR-002) :
@@ -233,7 +234,7 @@ Les métadonnées spécifiques aux notes de session sont portées par deux **cha
 | Champ | Type | Description |
 |---|---|---|
 | `characterId` | `DocumentId?` | Personnage associé — pour les notes PLAYER_PRIVATE joueur |
-| `guestAccessId` | `GuestAccessId?` | Auteur invité sans compte — quand l'auteur n'est pas un utilisateur enregistré |
+| `guestAccessId` | `GuestAccessId?` | Post-MVP. Auteur invité sans compte. Aucun document d'invité n'existe au MVP (les notes de session du joueur sont hors MVP) |
 
 > Ce modèle permet à une note de session de référencer d'autres documents via `linkedDocuments`
 > (lier un PNJ, une scène, un lieu à la note) sans aucune modélisation supplémentaire.

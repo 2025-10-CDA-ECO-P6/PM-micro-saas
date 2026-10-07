@@ -28,7 +28,7 @@ Permettre au MJ de structurer librement le contenu de son espace en dossiers nom
   - A1 : renommer un dossier (y compris système)
   - A2 : réordonner les dossiers
   - A3 : créer un document depuis un dossier (auto-placé + template appliqué)
-  - A4 : document "non classé" → dossier virtuel invisible
+  - A4 : document "non classé" → dossier virtuel "Non classés" (affiché dès qu'il n'est pas vide)
   - A5 : dossier sans template → document créé vide
   - A6 : dossiers système créés à création d'espace
 
@@ -157,7 +157,7 @@ Scénario : Le MJ tente de créer un dossier avec un nom vide
 **Notes de conception** :
 - renommage du dossier.
 - `isSystem = true` est informatif — il ne bloque ni le renommage ni la suppression. C'est une décision de conception actée.
-- Le dossier virtuel "Non classés" (`isVirtual = true`) est non renommable — il est un mécanisme interne, invisible en navigation.
+- Le dossier virtuel "Non classés" (`isVirtual = true`) est non renommable — il est un mécanisme interne, affiché en navigation dès qu'il n'est pas vide (UC-05 A4).
 - Cas d'usage clé : Thomas renomme "Personnages" en "Factions" pour Blades in the Dark.
 
 **Règles métier** :
@@ -303,7 +303,7 @@ Scénario : Le MJ supprime un dossier système
 **Critères d'acceptation** :
 - [ ] Le MJ peut modifier l'ordre des dossiers de son espace.
 - [ ] L'ordre modifié est persisté et restauré à la prochaine ouverture de l'espace.
-- [ ] Le dossier virtuel "Non classés" n'apparaît pas dans la liste ordonnée (invisible en navigation).
+- [ ] Le dossier virtuel "Non classés" n'apparaît pas dans la liste ordonnée par le MJ.
 
 ```gherkin
 Scénario : Le MJ réordonne ses dossiers

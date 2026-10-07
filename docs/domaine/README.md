@@ -53,9 +53,9 @@ Avant d'ajouter un concept dans le Core, toutes les réponses doivent être **ou
 
 ## Sens de dépendance besoin ↔ décision — pureté du domaine
 
-Les invariants de domaine et la prose des contextes sont la couche la plus stable du modèle. Deux garde-fous la protègent :
+Les invariants de domaine, la prose des contextes et leurs diagrammes (classes, flux, MCD) sont la couche la plus stable du modèle. Deux garde-fous la protègent :
 
-1. **Aucun nom de technologie ou d'infrastructure** n'y figure directement — API navigateur, format de stockage, protocole, bibliothèque. Exemple interdit : citer le nom d'une interface logicielle dans la table des événements de domaine ; correct : « la suppression de compte déclenche la révocation des sessions actives ». Pour plus de détail et le test d'autoportance, voir la section « Sens de dépendance besoin ↔ décision » dans le [README parent](../reference/ordre-d-autorite.md#sens-de-dépendance-besoin--décision).
+1. **Aucun nom de technologie ou d'infrastructure** n'y figure directement — API navigateur, format de stockage, protocole, bibliothèque. Exemple interdit : citer le nom d'une interface logicielle dans la table des événements de domaine ; correct : « la suppression de compte déclenche la révocation des sessions actives ». La règle vaut pour les diagrammes comme pour la prose : un format de jeton, un nom d'interface technique ou une requête SQL quittent le diagramme pour les [spécifications d'architecture](../architecture/transverse.md), que le diagramme cite. Le MLD, vue physique assumée dont les types SQL et les index sont la fonction (voir l'en-tête de chaque `logical-data.md`), est la seule exception, pour son schéma seulement. Pour plus de détail et le test d'autoportance, voir la section « Sens de dépendance besoin ↔ décision » dans le [README parent](../reference/ordre-d-autorite.md#sens-de-dépendance-besoin--décision).
 
 2. **Aucun renvoi à une ADR comme source d'autorité d'une règle de domaine** — un ADR peut motiver un invariant, jamais le définir. Si masquer le renvoi ADR rend l'invariant vide, l'inversion est consommée : la substance doit vivre dans le domaine, pas dans la décision d'architecture.
 

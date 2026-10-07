@@ -42,7 +42,7 @@ Propriété portée par chaque `Document`. Détermine qui peut lire le document.
 | Valeur domaine | Sémantique |
 |---|---|
 | `PUBLIC` | Visible par tous les membres de l'espace et tous les `GuestAccess` actifs. |
-| `GM_ONLY` | Visible uniquement par les membres avec le rôle `OWNER` ou `GM`. C'est la valeur par défaut à la création. |
+| `GM_ONLY` | Visible uniquement par les membres avec le rôle `OWNER` ou `GM`, et, par exception (RB-12-01), par le joueur auquel est associé le personnage dont c'est la fiche. C'est la valeur par défaut à la création. |
 | `PLAYER_PRIVATE` | Lisible uniquement par l'auteur du document : le membre identifié par `createdById`, ou l'invité identifié par `guestAccessId`. Les membres `OWNER` et `GM` n'y ont aucun accès — ni lecture, ni énumération, ni métadonnées. |
 
 La confidentialité `PLAYER_PRIVATE` est absolue quel que soit le chemin d'accès (direct, via personnage associé, ou via accès invité).
@@ -228,7 +228,7 @@ Accès d'un joueur sans compte à un espace ou une session. Agrégat indépendan
 - Statuts : `ACTIVE`, `EXPIRED`, `REVOKED`, `CONVERTED`.
 - Portée (`GuestAccessScope`) : `SESSION` ou `SPACE`.
 - Propriétaire : **Space Management**.
-- Consommé par : **Session Conduct** (autorisation d'accès), **Content Library** (auteur invité d'une `LIVE_NOTE` via `guestAccessId`).
+- Consommé par : **Session Conduct** (autorisation d'accès), **Content Library** (auteur invité d'une `LIVE_NOTE` via `guestAccessId`, post-MVP).
 
 ---
 
@@ -257,7 +257,7 @@ Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, c
 
 Conteneur organisationnel. Structure l'arborescence du contenu dans un espace. Un `Folder` appartient toujours à exactement un `Espace`. Les dossiers système (`isSystem = true`) sont créés automatiquement à la création d'un espace ; ils sont renommables et supprimables librement — `isSystem` est informatif, pas restrictif.
 
-Le dossier virtuel « Non classés » (`isVirtual = true`) est non supprimable et invisible dans la navigation. Il reçoit automatiquement tout document dont le dossier explicite a été supprimé. Il en existe exactement un par espace.
+Le dossier virtuel « Non classés » (`isVirtual = true`) est non supprimable. Il est affiché dans la navigation dès qu'il n'est pas vide et masqué tant qu'il est vide ; dans un espace `PERSONAL` sans autre dossier, il est toujours affiché (invariant 4 de [Content Library](domaine/content-library/context.md#invariants-métier)). Il reçoit automatiquement tout document dont le dossier explicite a été supprimé. Il en existe exactement un par espace.
 
 ---
 
@@ -290,7 +290,7 @@ Le personnage actif est un état de focus / présentation **éphémère** : une 
 
 ### `LIVE_NOTE` (note de session)
 
-Type de document (`documentTypeId = LIVE_NOTE`) représentant une note prise pendant ou juste après une session. Une note de session est un `Document` ordinaire stocké dans **Content Library** ; **Session Conduct** la référence via `sessionNoteIds`. Deux champs de premier niveau spécifiques : `characterId` (personnage associé, pour les notes `PLAYER_PRIVATE` joueur) et `guestAccessId` (auteur invité sans compte).
+Type de document (`documentTypeId = LIVE_NOTE`) représentant une note prise pendant ou juste après une session. Une note de session est un `Document` ordinaire stocké dans **Content Library** ; **Session Conduct** la référence via `sessionNoteIds`. Deux champs de premier niveau spécifiques : `characterId` (personnage associé, pour les notes `PLAYER_PRIVATE` joueur) et `guestAccessId` (auteur invité sans compte, post-MVP).
 
 - Visibilité par défaut à la création par le MJ : `GM_ONLY` (terme de besoin : « privé MJ »).
 - Visibilité d'une note créée par un joueur : `PLAYER_PRIVATE` (terme de besoin : « note personnelle joueur »).

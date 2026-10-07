@@ -2,7 +2,7 @@
 
 ## Périmètre
 
-Parcours du MJ depuis la découverte des dossiers de son espace jusqu'à la personnalisation avancée (renommage, templates, réordonnage). Couvre trois profils : Antoine (organisation thématique et templates), Nadia (usage des dossiers par défaut sans configuration), Thomas (renommage des dossiers système pour les adapter à son système de jeu). Le comportement du dossier virtuel "Non classés" est couvert comme mécanisme interne, invisible en navigation.
+Parcours du MJ depuis la découverte des dossiers de son espace jusqu'à la personnalisation avancée (renommage, templates, réordonnage). Couvre trois profils : Antoine (organisation thématique et templates), Nadia (usage des dossiers par défaut sans configuration), Thomas (renommage des dossiers système pour les adapter à son système de jeu). Le comportement du dossier virtuel "Non classés" est couvert comme mécanisme interne, affiché en navigation dès qu'il n'est pas vide.
 
 ---
 
@@ -84,7 +84,7 @@ flowchart TD
 | Créer un document dans un dossier avec template | Antoine, Thomas | Pas de retour visuel sur l'application du template | Indiquer visuellement que le template a été appliqué à l'ouverture de l'éditeur |
 | Déplacer un document vers un autre dossier | Émilie, Nadia | Sélection de plusieurs documents non disponible | Multi-sélection avec déplacement groupé |
 | Supprimer un dossier non vide | Antoine | Perte de documents si l'action n'est pas explicitée | Dialogue clair : "3 documents seront déplacés vers — choisissez un dossier ou laissez dans Non classés" |
-| Dossier virtuel Non classés | Tous | Confusion si des documents apparaissent dans un dossier inconnu | Le dossier virtuel est invisible en navigation — les documents orphelins sont accessibles via la recherche |
+| Dossier virtuel Non classés | Tous | Confusion si des documents apparaissent dans un dossier inconnu | Le dossier virtuel n'est affiché en navigation que lorsqu'il contient des documents — les documents orphelins sont aussi accessibles via la recherche |
 
 ---
 
@@ -151,7 +151,7 @@ Thomas commence une campagne Blades in the Dark. Les dossiers système lui sembl
 - **E2 — Suppression d'un dossier non vide** : dialogue explicite proposant (a) de choisir un dossier cible pour les documents ou (b) de les laisser dans "Non classés". Aucune suppression de document.
 - **E3 — Suppression d'un dossier système** : même comportement qu'E2. `isSystem` n'est pas une contrainte — la suppression est autorisée avec le même dialogue.
 - **E4 — Template supprimé après association** : `defaultTemplateDocumentId` passe silencieusement à null. Les documents existants (copies indépendantes) ne sont pas affectés. Le dossier se comporte comme un dossier sans template.
-- **A4 — Document orphelin** : un document sans dossier associé explicite est rattaché au dossier virtuel "Non classés". Ce dossier est invisible en navigation mais les documents sont accessibles via la recherche.
+- **A4 — Document orphelin** : un document sans dossier associé explicite est rattaché au dossier virtuel "Non classés". Ce dossier est affiché en navigation dès qu'il contient un document ; les documents sont aussi accessibles via la recherche.
 
 ---
 

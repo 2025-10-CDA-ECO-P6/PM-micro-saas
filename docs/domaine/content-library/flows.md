@@ -8,14 +8,20 @@ sequenceDiagram
     participant SM as Space Management
     participant CL as Content Library
 
-    SM-->>App: SpaceCreated(spaceId, ownerId)
-    App->>CL: Folder.Create(spaceId, "Personnages", isSystem=true)
-    App->>CL: Folder.Create(spaceId, "Joueurs", isSystem=true)
-    App->>CL: Folder.Create(spaceId, "Scénarios", isSystem=true)
-    App->>CL: Folder.Create(spaceId, "Notes", isSystem=true)
-    App->>CL: Folder.Create(spaceId, "Non classés", isSystem=true, isVirtual=true)
-    Note over CL: Dossier virtuel invisible — garantit folderId non-nullable sur Document
-    CL-->>App: 4 dossiers système visibles + 1 dossier virtuel technique créés
+    SM-->>App: SpaceCreated(spaceId, ownerId, type)
+    alt type = CAMPAIGN ou ONE_SHOT
+        App->>CL: Folder.Create(spaceId, "Personnages", isSystem=true)
+        App->>CL: Folder.Create(spaceId, "Joueurs", isSystem=true)
+        App->>CL: Folder.Create(spaceId, "Scénarios", isSystem=true)
+        App->>CL: Folder.Create(spaceId, "Notes", isSystem=true, systemRole=NOTES)
+        App->>CL: Folder.Create(spaceId, "Non classés", isSystem=true, isVirtual=true)
+        Note over CL: Dossier virtuel — garantit folderId non-nullable sur Document
+        CL-->>App: 4 dossiers système nommés + 1 dossier virtuel créés
+    else type = PERSONAL
+        App->>CL: Folder.Create(spaceId, "Non classés", isSystem=true, isVirtual=true)
+        Note over CL: Seul dossier créé — aucun dossier système nommé dans un espace personnel
+        CL-->>App: 1 dossier virtuel créé
+    end
 ```
 
 ## Flux 2 — Créer un document simple (PNJ, note…)
@@ -122,6 +128,8 @@ sequenceDiagram
 ## Flux 8 — Consulter les backlinks d'un document
 
 > **Hors MVP** — les backlinks arrivent avec les relations structurées (UC-F06, voir [exclusions](../../besoin/vision/perimetre/exclusions.md)) ; ce flux est conservé pour la reprise (US-04-06).
+>
+> Lecture des backlinks : seuls les documents source lisibles par l'appelant sont retournés — voir [ADR-014](../../decisions/ADR-014-modele-autorisation-api.md) (« Fuite d'existence par backlink ») et le [contrat OpenAPI](../../architecture/specs/contrat-openapi.md) § 3.2.
 
 ```mermaid
 sequenceDiagram
@@ -131,7 +139,7 @@ sequenceDiagram
 
     MJ->>App: Voir les documents qui référencent ce PNJ (documentId)
     App->>CL: GetBacklinks(targetDocumentId)
-    Note over CL: SELECT source_document_id FROM document_links<br/>WHERE target_document_id = :id
+    Note over CL: Documents source dont un lien cible le document consulté ;<br/>seuls les documents source lisibles par l'appelant sont retournés
     CL-->>App: Liste des documents source
     App-->>MJ: "Ce PNJ est référencé par 3 scènes"
 ```

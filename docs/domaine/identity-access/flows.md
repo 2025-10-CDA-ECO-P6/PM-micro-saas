@@ -21,19 +21,18 @@ sequenceDiagram
 
 ## Flux 2 — Connexion
 
-> Durées et révocation définies dans [ADR-015](../../decisions/ADR-015-securite-authentification-mvp.md) §3 : access token ≤ 15 min, refresh token ≤ 7 j absolu avec rotation et détection de réutilisation (denylist JTI). La révocation de la famille de tokens est déclenchée par `AccountSuspended` et `UserAnonymized` via `ITokenDenylist.RevokeFamilyAsync`.
+> Durées de vie et révocation des jetons : voir [ADR-015](../../decisions/ADR-015-securite-authentification-mvp.md) § 3 et la [vue transverse de sécurité](../../architecture/transverse.md). La suspension et l'anonymisation du compte révoquent tous les jetons de renouvellement actifs de l'utilisateur.
 
 ```mermaid
 sequenceDiagram
     actor Utilisateur
     participant App as Application Layer
     participant Identity as Infrastructure d'identité
-    participant Denylist as Token Denylist (JTI)
 
     Utilisateur->>App: Connexion (email, password)
     App->>Identity: SignIn(email, password)
     alt Identifiants valides et compte ACTIVE
-        Identity-->>App: JWT (≤ 15 min) + refresh token (≤ 7 j, rotatif)
+        Identity-->>App: Jeton d'accès + jeton de renouvellement
         App-->>Utilisateur: Authentifié
     else Identifiants invalides
         Identity-->>App: Échec
@@ -41,7 +40,7 @@ sequenceDiagram
     else Compte SUSPENDED ou DELETED
         App-->>Utilisateur: Accès refusé
     end
-    Note over App,Denylist: AccountSuspended / UserAnonymized → RevokeFamilyAsync(userId)<br/>invalide tous les refresh tokens actifs (denylist JTI)
+    Note over App,Identity: AccountSuspended / UserAnonymized →<br/>révocation de tous les jetons de renouvellement actifs de l'utilisateur
 ```
 
 ## Flux 3 — Réinitialisation du mot de passe
@@ -102,7 +101,7 @@ sequenceDiagram
     App->>IA: User.ChangeTier(newTier)
     IA-->>App: AccountTierChanged event
     App->>SM: Réagir à AccountTierChanged
-    alt Downgrade FREE → PRO (résiliation)
+    alt Downgrade PRO → FREE (résiliation)
         SM->>SM: Geler les espaces excédentaires (> 3)
         SM-->>App: OK
     else Upgrade FREE → PRO

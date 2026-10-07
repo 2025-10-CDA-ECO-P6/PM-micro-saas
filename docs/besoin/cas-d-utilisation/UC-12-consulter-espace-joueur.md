@@ -36,7 +36,7 @@ Le joueur accède à la vue d'espace ou de session après que son accès a été
 
 1. Le joueur accède à la vue d'espace ou de session.
 2. Le système vérifie que son `GuestAccess` ou son `SpaceMembership` est actif.
-3. Si un personnage lui a été associé par le MJ, la fiche du personnage actif s'affiche, quelle que soit la visibilité de cette fiche (RB-12-01).
+3. Si un personnage lui a été associé par le MJ, la fiche du personnage actif s'affiche, qu'elle soit `GM_ONLY` ou `PUBLIC` (RB-12-01).
 4. Les documents `PUBLIC` sont affichés selon le périmètre d'accès (`SESSION` ou `SPACE`).
 
 ## Scénarios alternatifs
@@ -66,7 +66,7 @@ L'accès n'est plus actif. La vue post-accès ne s'affiche pas. Le joueur est re
 
 ## Règles métier
 
-- **RB-12-01** : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` lui sont invisibles. Les notes `PLAYER_PRIVATE` sont invisibles à quiconque n'en est pas l'auteur. **Exception** : la fiche d'un personnage associé au joueur est lisible par ce joueur, quelle que soit sa visibilité — associer un personnage à un joueur lui en donne la lecture.
+- **RB-12-01** : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` lui sont invisibles. Les notes `PLAYER_PRIVATE` sont invisibles à quiconque n'en est pas l'auteur. **Exception** : la fiche d'un personnage associé au joueur est lisible par ce joueur, qu'elle soit `GM_ONLY` ou `PUBLIC` — associer un personnage à un joueur lui en donne la lecture. Une fiche `PLAYER_PRIVATE` reste lisible par son seul auteur, sans exception.
 - **RB-12-02** *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, rattachées au personnage pour l'affichage. Elles persistent entre les sessions pour le **même auteur** (compte stable). Un joueur accédant à un personnage déjà joué par quelqu'un d'autre ne récupère jamais les notes de son prédécesseur (RB-09-19).
 - **RB-12-03** *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
 - **RB-12-04** : Un accès périmètre `SESSION` ne donne pas accès à l'historique des sessions. Il donne accès aux documents épinglés de la session et à tous les documents `PUBLIC` de l'espace.
@@ -79,7 +79,7 @@ L'accès n'est plus actif. La vue post-accès ne s'affiche pas. Le joueur est re
 
 ## Critères d'acceptation
 
-- Le joueur avec un personnage associé voit la fiche du personnage actif dès l'accès à la vue, quelle que soit la visibilité de cette fiche.
+- Le joueur avec un personnage associé voit la fiche du personnage actif dès l'accès à la vue, qu'elle soit `GM_ONLY` ou `PUBLIC`.
 - Le joueur voit les documents `PUBLIC` filtrés selon son périmètre (`SESSION` ou `SPACE`).
 - Un joueur sans personnage associé voit les documents `PUBLIC`.
 - Un accès périmètre `SESSION` donne accès aux documents épinglés de la session et à tous les documents `PUBLIC` de l'espace, sans l'historique des sessions précédentes.

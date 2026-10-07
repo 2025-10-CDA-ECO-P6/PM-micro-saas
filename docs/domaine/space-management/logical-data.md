@@ -57,7 +57,7 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 |---|---|---|---|
 | `id` | `uuid` | PK, NOT NULL | |
 | `space_id` | `uuid` | FK → `spaces.id`, NOT NULL | |
-| `token` | `uuid` | UNIQUE, NOT NULL | Utilisé dans l'URL |
+| `token` | `uuid` | UNIQUE, NOT NULL | Utilisé dans l'URL. UUID v4 tiré d'un générateur cryptographique (122 bits aléatoires) ; UUID v7 exclu (préfixe temporel prévisible) |
 | `type` | `varchar(10)` | NOT NULL | `LINK` / `EMAIL` |
 | `scope` | `varchar(20)` | NOT NULL | `SPACE` / `SESSION` |
 | `session_id` | `uuid` | nullable | FK physique réelle → `sessions.id` (Session Conduct) — exception assumée inter-module, voir note ci-dessous |
@@ -79,7 +79,7 @@ Table de liaison entre un membership et les personnages associés (IDs vers Cont
 | `space_id` | `uuid` | FK → `spaces.id`, NOT NULL | |
 | `scope` | `varchar(20)` | NOT NULL | `SESSION` / `SPACE` |
 | `session_id` | `uuid` | nullable | FK physique réelle → `sessions.id` (Session Conduct) — exception assumée inter-module, voir note ci-dessous |
-| `token` | `uuid` | UNIQUE, NOT NULL | Utilisé dans l'URL |
+| `token` | `uuid` | UNIQUE, NOT NULL | Utilisé dans l'URL. UUID v4 tiré d'un générateur cryptographique (122 bits aléatoires) ; UUID v7 exclu (préfixe temporel prévisible) |
 | `display_name` | `varchar(100)` | NOT NULL | |
 | `character_id` | `uuid` | nullable | FK physique réelle → `documents.id` (Content Library, type `player_character`) — exception assumée inter-module, voir note ci-dessous |
 | `status` | `varchar(20)` | NOT NULL, DEFAULT `'ACTIVE'` | `ACTIVE` / `EXPIRED` / `REVOKED` / `CONVERTED` |

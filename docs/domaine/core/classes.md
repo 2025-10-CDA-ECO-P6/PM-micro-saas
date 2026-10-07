@@ -40,6 +40,9 @@ classDiagram
     class FolderId {
         +value: identifiant
     }
+    class GuestAccessId {
+        +value: identifiant
+    }
 
     class Email {
         +value: texte
@@ -81,6 +84,7 @@ classDiagram
     ValueObject <|-- SessionId
     ValueObject <|-- DocumentId
     ValueObject <|-- FolderId
+    ValueObject <|-- GuestAccessId
     ValueObject <|-- Email
     ValueObject <|-- Slug
     ValueObject <|-- Tag

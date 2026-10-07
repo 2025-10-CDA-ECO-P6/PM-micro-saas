@@ -137,7 +137,7 @@ placé dans ce dossier et initialisé avec son template par défaut s'il en a un
 ### A4 — Document sans dossier
 
 Un document "non classé" est automatiquement placé dans le dossier virtuel "Non classés" de l'espace.
-Ce dossier est invisible dans la navigation MJ mais les documents qu'il contient sont accessibles
+Ce dossier est affiché dans la navigation MJ dès qu'il contient au moins un document, et masqué tant qu'il est vide ; dans un espace personnel qui n'a pas d'autre dossier, il est toujours affiché, même vide (décision de l'opérateur, 2026-10-07 ; AR-16 du zonage). Les documents qu'il contient sont aussi accessibles
 via la recherche et une vue "Non classés" dédiée. Le dossier associé d'un document n'est jamais nul : un document sans dossier explicite pointe vers le dossier virtuel "Non classés".
 
 ### A5 — Dossier sans template

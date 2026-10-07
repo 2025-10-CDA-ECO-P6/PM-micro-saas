@@ -51,7 +51,7 @@ Le MJ souhaite intégrer un nouveau joueur, ou gérer les accès existants.
 
 ### A1 — Associer un joueur à un personnage
 
-Après qu'un joueur a rejoint, le MJ lui associe un personnage existant ou en crée un nouveau. L'association donne à ce joueur la lecture de la fiche de son personnage, quelle que soit la visibilité de la fiche (UC-12, RB-12-01).
+Après qu'un joueur a rejoint, le MJ lui associe un personnage existant ou en crée un nouveau. L'association donne à ce joueur la lecture de la fiche de son personnage, qu'elle soit `GM_ONLY` ou `PUBLIC` (UC-12, RB-12-01).
 
 ### A2 — Révoquer une invitation
 

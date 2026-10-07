@@ -10,13 +10,17 @@ sequenceDiagram
     participant CL as Content Library
 
     MJ->>App: Créer un espace (name, type)
-    App->>App: Vérifier quota FREE (≤ 3 espaces actifs)
+    App->>App: Vérifier quota FREE (≤ 3 espaces actifs CAMPAIGN/ONE_SHOT) — sans objet pour type = PERSONAL, hors quota
     alt Quota dépassé
         App-->>MJ: Bloqué — upgrade requis
     else Quota OK
         App->>SM: Space.Create(ownerId, name, type)
         SM-->>App: SpaceCreated event
-        App->>CL: Créer les dossiers système (Personnages, Joueurs, Scénarios, Notes)
+        alt type = CAMPAIGN ou ONE_SHOT
+            App->>CL: Créer les dossiers système (Personnages, Joueurs, Scénarios, Notes) + dossier virtuel (Non classés)
+        else type = PERSONAL
+            App->>CL: Créer uniquement le dossier virtuel (Non classés)
+        end
         App-->>MJ: Espace créé
     end
 ```
@@ -91,8 +95,8 @@ sequenceDiagram
     Billing->>App: Résiliation abonnement Pro (userId)
     App->>IA: User.ChangeTier(FREE)
     IA-->>App: AccountTierChanged(userId, FREE)
-    App->>SM: GetActiveSpaces(userId)
-    SM-->>App: Liste des espaces actifs (triées par date de création)
+    App->>SM: GetActiveSpaces(userId, types = CAMPAIGN/ONE_SHOT)
+    SM-->>App: Liste des espaces actifs CAMPAIGN/ONE_SHOT (triée par date de création) — PERSONAL exclu
     loop Pour chaque espace excédentaire (rang > 3)
         App->>SM: Space.Freeze()
         SM-->>App: SpaceFrozen event

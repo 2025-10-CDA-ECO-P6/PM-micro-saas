@@ -647,7 +647,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 - S'il est associé à plusieurs personnages, il choisit le personnage actif pour la session en cours.
 
 **Règles de gestion** :
-- Le joueur ne voit que les documents dont la visibilité est publique ; les documents réservés au MJ ou les notes personnelles d'autres personnages restent invisibles ; exception : la fiche d'un personnage associé à un joueur est lisible par ce joueur, quelle que soit sa visibilité (RB-12-01).
+- Le joueur ne voit que les documents dont la visibilité est publique ; les documents réservés au MJ ou les notes personnelles d'autres personnages restent invisibles ; exception : la fiche d'un personnage associé à un joueur est lisible par ce joueur, qu'elle soit réservée au MJ ou publique (RB-12-01) ; une fiche privée du joueur reste lisible par son seul auteur.
 - Les notes personnelles sont liées à leur auteur et persistent entre les sessions pour ce même auteur uniquement (RB-12-02). *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
 - Un accès de périmètre session donne accès aux documents épinglés de la session et à tous les documents publics de l'espace, mais pas à l'historique des sessions, à la différence d'un accès de périmètre campagne (RB-12-04, RB-12-05).
 - Un joueur associé à plusieurs personnages doit choisir un personnage actif ; ce choix ne modifie pas les associations définies par le MJ et peut être changé à tout moment (RB-12-06, RB-12-07, RB-12-09).

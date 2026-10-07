@@ -12,7 +12,8 @@
 | `parent_folder_id` | `uuid` | FK → `folders.id`, nullable | Self-référence pour l'arborescence |
 | `name` | `varchar(200)` | NOT NULL | SOUS-SPÉCIFIÉ |
 | `is_system` | `bool` | NOT NULL, DEFAULT `false` | Créé automatiquement à `SpaceCreated` — informatif uniquement, non restrictif |
-| `is_virtual` | `bool` | NOT NULL, DEFAULT `false` | Dossier "Non classés" — invisible dans la navigation, non supprimable, un seul par espace |
+| `system_role` | `varchar(20)` | nullable | Rôle système du dossier, fixé à la création, indépendant du nom. Seule valeur définie : `NOTES` (décision de l'opérateur, 2026-10-07) |
+| `is_virtual` | `bool` | NOT NULL, DEFAULT `false` | Dossier "Non classés" — non supprimable, un seul par espace ; affiché dans la navigation selon l'[invariant 4](context.md#invariants-métier) |
 | `default_document_type_id` | `uuid` | FK → `document_types.id`, nullable | Type proposé par défaut pour les nouveaux docs dans ce dossier |
 | `default_template_document_id` | `uuid` | FK → `documents.id`, nullable | Template utilisé pour initialiser les nouveaux documents créés dans ce dossier |
 | `order` | `int` | NOT NULL DEFAULT 0 | Ordre d'affichage dans le dossier parent |
@@ -62,7 +63,7 @@
 | `updated_at` | `timestamptz` | NOT NULL | |
 | `created_by_id` | `uuid` | NOT NULL | FK physique réelle → `users.id` (Identity & Access) — exception assumée inter-module, voir note ci-dessous |
 | `character_id` | `uuid` | nullable | FK physique réelle → `documents.id` (Content Library, type `player_character`) — exception assumée intra-module ; personnage associé d'un LIVE_NOTE (promu depuis `properties`, ADR-002) |
-| `guest_access_id` | `uuid` | nullable | FK physique réelle → `guest_accesses.id` (Space Management) — exception assumée inter-module ; auteur invité d'un LIVE_NOTE quand `created_by_id` est null (promu depuis `properties`, ADR-002) |
+| `guest_access_id` | `uuid` | nullable | FK physique réelle → `guest_accesses.id` (Space Management) — exception assumée inter-module ; post-MVP : aucun document d'invité n'existe au MVP, `created_by_id` reste NOT NULL ; auteur invité d'un LIVE_NOTE (promu depuis `properties`, ADR-002) |
 
 **Index**
 
@@ -73,7 +74,7 @@
 | `(space_id, document_type_id) WHERE is_deleted = false` | B-tree partiel | `is_deleted = false` | Lookups par espace + type (ex. lister les `player_character` d'un espace pour la validation runtime ADR-002). Source C-02. |
 | `GIN trigramme (title) WHERE is_deleted = false` | GIN trigramme | `is_deleted = false` | Recherche par sous-chaîne (« contient ») sur le titre. ⚠️ Requiert l'activation de l'extension de recherche trigramme du SGBD. Sources C-01/CR-5/H-05. **Note** : indexe le seul `title` — reste « recherche titre seul » au sens d'ADR-002. La recherche full-text sur le contenu (`tsvector`) est post-MVP assumée (non indexée ici). |
 | `(character_id) WHERE character_id IS NOT NULL` | B-tree partiel | `character_id IS NOT NULL` | **Préalable authz OBLIGATOIRE** — résolution des documents `PLAYER_PRIVATE` associés à un personnage. Cet index sert l'invariant métier n°6 (Content Library, prose domaine) : un document `PLAYER_PRIVATE` ne peut être lu que via son auteur, y compris quand cette identité est portée par le chemin de résolution `characterId` → résolution transitive `membership_characters`. |
-| `(guest_access_id) WHERE guest_access_id IS NOT NULL` | B-tree partiel | `guest_access_id IS NOT NULL` | **Préalable authz OBLIGATOIRE** — résolution des documents `PLAYER_PRIVATE` rattachés à un invité. Cet index sert l'invariant métier n°6 (Content Library, prose domaine) : un document `PLAYER_PRIVATE` ne peut être lu que par son auteur invité, y compris quand cette identité est portée par le chemin de résolution `guestAccessId`. |
+| `(guest_access_id) WHERE guest_access_id IS NOT NULL` | B-tree partiel | `guest_access_id IS NOT NULL` | Post-MVP, avec la colonne. **Préalable authz OBLIGATOIRE** — résolution des documents `PLAYER_PRIVATE` rattachés à un invité. Cet index sert l'invariant métier n°6 (Content Library, prose domaine) : un document `PLAYER_PRIVATE` ne peut être lu que par son auteur invité, y compris quand cette identité est portée par le chemin de résolution `guestAccessId`. |
 
 > **Post-MVP assumé** : index GIN `tsvector` full-text sur `title`/`content`/`properties` — non inclus MVP.
 

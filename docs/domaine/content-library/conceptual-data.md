@@ -10,6 +10,7 @@ erDiagram
         identifiant parent_folder_id FK "nullable — self-ref"
         texte name
         booléen is_system
+        texte system_role "nullable — NOTES"
         booléen is_virtual
         identifiant default_document_type_id FK "nullable"
         identifiant default_template_document_id FK "nullable — ref documents.id"
@@ -20,7 +21,7 @@ erDiagram
 
     DOCUMENT_TYPE {
         identifiant id PK
-        texte slug "unique — ex: scenario, scene, npc"
+        texte slug "unique par espace, global pour les types système (C2) — ex: scenario, scene, npc"
         texte name
         structure properties_schema "nullable"
         booléen is_system
@@ -40,7 +41,7 @@ erDiagram
         booléen is_reusable
         identifiant source_document_id FK "nullable — self-ref"
         identifiant character_id FK "nullable — ref documents.id (type: player_character)"
-        identifiant guest_access_id FK "nullable — ref Space Management"
+        identifiant guest_access_id FK "nullable — ref Space Management — post-MVP"
         booléen is_deleted
         horodatage deleted_at "nullable"
         horodatage created_at

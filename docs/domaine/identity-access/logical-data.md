@@ -45,5 +45,8 @@ Contrairement aux trois autres MLD (`content-library.md`, `space-management.md`,
 
 - `spaces.owner_id → users.id` (Space Management)
 - `space_memberships.user_id → users.id` (Space Management)
+- `folders.created_by_id → users.id` (Content Library)
+- `documents.created_by_id → users.id` (Content Library)
+- `sessions.created_by_id → users.id` (Session Conduct)
 
 Ces FK physiques réelles sont l'**exception assumée** du monolithe modulaire à base de données unique partagée : l'isolation des contextes est tenue au niveau du code (contrats, namespaces), pas par l'absence de FK. À l'extraction éventuelle d'un contexte en service dédié, ces FK deviendront des projections par events (`UserRegistered`, `UserAnonymized`). *(ADR-009)*

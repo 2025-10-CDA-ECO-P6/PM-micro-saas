@@ -9,11 +9,16 @@ sequenceDiagram
     participant CL as Content Library
     participant SC as Session Conduct
 
-    SM-->>App: SpaceCreated(spaceId)
-    App->>CL: Créer les 4 dossiers système visibles + 1 dossier virtuel technique
-    CL-->>App: [folderId1, folderId2, folderId3, folderId4, folderIdVirtual]
-    App->>SC: SessionViewConfig.Create(spaceId, folderIds)
-    SC-->>App: SessionViewConfig initialisé avec les dossiers système
+    SM-->>App: SpaceCreated(spaceId, type)
+    alt type = CAMPAIGN ou ONE_SHOT
+        App->>CL: Créer les 4 dossiers système nommés + 1 dossier virtuel
+        CL-->>App: [folderId1, folderId2, folderId3, folderId4, folderIdVirtual]
+        App->>SC: SessionViewConfig.Create(spaceId, [folderId1, folderId2, folderId3, folderId4])
+        SC-->>App: SessionViewConfig initialisé avec les 4 dossiers système nommés
+        Note over App: folderIdVirtual (Non classés) n'est pas transmis
+    else type = PERSONAL
+        Note over SC: Aucun SessionViewConfig — pas de session ni de vue joueur dans un espace personnel
+    end
 ```
 
 ## Flux 2 — Configurer les panneaux de la vue session
@@ -94,7 +99,7 @@ sequenceDiagram
     participant SC as Session Conduct
 
     MJ->>App: Nouvelle note (content, visibility)
-    App->>CL: Document.Create(spaceId, folderId="Notes", typeId=LIVE_NOTE)
+    App->>CL: Document.Create(spaceId, folderId=dossier de rôle NOTES (repli Non classés), typeId=LIVE_NOTE)
     CL-->>App: DocumentCreated (docId)
     App->>CL: Document.UpdateContent([TextBlock(content)])
     App->>SC: Session.AttachNote(docId)

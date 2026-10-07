@@ -6,10 +6,10 @@
 - 0004 — 2026-10-07 — [Recouper le corps de roadmap-produit avec moscow et la roadmap build](0004-recouper-le-corps-de-roadmap-produit-avec-moscow-et-la-roadm.md) — ouvert
 - 0005 — 2026-10-07 — [Vérifier si le CdC §12.1 est toujours à jour (épinglage, migration)](0005-verifier-si-le-cdc-12-1-est-toujours-a-jour-epinglage-migrat.md) — ouvert
 - 0006 — 2026-10-07 — [Trancher le décompte des FK inter-modules : 19 ou 17](0006-trancher-le-decompte-des-fk-inter-modules.md) — ouvert
-- 0007 — 2026-10-07 — [Vérifier l'unicité de la session LIVE pour un espace PERSONAL](0007-verifier-l-unicite-de-la-session-live-pour-un-espace-persona.md) — ouvert
+- 0007 — 2026-10-07 — [Vérifier l'unicité de la session LIVE pour un espace PERSONAL](0007-verifier-l-unicite-de-la-session-live-pour-un-espace-persona.md) — fait
 - 0008 — 2026-10-07 — [Vérifier le traitement par VerifCorpus du lien vers un répertoire](0008-verifier-le-traitement-par-verifcorpus-du-lien-vers-un-reper.md) — ouvert
 - 0009 — 2026-10-07 — [Reconstruire VerifCorpus et vérifier que la DLL suit la source](0009-reconstruire-verifcorpus-et-verifier-que-la-dll-suit-la-sour.md) — ouvert
-- 0010 — 2026-10-07 — [Vérifier la définition de GuestAccess, Non classés et LIVE_NOTE](0010-verifier-la-definition-de-guestaccess-non-classes-et-live-no.md) — ouvert
+- 0010 — 2026-10-07 — [Vérifier la définition de GuestAccess, Non classés et LIVE_NOTE](0010-verifier-la-definition-de-guestaccess-non-classes-et-live-no.md) — fait
 - 0011 — 2026-10-07 — [Expliquer l'absence de RB-02-21..23 dans les tables de US-UC-02](0011-expliquer-l-absence-de-rb-02-21-23-dans-les-tables-de-us-uc.md) — fait
 - 0012 — 2026-10-07 — [Identifier le document « 06 » cité par le dossier d'architecture](0012-identifier-le-document-06-cite-par-le-dossier-d-architecture.md) — ouvert
 - 0013 — 2026-10-07 — [Identifier les « 6 surfaces MJ » de l'accès compte](0013-identifier-les-6-surfaces-mj-de-l-acces-compte.md) — ouvert
@@ -26,7 +26,7 @@
 - 0024 — 2026-10-07 — [Amender RB-12-01 : la fiche du personnage associé est lisible par son joueur](0024-amender-rb-12-01-la-fiche-du-personnage-associe-est-lisible.md) — fait
 - 0025 — 2026-10-07 — [Amender UC-12 A2 et RB-12-04 : la portée SESSION voit tous les documents PUBLIC](0025-amender-uc-12-a2-et-rb-12-04.md) — fait
 - 0026 — 2026-10-07 — [Marquer le rôle GM (co-MJ) hors MVP](0026-marquer-le-role-gm-co-mj-hors-mvp.md) — fait
-- 0027 — 2026-10-07 — [Invitation d'un GM : sans objet au MVP (co-MJ hors MVP)](0027-invitation-d-un-gm.md) — ouvert
+- 0027 — 2026-10-07 — [Invitation d'un GM : sans objet au MVP (co-MJ hors MVP)](0027-invitation-d-un-gm.md) — fait
 - 0028 — 2026-10-07 — [Amender UC-09 : la fenêtre de grâce de 24 h est tranchée (RB-09-01)](0028-amender-uc-09-la-fenetre-de-grace-de-24-h-est-tranchee-rb-09.md) — fait
 - 0029 — 2026-10-07 — [Amender UC-11 et RB-09-16/RB-11-03 : la validation manuelle est close par UC-09:108](0029-amender-uc-11-et-rb-09-16-rb-11-03.md) — fait
 - 0030 — 2026-10-07 — [Même réponse que pour la validation manuelle (UC-11:136) : deux chemins distincts, à expliciter](0030-meme-reponse-que-pour-la-validation-manuelle-uc-11-136.md) — fait
@@ -38,16 +38,16 @@
 - 0036 — 2026-10-07 — [Réécrire RB-14-03 : un joueur trouve en recherche les documents PUBLIC et ses propres notes PLAYER_PRIVATE](0036-reecrire-rb-14-03-un-joueur-trouve-en-recherche-les-document.md) — fait
 - 0037 — 2026-10-07 — [Dire dans le README des NFR que le périmètre couvre les Must et Should Have de la première livraison](0037-dire-dans-le-readme-des-nfr-que-le-perimetre-couvre-les-must.md) — fait
 - 0038 — 2026-10-07 — [Dire dans le guide d'entretien qu'aucun entretien terrain n'a eu lieu au 2026-10-07](0038-dire-dans-le-guide-d-entretien-qu-aucun-entretien-terrain-n.md) — fait
-- 0039 — 2026-10-07 — [Préciser la règle 4 : une réinvitation réutilise la ligne d'adhésion REMOVED](0039-preciser-la-regle-4.md) — ouvert
-- 0040 — 2026-10-07 — [Spécifier les jetons d'invitation en UUID v4 tirés d'un générateur cryptographique](0040-specifier-les-jetons-d-invitation-en-uuid-v4-tires-d-un-gene.md) — ouvert
-- 0041 — 2026-10-07 — [Reporter la saga SpaceDeleted d'ADR-011 dans les tables de réception de Content Library et de Session Conduct](0041-reporter-la-saga-spacedeleted-d-adr-011-dans-les-tables-de-r.md) — ouvert
-- 0042 — 2026-10-07 — [Désigner le dossier des notes de session par son identifiant, avec repli sur Non classés](0042-designer-le-dossier-des-notes-de-session-par-son-identifiant.md) — ouvert
-- 0043 — 2026-10-07 — [Exclure le dossier virtuel Non classés des focusedFolders du SessionViewConfig](0043-exclure-le-dossier-virtuel-non-classes-des-focusedfolders-du.md) — ouvert
-- 0044 — 2026-10-07 — [Changer la signature de CanBeReadBy : le lecteur est un membre (UserId et rôle) ou un invité (GuestAccessId)](0044-changer-la-signature-de-canbereadby.md) — ouvert
+- 0039 — 2026-10-07 — [Préciser la règle 4 : une réinvitation réutilise la ligne d'adhésion REMOVED](0039-preciser-la-regle-4.md) — fait
+- 0040 — 2026-10-07 — [Spécifier les jetons d'invitation en UUID v4 tirés d'un générateur cryptographique](0040-specifier-les-jetons-d-invitation-en-uuid-v4-tires-d-un-gene.md) — fait
+- 0041 — 2026-10-07 — [Reporter la saga SpaceDeleted d'ADR-011 dans les tables de réception de Content Library et de Session Conduct](0041-reporter-la-saga-spacedeleted-d-adr-011-dans-les-tables-de-r.md) — fait
+- 0042 — 2026-10-07 — [Désigner le dossier des notes de session par son identifiant, avec repli sur Non classés](0042-designer-le-dossier-des-notes-de-session-par-son-identifiant.md) — fait
+- 0043 — 2026-10-07 — [Exclure le dossier virtuel Non classés des focusedFolders du SessionViewConfig](0043-exclure-le-dossier-virtuel-non-classes-des-focusedfolders-du.md) — fait
+- 0044 — 2026-10-07 — [Changer la signature de CanBeReadBy : le lecteur est un membre (UserId et rôle) ou un invité (GuestAccessId)](0044-changer-la-signature-de-canbereadby.md) — fait
 - 0045 — 2026-10-07 — [Avant la saisie du nom, l'accès par lien ne montre que les métadonnées du lien](0045-avant-la-saisie-du-nom-l-acces-par-lien-ne-montre-que-les-me.md) — ouvert
 - 0046 — 2026-10-07 — [Préciser dans le zoning S8 que la clôture formelle est le workflow d'après-session](0046-preciser-dans-le-zoning-s8-que-la-cloture-formelle-est-le-wo.md) — ouvert
 - 0047 — 2026-10-07 — [Afficher le niveau PLAYER_PRIVATE sous un terme générique, « Privé (joueur) »](0047-afficher-le-niveau-player-private-sous-un-terme-generique-pr.md) — ouvert
-- 0048 — 2026-10-07 — [Étendre la règle de pureté du domaine aux diagrammes](0048-etendre-la-regle-de-purete-du-domaine-aux-diagrammes.md) — ouvert
+- 0048 — 2026-10-07 — [Étendre la règle de pureté du domaine aux diagrammes](0048-etendre-la-regle-de-purete-du-domaine-aux-diagrammes.md) — fait
 - 0049 — 2026-10-07 — [Corriger PO-05 : le délai d'effacement de compte est de 1 mois, extensible à 2 (ADR-012:147)](0049-corriger-po-05-le-delai-d-effacement-de-compte-est-de-1-mois.md) — ouvert
 - 0050 — 2026-10-07 — [Inscrire la variante one-shot express dans moscow, en post-MVP comme dans UC-02](0050-inscrire-la-variante-one-shot-express-dans-moscow-en-post-mv.md) — fait
 - 0051 — 2026-10-07 — [Ajouter à la DoD la mise à jour du guide de lecture par fonctionnalité](0051-ajouter-a-la-dod-la-mise-a-jour-du-guide-de-lecture-par-fonc.md) — ouvert
@@ -59,8 +59,8 @@
 - 0057 — 2026-10-07 — [Aligner les parcours transverses sur leurs sources (15 écarts)](0057-aligner-les-parcours-transverses-sur-leurs-sources-15-ecarts.md) — fait
 - 0058 — 2026-10-07 — [Aligner INTERVIEW_GUIDE.md sur ses sources (1 écart)](0058-aligner-interview-guide-md-sur-ses-sources-1-ecart.md) — fait
 - 0059 — 2026-10-07 — [Aligner NFR-CONF-04-transparence-risques-mode-local-partage.md sur ses sources (1 écart)](0059-aligner-nfr-conf-04-transparence-risques-mode-local-partage.md) — fait
-- 0060 — 2026-10-07 — [Aligner les contextes du domaine sur leurs sources (6 écarts)](0060-aligner-les-contextes-du-domaine-sur-leurs-sources-6-ecarts.md) — ouvert
-- 0061 — 2026-10-07 — [Aligner les diagrammes du domaine sur leurs sources (8 écarts)](0061-aligner-les-diagrammes-du-domaine-sur-leurs-sources-8-ecarts.md) — ouvert
+- 0060 — 2026-10-07 — [Aligner les contextes du domaine sur leurs sources (6 écarts)](0060-aligner-les-contextes-du-domaine-sur-leurs-sources-6-ecarts.md) — fait
+- 0061 — 2026-10-07 — [Aligner les diagrammes du domaine sur leurs sources (8 écarts)](0061-aligner-les-diagrammes-du-domaine-sur-leurs-sources-8-ecarts.md) — fait
 - 0062 — 2026-10-07 — [Aligner zoning.md sur ses sources (5 écarts)](0062-aligner-zoning-md-sur-ses-sources-5-ecarts.md) — ouvert
 - 0063 — 2026-10-07 — [Aligner reflexion-ux-mvp.md sur ses sources (5 écarts)](0063-aligner-reflexion-ux-mvp-md-sur-ses-sources-5-ecarts.md) — ouvert
 - 0064 — 2026-10-07 — [Aligner gabarit-ecran.md sur ses sources (2 écarts)](0064-aligner-gabarit-ecran-md-sur-ses-sources-2-ecarts.md) — ouvert
@@ -84,9 +84,9 @@
 - 0082 — 2026-10-07 — [Aligner persona-03-lucas.md:6](0082-aligner-persona-03-lucas-md-6.md) — fait
 - 0083 — 2026-10-07 — [Convertir UJ-UC-01 à 07 au gabarit à quatre sections du README des user journeys](0083-convertir-uj-uc-01-a-07-au-gabarit-a-quatre-sections-du-read.md) — fait
 - 0084 — 2026-10-07 — [Unifier l'affichage de tout lien inutilisable selon RB-09-08](0084-unifier-l-affichage-de-tout-lien-inutilisable-selon-rb-09-08.md) — fait
-- 0085 — 2026-10-07 — [Retirer Identity & Access des consommateurs d'InvitationRevoked](0085-retirer-identity-access-des-consommateurs-d-invitationrevoke.md) — ouvert
-- 0086 — 2026-10-07 — [Garder documents.created_by_id NOT NULL au MVP](0086-garder-documents-created-by-id-not-null-au-mvp.md) — ouvert
-- 0087 — 2026-10-07 — [Amender l'invariant 4 de Content Library](0087-amender-l-invariant-4-de-content-library.md) — ouvert
+- 0085 — 2026-10-07 — [Retirer Identity & Access des consommateurs d'InvitationRevoked](0085-retirer-identity-access-des-consommateurs-d-invitationrevoke.md) — fait
+- 0086 — 2026-10-07 — [Garder documents.created_by_id NOT NULL au MVP](0086-garder-documents-created-by-id-not-null-au-mvp.md) — fait
+- 0087 — 2026-10-07 — [Amender l'invariant 4 de Content Library](0087-amender-l-invariant-4-de-content-library.md) — fait
 - 0088 — 2026-10-07 — [Ajouter la colonne Type d'espace à l'inventaire S4 du zoning](0088-ajouter-la-colonne-type-d-espace-a-l-inventaire-s4-du-zoning.md) — ouvert
 - 0089 — 2026-10-07 — [Ajouter la ligne Espace personnel à l'inventaire S4 du zoning](0089-ajouter-la-ligne-espace-personnel-a-l-inventaire-s4-du-zonin.md) — ouvert
 - 0090 — 2026-10-07 — [Retirer l'activation du partage du critère de la décision de marché post-J1](0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md) — ouvert
