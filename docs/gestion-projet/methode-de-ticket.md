@@ -139,9 +139,9 @@ La valeur `Anomalie` n'est pas un niveau de test : c'est le type de ticket que p
 
 ## 4. Chemin d'entrée d'un nouvel arrivant
 
-Le [`README.md`](../../README.md) racine porte déjà, en sa section [« Par où commencer »](../../README.md#par-où-commencer), un ordre de lecture pour une personne qui reprend le projet en vue d'écrire la première ligne de code. Ce document ne le refait pas — il le prolonge, jusqu'à la prise du premier ticket :
+Le [`README.md`](../../README.md) racine porte déjà, en sa section [« Reprendre le projet — Écrire la première ligne de code (J0) »](../../README.md#écrire-la-première-ligne-de-code-j0), un ordre de lecture pour une personne qui reprend le projet en vue d'écrire la première ligne de code. Ce document ne le refait pas — il le prolonge, jusqu'à la prise du premier ticket :
 
-1. **Les étapes de [« Par où commencer »](../../README.md#par-où-commencer)** — renvoi seul, non recopié ici : elles apportent la carte du corpus documentaire, la séquence de jalons et ses conditions de passage, les conventions de code et la Definition of Done, puis la structure concrète des projets .NET.
+1. **Les étapes de [« Reprendre le projet — Écrire la première ligne de code (J0) »](../../README.md#écrire-la-première-ligne-de-code-j0)** — renvoi seul, non recopié ici : elles apportent la carte du corpus documentaire, la séquence de jalons et ses conditions de passage, les conventions de code et la Definition of Done, puis la structure concrète des projets .NET.
 2. **[`guide-lecture-par-fonctionnalite.md`](guide-lecture-par-fonctionnalite.md)** — apporte l'entrée par fonctionnalité produit : pour toute capacité du périmètre, le renvoi vers son besoin, ses règles métier, sa maquette, les décisions d'architecture qui la contraignent, sa spécification technique et ses cas de recette.
 3. **[`plan-de-travail.md`](plan-de-travail.md)** — apporte la décomposition en épiques et en tâches exécutables du périmètre engagé, avec dépendances techniques, périmètre d'écriture et conflits calculés depuis ce périmètre.
 4. **Ce document** — apporte le modèle de ticket, la condition d'entrée à vérifier avant de prendre une tâche (§2), et le cycle de vie à suivre jusqu'à sa clôture (§5).
@@ -243,4 +243,4 @@ Ces deux traces s'écrivent dans le registre de trajectoire (§9) : l'ouverture 
 - Séquence de jalons, préalables bloquants, critères de sortie : [`roadmap-entree-build.md`](roadmap-entree-build.md)
 - Niveaux de test, axes transverses, cycle de vie d'anomalie et sévérité : [`cahier-strategie-test-et-recette.md`](../test/cahier-strategie-test-et-recette.md)
 - Granularité des projets .NET et périmètre du mode local TypeScript : [`structure-projets.md`](../architecture/structure-projets.md)
-- Ordre de lecture pour une personne qui reprend le projet : [`README.md`, § Par où commencer](../../README.md#par-où-commencer)
+- Ordre de lecture pour une personne qui reprend le projet : [`README.md`, § Reprendre le projet](../../README.md#écrire-la-première-ligne-de-code-j0)

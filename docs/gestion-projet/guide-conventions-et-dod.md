@@ -276,6 +276,34 @@ Cette pratique complète 8.5 sans la remplacer : 8.5 dit quels termes sont **pro
 
 **Pratique** : vérifier la disponibilité d'un terme candidat en lisant son registre d'emploi — les sens dans lesquels il est effectivement employé, et l'autorité des documents qui l'emploient — jamais par son compte d'occurrences.
 
+### 8.8 Conventions de tenue du corpus
+
+Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Conventions de tenue du corpus](../architecture/decisions/ADR-019-conventions-de-tenue-du-corpus.md), qui fait foi. En résumé :
+
+| Axe | Règle |
+|---|---|
+| Ordre d'autorité | Personas → vision → use cases → UJ / US / NFR → domaine → glossaire. Les documents de `context/` et de `gestion-projet/` ne font jamais foi : en cas d'écart, ce sont eux qu'on corrige. |
+| Identifiants | Une table unique des familles. Le numéro suivant est le plus grand de la famille + 1. Un identifiant n'est jamais réutilisé. |
+| Gabarits | Un gabarit déclaré par type de document. Dans une US, le Gherkin est l'unique porteur des critères d'acceptation. |
+| Renvois | Un lien relatif (chemin, plus ancre ou « § »), jamais un nom de fichier nu. Un renvoi dont la cible n'existe pas est mort. |
+| Marqueurs | Liste fermée. Ouvert : `À TRANCHER`, `SOUS-SPÉCIFIÉ`. Clos : `DÉCIDÉ` (date + renvoi). Fin de vie : `Retiré`, `Remplacé par <id>`. |
+| Registre | Les ADR sont le registre unique. Un ajustement se fait dans une section datée ; un changement de sens fait l'objet d'une nouvelle ADR. |
+| Reste à faire | Le plan de travail pour les tâches, `decisions-en-attente.md` pour les questions ouvertes, `docs/project/backlog/` pour les constats de l'onboarding. |
+| Vérification | Les quatre contrôles de la section suivante, lancés en CI sur toute modification de `docs/`. |
+| Langue | La documentation est en français. Tout ce qui touche au code est en anglais. |
+| Règles métier | Une RB est définie une seule fois, dans son épique US ; les autres documents la citent. |
+| Glossaire | Il fait référence pour les noms de termes. Un renommage est propagé partout ; l'ancien nom n'est gardé que comme alias. |
+| Flux | Les UJ portent le parcours d'un UC, les parcours transverses l'enchaînement entre UC, le zoning la navigation, et le domaine le comportement du système. |
+
+**Vérifier le corpus**, depuis la racine du dépôt :
+
+| Commande | Ce qu'elle contrôle | Sortie attendue |
+|---|---|---|
+| `dotnet test tools/Tests/CaracterisationOutils.csproj` | Les golden masters de l'outillage, y compris sur le corpus réel | tous les tests passent |
+| `dotnet run --project tools/VerifCorpus` | Les liens, ancres et orphelins, ainsi que l'équilibre des blocs de code | code 0 |
+| `dotnet run --project tools/VerifMailleAgregat` | La maille du plan de travail et les conflits recalculés | code 0 |
+| `dotnet run --project tools/VerifCouvertureRecette` | La couverture des cas de recette et l'intégrité de leurs citations | code 1 tant que des `TROU` ou `SOURCE RETIRÉE` sont assumés ; ils sont listés en sortie |
+
 ---
 
 ## 9. Definition of Done
