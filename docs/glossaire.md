@@ -195,7 +195,7 @@ Conteneur de premier ordre appartenant au propriétaire (`ownerId`), créé auto
 
 L'espace personnel est une spécialisation de l'agrégat `Space` avec `type = PERSONAL`. À la création, seul le dossier virtuel « Non classés » est créé automatiquement — les quatre dossiers système nommés (Personnages, Joueurs, Scénarios, Notes) sont réservés aux espaces `CAMPAIGN` et `ONE_SHOT`, où ils présupposent un groupe de jeu. Le propriétaire organise son espace personnel avec ses propres dossiers (organisation libre). À la suppression du compte, il est purgé de façon inconditionnelle via la saga `SpaceDeleted` — contrairement aux espaces partagés, aucun contenu ne survit sous identité anonymisée.
 
-La `ScenarioLibrary` (bibliothèque personnelle inter-espaces) est largement subsumée par l'espace personnel dans le nouveau paradigme : un scénario réutilisable est un `Document` de l'espace personnel avec `isReusable = true`. Voir ADR-018 §ScenarioLibrary.
+La `ScenarioLibrary` (bibliothèque personnelle inter-espaces) est largement subsumée par l'espace personnel dans le nouveau paradigme : un scénario réutilisable est un `Document` de l'espace personnel avec `isReusable = true`. Voir ADR-018 §Bibliothèque personnelle.
 
 - Défini dans : **ADR-018**.
 - Voir aussi : `SpaceType`, `ScenarioLibrary`.

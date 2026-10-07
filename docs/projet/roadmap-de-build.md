@@ -73,6 +73,8 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 
 ## 3. Détail par jalon
 
+origin: docs/assurance/strategie-de-test.md:278 @ 5b5190a ; docs/projet/note-de-cadrage.md:167 @ 5b5190a
+
 ### 3.1 J0 — Socle
 
 **Contenu** : (source : [ADR-008](../decisions/ADR-008-structure-solution.md), [ADR-007 §Compléments](../decisions/ADR-007-rgpd-autorisation-api.md))

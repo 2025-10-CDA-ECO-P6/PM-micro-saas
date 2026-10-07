@@ -248,9 +248,9 @@ Scénario : Fermeture du panneau latéral sans perte de contexte
 
 Scénario : Recherche joueur depuis la vue session (A4, E1)
   Étant donné qu'une session est en status LIVE
-  Et qu'un document "Note privée MJ" a visibility = GM_ONLY
+  Et qu'un document "Document privé MJ" a visibility = GM_ONLY
   Quand le joueur effectue une recherche depuis la vue session
-  Alors "Note privée MJ" n'apparaît pas dans ses résultats
+  Alors "Document privé MJ" n'apparaît pas dans ses résultats
 ```
 
 ---

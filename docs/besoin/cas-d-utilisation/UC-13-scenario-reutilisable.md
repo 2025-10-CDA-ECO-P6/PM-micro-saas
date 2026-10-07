@@ -2,7 +2,7 @@
 
 > **Should Have — hors première livraison (post-MVP)** — Ce cas d'utilisation, ainsi que le parcours express one-shot qu'il conditionne (UC-02 §A1), sont reportés après la première livraison. Voir vision §5bis. En MVP, le one-shot se crée via le parcours campagne nominal (UC-02, scénario nominal, `type = ONE_SHOT`).
 
-> **Note de subsomption (ADR-018)** — L'espace personnel (`SpaceType.PERSONAL`) subsume le rôle de la `ScenarioLibrary` telle qu'elle était modélisée dans le domaine Space Management. Un scénario réutilisable est désormais un `Document` de l'espace personnel du MJ avec `isReusable = true`. L'entité `ScenarioLibraryEntry` (pont compte↔espace) devient largement superflue dans ce modèle : la bibliothèque personnelle **est** l'espace personnel lui-même. Voir ADR-018 §ScenarioLibrary, UC-13, UC-F07.
+> **Note de subsomption (ADR-018)** — L'espace personnel (`SpaceType.PERSONAL`) subsume le rôle de la `ScenarioLibrary` telle qu'elle était modélisée dans le domaine Space Management. Un scénario réutilisable est désormais un `Document` de l'espace personnel du MJ avec `isReusable = true`. L'entité `ScenarioLibraryEntry` (pont compte↔espace) devient largement superflue dans ce modèle : la bibliothèque personnelle **est** l'espace personnel lui-même. Voir ADR-018 §Bibliothèque personnelle, UC-13, UC-F07.
 
 ## Acteur principal
 

@@ -48,7 +48,7 @@ L'agrégat `Campaign` du domaine Campaign Management porte aujourd'hui `type: Ca
 Tous les Documents du domaine Content Library portent un `campaignId: CampaignId` non-nullable (content-library.md l.64). La règle métier 5 d'Identity & Access affirme : « les contenus créés (documents, notes) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu » (identity-access.md l.100). Trois tensions caractérisent l'état actuel face au besoin identifié :
 
 1. Tout document exige une campagne existante à sa création — il n'existe pas de zone d'atterrissage naturelle pour le contenu pré-campagne.
-2. La ScenarioLibrary (campaign-management.md l.154-183, statut post-MVP) tente de répondre partiellement au besoin de réutilisation inter-campagnes mais introduit une entité de pont (`ScenarioLibraryEntry`) et ne couvre que les scénarios, pas l'ensemble des types de documents.
+2. L'agrégat `ScenarioLibrary` (bibliothèque personnelle, campaign-management.md l.154-183, statut post-MVP) tente de répondre partiellement au besoin de réutilisation inter-campagnes mais introduit une entité de pont (`ScenarioLibraryEntry`) et ne couvre que les scénarios, pas l'ensemble des types de documents.
 3. L'UC-F07 (UC-HORS-MVP.md l.39-47) reconnaît le besoin de « créer sans campagne » et le qualifie de palliatif via une « campagne-atelier » — signal que l'ontologie actuelle résiste à ce besoin.
 
 ---
@@ -98,13 +98,13 @@ Cette voie aurait ajouté `CampaignType.PERSONAL` à l'agrégat `Campaign` exist
 
 **Tenants** : coût de mise en œuvre minimal (pattern déjà établi avec `ONE_SHOT`), tous les invariants de domaine actuels préservés sans réécriture, machinerie RGPD (ADR-011/012) réutilisée verbatim, mode local résolu sans modification du store.
 
-**Aboutissants** : dette sémantique significative. L'utilisateur dont le contenu personnel est stocké dans « une campagne nommée Personnel » vit exactement l'ontologie que le besoin dénonce : *« je dois créer une campagne pour ça »*. La correction technique est masquée derrière un terme qui réintroduit le biais campagne-centré. Par ailleurs, la ScenarioLibrary (campaign-management.md l.154-183) reste une entité de pont artificielle — elle crée un couplage `ScenarioLibraryEntry ↔ ownerId` qui ne trouve pas de résolution naturelle dans ce modèle.
+**Aboutissants** : dette sémantique significative. L'utilisateur dont le contenu personnel est stocké dans « une campagne nommée Personnel » vit exactement l'ontologie que le besoin dénonce : *« je dois créer une campagne pour ça »*. La correction technique est masquée derrière un terme qui réintroduit le biais campagne-centré. Par ailleurs, l'agrégat `ScenarioLibrary` (bibliothèque personnelle, campaign-management.md l.154-183) reste une entité de pont artificielle — elle crée un couplage `ScenarioLibraryEntry ↔ ownerId` qui ne trouve pas de résolution naturelle dans ce modèle.
 
 **Format vision §5bis** :
 - *Décision* : `PERSONAL` sur `Campaign` non renommée — repli viable, non retenu.
 - *Raison d'être* : coût minimal, invariants préservés.
 - *Alternatives considérées* : voie retenue (Voie 3).
-- *Condition de retour* : revenir vers la Voie 3 dès que la ScenarioLibrary entre en jeu (condition de retour déjà active au moment de cette décision).
+- *Condition de retour* : revenir vers la Voie 3 dès que la bibliothèque personnelle entre en jeu (condition de retour déjà active au moment de cette décision).
 
 ---
 
@@ -168,7 +168,7 @@ En mode local, il n'y a pas de `User` (identity-access.md l.77, ADR-017 §1.1 ex
 
 Ce point est à documenter dans la révision d'ADR-016/017 au moment de la réécriture du domaine.
 
-#### ScenarioLibrary, UC-13, UC-F07
+#### Bibliothèque personnelle, UC-13, UC-F07
 
 **Ces trois éléments sont subsumés par la décision.**
 

@@ -42,7 +42,7 @@ Le MJ crée et organise des fiches de lieux, factions, organisations et objets i
 
 ### UC-F07 — Créer un scénario directement dans la bibliothèque (sans campagne)
 
-> **Note ADR-018** : ce use case, qualifié de palliatif dans le corpus initial, est largement subsumé par la décision `Space + SpaceType.PERSONAL`. Créer du contenu dans l'espace personnel est désormais le cas nominal — il ne requiert ni campagne intermédiaire ni campagne-atelier. La reformulation ci-dessous en prend acte sans supprimer l'entrée, qui reste utile pour tracer l'historique de la décision. Voir ADR-018 §ScenarioLibrary/UC-F07.
+> **Note ADR-018** : ce use case, qualifié de palliatif dans le corpus initial, est largement subsumé par la décision `Space + SpaceType.PERSONAL`. Créer du contenu dans l'espace personnel est désormais le cas nominal — il ne requiert ni campagne intermédiaire ni campagne-atelier. La reformulation ci-dessous en prend acte sans supprimer l'entrée, qui reste utile pour tracer l'historique de la décision. Voir ADR-018 §Bibliothèque personnelle/UC-F07.
 
 Le MJ crée un nouveau scénario template directement depuis son espace personnel (`SpaceType.PERSONAL`), sans passer par une campagne existante.
 

@@ -361,7 +361,7 @@ Document (SCENE) "Entrée de la crypte"
 
 ---
 
-## Note sur la ScenarioLibrary (UC-13)
+## Note sur la bibliothèque personnelle (UC-13)
 
 La réutilisabilité est portée par `Document.isReusable` + `Document.Instantiate` (Content Library) ;
 la bibliothèque personnelle est une vue de l'espace `PERSONAL` (Space Management). Il n'existe pas

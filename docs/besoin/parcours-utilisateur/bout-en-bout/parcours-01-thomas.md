@@ -207,7 +207,7 @@ Il renseigne email, nom d'affichage, mot de passe. Le compte est créé (tier `F
 
 L'application présente le **gate de reconnaissance** : les campagnes locales détectées (titres, volume estimé, date de création) sont listées. Thomas doit confirmer explicitement avant que la migration commence. Ce gate protège contre l'appropriation accidentelle de données d'un tiers.
 
-Après confirmation, les campagnes sont importées **campagne par campagne, tout-ou-rien par campagne**. En cas d'échec d'une campagne, les données locales correspondantes sont conservées intégralement. Un rapport de rejets est présenté.
+Après confirmation, les campagnes sont importées **espace par espace, tout-ou-rien par espace**. En cas d'échec d'un espace, les données locales correspondantes sont conservées intégralement. Un rapport de rejets est présenté.
 
 Thomas retrouve son espace de travail intact pour les campagnes importées, maintenant synchronisé.
 
@@ -276,9 +276,9 @@ Thomas retrouve son espace de travail intact pour les campagnes importées, main
 
 ### RUPTURE-N3 — État des `LIVE_NOTE` et `pinnedDocumentIds` après migration locale→cloud non spécifié
 
-**Localisation :** UC-10 E5 (migration en attente), UC-01 règle métier (migration campagne par campagne).
+**Localisation :** UC-10 E5 (migration en attente), UC-01 règle métier (migration espace par espace).
 
-**Constat :** UC-10 spécifie que la migration est « tout-ou-rien par campagne » et que les campagnes importées sont accessibles. Il ne précise pas si les `Session` créées en mode local (avec leurs `LIVE_NOTE`, `pinnedDocumentIds`, `summary`) sont migrées ou abandonnées. Le glossaire définit `Session` comme un agrégat de `Session Conduct` — son sort lors d'une migration locale→cloud n'est pas couvert par UC-10 ni par UC-01.
+**Constat :** UC-10 spécifie que la migration est tout-ou-rien **par espace** et que les espaces importés sont accessibles. Il ne précise pas si les `Session` créées en mode local (avec leurs `LIVE_NOTE`, `pinnedDocumentIds`, `summary`) sont migrées ou abandonnées. Le glossaire définit `Session` comme un agrégat de `Session Conduct` — son sort lors d'une migration locale→cloud n'est pas couvert par UC-10 ni par UC-01.
 
 **Impact :** Si Thomas a conduit une session en mode local, ses notes de session et épingles peuvent être perdues à la migration. Ce point est structurant pour la promesse de confiance/possession des données (persona Thomas, douleur principale).
 

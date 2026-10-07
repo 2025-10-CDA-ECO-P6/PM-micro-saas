@@ -277,45 +277,34 @@ Cette table reste factuelle : elle ne présuppose ni rôle QA dédié ni outilla
 
 ## 9. Critères de sortie par jalon
 
-Quatre jalons de build et deux points de décision non vérifiables en CI, nommés par leur contenu (Socle / Local-only / Cloud + migration / Partage + temps réel) — reprise fidèle des critères de sortie factuels de `docs/projet/roadmap-de-build.md §3`.
+Quatre jalons de build et deux points de décision non vérifiables en CI, nommés par leur contenu (Socle / Local-only / Cloud + migration / Partage + temps réel) — dont les critères de sortie factuels sont portés par `docs/projet/roadmap-de-build.md §3`.
+
+Les critères ne sont plus recopiés ici : la roadmap de build (§ 3) en est propriétaire, et chaque jalon renvoie à sa sous-section.
 
 ### Jalon « Socle »
 
-- Les 8 ADR de nature pré-implémentation portent une confirmation explicite (date + décideur) à l'entrée en build.
-- Le squelette Domain/Application compile et respecte la structure documentée.
-- Le test d'architecture CI existe, tourne en pipeline, et échoue si une référence traverse une frontière de bounded context non autorisée.
-- L'interface `IResourceAccessPolicy` est déclarée en couche Application — son câblage complet (pipeline REST + filtre SignalR) reste un critère des jalons suivants.
+Critères de sortie : [roadmap de build § 3.1 — J0, Socle](../projet/roadmap-de-build.md#31-j0--socle), qui fait foi.
 
 ### Jalon « Local-only »
 
-- Le store IndexedDB local est opérationnel et couvre le périmètre défini.
-- `navigator.storage.persist()` est appelé à l'entrée en mode local ; le résultat (accordé / refusé-best-effort) est lu et déclenche le bandeau de durabilité si nécessaire.
-- Un export au format `schemaVersion` peut être produit depuis le store local et est structurellement rejouable (dry-run sans serveur cloud actif).
-- Aucun appel réseau vers l'API n'existe dans le périmètre mode local livré — observable via la CSP `connect-src 'self'`.
+Critères de sortie : [roadmap de build § 3.2 — J1, Local-only](../projet/roadmap-de-build.md#32-j1--local-only), qui fait foi.
 
 ### [DÉCISION MARCHÉ] — hors-CI, ne pas convertir en dette de test
 
-Décision go/no-go du responsable produit sur la télémétrie des piliers d'activation que J1 livre (préparation, vue session), croisée avec les hypothèses de validation H1 et H2 ; le pilier partage, livré en J3, est mesuré après la décision. Les seuils de décision ne sont pas fixés par la roadmap — ils relèvent de l'instrumentation produit. **Critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
+Critère de décision : [roadmap de build § 3.3 — décision marché](../projet/roadmap-de-build.md#33-décision-marché--gono-go-avant-le-build-lourd-cloud--temps-réel), qui fait foi. Propre à cette stratégie de test : **critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
 
 ### Jalon « Cloud + migration »
 
-- Les query filters EF Core P2/P3 sont actifs sur tous les chemins de lecture (énumération, lecture par ID, projections).
-- Le pipeline behavior REST et le filtre de diffusion SignalR appellent le même `IResourceAccessPolicy.CanAccess(...)`.
-- Un export du jalon « Local-only » peut être migré de bout en bout : dry-run, rapport de rejets le cas échéant, import transactionnel par espace, idempotence vérifiée sur rejeu du même `migration_batch_id`.
-- `AccountSuspended` et `UserAnonymized` déclenchent effectivement `ITokenDenylist.RevokeFamilyAsync`.
-- La saga `SpaceDeleted` s'exécute sans erreur de cycle FK sur un espace de test couvrant les deux cycles documentés.
+Critères de sortie : [roadmap de build § 3.4 — J2, Cloud + migration](../projet/roadmap-de-build.md#34-j2--cloud--migration), qui fait foi.
 
 ### [VALIDATION JURIDIQUE EU] — hors-CI, ne pas convertir en dette de test
 
-Bloque le lancement commercial EU — pas le build technique, qui peut être instruit en parallèle. Cinq axes RGPD, chacun devant porter un statut distinct de « à valider juriste » (nature binaire par axe) : article 8 (mineurs) ; article 28 + DPA sous-traitant ; intérêt légitime post-effacement et `display_name` invité ; article 17 (hard-delete `PERSONAL`) ; facette RGPD « reclaim-in-place ». Cette validation n'est pas convertie en dette de test.
+Critère de sortie : [roadmap de build § 3.5 — validation juridique EU](../projet/roadmap-de-build.md#35-validation-juridique-eu--validation-juridique-pré-lancement), qui fait foi. Cette validation n'est pas convertie en dette de test.
 
 ### Jalon « Partage + temps réel »
 
-- Le filtre SignalR appelle `IResourceAccessPolicy.CanAccess` avant tout push.
-- Déconnexion forcée du hub sur `GuestAccessRevoked` / `GuestAccessExpired`.
-- Le token `GuestAccess` est absent de toute URL et de tout journal.
-- Le test anti-fuite B8.2 couvre au minimum le cas de référence « push vers un invité après révocation du `GuestAccess` » → attendu interdit.
-- Le seuil de repli SSE → polling adaptatif est un point ouvert (§12) — bloquant pour la clôture opérationnelle du jalon, pas pour son entrée.
+Critères de sortie : [roadmap de build § 3.6 — J3, Partage + temps réel](../projet/roadmap-de-build.md#36-j3--partage--temps-réel), qui fait foi.
+Le seuil de repli SSE → polling adaptatif reste un point ouvert (§12) : préalable bloquant pour la clôture opérationnelle du jalon, pas un critère de sortie.
 
 ---
 
@@ -504,7 +493,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 | CR-UC06-06 | [nominal] Config persiste entre deux sessions | Le MJ a configuré ses panneaux | Il lance une nouvelle session | La même configuration est chargée automatiquement | US-06-02 §"La config persiste entre deux sessions" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC06-07 | [nominal] MJ consulte un dossier pendant la session | Une session est LIVE, le dossier « PNJ » est mis en avant | Le MJ ouvre le panneau « PNJ » | Les documents du dossier sont affichés en vue condensée | US-06-03 §"Le MJ consulte un dossier pendant la session" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC06-08 | [erreur] Joueur ne voit pas les documents non publics | Une session est LIVE, un document « Plan secret » a `visibility != visible par les joueurs` | Le joueur consulte la vue joueur | « Plan secret » n'est pas affiché | US-06-03 §"Le joueur ne voit pas les documents non publics" | ☐ OK ☐ KO ☐ N/A |
-| CR-UC06-09 | [nominal] Note privée MJ (non visible joueur) | Une session est LIVE | Le MJ saisit une note « Ragnar ment sur son passé » | La note est créée avec `visibility = privé MJ` ; elle n'est pas visible dans la vue joueur | US-06-04 §"Le MJ crée une note de session privé MJ" | ☐ OK ☐ KO ☐ N/A |
+| CR-UC06-09 | [nominal] Note de session privé MJ (non visible joueur) | Une session est LIVE | Le MJ saisit une note « Ragnar ment sur son passé » | La note est créée avec `visibility = privé MJ` ; elle n'est pas visible dans la vue joueur | US-06-04 §"Le MJ crée une note de session privé MJ" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC06-10 | [alternatif] Rendre une note publique, visible immédiatement | Une note de session existe avec `visibility = privé MJ` | Le MJ bascule sa visibilité vers visible par les joueurs | La note est immédiatement visible dans la vue joueur | US-06-04 §"Le MJ rend une note de session publique" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC06-11 | [erreur, résilience] Perte de connexion → draft local + synchro | Le MJ perd la connexion pendant la saisie d'une note | Il continue de saisir sa note | Le contenu est conservé en draft local ; la note est synchronisée automatiquement au retour de connexion | US-06-04 §"Résilience réseau (E1)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC06-12 | [nominal] Épingler un document, source inchangé | Une session est LIVE, le document « Carte du donjon » existe | Le MJ épingle « Carte du donjon » | Le document apparaît dans le panneau Épinglés ; il reste inchangé dans la bibliothèque | US-06-05 §"Le MJ épingle un document" | ☐ OK ☐ KO ☐ N/A |
@@ -747,7 +736,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 | CR-UC14-09 | [nominal] Recherche depuis la vue session, pondération session active | Une session est LIVE ; « Seigneur Varek » est épinglé ; « Varek le marchand » ne l'est pas | Le MJ saisit « Varek » depuis la vue session | « Seigneur Varek » apparaît en tête des résultats ; « Varek le marchand » apparaît après | US-14-03 §"Recherche depuis la vue session avec pondération (nominal)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC14-10 | [nominal] Ouvrir un document dans le panneau latéral | Une session est LIVE ; le MJ a cherché « Corbeau » | Il sélectionne « Faction des Corbeaux » | Le document s'ouvre dans un panneau latéral ; la vue session reste active | US-14-03 §"Ouverture d'un document dans le panneau latéral" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC14-11 | [nominal] Fermer le panneau sans perte de contexte | Le panneau latéral de recherche est ouvert | Le MJ le ferme | La vue session est restaurée telle quelle, sans perte de contexte | US-14-03 §"Fermeture du panneau latéral sans perte de contexte" | ☐ OK ☐ KO ☐ N/A |
-| CR-UC14-12 | [sécurité] Recherche joueur depuis la vue session, note privée MJ absente | Une session est LIVE ; un document « Note privée MJ » a `GM_ONLY` | Le joueur effectue une recherche depuis la vue session | « Note privée MJ » n'apparaît pas dans ses résultats | US-14-03 §"Recherche joueur depuis la vue session (A4, E1)" | ☐ OK ☐ KO ☐ N/A |
+| CR-UC14-12 | [sécurité] Recherche joueur depuis la vue session, document privé MJ absent | Une session est LIVE ; un document « Document privé MJ » a `GM_ONLY` | Le joueur effectue une recherche depuis la vue session | « Document privé MJ » n'apparaît pas dans ses résultats | US-14-03 §"Recherche joueur depuis la vue session (A4, E1)" | ☐ OK ☐ KO ☐ N/A |
 | CR-UC14-13 | [erreur, dérivé] Erreur d'indexation | La recherche échoue techniquement | Le MJ ou le joueur effectue une recherche | Le système affiche un message d'erreur et propose une navigation manuelle | UC-14 fiche §Exceptions E2 (dérivé, pas de Gherkin) | ☐ OK ☐ KO ☐ N/A |
 
 ---

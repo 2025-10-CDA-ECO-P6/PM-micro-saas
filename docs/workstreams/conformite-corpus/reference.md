@@ -141,4 +141,4 @@ Après chaque tâche « backlog », le commit de départ de `conform-verify` pas
 | `backlog-domaine` | le commit « docs(conformite-corpus): applique le backlog de la couche domaine » | `dca4540` |
 | `backlog-interface` | le commit « docs(conformite-corpus): applique le backlog de la couche interface » | `4ce7faa` |
 | `backlog-decisions-architecture-assurance` | le commit « docs(conformite-corpus): applique le backlog des couches décisions, architecture et assurance » | `3037a00` |
-| `backlog-reference-projet` | le commit « docs(conformite-corpus): applique le backlog des couches référence et projet » | inscrit par la tâche `doublons` |
+| `backlog-reference-projet` | le commit « docs(conformite-corpus): applique le backlog des couches référence et projet » | `775a1db` |

@@ -258,7 +258,7 @@ flowchart LR
 
 - RB-01-09 : La création de compte depuis le mode local déclenche une migration des données locales vers le cloud. Si des données locales existent, un gate de reconnaissance est présenté (campagnes détectées, volume, date) et la migration ne démarre qu'après confirmation explicite de l'utilisateur. Cette exigence de confirmation est une exigence du système : aucune migration ne peut démarrer sans elle, quel que soit le moyen par lequel elle est déclenchée. La règle porteuse complète est RB-10-04 dans UC-10.
 - RB-01-10 : Le MJ peut initier la création de compte depuis n'importe quelle page de l'application.
-- RB-01-11 : En cas d'échec de migration, les données locales de la campagne concernée sont préservées intactes. Un rapport de rejets est présenté (raisons par campagne). Les campagnes migrées avec succès sont disponibles en cloud.
+- RB-01-11 : En cas d'échec de migration, les données locales de la campagne concernée sont préservées intactes. Un rapport de rejets est présenté (raisons par espace). Les campagnes migrées avec succès sont disponibles en cloud.
 
 **Critères d'acceptation** :
 
@@ -290,7 +290,7 @@ flowchart LR
   Scénario: La migration échoue pour une campagne
     Étant donné que le MJ vient de créer un compte et a confirmé la migration
     Quand la migration d'une campagne locale échoue (slug collision, properties invalides, type inconnu ou version non supportée)
-    Alors un rapport de rejets est présenté indiquant les raisons par campagne
+    Alors un rapport de rejets est présenté indiquant les raisons par espace
     Et les données locales de la campagne rejetée sont préservées intactes dans le navigateur
     Et le MJ peut reprendre la migration de cette campagne manuellement
     Et les autres campagnes migrées avec succès restent accessibles en cloud

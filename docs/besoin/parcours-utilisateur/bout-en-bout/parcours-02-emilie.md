@@ -221,7 +221,7 @@ Elle veut inviter ses joueurs pour la prochaine session. Elle tente de cliquer s
 - Elle renseigne email, nom d'affichage, mot de passe. Son compte est créé (tier `FREE`).
 - Le **gate de reconnaissance** lui présente les campagnes locales détectées (titres, volume, date) avec leur historique de session (sessions terminées, notes de session, documents épinglés, résumés).
 - Si une session est encore en `LIVE`, le gate lui signale qu'elle doit être clôturée avant migration — Émilie a déjà clôturé la session à l'étape 5, cette condition est satisfaite.
-- Émilie confirme. La migration démarre, campagne par campagne, tout-ou-rien.
+- Émilie confirme. La migration démarre, espace par espace, tout-ou-rien.
 - Après migration : ses campagnes et tout leur historique de session sont disponibles en cloud. La `SessionViewConfig` n'est pas reprise — elle sera reconfigurée.
 
 ### État laissé

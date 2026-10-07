@@ -164,7 +164,7 @@ Seuils et délais indiqués au 2026-07-02 ; valeurs volatiles, ajustables avant 
 
 **Instruments de constat (Must Have).** Trois mesures d'activation anonymes — activation préparation, activation vue session, activation partage — complétées par une mesure d'usage anonyme en mode local et des entretiens utilisateurs, sans jamais capter de contenu narratif ni de donnée nominative.
 
-**Critères de sortie techniques par jalon (exemples).** J0 : test d'architecture en intégration continue au vert. J1 : export versionné produit et rejouable, aucun appel réseau en mode local. J2 : migration d'un jeu de données J1 réussie de bout en bout, filtres de cloisonnement actifs sur tous les chemins de lecture. J3 : test anti-fuite en temps réel au vert.
+**Critères de sortie techniques par jalon.** Ils sont portés par la [roadmap de build, § 3](roadmap-de-build.md#3-détail-par-jalon), qui fait foi.
 
 **Cibles de friction chiffrées.** Accès à l'espace de travail en moins de deux minutes ; création d'un élément à la volée en moins de dix secondes ; résultat de recherche en moins de cinq secondes.
 

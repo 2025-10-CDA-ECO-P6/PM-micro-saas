@@ -422,7 +422,8 @@ Scénario : Le MJ archive une session CLOSED
 - RB-06-22 : La vue joueur nécessite un compte ou un accès invité — non disponible en mode local.
 - RB-06-23 : Le joueur voit uniquement les documents partagés et ses propres notes de session personnelle joueur *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - RB-06-24 : Les notes de session privé MJ sont invisibles pour les joueurs.
-- RB-06-25 : Tout document `PLAYER_PRIVATE` est invisible pour les autres joueurs et pour le MJ — quel que soit le type de document. Seul l'auteur du document (`createdById` ou `guest_access_id`) peut y accéder.
+- RB-06-25 : Tout document `PLAYER_PRIVATE` est invisible pour les autres joueurs et pour le MJ — quel que soit le type de document. Seul l'auteur du document (`createdById` ou `guest_access_id`) peut y accéder. Règle sans exception, encodée dans `Document.CanBeReadBy()`.
+  origin: docs/besoin/stories/US-UC-06-vue-session.md:545 @ 5b5190a
 
 **Critères d'acceptation** :
 - [ ] Un joueur avec un compte ou accès invité peut accéder à la vue joueur d'une session LIVE.
@@ -542,7 +543,7 @@ Scénario : Création impossible en ARCHIVED
 - Création possible uniquement pendant une session `LIVE`.
 
 **Règles métier** :
-- RB-06-26 : Tout document `PLAYER_PRIVATE` (y compris les `LIVE_NOTE` personnelle joueur) est inaccessible au MJ, même OWNER/GM. Règle sans exception, encodée dans `Document.CanBeReadBy()`.
+- RB-06-26 : voir RB-06-25 (document `PLAYER_PRIVATE` inaccessible au MJ, y compris OWNER/GM, `LIVE_NOTE` personnelle joueur comprises).
 - RB-06-27 : Un joueur ne peut créer des notes de session que pendant une session LIVE.
 - RB-06-28 : Un joueur accès invité peut créer une note de session personnelle joueur s'il a un personnage associé associé.
 
