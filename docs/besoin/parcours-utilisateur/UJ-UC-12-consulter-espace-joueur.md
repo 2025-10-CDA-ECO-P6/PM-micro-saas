@@ -8,6 +8,15 @@ Les deux situations couvertes ici sont : Lucas qui accède pour la première foi
 
 ---
 
+## Personas concernés
+
+| Persona | Mode de travail | Attente principale | Risque de friction |
+|---|---|---|---|
+| Lucas | accède pour la première fois à sa fiche et aux documents partagés | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Thomas | joue dans un espace avec deux personnages alternés et doit choisir lequel est actif | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
+---
+
 ## Carte d'expérience
 
 ```mermaid
@@ -67,17 +76,15 @@ flowchart TD
 
 ---
 
-## Points de friction identifiés
+## Points de friction
 
-- **Absence de personnage associe - frustration silencieuse** : Lucas rejoint la session, voit les documents partagés, mais ne trouve pas sa fiche. Sans message explicite ("Le MJ ne t'a pas encore associé à un personnage"), il ne comprend pas pourquoi la fiche est absente et peut penser à un bug.
-
-- **Distinction SESSION vs SPACE peu lisible** : Lucas arrive via un lien `SESSION` et ne comprend pas pourquoi il n'a pas accès à l'historique des sessions précédentes ni au lore complet. L'interface doit indiquer clairement le périmètre de son accès et proposer une action pour l'étendre (migration vers compte et lien `SPACE`).
-
-- **Sélection du personnage actif bloquante si non anticipée** : Thomas arrive dans la session et se retrouve face à une sélection entre deux personnages sans contexte. Si la session a déjà démarré et que le MJ attend, cette étape intermédiaire crée une rupture. Un personnage par défaut (dernier utilisé) réduirait la friction.
-
-- **Changement de personnage actif en cours de session - visibilité incertaine** : Thomas bascule de "Veran" à "Kael" en cours de session. Si ce changement n'est pas visible du MJ dans sa vue session, le MJ ne sait pas quel personnage Thomas joue à un instant donné.
-
-- **Notes PLAYER_PRIVATE liees au personnage, pas a l acces** : un joueur invité (`GuestAccess`) qui retrouve un lien vers un personnage déjà utilisé récupère ses notes. Mais si ce lien pointe vers un nouveau `GuestAccess` sans personnage associé, les notes sont inaccessibles sans que le joueur comprenne pourquoi. Ce comportement doit être visible dans l'interface.
+| Étape | Persona(s) | Friction | Opportunité produit |
+|---|---|---|---|
+| SOUS-SPÉCIFIÉ | Lucas | **Absence de personnage associe - frustration silencieuse** : Lucas rejoint la session, voit les documents partagés, mais ne trouve pas sa fiche. Sans message explicite ("Le MJ ne t'a pas encore associé à un personnage"), il ne comprend pas pourquoi la fiche est absente et peut penser à un bug. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Lucas | **Distinction SESSION vs SPACE peu lisible** : Lucas arrive via un lien `SESSION` et ne comprend pas pourquoi il n'a pas accès à l'historique des sessions précédentes ni au lore complet. L'interface doit indiquer clairement le périmètre de son accès et proposer une action pour l'étendre (migration vers compte et lien `SPACE`). | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Thomas | **Sélection du personnage actif bloquante si non anticipée** : Thomas arrive dans la session et se retrouve face à une sélection entre deux personnages sans contexte. Si la session a déjà démarré et que le MJ attend, cette étape intermédiaire crée une rupture. Un personnage par défaut (dernier utilisé) réduirait la friction. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Thomas | **Changement de personnage actif en cours de session - visibilité incertaine** : Thomas bascule de "Veran" à "Kael" en cours de session. Si ce changement n'est pas visible du MJ dans sa vue session, le MJ ne sait pas quel personnage Thomas joue à un instant donné. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | **Notes PLAYER_PRIVATE liees au personnage, pas a l acces** : un joueur invité (`GuestAccess`) qui retrouve un lien vers un personnage déjà utilisé récupère ses notes. Mais si ce lien pointe vers un nouveau `GuestAccess` sans personnage associé, les notes sont inaccessibles sans que le joueur comprenne pourquoi. Ce comportement doit être visible dans l'interface. | SOUS-SPÉCIFIÉ |
 
 ---
 

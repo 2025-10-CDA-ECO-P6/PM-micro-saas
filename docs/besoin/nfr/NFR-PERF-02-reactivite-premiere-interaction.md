@@ -1,6 +1,6 @@
 # NFR-PERF-02 — Réactivité à la première interaction
 
-Famille **Performance perçue** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : PERF · [Index — Performance perçue](README.md)
 
 ---
 
@@ -43,7 +43,7 @@ et la réouverture par un utilisateur déjà actif qui retrouve son contenu exis
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - L'ouverture de l'application par le MJ depuis un appareil où le contenu est déjà présent
   (mode local : campagnes créées localement ; mode cloud : compte actif avec campagnes
@@ -53,7 +53,7 @@ et la réouverture par un utilisateur déjà actif qui retrouve son contenu exis
 - La première ouverture sur un appareil pour un nouvel utilisateur — l'interface doit être
   opérationnelle immédiatement, même si le contenu est vide.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - La navigation entre les écrans une fois l'application ouverte — couverte par NFR-PERF-01
   pour la vue session et NFR-PERF-03 pour les actions en cours de partie.
@@ -67,29 +67,29 @@ et la réouverture par un utilisateur déjà actif qui retrouve son contenu exis
 
 ## Critères d'acceptation produit
 
-**Situation nominale — MJ avec campagnes existantes :**
+**Situation nominale** : MJ avec campagnes existantes
 
 Le MJ peut commencer à interagir avec son contenu immédiatement après avoir ouvert
 l'application, sans attendre une phase de chargement distincte. Ses campagnes et ses documents
 sont accessibles dès le premier écran opérationnel.
 
-**Situation nominale — MJ ouvrant l'application pour la première fois :**
+**Situation nominale** : MJ ouvrant l'application pour la première fois
 
 L'interface est opérationnelle dès l'ouverture. Le MJ peut créer sa première campagne sans
 avoir traversé de phase d'attente prolongée entre l'ouverture et la possibilité d'agir.
 
-**Situation nominale — joueur accédant via un lien de session :**
+**Situation nominale** : joueur accédant via un lien de session
 
 Le joueur voit les informations partagées par le MJ sans attendre une phase de chargement
 distincte entre le clic sur le lien et l'affichage du contenu.
 
-**Situation limite — retour après une longue absence :**
+**Situation limite** : retour après une longue absence
 
 Nadia rouvre l'application après six semaines sans l'avoir utilisée. Ses campagnes s'affichent
 dans l'état où elle les a laissées, sans phase d'initialisation perceptible. Elle peut reprendre
 là où elle s'était arrêtée immédiatement.
 
-**Situation limite — ouverture depuis un réseau lent :**
+**Situation limite** : ouverture depuis un réseau lent
 
 Lorsque la connexion réseau est lente, le MJ en mode local peut accéder à son contenu sans
 attendre la fin d'une synchronisation. Le contenu local est disponible indépendamment de
@@ -99,9 +99,9 @@ l'état du réseau.
 
 ## Traçabilité montante
 
-| Artefact | Lien |
-|---|---|
-| UC-06 — Vue session (contexte, déclencheur) | [../usecases/UC-06-vue-session.md](../cas-d-utilisation/UC-06-vue-session.md) |
-| US-UC-06 — Epic vue session (US-06-01 : lancement de session) | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| UC-09 — Accès session joueur (accès via lien ponctuel) | [../usecases/UC-09-acces-session-joueur.md](../cas-d-utilisation/UC-09-acces-session-joueur.md) |
-| RB-06-02 — Session créée directement en LIVE (pas d'état intermédiaire) | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | contexte, déclencheur |
+| [US-UC-06 — Epic vue session](../stories/US-UC-06-vue-session.md) | US-06-01 : lancement de session |
+| [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) | accès via lien ponctuel |
+| [RB-06-02 — Session créée directement en LIVE](../stories/US-UC-06-vue-session.md) | pas d'état intermédiaire |

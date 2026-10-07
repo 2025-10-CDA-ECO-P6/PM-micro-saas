@@ -1,10 +1,14 @@
-# Use Cases hors MVP — Vision produit long terme
+# Exclusions
+
+Use Cases hors MVP — Vision produit long terme.
 
 Les use cases suivants ne sont pas prévus dans le MVP. Ils sont exclus par choix stratégique, pas par oubli.
 
 ---
 
-## Fonctionnalités déprioritisées (anciennement envisagées dans le MVP)
+## Fonctionnalités déprioritisées
+
+Fonctionnalités anciennement envisagées dans le MVP.
 
 ### Inventaire personnage
 
@@ -43,6 +47,8 @@ Le MJ crée et organise des fiches de lieux, factions, organisations et objets i
 Le MJ crée un nouveau scénario template directement depuis son espace personnel (`SpaceType.PERSONAL`), sans passer par une campagne existante.
 
 **Persona concerné** : Sonia, qui veut préparer un nouveau one-shot pour son catalogue sans avoir à créer une campagne intermédiaire.
+
+**Pourquoi Won't Have** : SOUS-SPÉCIFIÉ
 
 **Pourquoi largement subsumé (Could Have résiduel)** : sous ADR-018, l'espace personnel est créé par défaut à l'ouverture du compte et constitue la zone d'atterrissage naturelle pour tout contenu créé sans espace explicite. Sonia crée son scénario dans son espace personnel — c'est le flux de base, pas un palliatif. Le Could Have résiduel concerne uniquement l'interface de bibliothèque dédiée (navigation, recherche, instanciation en un geste), restée post-MVP conformément aux recommandations MoSCoW d'ADR-018.
 

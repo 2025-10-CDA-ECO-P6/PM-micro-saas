@@ -1,4 +1,4 @@
-# Haversack — Diagrammes de cas d'utilisation
+# Diagrammes des cas d'utilisation
 
 > Périmètre fonctionnel MVP défini dans [README.md](README.md).
 > Organisés du plus synthétique au plus détaillé.
@@ -12,7 +12,7 @@
 
 ## Légende
 
-| Notation | Signification |
+| Symbole | Signification |
 |---|---|
 | Rectangle `[ ]` | Acteur |
 | Ovale `([ ])` | Cas d'utilisation |

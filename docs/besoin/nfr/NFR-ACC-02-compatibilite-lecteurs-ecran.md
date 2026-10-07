@@ -1,6 +1,6 @@
 # NFR-ACC-02 — Compatibilité avec les outils de lecture d'écran
 
-Famille **Accessibilité** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : ACC · [Index — Accessibilité](README.md)
 
 ---
 
@@ -55,7 +55,7 @@ cette exigence, sans s'y substituer.
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - L'ensemble des éléments interactifs du produit : boutons, zones de saisie, liens, menus,
   panneaux configurables de la vue session — leur nature et leur rôle doivent être lisibles
@@ -70,7 +70,7 @@ cette exigence, sans s'y substituer.
   partagés, prise de notes personnelles.
 - Le parcours MJ complet depuis l'ouverture de l'application jusqu'à la clôture d'une session.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - La configuration des outils de lecture d'écran eux-mêmes — ce sont des outils tiers
   dont la configuration relève de l'utilisateur.
@@ -84,32 +84,32 @@ cette exigence, sans s'y substituer.
 
 ## Critères d'acceptation produit
 
-**Parcours MJ — création d'une campagne et lancement de session :**
+**Situation nominale** : Parcours MJ — création d'une campagne et lancement de session
 
 Un MJ utilisant un lecteur d'écran peut créer une campagne, saisir un titre de session et
 lancer la vue session sans aide extérieure. Chaque étape est franchissable depuis le seul
 retour fourni par l'outil de lecture d'écran.
 
-**Parcours MJ — navigation en vue session :**
+**Situation nominale** : Parcours MJ — navigation en vue session
 
 Un MJ utilisant un lecteur d'écran peut identifier les panneaux de dossiers configurés,
 naviguer dans les documents d'un panneau, ouvrir un document en consultation et revenir
 à la vue session — sans avoir à voir l'écran pour comprendre dans quelle zone il se trouve.
 
-**Changements d'état annoncés sans action :**
+**Situation limite** : Changements d'état annoncés sans action
 
 Lorsqu'une note de session est créée, lorsque la visibilité d'un document bascule vers
 visible par les joueurs, lorsqu'un résultat de recherche se charge, et lorsqu'une notification
 non bloquante apparaît (perte de connexion, espace de stockage sous pression), le changement
 est annoncé par le produit sans que l'utilisateur ait à déplacer son focus pour le découvrir.
 
-**Parcours joueur — accès et consultation :**
+**Situation nominale** : Parcours joueur — accès et consultation
 
 Un joueur malvoyant utilisant un lecteur d'écran peut cliquer sur un lien de session, saisir
 son nom d'affichage, accéder à la liste des documents partagés par le MJ et lire le contenu
 de ces documents — sans aide extérieure.
 
-**Éléments interactifs identifiables par leur rôle :**
+**Situation limite** : Éléments interactifs identifiables par leur rôle
 
 Depuis le retour d'un lecteur d'écran, chaque bouton, zone de saisie et lien du produit est
 distinguable : son rôle (bouton, champ de saisie, liste) et son libellé (l'action qu'il
@@ -119,14 +119,14 @@ déclenche ou l'information qu'il contient) sont perceptibles sans avoir à voir
 
 ## Traçabilité montante
 
-| Artefact | Lien |
-|---|---|
-| UC-06 — Vue session (phases 2-3, changements d'état, notifications) | [../usecases/UC-06-vue-session.md](../cas-d-utilisation/UC-06-vue-session.md) |
-| UC-09 — Accès session joueur | [../usecases/UC-09-acces-session-joueur.md](../cas-d-utilisation/UC-09-acces-session-joueur.md) |
-| UC-14 — Rechercher rapidement une information | [../usecases/UC-14-recherche.md](../cas-d-utilisation/UC-14-recherche.md) |
-| US-06-01 — Lancer une session | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-06-03 — Naviguer dans les dossiers pendant la session | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-06-04 — Prendre des notes de session MJ (notification E1) | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-06-07 — Accéder à la vue joueur pendant une session LIVE | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-14-03 — Rechercher depuis la vue session | [../user-stories/US-UC-14-recherche.md](../stories/US-UC-14-recherche.md) |
-| NFR-ACC-01 — Utilisabilité sans dispositif de pointage (navigation clavier, prérequis) | [NFR-ACC-01-utilisabilite-sans-dispositif-de-pointage.md](NFR-ACC-01-utilisabilite-sans-dispositif-de-pointage.md) |
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | phases 2-3, changements d'état, notifications |
+| [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) | SOUS-SPÉCIFIÉ |
+| [UC-14 — Rechercher rapidement une information](../cas-d-utilisation/UC-14-recherche.md) | SOUS-SPÉCIFIÉ |
+| [US-06-01 — Lancer une session](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-06-03 — Naviguer dans les dossiers pendant la session](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-06-04 — Prendre des notes de session MJ](../stories/US-UC-06-vue-session.md) | notification E1 |
+| [US-06-07 — Accéder à la vue joueur pendant une session LIVE](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-14-03 — Rechercher depuis la vue session](../stories/US-UC-14-recherche.md) | SOUS-SPÉCIFIÉ |
+| [NFR-ACC-01 — Utilisabilité sans dispositif de pointage](NFR-ACC-01-utilisabilite-sans-dispositif-de-pointage.md) | navigation clavier, prérequis |

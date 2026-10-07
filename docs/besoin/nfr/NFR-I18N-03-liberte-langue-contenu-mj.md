@@ -1,6 +1,6 @@
 # NFR-I18N-03 — Liberté totale de langue pour le contenu créé par le MJ
 
-Famille **Internationalisation** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : I18N · [Index — Internationalisation](README.md)
 
 ---
 
@@ -48,7 +48,7 @@ une langue fictive doit être aussi cherchable qu'un titre en français.
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - La saisie de contenu par le MJ dans n'importe quelle langue, y compris des langues utilisant
   des scripts ou des directions d'écriture différents du français, et des langues fictives
@@ -62,7 +62,7 @@ une langue fictive doit être aussi cherchable qu'un titre en français.
 - Le contenu visible par les joueurs via les informations partagées : un document dont le
   titre est en langue étrangère s'affiche sans erreur dans la vue joueur.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - La langue de l'interface produite par l'application : couverte par NFR-I18N-01.
 - La mise en page adaptée aux scripts à direction d'écriture de droite à gauche ou verticale :
@@ -79,48 +79,42 @@ une langue fictive doit être aussi cherchable qu'un titre en français.
 
 ## Critères d'acceptation produit
 
-- Un MJ peut saisir un titre de document, une note de session ou une description de PNJ
-  dans une langue différente de celle de l'interface — par exemple en anglais, en espagnol,
-  en japonais ou dans une langue fictive — et retrouver ce contenu dans l'application
-  tel qu'il l'a saisi, sans modification ni message d'erreur.
-- Un MJ peut saisir un titre de document dans une langue fictive comportant des caractères
-  inhabituels, enregistrer ce document, et le retrouver affiché correctement dans sa
-  bibliothèque de contenu et dans sa vue session.
-- La recherche par titre (UC-14) retourne le document attendu lorsque le MJ saisit une
-  partie du titre en langue étrangère ou fictive, dans les mêmes conditions que pour un
-  titre en français.
-- Un document dont le titre est rédigé dans une langue différente de l'interface s'affiche
-  sans dégradation visuelle dans la vue session, dans la vue joueur et dans les résultats
-  de recherche.
-- Un MJ dont le groupe joue dans une langue différente de l'interface peut travailler
-  intégralement avec un contenu rédigé dans cette langue, sans message d'erreur ni
-  fonctionnalité dégradée.
+**Situation nominale** : Un MJ peut saisir un titre de document, une note de session ou une description de PNJ
+dans une langue différente de celle de l'interface — par exemple en anglais, en espagnol,
+en japonais ou dans une langue fictive — et retrouver ce contenu dans l'application
+tel qu'il l'a saisi, sans modification ni message d'erreur.
+
+**Situation limite** : Un MJ peut saisir un titre de document dans une langue fictive comportant des caractères
+inhabituels, enregistrer ce document, et le retrouver affiché correctement dans sa
+bibliothèque de contenu et dans sa vue session.
+
+**Situation nominale** : La recherche par titre (UC-14) retourne le document attendu lorsque le MJ saisit une
+partie du titre en langue étrangère ou fictive, dans les mêmes conditions que pour un
+titre en français.
+
+**Situation nominale** : Un document dont le titre est rédigé dans une langue différente de l'interface s'affiche
+sans dégradation visuelle dans la vue session, dans la vue joueur et dans les résultats
+de recherche.
+
+**Situation nominale** : Un MJ dont le groupe joue dans une langue différente de l'interface peut travailler
+intégralement avec un contenu rédigé dans cette langue, sans message d'erreur ni
+fonctionnalité dégradée.
 
 ---
 
 ## Traçabilité montante
 
-**Use cases servis :**
-
-- [UC-03 — Structurer un scénario](../cas-d-utilisation/UC-03-structurer-scenario.md) — saisie
-  de contenu narratif pouvant être rédigé dans n'importe quelle langue.
-- [UC-04 — Gérer les documents d'une campagne](../cas-d-utilisation/UC-04-gerer-documents-espace.md)
-  — création, nommage et organisation de documents sans contrainte de langue.
-- [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) — affichage du contenu du MJ
-  en cours de partie, y compris les titres et notes en langue étrangère ou fictive.
-- [UC-07 — Création à la volée en session](../cas-d-utilisation/UC-07-creation-volee-session.md)
-  — saisie de notes rapides en cours de partie dans la langue de travail du MJ.
-- [UC-08 — Partager une information aux joueurs](../cas-d-utilisation/UC-08-partager-information.md)
-  — partage de documents dont le contenu peut être dans une langue différente de l'interface.
-- [UC-14 — Recherche](../cas-d-utilisation/UC-14-recherche.md) — recherche par titre dans du contenu
-  rédigé en toute langue ; le critère de visibilité (MJ voit tout, joueur voit le public)
-  s'applique indépendamment de la langue du contenu.
-
-**User stories servies :**
-
-- [US-UC-03 — Structurer un scénario](../stories/US-UC-03-structurer-scenario.md)
-- [US-UC-04 — Gérer les documents d'une campagne](../stories/US-UC-04-gerer-documents-espace.md)
-- [US-UC-06 — Vue session](../stories/US-UC-06-vue-session.md)
-- [US-UC-07 — Création à la volée en session](../stories/US-UC-07-creation-volee-session.md)
-- [US-UC-08 — Partager une information aux joueurs](../stories/US-UC-08-partager-information.md)
-- [US-UC-14 — Recherche](../stories/US-UC-14-recherche.md)
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-03 — Structurer un scénario](../cas-d-utilisation/UC-03-structurer-scenario.md) | saisie de contenu narratif pouvant être rédigé dans n'importe quelle langue. |
+| [UC-04 — Gérer les documents d'une campagne](../cas-d-utilisation/UC-04-gerer-documents-espace.md) | création, nommage et organisation de documents sans contrainte de langue. |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | affichage du contenu du MJ en cours de partie, y compris les titres et notes en langue étrangère ou fictive. |
+| [UC-07 — Création à la volée en session](../cas-d-utilisation/UC-07-creation-volee-session.md) | saisie de notes rapides en cours de partie dans la langue de travail du MJ. |
+| [UC-08 — Partager une information aux joueurs](../cas-d-utilisation/UC-08-partager-information.md) | partage de documents dont le contenu peut être dans une langue différente de l'interface. |
+| [UC-14 — Recherche](../cas-d-utilisation/UC-14-recherche.md) | recherche par titre dans du contenu rédigé en toute langue ; le critère de visibilité (MJ voit tout, joueur voit le public) s'applique indépendamment de la langue du contenu. |
+| [US-UC-03 — Structurer un scénario](../stories/US-UC-03-structurer-scenario.md) | User story servie |
+| [US-UC-04 — Gérer les documents d'une campagne](../stories/US-UC-04-gerer-documents-espace.md) | User story servie |
+| [US-UC-06 — Vue session](../stories/US-UC-06-vue-session.md) | User story servie |
+| [US-UC-07 — Création à la volée en session](../stories/US-UC-07-creation-volee-session.md) | User story servie |
+| [US-UC-08 — Partager une information aux joueurs](../stories/US-UC-08-partager-information.md) | User story servie |
+| [US-UC-14 — Recherche](../stories/US-UC-14-recherche.md) | User story servie |

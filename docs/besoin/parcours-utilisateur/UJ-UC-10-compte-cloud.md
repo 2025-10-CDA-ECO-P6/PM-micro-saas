@@ -6,6 +6,16 @@ Parcours couvrant trois flux d'entrée : l'inscription par un MJ venant du mode 
 
 ---
 
+## Personas concernés
+
+| Persona | Mode de travail | Attente principale | Risque de friction |
+|---|---|---|---|
+| Émilie | inscription par un MJ venant du mode local ; migration avec gate de reconnaissance des données locales intégrée à son flux | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Thomas | création directe de compte pour usage multi-device | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Lucas | création de compte depuis un lien d'invitation par un joueur | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
+---
+
 ## Carte d'expérience
 
 ```mermaid
@@ -88,19 +98,16 @@ flowchart TD
 
 ---
 
-## Points de friction identifiés
+## Points de friction
 
-- **Invite contextuelle peu visible en mode local** : Émilie peut passer plusieurs sessions sans voir l'invite de sauvegarde cloud. Si le bandeau est discret ou apparait en bas d'écran, le déclencheur naturel de l'inscription peut être raté. Le contexte idéal pour l'afficher est la première tentative de partage avec un joueur.
-
-- **Friction à la saisie du mot de passe pour Lucas** : Lucas arrive depuis un lien d'invitation — il vient d'utiliser l'application sans mot de passe (mode invité). Lui demander de choisir un mot de passe sécurisé à ce moment peut créer un abandon. La connexion fédérée réduit ce frein mais ne couvre pas tous les cas.
-
-- **Sessions en cours à clôturer avant migration** : Émilie peut avoir une session ouverte (LIVE) au moment où elle souhaite créer son compte et migrer. Le gate de reconnaissance signale cette session et indique qu'elle doit être clôturée — si ce message n'est pas clair, Émilie peut être frustrée de ne pas pouvoir procéder immédiatement.
-
-- **Progression de la migration pour gros volumes** : le gate de reconnaissance (ADR-016 §4) répond à l'opacité pré-import — Émilie voit les espaces détectés (y compris leur historique de session) avant de confirmer. Pour les volumes importants, l'absence de retour visuel pendant la migration elle-même (barre de progression, indicateur "synchronisation en cours") reste une friction résiduelle à adresser.
-
-- **Réinitialisation de mot de passe avec délai d'expiration court** : si le token expire rapidement (exemple : 1 heure) et que l'utilisateur ne voit pas l'email immédiatement, il devra recommencer le processus. La durée d'expiration est à calibrer.
-
-- **Pas de différenciation des erreurs de connexion** : le message générique (E2) est correct sur le plan de la sécurité, mais peut frustrer un utilisateur légitime qui ne sait pas si c'est son email ou son mot de passe qui est en cause. L'aide doit orienter vers la réinitialisation du mot de passe.
+| Étape | Persona(s) | Friction | Opportunité produit |
+|---|---|---|---|
+| SOUS-SPÉCIFIÉ | Émilie | **Invite contextuelle peu visible en mode local** : Émilie peut passer plusieurs sessions sans voir l'invite de sauvegarde cloud. Si le bandeau est discret ou apparait en bas d'écran, le déclencheur naturel de l'inscription peut être raté. Le contexte idéal pour l'afficher est la première tentative de partage avec un joueur. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Lucas | **Friction à la saisie du mot de passe pour Lucas** : Lucas arrive depuis un lien d'invitation — il vient d'utiliser l'application sans mot de passe (mode invité). Lui demander de choisir un mot de passe sécurisé à ce moment peut créer un abandon. La connexion fédérée réduit ce frein mais ne couvre pas tous les cas. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Émilie | **Sessions en cours à clôturer avant migration** : Émilie peut avoir une session ouverte (LIVE) au moment où elle souhaite créer son compte et migrer. Le gate de reconnaissance signale cette session et indique qu'elle doit être clôturée — si ce message n'est pas clair, Émilie peut être frustrée de ne pas pouvoir procéder immédiatement. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Émilie | **Progression de la migration pour gros volumes** : le gate de reconnaissance (ADR-016 §4) répond à l'opacité pré-import — Émilie voit les espaces détectés (y compris leur historique de session) avant de confirmer. Pour les volumes importants, l'absence de retour visuel pendant la migration elle-même (barre de progression, indicateur "synchronisation en cours") reste une friction résiduelle à adresser. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | **Réinitialisation de mot de passe avec délai d'expiration court** : si le token expire rapidement (exemple : 1 heure) et que l'utilisateur ne voit pas l'email immédiatement, il devra recommencer le processus. La durée d'expiration est à calibrer. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | **Pas de différenciation des erreurs de connexion** : le message générique (E2) est correct sur le plan de la sécurité, mais peut frustrer un utilisateur légitime qui ne sait pas si c'est son email ou son mot de passe qui est en cause. L'aide doit orienter vers la réinitialisation du mot de passe. | SOUS-SPÉCIFIÉ |
 
 ---
 

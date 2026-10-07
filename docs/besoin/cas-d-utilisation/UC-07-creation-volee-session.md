@@ -133,3 +133,7 @@ La création à la volée est impossible depuis une session ARCHIVED (lecture se
 - Un PNJ créé à la volée apparaît dans les documents épinglés ou dans son dossier, filtrable comme PNJ.
 - La création est impossible depuis une session ARCHIVED.
 - Le MJ peut compléter le document créé à la volée ultérieurement.
+
+## Questions à valider en interview
+
+SOUS-SPÉCIFIÉ

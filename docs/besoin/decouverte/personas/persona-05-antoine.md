@@ -6,7 +6,7 @@
 30 ans, graphiste freelance. MJ et joueur depuis 10 ans. Trois campagnes actives en parallèle,
 2 à 3 sessions par semaine. Systèmes joués : D&D 5e, Call of Cthulhu 7e, Blades in the Dark.
 
-## Qui il est
+## Qui il/elle est
 
 Antoine mène trois campagnes simultanément avec trois groupes différents. Chaque système a
 sa propre logique de préparation :
@@ -25,7 +25,7 @@ directe : c'est une organisation qui a du sens pour D&D, mais pas pour Blades in
 factions sont l'entité centrale, ni pour Call of Cthulhu où l'organisation naturelle est par
 scénario puis par acte.
 
-## Ce qu'il utiliserait
+## Ce qu'il/elle utiliserait
 
 - Un outil unique pour ses trois campagnes avec un accès rapide à chacune
 - Le partage joueurs pour ses trois groupes
@@ -33,7 +33,7 @@ scénario puis par acte.
 - Un espace personnel où stocker ses contenus réutilisables — templates de PNJ, factions génériques,
   fragments de lore — pour les instancier ensuite dans la campagne qui en a besoin, sans les dupliquer
 
-## Ce qu'il demande à l'app
+## Ce qu'il/elle demande au produit
 
 - Les dossiers par défaut peuvent-ils être supprimés ou renommés ?
 - Y a-t-il un dashboard multi-campagnes ou faut-il naviguer campagne par campagne ?

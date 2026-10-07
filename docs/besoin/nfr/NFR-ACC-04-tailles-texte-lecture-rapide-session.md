@@ -1,6 +1,6 @@
 # NFR-ACC-04 — Tailles de texte adaptées à la lecture rapide en session
 
-Famille **Accessibilité** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : ACC · [Index — Accessibilité](README.md)
 
 ---
 
@@ -53,7 +53,7 @@ restent une référence d'implémentation, non un critère d'acceptation produit
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - Les titres et le contenu des documents affichés dans les panneaux de la vue session
   (vue condensée dans les panneaux de dossiers, vue complète ouverte depuis un panneau).
@@ -64,7 +64,7 @@ restent une référence d'implémentation, non un critère d'acceptation produit
 - La vue joueur, pour les documents partagés et les notes personnelles consultées pendant
   la session.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - La phase de préparation (hors session LIVE) — le contexte de lecture y est différent :
   posé, prolongé, à une distance d'écran plus variable.
@@ -81,30 +81,30 @@ restent une référence d'implémentation, non un critère d'acceptation produit
 
 ## Critères d'acceptation produit
 
-**Lecture des titres de documents sans effort :**
+**Situation nominale** : Lecture des titres de documents sans effort
 
 Dans la vue session, un MJ assis à une distance normale de son écran peut lire le titre
 d'un document affiché dans un panneau de dossier d'un seul coup d'œil, sans incliner la
 tête ni se rapprocher de l'appareil.
 
-**Lecture des notes de session pendant la conversation :**
+**Situation nominale** : Lecture des notes de session pendant la conversation
 
 Un MJ peut lire les premières lignes d'une note de session pendant qu'une conversation
 se déroule autour de lui, sans interrompre le contact visuel avec la table pour s'approcher
 de l'écran.
 
-**Lecture des résultats de recherche en session :**
+**Situation nominale** : Lecture des résultats de recherche en session
 
 Les titres des résultats affichés dans le panneau latéral de recherche (UC-14) sont lisibles
 à distance normale de l'écran, sans que le MJ ait à zoomer ou à ouvrir chaque résultat
 pour identifier lequel correspond à sa recherche.
 
-**Lecture dans la vue joueur :**
+**Situation nominale** : Lecture dans la vue joueur
 
 Les documents partagés et les notes personnelles sont lisibles depuis la position habituelle
 du joueur à la table — assis face à son propre appareil, à distance normale.
 
-**Aucune configuration préalable requise :**
+**Situation limite** : Aucune configuration préalable requise
 
 La taille du texte dans la vue session est suffisante à l'ouverture de l'application,
 sans que le MJ ait à ajuster les paramètres de l'application ou de son appareil avant
@@ -114,12 +114,12 @@ de lancer une session.
 
 ## Traçabilité montante
 
-| Artefact | Lien |
-|---|---|
-| UC-06 — Vue session (contexte, phase 2 — panneaux configurés, notes de session) | [../usecases/UC-06-vue-session.md](../cas-d-utilisation/UC-06-vue-session.md) |
-| UC-14 — Rechercher rapidement une information (résultats en vue session) | [../usecases/UC-14-recherche.md](../cas-d-utilisation/UC-14-recherche.md) |
-| UC-09 — Accès session joueur (vue joueur) | [../usecases/UC-09-acces-session-joueur.md](../cas-d-utilisation/UC-09-acces-session-joueur.md) |
-| US-06-03 — Naviguer dans les dossiers pendant la session | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-06-04 — Prendre des notes de session MJ | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-06-07 — Accéder à la vue joueur pendant une session LIVE | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-14-03 — Rechercher depuis la vue session | [../user-stories/US-UC-14-recherche.md](../stories/US-UC-14-recherche.md) |
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | contexte, phase 2 — panneaux configurés, notes de session |
+| [UC-14 — Rechercher rapidement une information](../cas-d-utilisation/UC-14-recherche.md) | résultats en vue session |
+| [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) | vue joueur |
+| [US-06-03 — Naviguer dans les dossiers pendant la session](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-06-04 — Prendre des notes de session MJ](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-06-07 — Accéder à la vue joueur pendant une session LIVE](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-14-03 — Rechercher depuis la vue session](../stories/US-UC-14-recherche.md) | SOUS-SPÉCIFIÉ |

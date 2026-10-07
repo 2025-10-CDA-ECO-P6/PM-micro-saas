@@ -1,6 +1,6 @@
 # NFR-OFF-01 — Utilisation intégrale sans connexion en mode local
 
-Famille **Hors connexion** — [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : OFF · [Index — Hors connexion](README.md)
 
 ---
 
@@ -26,14 +26,14 @@ L'hypothèse de monétisation du produit (vision §2.3, H5) repose sur la conver
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - La préparation dans tout espace local du MJ (espace personnel, campagnes et one-shots) : structuration de scénarios, organisation de documents, capture à la volée — en totalité, sans connexion réseau.
 - Le lancement et le pilotage d'une vue session complète, sans connexion réseau.
 - La création d'éléments à la volée en cours de session, sans connexion réseau.
 - La recherche dans le contenu local du MJ, sans connexion réseau.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Le partage d'informations avec les joueurs : cette fonctionnalité nécessite une connexion — c'est un choix de périmètre explicite, pas un oubli.
 - La sauvegarde dans le cloud : nécessite également une connexion, par définition.
@@ -44,19 +44,19 @@ L'hypothèse de monétisation du produit (vision §2.3, H5) repose sur la conver
 
 ## Critères d'acceptation produit
 
-**Situation nominale — préparation sans connexion :**
+**Situation nominale** : préparation sans connexion
 
 Un MJ qui coupe la connexion réseau de son appareil avant d'ouvrir l'application peut créer une campagne, y ajouter des documents, les organiser en dossiers et naviguer dans son contenu. Aucun message d'erreur ne s'affiche, aucune fonctionnalité de préparation n'est désactivée ou grisée.
 
-**Situation nominale — session sans connexion :**
+**Situation nominale** : session sans connexion
 
 Un MJ en mode local qui lance une session depuis une campagne déjà préparée, sans connexion réseau, accède à la vue session complète : panneaux configurés, documents de la campagne consultables, prise de notes, création à la volée. Aucun gel de l'interface n'est imputable à l'absence de réseau.
 
-**Situation limite — lieu sans accès réseau :**
+**Situation limite** : lieu sans accès réseau
 
 Un MJ qui utilise l'application dans un lieu sans réseau (zone blanche, transport sans Wi-Fi, sous-sol) constate le même comportement qu'avec une connexion disponible, pour toutes les fonctionnalités de préparation et de session.
 
-**Situation limite — fonctionnalités cloud visibles sans connexion :**
+**Situation limite** : fonctionnalités cloud visibles sans connexion
 
 Les fonctionnalités qui nécessitent un compte (partage, accès joueur) restent visibles dans l'interface mais s'affichent comme indisponibles en mode local, avec une invite à créer un compte. Elles ne produisent pas de message d'erreur réseau.
 

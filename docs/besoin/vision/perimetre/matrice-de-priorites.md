@@ -1,4 +1,4 @@
-# Priorisation MoSCoW — Haversack MVP
+# Matrice de priorités
 
 > **MoSCoW** = Must Have · Should Have · Could Have · Won't Have (this release)
 >
@@ -19,7 +19,9 @@
 
 ---
 
-## Must Have — Le produit ne peut pas être validé sans eux
+## Must Have
+
+Le produit ne peut pas être validé sans eux.
 
 Ces dix use cases, complétés par l'espace personnel, forment le périmètre minimal cohérent :
 sans l'un d'eux, soit le produit ne peut pas être utilisé, soit l'hypothèse centrale ne peut
@@ -178,8 +180,7 @@ principale d'utiliser UC-08.
 ### UC-10 — Créer un compte et synchroniser dans le cloud
 
 **Pourquoi Must Have** : UC-08 (partage joueurs) et UC-09 (accès joueur) exigent un compte
-et une synchronisation cloud pour fonctionner. Sans UC-10, le second pilier produit (partage
-et collaboration joueur) est inatteignable, alors qu'il est Must Have. Inversement, une
+et une synchronisation cloud pour fonctionner. Inversement, une
 capacité Must Have (partage) ne peut pas dépendre d'une capacité Should Have — cette incohérence
 de priorisation rendrait le périmètre MVP non fiable.
 
@@ -190,6 +191,9 @@ automatique et transparente.
 
 **Critère de sortie** : un MJ en mode local crée un compte, ses données migrent vers le cloud,
 le partage joueurs s'active.
+
+**Risque si absent** : sans UC-10, le second pilier produit (partage
+et collaboration joueur) est inatteignable, alors qu'il est Must Have.
 
 Le raisonnement d'origine et les alternatives écartées (MVP en deux temps de livraison, statu quo du
 reclassement) sont conservés à titre de trace historique (ADR-006).
@@ -232,7 +236,7 @@ et résiste au besoin de capture spontanée identifié comme central (ADR-018 §
 
 ---
 
-### Quota FREE — espaces `CAMPAIGN`/`ONE_SHOT`
+#### Quota FREE — espaces `CAMPAIGN`/`ONE_SHOT`
 
 Le tier FREE inclut un quota de **3 espaces de type `CAMPAIGN` ou `ONE_SHOT`**. L'espace
 personnel (`SpaceType.PERSONAL`) n'est **pas décompté** dans ce quota — il est provisionné
@@ -245,10 +249,9 @@ personnel est une propriété permanente du compte, non une fonctionnalité soum
 
 ### Export d'espace (Must Have — version minimale)
 
-**Pourquoi Must Have** (promu de Should Have par décision produit du 2026-06-25) :
+**Pourquoi Must Have** : (promu de Should Have par décision produit du 2026-06-25)
 l'export matérialise le différenciant n°1 de la vision — la possession des données, qui doit être
-actionnable et non simplement affirmée. Sans export accessible, la promesse de possession des données
-reste une déclaration sans preuve. L'export répond aussi à la douleur de confiance de Thomas (crainte
+actionnable et non simplement affirmée. L'export répond aussi à la douleur de confiance de Thomas (crainte
 de l'enfermement propriétaire) et de Rémi (réassurance face au numérique), et constitue un filet de
 sécurité critique pour le mode local.
 
@@ -266,6 +269,9 @@ section correspondante).
 
 **Critère de sortie** : un MJ exporte l'ensemble de son espace — documents, notes, structure — dans un format ouvert, lisible et réutilisable hors de l'application. Disponible en mode local comme avec un compte.
 
+**Risque si absent** : sans export accessible, la promesse de possession des données
+reste une déclaration sans preuve.
+
 > **Note de révision — 2026-06-25** : promu de Should Have (arbitrage 2026-06-10) à Must Have / version
 > minimale. Motivation : adoption segment MJ-organisé (Thomas) — la portabilité est un critère de confiance,
 > pas un confort. L'export doit être présent dès le MVP pour rendre la promesse de possession des données
@@ -275,9 +281,9 @@ section correspondante).
 
 ### Instrumentation de validation du MVP
 
-**Pourquoi Must Have** : le MVP unique teste simultanément trois piliers (préparation, vue session, partage). Sans mesure granulaire par pilier, un échec d'adoption serait indiagnosticable — impossible de savoir quel pilier n'a pas résonné avec les utilisateurs. L'instrumentation doit permettre une analyse rétrospective claire de chaque pilier.
+**Pourquoi Must Have** : le MVP unique teste simultanément trois piliers (préparation, vue session, partage). L'instrumentation doit permettre une analyse rétrospective claire de chaque pilier.
 
-L'application permet de constater, de façon anonyme et sans capter le contenu narratif :
+**Critère de sortie** : l'application permet de constater, de façon anonyme et sans capter le contenu narratif :
 
 1. **Activation préparation** : le MJ a créé un espace ET y a créé **au moins trois documents** ;
    ou, en l'absence de campagne, a produit dans son espace personnel un **geste structurant** —
@@ -291,6 +297,8 @@ L'application permet de constater, de façon anonyme et sans capter le contenu n
    *Une action plutôt qu'une durée : une session ouverte puis oubliée mesurerait la présence, non l'usage, alors que H2 porte sur la valeur apportée pendant la partie.*
 
 3. **Activation partage** : un document a été partagé aux joueurs ET au moins un joueur l'a consulté. Ce constat mesure si le pilier 3 (collaboration joueur) fonctionne comme canal d'engagement collectif.
+
+**Risque si absent** : sans mesure granulaire par pilier, un échec d'adoption serait indiagnosticable — impossible de savoir quel pilier n'a pas résonné avec les utilisateurs.
 
 **Mesure anonyme dès le mode local** : la capture fonctionne sans compte utilisateur, ne porte aucun contenu narratif ni donnée nominative (aucune lecture de titre, notes ou propriété structurée), et respecte les obligations de protection des données personnelles — elle se limite à l'existence d'une action et à sa date.
 

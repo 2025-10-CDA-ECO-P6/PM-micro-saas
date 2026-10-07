@@ -1,6 +1,6 @@
 # NFR-CONF-03 — Suppression effective des données personnelles sur demande
 
-Famille **Confidentialité** — [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : CONF · [Index — Confidentialité](README.md)
 
 ---
 
@@ -26,14 +26,14 @@ Cette exigence est distincte des règles métier détaillées de suppression, qu
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - La suppression effective des données personnelles d'un utilisateur titulaire d'un compte (FREE ou PRO) qui en fait la demande.
 - La confirmation reçue par l'utilisateur que la suppression a eu lieu.
 - L'impossibilité de se reconnecter avec les mêmes identifiants après suppression.
 - Le caractère irréversible de la suppression sans action de l'utilisateur (l'utilisateur peut créer un nouveau compte, mais ses données supprimées ne sont pas restaurées automatiquement).
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Le détail des catégories de données supprimées ou conservées (contenus de campagne et de one-shot sous intérêt légitime, données anonymisées) : ces règles vivent dans le domaine Identity & Access (règle F-08, invariant 3 et invariant 6 de l'agrégat `User`) et dans la modélisation DDD correspondante.
 - L'effacement des données des joueurs invités sans compte à la fin de leur accès : ce cas est régi par UC-09 (RB-09-18, RB-09-19) et la règle d'information RB-09-20. Il relève d'une durée de vie d'accès, pas d'une demande de suppression de compte.
@@ -44,19 +44,19 @@ Cette exigence est distincte des règles métier détaillées de suppression, qu
 
 ## Critères d'acceptation produit
 
-**Situation nominale — suppression du compte :**
+**Situation nominale** : suppression du compte
 
 Un utilisateur qui demande la suppression de son compte reçoit une confirmation visible que la suppression a été prise en compte. Ses données personnelles — nom d'affichage, adresse de messagerie, éléments d'identification — ne sont plus accessibles dans le produit. Une tentative de reconnexion avec les mêmes identifiants échoue.
 
-**Situation limite — opération sensible requise avant suppression :**
+**Situation limite** : opération sensible requise avant suppression
 
 La demande d'effacement des données personnelles est une opération sensible. Elle nécessite que l'adresse de messagerie du compte soit préalablement confirmée (US-UC-10, RB-10-05). Un compte dont l'adresse de messagerie n'a pas été confirmée est informé de cette condition avant que la demande puisse aboutir.
 
-**Situation limite — tentative de reconnexion après suppression :**
+**Situation limite** : tentative de reconnexion après suppression
 
 Après suppression du compte, toute tentative de reconnexion avec les identifiants de ce compte est refusée. Le message affiché est générique — il ne révèle pas si le compte a été supprimé ou si les identifiants sont incorrects (principe de non-révélation d'existence).
 
-**Situation limite — accès aux données après suppression :**
+**Situation limite** : accès aux données après suppression
 
 Un utilisateur dont le compte a été supprimé ne peut plus accéder à ses données personnelles via le produit. Les contenus créés qui sont conservés dans les campagnes et les one-shots (sous intérêt légitime pour la continuité des espaces actifs) apparaissent sous une identité anonymisée — ils ne permettent pas d'identifier leur auteur.
 

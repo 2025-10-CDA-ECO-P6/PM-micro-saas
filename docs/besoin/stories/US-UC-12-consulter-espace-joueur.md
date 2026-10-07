@@ -29,13 +29,7 @@ Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-12 — Consulter son espace en tant que joueur (vue post-accès)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- **Space Management** — gère les `Member`, les associations joueur-personnage, le personnage actif.
-- **Identity & Access** — valide les tokens `GuestAccess` et `Member`, contrôle le périmètre d'accès.
-- **Bibliothèque de contenu** — fournit les documents `PUBLIC` et les fiches de personnage (Document de type `player_character`).
+**Source de la priorité** : Matrice de priorités
 
 ---
 
@@ -56,7 +50,7 @@ UC-12 couvre uniquement : la vue joueur post-accès (fiche + documents `PUBLIC`)
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -78,9 +72,15 @@ flowchart TD
     PersonnageAssocie -->|Acces SESSION uniquement| SessionSeul[Perimetre session\nDocuments epingles\nDocuments PUBLIC\nPas d acces au lore complet]
 ```
 
+### Bounded contexts pressentis
+
+- **Space Management** — gère les `Member`, les associations joueur-personnage, le personnage actif.
+- **Identity & Access** — valide les tokens `GuestAccess` et `Member`, contrôle le périmètre d'accès.
+- **Bibliothèque de contenu** — fournit les documents `PUBLIC` et les fiches de personnage (Document de type `player_character`).
+
 ---
 
-## Diagramme de dépendances
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -107,9 +107,9 @@ flowchart LR
 
 ### US-12-01 — Accéder à sa fiche de personnage et aux informations partagées
 
-**En tant que** joueur,
-**je veux** voir ma fiche de personnage et les documents partagés par le MJ dès que j'ai rejoint la session,
-**afin de** disposer de toutes les informations utiles pour jouer sans avoir à les demander au MJ.
+**En tant que** : joueur,
+**je veux** : voir ma fiche de personnage et les documents partagés par le MJ dès que j'ai rejoint la session,
+**afin de** : disposer de toutes les informations utiles pour jouer sans avoir à les demander au MJ.
 
 **Notes de conception** :
 - La vue joueur est rendue disponible dès que le `GuestAccess` ou le `Member` est actif (UC-09).
@@ -174,9 +174,9 @@ Scénario : Documents GM_ONLY invisibles pour le joueur
 
 ### US-12-02 — Choisir son personnage actif quand associé à plusieurs personnages
 
-**En tant que** joueur,
-**je veux** choisir lequel de mes personnages est actif pour la session en cours,
-**afin de** consulter la bonne fiche et prendre des notes liées au personnage que je joue ce soir.
+**En tant que** : joueur,
+**je veux** : choisir lequel de mes personnages est actif pour la session en cours,
+**afin de** : consulter la bonne fiche et prendre des notes liées au personnage que je joue ce soir.
 
 **Notes de conception** :
 - **Principe** : le personnage actif est un état de **focus / présentation éphémère** (quelle fiche et quelles notes sont mises en avant dans la vue joueur) — **jamais un droit d'accès**. Les droits sur les documents dérivent de l'**ensemble** des personnages associés au joueur (RB-11-17), pas du seul personnage actif.
@@ -258,7 +258,7 @@ Scénario : Changement de personnage actif sans modifier les associations MJ
 
 ## Vérification de couverture
 
-| Cas UC-12 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal — vue joueur post-accès, fiche + documents PUBLIC | US-12-01 |
 | A1 — joueur associé à plusieurs personnages, choix du personnage actif | US-12-02 |

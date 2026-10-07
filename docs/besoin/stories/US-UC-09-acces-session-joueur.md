@@ -32,17 +32,11 @@ Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lie
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-09 — Accès joueur sans compte](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- **Identity & Access** — gère `GuestAccess`, `Member`, génération et révocation des tokens de lien, validation des accès.
-- **Space Management** — associe les membres et les `GuestAccess` à un espace partagé, contrôle la liste des participants.
-- **Conduite de session** — consomme l'accès joueur pour afficher la vue joueur, expose les documents `PUBLIC` et les `documents épinglés` en temps réel.
+**Source de la priorité** : Matrice de priorités
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -73,9 +67,15 @@ flowchart TD
     O -->|Non| Q[Acces expire apres session + 24h]
 ```
 
+### Bounded contexts pressentis
+
+- **Identity & Access** — gère `GuestAccess`, `Member`, génération et révocation des tokens de lien, validation des accès.
+- **Space Management** — associe les membres et les `GuestAccess` à un espace partagé, contrôle la liste des participants.
+- **Conduite de session** — consomme l'accès joueur pour afficher la vue joueur, expose les documents `PUBLIC` et les `documents épinglés` en temps réel.
+
 ---
 
-## Dépendances Mermaid
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -105,9 +105,9 @@ flowchart LR
 
 ### US-09-01 — Rejoindre une session via lien ponctuel sans compte
 
-**En tant que** joueur,
-**je veux** accéder à une session en cliquant sur un lien et en saisissant uniquement un nom d'affichage,
-**afin de** consulter les informations partagées par le MJ sans avoir à créer de compte.
+**En tant que** : joueur,
+**je veux** : accéder à une session en cliquant sur un lien et en saisissant uniquement un nom d'affichage,
+**afin de** : consulter les informations partagées par le MJ sans avoir à créer de compte.
 
 **Notes de conception** :
 - Identity & Access valide le token `GuestAccess` à réception du lien.
@@ -167,9 +167,9 @@ Scénario : Accès expire après 24h de grâce
 
 ### US-09-02 — Lien révoqué ou expiré
 
-**En tant que** joueur,
-**je veux** recevoir un message clair lorsque le lien que j'utilise n'est plus actif,
-**afin de** comprendre la situation et savoir quoi faire (contacter le MJ), sans obtenir d'information sur l'existence de l'espace partagé.
+**En tant que** : joueur,
+**je veux** : recevoir un message clair lorsque le lien que j'utilise n'est plus actif,
+**afin de** : comprendre la situation et savoir quoi faire (contacter le MJ), sans obtenir d'information sur l'existence de l'espace partagé.
 
 **Notes de conception** :
 - Identity & Access invalide le `GuestAccess` à l'expiration ou à la révocation explicite par le MJ.
@@ -213,9 +213,9 @@ Scénario : Lien invalide ou mal formé (E1)
 
 ### US-09-03 — Rejoindre un espace partagé via lien permanent avec compte
 
-**En tant que** joueur régulier,
-**je veux** accéder à un espace partagé via un lien permanent fourni par le MJ,
-**afin de** consulter l'historique des sessions passées et les documents de lore partagés entre les séances.
+**En tant que** : joueur régulier,
+**je veux** : accéder à un espace partagé via un lien permanent fourni par le MJ,
+**afin de** : consulter l'historique des sessions passées et les documents de lore partagés entre les séances.
 
 **Notes de conception** :
 - Le lien permanent est associé à un `Member` de l'espace partagé, géré par Identity & Access et Space Management.
@@ -263,9 +263,9 @@ Scénario : MJ révoque l'accès permanent d'un membre
 
 ### US-09-04 — Créer un compte depuis un accès invité (migration sans perte)
 
-**En tant que** joueur invité,
-**je veux** créer un compte Haversack depuis ma session invité et conserver toutes mes données existantes,
-**afin de** ne pas perdre mes notes personnelles et d'accéder à l'espace partagé de façon permanente entre les séances.
+**En tant que** : joueur invité,
+**je veux** : créer un compte Haversack depuis ma session invité et conserver toutes mes données existantes,
+**afin de** : ne pas perdre mes notes personnelles et d'accéder à l'espace partagé de façon permanente entre les séances.
 
 **Notes de conception** :
 - La migration est déclenchée volontairement par le joueur depuis la vue invité (bouton "Créer un compte").
@@ -329,7 +329,7 @@ Scénario : MJ peut promouvoir le joueur migré en Member
 
 ## Vérification de couverture
 
-| Cas UC-09 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal — accès via lien ponctuel, nom seul | US-09-01 |
 | A1 — joueur déjà connecté à son compte | US-09-01 |

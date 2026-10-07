@@ -1,6 +1,6 @@
 # NFR-CONF-02 — Isolation des données en mode local
 
-Famille **Confidentialité** — [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : CONF · [Index — Confidentialité](README.md)
 
 ---
 
@@ -26,13 +26,13 @@ UC-01 formalise cette règle métier : *« En mode local, aucune donnée n'est e
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - L'ensemble du contenu local du MJ saisi en mode local : documents, notes, dossiers, scénarios, contenu des sessions — qu'il soit rattaché à un espace de campagne ou de one-shot, ou capturé dans l'espace personnel.
 - L'absence de transmission de ces données vers tout service extérieur, tant que le MJ reste en mode local et n'a pas déclenché d'action explicite (création de compte ou export manuel).
 - Le comportement observable lors d'une session hors connexion : l'application fonctionne de façon identique avec ou sans connexion réseau disponible, pour toutes les fonctionnalités de préparation et de session.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Les données transmises après une action explicite du MJ : la création d'un compte déclenche une migration des données locales vers le cloud, soumise à un gate de confirmation (UC-01 A1, US-UC-01 RB-01-09, RB-10-04). Ces transmissions sont consenties.
 - L'export manuel depuis les paramètres : l'utilisateur agit délibérément pour produire un fichier de sauvegarde. Cette action sort du périmètre de l'exigence d'isolation.
@@ -43,19 +43,19 @@ UC-01 formalise cette règle métier : *« En mode local, aucune donnée n'est e
 
 ## Critères d'acceptation produit
 
-**Situation nominale — utilisation en mode local avec connexion disponible :**
+**Situation nominale** : utilisation en mode local avec connexion disponible
 
 Un MJ qui utilise l'application en mode local, avec une connexion réseau disponible, observe que ses actions de préparation (création de campagne, capture dans l'espace personnel, ajout de documents, prise de notes) ne génèrent aucune communication vers un service extérieur pour le contenu local du MJ. L'application se comporte de façon identique, avec ou sans connexion disponible, pour toutes les fonctionnalités de préparation et de session.
 
-**Situation nominale — utilisation hors connexion :**
+**Situation nominale** : utilisation hors connexion
 
 Un MJ qui coupe sa connexion réseau alors qu'il utilise l'application en mode local ne voit aucun avertissement réseau et ne constate aucune dégradation du comportement de l'application pour les fonctionnalités de préparation et de session. Cela confirme qu'aucune dépendance réseau n'existe pour ces fonctionnalités.
 
-**Situation limite — tentative d'action cloud depuis le mode local :**
+**Situation limite** : tentative d'action cloud depuis le mode local
 
 Un MJ qui tente d'utiliser une fonctionnalité nécessitant un compte (partage avec les joueurs, accès multi-appareil) se voit proposer la création d'un compte via une invite claire et non bloquante. Aucun contenu local du MJ n'est transmis avant qu'il ait créé un compte et confirmé la migration.
 
-**Situation limite — création de compte depuis le mode local :**
+**Situation limite** : création de compte depuis le mode local
 
 Quand le MJ choisit de créer un compte, l'application lui présente les données détectées (campagnes, volume, date) et lui demande une confirmation explicite avant de démarrer la migration. La migration ne commence qu'après cette confirmation. Aucune donnée n'est transmise sans ce consentement.
 

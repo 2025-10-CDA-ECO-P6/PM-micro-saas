@@ -34,16 +34,11 @@ Permettre au MJ de contrôler la visibilité de ses documents d'espace. Tout doc
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-08 — Partager une information aux joueurs](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- **Bibliothèque de contenu** — porte `Document.visibility`, expose `Document.Share()` et `Document.Unshare()`, produit `DocumentVisibilityChanged`.
-- **Conduite de session** — consomme `DocumentVisibilityChanged` pour mettre à jour la vue joueur en temps réel et gère les `documents épinglés`.
+**Source de la priorité** : Matrice de priorités
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -67,9 +62,14 @@ flowchart TD
     L --> M
 ```
 
+### Bounded contexts pressentis
+
+- **Bibliothèque de contenu** — porte `Document.visibility`, expose `Document.Share()` et `Document.Unshare()`, produit `DocumentVisibilityChanged`.
+- **Conduite de session** — consomme `DocumentVisibilityChanged` pour mettre à jour la vue joueur en temps réel et gère les `documents épinglés`.
+
 ---
 
-## Dépendances Mermaid
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -94,9 +94,9 @@ flowchart LR
 
 ### US-08-01 — Partager un document avec les joueurs
 
-**En tant que** MJ,  
-**je veux** rendre un document d'espace visible par les joueurs,  
-**afin de** leur transmettre une information (indice, aide de jeu, révélation, résumé) de façon durable.
+**En tant que** : MJ,  
+**je veux** : rendre un document d'espace visible par les joueurs,  
+**afin de** : leur transmettre une information (indice, aide de jeu, révélation, résumé) de façon durable.
 
 **Notes de conception** :
 - `Document.Share()` est la seule méthode de Content Library impliquée. Elle passe `visibility` de `GM_ONLY` à `PUBLIC` et produit `DocumentVisibilityChanged`.
@@ -145,9 +145,9 @@ Scénario : Document déjà PUBLIC (E1)
 
 ### US-08-02 — Retirer le partage d'un document
 
-**En tant que** MJ,  
-**je veux** repasser un document `PUBLIC` en `GM_ONLY`,  
-**afin de** garder le contrôle sur ce que les joueurs voient, notamment si une information ne doit plus être accessible.
+**En tant que** : MJ,  
+**je veux** : repasser un document `PUBLIC` en `GM_ONLY`,  
+**afin de** : garder le contrôle sur ce que les joueurs voient, notamment si une information ne doit plus être accessible.
 
 **Notes de conception** :
 - `Document.Unshare()` repasse `visibility` de `PUBLIC` à `GM_ONLY` et produit `DocumentVisibilityChanged`.
@@ -193,9 +193,9 @@ Scénario : Document déjà GM_ONLY
 
 ### US-08-03 — Partager un document depuis la vue session
 
-**En tant que** MJ,  
-**je veux** partager un document directement depuis la vue session en cours,  
-**afin de** transmettre une information aux joueurs sans quitter le contexte de partie, et que le document soit immédiatement visible dans les `documents épinglés` de la session.
+**En tant que** : MJ,  
+**je veux** : partager un document directement depuis la vue session en cours,  
+**afin de** : transmettre une information aux joueurs sans quitter le contexte de partie, et que le document soit immédiatement visible dans les `documents épinglés` de la session.
 
 **Notes de conception** :
 - Opération cross-context :
@@ -262,7 +262,7 @@ Scénario : Partage depuis une session non LIVE
 
 ## Vérification de couverture
 
-| Cas UC-08 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal — partage depuis la bibliothèque | US-08-01 |
 | A1 — Retrait du partage | US-08-02 |

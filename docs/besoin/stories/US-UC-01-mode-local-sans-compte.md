@@ -1,4 +1,6 @@
-# Epic — Mode local sans compte
+# Epic — Mode local sans compte (UC-01)
+
+- **Gherkin** : Scénario, Étant donné que, Quand, Alors, Et, Mais
 
 ---
 
@@ -10,7 +12,7 @@ Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans frict
 
 ## Personas concernés
 
-| Persona | Profil | Douleur principale | Lien avec cet epic |
+| Persona | Profil | Douleur principale | Motivation principale |
 |---|---|---|---|
 | **Nadia** | MJ infirmière, 42 ans | Coût d'adoption trop élevé pour sa fréquence de jeu | Bénéficiaire directe — peut tester sans s'engager |
 | **Thomas** | MJ développeur, 35 ans | Lock-in propriétaire, migration lourde | Concerné par l'export en format ouvert et la liberté des données — ce besoin est transverse au mode local et au compte cloud |
@@ -29,16 +31,7 @@ Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans frict
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-01 — Mode local sans compte](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- **Space Management** — création et stockage des espaces locaux (espace personnel par défaut, campagnes et one-shots) ; aucun plafond de création n'existe en mode local, seule la capacité de stockage du navigateur limite la création
-- **la bibliothèque de contenu** — documents, dossiers, scénarios stockés localement, y compris dans l'espace personnel
-- **Identity & Access** — activation lors de la conversion vers un compte (US-01-05 uniquement)
-
-Le mode local ne crée aucun compte utilisateur côté serveur. Les contraintes de stockage (~50-100 Mo)
-sont des règles d'interface, pas des règles métier durables.
+**Source de la priorité** : Matrice de priorités
 
 ---
 
@@ -64,6 +57,15 @@ flowchart TD
     O -- Non --> L
     O -- Oui --> P[Création de compte + gate reconnaissance + migration\nUS-01-05]
 ```
+
+### Bounded contexts pressentis
+
+- **Space Management** — création et stockage des espaces locaux (espace personnel par défaut, campagnes et one-shots) ; aucun plafond de création n'existe en mode local, seule la capacité de stockage du navigateur limite la création
+- **la bibliothèque de contenu** — documents, dossiers, scénarios stockés localement, y compris dans l'espace personnel
+- **Identity & Access** — activation lors de la conversion vers un compte (US-01-05 uniquement)
+
+Le mode local ne crée aucun compte utilisateur côté serveur. Les contraintes de stockage (~50-100 Mo)
+sont des règles d'interface, pas des règles métier durables.
 
 ---
 
@@ -96,11 +98,11 @@ flowchart LR
 
 ### US-01-01 — Démarrer l'application sans créer de compte
 
-**Format**
+**En tant que** : MJ,  
+**je veux** : pouvoir commencer à utiliser Haversack immédiatement sans créer de compte,  
+**afin de** : découvrir la valeur de l'outil avant de m'engager.
 
-> En tant que MJ,
-> je veux pouvoir commencer à utiliser Haversack immédiatement sans créer de compte,
-> afin de découvrir la valeur de l'outil avant de m'engager.
+**Notes de conception** :
 
 **Métadonnées**
 
@@ -109,31 +111,10 @@ flowchart LR
 | Source | UC-01 — scénario nominal |
 | Bounded context | Space Management |
 
-**Critères d'acceptation**
+- Le mode local n'instancie aucun compte utilisateur. Space Management opère avec un identifiant de session local opaque.
+- La règle "aucune donnée envoyée au serveur" doit être testable (ex : absence de requêtes réseau sortantes en mode local, vérifiable en tests d'intégration). Le raisonnement technique est tracé dans ADR-017.
 
-```gherkin
-Feature: Démarrage sans compte
-
-  Scenario: Le MJ choisit de commencer sans compte
-    Given le MJ ouvre l'application pour la première fois
-    When il choisit "Commencer sans compte"
-    Then l'application affiche un message court sur le stockage local
-    And un lien vers la FAQ est disponible
-    And le MJ est redirigé vers l'écran de création de campagne
-
-  Scenario: Le MJ reçoit un message informatif au premier démarrage
-    Given le MJ ouvre l'application pour la première fois
-    When il choisit de commencer sans compte
-    Then le MJ reçoit un message informatif court sur le stockage local lors du premier démarrage
-
-  Scenario: Le MJ crée une campagne en mode local
-    Given le MJ est en mode local sans compte
-    When il crée une campagne et y ajoute du contenu
-    Then aucune donnée n'est envoyée au serveur
-    And le contenu est disponible dans la session courante
-```
-
-**Règles métier**
+**Règles métier** :
 
 - RB-01-01 : En mode local, aucune donnée n'est envoyée au serveur. Cette règle est une garantie de confiance envers l'utilisateur, pas uniquement une contrainte technique.
 - RB-01-02 : L'application propose systématiquement les deux options (sans compte / avec compte) à l'écran d'accueil, sans hiérarchie visuelle forçant l'inscription.
@@ -144,20 +125,39 @@ Feature: Démarrage sans compte
   Ces deux bandeaux ont des causes, des risques et des publics cibles distincts — ils ne doivent pas être fusionnés.
 - RB-01-15 : En mode local, aucun élément donnant accès à des données protégées (jeton d'accès, secret, identifiant de connexion à un compte) n'est conservé dans le navigateur.
 
-**Notes de conception**
+**Critères d'acceptation** :
 
-- Le mode local n'instancie aucun compte utilisateur. Space Management opère avec un identifiant de session local opaque.
-- La règle "aucune donnée envoyée au serveur" doit être testable (ex : absence de requêtes réseau sortantes en mode local, vérifiable en tests d'intégration). Le raisonnement technique est tracé dans ADR-017.
+```gherkin
+# Fonctionnalité : Démarrage sans compte
+
+  Scénario: Le MJ choisit de commencer sans compte
+    Étant donné que le MJ ouvre l'application pour la première fois
+    Quand il choisit "Commencer sans compte"
+    Alors l'application affiche un message court sur le stockage local
+    Et un lien vers la FAQ est disponible
+    Et le MJ est redirigé vers l'écran de création de campagne
+
+  Scénario: Le MJ reçoit un message informatif au premier démarrage
+    Étant donné que le MJ ouvre l'application pour la première fois
+    Quand il choisit de commencer sans compte
+    Alors le MJ reçoit un message informatif court sur le stockage local lors du premier démarrage
+
+  Scénario: Le MJ crée une campagne en mode local
+    Étant donné que le MJ est en mode local sans compte
+    Quand il crée une campagne et y ajoute du contenu
+    Alors aucune donnée n'est envoyée au serveur
+    Et le contenu est disponible dans la session courante
+```
 
 ---
 
 ### US-01-02 — Retrouver ses données après fermeture du navigateur
 
-**Format**
+**En tant que** : MJ,  
+**je veux** : retrouver mes campagnes et contenus intacts après avoir fermé et rouvert le navigateur,  
+**afin de** : ne pas perdre mon travail de préparation.
 
-> En tant que MJ,
-> je veux retrouver mes campagnes et contenus intacts après avoir fermé et rouvert le navigateur,
-> afin de ne pas perdre mon travail de préparation.
+**Notes de conception** :
 
 **Métadonnées**
 
@@ -166,37 +166,35 @@ Feature: Démarrage sans compte
 | Source | UC-01 — scénario alternatif A2 |
 | Bounded context | Space Management, la bibliothèque de contenu |
 
-**Critères d'acceptation**
+- Aucun utilisateur ne doit être modélisé pour le mode local. L'id est un identifiant de session opaque géré côté interface.
+- Le comportement du navigateur face à la demande de conservation permanente des données est un comportement d'environnement d'exécution ; la logique applicative (lire le résultat de cette demande, déclencher le bandeau) est testable par simulation de l'API. Le raisonnement technique est tracé dans ADR-017.
 
-```gherkin
-Feature: Persistance des données locales
-
-  Scenario: Retour après fermeture du navigateur
-    Given le MJ a créé du contenu en mode local
-    And il a fermé le navigateur
-    When il rouvre l'application
-    Then ses campagnes et contenus sont disponibles
-```
-
-**Règles métier**
+**Règles métier** :
 
 - RB-01-04 : Les données créées en mode local sont durables — elles survivent à la fermeture et à la réouverture du navigateur. Dès l'entrée en mode local, l'application demande au navigateur la garantie de conservation permanente des données. Si cette garantie est refusée, les données restent conservées au mieux (le navigateur peut les supprimer sous pression de stockage) et un bandeau de durabilité non bloquant informe l'utilisateur de ce risque.
 - RB-01-05 : Les limites de stockage (~50-100 Mo) sont des contraintes d'interface. Elles ne constituent pas des règles métier durables.
 
-**Notes de conception**
+**Critères d'acceptation** :
 
-- Aucun utilisateur ne doit être modélisé pour le mode local. L'id est un identifiant de session opaque géré côté interface.
-- Le comportement du navigateur face à la demande de conservation permanente des données est un comportement d'environnement d'exécution ; la logique applicative (lire le résultat de cette demande, déclencher le bandeau) est testable par simulation de l'API. Le raisonnement technique est tracé dans ADR-017.
+```gherkin
+# Fonctionnalité : Persistance des données locales
+
+  Scénario: Retour après fermeture du navigateur
+    Étant donné que le MJ a créé du contenu en mode local
+    Et il a fermé le navigateur
+    Quand il rouvre l'application
+    Alors ses campagnes et contenus sont disponibles
+```
 
 ---
 
 ### US-01-04 — Voir les fonctionnalités cloud inaccessibles depuis le mode local
 
-**Format**
+**En tant que** : MJ en mode local,  
+**je veux** : voir quelles fonctionnalités nécessitent un compte,  
+**afin de** : comprendre ce que je gagnerais à créer un compte sans être bloqué dans mon usage actuel.
 
-> En tant que MJ en mode local,
-> je veux voir quelles fonctionnalités nécessitent un compte,
-> afin de comprendre ce que je gagnerais à créer un compte sans être bloqué dans mon usage actuel.
+**Notes de conception** :
 
 **Métadonnées**
 
@@ -205,46 +203,44 @@ Feature: Persistance des données locales
 | Source | UC-01 — règle métier 4, critère d'acceptation |
 | Bounded context | Space Management (partage), la conduite de session (accès joueur) |
 
-**Critères d'acceptation**
+- Pattern UI obligatoire : "unlock" (visible + désactivé + CTA) et non "hidden" (masqué). Le choix "hidden" nuirait à la découvrabilité et à la démonstration de valeur, ce qui est contraire à l'objectif de cet epic.
+- Ce pattern est un point de conversion implicite vers US-01-05.
 
-```gherkin
-Feature: Visibilité des fonctionnalités cloud en mode local
-
-  Scenario: Fonctionnalité de partage visible mais désactivée
-    Given le MJ est en mode local sans compte
-    When il accède à une fonctionnalité de partage (UC-08) ou d'accès joueur (UC-09)
-    Then la fonctionnalité est visible dans l'interface
-    And elle est désactivée
-    And un CTA clair invite le MJ à créer un compte pour y accéder
-
-  Scenario: Le MJ comprend ce qui est accessible sans compte
-    Given le MJ est en mode local sans compte
-    When il navigue dans l'application
-    Then les fonctionnalités locales sont pleinement accessibles
-    And les fonctionnalités cloud sont distinguables visuellement (ex : cadenas, label)
-    And aucune fonctionnalité cloud n'est masquée ou cachée
-```
-
-**Règles métier**
+**Règles métier** :
 
 - RB-01-06 : Les fonctionnalités de partage (UC-08) et d'accès joueur (UC-09) nécessitent au minimum un compte gratuit.
 - RB-01-07 : Les fonctionnalités cloud sont visibles mais désactivées en mode local. Elles ne sont pas masquées.
 - RB-01-08 : Un CTA de conversion vers un compte doit accompagner chaque fonctionnalité cloud désactivée.
 
-**Notes de conception**
+**Critères d'acceptation** :
 
-- Pattern UI obligatoire : "unlock" (visible + désactivé + CTA) et non "hidden" (masqué). Le choix "hidden" nuirait à la découvrabilité et à la démonstration de valeur, ce qui est contraire à l'objectif de cet epic.
-- Ce pattern est un point de conversion implicite vers US-01-05.
+```gherkin
+# Fonctionnalité : Visibilité des fonctionnalités cloud en mode local
+
+  Scénario: Fonctionnalité de partage visible mais désactivée
+    Étant donné que le MJ est en mode local sans compte
+    Quand il accède à une fonctionnalité de partage (UC-08) ou d'accès joueur (UC-09)
+    Alors la fonctionnalité est visible dans l'interface
+    Et elle est désactivée
+    Et un CTA clair invite le MJ à créer un compte pour y accéder
+
+  Scénario: Le MJ comprend ce qui est accessible sans compte
+    Étant donné que le MJ est en mode local sans compte
+    Quand il navigue dans l'application
+    Alors les fonctionnalités locales sont pleinement accessibles
+    Et les fonctionnalités cloud sont distinguables visuellement (ex : cadenas, label)
+    Et aucune fonctionnalité cloud n'est masquée ou cachée
+```
 
 ---
 
 ### US-01-05 — Créer un compte depuis le mode local avec migration après gate de reconnaissance
 
-**Format**
+**En tant que** : MJ en mode local,  
+**je veux** : créer un compte depuis n'importe quelle page de l'application et y retrouver toutes mes données,  
+**afin de** : passer au cloud sans perdre mon travail de préparation.
 
-> En tant que MJ en mode local,
-> je veux créer un compte depuis n'importe quelle page de l'application et y retrouver toutes mes données,
-> afin de passer au cloud sans perdre mon travail de préparation.
+**Notes de conception** :
 
 **Métadonnées**
 
@@ -253,63 +249,61 @@ Feature: Visibilité des fonctionnalités cloud en mode local
 | Source | UC-01 — scénario alternatif A1, règle métier 2 |
 | Bounded context | Identity & Access (création du compte), Space Management (migration des données) |
 
-**Critères d'acceptation**
+- Ce flow est transverse : Identity & Access crée le compte utilisateur, Space Management orchestre la migration des données locales. Ce n'est pas la responsabilité d'un seul périmètre fonctionnel.
+- Dépendance forte avec UC-10 (création de compte) : cette story ne peut être livrée qu'après stabilisation d'UC-10. Le raisonnement et les alternatives pour le gate de reconnaissance sont tracés dans ADR-016.
+- La migration implique de lire les données depuis le stockage local du navigateur et de les persister via l'API Space Management / la bibliothèque de contenu.
 
-```gherkin
-Feature: Migration des données locales à la création de compte
-
-  Scenario: Le MJ crée un compte depuis une invite contextuelle
-    Given le MJ est en mode local sans compte
-    And il a tenté d'accéder à une fonctionnalité cloud
-    When il choisit de créer un compte via le CTA
-    Then il est redirigé vers le flow de création de compte (UC-10)
-    And après création du compte, le gate de reconnaissance est présenté puis la migration est déclenchée après confirmation
-    And il retrouve ses campagnes et contenus dans son espace cloud
-
-  Scenario: Le MJ crée un compte depuis les paramètres
-    Given le MJ est en mode local sans compte
-    When il accède aux paramètres et choisit de créer un compte
-    Then le même flow de migration automatique est déclenché
-
-  Scenario: Le gate de reconnaissance est présenté avant la migration
-    Given le MJ vient de créer un compte
-    And des données locales existent dans le navigateur
-    When la création de compte est finalisée
-    Then l'application présente les campagnes locales détectées avec titre, volume et date
-    And le contenu de l'espace personnel est présenté dans ce même gate, au même titre que les campagnes locales
-    And une confirmation explicite est demandée au MJ avant de démarrer la migration
-    And la migration ne démarre qu'après confirmation
-
-  Scenario: La migration échoue pour une campagne
-    Given le MJ vient de créer un compte et a confirmé la migration
-    When la migration d'une campagne locale échoue (slug collision, properties invalides, type inconnu ou version non supportée)
-    Then un rapport de rejets est présenté indiquant les raisons par campagne
-    And les données locales de la campagne rejetée sont préservées intactes dans le navigateur
-    And le MJ peut reprendre la migration de cette campagne manuellement
-    And les autres campagnes migrées avec succès restent accessibles en cloud
-```
-
-**Règles métier**
+**Règles métier** :
 
 - RB-01-09 : La création de compte depuis le mode local déclenche une migration des données locales vers le cloud. Si des données locales existent, un gate de reconnaissance est présenté (campagnes détectées, volume, date) et la migration ne démarre qu'après confirmation explicite de l'utilisateur. Cette exigence de confirmation est une exigence du système : aucune migration ne peut démarrer sans elle, quel que soit le moyen par lequel elle est déclenchée. La règle porteuse complète est RB-10-04 dans UC-10.
 - RB-01-10 : Le MJ peut initier la création de compte depuis n'importe quelle page de l'application.
 - RB-01-11 : En cas d'échec de migration, les données locales de la campagne concernée sont préservées intactes. Un rapport de rejets est présenté (raisons par campagne). Les campagnes migrées avec succès sont disponibles en cloud.
 
-**Notes de conception**
+**Critères d'acceptation** :
 
-- Ce flow est transverse : Identity & Access crée le compte utilisateur, Space Management orchestre la migration des données locales. Ce n'est pas la responsabilité d'un seul périmètre fonctionnel.
-- Dépendance forte avec UC-10 (création de compte) : cette story ne peut être livrée qu'après stabilisation d'UC-10. Le raisonnement et les alternatives pour le gate de reconnaissance sont tracés dans ADR-016.
-- La migration implique de lire les données depuis le stockage local du navigateur et de les persister via l'API Space Management / la bibliothèque de contenu.
+```gherkin
+# Fonctionnalité : Migration des données locales à la création de compte
+
+  Scénario: Le MJ crée un compte depuis une invite contextuelle
+    Étant donné que le MJ est en mode local sans compte
+    Et il a tenté d'accéder à une fonctionnalité cloud
+    Quand il choisit de créer un compte via le CTA
+    Alors il est redirigé vers le flow de création de compte (UC-10)
+    Et après création du compte, le gate de reconnaissance est présenté puis la migration est déclenchée après confirmation
+    Et il retrouve ses campagnes et contenus dans son espace cloud
+
+  Scénario: Le MJ crée un compte depuis les paramètres
+    Étant donné que le MJ est en mode local sans compte
+    Quand il accède aux paramètres et choisit de créer un compte
+    Alors le même flow de migration automatique est déclenché
+
+  Scénario: Le gate de reconnaissance est présenté avant la migration
+    Étant donné que le MJ vient de créer un compte
+    Et des données locales existent dans le navigateur
+    Quand la création de compte est finalisée
+    Alors l'application présente les campagnes locales détectées avec titre, volume et date
+    Et le contenu de l'espace personnel est présenté dans ce même gate, au même titre que les campagnes locales
+    Et une confirmation explicite est demandée au MJ avant de démarrer la migration
+    Et la migration ne démarre qu'après confirmation
+
+  Scénario: La migration échoue pour une campagne
+    Étant donné que le MJ vient de créer un compte et a confirmé la migration
+    Quand la migration d'une campagne locale échoue (slug collision, properties invalides, type inconnu ou version non supportée)
+    Alors un rapport de rejets est présenté indiquant les raisons par campagne
+    Et les données locales de la campagne rejetée sont préservées intactes dans le navigateur
+    Et le MJ peut reprendre la migration de cette campagne manuellement
+    Et les autres campagnes migrées avec succès restent accessibles en cloud
+```
 
 ---
 
 ### US-01-06 — Être guidé quand les données locales sont introuvables
 
-**Format**
+**En tant que** : MJ revenant sur l'application,  
+**je veux** : être informé clairement quand mes données locales ne sont pas disponibles,  
+**afin de** : comprendre ce qui s'est passé et de savoir comment continuer.
 
-> En tant que MJ revenant sur l'application,
-> je veux être informé clairement quand mes données locales ne sont pas disponibles,
-> afin de comprendre ce qui s'est passé et de savoir comment continuer.
+**Notes de conception** :
 
 **Métadonnées**
 
@@ -318,41 +312,39 @@ Feature: Migration des données locales à la création de compte
 | Source | UC-01 — scénario alternatif A3, exception E1 |
 | Bounded context | Space Management |
 
-**Critères d'acceptation**
+- La distinction "première visite" vs. "données perdues" peut reposer sur un flag local persisté indépendant des données campagne. Ce flag est distinct des données métier. En mode local, un flag d'interface persisté localement (distinguant première visite de données perdues) n'entre pas dans la catégorie des éléments protégés couverts par RB-01-15, car il ne donne accès à rien de protégé et sa lecture par un tiers est sans conséquence de sécurité. Le raisonnement est tracé dans ADR-017.
+- Le message "données introuvables" ne doit pas être anxiogène pour une première visite.
+- Le cas "données disparues après refus de la garantie de conservation permanente" est couvert par le même message que "cache vidé" (A3) — la cause technique est distincte mais la résolution proposée à l'utilisateur est identique.
 
-```gherkin
-Feature: Gestion des données locales introuvables
-
-  Scenario: Données effacées (cache vidé)
-    Given le MJ a déjà utilisé l'application en mode local
-    And les données du stockage local du navigateur ont été supprimées (ex : cache vidé)
-    When le MJ rouvre l'application
-    Then un message explicite indique que les données précédentes sont introuvables
-    And le message distingue ce cas d'une première visite
-    And le MJ peut choisir de créer une nouvelle campagne ou de se connecter
-
-  Scenario: Première visite réelle
-    Given le MJ ouvre l'application pour la première fois
-    When l'application ne trouve aucune donnée locale
-    Then le message affiché est celui d'un accueil, pas d'un avertissement de perte de données
-
-  Scenario: Stockage navigateur plein
-    Given le MJ est en mode local
-    When le stockage local du navigateur atteint sa limite
-    Then un message indique que le stockage est plein
-    And l'application propose de migrer les données vers le cloud (création de compte)
-```
-
-**Règles métier**
+**Règles métier** :
 
 - RB-01-12 : L'application distingue le cas "première visite" (aucune donnée attendue) du cas "données perdues" (des données étaient présentes précédemment). Les messages affichés sont différents.
 - RB-01-13 : En cas de stockage plein, la migration vers le cloud est proposée comme solution.
 
-**Notes de conception**
+**Critères d'acceptation** :
 
-- La distinction "première visite" vs. "données perdues" peut reposer sur un flag local persisté indépendant des données campagne. Ce flag est distinct des données métier. En mode local, un flag d'interface persisté localement (distinguant première visite de données perdues) n'entre pas dans la catégorie des éléments protégés couverts par RB-01-15, car il ne donne accès à rien de protégé et sa lecture par un tiers est sans conséquence de sécurité. Le raisonnement est tracé dans ADR-017.
-- Le message "données introuvables" ne doit pas être anxiogène pour une première visite.
-- Le cas "données disparues après refus de la garantie de conservation permanente" est couvert par le même message que "cache vidé" (A3) — la cause technique est distincte mais la résolution proposée à l'utilisateur est identique.
+```gherkin
+# Fonctionnalité : Gestion des données locales introuvables
+
+  Scénario: Données effacées (cache vidé)
+    Étant donné que le MJ a déjà utilisé l'application en mode local
+    Et les données du stockage local du navigateur ont été supprimées (ex : cache vidé)
+    Quand le MJ rouvre l'application
+    Alors un message explicite indique que les données précédentes sont introuvables
+    Et le message distingue ce cas d'une première visite
+    Et le MJ peut choisir de créer une nouvelle campagne ou de se connecter
+
+  Scénario: Première visite réelle
+    Étant donné que le MJ ouvre l'application pour la première fois
+    Quand l'application ne trouve aucune donnée locale
+    Alors le message affiché est celui d'un accueil, pas d'un avertissement de perte de données
+
+  Scénario: Stockage navigateur plein
+    Étant donné que le MJ est en mode local
+    Quand le stockage local du navigateur atteint sa limite
+    Alors un message indique que le stockage est plein
+    Et l'application propose de migrer les données vers le cloud (création de compte)
+```
 
 ---
 
@@ -360,11 +352,11 @@ Feature: Gestion des données locales introuvables
 
 **Note de transversalité** : ce besoin de possession des données existe en mode local comme avec un compte cloud — l'export n'est pas une fonctionnalité exclusive au mode local. L'implémentation sera commune aux deux contextes.
 
-**Format**
+**En tant que** : MJ,  
+**je veux** : pouvoir exporter un espace (espace personnel inclus) dans un format ouvert depuis les paramètres,  
+**afin de** : disposer d'une copie de sauvegarde et de ne pas être enfermé dans l'outil.
 
-> En tant que MJ,
-> je veux pouvoir exporter un espace (espace personnel inclus) dans un format ouvert depuis les paramètres,
-> afin de disposer d'une copie de sauvegarde et de ne pas être enfermé dans l'outil.
+**Notes de conception** :
 
 **Métadonnées**
 
@@ -373,44 +365,42 @@ Feature: Gestion des données locales introuvables
 | Source | UC-01 — scénario alternatif A4a ; vision §5bis |
 | Bounded context | Space Management |
 
-**Critères d'acceptation**
+- Ceci est la story centrale de l'export ; le réimport (lecture d'un fichier de sauvegarde) est une story distincte, repoussée post-MVP (US-01-08).
+- La transversalité mode local / compte cloud implique que l'implémentation de l'export ne peut pas résider exclusivement dans le périmètre du mode local.
 
-```gherkin
-Feature: Export d'un espace en format ouvert
-
-  Scenario: Le MJ exporte sa campagne depuis les paramètres (mode local)
-    Given le MJ est en mode local sans compte
-    And il a au moins une campagne
-    When il accède aux paramètres et déclenche l'export
-    Then un fichier de sauvegarde au format ouvert est généré et téléchargé
-    And le fichier contient l'intégralité des données de la campagne
-
-  Scenario: Le MJ exporte sa campagne depuis les paramètres (compte cloud)
-    Given le MJ est connecté avec un compte
-    When il accède aux paramètres et déclenche l'export d'une campagne
-    Then un fichier de sauvegarde au format ouvert est généré et téléchargé
-    And le fichier contient l'intégralité des données de la campagne
-```
-
-**Règles métier**
+**Règles métier** :
 
 - RB-01-16 : L'export de campagne est disponible en mode local comme avec un compte cloud. L'utilisateur est propriétaire du fichier généré.
 - RB-01-17 : Le fichier d'export utilise un format ouvert et documenté, lisible sans dépendance à l'outil.
 
-**Notes de conception**
+**Critères d'acceptation** :
 
-- Ceci est la story centrale de l'export ; le réimport (lecture d'un fichier de sauvegarde) est une story distincte, repoussée post-MVP (US-01-08).
-- La transversalité mode local / compte cloud implique que l'implémentation de l'export ne peut pas résider exclusivement dans le périmètre du mode local.
+```gherkin
+# Fonctionnalité : Export d'un espace en format ouvert
+
+  Scénario: Le MJ exporte sa campagne depuis les paramètres (mode local)
+    Étant donné que le MJ est en mode local sans compte
+    Et il a au moins une campagne
+    Quand il accède aux paramètres et déclenche l'export
+    Alors un fichier de sauvegarde au format ouvert est généré et téléchargé
+    Et le fichier contient l'intégralité des données de la campagne
+
+  Scénario: Le MJ exporte sa campagne depuis les paramètres (compte cloud)
+    Étant donné que le MJ est connecté avec un compte
+    Quand il accède aux paramètres et déclenche l'export d'une campagne
+    Alors un fichier de sauvegarde au format ouvert est généré et téléchargé
+    Et le fichier contient l'intégralité des données de la campagne
+```
 
 ---
 
 ### US-01-09 — Capturer une idée dans l'espace personnel sans créer de campagne
 
-**Format**
+**En tant que** : MJ,  
+**je veux** : pouvoir capturer une idée (lieu, PNJ, scénario, objet) immédiatement, sans avoir à créer une campagne au préalable,  
+**afin de** : ne pas perdre une inspiration au moment où elle surgit.
 
-> En tant que MJ,
-> je veux pouvoir capturer une idée (lieu, PNJ, scénario, objet) immédiatement, sans avoir à créer une campagne au préalable,
-> afin de ne pas perdre une inspiration au moment où elle surgit.
+**Notes de conception** :
 
 **Métadonnées**
 
@@ -419,42 +409,40 @@ Feature: Export d'un espace en format ouvert
 | Source | UC-01 — geste capture-first ; ADR-018 (espace personnel par défaut) |
 | Bounded context | la bibliothèque de contenu (capture et stockage), la gestion de l'espace (espace personnel par défaut) |
 
-**Critères d'acceptation**
+- L'espace personnel est de type `SpaceType.PERSONAL` (ADR-018). Aucun plafond de création ne s'applique en mode local, ni à l'espace personnel ni aux espaces `CAMPAIGN`/`ONE_SHOT` (RB-01-03 retirée — voir US-01-01). Côté cloud, l'espace personnel n'est de toute façon pas décompté dans le plafond de 3 espaces `CAMPAIGN`/`ONE_SHOT` du compte gratuit (RB-02-10, UC-02).
+- En mode local, l'espace personnel est identifié par l'identifiant de session opaque géré côté interface (cohérent avec US-01-01 et US-01-02). Aucun compte utilisateur n'est requis.
+- La migration vers un compte (US-01-05) inclut le contenu de l'espace personnel : il est présenté dans le gate de reconnaissance au même titre que les campagnes locales.
 
-```gherkin
-Feature: Capture dans l'espace personnel sans campagne
-
-  Scenario: Le MJ crée un document sans avoir créé de campagne
-    Given le MJ est en mode local sans compte
-    And aucune campagne n'a été créée
-    When il crée un document (lieu, PNJ, scénario ou objet)
-    Then le document est enregistré dans l'espace personnel par défaut
-    And aucune campagne n'est requise pour valider l'action
-    And aucune donnée n'est envoyée au serveur
-
-  Scenario: Le MJ retrouve le contenu capturé
-    Given le MJ a capturé du contenu dans l'espace personnel en mode local
-    When il navigue vers l'espace personnel
-    Then tous les documents capturés sont visibles et accessibles
-
-  Scenario: Le MJ range le contenu dans une campagne ultérieurement
-    Given le MJ a du contenu dans l'espace personnel
-    And il a créé ou crée une campagne
-    When il décide de rattacher un document de l'espace personnel à cette campagne
-    Then le document est déplacé ou instancié dans la campagne
-    And l'espace personnel ne contient plus ce document (s'il a été déplacé)
-```
-
-**Règles métier**
+**Règles métier** :
 
 - RB-01-18 : En mode local sans compte, l'espace personnel est instancié automatiquement dès le premier démarrage. Il sert de conteneur par défaut pour tout contenu créé sans campagne. L'espace personnel local n'est pas associé à un compte utilisateur ; sa propriété est transférée lors de la migration vers un compte (US-01-05).
 - RB-01-19 : Tout contenu capturé dans l'espace personnel est retrouvable par le MJ à tout moment depuis l'espace personnel. Le MJ peut ultérieurement rattacher ou instancier ce contenu dans une campagne de son choix.
 
-**Notes de conception**
+**Critères d'acceptation** :
 
-- L'espace personnel est de type `SpaceType.PERSONAL` (ADR-018). Aucun plafond de création ne s'applique en mode local, ni à l'espace personnel ni aux espaces `CAMPAIGN`/`ONE_SHOT` (RB-01-03 retirée — voir US-01-01). Côté cloud, l'espace personnel n'est de toute façon pas décompté dans le plafond de 3 espaces `CAMPAIGN`/`ONE_SHOT` du compte gratuit (RB-02-10, UC-02).
-- En mode local, l'espace personnel est identifié par l'identifiant de session opaque géré côté interface (cohérent avec US-01-01 et US-01-02). Aucun compte utilisateur n'est requis.
-- La migration vers un compte (US-01-05) inclut le contenu de l'espace personnel : il est présenté dans le gate de reconnaissance au même titre que les campagnes locales.
+```gherkin
+# Fonctionnalité : Capture dans l'espace personnel sans campagne
+
+  Scénario: Le MJ crée un document sans avoir créé de campagne
+    Étant donné que le MJ est en mode local sans compte
+    Et aucune campagne n'a été créée
+    Quand il crée un document (lieu, PNJ, scénario ou objet)
+    Alors le document est enregistré dans l'espace personnel par défaut
+    Et aucune campagne n'est requise pour valider l'action
+    Et aucune donnée n'est envoyée au serveur
+
+  Scénario: Le MJ retrouve le contenu capturé
+    Étant donné que le MJ a capturé du contenu dans l'espace personnel en mode local
+    Quand il navigue vers l'espace personnel
+    Alors tous les documents capturés sont visibles et accessibles
+
+  Scénario: Le MJ range le contenu dans une campagne ultérieurement
+    Étant donné que le MJ a du contenu dans l'espace personnel
+    Et il a créé ou crée une campagne
+    Quand il décide de rattacher un document de l'espace personnel à cette campagne
+    Alors le document est déplacé ou instancié dans la campagne
+    Et l'espace personnel ne contient plus ce document (s'il a été déplacé)
+```
 
 ---
 
@@ -509,6 +497,15 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 
 ## Vérification de couverture
 
+| Cas | Story couvrant |
+|---|---|
+| A1 — Conversion vers un compte | US-01-05 |
+| A2 — Retour après fermeture du navigateur | US-01-02 |
+| A3 — Données introuvables (cache vidé ou éviction navigateur) | US-01-06 |
+| A4a — Export d'un espace (format ouvert) | US-01-07 |
+| A4b — Réimport de fichier de sauvegarde (validation + nettoyage) | US-01-08 — post-MVP |
+| E1 — Stockage navigateur plein | US-01-06 |
+
 | Règle métier UC-01 | Story couvrant la règle |
 |---|---|
 | RB-01-01 : aucune donnée envoyée au serveur en mode local | US-01-01 |
@@ -534,15 +531,6 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 | Fonctionnalités de partage visibles mais désactivées avec invite | US-01-04 |
 | Bandeau durabilité si garantie de conservation refusée | US-01-02 (RB-01-04 révisée) |
 | Bandeau confidentialité systématique en mode local | US-01-01 (RB-01-14) |
-
-| Scénario alternatif UC-01 | Story couvrant le scénario |
-|---|---|
-| A1 — Conversion vers un compte | US-01-05 |
-| A2 — Retour après fermeture du navigateur | US-01-02 |
-| A3 — Données introuvables (cache vidé ou éviction navigateur) | US-01-06 |
-| A4a — Export d'un espace (format ouvert) | US-01-07 |
-| A4b — Réimport de fichier de sauvegarde (validation + nettoyage) | US-01-08 — post-MVP |
-| E1 — Stockage navigateur plein | US-01-06 |
 
 ---
 

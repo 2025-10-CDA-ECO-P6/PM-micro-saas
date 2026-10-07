@@ -1,6 +1,6 @@
 # NFR-OFF-03 — Aucune perte silencieuse de données locales
 
-Famille **Hors connexion** — [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : OFF · [Index — Hors connexion](README.md)
 
 ---
 
@@ -26,14 +26,14 @@ La promesse de « données toujours possédées par l'utilisateur » (vision §5
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - L'alerte non bloquante lorsque la conservation permanente des données ne peut pas être garantie par l'appareil (demande de garantie refusée).
 - L'alerte non bloquante lorsque l'espace de stockage de l'appareil est saturé et que l'enregistrement d'une nouvelle donnée est refusé.
 - La proposition d'une action concrète permettant au MJ de sécuriser ses données : création d'un compte pour migrer vers le cloud, ou export de ses données.
 - La garantie qu'aucune disparition de données ne survient sans qu'un message ait été affiché préalablement.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Le cas où le MJ efface délibérément les données de son navigateur : ce cas est hors du périmètre de l'alerte (l'action est intentionnelle de la part du MJ, à l'extérieur de l'application).
 - La récupération des données après leur perte : ce cas est couvert par UC-01 (scénario alternatif A3) et US-01-06.
@@ -47,19 +47,19 @@ La promesse de « données toujours possédées par l'utilisateur » (vision §5
 
 ## Critères d'acceptation produit
 
-**Situation nominale — conservation garantie non obtenue :**
+**Situation nominale** : conservation garantie non obtenue
 
 Lorsque l'application ne parvient pas à obtenir la garantie de conservation permanente de l'appareil, un message non bloquant apparaît dans l'interface. Ce message est visible sans que le MJ ait à naviguer pour le trouver. Il décrit le risque en termes compréhensibles (les données peuvent être supprimées par l'appareil) et propose une action concrète. Il ne bloque pas l'utilisation de l'application.
 
-**Situation nominale — stockage de l'appareil saturé :**
+**Situation nominale** : stockage de l'appareil saturé
 
 Lorsque l'appareil refuse d'enregistrer de nouvelles données faute d'espace disponible, un message non bloquant s'affiche et informe le MJ que l'enregistrement a échoué. Une action concrète est proposée (créer un compte pour migrer les données). Le MJ comprend que ses données existantes sont intactes mais que rien de nouveau ne peut être sauvegardé.
 
-**Situation limite — aucune disparition sans message préalable :**
+**Situation limite** : aucune disparition sans message préalable
 
 Dans tous les cas où une perte de données locales est techniquement possible dans le périmètre de l'application, un message d'alerte a été affiché au MJ avant que cette perte ne survienne. Il n'existe pas de scénario dans lequel des données disparaissent et le MJ n'en a jamais été informé.
 
-**Situation limite — message non bloquant :**
+**Situation limite** : message non bloquant
 
 Le message d'alerte ne suspend pas les actions en cours ni ne gèle l'interface. Le MJ peut continuer à utiliser l'application pendant la durée de l'alerte. L'alerte est visible mais non intrusive.
 

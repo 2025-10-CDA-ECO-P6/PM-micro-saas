@@ -109,6 +109,6 @@ UC-06 enrichit cette vue **pendant une session `LIVE`** en autorisant la prise d
 - **Notes « libres » sans personnage associé** : **non au MVP** — toute note `PLAYER_PRIVATE` requiert un `player_character` (RB-12-02, RB-12-03, RB-12-10) ; note libre non rattachée = *Could Have* post-MVP. Le cycle de vie éphémère des notes d'un invité sans compte (règle métier 10 de *space-management*, RGPD Art. 17) est inchangé.
 - **Priorité `SESSION` + `SPACE` simultanés** : **`SPACE` prioritaire** (superset — RB-12-05 ⊃ RB-12-04) ; cas largement précludé par les invariants 3 et 8 du domaine.
 
-## Question différée (post-MVP / interview)
+## Questions à valider en interview
 
 - La sélection du personnage actif doit-elle être visible par le MJ dans sa vue session ? Différée — hors MVP. Si retenue, relèverait d'un **état runtime de Session Conduct (UC-06)**, pas d'une donnée `SpaceMembership` (le personnage actif restant préférence client au MVP).

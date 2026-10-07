@@ -65,9 +65,21 @@ Le diff contre le gabarit : forme seulement, aucune perte de fond ?
 
 ## Notes de dev
 
-
+- Point de départ : 872 écarts de gabarit dans la couche besoin, mesurés par le contrôle `template` global (11 min par passage). Quatre lots en parallèle dans des worktrees détachés (stories 01-05, stories 06-14, NFR, reste), puis un lot de contenu absent.
+- Décisions de l'opérateur (2026-10-07), valables pour toutes les tâches de gabarits : l'élision « Étant donné qu'un… » est gardée (85 étapes que le contrôle refuse à tort, défaut de l'outillage) ; un élément requis et absent reçoit le seul marqueur `SOUS-SPÉCIFIÉ` (161 marqueurs posés) ; un qualificatif nominal/limite posé par jugement sur un texte intact est accepté ; les conversions de forme sont déclarées à verify.
+- Décisions de l'orchestrateur : `Feature: X` devient `# Fonctionnalité : X` ; « Bounded contexts pressentis » devient une sous-section `###` de « Vue d'ensemble ».
+- Écarts `template` restants dans la couche : les 85 étapes d'élision, et rien d'autre.
+- `conform.sh verify 282e2b6 --declared docs/workstreams/conformite-corpus/declares-gabarits-besoin.txt` : code 0 (fichier cumulé depuis le commit de départ).
+- Restent à reprendre sur le fond (backlog) : les « Transitions inter-UC » des UJ-04 à 06, à migrer vers les parcours bout-en-bout ; les opportunités des UJ-08 à 14, à rapprocher ligne à ligne de leurs frictions.
 
 ## Notes de revue
 
+Revue « forme seulement, aucune perte de fond ? », 2026-10-07, sur le diff au grain du mot : dix constats.
 
+- `fix` : `exclusions.md` UC-F07, « Pourquoi Won't Have » ajoutait une classification absente de la source. Le libellé d'origine est rétabli, et le champ du gabarit porte `SOUS-SPÉCIFIÉ`.
+- `fix` : les titres raccourcis de `exclusions.md` et du guide d'entretien (§ 4) gardent leur intitulé d'origine en phrase.
+- Rejeté : la prose de « Personas concernés » des UJ-08 à 14 reprend mot pour mot la parenthèse du Périmètre du même fichier. UC-12 garde « Différée — hors MVP » dans son contenu. Les ancres sont vérifiées par VerifCorpus (0 morte).
+- Optionnels gardés : les en-têtes de colonnes renommés (Motivation principale, Mode de travail…), « Source de la priorité » (la section Priorité de chaque epic renvoie déjà à la matrice), le lien d'index des NFR vers leur README, la structure du § 8 du guide, `# Fonctionnalité`.
+
+Répartition : 2 `fix`, 3 rejetés, 5 optionnels gardés.
 

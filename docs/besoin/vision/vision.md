@@ -1,4 +1,4 @@
-# Vision produit — Haversack
+# Vision produit
 
 > Document de référence pour le positionnement produit, les choix assumés
 > et la définition des utilisateurs cibles.
@@ -52,7 +52,7 @@ Un outil pensé pour les problèmes du MJ.
 
 ---
 
-## 2. Positionnement du MVP
+## 2. Positionnement
 
 ### 2.1 Objectif principal
 
@@ -311,7 +311,7 @@ Typique pour les one-shots, les conventions, les groupes changeants.
 
 ## 5. Positionnement concurrentiel
 
-| Outil | Forces | Limites vs Haversack |
+| Outil | Forces | Limites |
 |---|---|---|
 | Notion | Très flexible, markdown riche | Non spécialisé JDR, pas de vue session, pas de partage sélectif |
 | Obsidian | Graphe de liens, markdown local | Pas de collaboration, pas de vue session, pas de partage joueurs |

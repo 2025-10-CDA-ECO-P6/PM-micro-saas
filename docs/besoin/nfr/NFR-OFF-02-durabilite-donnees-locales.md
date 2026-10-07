@@ -1,6 +1,6 @@
 # NFR-OFF-02 — Durabilité des données locales entre les sessions
 
-Famille **Hors connexion** — [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : OFF · [Index — Hors connexion](README.md)
 
 ---
 
@@ -26,13 +26,13 @@ Le scénario alternatif A2 d'UC-01 décrit précisément ce flux : le MJ ferme p
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - La persistance de l'ensemble du contenu local du MJ créé en mode local — campagnes, one-shots, espace personnel, documents, dossiers et configurations — entre deux ouvertures successives de l'application, y compris après fermeture du navigateur ou redémarrage de l'appareil.
 - La durabilité sur le même appareil, dans le même navigateur.
 - L'information proactive du MJ lorsque cette durabilité ne peut pas être garantie par l'appareil — via un bandeau non bloquant distinct (couvert par NFR-OFF-03 pour le volet alerte).
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - La persistance entre plusieurs appareils différents : la synchronisation multi-appareils nécessite un compte et une connexion. La synchronisation hors connexion entre plusieurs appareils est explicitement exclue du MVP.
 - La durabilité dans le cloud : hors périmètre du mode local, par définition.
@@ -45,19 +45,19 @@ Le scénario alternatif A2 d'UC-01 décrit précisément ce flux : le MJ ferme p
 
 ## Critères d'acceptation produit
 
-**Situation nominale — fermeture et réouverture du navigateur :**
+**Situation nominale** : fermeture et réouverture du navigateur
 
 Un MJ qui a créé une campagne, ajouté des documents et structuré son contenu, puis fermé le navigateur, retrouve l'intégralité de son contenu intact à la prochaine ouverture de l'application dans le même navigateur sur le même appareil. Aucun contenu n'est manquant, aucun document n'est partiellement chargé.
 
-**Situation nominale — retour après plusieurs semaines :**
+**Situation nominale** : retour après plusieurs semaines
 
 Un MJ qui n'a pas utilisé l'application depuis plusieurs semaines retrouve ses campagnes dans l'état exact où il les avait laissées. Le contenu, l'organisation des dossiers et la configuration de la vue session sont préservés.
 
-**Situation nominale — redémarrage de l'appareil :**
+**Situation nominale** : redémarrage de l'appareil
 
 Après un redémarrage complet de l'appareil, le MJ retrouve ses données locales dans le même état qu'avant le redémarrage.
 
-**Situation limite — demande de conservation garantie refusée par l'appareil :**
+**Situation limite** : demande de conservation garantie refusée par l'appareil
 
 Lorsque l'application demande à l'appareil la garantie de conservation permanente des données et que cette demande est refusée, les données sont conservées au mieux et un bandeau non bloquant informe le MJ que cette garantie n'a pas pu être obtenue. La conservation reste effective jusqu'à une éventuelle contrainte de mémoire — le MJ est informé du risque, pas de la perte effective.
 

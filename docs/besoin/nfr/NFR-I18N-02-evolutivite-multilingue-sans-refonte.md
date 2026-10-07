@@ -1,6 +1,6 @@
 # NFR-I18N-02 — Évolutivité vers d'autres langues sans refonte de l'expérience
 
-Famille **Internationalisation** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : I18N · [Index — Internationalisation](README.md)
 
 ---
 
@@ -48,7 +48,7 @@ variabilité comme une contrainte normale.
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - La conception de la mise en page et de la disposition des éléments d'interface : elle doit
   rester fonctionnelle et cohérente avec des libellés sensiblement plus longs ou plus courts
@@ -59,7 +59,7 @@ variabilité comme une contrainte normale.
 - Les messages d'état et de notification : leur mise en page doit accommoder des formulations
   de longueur variable sans casser la lisibilité.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Le lancement d'une interface dans une autre langue que le français : ce n'est ni planifié
   ni engagé dans le MVP.
@@ -78,42 +78,38 @@ rester possible sans travaux structurels, pas qu'elle est planifiée.
 
 ## Critères d'acceptation produit
 
-- Une nouvelle langue peut être proposée dans l'interface sans que les parcours utilisateur
-  ni la disposition des écrans changent, et sans mise en page brisée — y compris avec des
-  libellés sensiblement plus longs ou plus courts qu'en français.
-- En remplaçant les libellés de l'interface par des équivalents dont la longueur varie de
-  façon significative par rapport au français (par exemple, libellés deux fois plus longs),
-  aucun élément d'interface ne se chevauche avec un autre, ne se tronque sans indication
-  visible, ni ne déborde de sa zone d'affichage.
-- En remplaçant les libellés de l'interface par des équivalents significativement plus courts
-  qu'en français, la mise en page reste lisible et aucune zone d'interface ne présente un
-  déséquilibre visuel qui nuirait à la navigation.
-- Les parcours utilisateur documentés — de la création de campagne à la vue session en passant
-  par la recherche et le partage d'informations — restent intégralement exécutables sans
-  adaptation de leur logique d'enchaînement, indépendamment de la longueur des libellés.
-- Les messages de confirmation, d'erreur et de notification restent lisibles et compréhensibles
-  avec des formulations de longueur variable, sans troncature ou débordement.
+**Situation nominale** : Une nouvelle langue peut être proposée dans l'interface sans que les parcours utilisateur
+ni la disposition des écrans changent, et sans mise en page brisée — y compris avec des
+libellés sensiblement plus longs ou plus courts qu'en français.
+
+**Situation limite** : En remplaçant les libellés de l'interface par des équivalents dont la longueur varie de
+façon significative par rapport au français (par exemple, libellés deux fois plus longs),
+aucun élément d'interface ne se chevauche avec un autre, ne se tronque sans indication
+visible, ni ne déborde de sa zone d'affichage.
+
+**Situation limite** : En remplaçant les libellés de l'interface par des équivalents significativement plus courts
+qu'en français, la mise en page reste lisible et aucune zone d'interface ne présente un
+déséquilibre visuel qui nuirait à la navigation.
+
+**Situation nominale** : Les parcours utilisateur documentés — de la création de campagne à la vue session en passant
+par la recherche et le partage d'informations — restent intégralement exécutables sans
+adaptation de leur logique d'enchaînement, indépendamment de la longueur des libellés.
+
+**Situation limite** : Les messages de confirmation, d'erreur et de notification restent lisibles et compréhensibles
+avec des formulations de longueur variable, sans troncature ou débordement.
 
 ---
 
 ## Traçabilité montante
 
-**Use cases servis :**
-
-- [UC-01 — Mode local sans compte](../cas-d-utilisation/UC-01-mode-local-sans-compte.md) — parcours
-  d'entrée, dont la fluidité ne doit pas dépendre de la longueur des libellés.
-- [UC-02 — Créer un espace de jeu](../cas-d-utilisation/UC-02-creer-espace-jeu.md) — parcours de
-  création de campagne, mise en page des formulaires et confirmations.
-- [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) — interface à la plus forte densité
-  d'éléments actifs, dont la disposition doit tolérer la variabilité des libellés.
-- [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) — interface
-  visible par les joueurs, y compris dans des groupes multilingues.
-- [UC-14 — Recherche](../cas-d-utilisation/UC-14-recherche.md) — libellés des filtres, états vides
-  et suggestions dont la longueur peut varier selon la langue.
-
-**User stories servies :**
-
-- [US-UC-01 — Mode local sans compte](../stories/US-UC-01-mode-local-sans-compte.md)
-- [US-UC-02 — Créer un espace de jeu](../stories/US-UC-02-creer-espace-jeu.md)
-- [US-UC-06 — Vue session](../stories/US-UC-06-vue-session.md)
-- [US-UC-14 — Recherche](../stories/US-UC-14-recherche.md)
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-01 — Mode local sans compte](../cas-d-utilisation/UC-01-mode-local-sans-compte.md) | parcours d'entrée, dont la fluidité ne doit pas dépendre de la longueur des libellés. |
+| [UC-02 — Créer un espace de jeu](../cas-d-utilisation/UC-02-creer-espace-jeu.md) | parcours de création de campagne, mise en page des formulaires et confirmations. |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | interface à la plus forte densité d'éléments actifs, dont la disposition doit tolérer la variabilité des libellés. |
+| [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) | interface visible par les joueurs, y compris dans des groupes multilingues. |
+| [UC-14 — Recherche](../cas-d-utilisation/UC-14-recherche.md) | libellés des filtres, états vides et suggestions dont la longueur peut varier selon la langue. |
+| [US-UC-01 — Mode local sans compte](../stories/US-UC-01-mode-local-sans-compte.md) | User story servie |
+| [US-UC-02 — Créer un espace de jeu](../stories/US-UC-02-creer-espace-jeu.md) | User story servie |
+| [US-UC-06 — Vue session](../stories/US-UC-06-vue-session.md) | User story servie |
+| [US-UC-14 — Recherche](../stories/US-UC-14-recherche.md) | User story servie |

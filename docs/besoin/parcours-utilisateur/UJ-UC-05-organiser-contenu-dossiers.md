@@ -16,9 +16,7 @@ Parcours du MJ depuis la découverte des dossiers de son espace jusqu'à la pers
 
 ---
 
-## Vue d'ensemble du parcours
-
-### Carte d'expérience
+## Carte d'expérience
 
 ```mermaid
 journey
@@ -37,7 +35,7 @@ journey
         Retrouver un document dans la bonne catégorie: 4: Antoine, 4: Nadia, 4: Thomas
 ```
 
-### Flux fonctionnel
+## Flux fonctionnel
 
 ```mermaid
 flowchart TD
@@ -76,7 +74,7 @@ flowchart TD
 
 ## Points de friction
 
-| Étape | Persona(s) | Friction potentielle | Opportunité produit |
+| Étape | Persona(s) | Friction | Opportunité produit |
 |---|---|---|---|
 | Découvrir les dossiers système à la création de l'espace | Tous | Dossiers trop génériques ou inadaptés au système de jeu | Afficher les dossiers système dès l'écran de l'espace avec une explication courte |
 | Renommer un dossier système | Thomas, Antoine | Action non trouvée si l'édition inline n'est pas évidente | Édition inline au clic sur le nom du dossier, sans passer par un panneau de configuration |
@@ -87,6 +85,18 @@ flowchart TD
 | Déplacer un document vers un autre dossier | Émilie, Nadia | Sélection de plusieurs documents non disponible | Multi-sélection avec déplacement groupé |
 | Supprimer un dossier non vide | Antoine | Perte de documents si l'action n'est pas explicitée | Dialogue clair : "3 documents seront déplacés vers — choisissez un dossier ou laissez dans Non classés" |
 | Dossier virtuel Non classés | Tous | Confusion si des documents apparaissent dans un dossier inconnu | Le dossier virtuel est invisible en navigation — les documents orphelins sont accessibles via la recherche |
+
+---
+
+## Opportunités UX
+
+| Point de conversion | Indicateur de succès | Risque d'abandon |
+|---|---|---|
+| Premier dossier créé ou renommé | Dossier visible en navigation avec le bon nom | Action de renommage non trouvée |
+| Premier template associé à un dossier | `defaultTemplateDocumentId` non null sur le dossier | Aucun template disponible — liste vide |
+| Premier document créé depuis un dossier avec template | Document ouvert avec la structure du template | Pas de retour visuel sur l'application du template |
+| Suppression d'un dossier non vide sans perte de documents | Documents retrouvables après suppression | Dialogue peu clair — MJ pense avoir perdu ses documents |
+| Ordre des dossiers persisté | Même ordre à la réouverture de l'espace | Ordre réinitialisé — frustration pour Antoine |
 
 ---
 
@@ -145,18 +155,6 @@ Thomas commence une campagne Blades in the Dark. Les dossiers système lui sembl
 
 ---
 
-## Opportunités UX
-
-| Point de conversion | Indicateur de succès | Risque d'abandon |
-|---|---|---|
-| Premier dossier créé ou renommé | Dossier visible en navigation avec le bon nom | Action de renommage non trouvée |
-| Premier template associé à un dossier | `defaultTemplateDocumentId` non null sur le dossier | Aucun template disponible — liste vide |
-| Premier document créé depuis un dossier avec template | Document ouvert avec la structure du template | Pas de retour visuel sur l'application du template |
-| Suppression d'un dossier non vide sans perte de documents | Documents retrouvables après suppression | Dialogue peu clair — MJ pense avoir perdu ses documents |
-| Ordre des dossiers persisté | Même ordre à la réouverture de l'espace | Ordre réinitialisé — frustration pour Antoine |
-
----
-
 ## Liens
 
 - Use case source : [`docs/besoin/cas-d-utilisation/`](../cas-d-utilisation/)
@@ -166,16 +164,16 @@ Thomas commence une campagne Blades in the Dark. Les dossiers système lui sembl
 
 ---
 
-## Transitions inter-UC
+### Transitions inter-UC
 
-### Depuis UC-02 (création de l'espace de jeu)
+#### Depuis UC-02 (création de l'espace de jeu)
 
 À la création d'un espace `CAMPAIGN` ou `ONE_SHOT` (UC-02), les dossiers système — **Personnages**, **Joueurs**, **Scénarios**, **Notes** — et le dossier virtuel « Non classés » (non visible en navigation) sont créés automatiquement. UC-05 peut être déclenché immédiatement après : le MJ renomme, supprime ou crée des dossiers selon son système de jeu, avant même d'avoir créé son premier document. L'ordre entre la configuration des dossiers (UC-05) et la création des documents (UC-04) n'est pas imposé — les deux peuvent s'alterner librement.
 
-### Vers UC-04 (gestion des documents)
+#### Vers UC-04 (gestion des documents)
 
 L'organisation des dossiers dans UC-05 conditionne l'initialisation des documents créés dans UC-04. Lorsqu'un dossier porte un document réutilisable comme modèle par défaut, tout nouveau document créé depuis ce dossier est initialisé à partir d'une copie indépendante de ce modèle. La disponibilité de ce modèle dépend de UC-13 (Should Have — post-MVP) : en l'absence de UC-13, la liste des modèles disponibles est vide et l'association de modèle à un dossier n'est pas opérante. Les documents déjà créés dans un dossier ne sont jamais affectés par un changement de modèle par défaut du dossier.
 
-### Vers UC-06 (vue session)
+#### Vers UC-06 (vue session)
 
 La `SessionViewConfig` de l'espace référence des dossiers parmi ceux gérés dans UC-05. Le MJ configure quels dossiers apparaissent dans les panneaux de la vue session depuis les paramètres de l'espace (hors session) ou depuis la vue session elle-même. Les dossiers renommés par Thomas dans UC-05 (par exemple, « Scoundrels » au lieu de « Personnages ») apparaissent avec leur nouveau nom dans les panneaux de la vue session — aucune resynchronisation n'est nécessaire. La suppression d'un dossier présent dans la `SessionViewConfig` retire ce dossier des panneaux configurés ; les documents déplacés vers « Non classés » restent accessibles via la recherche globale de la vue session.

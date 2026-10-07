@@ -1,4 +1,4 @@
-# User Journey — Mode local sans compte
+# User Journey — Mode local sans compte (UC-01)
 
 ## Périmètre
 
@@ -10,17 +10,15 @@ Il inclut les scénarios de limite atteinte et de retour après vidage de cache,
 
 ## Personas concernés
 
-| Persona | Profil | Objectif dans ce parcours |
-|---|---|---|
-| **Nadia** | MJ occasionnelle, a abandonné Notion | Valeur rapide — va jusqu'à la conversion |
-| **Thomas** | MJ Obsidian, évaluateur | Tester sans s'engager — reste en mode local |
-| **Rémi** | MJ papier, résistant au numérique | Tester le partage de résumé — expérience de démarrage médiocre |
+| Persona | Mode de travail | Attente principale | Risque de friction |
+|---|---|---|---|
+| **Nadia** | MJ occasionnelle, a abandonné Notion | Valeur rapide — va jusqu'à la conversion | SOUS-SPÉCIFIÉ |
+| **Thomas** | MJ Obsidian, évaluateur | Tester sans s'engager — reste en mode local | SOUS-SPÉCIFIÉ |
+| **Rémi** | MJ papier, résistant au numérique | Tester le partage de résumé — expérience de démarrage médiocre | SOUS-SPÉCIFIÉ |
 
 ---
 
-## Vue d'ensemble du parcours
-
-### Carte d'expérience
+## Carte d'expérience
 
 ```mermaid
 journey
@@ -52,7 +50,7 @@ journey
       Quitter sans créer de compte: 3: Rémi
 ```
 
-### Flux fonctionnel
+## Flux fonctionnel
 
 ```mermaid
 flowchart TD
@@ -78,7 +76,7 @@ flowchart TD
 
 ---
 
-## Détail des étapes
+## Points de friction
 
 | Étape | Persona(s) | Friction | Opportunité produit |
 |---|---|---|---|
@@ -91,6 +89,20 @@ flowchart TD
 | Retour après fermeture | Nadia | Crainte de perte de données | Atterrit directement sur le dernier espace ouvert |
 | Tenter de partager | Nadia, Rémi | Bouton absent ou message de blocage agressif | Bouton visible mais désactivé, CTA discret et optionnel |
 | Créer un compte + migration | Nadia | Migration longue ou signalée en erreur | Gate de reconnaissance pré-import (espaces détectés avec historique de session, confirmation explicite — ADR-016 §4) ; indicateur de progression pour gros volumes ; après migration, l'historique de session (sessions passées, notes, épingles) est retrouvé intact pour enchaîner vers le partage joueurs |
+
+---
+
+## Opportunités UX
+
+### Points de conversion clés
+
+| Moment | Déclencheur | Action attendue |
+|---|---|---|
+| Première visite | Curiosité / recommandation | Choisit "Commencer sans compte" |
+| Retour J+1 | Contenu retrouvé intact | Confiance installée — continue à utiliser |
+| Tentative de partage | Besoin fonctionnel réel | Envisage la création de compte |
+| Stockage navigateur saturé | Capacité de stockage atteinte (aucun plafond de nombre d'espaces en mode local) | Conversion vers le compte pour migrer les données |
+| Retour post-vidage cache | Perte de données | Conversion comme solution à un problème vécu |
 
 ---
 
@@ -113,18 +125,6 @@ flowchart TD
 **Stockage du navigateur saturé**
 - Il n'existe aucun plafond de nombre d'espaces en mode local : le MJ peut créer autant de campagnes ou de one-shots qu'il le souhaite. Seule la capacité de stockage du navigateur (~50–100 Mo en pratique) peut interrompre la création (E1).
 - Si le stockage est plein, la création est bloquée avec un message valorisant la création de compte pour migrer vers le cloud. Le plafond de 3 espaces synchronisés (RB-02-10) ne s'applique qu'au compte gratuit, jamais à la création en mode local.
-
----
-
-## Points de conversion clés
-
-| Moment | Déclencheur | Action attendue |
-|---|---|---|
-| Première visite | Curiosité / recommandation | Choisit "Commencer sans compte" |
-| Retour J+1 | Contenu retrouvé intact | Confiance installée — continue à utiliser |
-| Tentative de partage | Besoin fonctionnel réel | Envisage la création de compte |
-| Stockage navigateur saturé | Capacité de stockage atteinte (aucun plafond de nombre d'espaces en mode local) | Conversion vers le compte pour migrer les données |
-| Retour post-vidage cache | Perte de données | Conversion comme solution à un problème vécu |
 
 ---
 

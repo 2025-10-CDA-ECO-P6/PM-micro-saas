@@ -10,6 +10,15 @@ Les flux de création d'espace de jeu sont couverts par UC-02. La gestion des me
 
 ---
 
+## Personas concernés
+
+| Persona | Mode de travail | Attente principale | Risque de friction |
+|---|---|---|---|
+| Sonia | anime des one-shots avec un catalogue de 15 scénarios qu'elle rejoue avec des groupes différents | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Antoine | veut réutiliser des structures entre ses 3 campagnes simultanées | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
+---
+
 ## Carte d'expérience
 
 ```mermaid
@@ -85,19 +94,16 @@ flowchart TD
 
 ---
 
-## Points de friction identifiés
+## Points de friction
 
-- **Absence de distinction claire entre source et instance dans l'interface** : si le MJ n'a pas conscience qu'il travaille sur une instance et non sur le source, il peut penser que ses modifications vont dans le scénario réutilisable. L'interface doit indiquer en permanence qu'il s'agit d'une instance, avec un lien vers le scénario source dans l'espace personnel.
-
-- **Catalogue vide au premier accès** : Sonia ouvre la bibliothèque pour la première fois et le catalogue est vide. Sans scénario marqué `isReusable` depuis ses espaces, elle ne peut pas encore "rejouer". Ce point d'entrée vide peut dérouter — un message d'invite ("Aucun scénario réutilisable encore. Marquez un scénario depuis l'un de vos espaces.") et un raccourci direct vers ses espaces réduiraient la friction.
-
-- **Copie profonde invisible et silencieuse** : lors de la création d'une instance dans l'espace cible, la copie profonde (scénario + scènes + `Document` liés) peut prendre un moment ou produire un volume de contenu inattendu pour Sonia. Une indication visuelle du périmètre copié ("15 documents, 6 scènes inclus") permet d'éviter la surprise.
-
-- **One-shot sans archivage automatique** : Sonia s'attend peut-être à ce que l'espace one-shot disparaisse ou soit rangé automatiquement après la session. L'interface doit rappeler explicitement que l'espace reste à l'état CLOSED et que l'archivage est une action manuelle — sous peine d'une accumulation de one-shots non archivés dans le tableau de bord.
-
-- **Historique des runs peu actionnable sans notes** : si Sonia n'a pas pris de notes MJ pendant le run, l'entrée d'historique n'affiche qu'une date et un contexte. La valeur perçue est faible. Un rappel à la fin de la session ("Ajoutez des notes à cette instance pour enrichir votre historique") augmente la probabilité que l'historique soit utile à terme.
-
-- **Antoine entre dans la campagne par la bibliothèque** : pour Antoine, la bibliothèque de scénarios réutilisables est un outil de gestion multi-campagnes. S'il doit quitter le contexte de la campagne pour accéder à la bibliothèque, puis y revenir, les allers-retours sont fastidieux. Un accès à la bibliothèque depuis la vue campagne réduirait les ruptures de contexte.
+| Étape | Persona(s) | Friction | Opportunité produit |
+|---|---|---|---|
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | **Absence de distinction claire entre source et instance dans l'interface** : si le MJ n'a pas conscience qu'il travaille sur une instance et non sur le source, il peut penser que ses modifications vont dans le scénario réutilisable. L'interface doit indiquer en permanence qu'il s'agit d'une instance, avec un lien vers le scénario source dans l'espace personnel. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Sonia | **Catalogue vide au premier accès** : Sonia ouvre la bibliothèque pour la première fois et le catalogue est vide. Sans scénario marqué `isReusable` depuis ses espaces, elle ne peut pas encore "rejouer". Ce point d'entrée vide peut dérouter — un message d'invite ("Aucun scénario réutilisable encore. Marquez un scénario depuis l'un de vos espaces.") et un raccourci direct vers ses espaces réduiraient la friction. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Sonia | **Copie profonde invisible et silencieuse** : lors de la création d'une instance dans l'espace cible, la copie profonde (scénario + scènes + `Document` liés) peut prendre un moment ou produire un volume de contenu inattendu pour Sonia. Une indication visuelle du périmètre copié ("15 documents, 6 scènes inclus") permet d'éviter la surprise. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Sonia | **One-shot sans archivage automatique** : Sonia s'attend peut-être à ce que l'espace one-shot disparaisse ou soit rangé automatiquement après la session. L'interface doit rappeler explicitement que l'espace reste à l'état CLOSED et que l'archivage est une action manuelle — sous peine d'une accumulation de one-shots non archivés dans le tableau de bord. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Sonia | **Historique des runs peu actionnable sans notes** : si Sonia n'a pas pris de notes MJ pendant le run, l'entrée d'historique n'affiche qu'une date et un contexte. La valeur perçue est faible. Un rappel à la fin de la session ("Ajoutez des notes à cette instance pour enrichir votre historique") augmente la probabilité que l'historique soit utile à terme. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Antoine | **Antoine entre dans la campagne par la bibliothèque** : pour Antoine, la bibliothèque de scénarios réutilisables est un outil de gestion multi-campagnes. S'il doit quitter le contexte de la campagne pour accéder à la bibliothèque, puis y revenir, les allers-retours sont fastidieux. Un accès à la bibliothèque depuis la vue campagne réduirait les ruptures de contexte. | SOUS-SPÉCIFIÉ |
 
 ---
 

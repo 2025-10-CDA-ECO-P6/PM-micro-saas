@@ -8,7 +8,7 @@ courts métrages. Systèmes joués : Alien RPG, Call of Cthulhu, Ironsworn. Elle
 par mois dans son association locale, dans des festivals de jeux, ou pour des groupes qui veulent
 découvrir le JDR sans s'engager sur le long terme.
 
-## Qui elle est
+## Qui il/elle est
 
 Sonia ne fait pas de campagnes. Chaque partie qu'elle mène est une histoire complète en 3 à 4
 heures, avec des joueurs qui changent à chaque fois. Elle a une quinzaine de scénarios dans son
@@ -28,7 +28,7 @@ quand la soirée est terminée.
 Si elle ouvre Haversack, elle verra "créer une campagne" et aura l'impression que l'outil ne
 parle pas d'elle. Créer une campagne vide pour chaque one-shot serait absurde de son point de vue.
 
-## Ce qu'elle utiliserait
+## Ce qu'il/elle utiliserait
 
 - Un espace personnel qui contient tous ses scénarios, accessible sans créer de campagne
 - Un espace par scénario instancié, sans notion de campagne comme conteneur obligatoire
@@ -36,7 +36,7 @@ parle pas d'elle. Créer une campagne vide pour chaque one-shot serait absurde d
   compte, juste pour la durée de la soirée
 - Une bibliothèque de ses scénarios qu'elle peut parcourir et réutiliser
 
-## Ce qu'elle demande à l'app
+## Ce qu'il/elle demande au produit
 
 - Peut-on créer un espace de jeu sans l'appeler "campagne" ?
 - Peut-on rejouer le même scénario avec un groupe différent sans dupliquer tout le contenu ?

@@ -1,6 +1,6 @@
 # NFR-PERF-03 — Continuité sans interruption lors des actions en cours de partie
 
-Famille **Performance perçue** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : PERF · [Index — Performance perçue](README.md)
 
 ---
 
@@ -47,7 +47,7 @@ plus cher.
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - La création à la volée d'une note de session, d'un document libre ou d'un document typé
   (PNJ, lieu, etc.) depuis la vue session pendant une session LIVE — UC-07 scénario nominal
@@ -59,7 +59,7 @@ plus cher.
 - Le basculement de visibilité d'une note de session de privé MJ vers visible par les joueurs
   (UC-06, US-06-04).
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - La navigation dans les panneaux configurés et la consultation de documents — couverte par
   NFR-PERF-01.
@@ -75,31 +75,31 @@ plus cher.
 
 ## Critères d'acceptation produit
 
-**Situation nominale — création d'une note à la volée :**
+**Situation nominale** : création d'une note à la volée
 
 Après avoir validé la création d'une note de session (titre seul suffit), le MJ peut
 immédiatement effectuer une autre action sans observer de gel ni d'indicateur d'attente
 bloquant. La note est référencée dans la session active sans que le MJ ait eu à attendre.
 
-**Situation nominale — création d'un document typé (PNJ, lieu) :**
+**Situation nominale** : création d'un document typé (PNJ, lieu)
 
 Après avoir créé un PNJ à la volée avec son seul nom, le document est épinglé dans la
 session et disponible pour consultation — le MJ peut continuer sa narration sans pause
 visible liée à l'outil.
 
-**Situation nominale — partage d'un document aux joueurs :**
+**Situation nominale** : partage d'un document aux joueurs
 
 Après avoir déclenché l'action de partage sur un document, le MJ peut immédiatement
 effectuer une autre action. Le document devient visible dans la vue joueur sans que le
 MJ ait observé de gel de l'interface de son côté.
 
-**Situation nominale — épinglage d'un document :**
+**Situation nominale** : épinglage d'un document
 
 L'épinglage d'un document, qu'il soit manuel ou automatique, ne crée pas de moment
 d'attente. Le document apparaît dans le panneau Documents épinglés sans interruption
 perceptible du contexte de session.
 
-**Situation limite — plusieurs actions rapprochées :**
+**Situation limite** : plusieurs actions rapprochées
 
 Un MJ qui enchaîne plusieurs actions en peu de temps — créer une note, épingler un
 document, partager une information — ne voit pas l'interface ralentir cumulativement.
@@ -109,13 +109,13 @@ Chaque action reste aussi fluide que la première.
 
 ## Traçabilité montante
 
-| Artefact | Lien |
-|---|---|
-| UC-07 — Créer un élément à la volée pendant la session | [../usecases/UC-07-creation-volee-session.md](../cas-d-utilisation/UC-07-creation-volee-session.md) |
-| UC-08 — Partager une information aux joueurs | [../usecases/UC-08-partager-information.md](../cas-d-utilisation/UC-08-partager-information.md) |
-| UC-06 — Vue session (A2, A4, phases 3) | [../usecases/UC-06-vue-session.md](../cas-d-utilisation/UC-06-vue-session.md) |
-| US-UC-07 — Epic création à la volée | [../user-stories/US-UC-07-creation-volee-session.md](../stories/US-UC-07-creation-volee-session.md) |
-| US-UC-08 — Epic partage d'information | [../user-stories/US-UC-08-partager-information.md](../stories/US-UC-08-partager-information.md) |
-| US-UC-06 — Epic vue session (US-06-04 : notes de session MJ, US-06-05 : épinglage) | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| RB-06-13 — Note visible par les joueurs immédiatement | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| RB-06-17 — Épinglage automatique à la création à la volée et au partage | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-07 — Créer un élément à la volée pendant la session](../cas-d-utilisation/UC-07-creation-volee-session.md) | SOUS-SPÉCIFIÉ |
+| [UC-08 — Partager une information aux joueurs](../cas-d-utilisation/UC-08-partager-information.md) | SOUS-SPÉCIFIÉ |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | A2, A4, phases 3 |
+| [US-UC-07 — Epic création à la volée](../stories/US-UC-07-creation-volee-session.md) | SOUS-SPÉCIFIÉ |
+| [US-UC-08 — Epic partage d'information](../stories/US-UC-08-partager-information.md) | SOUS-SPÉCIFIÉ |
+| [US-UC-06 — Epic vue session](../stories/US-UC-06-vue-session.md) | US-06-04 : notes de session MJ, US-06-05 : épinglage |
+| [RB-06-13 — Note visible par les joueurs immédiatement](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [RB-06-17 — Épinglage automatique à la création à la volée et au partage](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |

@@ -1,6 +1,6 @@
 # NFR-ACC-01 — Utilisabilité sans dispositif de pointage
 
-Famille **Accessibilité** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : ACC · [Index — Accessibilité](README.md)
 
 ---
 
@@ -50,7 +50,7 @@ Il oriente l'implémentation sans se substituer au besoin formulé ici.
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - L'ensemble des actions critiques documentées dans les use cases du MVP : créer une campagne
   (UC-02), structurer un scénario (UC-03), gérer des documents (UC-04), organiser par dossiers
@@ -64,7 +64,7 @@ Il oriente l'implémentation sans se substituer au besoin formulé ici.
 - Le parcours d'accès au produit : ouverture de l'application, création d'un espace de jeu,
   saisie d'un titre de session.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Les interactions avec des services ou outils tiers (partage de lien vers une autre application,
   ouverture d'un export dans un lecteur externe).
@@ -76,7 +76,7 @@ Il oriente l'implémentation sans se substituer au besoin formulé ici.
 
 ## Critères d'acceptation produit
 
-**Parcours complet MJ — vue session au clavier :**
+**Situation nominale** : Parcours complet MJ — vue session au clavier
 
 Un MJ ayant ouvert la vue session peut, en utilisant uniquement le clavier : passer d'un
 panneau de dossier au suivant, ouvrir un document pour le consulter, épingler ce document
@@ -84,29 +84,29 @@ dans le panneau des documents épinglés, prendre une note de session, basculer 
 de cette note vers visible par les joueurs, et lancer une recherche — sans jamais avoir à
 saisir une souris ou toucher l'écran.
 
-**Parcours complet MJ — préparation au clavier :**
+**Situation nominale** : Parcours complet MJ — préparation au clavier
 
 Un MJ peut créer une campagne, saisir un titre de session et accéder à la vue session
 entièrement au clavier, depuis l'ouverture de l'application.
 
-**Parcours complet joueur — accès et consultation au clavier :**
+**Situation nominale** : Parcours complet joueur — accès et consultation au clavier
 
 Un joueur accédant via un lien de session peut saisir son nom d'affichage, accéder à la
 vue joueur, naviguer parmi les documents partagés et créer une note personnelle — entièrement
 au clavier.
 
-**Focus visible en permanence :**
+**Situation limite** : Focus visible en permanence
 
 À tout moment, l'élément ayant le focus au clavier est visuellement identifiable pour
 l'utilisateur. Aucune étape de navigation ne laisse le focus dans un état invisible ou ambigu.
 
-**Aucun blocage dans les parcours documentés :**
+**Situation limite** : Aucun blocage dans les parcours documentés
 
 Un utilisateur naviguant exclusivement au clavier peut accomplir l'ensemble des parcours
 utilisateur documentés (user journeys MVP) sans rencontrer d'action inatteignable ou de
 composante interactive sur laquelle le clavier est sans effet.
 
-**Ordre de navigation cohérent :**
+**Situation nominale** : Ordre de navigation cohérent
 
 L'ordre dans lequel le clavier passe d'un élément interactif au suivant suit la logique
 visuelle de la page — du plus général au plus spécifique, sans sauts incohérents entre des
@@ -116,13 +116,13 @@ zones sans rapport.
 
 ## Traçabilité montante
 
-| Artefact | Lien |
-|---|---|
-| UC-06 — Vue session (phases 2-3, navigation MJ) | [../usecases/UC-06-vue-session.md](../cas-d-utilisation/UC-06-vue-session.md) |
-| UC-14 — Rechercher rapidement une information | [../usecases/UC-14-recherche.md](../cas-d-utilisation/UC-14-recherche.md) |
-| UC-09 — Accès session joueur | [../usecases/UC-09-acces-session-joueur.md](../cas-d-utilisation/UC-09-acces-session-joueur.md) |
-| US-06-03 — Naviguer dans les dossiers pendant la session | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-06-04 — Prendre des notes de session MJ | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-06-05 — Épingler un document pendant la session | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-14-01 — Rechercher un document par titre | [../user-stories/US-UC-14-recherche.md](../stories/US-UC-14-recherche.md) |
-| US-14-03 — Rechercher depuis la vue session | [../user-stories/US-UC-14-recherche.md](../stories/US-UC-14-recherche.md) |
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | phases 2-3, navigation MJ |
+| [UC-14 — Rechercher rapidement une information](../cas-d-utilisation/UC-14-recherche.md) | SOUS-SPÉCIFIÉ |
+| [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) | SOUS-SPÉCIFIÉ |
+| [US-06-03 — Naviguer dans les dossiers pendant la session](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-06-04 — Prendre des notes de session MJ](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-06-05 — Épingler un document pendant la session](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-14-01 — Rechercher un document par titre](../stories/US-UC-14-recherche.md) | SOUS-SPÉCIFIÉ |
+| [US-14-03 — Rechercher depuis la vue session](../stories/US-UC-14-recherche.md) | SOUS-SPÉCIFIÉ |

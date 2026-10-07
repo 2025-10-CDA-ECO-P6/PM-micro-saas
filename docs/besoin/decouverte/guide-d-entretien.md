@@ -1,4 +1,4 @@
-# Guide d'entretien utilisateur — Haversack
+# Guide d'entretien
 
 > Document de référence pour la conduite des interviews utilisateurs pré-développement et pré-lancement MVP.
 >
@@ -8,18 +8,18 @@
 
 ## Table des matières
 
-1. [Objectif des interviews](#1-objectif-des-interviews)
+1. [Objectif des interviews](#1-objectif)
 2. [Profils à interviewer](#2-profils-à-interviewer)
 3. [Questions par thème](#3-questions-par-thème)
-4. [Piliers critiques — Hypothèses et questions structurantes](#4-piliers-critiques--hypothèses-et-questions-structurantes)
-5. [Questions prioritaires (top 10)](#5-questions-prioritaires-top-10)
-6. [Anti-patterns à éviter](#6-anti-patterns-à-éviter)
-7. [Template de compte-rendu](#7-template-de-compte-rendu)
-8. [Résultats de la campagne d'entretiens](#8-résultats-de-la-campagne-dentretiens)
+4. [Piliers critiques — Hypothèses et questions structurantes](#4-hypothèses-critiques)
+5. [Questions prioritaires (top 10)](#5-questions-prioritaires)
+6. [Anti-patterns à éviter](#6-anti-patterns)
+7. [Template de compte-rendu](#7-modèle-de-compte-rendu)
+8. [Résultats de la campagne d'entretiens](#8-résultats)
 
 ---
 
-## 1. Objectif des interviews
+## 1. Objectif
 
 Les interviews cherchent à comprendre les **comportements actuels** des maîtres de jeu et des joueurs : comment ils préparent une campagne aujourd'hui, comment ils pilotent une session, comment ils partagent des informations avec leur groupe, et quels outils ils utilisent réellement. L'objectif est de valider ou d'invalider des hypothèses de conception déjà formulées — pas de découvrir le marché depuis zéro.
 
@@ -127,13 +127,15 @@ Ce que ces interviews ne cherchent pas : recueillir des listes de fonctionnalit�
 
 ---
 
-## 4. Piliers critiques — Hypothèses et questions structurantes
+## 4. Hypothèses critiques
+
+Piliers critiques — Hypothèses et questions structurantes.
 
 Les deux hypothèses centrales du MVP (vision §2.3) doivent être validées en priorité par cette campagne d'entretiens. Cette section regroupe, pour chacun des deux piliers, l'hypothèse exacte, les questions à poser, et le signal attendu en réponse.
 
 ### Pilier 1 — Préparation sans friction
 
-**Hypothèse à valider** : Un MJ peut créer une campagne structurée et y retrouver ses informations sans friction d'onboarding — spécifiquement, sans compte obligatoire au démarrage, en utilisant les données locales du navigateur comme point d'entrée naturel.
+**Hypothèse** : (à valider) Un MJ peut créer une campagne structurée et y retrouver ses informations sans friction d'onboarding — spécifiquement, sans compte obligatoire au démarrage, en utilisant les données locales du navigateur comme point d'entrée naturel.
 
 **Questions structurantes** :
 - Quand vous essayez un nouvel outil, qu'est-ce qui fait que vous l'abandonnez dans les premières heures ? [§3.7 Onboarding et premier lancement — cible MJ débutant, MJ casual]
@@ -142,7 +144,7 @@ Les deux hypothèses centrales du MVP (vision §2.3) doivent être validées en 
 - Si un outil conservait vos données uniquement dans votre navigateur sans compte, est-ce que ce serait suffisant pour commencer à l'utiliser ? Qu'est-ce qui vous ferait douter ? [§3.6 Mode hors-ligne vs cloud — top 10 #10]
 - Si un outil vous proposait 4 dossiers par défaut à la création d'une campagne — "Personnages", "Scénarios", "Joueurs", "Notes" — est-ce que ça vous aiderait ou est-ce que vous préféreriez partir d'une page vide ? [§3.7 Onboarding et premier lancement]
 
-**Signaux attendus en réponse** :
+**Signaux** : attendus en réponse
 - ✅ **Pilier validé si** : le MJ accepte de commencer sans compte — soit immédiatement, soit après 10-15 minutes d'utilisation ; le temps de configuration initial (structure des dossiers) ne dépasse pas 5 minutes ; les dossiers par défaut aident plus qu'ils ne bloquent.
 - ❌ **Pilier invalidé si** : le MJ exige un compte obligatoire pour se sentir en sécurité ; la friction d'onboarding est présente au-delà de 15 minutes ; la peur de perdre les données locales est un frein majeur non résolvable par un simple rappel visuel.
 - ⚠️ **Non tranchée si** : les réponses sont mitigées ou contradictoires entre MJ débutant et MJ expérimenté — dans ce cas, le profil le plus exigeant dicte l'ajustement.
@@ -151,7 +153,7 @@ Les deux hypothèses centrales du MVP (vision §2.3) doivent être validées en 
 
 ### Pilier 2 — Vue session avec valeur réelle en partie
 
-**Hypothèse à valider** : La vue session apporte une valeur réelle pendant une partie — réduction mesurable du temps de recherche, accès fluide au contenu préparé, capacité de création à la volée sans rupture.
+**Hypothèse** : (à valider) La vue session apporte une valeur réelle pendant une partie — réduction mesurable du temps de recherche, accès fluide au contenu préparé, capacité de création à la volée sans rupture.
 
 **Questions structurantes** :
 - Racontez-moi comment se passe concrètement le début d'une session pour vous : qu'est-ce que vous avez ouvert devant vous, sur quoi vous appuyez-vous ? [§3.2 Conduite de session]
@@ -161,18 +163,20 @@ Les deux hypothèses centrales du MVP (vision §2.3) doivent être validées en 
 - Pendant une partie, est-ce qu'il vous arrive de devoir quitter votre système de notes principal pour chercher un détail ailleurs — papier, autre onglet, mémoire ? Racontez un exemple. [MJ expérimenté, MJ débutant]
 - Sur quoi consultez-vous vos notes pendant une partie : ordinateur, tablette, téléphone, papier ? [§3.2 Conduite de session]
 
-**Signaux attendus en réponse** :
+**Signaux** : attendus en réponse
 - ✅ **Pilier validé si** : le MJ interrompt la session **plus de 2 fois** pour chercher une information ; le temps de recherche moyen dépasse **30 secondes** ; il existe actuellement des tâches de création à la volée (PNJ, lieux) qui **cassent le rythme** de jeu ; l'accès au contenu préparé est fragmenté (plusieurs outils/emplacements) ; le MJ reconnaît que centraliser cet accès serait une amélioration directe.
 - ❌ **Pilier invalidé si** : le MJ ne rencontre jamais d'interruption pour chercher (organisation déjà très efficace) ; la création à la volée est rapide et n'interfère pas avec le rythme ; tous les contenus sont déjà centralisés et accessibles d'un seul clic.
 - ⚠️ **Non tranchée si** : le problème existe mais est marginal (< 2 interruptions par session) ; le MJ n'est pas convaincu qu'une vue dédiée changerait son flux actuel.
 
 ---
 
-## 5. Questions prioritaires (top 10)
+## 5. Questions prioritaires
+
+Top 10.
 
 Les questions suivantes couvrent les incertitudes les plus critiques identifiées lors de la revue des use cases.
 
-| # | Question | Profil cible | Hypothèse à valider ou invalider |
+| # | Question | Profil cible | Hypothèse |
 |---|---|---|---|
 | 1 | À quel moment vous dites-vous "il faut que je crée un compte" pour un outil — qu'est-ce qui déclenche ce moment ? | MJ débutant, MJ occasionnelle (Nadia) | H : le déclencheur naturel est le partage avec les joueurs, pas la peur de perdre des données. Si faux, le message "risque de perte" doit être plus présent en mode local (UC-01). |
 | 2 | Quand vous relancez un scénario avec un nouveau groupe, qu'est-ce que vous voulez garder exactement identique, et qu'est-ce que vous adaptez ? | MJ convention (Sonia) | H : Sonia veut un "instantané" du scénario source, pas un diff. Si faux, un mécanisme de comparaison source/instance est nécessaire (UC-13). |
@@ -187,7 +191,7 @@ Les questions suivantes couvrent les incertitudes les plus critiques identifiée
 
 ---
 
-## 6. Anti-patterns à éviter
+## 6. Anti-patterns
 
 **Questions fermées déguisées en questions ouvertes**
 A éviter : "Est-ce que vous utiliseriez une fonctionnalité qui vous permet de partager vos notes directement depuis l'outil ?"
@@ -218,7 +222,7 @@ Les premières personnes disponibles (amis, famille) ont tendance à valider pou
 
 ---
 
-## 7. Template de compte-rendu
+## 7. Modèle de compte rendu
 
 Utiliser ce template pour chaque interview réalisé. Stocker les fichiers dans `docs/interviews/YYYY-MM-DD-[prénom-profil].md`.
 
@@ -271,11 +275,11 @@ Utiliser ce template pour chaque interview réalisé. Stocker les fichiers dans 
 
 ---
 
-## 8. Résultats de la campagne d'entretiens
+## 8. Résultats
 
 Cette section centralise les résultats de la campagne de validation des hypothèses pré-MVP. À remplir à mesure que les entretiens sont menés.
 
-### 8.1 Suivi des entretiens réalisés
+#### 8.1 Suivi des entretiens réalisés
 
 *(à remplir en terrain)*
 
@@ -289,63 +293,93 @@ Cette section centralise les résultats de la campagne de validation des hypoth�
 
 ---
 
-### 8.2 Synthèse des hypothèses de la vision
+**8.2 Synthèse des hypothèses de la vision**
 
 Évaluation du statut des 5 hypothèses du MVP ([besoin/vision/vision-produit.md §2.3](../vision/vision.md)).
 
 *(à remplir en terrain)*
 
-#### H1 — Préparation sans friction
+### H1 — Préparation sans friction
 
 **Énoncé** : Un MJ peut créer une campagne structurée et y retrouver ses informations sans friction d'onboarding — pas de compte obligatoire au démarrage.
 
-| Statut | Justification croisée | Verbatims clés | Actions |
-|---|---|---|---|
-| Validée / Invalidée / Non tranchée | [Synthèse des patterns observés + nombre de MJ validant] | > "[Citations des interviewés]" | [Décisions de conception à reconsidérer] |
+**Statut** : Validée / Invalidée / Non tranchée
+
+**Justification croisée** : [Synthèse des patterns observés + nombre de MJ validant]
+
+**Verbatims clés** :
+
+> "[Citations des interviewés]"
+
+**Actions** : [Décisions de conception à reconsidérer]
 
 ---
 
-#### H2 — Vue session avec valeur réelle
+### H2 — Vue session avec valeur réelle
 
 **Énoncé** : La vue session apporte une valeur réelle pendant une partie — réduction du temps de recherche, accès au contenu préparé, création à la volée.
 
-| Statut | Justification croisée | Verbatims clés | Actions |
-|---|---|---|---|
-| Validée / Invalidée / Non tranchée | [Synthèse des patterns observés + nombre de MJ validant] | > "[Citations des interviewés]" | [Décisions de conception à reconsidérer] |
+**Statut** : Validée / Invalidée / Non tranchée
+
+**Justification croisée** : [Synthèse des patterns observés + nombre de MJ validant]
+
+**Verbatims clés** :
+
+> "[Citations des interviewés]"
+
+**Actions** : [Décisions de conception à reconsidérer]
 
 ---
 
-#### H3 — Partage fluide avec les joueurs
+### H3 — Partage fluide avec les joueurs
 
 **Énoncé** : Le partage d'informations aux joueurs est plus fluide que les solutions actuelles (Discord, Google Docs, papier).
 
-| Statut | Justification croisée | Verbatims clés | Actions |
-|---|---|---|---|
-| Validée / Invalidée / Non tranchée | [Synthèse des patterns observés + nombre de MJ/joueurs validant] | > "[Citations des interviewés]" | [Décisions de conception à reconsidérer] |
+**Statut** : Validée / Invalidée / Non tranchée
+
+**Justification croisée** : [Synthèse des patterns observés + nombre de MJ/joueurs validant]
+
+**Verbatims clés** :
+
+> "[Citations des interviewés]"
+
+**Actions** : [Décisions de conception à reconsidérer]
 
 ---
 
-#### H4 — Accès joueur sans compte
+### H4 — Accès joueur sans compte
 
 **Énoncé** : L'accès joueur sans compte n'est pas un frein à l'adoption du groupe entier.
 
-| Statut | Justification croisée | Verbatims clés | Actions |
-|---|---|---|---|
-| Validée / Invalidée / Non tranchée | [Synthèse des patterns observés + nombre de joueurs acceptant] | > "[Citations des interviewés]" | [Décisions de conception à reconsidérer] |
+**Statut** : Validée / Invalidée / Non tranchée
+
+**Justification croisée** : [Synthèse des patterns observés + nombre de joueurs acceptant]
+
+**Verbatims clés** :
+
+> "[Citations des interviewés]"
+
+**Actions** : [Décisions de conception à reconsidérer]
 
 ---
 
-#### H5 — Conversion naturelle vers le compte payant
+### H5 — Conversion naturelle vers le compte payant
 
 **Énoncé** : La conversion du mode local vers un compte payant se produit naturellement quand le besoin de partage ou de cloud apparaît.
 
-| Statut | Justification croisée | Verbatims clés | Actions |
-|---|---|---|---|
-| Validée / Invalidée / Non tranchée | [Synthèse des patterns observés + déclencheurs identifiés] | > "[Citations des interviewés]" | [Décisions de conception à reconsidérer] |
+**Statut** : Validée / Invalidée / Non tranchée
+
+**Justification croisée** : [Synthèse des patterns observés + déclencheurs identifiés]
+
+**Verbatims clés** :
+
+> "[Citations des interviewés]"
+
+**Actions** : [Décisions de conception à reconsidérer]
 
 ---
 
-### 8.3 Angles morts révélés
+#### 8.3 Angles morts révélés
 
 *(à remplir en terrain)*
 
@@ -359,7 +393,7 @@ Besoins ou comportements non anticipés dans les use cases ou la vision, mais qu
 
 ---
 
-### 8.4 Décisions de conception à reconsidérer
+#### 8.4 Décisions de conception à reconsidérer
 
 *(à remplir en terrain)*
 
@@ -373,7 +407,7 @@ Sur la base des entretiens, indiquer les points de la conception actuellement do
 
 ---
 
-### 8.5 Conclusion de la campagne
+#### 8.5 Conclusion de la campagne
 
 *(à remplir en terrain)*
 

@@ -31,16 +31,11 @@ Permettre au MJ de créer un scénario une fois et de le rejouer avec des groupe
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-13 — Utiliser un scénario réutilisable](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- **Space Management** — héberge l'espace personnel du MJ (un `Space` de type `PERSONAL`) qui contient les scénarios réutilisables sous forme de `Document` (`isReusable = true`), les instances créées par `Document.Instantiate` dans des campagnes ou one-shots, et gère la relation entre une instance et son contexte de jeu. Note ADR-018 : la `ScenarioLibrary` en tant qu'entité distincte est subsumée par l'espace personnel — un scénario réutilisable est simplement un `Document` de cet espace.
-- **Content Library** — consomme les instances de scénario comme documents de l'espace cible (campagne ou one-shot).
+**Source de la priorité** : Matrice de priorités
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -67,9 +62,14 @@ flowchart TD
     Session --> SourceIntact[Source reste intact\nModifs dans l instance uniquement]
 ```
 
+### Bounded contexts pressentis
+
+- **Space Management** — héberge l'espace personnel du MJ (un `Space` de type `PERSONAL`) qui contient les scénarios réutilisables sous forme de `Document` (`isReusable = true`), les instances créées par `Document.Instantiate` dans des campagnes ou one-shots, et gère la relation entre une instance et son contexte de jeu. Note ADR-018 : la `ScenarioLibrary` en tant qu'entité distincte est subsumée par l'espace personnel — un scénario réutilisable est simplement un `Document` de cet espace.
+- **Content Library** — consomme les instances de scénario comme documents de l'espace cible (campagne ou one-shot).
+
 ---
 
-## Diagramme de dépendances
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -99,9 +99,9 @@ flowchart LR
 
 ### US-13-01 — Marquer un scénario comme réutilisable
 
-**En tant que** MJ,
-**je veux** marquer un scénario existant comme réutilisable,
-**afin de** le conserver dans mon espace personnel (`isReusable = true`) et pouvoir en créer des instances sans toucher à l'original.
+**En tant que** : MJ,
+**je veux** : marquer un scénario existant comme réutilisable,
+**afin de** : le conserver dans mon espace personnel (`isReusable = true`) et pouvoir en créer des instances sans toucher à l'original.
 
 **Notes de conception** :
 - L'action "Marquer comme réutilisable" est disponible depuis la vue d'un scénario dans un espace (campagne ou one-shot).
@@ -154,9 +154,9 @@ Scénario : Espace personnel accessible uniquement par le MJ propriétaire
 
 ### US-13-02 — Rejouer un scénario depuis la bibliothèque
 
-**En tant que** MJ,
-**je veux** créer une instance d'un scénario depuis mon espace personnel et la lancer dans le contexte de mon choix,
-**afin de** rejouer le même scénario avec un nouveau groupe sans modifier le contenu source.
+**En tant que** : MJ,
+**je veux** : créer une instance d'un scénario depuis mon espace personnel et la lancer dans le contexte de mon choix,
+**afin de** : rejouer le même scénario avec un nouveau groupe sans modifier le contenu source.
 
 **Notes de conception** :
 - Le MJ choisit entre deux contextes cibles : "One-shot ce soir" (crée un espace one-shot minimal, A3) ou "Ajouter à une campagne existante".
@@ -193,7 +193,7 @@ Scénario : Rejouer un scénario en one-shot ce soir — nominal
   Et le scénario source "La Crypte de Malnoir" reste intact dans l'espace personnel de Sonia
 
 Scénario : Rejouer un scénario dans une campagne existante
-  Étant donné que Antoine a le scénario "Module d'initiation" dans son espace personnel
+  Étant donné qu'Antoine a le scénario "Module d'initiation" dans son espace personnel
   Et que Antoine a une campagne "Campagne Nordique" en cours
   Quand Antoine choisit "Rejouer" puis "Ajouter à une campagne existante"
   Et que Antoine sélectionne "Campagne Nordique"
@@ -222,9 +222,9 @@ Scénario : Archivage manuel de l'espace one-shot après la session
 
 ### US-13-03 — Consulter l'historique des runs
 
-**En tant que** MJ,
-**je veux** consulter la liste des instances passées d'un scénario depuis mon espace personnel,
-**afin de** me souvenir des runs précédents, voir les notes laissées et éviter de répéter les mêmes variantes avec un même groupe.
+**En tant que** : MJ,
+**je veux** : consulter la liste des instances passées d'un scénario depuis mon espace personnel,
+**afin de** : me souvenir des runs précédents, voir les notes laissées et éviter de répéter les mêmes variantes avec un même groupe.
 
 **Notes de conception** :
 - L'historique est accessible depuis la fiche d'un scénario dans l'espace personnel.
@@ -258,7 +258,7 @@ Scénario : Consulter une instance passée en lecture seule
   Et aucune modification n'est possible depuis cette vue historique
 
 Scénario : Historique vide pour un scénario jamais joué
-  Étant donné que Antoine a ajouté "Module d'initiation" dans son espace personnel
+  Étant donné qu'Antoine a ajouté "Module d'initiation" dans son espace personnel
   Et qu'aucune instance n'a encore été créée
   Quand Antoine consulte l'historique de "Module d'initiation"
   Alors l'historique est vide et un message invite Antoine à lancer le premier run
@@ -288,7 +288,7 @@ Scénario : Historique vide pour un scénario jamais joué
 
 ## Vérification de couverture
 
-| Cas UC-13 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal — rejouer un scenario depuis l espace personnel, creation d une instance via Document.Instantiate | US-13-02 |
 | A1 — marquer un scenario comme reutilisable (Document isReusable = true dans l espace personnel) | US-13-01 |

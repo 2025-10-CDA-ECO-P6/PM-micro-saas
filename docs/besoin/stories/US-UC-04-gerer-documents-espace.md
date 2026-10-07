@@ -1,4 +1,6 @@
-# Epic — Créer et gérer des documents d'espace modulaires
+# Epic — Créer et gérer des documents d'espace modulaires (UC-04)
+
+- **Gherkin** : Scénario, Étant donné que, Quand, Alors, Et, Mais
 
 ## Objectif utilisateur
 
@@ -38,18 +40,11 @@ d'espace : le type est une aide optionnelle, la structure reste libre en blocs.
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-04 — Gérer les documents d'un espace](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- Création et modification des documents d'espace
-- Classement dans les dossiers
-- Liens entre documents
-- Tags, recherche et visibilité
+**Source de la priorité** : Matrice de priorités
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -71,9 +66,16 @@ flowchart TD
     L -->|Consulter les backlinks| N[Voir les documents\nqui référencent ce doc]
 ```
 
+### Bounded contexts pressentis
+
+- Création et modification des documents d'espace
+- Classement dans les dossiers
+- Liens entre documents
+- Tags, recherche et visibilité
+
 ---
 
-## Dépendances Mermaid
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -104,10 +106,10 @@ flowchart LR
 
 ### US-04-01 — Créer et modifier un document d'espace
 
-**En tant que** MJ,  
-**je veux** créer un document modulaire dans mon espace, y rédiger un contenu libre en blocs
+**En tant que** : MJ,  
+**je veux** : créer un document modulaire dans mon espace, y rédiger un contenu libre en blocs
 et le modifier à tout moment,  
-**afin de** disposer d'un espace durable pour représenter mes éléments sans structure imposée.
+**afin de** : disposer d'un espace durable pour représenter mes éléments sans structure imposée.
 
 **Notes de conception** :
 - Le type de document est optionnel. Les types proposés peuvent inclure note, PNJ, lieu,
@@ -153,9 +155,9 @@ Scénario : Le MJ déplace un document vers un autre dossier
 
 ### US-04-02 — Créer une note rapide sans configuration
 
-**En tant que** MJ,  
-**je veux** créer une note immédiatement sans remplir de formulaire,  
-**afin de** capturer une idée ou une information en session sans interrompre le jeu.
+**En tant que** : MJ,  
+**je veux** : créer une note immédiatement sans remplir de formulaire,  
+**afin de** : capturer une idée ou une information en session sans interrompre le jeu.
 
 **Notes de conception** :
 - La logique de titre généré est **interface uniquement** : le système conserve toujours un titre non vide.
@@ -203,9 +205,9 @@ Scénario : La note rapide est accessible depuis la bibliothèque et depuis la v
 
 ### US-04-03 — Contrôler la visibilité d'un document
 
-**En tant que** MJ,  
-**je veux** définir si un document est privé ou visible par tous les membres de mon espace,  
-**afin de** partager certains éléments avec mes joueurs tout en gardant mes notes pour moi.
+**En tant que** : MJ,  
+**je veux** : définir si un document est privé ou visible par tous les membres de mon espace,  
+**afin de** : partager certains éléments avec mes joueurs tout en gardant mes notes pour moi.
 
 **Notes de conception** :
 - Le MJ peut rendre un document visible par les joueurs.
@@ -246,9 +248,9 @@ Scénario : Un joueur ne voit pas un document privé
 
 ### US-04-04 — Taguer un document
 
-**En tant que** MJ,  
-**je veux** associer librement des tags à mes documents pour les organiser selon mes propres catégories,  
-**afin de** structurer mon contenu comme je l'entends, indépendamment de tout dossier, type ou lien — et, une fois la recherche par tag disponible, de les retrouver par thème.
+**En tant que** : MJ,  
+**je veux** : associer librement des tags à mes documents pour les organiser selon mes propres catégories,  
+**afin de** : structurer mon contenu comme je l'entends, indépendamment de tout dossier, type ou lien — et, une fois la recherche par tag disponible, de les retrouver par thème.
 
 **Notes de conception** :
 - **Résolution de l'arbitrage** : la fonction tag répond à un besoin propre d'organisation du MJ, indépendant de la recherche — le MJ en fait ce qu'il veut. Ce n'est pas une fonction subordonnée au filtrage en recherche : elle a sa propre valeur d'usage, même sans recherche par tag disponible (UC-04 § Tags, § Règles métier).
@@ -292,9 +294,9 @@ Scénario : Le MJ saisit une variante de casse d'un tag existant
 
 ### US-04-05 — Lier un document à d'autres éléments d'espace
 
-**En tant que** MJ,  
-**je veux** lier mes documents entre eux,  
-**afin de** naviguer entre un PNJ, ses scènes, ses notes associées, sans dupliquer le contenu.
+**En tant que** : MJ,  
+**je veux** : lier mes documents entre eux,  
+**afin de** : naviguer entre un PNJ, ses scènes, ses notes associées, sans dupliquer le contenu.
 
 **Notes de conception** :
 - Le lien part d'un document vers un ou plusieurs autres documents.
@@ -331,9 +333,9 @@ Scénario : Un document peut être lié à plusieurs autres documents
 
 ### US-04-06 — Consulter les backlinks d'un document
 
-**En tant que** MJ,  
-**je veux** voir quels documents référencent le document que je consulte,  
-**afin de** naviguer dans le graphe de mon espace et comprendre les dépendances entre éléments.
+**En tant que** : MJ,  
+**je veux** : voir quels documents référencent le document que je consulte,  
+**afin de** : naviguer dans le graphe de mon espace et comprendre les dépendances entre éléments.
 
 **Notes de conception** :
 - Les backlinks sont la liste des documents qui pointent vers le document courant.
@@ -392,7 +394,7 @@ Scénario : Un document sans backlink affiche une section vide
 
 ## Vérification de couverture
 
-| Cas UC-04 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal — création complète | US-04-01 + US-04-03 + US-04-04 + US-04-05 |
 | A1 — note rapide sans titre | US-04-02 |

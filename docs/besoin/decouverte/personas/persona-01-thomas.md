@@ -6,7 +6,7 @@
 35 ans, développeur backend. MJ depuis 12 ans, groupe de 6 joueurs, une session tous les 15 jours.
 Systèmes joués : D&D 5e, Forbidden Lands.
 
-## Qui il est
+## Qui il/elle est
 
 Thomas a passé autant de temps à organiser sa campagne qu'à la jouer. Son vault Obsidian dépasse
 les 400 notes : des requêtes Dataview pour ses tables dynamiques, des templates Templater, le
@@ -19,12 +19,12 @@ Ce qui lui manque concrètement :
 
 Mais il ne se voit pas abandonner Obsidian pour ça.
 
-## Ce qu'il utiliserait
+## Ce qu'il/elle utiliserait
 
 Potentiellement, Haversack comme couche de partage et de vue session par-dessus son organisation
 existante. Pas comme remplacement.
 
-## Ce qu'il demande à l'app
+## Ce qu'il/elle demande au produit
 
 - Peut-on importer du markdown depuis Obsidian ?
 - Peut-on exporter ses données si on arrête l'outil ?

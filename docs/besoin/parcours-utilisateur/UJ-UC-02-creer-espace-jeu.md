@@ -12,17 +12,15 @@ Le one-shot est techniquement un espace avec `type = ONE_SHOT` ; le MJ ne voit p
 
 ## Personas concernés
 
-| Persona | Profil | Objectif dans ce parcours |
-|---|---|---|
-| **Nadia** | MJ infirmière, sessions mensuelles | Créer sa première campagne sans friction |
-| **Sonia** | MJ one-shot, 3-5 sessions/mois | Être opérationnelle en moins de 30 secondes |
-| **Antoine** | MJ multi-campagnes simultanées | Créer une 3e campagne et adapter la structure à son système |
+| Persona | Mode de travail | Attente principale | Risque de friction |
+|---|---|---|---|
+| **Nadia** | MJ infirmière, sessions mensuelles | Créer sa première campagne sans friction | SOUS-SPÉCIFIÉ |
+| **Sonia** | MJ one-shot, 3-5 sessions/mois | Être opérationnelle en moins de 30 secondes | SOUS-SPÉCIFIÉ |
+| **Antoine** | MJ multi-campagnes simultanées | Créer une 3e campagne et adapter la structure à son système | SOUS-SPÉCIFIÉ |
 
 ---
 
-## Vue d'ensemble du parcours
-
-### Carte d'expérience
+## Carte d'expérience
 
 ```mermaid
 journey
@@ -44,7 +42,7 @@ journey
       Commencer à ajouter du contenu: 4: Nadia, Antoine
 ```
 
-### Flux fonctionnel
+## Flux fonctionnel
 
 ```mermaid
 flowchart TD
@@ -69,7 +67,7 @@ flowchart TD
 
 ---
 
-## Détail des étapes
+## Points de friction
 
 | Étape | Persona(s) | Friction | Opportunité produit |
 |---|---|---|---|
@@ -82,6 +80,19 @@ flowchart TD
 | Choisir "Lancer un one-shot" *(post-MVP)* | Sonia | Redirection inattendue vers un formulaire | Parcours express : titre → éditeur, sans étape intermédiaire |
 | Sélectionner un scénario existant *(post-MVP — dépend UC-13)* | Sonia | Catalogue lent à charger ou peu lisible | Liste compacte avec recherche rapide et aperçu titre |
 | Arriver dans l'éditeur *(post-MVP)* | Sonia | Interface d'édition chargée ou désorientante | Vue épurée avec zone de saisie active immédiatement |
+
+---
+
+## Opportunités UX
+
+### Points de conversion clés
+
+| Moment | Déclencheur | Action attendue |
+|---|---|---|
+| Première campagne créée | Dossiers visibles, accès immédiat | Installation de la confiance — reprise à la prochaine session |
+| One-shot < 30 secondes *(post-MVP — parcours express)* | Accès direct à l'éditeur | Fidélisation Sonia — usage récurrent sans effort |
+| Dossiers renommés (Antoine) | Flexibilité perçue | Satisfaction structurelle — adoption sur plusieurs systèmes |
+| Limite de synchronisation atteinte (gratuit) | Besoin de plus d'espaces synchronisés | Conversion vers offre payante |
 
 ---
 
@@ -102,17 +113,6 @@ flowchart TD
 
 **Nom vide à la validation**
 - Retour d'erreur inline sous le champ, sans rechargement. La saisie reste active.
-
----
-
-## Points de conversion clés
-
-| Moment | Déclencheur | Action attendue |
-|---|---|---|
-| Première campagne créée | Dossiers visibles, accès immédiat | Installation de la confiance — reprise à la prochaine session |
-| One-shot < 30 secondes *(post-MVP — parcours express)* | Accès direct à l'éditeur | Fidélisation Sonia — usage récurrent sans effort |
-| Dossiers renommés (Antoine) | Flexibilité perçue | Satisfaction structurelle — adoption sur plusieurs systèmes |
-| Limite de synchronisation atteinte (gratuit) | Besoin de plus d'espaces synchronisés | Conversion vers offre payante |
 
 ---
 

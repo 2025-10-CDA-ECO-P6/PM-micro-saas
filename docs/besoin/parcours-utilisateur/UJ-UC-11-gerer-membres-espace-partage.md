@@ -6,6 +6,15 @@ Parcours couvrant deux flux distincts du point de vue du MJ : la gestion rapide 
 
 ---
 
+## Personas concernés
+
+| Persona | Mode de travail | Attente principale | Risque de friction |
+|---|---|---|---|
+| Émilie | gestion rapide des invitations ; table occasionnelle, friction minimale | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Thomas | gestion complète des membres ; table stable, association joueur-personnage, surveillance des accès | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
+---
+
 ## Carte d'expérience
 
 ```mermaid
@@ -88,19 +97,16 @@ flowchart TD
 
 ---
 
-## Points de friction identifiés
+## Points de friction
 
-- **Choix du périmètre peu intuitif pour Émilie** : la distinction `SPACE` / `SESSION` est technique. Émilie veut juste "inviter ses joueurs pour ce soir". Un libellé orienté usage ("Accès permanent à l'espace" / "Accès pour cette session") réduirait la friction cognitive.
-
-- **Génération du lien hors de la vue session** : Émilie veut souvent inviter ses joueurs juste avant de démarrer la session. Si le point d'entrée est uniquement dans la section "Membres" de l'espace, elle doit naviguer hors de la vue session en cours. Un raccourci depuis la vue session (UC-06) éviterait cette rupture.
-
-- **Absence de confirmation visuelle que le joueur a rejoint** : Thomas génère un lien et attend. Sans indication dans l'interface que le lien a été utilisé, il ne sait pas si son joueur a bien rejoint. L'état de l'invitation (`PENDING` → `ACTIVE`) doit être visible en temps réel dans le panneau membres.
-
-- **Association joueur-personnage silencieuse** : Thomas associe un joueur à son personnage mais ne sait pas si le joueur l'a vu. Si l'association a lieu alors que le joueur est déjà connecté, une notification in-app côté joueur éviterait les demandes répétées ("tu as ma fiche ?").
-
-- **Retrait d'un membre — confirmation anxiogène** : le MJ craint de supprimer des données. Un message de confirmation explicite ("les données du joueur — personnage, notes — sont conservées dans l'espace") réduit l'hésitation.
-
-- **Quota d'usages — valeur par défaut ambiguë** : si Thomas ne renseigne pas de nombre maximum d'utilisations, le comportement par défaut (illimité ou 1 ?) n'est pas évident. La valeur par défaut doit être visible et documentée dans le formulaire.
+| Étape | Persona(s) | Friction | Opportunité produit |
+|---|---|---|---|
+| SOUS-SPÉCIFIÉ | Émilie | **Choix du périmètre peu intuitif pour Émilie** : la distinction `SPACE` / `SESSION` est technique. Émilie veut juste "inviter ses joueurs pour ce soir". Un libellé orienté usage ("Accès permanent à l'espace" / "Accès pour cette session") réduirait la friction cognitive. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Émilie | **Génération du lien hors de la vue session** : Émilie veut souvent inviter ses joueurs juste avant de démarrer la session. Si le point d'entrée est uniquement dans la section "Membres" de l'espace, elle doit naviguer hors de la vue session en cours. Un raccourci depuis la vue session (UC-06) éviterait cette rupture. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Thomas | **Absence de confirmation visuelle que le joueur a rejoint** : Thomas génère un lien et attend. Sans indication dans l'interface que le lien a été utilisé, il ne sait pas si son joueur a bien rejoint. L'état de l'invitation (`PENDING` → `ACTIVE`) doit être visible en temps réel dans le panneau membres. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Thomas | **Association joueur-personnage silencieuse** : Thomas associe un joueur à son personnage mais ne sait pas si le joueur l'a vu. Si l'association a lieu alors que le joueur est déjà connecté, une notification in-app côté joueur éviterait les demandes répétées ("tu as ma fiche ?"). | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | **Retrait d'un membre — confirmation anxiogène** : le MJ craint de supprimer des données. Un message de confirmation explicite ("les données du joueur — personnage, notes — sont conservées dans l'espace") réduit l'hésitation. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Thomas | **Quota d'usages — valeur par défaut ambiguë** : si Thomas ne renseigne pas de nombre maximum d'utilisations, le comportement par défaut (illimité ou 1 ?) n'est pas évident. La valeur par défaut doit être visible et documentée dans le formulaire. | SOUS-SPÉCIFIÉ |
 
 ---
 

@@ -16,9 +16,7 @@ Parcours du MJ depuis le lancement d'une session jusqu'à sa fermeture, en passa
 
 ---
 
-## Vue d'ensemble du parcours
-
-### Carte d'expérience
+## Carte d'expérience
 
 ```mermaid
 journey
@@ -42,7 +40,7 @@ journey
         Archiver la session (CLOSED → ARCHIVED): 3: Émilie, 4: Thomas, 3: Nadia
 ```
 
-### Flux fonctionnel
+## Flux fonctionnel
 
 ```mermaid
 flowchart TD
@@ -86,7 +84,7 @@ flowchart TD
 
 ## Points de friction
 
-| Étape | Persona(s) | Friction potentielle | Opportunité produit |
+| Étape | Persona(s) | Friction | Opportunité produit |
 |---|---|---|---|
 | Ouvrir l'écran de lancement | Tous | Trop d'étapes avant d'atteindre le bouton "Lancer" | Accès direct depuis le tableau de bord de l'espace en un clic |
 | Saisir le titre et sélectionner un scénario | Thomas, Sonia | Sélection du scénario obligatoire si l'UX n'indique pas que c'est optionnel | Champ scénario clairement marqué "optionnel", lancement possible sans sélection |
@@ -100,6 +98,19 @@ flowchart TD
 | Terminer la session | Nadia | Confirmation redondante si l'action est simple | Une confirmation simple suffit — pas de dialogue complexe |
 | Ajouter une note rétroactive en CLOSED | Thomas | Statut CLOSED peu visible — MJ peut penser être en LIVE | Indicateur de statut visible dans la barre de la vue session |
 | Archiver | Thomas | Transition CLOSED → ARCHIVED irréversible mal comprise | Avertissement explicite que l'archivage est définitif et passe en lecture seule |
+
+---
+
+## Opportunités UX
+
+| Point de conversion | Indicateur de succès | Risque d'abandon |
+|---|---|---|
+| Lancement de session en moins de 30 secondes | Session en `LIVE` avec vue ouverte avant 30 secondes | Trop d'étapes ou champ scénario mal présenté comme optionnel |
+| Panneaux dans le bon ordre à l'ouverture | configuration de la vue session persistée entre deux sessions | Config réinitialisée à chaque session — Thomas abandonne |
+| Première note de session créée sans friction | note de session enregistrée depuis la zone de saisie directe | Zone de saisie masquée ou inaccessible sans scroll |
+| Document retrouvé et épinglé rapidement | Document dans le panneau Épinglés en moins de 3 clics | Vue condensée peu informative, dossier dense |
+| Basculement note de session privé MJ → visible par les joueurs efficace | Joueurs voient la note immédiatement | Icône de basculement non visible inline |
+| Fermeture de session sans perte de données | notes de session et épingles présents en CLOSED | Confusion entre fermeture accidentelle et clôture intentionnelle |
 
 ---
 
@@ -160,19 +171,6 @@ Nadia prépare une session de Dungeon World. Elle veut lancer en moins de 30 sec
 
 ---
 
-## Opportunités UX
-
-| Point de conversion | Indicateur de succès | Risque d'abandon |
-|---|---|---|
-| Lancement de session en moins de 30 secondes | Session en `LIVE` avec vue ouverte avant 30 secondes | Trop d'étapes ou champ scénario mal présenté comme optionnel |
-| Panneaux dans le bon ordre à l'ouverture | configuration de la vue session persistée entre deux sessions | Config réinitialisée à chaque session — Thomas abandonne |
-| Première note de session créée sans friction | note de session enregistrée depuis la zone de saisie directe | Zone de saisie masquée ou inaccessible sans scroll |
-| Document retrouvé et épinglé rapidement | Document dans le panneau Épinglés en moins de 3 clics | Vue condensée peu informative, dossier dense |
-| Basculement note de session privé MJ → visible par les joueurs efficace | Joueurs voient la note immédiatement | Icône de basculement non visible inline |
-| Fermeture de session sans perte de données | notes de session et épingles présents en CLOSED | Confusion entre fermeture accidentelle et clôture intentionnelle |
-
----
-
 ## Liens
 
 - Use case source : [`docs/besoin/cas-d-utilisation/UC-06-vue-session.md`](../cas-d-utilisation/UC-06-vue-session.md)
@@ -186,24 +184,24 @@ Nadia prépare une session de Dungeon World. Elle veut lancer en moins de 30 sec
 
 ---
 
-## Transitions inter-UC
+### Transitions inter-UC
 
-### Depuis UC-04 / UC-05 (préparation du contenu)
+#### Depuis UC-04 / UC-05 (préparation du contenu)
 
 La vue session (UC-06) consomme sans transformation le contenu préparé dans UC-04 (documents) et la structure de dossiers configurée dans UC-05. Les panneaux de la `SessionViewConfig` référencent des dossiers par leur identifiant — les documents qu'ils contiennent sont affichés tels quels, avec le nom de dossier actuel (renommages UC-05 inclus). La configuration des panneaux peut être faite avant la session (recommandé pour Thomas) ou ajustée en direct pendant la session `LIVE` sans l'interrompre. Un document préparé dans UC-04 avec `visibility = GM_ONLY` est visible uniquement dans la vue MJ ; il ne devient visible dans la vue joueur qu'après une action explicite de partage (UC-08).
 
-### Vers UC-07 (création à la volée)
+#### Vers UC-07 (création à la volée)
 
 Depuis la vue session `LIVE`, le MJ peut créer un document ou une note sans quitter la vue session. UC-07 gère ce flux de création rapide ; le document résultant est un `Document` ordinaire au sens de UC-04, automatiquement épinglé dans `pinnedDocumentIds` de la session active. La visibilité par défaut du document créé à la volée est `GM_ONLY`. UC-07 retourne le contrôle à la vue session UC-06 sans transition visible pour le MJ.
 
-### Vers UC-08 (partage d'un document)
+#### Vers UC-08 (partage d'un document)
 
 Depuis la vue session `LIVE`, le MJ peut déclencher le partage d'un document via l'action « Partager » sur n'importe quel document visible. UC-08 gère la transition de `visibility = GM_ONLY` vers `PUBLIC` ; ce changement est **durable** au-delà de la session. En retour vers UC-06, le document partagé est automatiquement ajouté à `pinnedDocumentIds` de la session pour un accès rapide, et les joueurs ayant un `GuestAccess` actif ou un `SpaceMembership` voient immédiatement le document dans leur vue joueur. Cette transition UC-06 → UC-08 → UC-06 est transparente pour le MJ — il ne quitte pas la vue session.
 
-### Vers UC-09 (vue joueur)
+#### Vers UC-09 (vue joueur)
 
 La vue joueur exposée par UC-09 est le pendant de la vue session MJ : elle affiche les documents `PUBLIC` de l'espace et les notes de session `PLAYER_PRIVATE` propres au joueur. La vue joueur est disponible uniquement si le MJ a un compte actif (mode local exclu — RB-01-06). Les joueurs accèdent à leur vue via un lien de session ponctuel (`GuestAccess`, portée `SESSION`) généré par le MJ depuis la vue session ou le panneau membres. Les documents que le MJ partage en session (UC-08) apparaissent dans la vue joueur en temps réel ; les documents restés `GM_ONLY` n'y sont jamais visibles même s'ils sont épinglés dans la session MJ.
 
-### Vers UC-14 (recherche globale)
+#### Vers UC-14 (recherche globale)
 
 Depuis la vue session `LIVE`, le MJ dispose d'une barre de recherche globale pour retrouver un document non épinglé et non visible dans les panneaux configurés. Nadia cherche un PNJ spécifique au milieu d'une session sans quitter la vue session ; Émilie retrouve une note de session ou un scénario mémorisé par titre ou tag. Les résultats de recherche sont ouverts dans un panneau latéral sans interrompre le contexte de session. UC-14 décrit le système de recherche global (indexation, filtrage par type, visibilité des résultats) ; UC-06 exprime son usage : accès rapide pendant une session `LIVE`.

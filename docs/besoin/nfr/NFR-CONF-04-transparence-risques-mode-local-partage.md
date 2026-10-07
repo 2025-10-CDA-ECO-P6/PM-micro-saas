@@ -1,6 +1,6 @@
 # NFR-CONF-04 — Transparence sur les risques de confidentialité en mode local partagé
 
-Famille **Confidentialité** — [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : CONF · [Index — Confidentialité](README.md)
 
 ---
 
@@ -24,13 +24,13 @@ La confiance dans un produit qui gère des données de préparation narrative �
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - L'affichage d'un bandeau d'information non bloquant, systématiquement présent en mode local, signalant le risque d'accès aux données par une autre personne utilisant le même appareil et navigateur.
 - La proposition, depuis ce bandeau, d'un moyen de sécuriser les données : la création d'un compte, qui associe les données à des identifiants personnels.
 - La distinction de ce bandeau d'avec le bandeau de durabilité (NFR-OFF-03) : les deux bandeaux ont des causes, des risques et des audiences cibles distincts — ils ne doivent pas être fusionnés (US-UC-01, RB-01-14).
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - La protection technique des données stockées localement contre la lecture par un tiers : cette protection n'est pas livrée en MVP, c'est une limite assumée (US-UC-01, RB-01-14 — « limitation MVP assumée »). Cette exigence ne demande pas que le risque soit éliminé, mais qu'il soit communiqué.
 - Le mode cloud (compte créé) : une fois le MJ authentifié avec un compte, ses données sont associées à ses identifiants. Cette exigence ne s'applique qu'au mode local sans compte.
@@ -41,19 +41,19 @@ La confiance dans un produit qui gère des données de préparation narrative �
 
 ## Critères d'acceptation produit
 
-**Situation nominale — premier accès en mode local :**
+**Situation nominale** : premier accès en mode local
 
 Un MJ qui choisit de commencer sans compte voit, dès les premières interactions avec l'application en mode local, un bandeau d'information non bloquant lui signalant que les données stockées localement sont lisibles par toute personne ayant accès à ce navigateur sur cet appareil. Ce bandeau lui propose de créer un compte comme alternative plus sécurisée.
 
-**Situation nominale — usage continu en mode local :**
+**Situation nominale** : usage continu en mode local
 
 Le bandeau de confidentialité reste présent pendant toute la durée des sessions en mode local. Il ne disparaît pas après un premier affichage, puisque le risque qu'il signale est permanent tant que le MJ reste en mode local. Il est non bloquant : le MJ peut ignorer l'information et continuer à utiliser l'application normalement.
 
-**Situation limite — distinction avec le bandeau de durabilité :**
+**Situation limite** : distinction avec le bandeau de durabilité
 
 Un MJ en mode local qui voit à la fois le bandeau de confidentialité et le bandeau de durabilité (déclenché si le navigateur n'a pas garanti la conservation permanente des données — NFR-OFF-03) distingue clairement deux messages séparés portant sur deux risques distincts. Les deux bandeaux ne sont pas fusionnés en un seul message générique.
 
-**Situation limite — action depuis le bandeau :**
+**Situation limite** : action depuis le bandeau
 
 Le MJ qui clique sur l'invitation du bandeau de confidentialité est dirigé vers le parcours de création de compte (UC-10). Cette action est proposée, jamais imposée : le bandeau ne bloque pas l'accès à l'application si le MJ choisit de ne pas créer de compte.
 

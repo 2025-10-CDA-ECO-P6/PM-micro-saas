@@ -1,6 +1,6 @@
 # NFR-I18N-01 — Interface entièrement utilisable en français au MVP
 
-Famille **Internationalisation** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : I18N · [Index — Internationalisation](README.md)
 
 ---
 
@@ -46,7 +46,7 @@ est immédiatement lisible. Une friction linguistique est une friction d'adoptio
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - L'ensemble des textes produits par l'application et visibles à l'utilisateur dans les
   parcours normaux : libellés de boutons et d'actions, titres de sections, messages de
@@ -57,7 +57,7 @@ est immédiatement lisible. Une friction linguistique est une friction d'adoptio
   en français, mais sa qualité (absence de fautes manifestes, cohérence terminologique
   sur l'ensemble des parcours).
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Le contenu créé par le MJ ou les joueurs (titres de documents, notes, descriptions de
   PNJ, noms de lieux) — ce contenu est libre de langue, comme l'exprime NFR-I18N-03.
@@ -72,44 +72,38 @@ linguistique n'est engagé pour cette version.
 
 ## Critères d'acceptation produit
 
-- En parcourant l'ensemble des écrans accessibles au MJ — création de campagne, préparation
-  de scénario, vue session, recherche, partage d'informations, gestion du compte — aucun
-  texte en langue étrangère n'apparaît dans les libellés, titres, boutons, messages ou
-  notifications produits par l'application.
-- En parcourant l'ensemble des écrans accessibles au joueur — accès via lien de session,
-  consultation des informations partagées — aucun texte en langue étrangère n'apparaît
-  dans les éléments d'interface produits par l'application.
-- Dans les états exceptionnels visibles à l'utilisateur (aucun résultat de recherche,
-  perte de connexion, espace de stockage sous pression, confirmation de suppression de
-  compte), les messages affichés sont en français et compréhensibles sans connaissance
-  préalable de l'outil.
-- Un utilisateur dont le français est la seule langue maîtrisée peut accomplir l'ensemble
-  des parcours utilisateur documentés — UC-01 à UC-14 — sans rencontrer de texte
-  incompréhensible produit par l'interface.
+**Situation nominale** : En parcourant l'ensemble des écrans accessibles au MJ — création de campagne, préparation
+de scénario, vue session, recherche, partage d'informations, gestion du compte — aucun
+texte en langue étrangère n'apparaît dans les libellés, titres, boutons, messages ou
+notifications produits par l'application.
+
+**Situation nominale** : En parcourant l'ensemble des écrans accessibles au joueur — accès via lien de session,
+consultation des informations partagées — aucun texte en langue étrangère n'apparaît
+dans les éléments d'interface produits par l'application.
+
+**Situation limite** : Dans les états exceptionnels visibles à l'utilisateur (aucun résultat de recherche,
+perte de connexion, espace de stockage sous pression, confirmation de suppression de
+compte), les messages affichés sont en français et compréhensibles sans connaissance
+préalable de l'outil.
+
+**Situation nominale** : Un utilisateur dont le français est la seule langue maîtrisée peut accomplir l'ensemble
+des parcours utilisateur documentés — UC-01 à UC-14 — sans rencontrer de texte
+incompréhensible produit par l'interface.
 
 ---
 
 ## Traçabilité montante
 
-**Use cases servis :**
-
-- [UC-01 — Mode local sans compte](../cas-d-utilisation/UC-01-mode-local-sans-compte.md) — parcours
-  d'entrée sans inscription, premier contact avec l'interface.
-- [UC-02 — Créer un espace de jeu](../cas-d-utilisation/UC-02-creer-espace-jeu.md) — création de
-  campagne, libellés et confirmations du parcours de démarrage.
-- [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) — interface à la plus forte
-  densité de libellés actifs pendant une partie.
-- [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) — interface
-  visible par les joueurs accédant via lien de session.
-- [UC-10 — Compte cloud](../cas-d-utilisation/UC-10-compte-cloud.md) — messages d'inscription,
-  confirmations et notifications liées au compte.
-- [UC-14 — Recherche](../cas-d-utilisation/UC-14-recherche.md) — textes des états vides, suggestions,
-  libellés de filtres.
-
-**User stories servies :**
-
-- [US-UC-01 — Mode local sans compte](../stories/US-UC-01-mode-local-sans-compte.md)
-- [US-UC-06 — Vue session](../stories/US-UC-06-vue-session.md)
-- [US-UC-09 — Accès session joueur](../stories/US-UC-09-acces-session-joueur.md)
-- [US-UC-10 — Compte cloud](../stories/US-UC-10-compte-cloud.md)
-- [US-UC-14 — Recherche](../stories/US-UC-14-recherche.md)
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-01 — Mode local sans compte](../cas-d-utilisation/UC-01-mode-local-sans-compte.md) | parcours d'entrée sans inscription, premier contact avec l'interface. |
+| [UC-02 — Créer un espace de jeu](../cas-d-utilisation/UC-02-creer-espace-jeu.md) | création de campagne, libellés et confirmations du parcours de démarrage. |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | interface à la plus forte densité de libellés actifs pendant une partie. |
+| [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) | interface visible par les joueurs accédant via lien de session. |
+| [UC-10 — Compte cloud](../cas-d-utilisation/UC-10-compte-cloud.md) | messages d'inscription, confirmations et notifications liées au compte. |
+| [UC-14 — Recherche](../cas-d-utilisation/UC-14-recherche.md) | textes des états vides, suggestions, libellés de filtres. |
+| [US-UC-01 — Mode local sans compte](../stories/US-UC-01-mode-local-sans-compte.md) | User story servie |
+| [US-UC-06 — Vue session](../stories/US-UC-06-vue-session.md) | User story servie |
+| [US-UC-09 — Accès session joueur](../stories/US-UC-09-acces-session-joueur.md) | User story servie |
+| [US-UC-10 — Compte cloud](../stories/US-UC-10-compte-cloud.md) | User story servie |
+| [US-UC-14 — Recherche](../stories/US-UC-14-recherche.md) | User story servie |

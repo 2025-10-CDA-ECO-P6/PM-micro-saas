@@ -6,7 +6,7 @@
 28 ans, professeure de lycée. MJ depuis 6 ans, groupe de 3 à 4 joueurs, une session par semaine.
 Systèmes joués : Ironsworn, Blades in the Dark, Fate.
 
-## Qui elle est
+## Qui il/elle est
 
 Émilie ne prépare presque rien avant une session. Ce n'est pas de la paresse, c'est une philosophie.
 Elle joue des systèmes où l'impro collaborative est une mécanique centrale, pas une rustine.
@@ -20,13 +20,13 @@ se perdent, et 6 mois plus tard elle ne retrouve plus ce qui a été établi à 
 Si on lui montre la vision de Haversack, elle lira "préparer une campagne" et aura l'impression
 que l'outil n'est pas fait pour elle.
 
-## Ce qu'elle utiliserait
+## Ce qu'il/elle utiliserait
 
 - Créer une fiche PNJ en quelques secondes en cours de scène, sans quitter la fiction
 - Capturer du contenu imprévu et le réorganiser après la partie
 - Suivre les conséquences narratives dans le temps
 
-## Ce qu'elle demande à l'app
+## Ce qu'il/elle demande au produit
 
 - Combien de clics pour créer un nouveau document pendant une session ?
 - Y a-t-il un mode capture rapide, sans structure imposée ?

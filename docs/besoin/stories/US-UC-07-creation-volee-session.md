@@ -34,18 +34,11 @@ Permettre au MJ de créer instantanément un document durable dans l'espace depu
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-07 — Créer un élément à la volée en session](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- **Content Library** — création du document, liaison à l'espace, dossier d'accueil
-- **Session Conduct** — rattachement selon le type : `Session.AttachNote` (`sessionNoteIds`) pour une note de session, `Session.PinDocument` (`pinnedDocumentIds`, auto-épinglé par défaut en LIVE, désépinglable par le MJ) pour un document durable
-
-La création à la volée est une opération cross-context : `Document.Create(...)` dans Content Library, puis — selon le type — `Session.AttachNote(documentId)` (note de session) ou `Session.PinDocument(documentId)` (document durable) dans Session Conduct.
+**Source de la priorité** : Matrice de priorités
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -75,9 +68,16 @@ flowchart TD
     L --> M[MJ enrichit le document ultérieurement]
 ```
 
+### Bounded contexts pressentis
+
+- **Content Library** — création du document, liaison à l'espace, dossier d'accueil
+- **Session Conduct** — rattachement selon le type : `Session.AttachNote` (`sessionNoteIds`) pour une note de session, `Session.PinDocument` (`pinnedDocumentIds`, auto-épinglé par défaut en LIVE, désépinglable par le MJ) pour un document durable
+
+La création à la volée est une opération cross-context : `Document.Create(...)` dans Content Library, puis — selon le type — `Session.AttachNote(documentId)` (note de session) ou `Session.PinDocument(documentId)` (document durable) dans Session Conduct.
+
 ---
 
-## Dépendances Mermaid
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -99,9 +99,9 @@ flowchart LR
 
 ### US-07-01 — Créer un document à la volée depuis une session LIVE
 
-**En tant que** MJ,  
-**je veux** créer un document (note, PNJ, lieu, faction, personnage joueur ou document libre) depuis la vue session avec un titre seul,  
-**afin de** maintenir la fluidité de la partie et retrouver l'élément proprement dans mon espace après la session.
+**En tant que** : MJ,  
+**je veux** : créer un document (note, PNJ, lieu, faction, personnage joueur ou document libre) depuis la vue session avec un titre seul,  
+**afin de** : maintenir la fluidité de la partie et retrouver l'élément proprement dans mon espace après la session.
 
 **Notes de conception** :
 - Opération cross-context :
@@ -167,9 +167,9 @@ Scénario : Création impossible en ARCHIVED (E2)
 
 ### US-07-02 — Ajouter un élément rétroactif depuis une session CLOSED
 
-**En tant que** MJ,  
-**je veux** créer un document depuis une session déjà terminée (CLOSED),  
-**afin de** retrouver dans mon espace un élément improvisé pendant la partie que je n'ai pas eu le temps de saisir à chaud.
+**En tant que** : MJ,  
+**je veux** : créer un document depuis une session déjà terminée (CLOSED),  
+**afin de** : retrouver dans mon espace un élément improvisé pendant la partie que je n'ai pas eu le temps de saisir à chaud.
 
 **Notes de conception** :
 - Session en statut `CLOSED` : `Session.pinnedDocumentIds` reste modifiable.
@@ -229,7 +229,7 @@ Scénario : Création impossible en ARCHIVED
 
 ## Vérification de couverture
 
-| Cas UC-07 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal — création rapide depuis panneau | US-07-01 |
 | A1 — PNJ à la volée | US-07-01 |

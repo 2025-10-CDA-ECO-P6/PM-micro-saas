@@ -38,16 +38,11 @@ Permettre au MJ de piloter une session de jeu depuis un tableau de bord configur
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-06 — Utiliser la vue session](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- **la conduite de session** — Session, configuration de la vue session, références aux documents de session
-- **Bibliothèque de contenu** — dossiers, documents, notes de session
+**Source de la priorité** : Matrice de priorités
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -81,9 +76,14 @@ flowchart TD
     T --> U[Joueur crée ses propres notes de session personnelle joueur]
 ```
 
+### Bounded contexts pressentis
+
+- **la conduite de session** — Session, configuration de la vue session, références aux documents de session
+- **Bibliothèque de contenu** — dossiers, documents, notes de session
+
 ---
 
-## Dépendances Mermaid
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -123,9 +123,9 @@ flowchart LR
 
 ### US-06-01 — Lancer une session
 
-**En tant que** MJ,  
-**je veux** lancer une session en saisissant un titre et en sélectionnant optionnellement un scénario,  
-**afin d'** accéder immédiatement au tableau de bord de session.
+**En tant que** : MJ,  
+**je veux** : lancer une session en saisissant un titre et en sélectionnant optionnellement un scénario,  
+**afin de** : accéder immédiatement au tableau de bord de session.
 
 **Notes de conception** :
 - `Session.Start(espace associé, title, scenarioId?)` — crée la session directement en `LIVE`. Pas d'état intermédiaire PENDING.
@@ -170,9 +170,9 @@ Scénario : Lancement refusé si titre vide
 
 ### US-06-02 — Configurer les panneaux de la vue session
 
-**En tant que** MJ,  
-**je veux** configurer les dossiers mis en avant dans la vue session et leur ordre,  
-**afin de** disposer immédiatement des informations pertinentes lors de la session.
+**En tant que** : MJ,  
+**je veux** : configurer les dossiers mis en avant dans la vue session et leur ordre,  
+**afin de** : disposer immédiatement des informations pertinentes lors de la session.
 
 **Notes de conception** :
 - La configuration est définie par espace, pas par session — elle persiste entre les sessions.
@@ -219,9 +219,9 @@ Scénario : La config persiste entre deux sessions
 
 ### US-06-03 — Naviguer dans les dossiers pendant la session
 
-**En tant que** MJ,  
-**je veux** parcourir les dossiers et documents de mon espace depuis la vue session,  
-**afin d'** accéder aux informations dont j'ai besoin sans quitter l'interface de session.
+**En tant que** : MJ,  
+**je veux** : parcourir les dossiers et documents de mon espace depuis la vue session,  
+**afin de** : accéder aux informations dont j'ai besoin sans quitter l'interface de session.
 
 **Notes de conception** :
 - la conduite de session **lit** le contenu depuis la bibliothèque de contenu — il ne le possède pas.
@@ -257,9 +257,9 @@ Scénario : Le joueur ne voit pas les documents non publics
 
 ### US-06-04 — Prendre des notes de session MJ
 
-**En tant que** MJ,  
-**je veux** prendre des notes rapides pendant la session et choisir si elles sont visibles par les joueurs,  
-**afin de** tracer les événements importants et partager sélectivement avec ma table.
+**En tant que** : MJ,  
+**je veux** : prendre des notes rapides pendant la session et choisir si elles sont visibles par les joueurs,  
+**afin de** : tracer les événements importants et partager sélectivement avec ma table.
 
 **Mapping de visibilité (référence implémentation)** :
 - `privé MJ` dans ce document = `GM_ONLY` dans le domaine — lisible par `OWNER` et `GM`, invisible aux joueurs.
@@ -314,9 +314,9 @@ Scénario : Résilience réseau (E1)
 
 ### US-06-05 — Épingler un document pendant la session
 
-**En tant que** MJ,  
-**je veux** épingler des documents dans la vue session pour les garder accessibles sans navigation,  
-**afin de** conserver sous la main les documents critiques pour la session en cours.
+**En tant que** : MJ,  
+**je veux** : épingler des documents dans la vue session pour les garder accessibles sans navigation,  
+**afin de** : conserver sous la main les documents critiques pour la session en cours.
 
 **Notes de conception** :
 - épinglage du document / désépinglage du document — modifie documents épinglés.
@@ -357,9 +357,9 @@ Scénario : Épinglage automatique à la création à la volée
 
 ### US-06-06 — Terminer une session
 
-**En tant que** MJ,  
-**je veux** terminer la session en cours,  
-**afin de** clore proprement la session tout en pouvant ajouter des notes rétroactives avant archivage.
+**En tant que** : MJ,  
+**je veux** : terminer la session en cours,  
+**afin de** : clore proprement la session tout en pouvant ajouter des notes rétroactives avant archivage.
 
 **Notes de conception** :
 - `Session.Close()` → `LIVE → CLOSED`. Transition irréversible.
@@ -408,9 +408,9 @@ Scénario : Le MJ archive une session CLOSED
 
 ### US-06-07 — Accéder à la vue joueur pendant une session LIVE
 
-**En tant que** joueur,  
-**je veux** accéder à la vue de session partagée pendant une session LIVE,  
-**afin de** consulter les documents partagés par le MJ et mes notes personnelles.
+**En tant que** : joueur,  
+**je veux** : accéder à la vue de session partagée pendant une session LIVE,  
+**afin de** : consulter les documents partagés par le MJ et mes notes personnelles.
 
 **Notes de conception** :
 - La vue joueur nécessite un compte ou un accès invité (UC-09). Elle n'est pas disponible en mode local.
@@ -453,9 +453,9 @@ Scénario : Accès refusé sans compte ni accès invité
 
 ### US-06-08 — Prendre des notes de session personnelle joueur
 
-**En tant que** joueur,  
-**je veux** créer des notes personnelles visibles uniquement par moi,  
-**afin de** consigner mes observations sans les partager avec le MJ ni les autres joueurs.
+**En tant que** : joueur,  
+**je veux** : créer des notes personnelles visibles uniquement par moi,  
+**afin de** : consigner mes observations sans les partager avec le MJ ni les autres joueurs.
 
 **Notes de conception** :
 - Note de session personnelle, éventuellement associée au personnage du joueur.
@@ -497,9 +497,9 @@ Scénario : Joueur accès invité avec personnage associé
 
 ### US-06-09 — Reprendre une session interrompue
 
-**En tant que** MJ,  
-**je veux** reprendre une session qui s'est interrompue (coupure réseau, fermeture accidentelle),  
-**afin de** ne pas perdre le contexte de la session en cours.
+**En tant que** : MJ,  
+**je veux** : reprendre une session qui s'est interrompue (coupure réseau, fermeture accidentelle),  
+**afin de** : ne pas perdre le contexte de la session en cours.
 
 **Notes de conception** :
 - Une session `LIVE` reste en `LIVE` tant que `Session.Close()` n'est pas appelé. Une interruption technique ne change pas le statut.
@@ -528,9 +528,9 @@ Scénario : Le MJ reprend une session après interruption
 
 ### US-06-10 — Ajouter des notes rétroactives après session CLOSED
 
-**En tant que** MJ,  
-**je veux** ajouter des notes de session à une session déjà terminée (CLOSED),  
-**afin de** compléter la trace narrative après la session.
+**En tant que** : MJ,  
+**je veux** : ajouter des notes de session à une session déjà terminée (CLOSED),  
+**afin de** : compléter la trace narrative après la session.
 
 **Notes de conception** :
 - Disponible uniquement en statut `CLOSED`. En `ARCHIVED`, aucune modification n'est possible.
@@ -590,7 +590,7 @@ Scénario : Création impossible en ARCHIVED
 
 ## Vérification de couverture
 
-| Cas UC-06 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal 1 — lancement session | US-06-01 |
 | Nominal 2 — navigation dossiers | US-06-03 |

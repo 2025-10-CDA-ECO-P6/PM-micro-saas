@@ -1,6 +1,6 @@
 # NFR-ACC-03 — Lisibilité en conditions de faible éclairage
 
-Famille **Accessibilité** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : ACC · [Index — Accessibilité](README.md)
 
 ---
 
@@ -51,7 +51,7 @@ pour les décisions d'implémentation, sans se substituer au besoin formulé ici
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - Le texte des documents consultés depuis la vue session : titres, contenu des blocs,
   propriétés affichées en vue condensée dans les panneaux de dossiers.
@@ -63,7 +63,7 @@ pour les décisions d'implémentation, sans se substituer au besoin formulé ici
   étiquettes de panneaux.
 - La vue joueur : documents partagés, notes personnelles.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Les conditions d'éclairage extrêmes (obscurité totale, lumière de plein soleil direct
   sur l'écran) — ces conditions sortent du contexte d'usage documenté et sont de la
@@ -79,32 +79,32 @@ pour les décisions d'implémentation, sans se substituer au besoin formulé ici
 
 ## Critères d'acceptation produit
 
-**Lisibilité du contenu de session sans ajustement de l'appareil :**
+**Situation nominale** : Lisibilité du contenu de session sans ajustement de l'appareil
 
 Dans une pièce éclairée à la lumière d'ambiance du soir (lampe de table, plafond tamisé),
 un utilisateur avec une acuité visuelle normale peut lire le texte des documents, des notes
 de session et des résultats de recherche dans la vue session sans ressentir le besoin de
 modifier la luminosité de son écran ni de se rapprocher de l'appareil.
 
-**Lisibilité des notifications et indicateurs d'état :**
+**Situation nominale** : Lisibilité des notifications et indicateurs d'état
 
 Les messages non bloquants qui apparaissent pendant la session (notification de synchronisation
 en attente, avertissement de stockage local) sont lisibles dans les mêmes conditions
 d'éclairage, sans que l'utilisateur ait à les chercher visuellement.
 
-**Lisibilité des libellés d'interface :**
+**Situation nominale** : Lisibilité des libellés d'interface
 
 Les étiquettes des panneaux, les libellés des boutons et les indicateurs d'état de la vue
 session sont lisibles dans les mêmes conditions, y compris les éléments en mode condensé
 (vue résumée d'un document dans un panneau de dossier).
 
-**Lisibilité de la vue joueur :**
+**Situation nominale** : Lisibilité de la vue joueur
 
 La vue joueur, utilisée depuis l'appareil personnel du joueur dans les mêmes conditions
 d'éclairage de soirée, présente un niveau de contraste suffisant pour que les documents
 partagés soient lisibles sans configuration préalable.
 
-**Absence de surbrillance pénalisante :**
+**Situation limite** : Absence de surbrillance pénalisante
 
 Aucun élément de l'interface, dans son état par défaut, ne crée un halo lumineux ou une
 surbrillance qui dégrade la lisibilité du texte environnant dans un environnement peu éclairé.
@@ -113,12 +113,12 @@ surbrillance qui dégrade la lisibilité du texte environnant dans un environnem
 
 ## Traçabilité montante
 
-| Artefact | Lien |
-|---|---|
-| UC-06 — Vue session (contexte d'usage, phase 2 — affichage des panneaux) | [../usecases/UC-06-vue-session.md](../cas-d-utilisation/UC-06-vue-session.md) |
-| UC-14 — Rechercher rapidement une information (résultats affichés en session) | [../usecases/UC-14-recherche.md](../cas-d-utilisation/UC-14-recherche.md) |
-| UC-09 — Accès session joueur (vue joueur) | [../usecases/UC-09-acces-session-joueur.md](../cas-d-utilisation/UC-09-acces-session-joueur.md) |
-| US-06-03 — Naviguer dans les dossiers pendant la session | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-06-04 — Prendre des notes de session MJ (notification E1) | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-06-07 — Accéder à la vue joueur pendant une session LIVE | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| US-14-03 — Rechercher depuis la vue session | [../user-stories/US-UC-14-recherche.md](../stories/US-UC-14-recherche.md) |
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | contexte d'usage, phase 2 — affichage des panneaux |
+| [UC-14 — Rechercher rapidement une information](../cas-d-utilisation/UC-14-recherche.md) | résultats affichés en session |
+| [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) | vue joueur |
+| [US-06-03 — Naviguer dans les dossiers pendant la session](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-06-04 — Prendre des notes de session MJ](../stories/US-UC-06-vue-session.md) | notification E1 |
+| [US-06-07 — Accéder à la vue joueur pendant une session LIVE](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [US-14-03 — Rechercher depuis la vue session](../stories/US-UC-14-recherche.md) | SOUS-SPÉCIFIÉ |

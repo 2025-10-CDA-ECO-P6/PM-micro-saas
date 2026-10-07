@@ -38,6 +38,8 @@ Permettre à un utilisateur (MJ ou joueur) de créer un compte pour activer la s
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-10 — Créer un compte et synchroniser dans le cloud](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
+**Source de la priorité** : Matrice de priorités
+
 ---
 
 ## Bounded contexts
@@ -52,7 +54,7 @@ La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -92,7 +94,7 @@ flowchart TD
 
 ---
 
-## Diagramme de dépendances
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -135,9 +137,9 @@ flowchart LR
 
 ### US-10-01 — S'inscrire avec email et mot de passe
 
-**En tant que** MJ ou joueur,
-**je veux** créer un compte avec mon email et un mot de passe,
-**afin de** activer la synchronisation cloud, le partage avec mes joueurs et l'accès multi-device.
+**En tant que** : MJ ou joueur,
+**je veux** : créer un compte avec mon email et un mot de passe,
+**afin de** : activer la synchronisation cloud, le partage avec mes joueurs et l'accès multi-device.
 
 **Notes de conception** :
 - Si des données locales existent (UC-01), un **gate de reconnaissance** est présenté avant la migration : l'application affiche les espaces détectés (titre, volume, date) et affiche pour chaque espace l'historique de session qu'il contient (sessions terminées, notes de session, documents épinglés, résumés). Le gate signale aussi toute session en cours (LIVE) en indiquant qu'elle doit être clôturée pour que l'espace puisse migrer. L'application demande une confirmation explicite avant l'import. La migration n'est déclenchée qu'après cette confirmation. Cette confirmation est une exigence du système : aucune migration ne peut démarrer sans elle, quel que soit le moyen par lequel elle est déclenchée. Le passage par l'écran de présentation n'est pas le seul garde-fou — le système rejette toute demande de migration dépourvue de cette confirmation. Cette exigence vise à prévenir qu'un utilisateur s'approprie par inadvertance les données créées par quelqu'un d'autre sur un poste partagé en confirmant sans les reconnaître : en voyant précisément ce qui va être importé (y compris l'historique de session), il peut interrompre avant l'import. Si certains espaces sont refusés lors de la migration (en raison d'un contenu invalide, d'un intitulé en conflit avec un contenu existant, d'un type ou d'un format non reconnu), un rapport détaille la raison du refus pour chacun, et les données locales correspondantes restent intactes dans le navigateur ; les espaces acceptés sont migrés et accessibles avec tout leur historique de session. Le raisonnement ayant conduit à ce choix (et les alternatives écartées) est tracé dans [ADR-016](../../decisions/ADR-016-serialisation-locale-migration.md) §4.
@@ -207,9 +209,9 @@ Scénario : Joueur invité crée un compte depuis un lien d'invitation (A3)
 
 ### US-10-02 — Se connecter avec email et mot de passe
 
-**En tant que** utilisateur avec un compte,
-**je veux** me connecter avec mon email et mon mot de passe,
-**afin de** accéder à mes espaces et données synchronisées.
+**En tant que** : utilisateur avec un compte,
+**je veux** : me connecter avec mon email et mon mot de passe,
+**afin de** : accéder à mes espaces et données synchronisées.
 
 **Notes de conception** :
 - Le message d'erreur sur identifiants invalides est générique — pas de distinction entre email inconnu et mot de passe incorrect (sécurité).
@@ -250,9 +252,9 @@ Scénario : Connexion avec un compte suspendu
 
 ### US-10-03 — Se connecter ou s'inscrire via un fournisseur d'identité externe
 
-**En tant que** MJ ou joueur,
-**je veux** me connecter ou créer un compte via un fournisseur d'identité externe (connexion fédérée),
-**afin de** accéder à l'application sans gérer un mot de passe supplémentaire.
+**En tant que** : MJ ou joueur,
+**je veux** : me connecter ou créer un compte via un fournisseur d'identité externe (connexion fédérée),
+**afin de** : accéder à l'application sans gérer un mot de passe supplémentaire.
 
 **Notes de conception** :
 - La connexion fédérée est incluse dans le MVP comme méthode d'authentification aux côtés de l'adresse de messagerie et du mot de passe. Le choix du ou des fournisseurs est tracé dans ADR-015.
@@ -314,9 +316,9 @@ Scénario : Connexion fédérée avec données locales existantes
 
 ### US-10-04 — Réinitialiser son mot de passe
 
-**En tant que** utilisateur avec un compte email et mot de passe,
-**je veux** pouvoir réinitialiser mon mot de passe en cas d'oubli,
-**afin de** retrouver l'accès à mon compte sans intervention manuelle.
+**En tant que** : utilisateur avec un compte email et mot de passe,
+**je veux** : pouvoir réinitialiser mon mot de passe en cas d'oubli,
+**afin de** : retrouver l'accès à mon compte sans intervention manuelle.
 
 **Notes de conception** :
 - Identity & Access gère la génération et la validation des tokens de réinitialisation.
@@ -362,9 +364,9 @@ Scénario : Réinitialisation réussie
 
 ### US-10-05 — Mettre à jour son profil
 
-**En tant que** utilisateur authentifié,
-**je veux** pouvoir modifier mon nom d'affichage,
-**afin de** garder mes informations à jour dans l'application.
+**En tant que** : utilisateur authentifié,
+**je veux** : pouvoir modifier mon nom d'affichage,
+**afin de** : garder mes informations à jour dans l'application.
 
 **Notes de conception** :
 - La mise à jour du nom d'affichage est la seule modification de profil couverte dans le MVP.
@@ -403,9 +405,9 @@ Scénario : Modification du mot de passe
 
 ### US-10-06 — Supprimer son compte (droit à l'effacement RGPD)
 
-**En tant que** utilisateur authentifié dont l'adresse de messagerie est validée,
-**je veux** pouvoir demander la suppression définitive de mon compte,
-**afin de** exercer mon droit à l'effacement conformément au RGPD (article 17).
+**En tant que** : utilisateur authentifié dont l'adresse de messagerie est validée,
+**je veux** : pouvoir demander la suppression définitive de mon compte,
+**afin de** : exercer mon droit à l'effacement conformément au RGPD (article 17).
 
 **Notes de conception** :
 - La suppression est soumise à la validation préalable de l'adresse de messagerie (RB-10-05) : le système refuse la demande si l'adresse n'est pas vérifiée.
@@ -489,7 +491,7 @@ Scénario : Suppression bloquée — adresse de messagerie non validée
 
 ## Vérification de couverture
 
-| Cas UC-10 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal 1 — inscription avec gate de reconnaissance et migration | US-10-01 |
 | Nominal 2 — inscription sans données locales | US-10-01 |

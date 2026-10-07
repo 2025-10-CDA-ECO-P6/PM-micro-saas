@@ -1,4 +1,6 @@
-# Epic — Organiser le contenu en dossiers
+# Epic — Organiser le contenu en dossiers (UC-05)
+
+- **Gherkin** : Scénario, Étant donné que, Quand, Alors, Et, Mais
 
 ## Objectif utilisateur
 
@@ -36,15 +38,11 @@ Permettre au MJ de structurer librement le contenu de son espace en dossiers nom
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans `moscow.md`, qui distingue explicitement [§ UC-05 base — Organiser le contenu en dossiers (Must Have)](../vision/perimetre/matrice-de-priorites.md) et [§ UC-05 riche — Dossiers et types de document élaborés (Should Have)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour attribuer cette priorité (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story, et ne décide pas non plus quelle story relève de la base et laquelle relève de la couche riche : ce rattachement est une inférence que seule l'autorité de priorisation peut trancher — une fiche dérivée qui l'opérait recopierait une décision qu'elle n'a pas l'autorité de prendre, et qu'une révision ultérieure de `moscow.md` laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- **Bibliothèque de contenu** — toutes les stories (dossiers, documents, classement)
+**Source de la priorité** : Matrice de priorités
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -78,9 +76,13 @@ flowchart TD
     S -->|Non| U[Document créé vide]
 ```
 
+### Bounded contexts pressentis
+
+- **Bibliothèque de contenu** — toutes les stories (dossiers, documents, classement)
+
 ---
 
-## Dépendances Mermaid
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -107,9 +109,9 @@ flowchart LR
 
 ### US-05-01 — Créer un dossier dans un espace
 
-**En tant que** MJ,  
-**je veux** créer un dossier nommé dans mon espace,  
-**afin de** regrouper mes documents par thème ou catégorie.
+**En tant que** : MJ,  
+**je veux** : créer un dossier nommé dans mon espace,  
+**afin de** : regrouper mes documents par thème ou catégorie.
 
 **Notes de conception** :
 - Création d'un dossier. Les sous-dossiers ne sont pas couverts par le MVP.
@@ -148,9 +150,9 @@ Scénario : Le MJ tente de créer un dossier avec un nom vide
 
 ### US-05-02 — Renommer un dossier (y compris système)
 
-**En tant que** MJ,  
-**je veux** renommer n'importe quel dossier de mon espace, y compris les dossiers système,  
-**afin d'** adapter les intitulés à mon système de jeu ou ma logique d'organisation.
+**En tant que** : MJ,  
+**je veux** : renommer n'importe quel dossier de mon espace, y compris les dossiers système,  
+**afin de** : adapter les intitulés à mon système de jeu ou ma logique d'organisation.
 
 **Notes de conception** :
 - renommage du dossier.
@@ -187,9 +189,9 @@ Scénario : Le MJ tente de renommer avec un nom vide
 
 ### US-05-03 — Associer un template par défaut à un dossier
 
-**En tant que** MJ,  
-**je veux** associer un template à un dossier pour que tout nouveau document créé dans ce dossier parte d'une structure prédéfinie,  
-**afin de** gagner du temps sur les documents répétitifs (fiches PNJ, lieux, factions).
+**En tant que** : MJ,  
+**je veux** : associer un template à un dossier pour que tout nouveau document créé dans ce dossier parte d'une structure prédéfinie,  
+**afin de** : gagner du temps sur les documents répétitifs (fiches PNJ, lieux, factions).
 
 **Notes de conception** :
 - association d'un modèle au dossier — pointe vers un document marqué comme modèle réutilisable.
@@ -235,9 +237,9 @@ Scénario : Template supprimé après association
 
 ### US-05-04 — Supprimer un dossier
 
-**En tant que** MJ,  
-**je veux** supprimer un dossier dont je n'ai plus besoin,  
-**afin de** garder une structure propre et lisible dans mon espace.
+**En tant que** : MJ,  
+**je veux** : supprimer un dossier dont je n'ai plus besoin,  
+**afin de** : garder une structure propre et lisible dans mon espace.
 
 **Notes de conception** :
 - E2 : suppression d'un dossier non vide → le MJ choisit entre (a) déplacer les documents vers un autre dossier, ou (b) laisser les documents dans "Non classés" (dossier virtuel).
@@ -286,9 +288,9 @@ Scénario : Le MJ supprime un dossier système
 
 ### US-05-05 — Réordonner les dossiers
 
-**En tant que** MJ,  
-**je veux** modifier l'ordre d'affichage de mes dossiers,  
-**afin de** mettre en avant les dossiers les plus utilisés et adapter la navigation à mon flux de travail.
+**En tant que** : MJ,  
+**je veux** : modifier l'ordre d'affichage de mes dossiers,  
+**afin de** : mettre en avant les dossiers les plus utilisés et adapter la navigation à mon flux de travail.
 
 **Notes de conception** :
 - Le mécanisme de classement conserve l'ordre des dossiers.
@@ -335,7 +337,7 @@ Scénario : Le MJ réordonne ses dossiers
 
 ## Vérification de couverture
 
-| Cas UC-05 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal 1 — créer un dossier | US-05-01 |
 | Nominal 2 — associer un template à un dossier existant | US-05-03 |

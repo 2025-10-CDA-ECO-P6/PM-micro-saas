@@ -7,7 +7,7 @@
 48 ans, libraire. MJ depuis 25 ans, groupe stable depuis 8 ans, une session par semaine.
 Systèmes joués : Old School Essentials, Pendragon. Mouvance OSR.
 
-## Qui il est
+## Qui il/elle est
 
 Rémi prépare ses sessions avec un carnet Leuchtturm, des fiches Bristol et des stylos à encre.
 Ce n'est pas un manque de compétences numériques, il utilise un ordinateur tous les jours.
@@ -23,12 +23,12 @@ anciens carnets prend du temps, et que ses joueurs aimeraient parfois avoir un r
 sessions. Mais ces frustrations ne le motivent pas à changer. Son système fonctionne depuis
 25 ans.
 
-## Ce qu'il utiliserait
+## Ce qu'il/elle utiliserait
 
 Peut-être un résumé de session consultable par les joueurs, si c'est moins de 5 minutes de
 saisie après la partie. C'est probablement tout.
 
-## Ce qu'il demande à l'app
+## Ce qu'il/elle demande au produit
 
 - En quoi c'est mieux qu'une page vierge ?
 - Le modèle de blocs est-il aussi libre qu'un carnet, ou y a-t-il une structure implicite

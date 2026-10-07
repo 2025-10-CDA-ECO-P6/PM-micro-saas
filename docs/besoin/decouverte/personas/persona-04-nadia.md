@@ -6,7 +6,7 @@
 42 ans, infirmière, trois enfants. MJ depuis 15 ans, aujourd'hui une session par mois quand tout
 va bien. Systèmes joués : D&D 5e, Call of Cthulhu.
 
-## Qui elle est
+## Qui il/elle est
 
 Nadia a été une MJ régulière et investie pendant des années. Elle sait ce qu'elle devrait faire
 pour bien préparer. Elle n'a plus le temps de le faire. Sa préparation se passe le dimanche soir
@@ -20,13 +20,13 @@ emploi du temps.
 Si on lui parle de Haversack, sa première question sera : "combien de temps pour que ça soit
 utilisable ?" Si la réponse dépasse deux heures de configuration, elle passe.
 
-## Ce qu'elle utiliserait
+## Ce qu'il/elle utiliserait
 
 - Retrouver où elle en était sans relire 40 pages de notes
 - Un résumé de session rapide à saisir en fin de soirée
 - Ses PNJ importants accessibles sans chercher dans 5 fichiers
 
-## Ce qu'elle demande à l'app
+## Ce qu'il/elle demande au produit
 
 - Combien de temps pour qu'une campagne soit exploitable dans l'outil ?
 - Peut-on commencer avec très peu de contenu et enrichir au fur et à mesure ?

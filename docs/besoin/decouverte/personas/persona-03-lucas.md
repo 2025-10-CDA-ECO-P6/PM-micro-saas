@@ -6,7 +6,7 @@
 22 ans, étudiant en informatique. Joueur depuis 3 ans, jamais MJ. Il joue D&D 5e dans le groupe
 de Thomas, une session par semaine.
 
-## Qui il est
+## Qui il/elle est
 
 Pour Lucas, le JDR c'est le jeudi soir avec ses amis. Il a D&D Beyond pour sa fiche, Discord
 pour le groupe, un carnet pour ses notes. Ça lui suffit.
@@ -18,13 +18,13 @@ Si la page lui montre directement sa fiche, il reste. Il ne fera aucun effort su
 Ce n'est pas de la mauvaise volonté. Il fait confiance à son MJ. Mais son attention est limitée
 et il ne voit pas pourquoi il aurait besoin d'un outil de plus.
 
-## Ce qu'il utiliserait
+## Ce qu'il/elle utiliserait
 
 - Les informations partagées par le MJ, consultées passivement
 - Un résumé des sessions précédentes pour se rappeler où on en était
 - Sa fiche, si elle est là sans qu'il ait à la recréer
 
-## Ce qu'il demande à l'app
+## Ce qu'il/elle demande au produit
 
 - Le lien d'invitation ouvre-t-il directement du contenu ou une page de marketing qui demande
   de s'inscrire ?

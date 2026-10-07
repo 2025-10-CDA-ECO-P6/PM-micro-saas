@@ -18,9 +18,7 @@ Parcours du MJ depuis l'accès à son espace jusqu'à la sauvegarde d'un scénar
 
 ---
 
-## Vue d'ensemble du parcours
-
-### Carte d'expérience
+## Carte d'expérience
 
 ```mermaid
 journey
@@ -44,7 +42,7 @@ journey
         Retrouver le scénario dans l'espace: 5: Émilie, 5: Antoine, 5: Nadia
 ```
 
-### Flux fonctionnel
+## Flux fonctionnel
 
 ```mermaid
 flowchart TD
@@ -76,9 +74,9 @@ flowchart TD
 
 ---
 
-## Détail des étapes
+## Points de friction
 
-| Étape | Persona(s) | Friction potentielle | Opportunité produit |
+| Étape | Persona(s) | Friction | Opportunité produit |
 |---|---|---|---|
 | Ouvrir l'espace et naviguer vers Scénarios | Tous | Navigation peu claire si beaucoup de sections | Entrée directe "Mes scénarios" sur le tableau de bord de l'espace |
 | Créer un scénario (titre seul) | Émilie, Nadia | Formulaire trop long au démarrage | Création one-click avec titre uniquement, reste configurable après |
@@ -93,6 +91,20 @@ flowchart TD
 
 ---
 
+## Opportunités UX
+
+### Points de conversion clés
+
+| Point de conversion | Indicateur de succès | Risque d'abandon |
+|---|---|---|
+| Création du scénario (premier enregistrement) | MJ atteint l'éditeur avec un titre sauvegardé | Formulaire de création trop long ou obligatoire |
+| Premier contenu rédigé | Au moins un bloc de contenu non vide | Éditeur peu intuitif, page blanche intimidante |
+| Ajout d'une première scène | lien entre documents créé vers un document scène | Mode monobloc non trouvé, ajout de scène perçu comme obligatoire |
+| Premier lien vers un document | lien entre documents vers un NPC ou LOCATION existant | Recherche de documents absente ou trop lente |
+| Scénario marqué "prêt" | Statut = `PRET` | Statut ignoré si la valeur n'est pas perçue |
+
+---
+
 ## Scénarios alternatifs et d'erreur
 
 - **A1 — Scénario monobloc** : le MJ ne crée aucune scène. Le document est valide. Aucune friction supplémentaire.
@@ -102,18 +114,6 @@ flowchart TD
 - **Erreur — titre manquant** : la création est bloquée. Message d'erreur inline sur le champ titre.
 - **Erreur — perte de connexion** : si la sauvegarde automatique est implémentée, buffer local à vider à la reconnexion.
 - **Erreur — document lié introuvable** : lien entre documents vers un document supprimé → afficher un lien cassé identifiable et permettre de le supprimer.
-
----
-
-## Points de conversion clés
-
-| Point de conversion | Indicateur de succès | Risque d'abandon |
-|---|---|---|
-| Création du scénario (premier enregistrement) | MJ atteint l'éditeur avec un titre sauvegardé | Formulaire de création trop long ou obligatoire |
-| Premier contenu rédigé | Au moins un bloc de contenu non vide | Éditeur peu intuitif, page blanche intimidante |
-| Ajout d'une première scène | lien entre documents créé vers un document scène | Mode monobloc non trouvé, ajout de scène perçu comme obligatoire |
-| Premier lien vers un document | lien entre documents vers un NPC ou LOCATION existant | Recherche de documents absente ou trop lente |
-| Scénario marqué "prêt" | Statut = `PRET` | Statut ignoré si la valeur n'est pas perçue |
 
 ---
 

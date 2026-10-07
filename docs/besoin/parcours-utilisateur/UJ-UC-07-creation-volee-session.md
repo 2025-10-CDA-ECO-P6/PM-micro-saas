@@ -16,9 +16,7 @@ Parcours du MJ depuis le déclencheur de création rapide en session jusqu'à la
 
 ---
 
-## Vue d'ensemble du parcours
-
-### Carte d'expérience
+## Carte d'expérience
 
 ```mermaid
 journey
@@ -35,7 +33,7 @@ journey
         Enrichir le document hors session: 2: Émilie, 4: Antoine, 3: Nadia
 ```
 
-### Flux fonctionnel
+## Flux fonctionnel
 
 ```mermaid
 flowchart TD
@@ -66,7 +64,7 @@ flowchart TD
 
 ## Points de friction
 
-| Étape | Persona(s) | Friction potentielle | Opportunité produit |
+| Étape | Persona(s) | Friction | Opportunité produit |
 |---|---|---|---|
 | Repérer le point d'entrée de création | Émilie | Bouton "Créer" non visible sans scroll ou enfoui dans un menu | Bouton "Créer" fixe et visible en permanence dans la barre de la vue session |
 | Ouvrir le panneau de création rapide | Tous | Panneau lent à s'afficher — brise le rythme | Affichage instantané, sans animation bloquante |
@@ -75,6 +73,18 @@ flowchart TD
 | Document créé et épinglé | Émilie, Antoine | Confirmation d'épinglage non visible — le MJ ne sait pas que le document est épinglé | Toast ou indicateur visuel bref confirmant la création et l'épinglage |
 | Retrouver le document dans son dossier | Antoine | Document classé dans "Non classés" au lieu du dossier attendu | Résolution automatique du dossier d'accueil selon le type ; visible dès la création |
 | Enrichir le document hors session | Antoine | MJ ne retrouve pas le document créé à la volée parmi d'autres | Vue "Récemment créés" ou filtre "Créés en session" dans Content Library |
+
+---
+
+## Opportunités UX
+
+| Point de conversion | Indicateur de succès | Risque d'abandon |
+|---|---|---|
+| Panneau de création rapide accessible en moins de 2 clics | MJ atteint le formulaire sans navigation | Bouton enfoui dans un menu secondaire |
+| Formulaire réduit au titre | MJ valide sans remplir d'autres champs | Champs optionnels visibles — donne l'impression d'obligation |
+| Document épinglé automatiquement en LIVE | Document visible dans Épinglés immédiatement après création | Épinglage silencieux — MJ ne sait pas que le document est disponible |
+| Dossier d'accueil résolu automatiquement | Document dans le bon dossier sans action manuelle | Document dans "Non classés" — friction post-session pour Antoine |
+| Création disponible en CLOSED | MJ retrouve l'élément improvisé après la partie | Bouton désactivé en CLOSED — Nadia abandonne |
 
 ---
 
@@ -138,18 +148,6 @@ La session de Nadia est terminée depuis vingt minutes. Elle vient de se souveni
 - **E2 — Session ARCHIVED** : le panneau de création rapide est désactivé. Aucune création possible.
 - **A2 — Personnage joueur** : le PJ est créé avec le titre seul. Le champ "joueur associé" est vide — assignable après la session. Pas de blocage.
 - **Mode local** : la création à la volée fonctionne en mode local. Pas de différence de parcours pour Émilie.
-
----
-
-## Opportunités UX
-
-| Point de conversion | Indicateur de succès | Risque d'abandon |
-|---|---|---|
-| Panneau de création rapide accessible en moins de 2 clics | MJ atteint le formulaire sans navigation | Bouton enfoui dans un menu secondaire |
-| Formulaire réduit au titre | MJ valide sans remplir d'autres champs | Champs optionnels visibles — donne l'impression d'obligation |
-| Document épinglé automatiquement en LIVE | Document visible dans Épinglés immédiatement après création | Épinglage silencieux — MJ ne sait pas que le document est disponible |
-| Dossier d'accueil résolu automatiquement | Document dans le bon dossier sans action manuelle | Document dans "Non classés" — friction post-session pour Antoine |
-| Création disponible en CLOSED | MJ retrouve l'élément improvisé après la partie | Bouton désactivé en CLOSED — Nadia abandonne |
 
 ---
 

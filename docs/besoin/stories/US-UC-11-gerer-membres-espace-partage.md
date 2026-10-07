@@ -32,16 +32,11 @@ Permettre au MJ de contrôler qui accède à son espace : générer des liens d'
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-11 — Gérer les membres d'un espace](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
----
-
-## Bounded contexts pressentis
-
-- **Space Management** — gère `Member`, `Invitation`, associations joueur-personnage, liste des membres, statuts.
-- **Identity & Access** — valide les tokens d'invitation, crée les `GuestAccess` ou les `Member` à réception du lien.
+**Source de la priorité** : Matrice de priorités
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -65,9 +60,14 @@ flowchart TD
     A -->|Retirer un membre| M[Member passe a REMOVED\nUS-11-03\nDonnees preservees]
 ```
 
+### Bounded contexts pressentis
+
+- **Space Management** — gère `Member`, `Invitation`, associations joueur-personnage, liste des membres, statuts.
+- **Identity & Access** — valide les tokens d'invitation, crée les `GuestAccess` ou les `Member` à réception du lien.
+
 ---
 
-## Diagramme de dépendances
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -97,9 +97,9 @@ flowchart LR
 
 ### US-11-01 — Générer un lien d'invitation
 
-**En tant que** MJ,
-**je veux** générer un lien d'invitation partageable pour mon espace ou une session spécifique,
-**afin de** inviter mes joueurs sans passer par la plateforme — je partage le lien moi-même (Discord, WhatsApp, etc.).
+**En tant que** : MJ,
+**je veux** : générer un lien d'invitation partageable pour mon espace ou une session spécifique,
+**afin de** : inviter mes joueurs sans passer par la plateforme — je partage le lien moi-même (Discord, WhatsApp, etc.).
 
 **Notes de conception** :
 - Le MJ choisit le périmètre de l'invitation : `SPACE` (accès durable, lié à un `Member`) ou `SESSION` (accès temporaire, lié à un `GuestAccess`).
@@ -168,9 +168,9 @@ Scénario : Invitation expirée non réactivable (E2)
 
 ### US-11-02 — Révoquer une invitation active
 
-**En tant que** MJ,
-**je veux** révoquer une invitation que j'ai générée,
-**afin d'** empêcher qu'elle soit utilisée (lien partagé par erreur, joueur qui ne participe plus, etc.).
+**En tant que** : MJ,
+**je veux** : révoquer une invitation que j'ai générée,
+**afin de** : empêcher qu'elle soit utilisée (lien partagé par erreur, joueur qui ne participe plus, etc.).
 
 **Notes de conception** :
 - La révocation est une action explicite du MJ depuis la liste des invitations.
@@ -216,9 +216,9 @@ Scénario : Invitation déjà révoquée — pas de réactivation
 
 ### US-11-03 — Retirer un membre de l'espace
 
-**En tant que** MJ,
-**je veux** retirer un membre de mon espace,
-**afin de** révoquer son accès sans supprimer ses contributions (personnage, notes partagées).
+**En tant que** : MJ,
+**je veux** : retirer un membre de mon espace,
+**afin de** : révoquer son accès sans supprimer ses contributions (personnage, notes partagées).
 
 **Notes de conception** :
 - Retirer un membre passe son statut à `REMOVED` dans `Space Management`.
@@ -270,9 +270,9 @@ Scénario : Ancien lien d'un membre retiré
 
 ### US-11-04 — Associer un joueur à un personnage
 
-**En tant que** MJ,
-**je veux** associer un membre de mon espace à un personnage existant,
-**afin que** le joueur accède à sa fiche de personnage et à ses notes privées (`PLAYER_PRIVATE`) lors des sessions.
+**En tant que** : MJ,
+**je veux** : associer un membre de mon espace à un personnage existant,
+**afin de** : que le joueur accède à sa fiche de personnage et à ses notes privées (`PLAYER_PRIVATE`) lors des sessions.
 
 **Notes de conception** :
 - L'association peut être faite dès qu'un joueur est `Member` `ACTIVE` ou `PENDING` (avant même qu'il utilise son lien).
@@ -352,7 +352,7 @@ Scénario : Dissociation sans suppression
 
 ## Vérification de couverture
 
-| Cas UC-11 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal — générer un lien d'invitation (SPACE ou SESSION) | US-11-01 |
 | A1 — associer un joueur à un personnage | US-11-04 |

@@ -32,16 +32,11 @@ Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapid
 
 La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-14 — Rechercher et filtrer l'information](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir. Le bloc que la table précédente reportait (`Should Have`) est celui que `moscow.md` accorde à l'ensemble d'UC-14 : le reporter au grain story restait une attribution que cette fiche n'a pas l'autorité de faire, même quand la valeur recopiée coïncidait avec la source.
 
----
-
-## Bounded contexts pressentis
-
-- **Content Library** — fournit les documents, leurs titres, leurs types, leurs tags et leur visibilité. Porte la logique de filtrage par `visibility`.
-- **Conduite de session** — consomme la recherche depuis la vue session ; applique la pondération des éléments de la session active en tête des résultats.
+**Source de la priorité** : Matrice de priorités
 
 ---
 
-## Vue d'ensemble Mermaid
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
@@ -67,9 +62,14 @@ flowchart TD
     J --> M[MJ ou Joueur selectionne un document\nOuverture du document]
 ```
 
+### Bounded contexts pressentis
+
+- **Content Library** — fournit les documents, leurs titres, leurs types, leurs tags et leur visibilité. Porte la logique de filtrage par `visibility`.
+- **Conduite de session** — consomme la recherche depuis la vue session ; applique la pondération des éléments de la session active en tête des résultats.
+
 ---
 
-## Dépendances Mermaid
+## Dépendances
 
 ```mermaid
 flowchart LR
@@ -94,9 +94,9 @@ flowchart LR
 
 ### US-14-01 — Rechercher un document par titre dans l'espace actif
 
-**En tant que** MJ,
-**je veux** saisir un titre ou une partie de titre dans la barre de recherche de mon espace actif,
-**afin de** retrouver rapidement le document correspondant sans naviguer manuellement dans les dossiers.
+**En tant que** : MJ,
+**je veux** : saisir un titre ou une partie de titre dans la barre de recherche de mon espace actif,
+**afin de** : retrouver rapidement le document correspondant sans naviguer manuellement dans les dossiers.
 
 **Notes de conception** :
 - La recherche porte uniquement sur le **titre** du `Document`. La recherche full-text sur le contenu des blocs est post-MVP.
@@ -156,9 +156,9 @@ Scénario : LIVE_NOTE session passée recherchable
 
 ### US-14-02 — Filtrer les résultats par type de document
 
-**En tant que** MJ,
-**je veux** filtrer les résultats de recherche par type de document,
-**afin de** réduire rapidement la liste de résultats lorsque je cherche un document d'un type précis (PNJ, scène, note, lieu...).
+**En tant que** : MJ,
+**je veux** : filtrer les résultats de recherche par type de document,
+**afin de** : réduire rapidement la liste de résultats lorsque je cherche un document d'un type précis (PNJ, scène, note, lieu...).
 
 **Notes de conception** :
 - Le filtre par type est un **filtre additionnel** à la recherche par titre (US-14-01) — il ne remplace pas la recherche par titre.
@@ -200,9 +200,9 @@ Scénario : Retirer le filtre de type
 
 ### US-14-03 — Rechercher depuis la vue session avec pondération de la session active
 
-**En tant que** MJ,
-**je veux** rechercher un document depuis la vue session sans quitter la session,
-**afin de** retrouver rapidement une information pendant la partie — le résultat s'ouvre dans un panneau latéral et les éléments de la session active apparaissent en tête de liste.
+**En tant que** : MJ,
+**je veux** : rechercher un document depuis la vue session sans quitter la session,
+**afin de** : retrouver rapidement une information pendant la partie — le résultat s'ouvre dans un panneau latéral et les éléments de la session active apparaissent en tête de liste.
 
 **Notes de conception** :
 - La recherche depuis la vue session **ne quitte pas** la vue session. Les résultats s'affichent dans un panneau latéral.
@@ -277,7 +277,7 @@ Scénario : Recherche joueur depuis la vue session (A4, E1)
 
 ## Vérification de couverture
 
-| Cas UC-14 | Story couvrant |
+| Cas | Story couvrant |
 |---|---|
 | Nominal — recherche par titre dans l'espace actif | US-14-01 |
 | A1 — aucun résultat | US-14-01, US-14-02 |

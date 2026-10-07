@@ -56,6 +56,10 @@ L'événement `AccountTierChanged`, émis par Identity & Access et reçu par Spa
 5. Le dégel ne perd aucune donnée — le gel était un état de lecture seule, jamais une suppression ; le contenu et la structure de l'espace dégelé sont identiques à ce qu'ils étaient avant le gel.
 6. Le MJ est notifié du dégel (l'Application consomme `SpaceUnfrozen` pour émettre la notification).
 
+## Postconditions
+
+SOUS-SPÉCIFIÉ
+
 ## Règles métier
 
 - **RB-15-01** — Lors d'un downgrade laissant le propriétaire au-delà du quota du tier gratuit, les espaces excédentaires `CAMPAIGN`/`ONE_SHOT` sont gelés dans l'ordre de création, les plus récents en premier, jusqu'à ce que le nombre d'espaces `ACTIVE` revienne dans le quota.
@@ -64,6 +68,14 @@ L'événement `AccountTierChanged`, émis par Identity & Access et reçu par Spa
 - **RB-15-04** — Lors d'une montée de tier, les espaces `FROZEN` du propriétaire sont dégelés automatiquement, dans la limite du quota du tier cible — la garde est relative au quota cible, pas inconditionnelle, pour rester correcte si un tier intermédiaire apparaît.
 - **RB-15-05** — Le dégel ne perd aucune donnée : le gel et le dégel sont un cycle réversible sans suppression, dans les deux sens.
 - **RB-15-06** — Le propriétaire est notifié à chaque gel (`SpaceFrozen`) et à chaque dégel (`SpaceUnfrozen`) le concernant.
+
+## Critères d'acceptation
+
+SOUS-SPÉCIFIÉ
+
+## Questions à valider en interview
+
+SOUS-SPÉCIFIÉ
 
 ## Renvois
 

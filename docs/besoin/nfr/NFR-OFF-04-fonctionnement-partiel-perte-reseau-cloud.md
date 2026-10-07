@@ -1,6 +1,6 @@
 # NFR-OFF-04 — Fonctionnement partiel en cas de perte de réseau passagère en mode cloud
 
-Famille **Hors connexion** — [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : OFF · [Index — Hors connexion](README.md)
 
 ---
 
@@ -24,14 +24,14 @@ Les personas qui bénéficient de cette exigence sont principalement les MJ avec
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - La saisie de notes de session pendant une interruption réseau, avec conservation locale du contenu en attente de synchronisation.
 - La consultation des documents déjà chargés dans la vue session avant l'interruption.
 - La synchronisation automatique des modifications en attente au retour de la connexion, sans intervention du MJ.
 - L'information non bloquante indiquant au MJ l'état de synchronisation pendant l'interruption et à la reconnexion.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Le chargement de nouveaux documents non encore consultés pendant l'interruption : ces documents nécessitent une connexion pour être récupérés.
 - Le partage en direct avec les joueurs pendant l'interruption : le partage (UC-08) et l'accès joueur (UC-09) nécessitent une connexion active.
@@ -45,23 +45,23 @@ Les personas qui bénéficient de cette exigence sont principalement les MJ avec
 
 ## Critères d'acceptation produit
 
-**Situation nominale — perte de connexion pendant la saisie :**
+**Situation nominale** : perte de connexion pendant la saisie
 
 Un MJ qui perd sa connexion en cours de saisie d'une note de session voit son contenu conservé dans l'interface. Une notification non bloquante indique que la synchronisation est en attente. Le MJ peut continuer à saisir de nouvelles notes, à consulter les documents déjà chargés et à naviguer dans les panneaux de la vue session.
 
-**Situation nominale — reconnexion automatique :**
+**Situation nominale** : reconnexion automatique
 
 Dès que la connexion est rétablie, les notes conservées en attente sont synchronisées sans que le MJ ait à effectuer une action. La notification de synchronisation disparaît ou se met à jour pour indiquer que la synchronisation est terminée. Aucun contenu n'est perdu.
 
-**Situation limite — interruption longue :**
+**Situation limite** : interruption longue
 
 Un MJ dont la connexion est interrompue pendant une durée prolongée (supérieure à quelques secondes) continue à disposer des documents déjà chargés dans sa vue session. Il peut prendre des notes. À la reconnexion, toutes les modifications sont synchronisées dans l'ordre de leur saisie.
 
-**Situation limite — notification non bloquante :**
+**Situation limite** : notification non bloquante
 
 La notification de synchronisation en attente ne couvre pas la vue session, ne suspend pas l'interface et ne demande pas d'action au MJ. Elle est visible mais ne perturbe pas le pilotage de la session.
 
-**Ce que le MJ ne doit jamais constater :**
+**Situation limite** : Ce que le MJ ne doit jamais constater
 
 Le MJ ne perd aucune note saisie pendant une interruption réseau passagère. À la reconnexion, l'état qu'il voit dans l'interface correspond à l'état synchronisé.
 

@@ -6,6 +6,16 @@ Parcours couvrant deux flux distincts : l'accès d'un joueur via lien ponctuel s
 
 ---
 
+## Personas concernés
+
+| Persona | Mode de travail | Attente principale | Risque de friction |
+|---|---|---|---|
+| Lucas | accès via lien ponctuel sans compte ; joueur type sans compte, profil d'adoption critique (flux central) | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Émilie | accès via lien ponctuel sans compte | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Thomas | génération du lien par le MJ ; accès via lien permanent | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
+---
+
 ## Carte d'expérience
 
 ```mermaid
@@ -78,17 +88,15 @@ flowchart TD
 
 ---
 
-## Points de friction identifiés
+## Points de friction
 
-- **Saisie du nom d'affichage superflue si le joueur est déjà connecté** : Lucas peut avoir un compte Haversack sans le savoir ou sans être connecté. L'interface doit détecter silencieusement une session existante et proposer "Continuer en tant que Lucas (connecté)" plutôt que redemander un nom.
-
-- **Manque de retour visuel sur l'expiration imminente** : Lucas ne sait pas que son accès expire 24 heures après la fin de session. Si le MJ clôture la session tard dans la nuit, Lucas peut perdre l'accès à ses notes avant de les relire — sans avoir été averti.
-
-- **Friction lors de la création de compte depuis l'accès invité** : le moment où Lucas veut créer un compte pour garder ses notes coïncide souvent avec la fin de session (fatigue, rush). Si la procédure d'inscription est longue ou exige une validation d'email immédiate, il abandonne.
-
-- **Opacité du message d'erreur pour un lien expiré vs invalide** : le principe d'opacité est correct d'un point de vue sécurité, mais Lucas ne comprend pas pourquoi le lien ne fonctionne pas. Le message doit être sobre mais suffisamment actionnable ("contacter le MJ") pour éviter la confusion.
-
-- **Génération du lien — Thomas ne sait pas si le lien permanent est déjà actif** : si Thomas génère plusieurs liens pour le même espace partagé ou modifie les membres, l'interface doit clairement indiquer l'état actif/révoqué de chaque lien dans le panneau membres.
+| Étape | Persona(s) | Friction | Opportunité produit |
+|---|---|---|---|
+| SOUS-SPÉCIFIÉ | Lucas | **Saisie du nom d'affichage superflue si le joueur est déjà connecté** : Lucas peut avoir un compte Haversack sans le savoir ou sans être connecté. L'interface doit détecter silencieusement une session existante et proposer "Continuer en tant que Lucas (connecté)" plutôt que redemander un nom. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Lucas | **Manque de retour visuel sur l'expiration imminente** : Lucas ne sait pas que son accès expire 24 heures après la fin de session. Si le MJ clôture la session tard dans la nuit, Lucas peut perdre l'accès à ses notes avant de les relire — sans avoir été averti. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Lucas | **Friction lors de la création de compte depuis l'accès invité** : le moment où Lucas veut créer un compte pour garder ses notes coïncide souvent avec la fin de session (fatigue, rush). Si la procédure d'inscription est longue ou exige une validation d'email immédiate, il abandonne. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Lucas | **Opacité du message d'erreur pour un lien expiré vs invalide** : le principe d'opacité est correct d'un point de vue sécurité, mais Lucas ne comprend pas pourquoi le lien ne fonctionne pas. Le message doit être sobre mais suffisamment actionnable ("contacter le MJ") pour éviter la confusion. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Thomas | **Génération du lien — Thomas ne sait pas si le lien permanent est déjà actif** : si Thomas génère plusieurs liens pour le même espace partagé ou modifie les membres, l'interface doit clairement indiquer l'état actif/révoqué de chaque lien dans le panneau membres. | SOUS-SPÉCIFIÉ |
 
 ---
 

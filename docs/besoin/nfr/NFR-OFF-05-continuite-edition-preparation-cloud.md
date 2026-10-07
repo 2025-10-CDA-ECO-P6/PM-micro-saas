@@ -1,6 +1,6 @@
 # NFR-OFF-05 — Continuité d'édition en préparation cloud lors d'une perte de réseau
 
-Famille **Hors connexion** — [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : OFF · [Index — Hors connexion](README.md)
 
 ---
 
@@ -22,14 +22,14 @@ UC-03 documente déjà ce risque à la marge, dans son exception E2 (perte de co
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - L'édition de documents et de scénarios en préparation (hors session), en mode cloud, sur un seul appareil, lors d'une interruption réseau passagère.
 - La conservation locale du contenu en cours d'édition pendant l'interruption.
 - La synchronisation automatique des modifications en attente au retour de la connexion, sans intervention du MJ.
 - L'information non bloquante sur l'état de synchronisation pendant l'interruption et à la reconnexion.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Le chargement de contenu non encore consulté avant l'interruption : ce contenu nécessite une connexion pour être récupéré.
 - La synchronisation entre plusieurs appareils hors connexion : explicitement exclue du MVP (vision §2.4).
@@ -42,19 +42,19 @@ UC-03 documente déjà ce risque à la marge, dans son exception E2 (perte de co
 
 ## Critères d'acceptation produit
 
-**Situation nominale — perte de connexion pendant l'édition :**
+**Situation nominale** : perte de connexion pendant l'édition
 
 Un MJ qui perd sa connexion en cours d'édition d'un document ou d'un scénario voit son contenu conservé dans l'interface. Une notification non bloquante indique que la synchronisation est en attente. Le MJ peut continuer à saisir et à modifier le contenu en cours.
 
-**Situation nominale — reconnexion automatique :**
+**Situation nominale** : reconnexion automatique
 
 Dès que la connexion est rétablie, les modifications conservées en attente sont synchronisées sans que le MJ ait à effectuer une action. La notification de synchronisation disparaît ou se met à jour pour indiquer que la synchronisation est terminée. Aucun contenu n'est perdu.
 
-**Situation limite — interruption longue :**
+**Situation limite** : interruption longue
 
 Un MJ dont la connexion est interrompue pendant une durée prolongée continue à pouvoir éditer le document ou le scénario en cours. À la reconnexion, toutes les modifications sont synchronisées dans l'ordre de leur saisie.
 
-**Ce que le MJ ne doit jamais constater :**
+**Situation limite** : Ce que le MJ ne doit jamais constater
 
 Le MJ ne perd aucune modification saisie pendant une interruption réseau passagère en préparation. À la reconnexion, l'état qu'il voit dans l'interface correspond à l'état synchronisé.
 

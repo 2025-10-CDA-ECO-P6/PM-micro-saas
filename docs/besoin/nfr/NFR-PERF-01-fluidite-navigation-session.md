@@ -1,6 +1,6 @@
 # NFR-PERF-01 — Fluidité de la navigation en session
 
-Famille **Performance perçue** · [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : PERF · [Index — Performance perçue](README.md)
 
 ---
 
@@ -40,7 +40,7 @@ signaler à sa table qu'il est en train d'attendre l'application.
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - Toutes les actions de navigation réalisées par le MJ dans la vue session pendant une session
   en cours (statut LIVE) : consultation d'un document dans un panneau de dossier, épinglage
@@ -50,7 +50,7 @@ signaler à sa table qu'il est en train d'attendre l'application.
 - Les interactions décrites dans UC-06 phases 2 et 3 : navigation dans les panneaux configurés,
   consultation de documents en vue condensée, épinglage.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - La phase de préparation (hors session LIVE) — le contexte temporel y est différent.
 - Le premier affichage de l'application à l'ouverture — couvert par NFR-PERF-02.
@@ -64,30 +64,30 @@ signaler à sa table qu'il est en train d'attendre l'application.
 
 ## Critères d'acceptation produit
 
-**Situation nominale — navigation dans un panneau configuré :**
+**Situation nominale** : navigation dans un panneau configuré
 
 Un observateur assis à la table ne remarque pas que le MJ attend l'application. Le MJ peut
 passer d'un panneau à un autre, ouvrir un document en vue condensée et revenir à la
 conversation sans que les joueurs aient perçu de pause liée à l'outil.
 
-**Situation nominale — épinglage d'un document :**
+**Situation nominale** : épinglage d'un document
 
 Après avoir cliqué sur « Épingler », le document apparaît dans le panneau Documents épinglés
 sans que le MJ ait à attendre une confirmation visible. Il peut immédiatement poursuivre
 sa narration.
 
-**Situation nominale — ouverture d'un document épinglé :**
+**Situation nominale** : ouverture d'un document épinglé
 
 Un clic sur un document épinglé l'ouvre dans un panneau de consultation. Le contenu est
 lisible avant que la conversation n'ait marqué de pause perceptible.
 
-**Situation limite — campagne riche en contenu :**
+**Situation limite** : campagne riche en contenu
 
 Même lorsque la campagne contient un nombre important de documents et de dossiers, la
 navigation dans les panneaux configurés reste aussi fluide que pour une campagne peu
 alimentée. La densité de contenu n'est pas perçue par le MJ comme une source de lenteur.
 
-**Situation limite — reprise après interruption :**
+**Situation limite** : reprise après interruption
 
 Lorsque le MJ reprend une session interrompue (UC-06 A5), les panneaux configurés se
 restituent dans un délai qui ne crée pas de moment d'attente visible pour les joueurs
@@ -97,10 +97,10 @@ présents à la table.
 
 ## Traçabilité montante
 
-| Artefact | Lien |
-|---|---|
-| UC-06 — Vue session (contexte, phases 2-3, A3, A6) | [../usecases/UC-06-vue-session.md](../cas-d-utilisation/UC-06-vue-session.md) |
-| US-UC-06 — Epic vue session (US-06-01 à US-06-05) | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| RB-06-05 — Sauvegarde automatique de la configuration de vue | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| RB-06-09 — Filtrage des documents par visibilité | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
-| RB-06-15, RB-06-16 — Épinglage sans effet sur le document source | [../user-stories/US-UC-06-vue-session.md](../stories/US-UC-06-vue-session.md) |
+| Artefact | Nature du lien |
+| --- | --- |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | contexte, phases 2-3, A3, A6 |
+| [US-UC-06 — Epic vue session](../stories/US-UC-06-vue-session.md) | US-06-01 à US-06-05 |
+| [RB-06-05 — Sauvegarde automatique de la configuration de vue](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [RB-06-09 — Filtrage des documents par visibilité](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |
+| [RB-06-15, RB-06-16 — Épinglage sans effet sur le document source](../stories/US-UC-06-vue-session.md) | SOUS-SPÉCIFIÉ |

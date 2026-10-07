@@ -6,6 +6,16 @@ Parcours du MJ depuis l'identification d'un document à partager jusqu'à la con
 
 ---
 
+## Personas concernés
+
+| Persona | Mode de travail | Attente principale | Risque de friction |
+|---|---|---|---|
+| Émilie | partage à la volée en session, besoin de rapidité | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Thomas | partage préparé au moment précis d'une révélation | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Nadia | partage occasionnel d'une aide de jeu simple | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
+---
+
 ## Carte d'expérience
 
 ```mermaid
@@ -59,12 +69,14 @@ flowchart TD
 
 ---
 
-## Points de friction identifiés
+## Points de friction
 
-- **Confirmation superflue pour Émilie** : une boite de dialogue de confirmation interrompt le rythme de la partie. Émilie partage à la volée — chaque seconde compte.
-- **Manque de retour visuel sur l'état de partage** : sans indicateur clair sur le document (icône, badge), le MJ ne sait pas d'un coup d'oeil quels documents sont `PUBLIC` ou `GM_ONLY`. Thomas prépare plusieurs révélations — il a besoin de distinguer visuellement l'état de chacune.
-- **Auto-épinglage non perceptible** : le document est ajouté aux `documents épinglés` automatiquement lors d'un partage depuis la vue session, mais si aucun indicateur visuel ne le confirme, Émilie ne sait pas que le document est désormais accessible aux joueurs dans la session.
-- **Retrait du partage difficile à trouver** : l'action "Retirer le partage" peut être enfouie dans un menu contextuel ou peu visible si l'interface ne distingue pas les documents `PUBLIC` des documents `GM_ONLY`.
+| Étape | Persona(s) | Friction | Opportunité produit |
+|---|---|---|---|
+| SOUS-SPÉCIFIÉ | Émilie | **Confirmation superflue pour Émilie** : une boite de dialogue de confirmation interrompt le rythme de la partie. Émilie partage à la volée — chaque seconde compte. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Thomas | **Manque de retour visuel sur l'état de partage** : sans indicateur clair sur le document (icône, badge), le MJ ne sait pas d'un coup d'oeil quels documents sont `PUBLIC` ou `GM_ONLY`. Thomas prépare plusieurs révélations — il a besoin de distinguer visuellement l'état de chacune. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Émilie | **Auto-épinglage non perceptible** : le document est ajouté aux `documents épinglés` automatiquement lors d'un partage depuis la vue session, mais si aucun indicateur visuel ne le confirme, Émilie ne sait pas que le document est désormais accessible aux joueurs dans la session. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | **Retrait du partage difficile à trouver** : l'action "Retirer le partage" peut être enfouie dans un menu contextuel ou peu visible si l'interface ne distingue pas les documents `PUBLIC` des documents `GM_ONLY`. | SOUS-SPÉCIFIÉ |
 
 ---
 

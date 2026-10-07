@@ -1,6 +1,6 @@
 # NFR-CONF-01 — Séparation stricte entre notes privées du MJ et vue des joueurs
 
-Famille **Confidentialité** — [Index de conception](../../reference/ordre-d-autorite.md)
+> **Famille** : CONF · [Index — Confidentialité](README.md)
 
 ---
 
@@ -26,14 +26,14 @@ La vue joueur, telle que définie dans UC-06, affiche uniquement les documents d
 
 ## Portée et hors-portée
 
-**Ce que cette exigence couvre :**
+**Ce que cette exigence couvre** :
 
 - L'ensemble des documents dont la visibilité est « privé MJ » ou non définie : ils ne sont pas accessibles depuis la vue joueur, quelle que soit la façon dont le joueur tente d'y accéder.
 - Les notes de session créées par le MJ avec une visibilité « privé MJ » : inaccessibles depuis la vue joueur, même si la session est active.
 - L'accès ponctuel via lien de session (joueur sans compte, `GuestAccess`) : la séparation s'applique de façon identique à un joueur avec compte.
 - La tentative d'accès direct à un document non partagé, sans passer par l'interface de la vue joueur : cette tentative doit échouer, sans révéler l'existence du document.
 
-**Ce que cette exigence ne couvre pas :**
+**Ce que cette exigence ne couvre pas** :
 
 - Les notes personnelles des joueurs (visibilité « personnelle joueur ») : ces notes sont inaccessibles au MJ selon une règle distincte (UC-06, règles métier). Cette exigence ne concerne que le sens MJ → joueur.
 - La granularité du partage par joueur individuel : le MVP livre un partage par document pour l'ensemble des membres et des accès invités. La granularité par joueur ou personnage est un horizon produit (vision §5bis). Cette exigence couvre le niveau de granularité livré.
@@ -43,19 +43,19 @@ La vue joueur, telle que définie dans UC-06, affiche uniquement les documents d
 
 ## Critères d'acceptation produit
 
-**Situation nominale — vue joueur pendant une session active :**
+**Situation nominale** : vue joueur pendant une session active
 
 Un joueur accédant à sa vue pendant une session en cours voit uniquement les documents que le MJ a basculés en « visible par les joueurs ». Les documents de préparation du MJ — PNJ cachés, intrigues, notes privées de session — n'apparaissent pas dans sa vue, sans que le MJ ait eu à prendre d'action supplémentaire pour les masquer.
 
-**Situation nominale — joueur sans compte via lien ponctuel :**
+**Situation nominale** : joueur sans compte via lien ponctuel
 
 Un joueur accédant via un lien de session ponctuel (sans compte, en tant qu'invité) voit exactement les mêmes documents qu'un joueur avec compte dans le périmètre de la session. Aucun document à visibilité « privé MJ » n'est accessible, quelle que soit la méthode d'accès utilisée.
 
-**Situation limite — document épinglé non partagé :**
+**Situation limite** : document épinglé non partagé
 
 Un document épinglé dans les « documents épinglés de la session » mais dont la visibilité n'est pas « visible par les joueurs » n'apparaît pas dans la vue joueur. L'épinglage ne constitue pas un partage implicite.
 
-**Situation limite — tentative d'accès à un document non partagé :**
+**Situation limite** : tentative d'accès à un document non partagé
 
 Un joueur qui tenterait d'accéder directement à un document non partagé par le MJ — y compris en tentant d'accéder directement à des adresses de documents non partagés — se voit opposer un refus. Cette tentative ne révèle pas l'existence du document.
 

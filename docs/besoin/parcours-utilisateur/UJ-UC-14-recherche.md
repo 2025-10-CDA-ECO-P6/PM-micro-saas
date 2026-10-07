@@ -6,6 +6,16 @@ Parcours du MJ et du joueur depuis le déclenchement d'une recherche jusqu'à l'
 
 ---
 
+## Personas concernés
+
+| Persona | Mode de travail | Attente principale | Risque de friction |
+|---|---|---|---|
+| Émilie | MJ cherchant un PNJ en pleine session, besoin de rapidité | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Thomas | MJ cherchant une note de préparation par son titre hors session | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| Nadia | MJ retrouvant une note de session d'une séance précédente | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+
+---
+
 ## Carte d'expérience
 
 ```mermaid
@@ -68,13 +78,15 @@ flowchart TD
 
 ---
 
-## Points de friction identifiés
+## Points de friction
 
-- **Interruption du rythme de partie pour Émilie** : toute friction dans la recherche (lenteur, navigation multiple, panneau ne s'ouvrant pas directement) rompt le rythme de la partie. La recherche doit produire un résultat en moins de 2 secondes et s'ouvrir dans un panneau latéral sans détruire la vue session.
-- **Résultats trop nombreux sans filtre** : sur un espace au contenu volumineux (campagne longue, bibliothèque personnelle fournie), une recherche générale peut retourner trop de résultats. Sans filtre de type facilement accessible, Thomas et Nadia doivent faire défiler une longue liste.
-- **Pondération session active non perceptible** : si les documents liés à la session active ne sont pas clairement distingués des autres résultats (badge, section séparée), Émilie ne perçoit pas l'avantage de la pondération et cherche manuellement dans la liste.
-- **Etat vide peu informatif** : un état vide sans suggestion concrète (modifier la recherche, retirer le filtre, créer un document) laisse l'utilisateur sans action claire — particulièrement bloquant pour Nadia qui cherche une note dont elle ne se rappelle pas le titre exact.
-- **Règles de visibilité opaques pour le joueur** : si un joueur cherche un document et ne le trouve pas (parce qu'il est `GM_ONLY`), l'absence de résultat doit être claire sans révéler l'existence du document.
+| Étape | Persona(s) | Friction | Opportunité produit |
+|---|---|---|---|
+| SOUS-SPÉCIFIÉ | Émilie | **Interruption du rythme de partie pour Émilie** : toute friction dans la recherche (lenteur, navigation multiple, panneau ne s'ouvrant pas directement) rompt le rythme de la partie. La recherche doit produire un résultat en moins de 2 secondes et s'ouvrir dans un panneau latéral sans détruire la vue session. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Thomas, Nadia | **Résultats trop nombreux sans filtre** : sur un espace au contenu volumineux (campagne longue, bibliothèque personnelle fournie), une recherche générale peut retourner trop de résultats. Sans filtre de type facilement accessible, Thomas et Nadia doivent faire défiler une longue liste. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Émilie | **Pondération session active non perceptible** : si les documents liés à la session active ne sont pas clairement distingués des autres résultats (badge, section séparée), Émilie ne perçoit pas l'avantage de la pondération et cherche manuellement dans la liste. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Nadia | **Etat vide peu informatif** : un état vide sans suggestion concrète (modifier la recherche, retirer le filtre, créer un document) laisse l'utilisateur sans action claire — particulièrement bloquant pour Nadia qui cherche une note dont elle ne se rappelle pas le titre exact. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | **Règles de visibilité opaques pour le joueur** : si un joueur cherche un document et ne le trouve pas (parce qu'il est `GM_ONLY`), l'absence de résultat doit être claire sans révéler l'existence du document. | SOUS-SPÉCIFIÉ |
 
 ---
 
