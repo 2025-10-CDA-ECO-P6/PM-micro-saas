@@ -61,9 +61,9 @@ flowchart TD
     J --> L
     K --> L
 
-    F --> M{Contenu privé ?}
+    F --> M{Contenu à révéler aux joueurs ?}
     L --> M
-    M -->|Oui| N[Crée un doc privé MJ lié]
+    M -->|Oui| N[Ajoute une révélation\nDocument partageable lié à la scène]
     M -->|Non| O[Définit la visibilité du doc courant]
     N --> O
 
@@ -84,7 +84,7 @@ flowchart TD
 | Ajouter et ordonner des scènes | Antoine, Thomas | Absence de drag-and-drop, réordonnancement flou | Drag-and-drop sur ordre des scènes, avec indicateur visuel de l'ordre |
 | Écrire le contenu d'une scène | Tous | Éditeur peu expressif, absence de mise en forme basique | Éditeur de blocs fluide, raccourcis clavier |
 | Lier un document existant | Antoine, Sonia | Recherche de documents inexistante ou lente | Recherche rapide par titre dans l'espace, suggestion des documents récents |
-| Séparer notes privées et contenu partageable | Antoine, Thomas | Modèle "deux documents liés" non évident pour l'utilisateur | Affordance claire dans l'UI : "Ajouter une note MJ" crée automatiquement un doc privé MJ lié |
+| Séparer notes privées et contenu partageable | Antoine, Thomas | Modèle "deux documents liés" non évident pour l'utilisateur | Affordance claire dans l'UI : "Ajouter une révélation" crée automatiquement le document partageable lié à la scène |
 | Définir le statut | Nadia, Sonia | Étape perçue comme superflue si la valeur n'est pas visible | Statut "brouillon" par défaut, modifiable en un clic depuis la liste |
 | Sauvegarder | Tous | Perte de données si la sauvegarde n'est pas automatique | Sauvegarde automatique + indicateur de statut de synchronisation |
 | Retrouver le scénario | Nadia, Sonia | Liste non triée, pas de filtre par statut | Tri par date et filtre par statut dans la liste des scénarios |

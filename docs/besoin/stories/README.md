@@ -44,7 +44,7 @@ Ce dossier contient les 14 epics de user stories couvrant l'ensemble du périmè
 
 **Must Have (UC-01 à UC-10)** : toutes les fonctionnalités nécessaires pour qu'un MJ seul puisse utiliser l'application localement, structurer une campagne, animer une session et partager des informations avec ses joueurs. UC-10 (compte cloud) est Must Have car le partage joueurs (UC-08/09) l'exige et le MVP est livré en un seul bloc — raisonnement de priorisation détaillé dans la section MoSCoW (`../vision/moscow.md`). UC-05 base (dossiers libres) est Must Have ; la couche riche (types élaborés) est Should Have.
 
-**Should Have (UC-05 riche + UC-11, UC-12, UC-14)** : couche riche des dossiers (types de document élaborés), gestion de groupe et recherche. **UC-13 (scénario réutilisable) est Should Have mais hors première livraison** — voir MoSCoW.
+**Should Have (UC-05 riche + UC-11, UC-12, UC-14)** : couche riche des dossiers (types de document élaborés, templates par défaut des dossiers), gestion de groupe et recherche. **UC-13 (scénario réutilisable) est Should Have mais hors première livraison** — voir MoSCoW.
 
 **Could Have / Won't Have** : référencés dans `../usecases/UC-HORS-MVP.md` et dans les sections "Stories exclues" de chaque epic.
 

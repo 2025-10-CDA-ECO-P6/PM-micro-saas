@@ -4,7 +4,7 @@
 ## Profil
 
 22 ans, étudiant en informatique. Joueur depuis 3 ans, jamais MJ. Il joue D&D 5e dans le groupe
-de Thomas, une session par semaine.
+de Thomas, une session tous les 15 jours.
 
 ## Qui il/elle est
 

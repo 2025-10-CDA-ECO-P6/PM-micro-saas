@@ -36,7 +36,7 @@ Permettre au MJ de piloter une session de jeu depuis un tableau de bord configur
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-06 — Utiliser la vue session](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-06 — Utiliser la vue session](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -72,8 +72,8 @@ flowchart TD
     P -->|Non| R[Session.Archive\nCLOSED → ARCHIVED]
 
     D --> S[Vue joueur — pendant LIVE]
-    S --> T[Documents partagés + notes de session personnelle joueur du joueur]
-    T --> U[Joueur crée ses propres notes de session personnelle joueur]
+    S --> T["Documents partagés (+ notes de session personnelle joueur du joueur : hors MVP)"]
+    T --> U["Hors MVP — Joueur crée ses propres notes de session personnelle joueur"]
 ```
 
 ### Bounded contexts pressentis
@@ -94,7 +94,7 @@ flowchart LR
     US0605[US-06-05\nÉpingler un document]
     US0606[US-06-06\nTerminer une session]
     US0607[US-06-07\nAccès vue joueur]
-    US0608[US-06-08\nNotes personnelles joueur]
+    US0608[US-06-08\nNotes personnelles joueur — hors MVP]
     US0609[US-06-09\nReprendre une session interrompue]
     US0610[US-06-10\nNotes rétroactives CLOSED]
 
@@ -130,14 +130,14 @@ flowchart LR
 **Notes de conception** :
 - `Session.Start(espace associé, title, scenarioId?)` — crée la session directement en `LIVE`. Pas d'état intermédiaire PENDING.
 - `scenarioId = null` est valide — scénario improvisé (A1).
-- Mode local : session créée et stockée dans le stockage local du navigateur. Les notes de session joueurs ne sont pas disponibles en mode local.
+- Mode local : session créée et stockée dans le stockage local du navigateur. Les notes de session joueurs (hors MVP) ne sont pas disponibles en mode local.
 - configuration de la vue session est chargée depuis l'espace si elle existe, ou initialisée avec les dossiers de l'espace dans leur ordre par défaut.
 
 **Règles métier** :
 - RB-06-01 : Le titre est obligatoire et non vide.
 - RB-06-02 : La session est créée directement en `LIVE` — pas d'état PENDING.
 - RB-06-03 : Le scénario est optionnel (`scenarioId = null` autorisé).
-- RB-06-04 : En mode local, les notes de session joueurs et la vue joueur ne sont pas disponibles.
+- RB-06-04 : En mode local, les notes de session joueurs *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* et la vue joueur ne sont pas disponibles.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut lancer une session en saisissant uniquement un titre.
@@ -321,18 +321,18 @@ Scénario : Résilience réseau (E1)
 **Notes de conception** :
 - épinglage du document / désépinglage du document — modifie documents épinglés.
 - Un document épinglé reste intact dans la bibliothèque de contenu si désépinglé. L'épinglage ne modifie pas le document source.
-- Épinglage automatique lors d'une création à la volée (UC-07) ou d'un partage (UC-08).
+- Épinglage automatique d'un document durable lors d'une création à la volée (UC-07) ou d'un partage (UC-08), en session LIVE seulement. Une note de session n'est jamais épinglée (voir RB-07-04, US-UC-07).
 
 **Règles métier** :
 - RB-06-15 : L'épinglage d'un document n'affecte pas le document source dans la bibliothèque de contenu.
 - RB-06-16 : Un document peut être désépinglé — il reste disponible dans la bibliothèque de contenu.
-- RB-06-17 : Les documents créés à la volée (UC-07) ou partagés (UC-08) sont épinglés automatiquement.
+- RB-06-17 : Les documents durables créés à la volée (UC-07) ou partagés (UC-08) sont épinglés automatiquement, en session LIVE seulement. Une note de session n'est jamais épinglée : elle est rattachée à la session (voir RB-07-04).
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut épingler un document depuis la navigation ou un panneau de la vue session.
 - [ ] Le document épinglé apparaît dans le panneau "Documents épinglés".
 - [ ] Le MJ peut désépingler un document — le document reste dans la bibliothèque de contenu.
-- [ ] Un document créé à la volée pendant la session est épinglé automatiquement.
+- [ ] Un document durable créé à la volée pendant une session LIVE est épinglé automatiquement ; une note de session ne l'est jamais.
 
 ```gherkin
 Scénario : Le MJ épingle un document
@@ -349,7 +349,7 @@ Scénario : Le MJ désépingle un document
 
 Scénario : Épinglage automatique à la création à la volée
   Étant donné qu'une session est LIVE
-  Quand le MJ crée un document à la volée via UC-07
+  Quand le MJ crée un document durable à la volée via UC-07
   Alors le document est automatiquement ajouté à documents épinglés
 ```
 
@@ -363,13 +363,13 @@ Scénario : Épinglage automatique à la création à la volée
 
 **Notes de conception** :
 - `Session.Close()` → `LIVE → CLOSED`. Transition irréversible.
-- En `CLOSED` : le MJ peut ajouter des notes de session rétroactives. Les joueurs ne peuvent plus en créer.
+- En `CLOSED` : le MJ peut ajouter des notes de session rétroactives. Les joueurs ne peuvent plus en créer *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - `Session.Archive()` → `CLOSED → ARCHIVED`. Lecture seule intégrale.
 - La machine d'états est unidirectionnelle : `LIVE → CLOSED → ARCHIVED`.
 
 **Règles métier** :
 - RB-06-18 : `LIVE → CLOSED` est irréversible.
-- RB-06-19 : En `CLOSED`, le MJ peut ajouter des notes de session rétroactives. Les joueurs ne le peuvent pas.
+- RB-06-19 : En `CLOSED`, le MJ peut ajouter des notes de session rétroactives. Les joueurs ne le peuvent pas *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - RB-06-20 : `CLOSED → ARCHIVED` est irréversible. `ARCHIVED` est en lecture seule intégrale.
 - RB-06-21 : La machine d'états est unidirectionnelle — aucun retour en arrière possible.
 
@@ -377,7 +377,7 @@ Scénario : Épinglage automatique à la création à la volée
 - [ ] Le MJ peut terminer une session LIVE en cliquant "Terminer".
 - [ ] La session passe en `CLOSED` — irréversible.
 - [ ] En `CLOSED`, le MJ peut ajouter des notes de session rétroactives.
-- [ ] En `CLOSED`, les joueurs ne peuvent plus créer de notes de session.
+- [ ] En `CLOSED`, les joueurs ne peuvent plus créer de notes de session *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - [ ] Le MJ peut archiver une session `CLOSED` → `ARCHIVED`.
 - [ ] En `ARCHIVED`, aucune modification n'est possible (lecture seule).
 
@@ -392,7 +392,7 @@ Scénario : Le MJ ajoute une note rétroactive en CLOSED
   Quand le MJ crée une note de session
   Alors la note de session est enregistrée avec la session CLOSED
 
-Scénario : Un joueur ne peut pas créer de note de session en CLOSED
+Scénario : Un joueur ne peut pas créer de note de session en CLOSED *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
   Étant donné qu'une session est en status CLOSED
   Quand un joueur tente de créer une note de session
   Alors la création est refusée
@@ -410,24 +410,24 @@ Scénario : Le MJ archive une session CLOSED
 
 **En tant que** : joueur,  
 **je veux** : accéder à la vue de session partagée pendant une session LIVE,  
-**afin de** : consulter les documents partagés par le MJ et mes notes personnelles.
+**afin de** : consulter les documents partagés par le MJ (et mes notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*).
 
 **Notes de conception** :
 - La vue joueur nécessite un compte ou un accès invité (UC-09). Elle n'est pas disponible en mode local.
-- Le joueur voit : documents partagés + ses propres notes de session personnelle joueur.
+- Le joueur voit : documents partagés. Ses propres notes de session personnelle joueur s'y ajouteront *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - Le joueur ne voit pas les notes de session privé MJ ni les notes de session personnelle joueur des autres joueurs.
 - Dépendance forte à UC-09 (gestion du accès invité).
 
 **Règles métier** :
 - RB-06-22 : La vue joueur nécessite un compte ou un accès invité — non disponible en mode local.
-- RB-06-23 : Le joueur voit uniquement les documents partagés et ses propres notes de session personnelle joueur.
+- RB-06-23 : Le joueur voit uniquement les documents partagés et ses propres notes de session personnelle joueur *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - RB-06-24 : Les notes de session privé MJ sont invisibles pour les joueurs.
 - RB-06-25 : Tout document `PLAYER_PRIVATE` est invisible pour les autres joueurs et pour le MJ — quel que soit le type de document. Seul l'auteur du document (`createdById` ou `guest_access_id`) peut y accéder.
 
 **Critères d'acceptation** :
 - [ ] Un joueur avec un compte ou accès invité peut accéder à la vue joueur d'une session LIVE.
 - [ ] Le joueur voit les documents partagés de l'espace.
-- [ ] Le joueur voit ses propres notes de session personnelle joueur.
+- [ ] Le joueur voit ses propres notes de session personnelle joueur *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - [ ] Le joueur ne voit pas les notes de session privé MJ.
 - [ ] Le joueur ne voit pas les notes de session personnelle joueur des autres joueurs.
 - [ ] La vue joueur n'est pas accessible en mode local (sans compte ni accès invité).
@@ -436,7 +436,8 @@ Scénario : Le MJ archive une session CLOSED
 Scénario : Le joueur accède à la vue session
   Étant donné qu'une session est LIVE et que le joueur a un compte valide
   Quand le joueur accède à la vue session
-  Alors il voit les documents partagés et ses notes de session personnelle joueur
+  Alors il voit les documents partagés
+  # hors MVP — notes de session du joueur : Et il voit ses notes de session personnelle joueur
 
 Scénario : Le joueur ne voit pas les notes privé MJ
   Étant donné qu'une session est LIVE et qu'une note de session privé MJ existe
@@ -447,50 +448,6 @@ Scénario : Accès refusé sans compte ni accès invité
   Étant donné que la session est en mode local
   Quand un joueur tente d'accéder à la vue session
   Alors l'accès est refusé
-```
-
----
-
-### US-06-08 — Prendre des notes de session personnelle joueur
-
-**En tant que** : joueur,  
-**je veux** : créer des notes personnelles visibles uniquement par moi,  
-**afin de** : consigner mes observations sans les partager avec le MJ ni les autres joueurs.
-
-**Notes de conception** :
-- Note de session personnelle, éventuellement associée au personnage du joueur.
-- Inaccessible au MJ — règle générale sur tout document `PLAYER_PRIVATE`, sans exception de type de document ni de rôle (y compris OWNER/GM).
-- Un joueur accès invité peut créer une note de session personnelle joueur s'il est associé à un personnage associé.
-- Création possible uniquement pendant une session `LIVE`.
-
-**Règles métier** :
-- RB-06-26 : Tout document `PLAYER_PRIVATE` (y compris les `LIVE_NOTE` personnelle joueur) est inaccessible au MJ, même OWNER/GM. Règle sans exception, encodée dans `Document.CanBeReadBy()`.
-- RB-06-27 : Un joueur ne peut créer des notes de session que pendant une session LIVE.
-- RB-06-28 : Un joueur accès invité peut créer une note de session personnelle joueur s'il a un personnage associé associé.
-
-**Critères d'acceptation** :
-- [ ] Le joueur peut créer une note de session personnelle joueur pendant une session LIVE.
-- [ ] La note de session personnelle joueur n'est pas accessible au MJ.
-- [ ] La note de session personnelle joueur n'est pas visible par les autres joueurs.
-- [ ] Un joueur accès invité avec personnage associé peut créer une note de session personnelle joueur.
-- [ ] La création est impossible en dehors d'une session LIVE.
-
-```gherkin
-Scénario : Le joueur crée une note personnelle
-  Étant donné qu'une session est LIVE et que le joueur est connecté
-  Quand il crée une note de session "Je soupçonne Ragnar"
-  Alors la note de session est créée avec visibility = personnelle joueur
-  Et elle n'est pas visible dans la vue MJ
-
-Scénario : La note personnelle joueur est inaccessible au MJ
-  Étant donné qu'une note de session personnelle joueur existe
-  Quand le MJ consulte les notes de session de la session
-  Alors la note de session personnelle joueur n'est pas affichée
-
-Scénario : Joueur accès invité avec personnage associé
-  Étant donné qu'un joueur accès invité est associé au personnage associé "Kira"
-  Quand il crée une note de session pendant la session LIVE
-  Alors la note de session est créée pour "Kira" avec une visibilité personnelle
 ```
 
 ---
@@ -535,7 +492,7 @@ Scénario : Le MJ reprend une session après interruption
 **Notes de conception** :
 - Disponible uniquement en statut `CLOSED`. En `ARCHIVED`, aucune modification n'est possible.
 - Les notes de session rétroactives suivent les mêmes règles de visibilité que les notes créées pendant la session.
-- Les joueurs ne peuvent pas ajouter de notes rétroactives.
+- Les joueurs ne peuvent pas ajouter de notes rétroactives *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 
 **Règles métier** :
 - Cette story applique RB-06-19 et RB-06-20, définies dans US-06-06 (terminer une session) : en `CLOSED`, le MJ peut ajouter des notes de session rétroactives, les joueurs ne le peuvent pas ; `CLOSED → ARCHIVED` est irréversible et `ARCHIVED` est en lecture seule intégrale.
@@ -543,7 +500,7 @@ Scénario : Le MJ reprend une session après interruption
 **Critères d'acceptation** :
 - [ ] Le MJ peut ajouter une note de session à une session CLOSED.
 - [ ] La note de session rétroactive est associée à la session CLOSED.
-- [ ] Les joueurs ne peuvent pas ajouter de notes à une session CLOSED.
+- [ ] Les joueurs ne peuvent pas ajouter de notes à une session CLOSED *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - [ ] Aucune note ne peut être ajoutée à une session ARCHIVED.
 
 ```gherkin
@@ -566,10 +523,53 @@ Scénario : Création impossible en ARCHIVED
 |---|---|
 | Notification visuelle de connexion joueur | Question ouverte — non décidé pour le MVP |
 | Historique des notes de session dans le panneau session courante | DÉCIDÉ hors périmètre : accessibles via la recherche globale (UC-14) |
-| Template de vue session | Could Have post-MVP — permettrait de réutiliser une config entre campagnes / one-shots |
+| US-06-08 — Prendre des notes de session personnelle joueur | Hors MVP — réponse de l'opérateur (onboarding du 2026-10-07) : toutes les notes de session du joueur sont Could Have ([matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur)). L'identifiant reste pris ; le texte de la story est conservé ci-dessous. |
+| Template de vue session | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#template-de-vue-session-uc-06), § Template de vue session (UC-06)) — permettrait de réutiliser une config entre campagnes / one-shots |
 | Recherche globale en session | Hors périmètre UC-06. Documenté dans UC-14. |
 | Partage de document | Hors périmètre UC-06. Documenté dans UC-08. Épinglage automatique couvert dans US-06-05. |
 | Création de document à la volée | Hors périmètre UC-06. Documenté dans UC-07. Épinglage automatique couvert dans US-06-05. |
+
+**US-06-08 — Prendre des notes de session personnelle joueur** *(hors MVP — texte conservé pour la reprise)*
+
+**En tant que** : joueur,  
+**je veux** : créer des notes personnelles visibles uniquement par moi,  
+**afin de** : consigner mes observations sans les partager avec le MJ ni les autres joueurs.
+
+**Notes de conception** :
+- Note de session personnelle, éventuellement associée au personnage du joueur.
+- Inaccessible au MJ — règle générale sur tout document `PLAYER_PRIVATE`, sans exception de type de document ni de rôle (y compris OWNER/GM).
+- Un joueur accès invité peut créer une note de session personnelle joueur s'il est associé à un personnage associé.
+- Création possible uniquement pendant une session `LIVE`.
+
+**Règles métier** :
+- RB-06-26 : Tout document `PLAYER_PRIVATE` (y compris les `LIVE_NOTE` personnelle joueur) est inaccessible au MJ, même OWNER/GM. Règle sans exception, encodée dans `Document.CanBeReadBy()`.
+- RB-06-27 : Un joueur ne peut créer des notes de session que pendant une session LIVE.
+- RB-06-28 : Un joueur accès invité peut créer une note de session personnelle joueur s'il a un personnage associé associé.
+
+**Critères d'acceptation** :
+- [ ] Le joueur peut créer une note de session personnelle joueur pendant une session LIVE.
+- [ ] La note de session personnelle joueur n'est pas accessible au MJ.
+- [ ] La note de session personnelle joueur n'est pas visible par les autres joueurs.
+- [ ] Un joueur accès invité avec personnage associé peut créer une note de session personnelle joueur.
+- [ ] La création est impossible en dehors d'une session LIVE.
+
+```gherkin
+Scénario : Le joueur crée une note personnelle
+  Étant donné qu'une session est LIVE et que le joueur est connecté
+  Quand il crée une note de session "Je soupçonne Ragnar"
+  Alors la note de session est créée avec visibility = personnelle joueur
+  Et elle n'est pas visible dans la vue MJ
+
+Scénario : La note personnelle joueur est inaccessible au MJ
+  Étant donné qu'une note de session personnelle joueur existe
+  Quand le MJ consulte les notes de session de la session
+  Alors la note de session personnelle joueur n'est pas affichée
+
+Scénario : Joueur accès invité avec personnage associé
+  Étant donné qu'un joueur accès invité est associé au personnage associé "Kira"
+  Quand il crée une note de session pendant la session LIVE
+  Alors la note de session est créée pour "Kira" avec une visibilité personnelle
+```
 
 ---
 
@@ -582,7 +582,7 @@ Scénario : Création impossible en ARCHIVED
 5. **US-06-05** — Épingler un document (complète la navigation rapide)
 6. **US-06-06** — Terminer une session (cycle de vie complet)
 7. **US-06-07** — Accès vue joueur (dépend UC-09)
-8. **US-06-08** — Notes personnelles joueur (valeur joueur)
+8. **US-06-08** — Notes personnelles joueur : hors MVP, voir Stories exclues ou repoussées
 9. **US-06-09** — Reprendre une session interrompue (résilience)
 10. **US-06-10** — Notes rétroactives CLOSED (complétion narrative)
 
@@ -603,7 +603,7 @@ Scénario : Création impossible en ARCHIVED
 | A3 — notes rétroactives CLOSED | US-06-10 |
 | A4 — épinglage automatique UC-07/UC-08 | US-06-05 |
 | E1 — perte connexion note de session | US-06-04 |
-| personnelle joueur inaccessible MJ | US-06-07, US-06-08 |
+| personnelle joueur inaccessible MJ | US-06-07 (US-06-08, hors MVP, voir Stories exclues ou repoussées) |
 | Machine d'états LIVE → CLOSED → ARCHIVED | US-06-06 |
 
 ---
@@ -616,4 +616,4 @@ Scénario : Création impossible en ARCHIVED
    - Voir **AR-06** pour la cohérence du modèle de notification globale (joueur ↔ MJ).
    - **Substance reportée**: les modalités concrètes de la notification future sont reportées à l'interview post-MVP — non tranchées à ce stade.
 2. **DÉCIDÉ.** Les LiveNotes des sessions précédentes sont accessibles via la recherche globale (UC-14) comme tout document. Elles ne sont pas affichées dans le panneau de notes de la session courante.
-3. **DÉCIDÉ.** Auto-save à chaque changement. Pas de panneau paramètres séparé. Mode édition de la vue session accessible sans lancer de session. Templates de vue session = Could Have post-MVP.
+3. **DÉCIDÉ.** Auto-save à chaque changement. Pas de panneau paramètres séparé. Mode édition de la vue session accessible sans lancer de session. Templates de vue session : hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#template-de-vue-session-uc-06), § Template de vue session (UC-06)).

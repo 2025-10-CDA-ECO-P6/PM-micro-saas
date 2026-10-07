@@ -91,7 +91,7 @@ de contenu non prévue par défaut.
 ## Préconditions
 
 - Un espace existe.
-- Le MJ est propriétaire de l'espace.
+- Le MJ est membre `OWNER` ou `GM` de l'espace (sur un espace `PERSONAL`, le propriétaire).
 
 ## Scénario nominal — Créer un dossier
 
@@ -200,6 +200,7 @@ sans erreur. Les documents déjà créés conservent leur contenu (ils sont des 
 - Identifiant unique
 - Nom
 - Espace associé
+- Type de document par défaut (optionnel)
 - Template par défaut (optionnel)
 - Indicateur système (`isSystem`)
 - Ordre d'affichage
@@ -223,12 +224,12 @@ sans erreur. Les documents déjà créés conservent leur contenu (ils sont des 
 ## Critères d'acceptation
 
 - Le MJ peut créer un dossier avec un nom.
-- Le MJ peut associer un template par défaut à un dossier.
+- Le MJ peut associer à un dossier un type de document par défaut et un template par défaut, tous deux optionnels.
 - Le MJ peut renommer n'importe quel dossier, y compris les dossiers système.
 - Le MJ peut supprimer un dossier système comme n'importe quel autre dossier.
 - Le MJ peut supprimer un dossier en traitant son contenu (déplacer ou laisser non classé).
 - Le MJ peut déplacer un document d'un dossier à un autre.
-- À la création d'un espace `CAMPAIGN` ou `ONE_SHOT`, les 4 dossiers système existent avec leurs templates. À la création d'un espace `PERSONAL`, seul le dossier virtuel « Non classés » existe.
+- À la création d'un espace `CAMPAIGN` ou `ONE_SHOT`, les 4 dossiers système existent, chacun avec son type par défaut (sauf Notes, qui n'en a pas) et son template optionnel. À la création d'un espace `PERSONAL`, seul le dossier virtuel « Non classés » existe.
 - Un document créé depuis un dossier avec template est initialisé avec ce template.
 - Les documents existants ne sont jamais modifiés lors d'un changement de template par défaut.
 - Le MJ peut réordonner ses dossiers.

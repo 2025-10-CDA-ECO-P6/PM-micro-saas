@@ -2,7 +2,9 @@
 
 - **Id** : 0053
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : `docs/besoin/cas-d-utilisation/README.md`, `docs/besoin/cas-d-utilisation/UC-03-structurer-scenario.md`, `docs/besoin/cas-d-utilisation/UC-06-vue-session.md`, `docs/besoin/cas-d-utilisation/diagrammes.md`
+- **Note** : le troisième écart (note joueur conditionnée à un personnage associé) est porté par RB-12-03 et par la matrice de priorités ; UC-06:255 et UC-09:104 ne décrivent plus de note joueur, puisque l'entrée 0081 les sort du MVP.
 
 - [use-case-index:contradicted-1 — stale, README.md] Retirer « ou par tag » du résumé de UC-14 dans usecases/README.md:40 ou le marquer hors MVP
 - [use-cases:contradicted-1 — gap, UC-03-structurer-scenario.md] Ajouter à la postcondition UC-03:101 le repli vers Non classés quand aucun dossier Scénarios n'existe

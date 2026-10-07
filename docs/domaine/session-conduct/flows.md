@@ -150,7 +150,7 @@ sequenceDiagram
     App->>SM: Valider GuestAccess(token)
     alt GuestAccess invalide / expiré
         SM-->>App: Refusé
-        App-->>Joueur: "Ce lien n'est plus actif"
+        App-->>Joueur: "Ce lien n'est pas utilisable"
     else GuestAccess valide
         SM-->>App: GuestAccessId + spaceId + characterId?
         App->>SC: Charger vue session (documents PUBLIC, notes de session PUBLIC)

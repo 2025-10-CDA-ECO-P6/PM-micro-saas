@@ -10,34 +10,34 @@
 - 0008 — 2026-10-07 — [Vérifier le traitement par VerifCorpus du lien vers un répertoire](0008-verifier-le-traitement-par-verifcorpus-du-lien-vers-un-reper.md) — ouvert
 - 0009 — 2026-10-07 — [Reconstruire VerifCorpus et vérifier que la DLL suit la source](0009-reconstruire-verifcorpus-et-verifier-que-la-dll-suit-la-sour.md) — ouvert
 - 0010 — 2026-10-07 — [Vérifier la définition de GuestAccess, Non classés et LIVE_NOTE](0010-verifier-la-definition-de-guestaccess-non-classes-et-live-no.md) — ouvert
-- 0011 — 2026-10-07 — [Expliquer l'absence de RB-02-21..23 dans les tables de US-UC-02](0011-expliquer-l-absence-de-rb-02-21-23-dans-les-tables-de-us-uc.md) — ouvert
+- 0011 — 2026-10-07 — [Expliquer l'absence de RB-02-21..23 dans les tables de US-UC-02](0011-expliquer-l-absence-de-rb-02-21-23-dans-les-tables-de-us-uc.md) — fait
 - 0012 — 2026-10-07 — [Identifier le document « 06 » cité par le dossier d'architecture](0012-identifier-le-document-06-cite-par-le-dossier-d-architecture.md) — ouvert
 - 0013 — 2026-10-07 — [Identifier les « 6 surfaces MJ » de l'accès compte](0013-identifier-les-6-surfaces-mj-de-l-acces-compte.md) — ouvert
 - 0014 — 2026-10-07 — [Corriger le renvoi « item 1 du cadrage juridique » de la spec d'effacement](0014-corriger-le-renvoi-item-1-du-cadrage-juridique-de-la-spec-d.md) — ouvert
 - 0015 — 2026-10-07 — [Vérifier si VerifCouvertureRecette contrôle l'intégrité des citations Gherkin](0015-verifier-si-verifcouverturerecette-controle-l-integrite-des.md) — ouvert
-- 0016 — 2026-10-07 — [Corriger le renvoi de NFR-OFF-03 vers le README des NFR](0016-corriger-le-renvoi-de-nfr-off-03-vers-le-readme-des-nfr.md) — ouvert
-- 0017 — 2026-10-07 — [Aligner le nombre d'hypothèses centrales du guide d'entretien sur la vision](0017-aligner-le-nombre-d-hypotheses-centrales-du-guide-d-entretie.md) — ouvert
+- 0016 — 2026-10-07 — [Corriger le renvoi de NFR-OFF-03 vers le README des NFR](0016-corriger-le-renvoi-de-nfr-off-03-vers-le-readme-des-nfr.md) — fait
+- 0017 — 2026-10-07 — [Aligner le nombre d'hypothèses centrales du guide d'entretien sur la vision](0017-aligner-le-nombre-d-hypotheses-centrales-du-guide-d-entretie.md) — fait
 - 0018 — 2026-10-07 — [Vérifier si Paramètres de campagne touche la frontière joueur](0018-verifier-si-parametres-de-campagne-touche-la-frontiere-joueu.md) — ouvert
-- 0019 — 2026-10-07 — [Amender UC-05 : un dossier système porte un type par défaut et un template optionnel](0019-amender-uc-05-un-dossier-systeme-porte-un-type-par-defaut-et.md) — ouvert
-- 0020 — 2026-10-07 — [Amender UC-03, UC-05, UC-07 : tout MJ, OWNER ou GM, organise les dossiers et crée à la volée](0020-amender-uc-03-uc-05-uc-07.md) — ouvert
-- 0021 — 2026-10-07 — [Amender UC-07 : un MJ GM non propriétaire peut créer à la volée en session](0021-amender-uc-07-un-mj-gm-non-proprietaire-peut-creer-a-la-vole.md) — ouvert
-- 0022 — 2026-10-07 — [Amender UC-02 : le type d'espace se choisit dans le formulaire nominal](0022-amender-uc-02-le-type-d-espace-se-choisit-dans-le-formulaire.md) — ouvert
-- 0023 — 2026-10-07 — [Amender UC-06 : le MJ archive explicitement une session close (CLOSED → ARCHIVED)](0023-amender-uc-06-le-mj-archive-explicitement-une-session-close.md) — ouvert
-- 0024 — 2026-10-07 — [Amender RB-12-01 : la fiche du personnage associé est lisible par son joueur](0024-amender-rb-12-01-la-fiche-du-personnage-associe-est-lisible.md) — ouvert
-- 0025 — 2026-10-07 — [Amender UC-12 A2 et RB-12-04 : la portée SESSION voit tous les documents PUBLIC](0025-amender-uc-12-a2-et-rb-12-04.md) — ouvert
-- 0026 — 2026-10-07 — [Marquer le rôle GM (co-MJ) hors MVP](0026-marquer-le-role-gm-co-mj-hors-mvp.md) — ouvert
+- 0019 — 2026-10-07 — [Amender UC-05 : un dossier système porte un type par défaut et un template optionnel](0019-amender-uc-05-un-dossier-systeme-porte-un-type-par-defaut-et.md) — fait
+- 0020 — 2026-10-07 — [Amender UC-03, UC-05, UC-07 : tout MJ, OWNER ou GM, organise les dossiers et crée à la volée](0020-amender-uc-03-uc-05-uc-07.md) — fait
+- 0021 — 2026-10-07 — [Amender UC-07 : un MJ GM non propriétaire peut créer à la volée en session](0021-amender-uc-07-un-mj-gm-non-proprietaire-peut-creer-a-la-vole.md) — fait
+- 0022 — 2026-10-07 — [Amender UC-02 : le type d'espace se choisit dans le formulaire nominal](0022-amender-uc-02-le-type-d-espace-se-choisit-dans-le-formulaire.md) — fait
+- 0023 — 2026-10-07 — [Amender UC-06 : le MJ archive explicitement une session close (CLOSED → ARCHIVED)](0023-amender-uc-06-le-mj-archive-explicitement-une-session-close.md) — fait
+- 0024 — 2026-10-07 — [Amender RB-12-01 : la fiche du personnage associé est lisible par son joueur](0024-amender-rb-12-01-la-fiche-du-personnage-associe-est-lisible.md) — fait
+- 0025 — 2026-10-07 — [Amender UC-12 A2 et RB-12-04 : la portée SESSION voit tous les documents PUBLIC](0025-amender-uc-12-a2-et-rb-12-04.md) — fait
+- 0026 — 2026-10-07 — [Marquer le rôle GM (co-MJ) hors MVP](0026-marquer-le-role-gm-co-mj-hors-mvp.md) — fait
 - 0027 — 2026-10-07 — [Invitation d'un GM : sans objet au MVP (co-MJ hors MVP)](0027-invitation-d-un-gm.md) — ouvert
-- 0028 — 2026-10-07 — [Amender UC-09 : la fenêtre de grâce de 24 h est tranchée (RB-09-01)](0028-amender-uc-09-la-fenetre-de-grace-de-24-h-est-tranchee-rb-09.md) — ouvert
-- 0029 — 2026-10-07 — [Amender UC-11 et RB-09-16/RB-11-03 : la validation manuelle est close par UC-09:108](0029-amender-uc-11-et-rb-09-16-rb-11-03.md) — ouvert
-- 0030 — 2026-10-07 — [Même réponse que pour la validation manuelle (UC-11:136) : deux chemins distincts, à expliciter](0030-meme-reponse-que-pour-la-validation-manuelle-uc-11-136.md) — ouvert
-- 0031 — 2026-10-07 — [Classer dans moscow les templates par défaut des dossiers avec le volet riche de UC-05](0031-classer-dans-moscow-les-templates-par-defaut-des-dossiers-av.md) — ouvert
-- 0032 — 2026-10-07 — [moscow attribue seul les priorités, à tout grain](0032-moscow-attribue-seul-les-priorites-a-tout-grain.md) — ouvert
-- 0033 — 2026-10-07 — [Sortir les backlinks du MVP](0033-sortir-les-backlinks-du-mvp.md) — ouvert
-- 0034 — 2026-10-07 — [Spécifier dans US-UC-07 un raccourci clavier pour le panneau de création rapide](0034-specifier-dans-us-uc-07-un-raccourci-clavier-pour-le-panneau.md) — ouvert
-- 0035 — 2026-10-07 — [Marquer les statuts des questions 2 et 3 de US-UC-13](0035-marquer-les-statuts-des-questions-2-et-3-de-us-uc-13.md) — ouvert
-- 0036 — 2026-10-07 — [Réécrire RB-14-03 : un joueur trouve en recherche les documents PUBLIC et ses propres notes PLAYER_PRIVATE](0036-reecrire-rb-14-03-un-joueur-trouve-en-recherche-les-document.md) — ouvert
-- 0037 — 2026-10-07 — [Dire dans le README des NFR que le périmètre couvre les Must et Should Have de la première livraison](0037-dire-dans-le-readme-des-nfr-que-le-perimetre-couvre-les-must.md) — ouvert
-- 0038 — 2026-10-07 — [Dire dans le guide d'entretien qu'aucun entretien terrain n'a eu lieu au 2026-10-07](0038-dire-dans-le-guide-d-entretien-qu-aucun-entretien-terrain-n.md) — ouvert
+- 0028 — 2026-10-07 — [Amender UC-09 : la fenêtre de grâce de 24 h est tranchée (RB-09-01)](0028-amender-uc-09-la-fenetre-de-grace-de-24-h-est-tranchee-rb-09.md) — fait
+- 0029 — 2026-10-07 — [Amender UC-11 et RB-09-16/RB-11-03 : la validation manuelle est close par UC-09:108](0029-amender-uc-11-et-rb-09-16-rb-11-03.md) — fait
+- 0030 — 2026-10-07 — [Même réponse que pour la validation manuelle (UC-11:136) : deux chemins distincts, à expliciter](0030-meme-reponse-que-pour-la-validation-manuelle-uc-11-136.md) — fait
+- 0031 — 2026-10-07 — [Classer dans moscow les templates par défaut des dossiers avec le volet riche de UC-05](0031-classer-dans-moscow-les-templates-par-defaut-des-dossiers-av.md) — fait
+- 0032 — 2026-10-07 — [moscow attribue seul les priorités, à tout grain](0032-moscow-attribue-seul-les-priorites-a-tout-grain.md) — fait
+- 0033 — 2026-10-07 — [Sortir les backlinks du MVP](0033-sortir-les-backlinks-du-mvp.md) — fait
+- 0034 — 2026-10-07 — [Spécifier dans US-UC-07 un raccourci clavier pour le panneau de création rapide](0034-specifier-dans-us-uc-07-un-raccourci-clavier-pour-le-panneau.md) — fait
+- 0035 — 2026-10-07 — [Marquer les statuts des questions 2 et 3 de US-UC-13](0035-marquer-les-statuts-des-questions-2-et-3-de-us-uc-13.md) — fait
+- 0036 — 2026-10-07 — [Réécrire RB-14-03 : un joueur trouve en recherche les documents PUBLIC et ses propres notes PLAYER_PRIVATE](0036-reecrire-rb-14-03-un-joueur-trouve-en-recherche-les-document.md) — fait
+- 0037 — 2026-10-07 — [Dire dans le README des NFR que le périmètre couvre les Must et Should Have de la première livraison](0037-dire-dans-le-readme-des-nfr-que-le-perimetre-couvre-les-must.md) — fait
+- 0038 — 2026-10-07 — [Dire dans le guide d'entretien qu'aucun entretien terrain n'a eu lieu au 2026-10-07](0038-dire-dans-le-guide-d-entretien-qu-aucun-entretien-terrain-n.md) — fait
 - 0039 — 2026-10-07 — [Préciser la règle 4 : une réinvitation réutilise la ligne d'adhésion REMOVED](0039-preciser-la-regle-4.md) — ouvert
 - 0040 — 2026-10-07 — [Spécifier les jetons d'invitation en UUID v4 tirés d'un générateur cryptographique](0040-specifier-les-jetons-d-invitation-en-uuid-v4-tires-d-un-gene.md) — ouvert
 - 0041 — 2026-10-07 — [Reporter la saga SpaceDeleted d'ADR-011 dans les tables de réception de Content Library et de Session Conduct](0041-reporter-la-saga-spacedeleted-d-adr-011-dans-les-tables-de-r.md) — ouvert
@@ -49,16 +49,16 @@
 - 0047 — 2026-10-07 — [Afficher le niveau PLAYER_PRIVATE sous un terme générique, « Privé (joueur) »](0047-afficher-le-niveau-player-private-sous-un-terme-generique-pr.md) — ouvert
 - 0048 — 2026-10-07 — [Étendre la règle de pureté du domaine aux diagrammes](0048-etendre-la-regle-de-purete-du-domaine-aux-diagrammes.md) — ouvert
 - 0049 — 2026-10-07 — [Corriger PO-05 : le délai d'effacement de compte est de 1 mois, extensible à 2 (ADR-012:147)](0049-corriger-po-05-le-delai-d-effacement-de-compte-est-de-1-mois.md) — ouvert
-- 0050 — 2026-10-07 — [Inscrire la variante one-shot express dans moscow, en post-MVP comme dans UC-02](0050-inscrire-la-variante-one-shot-express-dans-moscow-en-post-mv.md) — ouvert
+- 0050 — 2026-10-07 — [Inscrire la variante one-shot express dans moscow, en post-MVP comme dans UC-02](0050-inscrire-la-variante-one-shot-express-dans-moscow-en-post-mv.md) — fait
 - 0051 — 2026-10-07 — [Ajouter à la DoD la mise à jour du guide de lecture par fonctionnalité](0051-ajouter-a-la-dod-la-mise-a-jour-du-guide-de-lecture-par-fonc.md) — ouvert
-- 0052 — 2026-10-07 — [Aligner moscow.md sur ses sources (4 écarts)](0052-aligner-moscow-md-sur-ses-sources-4-ecarts.md) — ouvert
-- 0053 — 2026-10-07 — [Aligner les use cases sur leurs sources (5 écarts)](0053-aligner-les-use-cases-sur-leurs-sources-5-ecarts.md) — ouvert
-- 0054 — 2026-10-07 — [Aligner persona-05-antoine.md sur ses sources (1 écart)](0054-aligner-persona-05-antoine-md-sur-ses-sources-1-ecart.md) — ouvert
-- 0055 — 2026-10-07 — [Aligner les user stories sur leurs sources (5 écarts)](0055-aligner-les-user-stories-sur-leurs-sources-5-ecarts.md) — ouvert
-- 0056 — 2026-10-07 — [Aligner les user journeys sur leurs sources (5 écarts)](0056-aligner-les-user-journeys-sur-leurs-sources-5-ecarts.md) — ouvert
-- 0057 — 2026-10-07 — [Aligner les parcours transverses sur leurs sources (15 écarts)](0057-aligner-les-parcours-transverses-sur-leurs-sources-15-ecarts.md) — ouvert
-- 0058 — 2026-10-07 — [Aligner INTERVIEW_GUIDE.md sur ses sources (1 écart)](0058-aligner-interview-guide-md-sur-ses-sources-1-ecart.md) — ouvert
-- 0059 — 2026-10-07 — [Aligner NFR-CONF-04-transparence-risques-mode-local-partage.md sur ses sources (1 écart)](0059-aligner-nfr-conf-04-transparence-risques-mode-local-partage.md) — ouvert
+- 0052 — 2026-10-07 — [Aligner moscow.md sur ses sources (4 écarts)](0052-aligner-moscow-md-sur-ses-sources-4-ecarts.md) — fait
+- 0053 — 2026-10-07 — [Aligner les use cases sur leurs sources (5 écarts)](0053-aligner-les-use-cases-sur-leurs-sources-5-ecarts.md) — fait
+- 0054 — 2026-10-07 — [Aligner persona-05-antoine.md sur ses sources (1 écart)](0054-aligner-persona-05-antoine-md-sur-ses-sources-1-ecart.md) — fait
+- 0055 — 2026-10-07 — [Aligner les user stories sur leurs sources (5 écarts)](0055-aligner-les-user-stories-sur-leurs-sources-5-ecarts.md) — fait
+- 0056 — 2026-10-07 — [Aligner les user journeys sur leurs sources (5 écarts)](0056-aligner-les-user-journeys-sur-leurs-sources-5-ecarts.md) — fait
+- 0057 — 2026-10-07 — [Aligner les parcours transverses sur leurs sources (15 écarts)](0057-aligner-les-parcours-transverses-sur-leurs-sources-15-ecarts.md) — fait
+- 0058 — 2026-10-07 — [Aligner INTERVIEW_GUIDE.md sur ses sources (1 écart)](0058-aligner-interview-guide-md-sur-ses-sources-1-ecart.md) — fait
+- 0059 — 2026-10-07 — [Aligner NFR-CONF-04-transparence-risques-mode-local-partage.md sur ses sources (1 écart)](0059-aligner-nfr-conf-04-transparence-risques-mode-local-partage.md) — fait
 - 0060 — 2026-10-07 — [Aligner les contextes du domaine sur leurs sources (6 écarts)](0060-aligner-les-contextes-du-domaine-sur-leurs-sources-6-ecarts.md) — ouvert
 - 0061 — 2026-10-07 — [Aligner les diagrammes du domaine sur leurs sources (8 écarts)](0061-aligner-les-diagrammes-du-domaine-sur-leurs-sources-8-ecarts.md) — ouvert
 - 0062 — 2026-10-07 — [Aligner zoning.md sur ses sources (5 écarts)](0062-aligner-zoning-md-sur-ses-sources-5-ecarts.md) — ouvert
@@ -79,11 +79,11 @@
 - 0077 — 2026-10-07 — [Aligner plan-de-travail.md sur ses sources (2 écarts)](0077-aligner-plan-de-travail-md-sur-ses-sources-2-ecarts.md) — ouvert
 - 0078 — 2026-10-07 — [Aligner roadmap-entree-build.md sur ses sources (1 écart)](0078-aligner-roadmap-entree-build-md-sur-ses-sources-1-ecart.md) — ouvert
 - 0079 — 2026-10-07 — [Aligner dossier-architecture.md sur ses sources (1 écart)](0079-aligner-dossier-architecture-md-sur-ses-sources-1-ecart.md) — ouvert
-- 0080 — 2026-10-07 — [Amender la vision et use-cases.md](0080-amender-la-vision-et-use-cases-md.md) — ouvert
-- 0081 — 2026-10-07 — [Sortir du MVP toutes les notes de session du joueur (Could Have)](0081-sortir-du-mvp-toutes-les-notes-de-session-du-joueur-could-ha.md) — ouvert
-- 0082 — 2026-10-07 — [Aligner persona-03-lucas.md:6](0082-aligner-persona-03-lucas-md-6.md) — ouvert
-- 0083 — 2026-10-07 — [Convertir UJ-UC-01 à 07 au gabarit à quatre sections du README des user journeys](0083-convertir-uj-uc-01-a-07-au-gabarit-a-quatre-sections-du-read.md) — ouvert
-- 0084 — 2026-10-07 — [Unifier l'affichage de tout lien inutilisable selon RB-09-08](0084-unifier-l-affichage-de-tout-lien-inutilisable-selon-rb-09-08.md) — ouvert
+- 0080 — 2026-10-07 — [Amender la vision et use-cases.md](0080-amender-la-vision-et-use-cases-md.md) — fait
+- 0081 — 2026-10-07 — [Sortir du MVP toutes les notes de session du joueur (Could Have)](0081-sortir-du-mvp-toutes-les-notes-de-session-du-joueur-could-ha.md) — fait
+- 0082 — 2026-10-07 — [Aligner persona-03-lucas.md:6](0082-aligner-persona-03-lucas-md-6.md) — fait
+- 0083 — 2026-10-07 — [Convertir UJ-UC-01 à 07 au gabarit à quatre sections du README des user journeys](0083-convertir-uj-uc-01-a-07-au-gabarit-a-quatre-sections-du-read.md) — fait
+- 0084 — 2026-10-07 — [Unifier l'affichage de tout lien inutilisable selon RB-09-08](0084-unifier-l-affichage-de-tout-lien-inutilisable-selon-rb-09-08.md) — fait
 - 0085 — 2026-10-07 — [Retirer Identity & Access des consommateurs d'InvitationRevoked](0085-retirer-identity-access-des-consommateurs-d-invitationrevoke.md) — ouvert
 - 0086 — 2026-10-07 — [Garder documents.created_by_id NOT NULL au MVP](0086-garder-documents-created-by-id-not-null-au-mvp.md) — ouvert
 - 0087 — 2026-10-07 — [Amender l'invariant 4 de Content Library](0087-amender-l-invariant-4-de-content-library.md) — ouvert

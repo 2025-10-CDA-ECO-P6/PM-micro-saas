@@ -12,7 +12,7 @@ Permettre à un utilisateur (MJ ou joueur) de créer un compte pour activer la s
 |---|---|
 | Émilie (MJ) | Démarre en mode local, passe au cloud pour partager ses campagnes avec ses joueurs |
 | Thomas (MJ) | Crée directement un compte pour accéder à ses campagnes depuis plusieurs appareils |
-| Lucas (joueur) | Crée un compte depuis un lien d'invitation pour conserver ses notes entre sessions |
+| Lucas (joueur) | Crée un compte depuis un lien d'invitation pour conserver son accès entre sessions (conserver ses notes de session : hors MVP, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur)) |
 
 ---
 
@@ -36,7 +36,7 @@ Permettre à un utilisateur (MJ ou joueur) de créer un compte pour activer la s
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-10 — Créer un compte et synchroniser dans le cloud](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-10 — Créer un compte et synchroniser dans le cloud](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -143,7 +143,7 @@ flowchart LR
 
 **Notes de conception** :
 - Si des données locales existent (UC-01), un **gate de reconnaissance** est présenté avant la migration : l'application affiche les espaces détectés (titre, volume, date) et affiche pour chaque espace l'historique de session qu'il contient (sessions terminées, notes de session, documents épinglés, résumés). Le gate signale aussi toute session en cours (LIVE) en indiquant qu'elle doit être clôturée pour que l'espace puisse migrer. L'application demande une confirmation explicite avant l'import. La migration n'est déclenchée qu'après cette confirmation. Cette confirmation est une exigence du système : aucune migration ne peut démarrer sans elle, quel que soit le moyen par lequel elle est déclenchée. Le passage par l'écran de présentation n'est pas le seul garde-fou — le système rejette toute demande de migration dépourvue de cette confirmation. Cette exigence vise à prévenir qu'un utilisateur s'approprie par inadvertance les données créées par quelqu'un d'autre sur un poste partagé en confirmant sans les reconnaître : en voyant précisément ce qui va être importé (y compris l'historique de session), il peut interrompre avant l'import. Si certains espaces sont refusés lors de la migration (en raison d'un contenu invalide, d'un intitulé en conflit avec un contenu existant, d'un type ou d'un format non reconnu), un rapport détaille la raison du refus pour chacun, et les données locales correspondantes restent intactes dans le navigateur ; les espaces acceptés sont migrés et accessibles avec tout leur historique de session. Le raisonnement ayant conduit à ce choix (et les alternatives écartées) est tracé dans [ADR-016](../../decisions/ADR-016-serialisation-locale-migration.md) §4.
-- Un joueur invité (`GuestAccess`) qui crée un compte via un lien d'invitation (A3, UC-09) voit ses notes personnelles (`PLAYER_PRIVATE`) migrées vers son nouveau compte dans le même flux.
+- Un joueur invité (`GuestAccess`) qui crée un compte via un lien d'invitation (A3, UC-09) voit son accès migré vers son nouveau compte dans le même flux ; ses notes personnelles (`PLAYER_PRIVATE`) y seront migrées aussi *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - Identity & Access crée le `User` et publie un événement de domaine. Space Management initialise le tableau de bord en réponse.
 - Le mot de passe est hashé en infrastructure — le domaine ne le connaît pas.
 - L'accès est immédiat après inscription. La validation de l'adresse de messagerie n'est pas bloquante à la connexion, mais est requise avant les opérations sensibles (modification de l'adresse de messagerie, modification du mot de passe, liaison d'un compte via connexion fédérée, effacement RGPD) — voir RB-10-05.
@@ -196,7 +196,7 @@ Scénario : Email déjà utilisé lors de l'inscription (E1)
   Alors le système refuse la création
   Et un message indique que l'adresse est déjà associée à un compte
 
-Scénario : Joueur invité crée un compte depuis un lien d'invitation (A3)
+Scénario : Joueur invité crée un compte depuis un lien d'invitation (A3) — volet notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
   Étant donné que Lucas a accès à une session en tant qu'invité GuestAccess
   Et qu'il a pris des notes personnelles pendant la session
   Quand il clique sur "Créer un compte" depuis la vue invitée

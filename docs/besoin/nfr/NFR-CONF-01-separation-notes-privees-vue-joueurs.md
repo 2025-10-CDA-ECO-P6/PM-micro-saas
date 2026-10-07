@@ -35,7 +35,7 @@ La vue joueur, telle que définie dans UC-06, affiche uniquement les documents d
 
 **Ce que cette exigence ne couvre pas** :
 
-- Les notes personnelles des joueurs (visibilité « personnelle joueur ») : ces notes sont inaccessibles au MJ selon une règle distincte (UC-06, règles métier). Cette exigence ne concerne que le sens MJ → joueur.
+- Les notes personnelles des joueurs (visibilité « personnelle joueur ») *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : ces notes seront inaccessibles au MJ selon une règle distincte (UC-06, règles métier). Cette exigence ne concerne que le sens MJ → joueur.
 - La granularité du partage par joueur individuel : le MVP livre un partage par document pour l'ensemble des membres et des accès invités. La granularité par joueur ou personnage est un horizon produit (vision §5bis). Cette exigence couvre le niveau de granularité livré.
 - La gestion des membres de campagne et la révocation des accès : couvertes par UC-11.
 
@@ -65,7 +65,7 @@ Un joueur qui tenterait d'accéder directement à un document non partagé par l
 
 | Artefact | Nature du lien |
 |---|---|
-| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | Règles métier : « les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées et leurs propres notes personnelles » ; « un document sans visibilité `visible par les joueurs` n'est pas visible dans la vue joueur, même s'il est épinglé dans la session ». |
+| [UC-06 — Vue session](../cas-d-utilisation/UC-06-vue-session.md) | Règles métier : « les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées » ; « un document sans visibilité `visible par les joueurs` n'est pas visible dans la vue joueur, même s'il est épinglé dans la session ». |
 | [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) | Le joueur invité via lien ponctuel (GuestAccess) dispose des mêmes droits fonctionnels qu'un joueur avec compte dans le périmètre de son accès — et des mêmes restrictions de visibilité. |
 | [US-UC-09 — Accéder à une session en tant que joueur](../stories/US-UC-09-acces-session-joueur.md) | RB-09-04 : le joueur invité voit les documents `PUBLIC` et les `documents épinglés` de la session (uniquement ceux `PUBLIC`) ; les documents `PLAYER_PRIVATE` des autres joueurs et ceux du MJ ne lui sont jamais visibles. |
 | [Vision produit §5 — Partage fluide](../vision/vision.md) | Différenciant nommé : « le MJ contrôle ce qui est visible aux joueurs, document par document, et garde ses notes de préparation privées ». |

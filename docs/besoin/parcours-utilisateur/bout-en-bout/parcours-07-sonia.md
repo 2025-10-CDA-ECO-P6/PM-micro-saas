@@ -271,8 +271,8 @@ Ce qu'elle ne peut pas faire :
    2026-06-10). Sans instanciation, Sonia duplique manuellement.
 
 3. **Créer un scénario directement dans une bibliothèque sans passer par une campagne.**
-   UC-F07 (Créer un scénario directement dans la bibliothèque) est Could Have non MVP
-   (UC-HORS-MVP §UC-F07).
+   La création dans l'espace personnel est au MVP ; seule l'interface de bibliothèque
+   dédiée (UC-F07 résiduel) est Could Have non MVP (UC-HORS-MVP §UC-F07).
 
 ---
 
@@ -318,5 +318,5 @@ pas un événement calendaire — c'est une observation à faire sur la cohorte 
 | C4 | Session locale → partage avec les joueurs | Étape 3 → étape 4 | Continue (documentée) | UC-01 règles métier : partage désactivé en mode local. UC-10 s'intercale. La transition est documentée dans UJ-UC-01 (flux fonctionnel, point de conversion « tentative de partage »). |
 | C5 | Compte actif → partage et accès joueur sans compte | Étape 4 → étape 5 | Continue | UC-08 + UC-09 préconditions satisfaites dès qu'un compte `FREE` existe. Le `GuestAccess` de portée `SESSION` couvre les joueurs changeants sans liste de membres. |
 | C6 | One-shot suivant → réutilisation du scénario | Post-étape 5 | Limite assumée | UC-13 hors première livraison (moscow.md §UC-13, vision §5bis). Sonia doit recréer ou dupliquer manuellement. C'est le noyau de sa non-servitude structurelle. Condition de retour tracée dans la vision §5bis et la moscow.md. |
-| C7 | Création d'un scénario directement sans campagne | Hors périmètre MVP | Limite assumée | UC-F07 Could Have non MVP (UC-HORS-MVP §UC-F07). Contournement documenté dans UC-HORS-MVP : « campagne "Atelier scénarios" comme conteneur de travail en attendant ». |
-| C8 | Table de convention > 4 joueurs | Étape 5 | Zone muette | La limite `FREE` à 4 joueurs par session est tracée (glossaire §2 `AccountTier`, UC-09 règles métier). Aucun UC ni UJ ne documente le parcours de Sonia face à cette limite (passage au compte `PRO` ou refus d'accès au 5e joueur). |
+| C7 | Création d'un scénario directement sans campagne | Création dans l'espace personnel au MVP | Limite assumée (interface dédiée) | La création dans l'espace personnel est au MVP ; seule l'interface de bibliothèque dédiée (UC-F07 résiduel) est Could Have non MVP (UC-HORS-MVP §UC-F07). Contournement documenté dans UC-HORS-MVP : « campagne "Atelier scénarios" comme conteneur de travail en attendant ». |
+| C8 | Table de convention > 4 joueurs | Étape 5 | Couture documentée | La limite `FREE` à 4 joueurs par session est tracée (glossaire §2 `AccountTier`). Le parcours de Sonia face à cette limite est documenté : [UC-09](../../cas-d-utilisation/UC-09-acces-session-joueur.md) E2 et RB-09-21 (accès du 5e joueur refusé à l'octroi, invitation faite au MJ à passer `PRO`). |

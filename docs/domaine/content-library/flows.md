@@ -121,6 +121,8 @@ sequenceDiagram
 
 ## 8. Consulter les backlinks d'un document
 
+> **Hors MVP** — les backlinks arrivent avec les relations structurées (UC-F06, voir [exclusions](../../besoin/vision/perimetre/exclusions.md)) ; ce flux est conservé pour la reprise (US-04-06).
+
 ```mermaid
 sequenceDiagram
     actor MJ

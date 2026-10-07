@@ -2,7 +2,8 @@
 
 - **Id** : 0057
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : docs/besoin/parcours-utilisateur/bout-en-bout/parcours-01-thomas.md … parcours-07-sonia.md (01 à 07) ; docs/besoin/cas-d-utilisation/UC-06-vue-session.md (l. configuration des panneaux)
 
 - [cross-journeys:contradicted-1 — stale, parcours-02-emilie.md] Remplacer la citation en parcours-02:204 par les préconditions actuelles UC-08:34-36
 - [cross-journeys:contradicted-2 — stale, parcours-01-thomas.md] Remplacer la citation en parcours-01:154 par la précondition actuelle UC-09:29

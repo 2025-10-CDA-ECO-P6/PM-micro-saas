@@ -2,7 +2,8 @@
 
 - **Id** : 0059
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : docs/besoin/nfr/NFR-CONF-04-transparence-risques-mode-local-partage.md
 
 - [nfr:contradicted-1 — stale] Réécrire l'énoncé normatif de NFR-CONF-04 : en mode local, l'application informe systématiquement le MJ du risque, sans détection
 

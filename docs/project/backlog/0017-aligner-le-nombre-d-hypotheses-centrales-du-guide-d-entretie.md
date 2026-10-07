@@ -2,7 +2,8 @@
 
 - **Id** : 0017
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : docs/besoin/decouverte/guide-d-entretien.md
 
 Aligner le nombre d'hypothèses centrales du guide d'entretien sur la vision. Le guide §4 parle de deux hypothèses centrales (vision §2.3), §8.2 en liste cinq (H1-H5).
 

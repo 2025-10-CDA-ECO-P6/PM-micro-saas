@@ -68,7 +68,7 @@ Thomas crée sa campagne (UC-02), adapte les dossiers à son système de jeu (UC
 ### État laissé par l'étape 2
 
 - Une `Campagne` existe en mode local, avec son identifiant, ses `Folder`, ses `Document` et ses `DocumentLink`.
-- La `SessionViewConfig` de la campagne existe (créée automatiquement à `CampaignCreated`), mais ses `focusedFolders` ne sont pas encore configurés — la configuration de la vue session peut se faire avant ou pendant une session (UC-06 A2).
+- La `SessionViewConfig` de la campagne existe (créée automatiquement à `SpaceCreated`), mais ses `focusedFolders` ne sont pas encore configurés — la configuration de la vue session peut se faire avant ou pendant une session ([UJ-UC-06](../UJ-UC-06-vue-session.md) A2).
 - Thomas est toujours en mode local, sans `User`.
 
 ### Couture vers l'étape 3
@@ -116,7 +116,7 @@ Deux positionnements sont possibles selon le corpus :
 
 Le corpus ne tranche pas explicitement l'ordre préférentiel entre ces deux parcours. [UJ-UC-01](../UJ-UC-01-mode-local-sans-compte.md) (flux fonctionnel) positionne la migration **après** une tentative de partage — ce qui valide le Parcours B. **Le présent document retient le Parcours B comme parcours décrit**, cohérent avec l'intention de démarrage en mode local sans friction de Thomas.
 
-La couture étape 3 → étape 4 est donc : Thomas tente de partager, constate que la fonctionnalité est désactivée, décide de créer un compte. La création de compte (UC-10) est le prérequis pour UC-08. **Couture conditionnelle — le parcours UC-10 s'intercale avant UC-08. Cette intercalation n'est pas modélisée comme étape explicite du parcours dans les UC existants — zone à documenter, non rupture.**
+La couture étape 3 → étape 4 est donc : Thomas tente de partager, constate que la fonctionnalité est désactivée, décide de créer un compte. La création de compte (UC-10) est le prérequis pour UC-08. **Couture conditionnelle — le parcours UC-10 s'intercale avant UC-08. Cette intercalation est formulée dans [UC-10](../../cas-d-utilisation/UC-10-compte-cloud.md), [UJ-UC-01](../UJ-UC-01-mode-local-sans-compte.md) et [UJ-UC-10](../UJ-UC-10-compte-cloud.md) — couture documentée, non rupture.**
 
 ---
 
@@ -151,7 +151,7 @@ Le partage sélectif par joueur ou personnage **n'est pas dans le MVP** (UC-08 r
 
 ### Couture vers l'étape 5
 
-UC-09 précondition : « Le MJ a un compte (au minimum gratuit) » et « Le MJ a généré un lien de session depuis UC-11 ou UC-08. » Thomas a maintenant un compte gratuit. **Couture continue à condition que Thomas génère un lien de session** — la génération du lien est dans UC-09 scénario nominal (Thomas génère le lien) et dans UC-08 (partage qui produit des `GuestAccess`). Les deux UC convergent sur cette nécessité. **Couture continue.**
+UC-09 préconditions : « Le MJ a un compte (au minimum gratuit). » et, selon le chemin, « le MJ a généré un lien de session ponctuel depuis la vue session » ou « un lien d'espace partagé depuis le panneau membres (UC-11) ». Thomas a maintenant un compte gratuit. **Couture continue à condition que Thomas génère un lien de session** — la génération du lien est dans UC-09 scénario nominal (Thomas génère le lien) et dans UC-08 (partage qui produit des `GuestAccess`). Les deux UC convergent sur cette nécessité. **Couture continue.**
 
 ---
 
@@ -163,15 +163,15 @@ Déroulé détaillé : [UJ-UC-09](../UJ-UC-09-acces-session-joueur.md)
 
 ### Ce que Thomas fait
 
-Thomas génère un lien de session ponctuel depuis la vue session ou le panneau membres (UC-09 scénario nominal, UC-11). Il partage ce lien. Le joueur clique sur le lien.
+Thomas génère un lien de session ponctuel depuis la vue session (UC-06, UC-09 scénario nominal) ; le panneau membres (UC-11) ne porte que le lien d'espace permanent. Il partage ce lien. Le joueur clique sur le lien.
 
 ### Ce que le joueur obtient (comportements observables clés)
 
 - Page d'accueil immédiate avec les informations partagées par Thomas pour cette session.
 - Saisie d'un **nom d'affichage uniquement** (pas d'email, pas de mot de passe).
 - Un `GuestAccess` de portée `SESSION` est créé : `status = ACTIVE`.
-- Le joueur accède à la **vue session joueur** : documents `PUBLIC`, documents épinglés, zone de notes de session personnelles.
-- Le joueur peut créer des notes de session avec `visibility = PLAYER_PRIVATE`, liées à son personnage associé si renseigné.
+- Le joueur accède à la **vue session joueur** : documents `PUBLIC`, documents épinglés ; une zone de notes de session personnelles s'y ajoutera *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
+- Le joueur pourra créer des notes de session avec `visibility = PLAYER_PRIVATE`, liées à son personnage associé si renseigné *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - L'accès expire à la fermeture de la session + 24 heures (fenêtre de grâce).
 
 ### Règle de limite : compte FREE
@@ -181,7 +181,7 @@ Thomas a un compte `FREE` : maximum **4 joueurs par session** (UC-09 règle mét
 ### État laissé par l'étape 5
 
 - Un ou plusieurs `GuestAccess` (`status = ACTIVE`, portée `SESSION`) existent dans la campagne.
-- Des `LIVE_NOTE` avec `visibility = PLAYER_PRIVATE` peuvent avoir été créées par les joueurs.
+- Des `LIVE_NOTE` avec `visibility = PLAYER_PRIVATE` pourront avoir été créées par les joueurs *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - La session est toujours `LIVE` ou vient de passer en `CLOSED`.
 - Thomas est sur un compte `FREE`.
 
@@ -239,8 +239,8 @@ Thomas retrouve son espace de travail intact pour les campagnes importées, main
 | C5 | Document partagé → accès joueur sans compte | 4 → 5 | **Continue** | UC-09 précondition = compte MJ `FREE` minimum + lien généré. Satisfait après UC-10. Le `GuestAccess` créé à l'arrivée du joueur consomme le document `PUBLIC`. Correspondance vérifiée. |
 | C6 | Accès invité → migration cloud | 5 → 6 | **Continue** | La migration (UC-10) est positionnée avant l'étape 4 dans ce parcours. L'étape 6 couvre la finalisation pour les campagnes locales en attente (UC-10 E5). Mécanisme de reprise de migration documenté dans UC-10. |
 | C7 | Limite `FREE` : partage avec joueurs | 4 + 5 | **Continue** | UC-01 et UC-09 convergent sur la règle : compte `FREE` = 4 joueurs max par session. Cohérence entre RB-01-06 (US-UC-01), UC-09 règle métier et UC-01 modèle d'accès. |
-| C8 | `SessionViewConfig` créée à `CampaignCreated` | 2 → 3 | **Continue** | Le glossaire confirme : une `SessionViewConfig` est créée automatiquement à `CampaignCreated`. La vue session peut donc s'ouvrir même sans configuration préalable des panneaux (message d'invitation à configurer à la première session). |
-| C9 | Notes personnelles joueur (`PLAYER_PRIVATE`) en mode local | 3 (mode local) | **Continue (limitation formulée)** | UC-06 précondition : « La vue joueur (partage, accès invité) nécessite un compte. » En mode local, les joueurs n'ont pas de vue session. Les notes de session `PLAYER_PRIVATE` d'un joueur présupposent un `GuestAccess` actif ou un `SpaceMembership`, ce qui est impossible en mode local. La limitation « en mode local pur, aucun joueur ne peut prendre de notes de session » est désormais énoncée explicitement dans UC-01 (fonctionnalités indisponibles) et UC-06 (précondition + règle métier « Mode local et vue joueur »). |
+| C8 | `SessionViewConfig` créée à `SpaceCreated` | 2 → 3 | **Continue** | Le glossaire confirme : une `SessionViewConfig` est créée automatiquement à `SpaceCreated`. La vue session peut donc s'ouvrir même sans configuration préalable des panneaux (message d'invitation à configurer à la première session). |
+| C9 | Notes personnelles joueur (`PLAYER_PRIVATE`) en mode local *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* | 3 (mode local) | **Continue (limitation formulée)** | UC-06 précondition : « La vue joueur (partage, accès invité) nécessite un compte. » En mode local, les joueurs n'ont pas de vue session. Les notes de session `PLAYER_PRIVATE` d'un joueur présupposent un `GuestAccess` actif ou un `SpaceMembership`, ce qui est impossible en mode local. La limitation « en mode local pur, aucun joueur ne peut prendre de notes de session » est désormais énoncée explicitement dans UC-01 (fonctionnalités indisponibles) et UC-06 (précondition + règle métier « Mode local et vue joueur »). |
 
 ---
 
@@ -262,7 +262,7 @@ Thomas retrouve son espace de travail intact pour les campagnes importées, main
 
 ### RUPTURE-N2 — Précondition UC-09 citant UC-11 comme source du lien de session, UC-11 hors périmètre de ce parcours
 
-**Localisation :** UC-09 précondition : « Le MJ a généré un lien de session depuis UC-11 ou UC-08. »
+**Localisation (état d'UC-09 au moment du constat) :** UC-09 préconditions : « Le MJ a un compte (au minimum gratuit). » et le lien de session ponctuel ou d'espace partagé généré depuis la vue session ou le panneau membres (UC-11).
 
 **Constat :** UC-11 (Gérer les membres d'une campagne) est cité comme source du lien de session dans UC-09. Ce parcours ne passe pas par UC-11 explicitement — Thomas génère un lien ponctuel directement depuis la vue session (UC-09 scénario nominal). La relation UC-09 ↔ UC-11 pour la génération du lien est mentionnée mais pas détaillée dans le parcours Thomas. UC-11 est un UC à part entière (gestion des membres permanents de la campagne), distinct du lien ponctuel `GuestAccess` couvert par UC-09. La frontière entre les deux n'est pas formalisée dans le parcours.
 
@@ -292,7 +292,7 @@ Thomas retrouve son espace de travail intact pour les campagnes importées, main
 
 - **Mode local et partage** : la valeur principale que Thomas cherche (partager avec ses joueurs) est désactivée en mode local. La vue session locale sert uniquement à la préparation solo. Le point de conversion vers la création de compte est la tentative de partage — documentée dans [UJ-UC-01](../UJ-UC-01-mode-local-sans-compte.md).
 
-- **Intercalation de UC-10 avant UC-08** : le parcours impose une création de compte (UC-10) entre la session locale (étape 3) et le partage (étape 4). Cette intercalation n'est pas modélisée comme étape explicite dans les UC existants. Elle est couverte comme zone à documenter dans la couture C3.
+- **Intercalation de UC-10 avant UC-08** : le parcours impose une création de compte (UC-10) entre la session locale (étape 3) et le partage (étape 4). Cette intercalation est formulée dans UC-10, UJ-UC-01 et UJ-UC-10 ; elle est couverte par la couture C3.
 
 - **Limite FREE et joueurs** : Thomas est limité à 4 joueurs par session en compte `FREE`. Ce plafond est cohérent entre UC-01, UC-09 et les règles métier, mais il peut devenir un point de friction pour son groupe de 6 joueurs — la mise à niveau vers `PRO` est le chemin attendu.
 

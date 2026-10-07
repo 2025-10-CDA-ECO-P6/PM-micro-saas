@@ -130,3 +130,11 @@ Le workflow est désactivé côté GitHub. Son fichier, `.github/workflows/recal
 - **Réactivation**, par la tâche `reprise-du-suivi-github` : `gh workflow enable recalcul-suivi-projet.yml`, puis `gh workflow list --all` doit afficher `active`.
 
 Tant que le workflow est suspendu, ce compteur de 9 ne doit pas augmenter quand une issue est fermée ou rouverte.
+
+## Réépinglages du commit de départ
+
+Après chaque tâche « backlog », le commit de départ de `conform-verify` passe au commit de cette tâche (ADR-022, condition 3), car c'est elle qui change le fond. Un commit ne peut pas contenir son propre hash : la tâche suivante inscrit donc le hash de la précédente.
+
+| Après la tâche | Commit de départ | Hash |
+|---|---|---|
+| `backlog-besoin` | le commit « docs(conformite-corpus): applique le backlog de la couche besoin » | inscrit par la tâche `gabarits-domaine` |

@@ -41,7 +41,7 @@ Ouvrir l'application, ne pas remplir de formulaire d'inscription, créer une cam
 - Nadia est en mode local : aucun `User` instancié, aucune donnée envoyée au serveur.
 - Un **espace personnel** (`SpaceType.PERSONAL`) préexiste comme conteneur par défaut, avec son seul dossier virtuel « Non classés » — Nadia en est la propriétaire.
 - Une `Campagne` existe avec ses dossiers système, persistée dans le stockage local du navigateur.
-- Une `SessionViewConfig` a été créée automatiquement à `CampaignCreated` — ses `focusedFolders` ne sont pas encore configurés.
+- Une `SessionViewConfig` a été créée automatiquement à `SpaceCreated` — ses `focusedFolders` ne sont pas encore configurés.
 
 ### Couture vers l'étape 2
 
@@ -168,13 +168,13 @@ Les points suivants sont fondés sur le corpus lu (UC, UJ, persona).
 **Note de frontière (hors profil Nadia) :** Le cadrage one-shot — parcours express, type `ONE_SHOT`, campagne à session unique — concerne le persona Sonia (persona-07), dont c'est le cœur de pratique. Nadia est une MJ de campagne dont les sessions sont espacées sur la même continuité narrative ; la problématique one-shot ne lui appartient pas.
 
 **1. Configuration des panneaux : travail différé ou friction en session**
-Si Nadia ne configure pas la `SessionViewConfig` avant sa session, les panneaux affichent les dossiers par défaut et un message d'invitation à configurer. Pour Nadia qui veut "lancer vite", ce message est une friction non bloquante mais réelle. La configuration des panneaux est faisable en direct pendant la session `LIVE` sans l'interrompre (UC-06 A2, UJ-UC-06 : "Modifier `SessionViewConfig` en direct"), mais cela coûte du temps qu'elle n'a pas.
+Si Nadia ne configure pas la `SessionViewConfig` avant sa session, les panneaux affichent les dossiers par défaut et un message d'invitation à configurer. Pour Nadia qui veut "lancer vite", ce message est une friction non bloquante mais réelle. La configuration des panneaux est faisable en direct pendant la session `LIVE` sans l'interrompre ([UJ-UC-06](../UJ-UC-06-vue-session.md) A2 : "Modification configuration de la vue session en direct" ; [UC-06](../../cas-d-utilisation/UC-06-vue-session.md), panneaux configurables aussi en `LIVE`), mais cela coûte du temps qu'elle n'a pas.
 
 **2. Recherche MVP limitée aux titres**
 La recherche du MVP porte uniquement sur les titres des documents (UC-14 scénario nominal). Nadia qui revient après six semaines est documentée comme le persona central de UC-14. Si ses documents ont des titres peu mémorables, la recherche ne l'aide pas. Ce point est un risque identifié dans UJ-UC-14 ("état vide peu informatif") et non résolu dans le périmètre MVP.
 
 **3. Risque de perte de données en mode local**
-Nadia n'est pas sensible au risque de perte de données immédiate (elle crée une session par mois). Mais après six semaines sans ouvrir le navigateur, le stockage local peut être vidé par le navigateur. Le bandeau de durabilité l'a prévenue. UC-01 A3 couvre le cas ("données introuvables — cache vidé") mais la récupération est impossible sans export préalable (et l'export de paramètres est lui-même Should Have).
+Nadia n'est pas sensible au risque de perte de données immédiate (elle crée une session par mois). Mais après six semaines sans ouvrir le navigateur, le stockage local peut être vidé par le navigateur. Le bandeau de durabilité l'a prévenue. UC-01 A3 couvre le cas ("données introuvables — cache vidé") mais la récupération est impossible sans export préalable (et l'export d'espace est lui-même Must Have / version minimale, promu 2026-06-25, voir [UC-01](../../cas-d-utilisation/UC-01-mode-local-sans-compte.md)).
 
 ---
 

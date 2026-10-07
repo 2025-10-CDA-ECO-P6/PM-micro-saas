@@ -40,9 +40,7 @@ Le MJ souhaite intégrer un nouveau joueur, ou gérer les accès existants.
 4. Il choisit le mode d'invitation :
    - lien partageable (copie dans le presse-papiers). *(MVP)*
    - ~~invitation par email~~ *(hors MVP — voir Questions ouvertes)*
-5. Il choisit le périmètre d'accès :
-   - accès durable à l'espace (périmètre `SPACE`) ;
-   - accès session temporaire (périmètre `SESSION`).
+5. Il choisit le périmètre d'accès : accès durable à l'espace (périmètre `SPACE`). Le lien de session ponctuel (périmètre `SESSION`) ne relève pas d'UC-11 : il relève d'UC-09 et se génère depuis la vue session ; UC-11 ne concerne que les membres permanents.
 6. Il configure optionnellement :
    - date d'expiration du lien ;
    - nombre d'utilisations maximum.
@@ -53,7 +51,7 @@ Le MJ souhaite intégrer un nouveau joueur, ou gérer les accès existants.
 
 ### A1 — Associer un joueur à un personnage
 
-Après qu'un joueur a rejoint, le MJ lui associe un personnage existant ou en crée un nouveau.
+Après qu'un joueur a rejoint, le MJ lui associe un personnage existant ou en crée un nouveau. L'association donne à ce joueur la lecture de la fiche de son personnage, quelle que soit la visibilité de la fiche (UC-12, RB-12-01).
 
 ### A2 — Révoquer une invitation
 
@@ -93,7 +91,7 @@ UC-11 est le **propriétaire unique** des données `Invitation` et `Membre d'esp
 
 - Type de lien (`LINK` — MVP ; `EMAIL` hors MVP)
 - Périmètre (`SPACE` ou `SESSION`) — détermine la durée et l'étendue de l'accès octroyé : `SPACE` correspond à un accès durable (membre permanent) ; `SESSION` correspond à un accès temporaire (invité de session). Ces deux valeurs remplacent et subsument l'ancienne notion de « type d'accès (permanent / temporaire) ».
-- Session associée si périmètre `SESSION`
+- Session associée si périmètre `SESSION` (invitation générée depuis la vue session, UC-09)
 - Token
 - Date d'expiration (optionnel)
 - Nombre d'utilisations maximum (optionnel)
@@ -102,13 +100,13 @@ UC-11 est le **propriétaire unique** des données `Invitation` et `Membre d'esp
 ### Membre d'espace (SpaceMembership)
 
 - Utilisateur associé (compte joueur)
-- Rôle dans l'espace (`PLAYER`)
+- Rôle dans l'espace (`PLAYER`) — le rôle `GM` (co-MJ) n'est pas attribuable au MVP (voir [UC-F08](../vision/perimetre/exclusions.md))
 - Personnages associés via les `Document` de type `player_character` (optionnel, zéro à plusieurs)
 - Statut (`PENDING`, `ACTIVE`, `REMOVED`)
 
 ## Règles métier
 
-- Seul le MJ propriétaire peut gérer les membres de son espace.
+- Seul le MJ propriétaire peut gérer les membres de son espace. Le droit du `GM` d'inviter et de retirer des membres, prévu par le domaine, s'applique à l'activation du rôle `GM`, hors MVP (voir [UC-F08](../vision/perimetre/exclusions.md)) ; au MVP, seul l'`OWNER` gère les membres.
 - L'octroi d'un accès durable (`SpaceMembership`) à un joueur est soumis à la limite du tier gratuit : sur un compte FREE, tout octroi d'accès supplémentaire — quelle qu'en soit la forme (membre permanent ou accès invité) — est refusé si la limite est déjà atteinte. Règle définie dans UC-09 (RB-09-21) ; UC-11 ne la redéfinit pas.
 - Un lien d'invitation peut être limité en durée ou en nombre d'utilisations.
 - La révocation d'une invitation passe son statut à `REVOKED`. Elle ne peut plus créer de nouvel accès.
@@ -116,7 +114,7 @@ UC-11 est le **propriétaire unique** des données `Invitation` et `Membre d'esp
 - Un membre retiré peut être réinvité.
 - Le personnage associé à un membre retiré est un `Document` de type `player_character` ; il appartient à l'espace, persiste après le retrait et peut être réassocié à un autre joueur.
 - Un accès invité est temporaire. La **fiche de personnage** (`Document` de type `player_character`) appartient à l'espace, persiste entre les accès et est ré-associable via un nouveau lien invité vers le même personnage.
-- Les **notes personnelles** (`PLAYER_PRIVATE`) appartiennent à leur auteur, pas au personnage. Un invité non converti en compte voit ses notes supprimées à la fin définitive de son accès (RB-09-19) — elles ne sont **jamais** récupérées par un nouvel invité réassocié au même personnage. Elles ne survivent que si l'invité crée un compte avant la fin de son accès (UC-09 A2, RB-09-14). L'invité est averti de ce sort en temps utile pour agir avant la fin de son accès (RB-09-22).
+- Les **notes personnelles** (`PLAYER_PRIVATE`) appartiennent à leur auteur, pas au personnage. Un invité non converti en compte voit ses notes supprimées à la fin définitive de son accès (RB-09-19) — elles ne sont **jamais** récupérées par un nouvel invité réassocié au même personnage. Elles ne survivent que si l'invité crée un compte avant la fin de son accès (UC-09 A2, RB-09-14). L'invité est averti de ce sort en temps utile pour agir avant la fin de son accès (RB-09-22). *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
 
 ## Critères d'acceptation
 
@@ -132,5 +130,4 @@ UC-11 est le **propriétaire unique** des données `Invitation` et `Membre d'esp
 - **[Hors MVP — à valider post-MVP]** L'invitation par email : les MJ en ont-ils besoin en complément du lien ? Quelle est la valeur ajoutée par rapport à copier-coller le lien dans un email manuel ?
 - Les MJ invitent-ils principalement par lien, email ou les deux ?
 - Ont-ils besoin de voir qui a ouvert une invitation sans encore rejoindre ? *(distinct du compteur d'usages restants — résolu, dérivable du domaine ; voir US-UC-11, Questions ouvertes Q1. Ce point-ci porte sur le suivi d'ouverture, non tranché.)*
-- Le retrait d'un joueur doit-il être visible par les autres joueurs ? *(le log d'activité associé reste Could Have, déjà exclu ; voir US-UC-11, Questions ouvertes Q2. Seule cette visibilité-ci reste ouverte.)*
-- Les MJ veulent-ils une validation manuelle avant que le joueur accède à l'espace ?
+- Le retrait d'un joueur doit-il être visible par les autres joueurs ? *(le log d'activité associé est hors MVP, sa priorité se lit dans la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md) ; voir US-UC-11, Questions ouvertes Q2. Seule cette visibilité-ci reste ouverte.)*

@@ -30,7 +30,7 @@ Permettre au MJ de contrôler qui accède à son espace : générer des liens d'
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-11 — Gérer les membres d'un espace](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-11 — Gérer les membres d'un espace](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -116,7 +116,7 @@ flowchart LR
 **Règles métier** :
 - RB-11-01 : Seul le MJ propriétaire (`OWNER`) d'un espace partagé peut générer une invitation.
 - RB-11-02 : Un lien d'invitation peut être limité en durée (date d'expiration) ou en nombre d'utilisations. Ces paramètres sont optionnels. Par défaut, si le nombre d'utilisations n'est pas renseigné, il est **illimité** (`maxUses` = `null`).
-- RB-11-03 : L'accès est accordé automatiquement à réception d'un lien valide — aucune validation manuelle du MJ n'est requise.
+- RB-11-03 : L'accès est accordé automatiquement à réception d'un lien d'invitation valide à portée `SPACE` généré par le MJ : ce lien vaut validation au sens de RB-09-16, aucune validation manuelle supplémentaire n'est requise. Un invité sans ce lien ne devient pas membre.
 - RB-11-04 : La plateforme ne gère pas l'envoi du lien. Le MJ le partage via le canal de son choix.
 - RB-11-05 : Un lien dont le nombre d'utilisations maximum est atteint ou dont la date d'expiration est dépassée passe à l'état `REVOKED` et ne crée plus d'accès.
 - RB-11-06 : Si le joueur est déjà `Member` `ACTIVE`, aucun doublon n'est créé. Le MJ en est informé.
@@ -175,20 +175,20 @@ Scénario : Invitation expirée non réactivable (E2)
 **Notes de conception** :
 - La révocation est une action explicite du MJ depuis la liste des invitations.
 - `Space Management` passe le statut de l'`Invitation` à `REVOKED`. `Identity & Access` invalide le token.
-- Une invitation `REVOKED` ne peut plus créer d'accès — un joueur qui clique sur le lien voit le message "Ce lien n'est plus actif" (cohérent avec UC-09 US-09-02).
+- Une invitation `REVOKED` ne peut plus créer d'accès — un joueur qui clique sur le lien voit le message "Ce lien n'est pas utilisable" (cohérent avec UC-09 US-09-02).
 - La révocation est distincte de l'expiration automatique (dépassement de date ou quota d'usages).
 - Pour réinviter, le MJ crée un nouveau lien (US-11-01).
 
 **Règles métier** :
 - RB-11-07 : Seul le MJ propriétaire (`OWNER`) peut révoquer une invitation.
 - RB-11-08 : La révocation d'une invitation passe son statut à `REVOKED`. Elle ne peut plus créer d'accès, immédiatement après la révocation.
-- RB-11-09 : Un joueur qui clique sur un lien `REVOKED` voit un message générique "Ce lien n'est plus actif" — aucune information sur l'espace n'est révélée.
+- RB-11-09 : Un joueur qui clique sur un lien `REVOKED` voit un message générique "Ce lien n'est pas utilisable" — aucune information sur l'espace n'est révélée.
 - RB-11-10 : Une invitation déjà `REVOKED` ou expirée ne peut pas être réactivée.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut révoquer une invitation depuis la liste des invitations.
 - [ ] Après révocation, l'invitation est marquée `REVOKED` dans la liste.
-- [ ] Un joueur qui utilise le lien révoqué voit le message "Ce lien n'est plus actif".
+- [ ] Un joueur qui utilise le lien révoqué voit le message "Ce lien n'est pas utilisable".
 - [ ] Une invitation `REVOKED` ne peut pas être réactivée.
 - [ ] Le MJ peut créer un nouveau lien après révocation (redirection vers US-11-01).
 
@@ -202,7 +202,7 @@ Scénario : MJ révoque une invitation active (A2)
 Scénario : Joueur tente d'utiliser un lien révoqué
   Étant donné qu'une invitation est passée à l'état REVOKED
   Quand un joueur clique sur le lien
-  Alors il voit le message "Ce lien n'est plus actif"
+  Alors il voit le message "Ce lien n'est pas utilisable"
   Et aucune information sur l'espace n'est révélée
 
 Scénario : Invitation déjà révoquée — pas de réactivation
@@ -272,36 +272,36 @@ Scénario : Ancien lien d'un membre retiré
 
 **En tant que** : MJ,
 **je veux** : associer un membre de mon espace à un personnage existant,
-**afin de** : que le joueur accède à sa fiche de personnage et à ses notes privées (`PLAYER_PRIVATE`) lors des sessions.
+**afin de** : que le joueur accède à sa fiche de personnage et à ses notes privées (`PLAYER_PRIVATE`) *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* lors des sessions.
 
 **Notes de conception** :
 - L'association peut être faite dès qu'un joueur est `Member` `ACTIVE` ou `PENDING` (avant même qu'il utilise son lien).
 - Dès l'activation du lien (`Activate()`, `PENDING` → `ACTIVE`), une association déjà faite en `PENDING` devient visible immédiatement dans la vue joueur — aucune action MJ séparée n'est requise (cohérent avec RB-11-03 : l'accès est automatique sur lien valide, sans étape d'approbation).
 - L'association est gérée par `Space Management` (relation `Member` <-> `Document` de type `player_character`).
 - Un joueur peut être associé à zéro ou plusieurs personnages. Un personnage peut n'être associé qu'à un seul joueur à la fois.
-- Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE` depuis sa vue joueur.
-- Si un `GuestAccess` (sans compte) est utilisé avec un lien pointant vers un personnage, le joueur accède à la **fiche** de ce personnage (`Document` de type `player_character`) — un nouveau lien vers le même personnage permet de retrouver cette fiche. Les notes `PLAYER_PRIVATE` appartiennent à leur auteur : un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent.
+- Après association, le joueur accède à la fiche du personnage depuis sa vue joueur, et à ses notes `PLAYER_PRIVATE` *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
+- Si un `GuestAccess` (sans compte) est utilisé avec un lien pointant vers un personnage, le joueur accède à la **fiche** de ce personnage (`Document` de type `player_character`) — un nouveau lien vers le même personnage permet de retrouver cette fiche. Les notes `PLAYER_PRIVATE` appartiennent à leur auteur : un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent. *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
 - Le MJ peut dissocier un joueur de son personnage sans supprimer le personnage.
 
 **Règles métier** :
 - RB-11-16 : Seul le MJ propriétaire (`OWNER`) peut associer ou dissocier un joueur et un personnage.
 - RB-11-17 : Un `Member` peut être associé à zéro ou plusieurs `Document` de type `player_character`.
 - RB-11-18 : Un personnage ne peut être associé qu'à un seul `SpaceMembership` actif à la fois. Cette exclusivité s'étend aux memberships en statut `PENDING` : un personnage associé à un membership PENDING est réservé et ne peut être réassocié à un autre membership tant que le PENDING n'est pas abandonné (revocation ou REMOVED).
-- RB-11-19 : Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE`.
-- RB-11-20 : Un nouveau lien vers le même personnage permet à un `GuestAccess` de récupérer la **fiche** (`Document` de type `player_character`). Les notes `PLAYER_PRIVATE` appartiennent à leur auteur — un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent (RB-09-19).
+- RB-11-19 : Après association, le joueur accède à la fiche du personnage et à ses notes `PLAYER_PRIVATE` *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
+- RB-11-20 : Un nouveau lien vers le même personnage permet à un `GuestAccess` de récupérer la **fiche** (`Document` de type `player_character`). Les notes `PLAYER_PRIVATE` appartiennent à leur auteur — un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent (RB-09-19). *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
 - RB-11-21 : Dissocier un joueur de son personnage ne supprime pas le personnage ni ses notes.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut associer un membre à un personnage existant depuis le panneau membres.
-- [ ] Après association, le joueur voit la fiche du personnage et ses notes `PLAYER_PRIVATE` dans sa vue joueur.
+- [ ] Après association, le joueur voit la fiche du personnage et ses notes `PLAYER_PRIVATE` *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* dans sa vue joueur.
 - [ ] Un personnage ne peut être associé qu'à un seul membre à la fois.
 - [ ] Le MJ peut dissocier un joueur de son personnage sans supprimer le personnage.
 - [ ] Une association faite pendant que le membre est `PENDING` devient visible dans sa vue joueur dès l'activation du lien, sans action MJ séparée.
 - [ ] Le MJ peut associer plusieurs personnages à un même membre (RB-11-17) ; le panneau membres permet et reflète cette association multiple (forme exacte du contrôle : renvoyée au wireframe).
-- [ ] Un `GuestAccess` vers un personnage déjà associé récupère la **fiche** du personnage (`Document` de type `player_character`) ; il n'hérite jamais des notes `PLAYER_PRIVATE` d'un invité précédent.
+- [ ] Un `GuestAccess` vers un personnage déjà associé récupère la **fiche** du personnage (`Document` de type `player_character`) ; il n'hérite jamais des notes `PLAYER_PRIVATE` d'un invité précédent. *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
 
 ```gherkin
-Scénario : MJ associe un joueur à un personnage (A1)
+Scénario : MJ associe un joueur à un personnage (A1) — volet notes `PLAYER_PRIVATE` *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
   Étant donné que Thomas a un Member ACTIVE "Sophie"
   Et que l'espace contient un personnage "Aelindra"
   Quand Thomas associe Sophie à Aelindra
@@ -313,7 +313,7 @@ Scénario : Personnage déjà associé — unicité
   Quand Thomas tente d'associer Aelindra à un autre membre
   Alors le système indique qu'Aelindra est déjà associée à Sophie
 
-Scénario : GuestAccess récupère la fiche via lien personnage, pas les notes d'un invité précédent
+Scénario : GuestAccess récupère la fiche via lien personnage, pas les notes d'un invité précédent *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
   Étant donné qu'un personnage "Aelindra" a une fiche existante dans l'espace
   Et qu'un nouveau lien GuestAccess pointant vers Aelindra est généré
   Quand le joueur utilise ce lien sans compte
@@ -335,9 +335,9 @@ Scénario : Dissociation sans suppression
 |---|---|
 | Invitation par email | Hors MVP — la plateforme ne gère pas l'envoi d'email d'invitation. Le MJ partage le lien lui-même. |
 | Validation manuelle du MJ avant accès | Hors MVP — l'accès est automatique sur lien valide (cohérent avec UC-09). |
-| Notification au MJ quand un joueur utilise l'invitation | Could Have — fonctionnalité de notification non prioritaire. |
+| Notification au MJ quand un joueur utilise l'invitation | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notification-au-mj-à-lutilisation-dune-invitation-uc-11), § Notification au MJ à l'utilisation d'une invitation (UC-11)) — fonctionnalité de notification non prioritaire. |
 | Gestion des rôles fin-grain dans l'espace (autre que PLAYER) | Hors périmètre MVP — le seul rôle joueur est `PLAYER`. |
-| Historique des actions d'invitation (qui a rejoint quand) | Could Have — audit log non prioritaire. |
+| Historique des actions d'invitation (qui a rejoint quand) | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#journal-dactivité-des-membres-uc-11), § Journal d'activité des membres (UC-11)) — audit log non prioritaire. |
 
 ---
 
@@ -366,8 +366,8 @@ Scénario : Dissociation sans suppression
 
 ## Questions ouvertes
 
-1. **RÉSOLU (partiel)** — Le compteur d'usages restants est **dérivable** du domaine (`usedCount` / `maxUses`) et affichable au MJ dans la liste des invitations (voir US-11-01, *Notes de conception* et *Critères d'acceptation*). En revanche, « qui a rejoint / historique des actions » reste **Could Have** — déjà exclu du MVP (*Stories exclues ou repoussées*, « Historique des actions d'invitation »). Cette clôture ne rouvre pas cette exclusion.
-2. **RÉSOLU (partiel)** — Le « log d'activité / historique » dans le panneau membres reste **Could Have** — déjà exclu du MVP (*Stories exclues ou repoussées*, « Historique des actions d'invitation »), non recouvert par cette clôture. La visibilité du retrait d'un membre par les autres membres n'est pas tranchable sur pièces (posture UX/produit) — **différée à l'interview utilisateur** (voir UC-11, *Questions à valider en interview*).
+1. **RÉSOLU (partiel)** — Le compteur d'usages restants est **dérivable** du domaine (`usedCount` / `maxUses`) et affichable au MJ dans la liste des invitations (voir US-11-01, *Notes de conception* et *Critères d'acceptation*). En revanche, « qui a rejoint / historique des actions » reste hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#journal-dactivité-des-membres-uc-11), § Journal d'activité des membres (UC-11)) — déjà exclu du MVP (*Stories exclues ou repoussées*, « Historique des actions d'invitation »). Cette clôture ne rouvre pas cette exclusion.
+2. **RÉSOLU (partiel)** — Le « log d'activité / historique » dans le panneau membres reste exclu du MVP, sa priorité se lisant dans la matrice de priorités (§ UC-11) (*Stories exclues ou repoussées*, « Historique des actions d'invitation »), non recouvert par cette clôture. La visibilité du retrait d'un membre par les autres membres n'est pas tranchable sur pièces (posture UX/produit) — **différée à l'interview utilisateur** (voir UC-11, *Questions à valider en interview*).
 3. **RÉSOLU** — Dérivable du domaine : le personnage associé est visible dans la vue joueur **dès l'activation du lien** (`Activate()`, `PENDING` → `ACTIVE`), sans action MJ séparée. L'association peut déjà être faite en statut `PENDING` (US-11-04), et l'accès est automatique sur lien valide, sans étape d'approbation (RB-11-03, cohérent avec UC-09).
 4. **RÉSOLU** — Dérivable du domaine : la capacité est déjà décidée (RB-11-17 — un `Member` peut être associé à zéro ou plusieurs `Document` de type `player_character`, `characterIds: DocumentId[]`). L'UI MJ doit permettre et refléter l'association multiple (voir US-11-04, *Critères d'acceptation*). La forme exacte du contrôle (liste multi-sélection, tags, etc.) est renvoyée au wireframe — relève de la couche interface.
 5. **[GATE tranché] RÉSOLU** — Par défaut (non renseigné), le nombre d'utilisations maximum est **illimité** (`maxUses` = `null`, non borné) — sert le cas d'un lien unique partagé pour tout le groupe. Ce défaut gouverne le formulaire de génération de lien (US-11-01, *Notes de conception* et RB-11-02). Le domaine porte déjà `maxUses: int?` ; RB-11-05 (passage à `REVOKED` quand la limite est atteinte) n'est pas modifié — une limite non renseignée ne peut jamais être « atteinte ».

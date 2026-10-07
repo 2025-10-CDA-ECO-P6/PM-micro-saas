@@ -209,7 +209,7 @@ Le périmètre du MVP est structuré selon la méthode MoSCoW (Must Have / Shoul
 | Catégorie | Ce que la catégorie signifie | Contenu |
 |---|---|---|
 | Must Have | Le produit ne peut pas être validé sans ces éléments ; leur absence rend l'hypothèse centrale non testable ou l'outil inutilisable. | UC-01 à UC-10 (dont UC-05 base — dossiers libres), espace personnel (conteneur par défaut, capture immédiate), instrumentation de validation du MVP, export d'espace (version minimale) |
-| Should Have | Le concept central peut être validé sans ces éléments, mais le MVP en serait significativement affaibli. | UC-05 riche (types de document élaborés), UC-11, UC-12, UC-14, UC-13 (hors première livraison) |
+| Should Have | Le concept central peut être validé sans ces éléments, mais le MVP en serait significativement affaibli. | UC-05 riche (types de document élaborés, templates par défaut des dossiers), UC-11, UC-12, UC-14, UC-13 (hors première livraison) |
 | Could Have | Valeur réelle mais non prioritaire pour la validation initiale ; peut être livré dans une version ultérieure sans compromettre l'adoption. | Types de document personnalisés, réimport de fichier de sauvegarde (post-MVP, distinct de l'export), persistance inter-sessions des notes du joueur |
 | Won't Have (cette version) | Exclusion assumée pour cette version, par choix stratégique de positionnement ou de complexité. | Inventaire personnage, clôture formelle de session, lore en use case distinct, relations typées entre documents, moteur de règles, assistant IA, table visuelle, application desktop avec synchronisation CRDT, templates communautaires |
 
@@ -238,8 +238,8 @@ Le périmètre minimal cohérent du MVP est constitué de dix use cases, complé
 
 Ces éléments apportent une valeur forte mais le concept central du produit peut être validé sans eux.
 
-- **UC-05 riche — Dossiers et types de document élaborés** : types de document intégrés (personnage non-joueur, lieu, objet…) proposés en complément optionnel des dossiers libres, sans contraindre la structure de base.
-- **UC-11 — Gérer les membres d'un espace** : invitation de membres permanents et génération de liens de session temporaires, avec révocation d'accès.
+- **UC-05 riche — Dossiers et types de document élaborés** : types de document intégrés (personnage non-joueur, lieu, objet…) proposés en complément optionnel des dossiers libres, sans contraindre la structure de base ; un dossier peut aussi porter un template par défaut.
+- **UC-11 — Gérer les membres d'un espace** : invitation de membres permanents et génération du lien d'espace permanent, avec révocation d'accès ; le lien de session ponctuel relève d'UC-09 et se génère depuis la vue session.
 - **UC-12 — Consulter son espace en tant que joueur** : vue cohérente pour un joueur déjà membre, regroupant sa fiche de personnage, les documents publics et l'historique partagé.
 - **UC-14 — Rechercher et filtrer l'information** : retrouver un document par mot-clé depuis la vue de session, avec filtrage par étiquettes.
 - **UC-13 — Utiliser un scénario réutilisable** *(hors première livraison)* : marquer un scénario comme réutilisable et en créer une instance indépendante pour un nouveau groupe. Exclu de la première livraison par arbitrage du 2026-06-10 — le contexte campagne porte seul la validation du cœur du produit lors du MVP.
@@ -443,7 +443,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 
 **Objectif** : Permettre au MJ de structurer librement le contenu de son espace en dossiers nommés, d'associer un template par défaut à chaque dossier, et de déplacer des documents entre dossiers.
 
-**Acteur(s)** : MJ · **Must Have** (base — dossiers libres) / **Should Have** (couche riche — types de document élaborés)
+**Acteur(s)** : MJ · **Must Have** (base — dossiers libres) / **Should Have** (couche riche — types de document élaborés, templates par défaut des dossiers)
 
 **Préconditions** : Un espace existe et le MJ en est propriétaire.
 
@@ -485,7 +485,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 **Règles de gestion** :
 - La vue session MJ est réservée au MJ de la campagne ; le mode local ne connaît ni vue joueur ni accès invité.
 - Une note de session créée par le MJ est privée par défaut et peut être basculée vers visible par les joueurs (RB-06-11, RB-06-12).
-- L'épinglage n'affecte pas le document source dans la bibliothèque de contenu ; un document créé à la volée ou partagé est épinglé automatiquement (RB-06-15, RB-06-17) *(l'automaticité de l'épinglage d'un document créé à la volée reste à réconcilier — voir [§12.1](#121-points-à-arbitrer-et-questions-ouvertes))*.
+- L'épinglage n'affecte pas le document source dans la bibliothèque de contenu ; un document durable créé à la volée ou partagé est épinglé automatiquement, en session LIVE seulement ; une note de session n'est jamais épinglée (RB-06-15, RB-06-17) *(l'automaticité de l'épinglage d'un document créé à la volée reste à réconcilier — voir [§12.1](#121-points-à-arbitrer-et-questions-ouvertes))*.
 - Le passage de l'état actif à l'état clos est irréversible ; une fois close, seul le MJ peut encore ajouter des notes rétroactives (RB-06-18, RB-06-19).
 - Un document non partagé aux joueurs n'apparaît jamais dans la vue joueur, même s'il est épinglé dans la session.
 - Il est possible de constater a posteriori, de façon anonyme et sans accès au contenu narratif, qu'une session a été réellement utilisée en partie — instrument de mesure de l'hypothèse H2.
@@ -575,7 +575,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 
 **Critères d'acceptation** :
 - Un joueur peut rejoindre une session en cliquant sur un lien et en saisissant uniquement un nom, sans inscription.
-- Le lien expire correctement après la session ; un lien révoqué affiche un message sobre, sans révéler d'information sur la campagne.
+- Le lien expire correctement après la session ; un lien révoqué affiche le message unique « Ce lien n'est pas utilisable », sans révéler d'information sur la campagne.
 - Un joueur authentifié suivant un lien de campagne obtient un accès persistant, visible dans la gestion des membres.
 
 ### UC-10 — Créer un compte et synchroniser dans le cloud
@@ -622,7 +622,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 
 **Règles de gestion** :
 - Seul le MJ propriétaire peut générer et révoquer une invitation, ou retirer un membre (RB-11-01, RB-11-07, RB-11-11).
-- L'accès est accordé automatiquement à l'utilisation d'un lien valide, sans validation manuelle du MJ (RB-11-03).
+- L'accès est accordé automatiquement à l'utilisation d'un lien d'invitation valide à portée espace généré par le MJ : ce lien vaut validation (RB-09-16), aucune validation manuelle supplémentaire n'est requise ; un invité sans ce lien ne devient pas membre (RB-11-03).
 - Un lien dont la limite d'utilisation ou d'expiration est atteinte passe à l'état révoqué et ne crée plus d'accès (RB-11-05).
 - Retirer un membre ne supprime pas ses données dans la campagne — personnage, notes partagées ; un membre retiré peut être réinvité (RB-11-12, RB-11-13, RB-11-14).
 - L'octroi d'un accès durable reste soumis à la limite du palier gratuit définie par UC-09 (RB-09-21).
@@ -647,9 +647,9 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 - S'il est associé à plusieurs personnages, il choisit le personnage actif pour la session en cours.
 
 **Règles de gestion** :
-- Le joueur ne voit que les documents dont la visibilité est publique ; les documents réservés au MJ ou les notes personnelles d'autres personnages restent invisibles (RB-12-01).
-- Les notes personnelles sont liées à leur auteur et persistent entre les sessions pour ce même auteur uniquement (RB-12-02).
-- Un accès de périmètre session ne donne pas accès à l'historique complet des sessions ni au lore de la campagne, à la différence d'un accès de périmètre campagne (RB-12-04, RB-12-05).
+- Le joueur ne voit que les documents dont la visibilité est publique ; les documents réservés au MJ ou les notes personnelles d'autres personnages restent invisibles ; exception : la fiche d'un personnage associé à un joueur est lisible par ce joueur, quelle que soit sa visibilité (RB-12-01).
+- Les notes personnelles sont liées à leur auteur et persistent entre les sessions pour ce même auteur uniquement (RB-12-02). *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
+- Un accès de périmètre session donne accès aux documents épinglés de la session et à tous les documents publics de l'espace, mais pas à l'historique des sessions, à la différence d'un accès de périmètre campagne (RB-12-04, RB-12-05).
 - Un joueur associé à plusieurs personnages doit choisir un personnage actif ; ce choix ne modifie pas les associations définies par le MJ et peut être changé à tout moment (RB-12-06, RB-12-07, RB-12-09).
 
 **Critères d'acceptation** :
@@ -995,8 +995,8 @@ Vingt écrans composent le périmètre d'interface du MVP, regroupés par surfac
 | Vue de session | Vue session MJ | Écran prioritaire du MVP — tableau de bord configurable de pilotage de session, à trois modes (configuration, actif, consultation après clôture) |
 | Vue de session | Panneau de création rapide à la volée | Création instantanée d'un document ou d'une note sans quitter la vue session |
 | Joueur | Accès par lien + saisie du nom d'affichage | Première page vue par le joueur à l'ouverture d'un lien, avec saisie du seul nom d'affichage |
-| Joueur | Vue joueur post-accès | Consultation des documents partagés et prise de notes personnelles pendant une session active |
-| Joueur | Page d'erreur d'accès | Message sobre en cas de lien expiré, révoqué ou invalide, sans révéler l'existence de la campagne |
+| Joueur | Vue joueur post-accès | Consultation des documents partagés et prise de notes personnelles pendant une session active *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* |
+| Joueur | Page d'erreur d'accès | Message unique « Ce lien n'est pas utilisable » en cas de lien expiré, révoqué ou invalide, sans révéler l'existence de la campagne |
 
 ### 9.3 Arbitrages d'interface figés
 
@@ -1026,7 +1026,7 @@ Les arbitrages de conception d'interface tranchés et figés au cours de la phas
 
 | Réf. | Décision |
 |---|---|
-| AR-11 | La navigation par dossiers est l'épine dorsale du contenu, la recherche un accélérateur omniprésent, les backlinks consultables depuis la fiche cible |
+| AR-11 | La navigation par dossiers est l'épine dorsale du contenu, la recherche un accélérateur omniprésent ; les backlinks, consultables depuis la fiche cible à la reprise, sont hors MVP (ils arrivent avec les relations structurées) |
 | AR-16 | L'espace personnel démarre avec le seul dossier virtuel « Non classés », sans les dossiers système nommés des espaces partagés |
 | AR-20 | Les dossiers système proposés à la création restent un gabarit entièrement modifiable ; seul le dossier virtuel « Non classés » est un réceptacle garanti |
 
@@ -1089,8 +1089,8 @@ Ce glossaire reprend, en langage besoin, les termes structurants employés dans 
 | **Accès invité** | Accès temporaire d'un joueur sans compte à une session ou à une campagne, obtenu via un lien, limité dans le temps et convertible en accès membre permanent. |
 | **Lien de session** | Lien d'invitation à portée ponctuelle, valable le temps d'une session et d'une brève fenêtre de grâce après sa clôture. |
 | **MJ (Maître du Jeu)** | Utilisateur qui crée et administre un espace, prépare son contenu et pilote les sessions ; seul acteur habilité à partager une information aux joueurs. |
-| **Joueur** | Utilisateur qui accède à un espace sur invitation du MJ, consulte les informations qui lui sont partagées et peut y prendre des notes personnelles. |
-| **Backlink** | Renvoi vers un document depuis un autre document qui le référence ; consultable depuis la fiche du document ciblé, sans être stocké séparément du document qui pointe vers lui. |
+| **Joueur** | Utilisateur qui accède à un espace sur invitation du MJ, consulte les informations qui lui sont partagées et peut y prendre des notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*. |
+| **Backlink** | Renvoi vers un document depuis un autre document qui le référence ; hors MVP (ils arrivent avec les relations structurées) — à la reprise, consultable depuis la fiche du document ciblé, sans être stocké séparément du document qui pointe vers lui. |
 | **Mode local** | Manière d'utiliser l'application sans création de compte, avec des données conservées uniquement dans le navigateur du MJ. |
 | **Compte** | Identité créée par un utilisateur — email et mot de passe, ou fournisseur d'identité externe — qui active la synchronisation cloud, le partage aux joueurs et l'accès multi-appareil. |
 | **Palier** | Niveau d'usage du produit — local, gratuit ou payant — déterminant les fonctionnalités disponibles et les limites de volume ou de nombre d'espaces. |
@@ -1164,7 +1164,7 @@ Les points listés dans cette annexe sont explicitement **non tranchés** : ils 
 
 **Sémantique de comptage du quota du palier gratuit — résolu.** L'invariant limitant l'accès à une session à 4 joueurs distincts pour un espace dont le propriétaire est au palier gratuit (`docs/domaine/space-management/context.md`, invariant 11) est désormais tranché : la sémantique de comptage est portée par **RB-09-21 (UC-09), qui fait foi** — le comptage a lieu **au moment de l'octroi** de l'accès, de manière **agnostique au type d'accès** (identités-joueur distinctes comptées en capacité joueur, MJ non compté). L'invariant 11 de `space-management.md` a été réaligné en conséquence.
 
-**Autres trous de conception** (recensés au zoning d'interface §S9, à spécifier) : la vue mobile du joueur, la spécification visuelle de l'éditeur de document (disposition des blocs, affordances de type, gestion des liens), l'écran de consultation des backlinks, et la vue « Non classés » — particulièrement centrale pour l'espace personnel, où elle constitue la seule vue de départ.
+**Autres trous de conception** (recensés au zoning d'interface §S9, à spécifier) : la vue mobile du joueur, la spécification visuelle de l'éditeur de document (disposition des blocs, affordances de type, gestion des liens), l'écran de consultation des backlinks (hors MVP), et la vue « Non classés » — particulièrement centrale pour l'espace personnel, où elle constitue la seule vue de départ.
 
 **Suivi des points de conception à trancher.** Le suivi des points de conception restant à trancher se fait via cette annexe ([§12.1](#121-points-à-arbitrer-et-questions-ouvertes)).
 

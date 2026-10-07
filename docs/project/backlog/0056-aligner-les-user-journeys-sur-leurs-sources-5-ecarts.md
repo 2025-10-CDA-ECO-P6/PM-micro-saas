@@ -2,7 +2,8 @@
 
 - **Id** : 0056
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : docs/besoin/parcours-utilisateur/UJ-UC-02-creer-espace-jeu.md ; docs/besoin/parcours-utilisateur/UJ-UC-03-structurer-scenario.md ; docs/besoin/parcours-utilisateur/UJ-UC-05-organiser-contenu-dossiers.md ; docs/besoin/parcours-utilisateur/UJ-UC-06-vue-session.md ; docs/besoin/parcours-utilisateur/UJ-UC-10-compte-cloud.md
 
 - [user-journeys-uc-02:contradicted-1 — stale, UJ-UC-02-creer-espace-jeu.md] Remplacer en UJ-UC-02:92 et :84 l'arrivée dans l'éditeur par la vue session pour le scénario existant
 - [user-journeys-uc-10:contradicted-1 — stale, UJ-UC-10-compte-cloud.md] Ajouter en UJ-UC-10:56-57 la condition d'adresse vérifiée et la branche de refus

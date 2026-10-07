@@ -139,10 +139,10 @@ de document par défaut, ou repartir d'une ardoise vide.
 **Vue session configurable.** Le tableau de bord de session n'impose aucune structure fixe. Le MJ choisit quels dossiers il met en avant dans sa vue — certains veulent leurs PNJ au premier plan, d'autres leurs lieux ou leurs scènes. Cette configuration est mémorisée par espace. La cohérence avec le système de dossiers libres est totale : ce que le MJ organise dans sa bibliothèque, il peut l'exposer directement dans sa vue session.
 
 **Relations entre documents.** N'importe quel document peut référencer un autre.
-Les backlinks (documents pointant vers un document donné) sont consultables depuis la fiche cible.
-L'espace devient un réseau d'informations navigable. Les relations typées entre documents
-(ce PNJ appartient à cette faction, cet objet est porté par ce personnage) sont une évolution
-post-MVP qui s'appuie sur les types de document — voir [UC-HORS-MVP](perimetre/exclusions.md).
+L'espace devient un réseau d'informations navigable. Les backlinks (documents pointant vers un
+document donné) et les relations typées entre documents (ce PNJ appartient à cette faction, cet
+objet est porté par ce personnage) sont une évolution post-MVP qui s'appuie sur les types de
+document — voir [UC-HORS-MVP](perimetre/exclusions.md).
 
 ### 2.3 Ce que le MVP doit démontrer
 
@@ -233,6 +233,8 @@ Haversack intègre le partage joueurs dans le tier gratuit, ce qui aligne l'adop
 un ou plusieurs espaces de jeu partagés (campagnes ou one-shots).
 Compte optionnel — peut utiliser l'application en mode local sans s'inscrire.
 Seul rôle pouvant créer du contenu, administrer un espace et partager des informations.
+Le joueur ne produit que ses propres notes de session (fonctionnalité hors MVP : voir la
+[matrice de priorités](perimetre/matrice-de-priorites.md#notes-personnelles-joueur)) ; le MJ reste le seul producteur de tout autre contenu.
 
 **Personas de référence** : Thomas, Émilie, Nadia, Antoine, Rémi, Sonia
 → [docs/besoin/decouverte/personas/](../decouverte/personas/)

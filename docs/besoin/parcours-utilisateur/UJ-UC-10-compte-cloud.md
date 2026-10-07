@@ -64,8 +64,10 @@ flowchart TD
     I -->|Non| K[Compte User cree\nIdentity and Access]
 
     H --> L{Adresse deja presente ?}
-    L -->|Oui| M[Liaison au compte existant\nRB-10-08]
+    L -->|Oui| LV{Adresse du compte existant\nverifiee ?}
     L -->|Non| K
+    LV -->|Oui| M[Liaison au compte existant\nRB-10-08 branche a]
+    LV -->|Non| LR[Liaison refusee, aucun doublon cree\nresolution non ratifiee\nRB-10-08 branche b]
 
     K --> N{Donnees locales\nexistantes ?}
     N -->|Oui| O[Gate de reconnaissance\nEspaces + historique de session\nsessions, notes, epingles\nConfirmation requise\nRB-10-04 / ADR-016 §4]

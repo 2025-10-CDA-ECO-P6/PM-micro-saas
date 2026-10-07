@@ -2,7 +2,8 @@
 
 - **Id** : 0038
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : docs/besoin/decouverte/guide-d-entretien.md
 
 Dire dans le guide d'entretien qu'aucun entretien terrain n'a eu lieu au 2026-10-07. Les hypothèses H1 à H5 restent non validées par le terrain ; docs/interviews/ n'existe pas encore.
 

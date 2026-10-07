@@ -6,7 +6,7 @@
 
 ## Énoncé normatif
 
-Lorsque l'application détecte que les données locales d'un MJ pourraient être consultées par un tiers sur le même appareil, elle l'en informe de manière visible et non bloquante, et lui propose un moyen de sécuriser ses données.
+En mode local, l'application informe systématiquement le MJ, de manière visible et non bloquante, que ses données locales peuvent être consultées par un tiers ayant accès au même appareil, sans détection préalable de ce risque, et lui propose un moyen de sécuriser ses données.
 
 ---
 

@@ -62,9 +62,10 @@ Les préconditions sont identiques dans les deux cas.
 3. Il renseigne :
    - nom de la campagne (obligatoire) ;
    - description courte (optionnel) ;
-   - système de jeu (optionnel).
+   - système de jeu (optionnel) ;
+   - type de l'espace : `CAMPAIGN` par défaut, ou `ONE_SHOT`.
 4. Il valide.
-5. L'application crée l'espace (`SpaceType.CAMPAIGN`) et redirige vers son tableau de bord.
+5. L'application crée l'espace du type choisi (`SpaceType.CAMPAIGN` par défaut, ou `SpaceType.ONE_SHOT`) et redirige vers son tableau de bord.
 6. Quatre dossiers système sont créés automatiquement :
    **Personnages**, **Joueurs**, **Scénarios**, **Notes**.
 
@@ -93,7 +94,7 @@ Le one-shot est un parcours distinct et plus court que la création de campagne.
 
 ### Ce qui est omis dans le one-shot :
 - Pas de description ni de configuration initiale.
-- Les membres joueurs rejoignent via un lien de session temporaire (UC-09 et UC-11) — pas d'invitation permanente.
+- Les membres joueurs rejoignent via un lien de session temporaire (UC-09, généré depuis la vue session) — pas d'invitation permanente.
 
 ## Scénario alternatif A2 — Création en mode brouillon
 
@@ -183,7 +184,7 @@ et conserve les données saisies.
 ## Critères d'acceptation
 
 - Un MJ peut créer une campagne depuis son tableau de bord avec juste un nom.
-- Un MJ peut créer un one-shot via le parcours campagne nominal avec `type = ONE_SHOT`.
+- Un MJ peut créer un one-shot via le parcours campagne nominal en choisissant `type = ONE_SHOT` dans le formulaire (`CAMPAIGN` par défaut).
 - *(post-MVP — parcours express)* Un MJ peut lancer un one-shot en moins de 30 secondes
   depuis le tableau de bord via un point d'entrée dédié.
 - *(post-MVP — parcours express)* Un one-shot lancé depuis un scénario existant redirige

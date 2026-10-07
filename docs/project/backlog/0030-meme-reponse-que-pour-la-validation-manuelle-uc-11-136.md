@@ -2,7 +2,8 @@
 
 - **Id** : 0030
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : `docs/besoin/stories/US-UC-11-gerer-membres-espace-partage.md`, `docs/besoin/stories/US-UC-09-acces-session-joueur.md`
 
 Même réponse que pour la validation manuelle (UC-11:136) : deux chemins distincts, à expliciter. RB-11-03 : accès automatique par le lien SPACE du MJ, qui vaut validation. RB-09-16 : la promotion d'un invité en membre exige une validation du MJ.
 

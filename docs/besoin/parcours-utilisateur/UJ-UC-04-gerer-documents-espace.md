@@ -14,7 +14,7 @@ pendant une session reste hors périmètre (UC-06/07).
 | Persona | Mode de travail | Attente principale | Risque de friction |
 |---|---|---|---|
 | Émilie | Note rapide, improvisation | Créer en 2 touches, capturer sans interrompre le jeu | Toute étape de configuration obligatoire |
-| Antoine | Documents riches, PNJ détaillés, liens entre éléments | Types, propriétés structurées, backlinks navigables | Absence de liaison entre documents, pas de types disponibles |
+| Antoine | Documents riches, PNJ détaillés, liens entre éléments | Types, propriétés structurées, liens navigables (les backlinks sont hors MVP) | Absence de liaison entre documents, pas de types disponibles |
 | Nadia | Peu de création, usage intermittent | Retrouver ses documents après 6 semaines d'absence | Recherche absente ou lente, documents mal organisés |
 
 ---
@@ -40,7 +40,7 @@ journey
         Rendre visible par les joueurs: 3: Émilie, 4: Antoine, 3: Nadia
     section Retrouver
         Rechercher par titre ou tag: 3: Émilie, 4: Antoine, 2: Nadia
-        Naviguer depuis un lien ou backlink: 2: Émilie, 5: Antoine, 2: Nadia
+        Naviguer depuis un lien: 2: Émilie, 5: Antoine, 2: Nadia
         Retrouver après longue absence: 3: Émilie, 3: Antoine, 2: Nadia
 ```
 
@@ -79,7 +79,6 @@ flowchart TD
     O --> P{Action ultérieure}
     P -->|Modifier| Q[Édite titre, contenu, type]
     P -->|Changer visibilité| R[Partage ou retire le partage]
-    P -->|Consulter backlinks| S[Liste des documents\nqui référencent ce doc]
     P -->|Retrouver| T[Recherche par titre ou tag\nUC-14]
 ```
 
@@ -99,7 +98,7 @@ flowchart TD
 | Définir la visibilité | Tous | Statut privé par défaut non perçu, MJ oublie de partager | Indicateur visuel clair du statut de visibilité sur la fiche du document |
 | Sauvegarder | Tous | Perte de données si la sauvegarde n'est pas automatique | Sauvegarde automatique + indicateur de synchronisation |
 | Retrouver un document après longue absence | Nadia | Aucun filtre, liste non triée, recherche absente | Tri par date de modification, filtre par type et tag, recherche plein texte (UC-14) |
-| Consulter les backlinks | Thomas, Antoine | Section backlinks absente ou non visible | Panneau latéral "Référencé par" sur la fiche du document |
+| Consulter les backlinks *(hors MVP)* | Thomas, Antoine | Section backlinks absente ou non visible | Panneau latéral "Référencé par" sur la fiche du document |
 
 ---
 

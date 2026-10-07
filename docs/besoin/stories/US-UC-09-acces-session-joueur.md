@@ -30,7 +30,7 @@ Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lie
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-09 — Accès joueur sans compte](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-09 — Accès joueur sans compte](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -45,7 +45,7 @@ flowchart TD
     B -->|Lien ponctuel| C[Identity and Access\nvalide le token GuestAccess]
     B -->|Lien permanent| D[Identity and Access\nvalide le token Member]
     B -->|Lien invalide ou mal forme| E[Page d erreur sobre\nopacite espace partage]
-    B -->|Lien expire ou revoque| F[Message lien non actif\ncontacter le MJ]
+    B -->|Lien expire ou revoque| F[Message lien non utilisable\ncontacter le MJ]
 
     C --> G{Joueur deja connecte ?}
     G -->|Non| H[Saisit un nom d affichage\npas d email ni mot de passe]
@@ -54,7 +54,7 @@ flowchart TD
     H --> J[GuestAccess actif\nAcces session joueur]
     I --> J
 
-    J --> K[Vue joueur\ndocuments PUBLIC\ndocuments epingles\nnotes personnelles]
+    J --> K[Vue joueur\ndocuments PUBLIC\ndocuments epingles\nnotes personnelles : hors MVP]
 
     D --> L{Joueur a un compte ?}
     L -->|Oui| M[Acces espace partage permanent\nhistorique et lore partage]
@@ -115,26 +115,26 @@ flowchart LR
 - Le nom d'affichage seul suffit ; aucun pseudo ni code court n'est requis à la saisie. L'identité technique du joueur invité est portée par le `GuestAccessId` (généré à l'octroi de l'accès, jamais saisi par le joueur) — le nom d'affichage (`displayName`) est un simple label, sans garantie d'unicité. Deux joueurs peuvent saisir le même nom (deux « Marc ») sans que cela pose un problème de modèle : la désambiguïsation en cas d'homonymie relève de la **présentation** (par exemple un court suffixe dérivé du `GuestAccessId`, affiché dans la vue session du MJ), pas d'une contrainte d'unicité du modèle ni d'un identifiant obligatoire à la saisie — l'imposer sur-modéliserait un besoin de confort d'affichage.
 - Si le joueur est déjà connecté à un compte Haversack (A1), l'étape de saisie du nom est sautée : il accède directement avec son identité de compte et son historique de session.
 - Le `GuestAccess` est valide pendant la durée de la session + une fenêtre de grâce de 24 heures.
-- Le joueur invité voit les documents `PUBLIC`, les `documents épinglés` de la session (uniquement ceux `PUBLIC`) et peut prendre des notes personnelles (`PLAYER_PRIVATE`) accessibles à lui seul. Il a accès à sa fiche de personnage si un personnage lui est associé. Les documents `PLAYER_PRIVATE` d'autres joueurs, et ceux d'un éventuel compte MJ, ne lui sont jamais visibles — la visibilité est respectée indépendamment de l'épinglage.
+- Le joueur invité voit les documents `PUBLIC`, les `documents épinglés` de la session (uniquement ceux `PUBLIC`) et pourra prendre des notes personnelles (`PLAYER_PRIVATE`) accessibles à lui seul *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*. Il a accès à sa fiche de personnage si un personnage lui est associé. Les documents `PLAYER_PRIVATE` d'autres joueurs, et ceux d'un éventuel compte MJ, ne lui sont jamais visibles — la visibilité est respectée indépendamment de l'épinglage.
 - Le nom d'affichage du joueur est visible par le MJ dans la vue session.
 
 **Règles métier** :
 - RB-09-01 : Un lien de session ponctuel est associé à un `GuestAccess` token. Il est valide pendant la durée de la session + 24 heures de grâce après la fin de session.
 - RB-09-02 : La saisie d'un nom d'affichage est obligatoire pour activer le `GuestAccess`. L'email et le mot de passe ne sont pas requis.
 - RB-09-03 : Un joueur déjà connecté à son compte Haversack saute l'étape de saisie du nom et accède directement.
-- RB-09-04 : Le joueur invité dispose des mêmes droits fonctionnels qu'un joueur avec compte dans le périmètre de son `GuestAccess` : documents `PUBLIC`, `documents épinglés`, notes personnelles, fiche personnage si associée.
+- RB-09-04 : Le joueur invité dispose des mêmes droits fonctionnels qu'un joueur avec compte dans le périmètre de son `GuestAccess` : documents `PUBLIC`, `documents épinglés`, notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*, fiche personnage si associée.
 - RB-09-05 : Le MJ a besoin d'un compte pour générer le lien de session (le backend gère l'accès).
 - RB-09-18 : À la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) cessent immédiatement d'être utilisées et affichées — plus aucune finalité produit. Leur effacement effectif intervient **au plus tard 90 jours** après la fin d'accès ; cette fenêtre bornée a pour seule finalité de permettre à l'invité d'exercer ses droits et de traiter une contestation, jamais un usage produit. ⚠️ Cette fenêtre de rétention de 90 jours porte **uniquement sur l'identifiant d'accès** (`displayName`, élément d'accès) — **les notes `PLAYER_PRIVATE` n'ont pas de fenêtre de rétention** : elles sont supprimées sans délai à la fin définitive de l'accès (RB-09-19). Si l'invité a été converti en compte, ses données suivent les règles du compte (RGPD Art. 5(1)(e) — limitation de la conservation).
 - RB-09-19 : À la fin définitive d'un `GuestAccess` non converti, les notes personnelles **écrites par cet invité** (`PLAYER_PRIVATE`) sont supprimées physiquement — la clé de suppression est l'auteur, pas le personnage. Seules les notes dont cet invité est l'auteur sont concernées, jamais celles d'autres participants. La **fiche de personnage** associée survit intacte (elle appartient à l'espace partagé, est ré-associable, et ne contient aucune note d'un autre joueur) (RGPD Art. 17 — droit à l'oubli, fondement identique à la suppression des notes à la suppression d'un compte).
-- RB-09-20 : Au moment où l'invité saisit son nom d'affichage (avant ou à l'entrée en session), il est informé de manière simple de ce qui est conservé (son nom d'affichage, ses notes personnelles éventuelles), pour combien de temps (durée de l'accès + grâce), et du sort de ses données à la fin de l'accès : ses notes personnelles sont supprimées s'il n'a pas créé de compte, son nom d'affichage cesse d'être utilisé immédiatement et est effacé au plus tard 90 jours après la fin d'accès (RGPD Art. 13 — information de la personne concernée).
+- RB-09-20 : Au moment où l'invité saisit son nom d'affichage (avant ou à l'entrée en session), il est informé de manière simple de ce qui est conservé (son nom d'affichage, ses notes personnelles éventuelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*), pour combien de temps (durée de l'accès + grâce), et du sort de ses données à la fin de l'accès : ses notes personnelles sont supprimées s'il n'a pas créé de compte *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*, son nom d'affichage cesse d'être utilisé immédiatement et est effacé au plus tard 90 jours après la fin d'accès (RGPD Art. 13 — information de la personne concernée).
 - RB-09-21 : Sur un compte `FREE`, une session est limitée à **4 joueurs distincts disposant d'un accès à la séance**, quel que soit le type d'accès (accès invité ponctuel, membre de l'espace partagé, ou autre type d'accès futur). Le MJ n'est jamais compté. La limite porte sur le nombre d'**accès distincts accordés** au moment de leur octroi — c'est le refus du **5e accès** qui bloque, pas une mesure de présence en temps réel. La limite porte sur la taille de la table, pas sur le moyen d'y accéder. Compter un seul type d'accès rendrait la limite contournable et viderait le levier de l'offre supérieure. Le joueur dont l'accès est refusé voit un message sobre d'erreur, sans révélation sur l'espace partagé (même registre que le message de lien expiré) ; le MJ reçoit le signalement de la limite atteinte avec une invitation à passer `PRO` pour la lever. Cette limite transpose, pour les joueurs d'une session, le précédent de blocage du compte `FREE` déjà établi pour les espaces partagés.
-- RB-09-22 : Au-delà de l'information donnée à la saisie du nom (RB-09-20), l'invité est averti **en temps utile** — à un moment qui lui laisse la possibilité d'agir avant la fin de son accès — que ses notes personnelles ne seront conservées que s'il crée un compte avant cette fin. Cet avertissement traite le risque que l'information initiale ne soit plus présente à l'esprit lorsque l'accès prend fin, et laisse à l'invité le temps de décider de créer un compte pour conserver ses notes (US-09-04, UC-09 A2, RB-09-14).
+- RB-09-22 *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Au-delà de l'information donnée à la saisie du nom (RB-09-20), l'invité est averti **en temps utile** — à un moment qui lui laisse la possibilité d'agir avant la fin de son accès — que ses notes personnelles ne seront conservées que s'il crée un compte avant cette fin. Cet avertissement traite le risque que l'information initiale ne soit plus présente à l'esprit lorsque l'accès prend fin, et laisse à l'invité le temps de décider de créer un compte pour conserver ses notes (US-09-04, UC-09 A2, RB-09-14).
 
 **Critères d'acceptation** :
 - [ ] Le joueur accède à la session en cliquant sur le lien et en saisissant uniquement un nom d'affichage.
 - [ ] Aucun email, aucun mot de passe, aucune confirmation n'est demandée.
 - [ ] Le joueur voit les documents `PUBLIC` de l'espace partagé et les `documents épinglés` de la session.
-- [ ] Le joueur peut prendre des notes personnelles.
+- [ ] Le joueur peut prendre des notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - [ ] Le nom d'affichage du joueur est visible par le MJ dans la vue session.
 - [ ] Un joueur déjà connecté accède directement sans saisir de nom (A1).
 - [ ] L'accès expire après la session + 24 heures (le token `GuestAccess` est invalidé).
@@ -160,7 +160,7 @@ Scénario : Accès expire après 24h de grâce
   Étant donné qu'une session est passée en status CLOSED depuis plus de 24 heures
   Quand Lucas tente de rouvrir le lien ponctuel
   Alors le GuestAccess est invalide
-  Et il voit le message lien non actif
+  Et il voit le message « Ce lien n'est pas utilisable »
 ```
 
 ---
@@ -168,7 +168,7 @@ Scénario : Accès expire après 24h de grâce
 ### US-09-02 — Lien révoqué ou expiré
 
 **En tant que** : joueur,
-**je veux** : recevoir un message clair lorsque le lien que j'utilise n'est plus actif,
+**je veux** : recevoir un message clair lorsque le lien que j'utilise n'est pas utilisable,
 **afin de** : comprendre la situation et savoir quoi faire (contacter le MJ), sans obtenir d'information sur l'existence de l'espace partagé.
 
 **Notes de conception** :
@@ -180,11 +180,11 @@ Scénario : Accès expire après 24h de grâce
 **Règles métier** :
 - RB-09-06 : Un `GuestAccess` révoqué par le MJ est immédiatement invalidé.
 - RB-09-07 : Un `GuestAccess` expiré (délai de grâce dépassé) est invalide.
-- RB-09-08 : Un lien invalide ou mal formé est traité avec le même affichage qu'un lien expiré ou révoqué — aucune information sur l'existence de l'espace partagé n'est révélée.
+- RB-09-08 : Un lien expiré, révoqué, invalide ou mal formé est traité avec un seul et même affichage — aucune information sur l'existence de l'espace partagé, ni sur l'existence passée du lien, n'est révélée.
 - RB-09-09 : Le message affiché est sobre et invite le joueur à contacter le MJ.
 
 **Critères d'acceptation** :
-- [ ] Un lien de session expiré affiche un message "Ce lien n'est plus actif" et invite à contacter le MJ.
+- [ ] Un lien de session expiré affiche un message "Ce lien n'est pas utilisable" et invite à contacter le MJ.
 - [ ] Un lien révoqué affiche le même message qu'un lien expiré.
 - [ ] Un lien mal formé affiche le même message — aucune information sur l'espace partagé n'est révélée.
 - [ ] La page d'erreur est sobre et ne révèle pas l'existence de l'espace partagé.
@@ -193,7 +193,7 @@ Scénario : Accès expire après 24h de grâce
 Scénario : Lien de session expiré (A4)
   Étant donné qu'une session est terminée depuis plus de 24 heures
   Quand Lucas clique sur l'ancien lien de session
-  Alors il voit un message "Ce lien n'est plus actif"
+  Alors il voit un message "Ce lien n'est pas utilisable"
   Et le message invite à contacter le MJ pour un nouveau lien
   Et aucune information sur l'espace partagé n'est révélée
 
@@ -265,32 +265,32 @@ Scénario : MJ révoque l'accès permanent d'un membre
 
 **En tant que** : joueur invité,
 **je veux** : créer un compte Haversack depuis ma session invité et conserver toutes mes données existantes,
-**afin de** : ne pas perdre mes notes personnelles et d'accéder à l'espace partagé de façon permanente entre les séances.
+**afin de** : ne pas perdre mes notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* et d'accéder à l'espace partagé de façon permanente entre les séances.
 
 **Notes de conception** :
 - La migration est déclenchée volontairement par le joueur depuis la vue invité (bouton "Créer un compte").
 - Identity & Access rattache le `GuestAccess` existant au nouveau compte créé (UC-10).
-- Les notes personnelles prises en mode invité (`PLAYER_PRIVATE`) sont migrées vers le compte.
+- Les notes personnelles prises en mode invité (`PLAYER_PRIVATE`) sont migrées vers le compte *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - L'accès existant (sessions rejointes, documents consultés) est préservé.
 - Après migration, le joueur peut être proposé comme `Member` permanent de l'espace partagé — la validation reste à la main du MJ.
 - L'accès du compte créé depuis la migration est immédiat ; la validation de l'adresse de messagerie n'est pas bloquante (RB-10-05, ADR-015 §2.1 — UC-10). La promotion en `Member` permanent (RB-09-16) dépend uniquement du consentement du MJ, jamais de l'état `emailVerified` du compte : ce sont deux gates indépendants, l'un ne conditionne pas l'autre.
 - La migration ne doit générer aucune perte de données.
 
 **Règles métier** :
-- RB-09-14 : La migration invité vers compte préserve toutes les notes personnelles (`PLAYER_PRIVATE`) et l'historique d'accès du `GuestAccess`.
+- RB-09-14 *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : La migration invité vers compte préserve toutes les notes personnelles (`PLAYER_PRIVATE`) et l'historique d'accès du `GuestAccess`.
 - RB-09-15 : Après migration, le `GuestAccess` est rattaché au compte. Le joueur n'a plus besoin d'un lien ponctuel pour les sessions déjà rejointes pendant la fenêtre de grâce.
-- RB-09-16 : La promotion en `Member` permanent nécessite la validation du MJ.
+- RB-09-16 : La promotion d'un invité en `Member` permanent nécessite la validation du MJ. Le lien d'invitation à portée `SPACE` généré par le MJ vaut cette validation (RB-11-03) ; un invité sans ce lien ne devient pas membre tant que le MJ ne l'a pas validé explicitement.
 - RB-09-17 : La migration est irréversible — l'invité ne peut pas repasser en mode sans compte sur ce compte.
 
 **Critères d'acceptation** :
 - [ ] Le joueur invité peut déclencher la création de compte depuis la vue invité.
-- [ ] Après création de compte, toutes les notes personnelles prises en mode invité sont conservées.
+- [ ] Après création de compte, toutes les notes personnelles prises en mode invité sont conservées *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - [ ] L'historique d'accès du `GuestAccess` est rattaché au nouveau compte.
 - [ ] Aucune donnée n'est perdue durant la migration.
 - [ ] Le MJ est notifié qu'un joueur invité a créé un compte et peut le promouvoir en `Member`.
 
 ```gherkin
-Scénario : Joueur invité crée un compte et migre ses données (A2)
+Scénario : Joueur invité crée un compte et migre ses données (A2) — volet notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
   Étant donné que Lucas a accès à plusieurs sessions en tant qu'invité
   Et qu'il a pris des notes personnelles
   Quand Lucas clique sur "Créer un compte" depuis la vue invité
@@ -313,7 +313,7 @@ Scénario : MJ peut promouvoir le joueur migré en Member
 |---|---|
 | Partage sélectif de documents par joueur | Hors MVP — RB-08-04 définit que le partage s'applique à tous les membres et GuestAccess actifs. |
 | Notification joueur (email, push) à l'expiration du lien | Hors périmètre UC-09. Traité dans les fonctionnalités de notification. |
-| Récapitulatif post-session envoyé par email au joueur sans compte | Could Have — nécessite une adresse email, hors scope MVP pour les invités. |
+| Récapitulatif post-session envoyé par email au joueur sans compte | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#récapitulatif-post-session-par-email-à-linvité-uc-09), § Récapitulatif post-session par email à l'invité (UC-09)) — nécessite une adresse email, hors scope MVP pour les invités. |
 | Identifiant ou pseudo dédié pour désambiguïser les homonymes (nom d'affichage en collision) | **Clos (Q#1)** — le nom d'affichage seul suffit ; l'identité technique est le `GuestAccessId`. La désambiguïsation d'homonymes est un traitement de présentation (suffixe dérivé du `GuestAccessId`), pas un identifiant de modèle. |
 
 ---

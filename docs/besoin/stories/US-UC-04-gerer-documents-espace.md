@@ -18,7 +18,7 @@ d'espace : le type est une aide optionnelle, la structure reste libre en blocs.
 | Émilie | Capturer vite, note rapide en 2 touches, réorganiser après |
 | Antoine | Créer des documents détaillés avec types et propriétés, lier ses documents |
 | Nadia | Peu de création, mais retrouver ses documents après 6 semaines d'absence |
-| Thomas | Backlinks et organisation libre style Obsidian |
+| Thomas | Organisation libre style Obsidian (les backlinks sont hors MVP) |
 | Rémi | Usage partiel, léger, utile sans reconstruire toute sa campagne |
 | Sonia | Documents ponctuels réutilisables ou liés à un scénario one-shot |
 
@@ -38,7 +38,7 @@ d'espace : le type est une aide optionnelle, la structure reste libre en blocs.
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-04 — Gérer les documents d'un espace](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-04 — Gérer les documents d'un espace](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -63,7 +63,6 @@ flowchart TD
     J --> K[Document accessible depuis dossier,\nrecherche et documents liés]
     K --> L{Action ultérieure}
     L -->|Changer la visibilité| M[Partage ou retrait]
-    L -->|Consulter les backlinks| N[Voir les documents\nqui référencent ce doc]
 ```
 
 ### Bounded contexts pressentis
@@ -84,7 +83,6 @@ flowchart LR
     US0403[US-04-03\nVisibilité]
     US0404[US-04-04\nTaguer]
     US0405[US-04-05\nLier des documents]
-    US0406[US-04-06\nBacklinks]
 
     UC03[UC-03\nStructurer un scénario]
     UC05[UC-05\nGérer les dossiers]
@@ -94,7 +92,6 @@ flowchart LR
     US0401 --> US0403
     US0401 --> US0404
     US0401 --> US0405
-    US0405 --> US0406
     US0404 --> UC14
     US0405 --> UC03
     US0401 --> UC05
@@ -331,7 +328,19 @@ Scénario : Un document peut être lié à plusieurs autres documents
 
 ---
 
-### US-04-06 — Consulter les backlinks d'un document
+## Stories exclues ou repoussées
+
+| Story / Feature | Raison |
+|---|---|
+| Partage sélectif par joueur | Hors périmètre MVP. Le partage vise le groupe. Décision actée. |
+| Workflow des notes de session | Couvert par UC-06/07. UC-04 garde le modèle général des documents d'espace. |
+| Suppression physique définitive d'un document | Hors périmètre MVP. Le besoin métier décrit surtout le retrait de la bibliothèque active. |
+| Déplacement d'un document entre dossiers | DÉCIDÉ : le déplacement de dossier est possible. Couvert par US-04-01 (RB-04-03). |
+| US-04-06 — Consulter les backlinks d'un document | Hors MVP — réponse de l'opérateur (onboarding du 2026-10-07) : les backlinks arrivent avec les relations structurées (UC-F06, voir [UC-HORS-MVP](../vision/perimetre/exclusions.md)). L'identifiant reste pris ; le texte de la story est conservé ci-dessous. |
+| Graphe de relations visuel | UX non définie. Les backlinks (US-04-06, hors MVP) poseraient le socle technique, la visualisation est une étape ultérieure. |
+| Visibilité par bloc | Hors périmètre MVP. La visibilité est au niveau document ; un contenu joueur doit être un document lié. |
+
+**US-04-06 — Consulter les backlinks d'un document** *(hors MVP — texte conservé pour la reprise)*
 
 **En tant que** : MJ,  
 **je veux** : voir quels documents référencent le document que je consulte,  
@@ -368,19 +377,6 @@ Scénario : Un document sans backlink affiche une section vide
 
 ---
 
-## Stories exclues ou repoussées
-
-| Story / Feature | Raison |
-|---|---|
-| Partage sélectif par joueur | Hors périmètre MVP. Le partage vise le groupe. Décision actée. |
-| Workflow des notes de session | Couvert par UC-06/07. UC-04 garde le modèle général des documents d'espace. |
-| Suppression physique définitive d'un document | Hors périmètre MVP. Le besoin métier décrit surtout le retrait de la bibliothèque active. |
-| Déplacement d'un document entre dossiers | DÉCIDÉ : le déplacement de dossier est possible. Couvert par US-04-01 (RB-04-03). |
-| Graphe de relations visuel | UX non définie. Les backlinks (US-04-06) posent le socle technique, la visualisation est une étape ultérieure. |
-| Visibilité par bloc | Hors périmètre MVP. La visibilité est au niveau document ; un contenu joueur doit être un document lié. |
-
----
-
 ## Ordre de livraison recommandé
 
 1. **US-04-01** — Créer et modifier un document (socle, bloque tout le reste)
@@ -388,7 +384,6 @@ Scénario : Un document sans backlink affiche une section vide
 3. **US-04-03** — Visibilité (nécessaire avant tout partage avec les joueurs)
 4. **US-04-05** — Lier des documents (dépend US-04-01, valeur pour Antoine et Thomas)
 5. **US-04-04** — Taguer (valeur propre d'organisation MJ ; le filtrage en recherche via UC-14 A3 reste un complément différé, `Could Have — hors MVP`)
-6. **US-04-06** — Backlinks (dépend US-04-05)
 
 ---
 
@@ -402,7 +397,7 @@ Scénario : Un document sans backlink affiche une section vide
 | A3 — document depuis template | UC-05 + US-04-01 |
 | A4 — changement de visibilité | US-04-03 |
 | A5 — document utilisé en session | US-04-01 + UC-06/07 |
-| Backlinks | US-04-06 |
+| Backlinks | hors MVP — US-04-06, voir Stories exclues ou repoussées |
 
 ---
 

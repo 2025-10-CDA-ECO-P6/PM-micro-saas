@@ -95,7 +95,7 @@ Un joueur dont l'accès invité a expiré ou été révoqué ne peut plus consul
 
 - Tout document créé par le MJ est privé par défaut.
 - Seul le MJ peut partager une information durable de l'espace.
-- Un joueur ne peut consulter que les documents partagés et ses propres notes de session personnelles joueur.
+- Un joueur ne peut consulter que les documents partagés.
 - Le MJ peut retirer un partage via l'action de retrait du partage.
 - Le partage est durable : le document reste accessible entre les sessions jusqu'à retrait explicite.
 - Le partage sélectif par joueur ou personnage n'est pas dans le périmètre MVP — voir l'arbitrage ci-dessous.

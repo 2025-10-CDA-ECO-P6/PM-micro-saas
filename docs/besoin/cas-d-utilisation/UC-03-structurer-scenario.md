@@ -36,7 +36,7 @@ Le MJ prépare une future session ou un arc narratif.
 ## Préconditions
 
 - Un espace existe.
-- Le MJ a les droits d'administration sur l'espace.
+- Le MJ est membre `OWNER` ou `GM` de l'espace (sur un espace `PERSONAL`, le propriétaire).
 
 ## Scénario nominal
 
@@ -98,7 +98,7 @@ Le système conserve les données saisies localement si possible et affiche un m
 ## Postconditions
 
 - Le scénario est sauvegardé comme document de l'espace.
-- Le scénario est placé dans le dossier **Scénarios** de l'espace (dossier système dans un espace `CAMPAIGN` ou `ONE_SHOT` ; dossier créé librement par le MJ dans un espace `PERSONAL`).
+- Le scénario est placé dans le dossier **Scénarios** de l'espace (dossier système dans un espace `CAMPAIGN` ou `ONE_SHOT` ; dossier créé librement par le MJ dans un espace `PERSONAL`). Quand aucun dossier **Scénarios** n'existe, le scénario est placé dans le dossier virtuel « Non classés » (UC-05, A4).
 - Le scénario peut être consulté, modifié ou lié à une session.
 - Les éléments liés au scénario sont accessibles depuis celui-ci.
 

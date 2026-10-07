@@ -2,7 +2,8 @@
 
 - **Id** : 0034
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : docs/besoin/stories/US-UC-07-creation-volee-session.md
 
 Spécifier dans US-UC-07 un raccourci clavier pour le panneau de création rapide. Il est au MVP. La touche est à définir avec les NFR d'accessibilité ; la question US-UC-07:249 est à marquer DÉCIDÉ.
 

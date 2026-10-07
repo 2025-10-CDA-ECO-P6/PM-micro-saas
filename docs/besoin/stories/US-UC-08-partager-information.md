@@ -32,7 +32,7 @@ Permettre au MJ de contrôler la visibilité de ses documents d'espace. Tout doc
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-08 — Partager une information aux joueurs](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-08 — Partager une information aux joueurs](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -248,7 +248,7 @@ Scénario : Partage depuis une session non LIVE
 | Partage sélectif par joueur | Hors MVP — RB-08-04 explicite. Prévu comme évolution future. |
 | Partage temporaire de session (expiration automatique) | Hors MVP. Le partage est permanent jusqu'à retrait explicite. |
 | Partage avec notification joueur (push / email) | Hors périmètre UC-08. Traité dans les fonctionnalités de notification. |
-| Historique des partages | Could Have — la date de partage est tracée dans `AuditInfo` mais pas affichée dans le MVP. |
+| Historique des partages | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#historique-des-partages-uc-08), § Historique des partages (UC-08)) — la date de partage est tracée dans `AuditInfo` mais pas affichée dans le MVP. |
 
 ---
 

@@ -131,7 +131,7 @@ Ce que ces interviews ne cherchent pas : recueillir des listes de fonctionnalit�
 
 Piliers critiques — Hypothèses et questions structurantes.
 
-Les deux hypothèses centrales du MVP (vision §2.3) doivent être validées en priorité par cette campagne d'entretiens. Cette section regroupe, pour chacun des deux piliers, l'hypothèse exacte, les questions à poser, et le signal attendu en réponse.
+Les cinq hypothèses du MVP (H1 à H5, vision §2.3) doivent être validées par cette campagne d'entretiens ; leur statut se suit en §8.2. Cette section détaille les deux piliers que portent H1 (préparation sans friction) et H2 (vue session) : pour chacun, l'hypothèse exacte, les questions à poser, et le signal attendu en réponse.
 
 ### Pilier 1 — Préparation sans friction
 
@@ -182,7 +182,7 @@ Les questions suivantes couvrent les incertitudes les plus critiques identifiée
 | 2 | Quand vous relancez un scénario avec un nouveau groupe, qu'est-ce que vous voulez garder exactement identique, et qu'est-ce que vous adaptez ? | MJ convention (Sonia) | H : Sonia veut un "instantané" du scénario source, pas un diff. Si faux, un mécanisme de comparaison source/instance est nécessaire (UC-13). |
 | 3 | Avez-vous un "catalogue" de vos scénarios — même informel — ou chaque one-shot existe de façon indépendante ? | MJ convention (Sonia) | H : Sonia a une organisation mentale par scénario, pas par campagne. Si vrai, le point d'entrée "Bibliothèque" du tableau de bord est prioritaire sur la vue "Campagnes". |
 | 4 | Les MJ font-ils une séparation mentale claire entre "campagne" et "one-shot" avant de lancer l'application ? | MJ débutant, MJ convention | H : la distinction campagne / one-shot est évidente pour l'utilisateur. Si faux, le choix au démarrage risque de bloquer l'onboarding (UC-02). |
-| 5 | Avez-vous cherché dans des notes de sessions passées une information précise ? Comment vous faites ça aujourd'hui ? | MJ occasionnelle (Nadia), MJ expérimenté | H : la recherche dans les notes de sessions archivées est un besoin réel non couvert par la navigation (UC-14 périmètre MVP à trancher). |
+| 5 | Avez-vous cherché dans des notes de sessions passées une information précise ? Comment vous faites ça aujourd'hui ? | MJ occasionnelle (Nadia), MJ expérimenté | H : la recherche dans les notes de sessions archivées est un besoin réel non couvert par la navigation (UC-14 : la recherche MVP porte sur les titres seuls, voir [UC-14](../cas-d-utilisation/UC-14-recherche.md) ; l'hypothèse reste à tester pour le post-MVP). |
 | 6 | Est-ce qu'il vous arrive de vouloir partager une information à un joueur précis mais pas aux autres ? Comment vous gérez ça aujourd'hui ? | MJ expérimenté (Antoine) | H : le partage par groupe (tous les joueurs) suffit pour le MVP. Si faux, la granularité par joueur ou personnage doit être réévaluée (UC-08, UC-09). |
 | 7 | Pendant une session, qu'est-ce qui se passe quand les joueurs font quelque chose que vous n'aviez pas prévu — comment vous le notez à ce moment-là ? | MJ expérimenté, MJ débutant (Émilie) | H : la création à la volée (UC-07) est un besoin fort pendant la session. Valide l'importance du panneau de création rapide. |
 | 8 | En tant que joueur, est-ce que vous accédez aux informations de campagne depuis votre téléphone ou plutôt depuis un ordinateur ? | Joueur régulier (Lucas), Joueur occasionnel | H : les joueurs accèdent depuis mobile. Si vrai, la vue joueur mobile est critique pour le MVP (UC-06, UC-09 — angle mort identifié). |
@@ -224,7 +224,7 @@ Les premières personnes disponibles (amis, famille) ont tendance à valider pou
 
 ## 7. Modèle de compte rendu
 
-Utiliser ce template pour chaque interview réalisé. Stocker les fichiers dans `docs/interviews/YYYY-MM-DD-[prénom-profil].md`.
+Utiliser ce template pour chaque interview réalisé. Stocker les fichiers dans `docs/besoin/decouverte/entretiens/YYYY-MM-DD-[prénom-profil].md`.
 
 ```markdown
 # Interview — [Prénom ou pseudonyme] — [Date]
@@ -279,13 +279,15 @@ Utiliser ce template pour chaque interview réalisé. Stocker les fichiers dans 
 
 Cette section centralise les résultats de la campagne de validation des hypothèses pré-MVP. À remplir à mesure que les entretiens sont menés.
 
+**État au 2026-10-07** : aucun entretien terrain n'a eu lieu. Aucun compte-rendu n'existe, `docs/besoin/decouverte/entretiens/` n'existe pas encore, et les hypothèses H1 à H5 restent non validées par le terrain.
+
 #### 8.1 Suivi des entretiens réalisés
 
 *(à remplir en terrain)*
 
 | Date | Profil | Prénom / pseudonyme | Fichier de compte-rendu | Notes rapides |
 |---|---|---|---|---|
-| [YYYY-MM-DD] | [MJ débutant / MJ expérimenté / MJ convention / Joueur régulier / Joueur occasionnel] | [Prénom] | `docs/interviews/YYYY-MM-DD-[prénom-profil].md` | [Remarque d'orientation initiale, si pertinent] |
+| [YYYY-MM-DD] | [MJ débutant / MJ expérimenté / MJ convention / Joueur régulier / Joueur occasionnel] | [Prénom] | `docs/besoin/decouverte/entretiens/YYYY-MM-DD-[prénom-profil].md` | [Remarque d'orientation initiale, si pertinent] |
 | | | | | |
 | | | | | |
 

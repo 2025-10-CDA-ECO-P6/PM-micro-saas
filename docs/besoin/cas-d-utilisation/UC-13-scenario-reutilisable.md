@@ -128,7 +128,7 @@ Si le MJ tente d'instancier un scénario dans un espace archivé, l'opération e
 
 **Justification** : aligne avec le principe de zéro friction et de prévisibilité pour Sonia. Elle modifie son run sans risquer d'altérer le source. Le source reste sa "version propre" du scénario, intacte pour les prochains groupes. La cohérence entre le source et les instances n'est pas gérée automatiquement — c'est le MJ qui décide de promouvoir à nouveau s'il améliore le source.
 
-**Conséquence** : pas de mécanisme de diff ou de synchronisation source → instance dans le MVP. Cette feature (UC-13 stories exclues) est Could Have post-MVP.
+**Conséquence** : pas de mécanisme de diff ou de synchronisation source → instance dans le MVP. Cette fonctionnalité (UC-13, stories exclues) est hors MVP ; sa priorité est attribuée par la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md) (§ Synchronisation source → instance d'un scénario réutilisable (UC-13)).
 
 ---
 

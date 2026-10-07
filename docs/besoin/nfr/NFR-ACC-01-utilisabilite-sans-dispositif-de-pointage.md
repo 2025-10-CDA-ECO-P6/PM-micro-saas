@@ -60,7 +60,7 @@ Il oriente l'implémentation sans se substituer au besoin formulé ici.
 - La navigation entre les panneaux de la vue session, l'épinglage d'un document, la prise de
   notes de session, le basculement de visibilité d'une note.
 - Les actions joueur : accès à la vue session, consultation des documents partagés, prise de
-  notes personnelles.
+  notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - Le parcours d'accès au produit : ouverture de l'application, création d'un espace de jeu,
   saisie d'un titre de session.
 
@@ -92,7 +92,7 @@ entièrement au clavier, depuis l'ouverture de l'application.
 **Situation nominale** : Parcours complet joueur — accès et consultation au clavier
 
 Un joueur accédant via un lien de session peut saisir son nom d'affichage, accéder à la
-vue joueur, naviguer parmi les documents partagés et créer une note personnelle — entièrement
+vue joueur, naviguer parmi les documents partagés et créer une note personnelle *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* — entièrement
 au clavier.
 
 **Situation limite** : Focus visible en permanence

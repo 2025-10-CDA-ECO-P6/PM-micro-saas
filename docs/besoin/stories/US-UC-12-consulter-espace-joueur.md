@@ -27,7 +27,7 @@ Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-12 — Consulter son espace en tant que joueur (vue post-accès)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-12 — Consulter son espace en tant que joueur (vue post-accès)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -58,18 +58,18 @@ flowchart TD
 
     Acces --> PersonnageAssocie{Personnage associe\npar le MJ ?}
 
-    PersonnageAssocie -->|Non| SansPerso[Vue joueur sans fiche\nDocuments PUBLIC uniquement\nPas de notes PLAYER_PRIVATE\nliees a un personnage]
+    PersonnageAssocie -->|Non| SansPerso[Vue joueur sans fiche\nDocuments PUBLIC uniquement\nPas de notes PLAYER_PRIVATE\nliees a un personnage (notes : hors MVP)]
 
-    PersonnageAssocie -->|Oui - un seul personnage| UnPerso[Vue joueur avec fiche\nDocuments PUBLIC\nNotes PLAYER_PRIVATE\ndu personnage associe]
+    PersonnageAssocie -->|Oui - un seul personnage| UnPerso[Vue joueur avec fiche\nDocuments PUBLIC\nNotes PLAYER_PRIVATE\ndu personnage associe (notes : hors MVP)]
 
     PersonnageAssocie -->|Oui - plusieurs personnages| MultiPerso[US-12-02\nChoix du personnage actif]
 
     MultiPerso --> ChoixPerso[Joueur selectionne\nle personnage actif]
     ChoixPerso --> UnPerso
 
-    UnPerso --> VueJoueur[Vue joueur complete\nFiche du personnage\nDocuments PUBLIC\nNotes PLAYER_PRIVATE]
+    UnPerso --> VueJoueur[Vue joueur complete\nFiche du personnage\nDocuments PUBLIC\nNotes PLAYER_PRIVATE (hors MVP)]
 
-    PersonnageAssocie -->|Acces SESSION uniquement| SessionSeul[Perimetre session\nDocuments epingles\nDocuments PUBLIC\nPas d acces au lore complet]
+    PersonnageAssocie -->|Acces SESSION uniquement| SessionSeul[Perimetre session\nDocuments epingles\nTous les documents PUBLIC\nPas d acces a l historique des sessions]
 ```
 
 ### Bounded contexts pressentis
@@ -114,24 +114,24 @@ flowchart LR
 **Notes de conception** :
 - La vue joueur est rendue disponible dès que le `GuestAccess` ou le `Member` est actif (UC-09).
 - La fiche de personnage n'est visible que si le MJ a associé un personnage à ce joueur (US-11-04). Sans association, le joueur consulte uniquement les documents `PUBLIC`.
-- Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, rattachées au personnage pour l'affichage. Un `GuestAccess` récupère la **fiche** du personnage associé — les notes `PLAYER_PRIVATE` ne sont visibles que si le même auteur y accède de nouveau (compte stable) ; un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent (RB-12-02, RB-09-19).
+- Les notes `PLAYER_PRIVATE` *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* sont liées à leur **auteur**, rattachées au personnage pour l'affichage. Un `GuestAccess` récupère la **fiche** du personnage associé — les notes `PLAYER_PRIVATE` ne sont visibles que si le même auteur y accède de nouveau (compte stable) ; un nouvel invité réassocié au même personnage ne récupère jamais les notes d'un invité précédent (RB-12-02, RB-09-19).
 - Les documents `PUBLIC` sont fournis par la Bibliothèque de contenu et filtrés selon le périmètre d'accès (`SESSION` ou `SPACE`).
-- Un accès périmètre `SESSION` donne accès aux documents épinglés de la session et aux documents `PUBLIC` de l'espace, mais pas à l'historique complet ni au lore de l'espace (couvert par US-09-03).
+- Un accès périmètre `SESSION` donne accès aux documents épinglés de la session et à tous les documents `PUBLIC` de l'espace, mais pas à l'historique des sessions (couvert par US-09-03).
 - Un accès périmètre `SPACE` (`Member`) donne accès à l'ensemble des documents `PUBLIC` de l'espace et à l'historique des sessions.
 
 **Règles métier** :
-- RB-12-01 : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` et les documents `PLAYER_PRIVATE` d'autres personnages sont invisibles.
-- RB-12-02 : Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, **rattachées au personnage pour l'affichage** ; elles persistent entre les sessions pour le **même auteur** (compte stable). Elles ne sont pas propriété du personnage — un joueur (invité ou membre) qui accède à un personnage déjà joué par quelqu'un d'autre ne récupère jamais les notes de son prédécesseur (RB-09-19).
-- RB-12-03 : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
-- RB-12-04 : Un accès périmètre `SESSION` ne donne pas accès à l'historique complet des sessions et du lore de l'espace. Seuls les documents `PUBLIC` et les documents épinglés de la session sont visibles.
+- RB-12-01 : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` lui sont invisibles. Les notes `PLAYER_PRIVATE` sont invisibles à quiconque n'en est pas l'auteur. Exception : la fiche d'un personnage associé au joueur est lisible par ce joueur, quelle que soit sa visibilité.
+- RB-12-02 *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, **rattachées au personnage pour l'affichage** ; elles persistent entre les sessions pour le **même auteur** (compte stable). Elles ne sont pas propriété du personnage — un joueur (invité ou membre) qui accède à un personnage déjà joué par quelqu'un d'autre ne récupère jamais les notes de son prédécesseur (RB-09-19).
+- RB-12-03 *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
+- RB-12-04 : Un accès périmètre `SESSION` ne donne pas accès à l'historique des sessions. Il donne accès aux documents épinglés de la session et à tous les documents `PUBLIC` de l'espace.
 - RB-12-05 : Un accès périmètre `SPACE` (`Member`) donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions passées.
 
 **Critères d'acceptation** :
 - [ ] Le joueur avec un personnage associé voit la fiche du personnage dès l'accès à la session.
 - [ ] Le joueur voit les documents `PUBLIC` de l'espace et les documents épinglés de la session.
-- [ ] Les notes `PLAYER_PRIVATE` du personnage associé sont accessibles et éditables.
-- [ ] Un joueur sans personnage associé voit les documents `PUBLIC` mais ne peut pas créer de notes liées à un personnage.
-- [ ] Un accès périmètre `SESSION` ne donne pas accès à l'historique des sessions précédentes ni au lore complet de l'espace.
+- [ ] Les notes `PLAYER_PRIVATE` du personnage associé sont accessibles et éditables *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
+- [ ] Un joueur sans personnage associé voit les documents `PUBLIC` mais ne peut pas créer de notes liées à un personnage *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
+- [ ] Un accès périmètre `SESSION` donne accès aux documents épinglés de la session et à tous les documents `PUBLIC` de l'espace, sans l'historique des sessions précédentes.
 - [ ] Un accès périmètre `SPACE` donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions.
 - [ ] Les documents dont la visibilité n'est pas `PUBLIC` ne sont pas visibles par le joueur.
 
@@ -142,7 +142,7 @@ Scénario : Joueur avec personnage associé accède à sa fiche et aux documents
   Quand la vue joueur s'affiche
   Alors Lucas voit la fiche du personnage "Aldric"
   Et Lucas voit les documents PUBLIC de l'espace
-  Et Lucas peut consulter et modifier ses notes PLAYER_PRIVATE liées à Aldric
+  Et Lucas peut consulter et modifier ses notes PLAYER_PRIVATE liées à Aldric *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
 
 Scénario : Joueur sans personnage associé — consultation uniquement
   Étant donné que Lucas a rejoint la session via un lien valide
@@ -150,15 +150,15 @@ Scénario : Joueur sans personnage associé — consultation uniquement
   Quand la vue joueur s'affiche
   Alors Lucas voit les documents PUBLIC de l'espace
   Et Lucas ne voit pas de fiche de personnage
-  Et Lucas ne peut pas créer de notes PLAYER_PRIVATE liées à un personnage
+  Et Lucas ne peut pas créer de notes PLAYER_PRIVATE liées à un personnage *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
 
-Scénario : Accès périmètre SESSION — pas d'accès au lore complet de l'espace
+Scénario : Accès périmètre SESSION — pas d'accès à l'historique des sessions
   Étant donné que Lucas a rejoint via un lien périmètre SESSION
   Quand la vue joueur s'affiche
-  Alors Lucas voit les documents épinglés de la session et les documents PUBLIC
-  Et Lucas ne voit pas l'historique des sessions précédentes ni le lore complet de l'espace
+  Alors Lucas voit les documents épinglés de la session et tous les documents PUBLIC de l'espace
+  Et Lucas ne voit pas l'historique des sessions précédentes
 
-Scénario : Notes PLAYER_PRIVATE préservées entre les sessions pour le même auteur
+Scénario : Notes PLAYER_PRIVATE préservées entre les sessions pour le même auteur *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
   Étant donné que Lucas a pris des notes PLAYER_PRIVATE sur Aldric lors d'une session précédente
   Et que Lucas rejoint une nouvelle session en tant que même auteur (même compte)
   Quand la vue joueur s'affiche
@@ -176,27 +176,27 @@ Scénario : Documents GM_ONLY invisibles pour le joueur
 
 **En tant que** : joueur,
 **je veux** : choisir lequel de mes personnages est actif pour la session en cours,
-**afin de** : consulter la bonne fiche et prendre des notes liées au personnage que je joue ce soir.
+**afin de** : consulter la bonne fiche (et prendre des notes liées au personnage que je joue ce soir *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*).
 
 **Notes de conception** :
 - **Principe** : le personnage actif est un état de **focus / présentation éphémère** (quelle fiche et quelles notes sont mises en avant dans la vue joueur) — **jamais un droit d'accès**. Les droits sur les documents dérivent de l'**ensemble** des personnages associés au joueur (RB-11-17), pas du seul personnage actif.
 - Un joueur peut être associé à plusieurs personnages dans un même espace (RB-11-17 dans UC-11). Cette story couvre la vue joueur de cette fonctionnalité.
 - Le choix du personnage actif est local à la session en cours. Il ne modifie pas l'association définie par le MJ (US-11-04) — il détermine seulement quel personnage est affiché en priorité dans la vue joueur.
-- Le personnage actif conditionne uniquement les actions qui dépendent d'une fiche précise : affichage de la fiche en tête, notes `PLAYER_PRIVATE` visibles et éditables, accès aux ressources liées au personnage.
+- Le personnage actif conditionne uniquement les actions qui dépendent d'une fiche précise : affichage de la fiche en tête, notes `PLAYER_PRIVATE` visibles et éditables *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*, accès aux ressources liées au personnage.
 - Si le joueur n'a qu'un seul personnage associé, aucune sélection n'est requise — la fiche s'affiche directement (US-12-01).
 - `Space Management` gère la liste des personnages associés à un `Member`. La sélection du personnage actif est une **préférence client, non persistée au MVP** (formule volontairement décorrélée d'une éventuelle visibilité MJ future — voir Q#1/Q#4 en questions closes), sans modifier les données de `Space Management`.
 
 **Règles métier** :
-- RB-12-06 : Un joueur associé à plusieurs personnages doit choisir un personnage actif pour les actions dépendant d'une fiche précise (notes `PLAYER_PRIVATE`, affichage de fiche).
+- RB-12-06 : Un joueur associé à plusieurs personnages doit choisir un personnage actif pour les actions dépendant d'une fiche précise (affichage de fiche ; notes `PLAYER_PRIVATE` *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*).
 - RB-12-07 : Le choix du personnage actif est propre à la session en cours. Il ne modifie pas les associations définies par le MJ.
 - RB-12-08 : Un joueur avec un seul personnage associé n'a pas à effectuer de sélection — son personnage est actif par défaut.
 - RB-12-09 : Le joueur peut changer de personnage actif à tout moment pendant la session.
-- RB-12-10 : Les notes `PLAYER_PRIVATE` et la fiche affichées correspondent toujours au personnage actif sélectionné.
+- RB-12-10 : La fiche affichée correspond toujours au personnage actif sélectionné ; les notes `PLAYER_PRIVATE` *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* suivent le même principe.
 
 **Critères d'acceptation** :
 - [ ] Un joueur associé à plusieurs personnages voit une interface de sélection du personnage actif à l'entrée en session.
 - [ ] Après sélection, la fiche du personnage actif est affichée dans la vue joueur.
-- [ ] Les notes `PLAYER_PRIVATE` visibles et éditables correspondent au personnage actif.
+- [ ] Les notes `PLAYER_PRIVATE` visibles et éditables correspondent au personnage actif *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - [ ] Le joueur peut changer de personnage actif à tout moment pendant la session.
 - [ ] Un joueur avec un seul personnage associé ne voit pas d'interface de sélection — la fiche s'affiche directement.
 - [ ] Le changement de personnage actif ne modifie pas les associations définies par le MJ.
@@ -213,14 +213,14 @@ Scénario : Vue joueur après sélection du personnage actif
   Étant donné que Thomas a sélectionné "Veran" comme personnage actif
   Quand la vue joueur s'affiche
   Alors la fiche de "Veran" est visible en priorité
-  Et les notes PLAYER_PRIVATE liées à "Veran" sont accessibles et éditables
-  Et les notes de "Kael" ne sont pas affichées
+  Et les notes PLAYER_PRIVATE liées à "Veran" sont accessibles et éditables *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
+  Et les notes de "Kael" ne sont pas affichées *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
 
 Scénario : Changement de personnage actif en cours de session
   Étant donné que Thomas a "Veran" comme personnage actif
   Quand Thomas change le personnage actif pour "Kael" depuis la vue joueur
   Alors la fiche de "Kael" s'affiche
-  Et les notes PLAYER_PRIVATE de "Kael" remplacent celles de "Veran" dans la vue
+  Et les notes PLAYER_PRIVATE de "Kael" remplacent celles de "Veran" dans la vue *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
 
 Scénario : Joueur avec un seul personnage — pas de sélection requise
   Étant donné que Lucas est Member de l'espace
@@ -241,11 +241,11 @@ Scénario : Changement de personnage actif sans modifier les associations MJ
 | Story / Feature | Raison |
 |---|---|
 | A2 — Validation manuelle du MJ avant l'accès joueur | Hors MVP (cohérent avec UC-11 et UC-09 : l'accès est automatique sur lien valide). |
-| Notification au joueur quand le MJ partage un nouveau document | Could Have — fonctionnalité de notification non prioritaire. |
+| Notification au joueur quand le MJ partage un nouveau document | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notification-du-joueur-au-partage-dun-document-uc-12), § Notification du joueur au partage d'un document (UC-12)) — fonctionnalité de notification non prioritaire. |
 | Accès joueur à l'historique des sessions passées via périmètre SESSION | Hors périmètre : le lien SESSION donne accès à la session courante uniquement. L'historique est couvert par US-09-03 (Member, périmètre SPACE). |
 | Partage sélectif de documents par joueur (un document PUBLIC pour ce joueur uniquement) | Hors MVP — RB-08-04 : le partage s'applique à tous les membres actifs. |
-| Personnage actif persisté entre les sessions | Could Have post-MVP — la sélection reste **préférence client, non persistée** au MVP (RB-12-07, Q#1) ; persistance à préciser selon les retours utilisateur. |
-| Notes libres non rattachées à un personnage (`Member` / `GuestAccess` sans `player_character`) | Could Have post-MVP — aucun slot de note libre au MVP ; RB-12-03 exige un personnage associé pour toute note `PLAYER_PRIVATE` (Q#3). |
+| Personnage actif persisté entre les sessions | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md), § Persistance du personnage actif entre sessions (UC-12)) — la sélection reste **préférence client, non persistée** au MVP (RB-12-07, Q#1) ; persistance à préciser selon les retours utilisateur. |
+| Notes libres non rattachées à un personnage (`Member` / `GuestAccess` sans `player_character`) | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md), § Notes libres du joueur, sans personnage associé (UC-12)) — aucun slot de note libre au MVP ; RB-12-03 exige un personnage associé pour toute note `PLAYER_PRIVATE` (Q#3). |
 
 ---
 
@@ -275,7 +275,7 @@ Scénario : Changement de personnage actif sans modifier les associations MJ
 
 ### Q#1 — Le personnage actif doit-il être mémorisé entre les sessions ?
 
-**Décision** : **session-local au MVP** (RB-12-07). Le personnage actif est une **préférence client, non persistée au MVP** — la formule remplace le « stocké en session » sous-spécifié pour éviter tout couplage à une visibilité MJ future (cf. Q#4). La persistance inter-sessions reste *Could Have* post-MVP (voir « Stories exclues ou repoussées »).
+**Décision** : **session-local au MVP** (RB-12-07). Le personnage actif est une **préférence client, non persistée au MVP** — la formule remplace le « stocké en session » sous-spécifié pour éviter tout couplage à une visibilité MJ future (cf. Q#4). La persistance inter-sessions reste hors MVP, sa priorité est attribuée par la matrice de priorités (voir « Stories exclues ou repoussées »).
 
 **Statut** : clos.
 
@@ -293,11 +293,13 @@ Scénario : Changement de personnage actif sans modifier les associations MJ
 
 **Distinction explicite** (lève l'ambiguïté de la question initiale) :
 - note **liée à un `player_character`** → requiert un personnage associé (RB-12-03) ;
-- note **libre, non rattachée à un personnage** (portée `Member` / `GuestAccess` seule, sans `player_character`) → aucun slot au MVP → **Could Have post-MVP**.
+- note **libre, non rattachée à un personnage** (portée `Member` / `GuestAccess` seule, sans `player_character`) → aucun slot au MVP → **hors MVP** (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md), § Notes libres du joueur, sans personnage associé (UC-12)).
 
-**Ratification (MVP, inchangée — cycle de vie éphémère invité)** : Les notes `PLAYER_PRIVATE` d'un invité sans compte ne persistent **pas** inter-sessions au MVP. Elles sont supprimées à la fin définitive du `GuestAccess` (voir *space-management* règle métier 10, RGPD Art. 17). La persistance inter-sessions est *Could Have* post-MVP (voir zoning S8). Cette ratification porte sur un axe distinct (disponibilité au MVP d'un slot de note libre non rattachée à un personnage) et n'est pas contredite par la décision ci-dessus.
+**Ratification (MVP, inchangée — cycle de vie éphémère invité)** : Les notes `PLAYER_PRIVATE` d'un invité sans compte ne persistent **pas** inter-sessions au MVP. Elles sont supprimées à la fin définitive du `GuestAccess` (voir *space-management* règle métier 10, RGPD Art. 17). La persistance inter-sessions est hors MVP ; sa priorité est attribuée par la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#persistance-des-notes-dun-invité-dune-session-à-lautre-uc-12), § Persistance des notes d'un invité d'une session à l'autre (UC-12) (voir zoning S8). Cette ratification porte sur un axe distinct (disponibilité au MVP d'un slot de note libre non rattachée à un personnage) et n'est pas contredite par la décision ci-dessus.
 
-**Statut** : clos (MVP — non) ; note libre post-MVP en *Could Have*.
+**Statut** : clos (MVP — non) ; note libre hors MVP, priorité attribuée par la matrice de priorités.
+
+**Mise à jour (2026-10-07).** Sans objet au MVP : toutes les notes de session du joueur, liées à un personnage ou non, sont hors MVP *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 
 ### Q#4 — La sélection du personnage actif doit-elle être visible par le MJ ?
 

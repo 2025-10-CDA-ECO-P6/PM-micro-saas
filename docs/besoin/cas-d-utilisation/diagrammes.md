@@ -182,8 +182,9 @@ flowchart LR
 
 ## 4. Vue centrée joueur
 
-Expérience côté joueur. Simple par conception — le joueur est un consommateur de contenu,
-pas un producteur.
+Expérience côté joueur. Simple par conception — le joueur est un consommateur de contenu.
+Il ne produit que ses propres notes de session, fonctionnalité hors MVP
+(voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur)) ; le MJ reste le seul producteur de tout autre contenu.
 
 ```mermaid
 flowchart LR
@@ -239,9 +240,11 @@ flowchart LR
         S2(["UC-07 Creer a la volee"])
         S3(["UC-08 Partager"])
         S4(["UC-14 Rechercher"])
+        S5(["Lien de session ponctuel"])
         S2 -.->|"extend"| S1
         S3 -.->|"extend"| S1
         S4 -.->|"extend"| S1
+        S5 -.->|"extend"| S1
     end
     subgraph JOUEURS["Acces joueurs"]
         UC09(["UC-09\nAcces joueur via lien\nsession ou campagne"])
@@ -257,6 +260,7 @@ flowchart LR
     O3 -.->|"extend"| O2
     O2 --> S1
     S3 --> UC09
+    S5 --> UC09
     C3 --> UC12
     Joueur --> UC09
     Joueur --> UC12

@@ -121,7 +121,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | aucune — aucun ADR ne nomme spécifiquement cette variante ; elle hérite des décisions citées à l'entrée « Création d'un espace partagé et quota FREE » |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | aucune plage dédiée ; dispersée dans [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-02 |
-| Le statut dans le périmètre | aucune sous-section MoSCoW nommée pour cette variante ; son rattachement se lit par dépendance dans [moscow.md, § UC-13 — Utiliser un scénario réutilisable](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [moscow.md, § Variante one-shot express (UC-02 §A1) — Post-MVP (spécifiés)](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Organisation en dossiers — base
 

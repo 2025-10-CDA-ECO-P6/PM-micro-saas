@@ -202,7 +202,7 @@ Aucune condition de retour explicite n'est tracée dans le corpus pour Rémi sp�
 La vision produit §5bis cite une condition générique pour l'export : « l'export matérialise la
 promesse de possession des données » et répond à la « douleur de confiance de Thomas (crainte
 de l'enfermement propriétaire) et de Rémi (réassurance face au numérique) ». L'export de campagne
-(Should Have) est donc tracé comme réassurance pour Rémi, mais dans le registre de la confiance
+(Must Have / version minimale, promu 2026-06-25) est donc tracé comme réassurance pour Rémi, mais dans le registre de la confiance
 — pas comme déclencheur de conversion.
 
 Aucun texte du corpus ne définit une condition d'événement (signal d'usage, signal d'entretien)

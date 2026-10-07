@@ -57,7 +57,7 @@ Le système permet de filtrer par type de contenu.
 
 ### A3 — Recherche par tag *(hors MVP — Could Have)*
 
-Le MJ filtre les résultats par tag ou catégorie.
+Le MJ filtre les résultats par tag ou catégorie. Hors MVP ; sa priorité est attribuée par la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#filtrage-par-tag-en-recherche-uc-14-a3) (§ Filtrage par tag en recherche (UC-14, A3)).
 
 ### A4 — Recherche joueur
 

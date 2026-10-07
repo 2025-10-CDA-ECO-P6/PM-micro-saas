@@ -39,7 +39,7 @@ La promesse de « données toujours possédées par l'utilisateur » (vision §5
 - La récupération des données après leur perte : ce cas est couvert par UC-01 (scénario alternatif A3) et US-01-06.
 - La protection des données contre la lecture par un tiers sur un appareil partagé : ce risque distinct est adressé par la famille Confidentialité (NFR-CONF-04).
 - La synchronisation vers un autre appareil en réponse à l'alerte : cette capacité nécessite un compte et une connexion.
-- La valeur numérique du seuil de saturation qui déclenche le refus d'enregistrement : cette valeur est une contrainte d'interface, pas une règle métier durable ([README de la famille](README.md)) — elle est documentée à titre indicatif dans [UC-01](../cas-d-utilisation/UC-01-mode-local-sans-compte.md) et qualifiée comme telle par [US-UC-01](../stories/US-UC-01-mode-local-sans-compte.md) (RB-01-05) ; elle n'est pas reproduite ici.
+- La valeur numérique du seuil de saturation qui déclenche le refus d'enregistrement : cette valeur est une contrainte d'interface, pas une règle métier durable, ce que pose RB-01-05 de [US-UC-01](../stories/US-UC-01-mode-local-sans-compte.md) — elle est documentée à titre indicatif dans [UC-01](../cas-d-utilisation/UC-01-mode-local-sans-compte.md) ; elle n'est pas reproduite ici.
 
 **Distinction entre les deux situations d'alerte :** la saturation du stockage (E1) signale un refus d'enregistrement immédiat — les nouvelles données ne peuvent pas être sauvegardées. La demande de garantie refusée signale un risque futur — les données existantes sont conservées au mieux mais peuvent être supprimées sous pression. Ces deux situations sont distinctes et doivent être communiquées différemment au MJ.
 

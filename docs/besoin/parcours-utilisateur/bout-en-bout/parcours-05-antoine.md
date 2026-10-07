@@ -34,7 +34,7 @@ Antoine découvre Haversack. Il n'a pas de données locales préexistantes — i
 - Son **espace personnel** (`SpaceType.PERSONAL`) est créé automatiquement à cette étape — conteneur de premier ordre, hors quota, mono-membre, dont Antoine est propriétaire (glossaire §`Espace personnel`).
 - Aucune donnée locale n'existe — le gate de reconnaissance n'est pas présenté (UC-10 scénario nominal « Inscription sans données locales »).
 - Il est redirigé vers son tableau de bord — son espace personnel y figure déjà. Il choisit de créer une campagne, un acte distinct et optionnel (UC-01 §Contexte, UC-02).
-- Avec un compte `FREE` : 3 campagnes cloud maximum. Antoine a besoin de trois campagnes simultanées — il atteint immédiatement la limite du tier `FREE`. Pour trois campagnes actives en cloud, un compte `PRO` est nécessaire (glossaire §2, `AccountTier`).
+- Avec un compte `FREE` : 3 campagnes cloud maximum. Antoine a besoin de trois campagnes simultanées — elles tiennent dans la limite du tier `FREE` ; seule une quatrième campagne exigerait un compte `PRO` (glossaire §2, `AccountTier`).
 
 ### État laissé
 
@@ -242,7 +242,7 @@ Antoine a des groupes stables pour chaque campagne. Il veut inviter ses joueurs 
 
 ### Couture vers l'étape 8
 
-UC-08 précondition : « Le MJ est authentifié et propriétaire de la campagne. Des joueurs ou des `GuestAccess` peuvent accéder à la campagne. » Satisfait — des membres existent dans chaque campagne.
+UC-08 préconditions : « Un espace existe. », « Des joueurs ou des accès invités peuvent accéder à l'espace ou à la session. », « Le contenu à partager existe ou est créé par le MJ. » Satisfait — des membres existent dans chaque campagne.
 
 **Couture continue.**
 
@@ -300,6 +300,6 @@ Ces points sont fondés sur le corpus (fiche persona, UJ-UC-05, UJ-UC-07) — au
 | C4 | Contenu créé → configuration vue session | 4 → 5 | **Continue** | UC-06 (SessionViewConfig) précondition = campagne existante. Satisfait. Les dossiers renommés apparaissent avec leur nouveau nom (UJ-UC-05 §Vers UC-06). |
 | C5 | Vue session configurée → conduite de session | 5 → 6 | **Continue** | UC-06 lancement : campagne existante + MJ authentifié. La SessionViewConfig configurée est retrouvée à l'identique. |
 | C6 | Conduite de session → invitation membres | 6 → 7 | **Continue** | UC-11 précondition = campagne existante + MJ propriétaire + joueurs disposant d'un compte (ou en créant un via UC-09/UC-10). Satisfait. L'octroi (`SpaceMembership`) relève d'UC-09 (joueur) et UC-11 (MJ) ; la vue joueur post-accès relève d'UC-12. |
-| C7 | Membres invités → partage en session | 7 → 8 | **Continue** | UC-08 précondition = MJ authentifié + joueurs/`GuestAccess` accessibles. `SpaceMembership` actifs existent. Satisfait. |
+| C7 | Membres invités → partage en session | 7 → 8 | **Continue** | UC-08 préconditions = espace existant + joueurs ou accès invités pouvant y accéder + contenu à partager existant. `SpaceMembership` actifs existent. Satisfait. |
 | C8 | Templates de dossier indisponibles (UC-13 hors MVP) | 3 | **Limite assumée** | UJ-UC-05 §Transitions inter-UC trace explicitement la dépendance : la liste des modèles pour un dossier dépend de UC-13 (Should Have — post-MVP, hors première livraison) ; en son absence, l'association de modèle n'est pas opérante et un message explicatif est prévu si aucun modèle n'est disponible (UJ-UC-05, points de vigilance). Localisé : UJ-UC-05 §Transitions inter-UC — Vers UC-04, et UC-05 scénario nominal « Associer un template à un dossier ». Antoine ne peut pas associer de template à ses dossiers Factions, Suspects ou Clocks dans la première livraison — limite de périmètre tracée, pas un trou de spécification. |
 | C9 | Dashboard multi-campagnes | 2, 6 | **Continue (couture)** | UC-02 postcondition : après création d'une campagne, depuis le tableau de bord, le MJ retrouve l'ensemble des espaces de jeu dont il est propriétaire ou membre, jusqu'à la limite de son AccountTier. Étape 2 : création des trois campagnes. Étape 6 : Antoine accède à son tableau de bord et retrouve ses trois campagnes, puis navigue entre elles pour conduire ses sessions. La navigation multi-espaces est continue — pas de rupture de parcours. |

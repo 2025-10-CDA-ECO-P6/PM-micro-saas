@@ -113,7 +113,10 @@ Intention : le MJ crée ou modifie un document dans son espace — en lui donnan
   ancrage  : UC-04 §Scénario nominal (étape 8 — lier à d'autres documents) ;
              UC-04 §Règles métier ; UC-14 (recherche titre seul) ; AR-19 §Divulgation progressive
 
-[ ZONE « RÉFÉRENCÉ PAR » (BACKLINKS) ]
+[ ZONE « RÉFÉRENCÉ PAR » (BACKLINKS) — HORS MVP, zone non affichée au MVP ]
+  statut   : hors MVP — les backlinks arrivent avec les relations structurées (UC-F06, voir
+             docs/besoin/vision/perimetre/exclusions.md) ; US-04-06 est conservée
+             pour la reprise. Le placement ci-dessous reste figé pour cette reprise.
   type     : latéral secondaire
   rôle     : liste les documents de l'espace qui font référence à ce document ;
              lecture seule — un backlink se crée automatiquement quand un autre
@@ -221,7 +224,7 @@ hiérarchie de lecture à distance :
 
 ```
 Sources : UC-04 ; UC-07 (création à la volée depuis la vue session) ;
-          AR-11 (backlinks — recommandation révisable) ;
+          AR-11 (backlinks — hors MVP, placement conservé) ;
           NFR-ACC-02 ; NFR-OFF-05 ;
           châssis S7 (zoning.md §S7)
 ```

@@ -80,7 +80,7 @@ flowchart TD
 | Renommer un dossier système | Thomas, Antoine | Action non trouvée si l'édition inline n'est pas évidente | Édition inline au clic sur le nom du dossier, sans passer par un panneau de configuration |
 | Créer un nouveau dossier thématique | Antoine, Thomas | Pas de point d'entrée visible pour ajouter un dossier | Bouton "+" à côté de la liste des dossiers |
 | Associer un template à un dossier | Antoine | Templates inexistants si UC-13 non implémenté — liste vide déconcertante | Afficher un message explicatif si aucun template n'est disponible + lien vers la création |
-| Réordonner les dossiers | Antoine | Interface peu intuitive si drag-and-drop absent | Drag-and-drop en première intention, ordre numérique en fallback |
+| Réordonner les dossiers | Antoine | Interface peu intuitive si drag-and-drop absent | Ordre numérique au MVP ; drag-and-drop post-MVP |
 | Créer un document dans un dossier avec template | Antoine, Thomas | Pas de retour visuel sur l'application du template | Indiquer visuellement que le template a été appliqué à l'ouverture de l'éditeur |
 | Déplacer un document vers un autre dossier | Émilie, Nadia | Sélection de plusieurs documents non disponible | Multi-sélection avec déplacement groupé |
 | Supprimer un dossier non vide | Antoine | Perte de documents si l'action n'est pas explicitée | Dialogue clair : "3 documents seront déplacés vers — choisissez un dossier ou laissez dans Non classés" |

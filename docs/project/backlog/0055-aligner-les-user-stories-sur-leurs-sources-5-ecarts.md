@@ -2,7 +2,9 @@
 
 - **Id** : 0055
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : docs/besoin/stories/US-UC-01-mode-local-sans-compte.md ; docs/besoin/stories/US-UC-06-vue-session.md ; docs/besoin/stories/US-UC-12-consulter-espace-joueur.md ; docs/besoin/cas-d-utilisation/UC-12-consulter-espace-joueur.md ; docs/assurance/strategie-de-test.md (CR-UC01-01, hors docs/besoin) ; `docs/reference/cahier-des-charges.md`
+- **Note** : l'écart 5 (RB-12-01) touche la même ligne que l'entrée 0024 (UC-12 et US-UC-12) ; les deux amendements sont fusionnés dans la même règle.
 
 - [user-stories-uc-01:contradicted-1 — stale, US-UC-01-mode-local-sans-compte.md] Réaligner le libellé de RB-01-02 en :516 sur la définition :139 et rattacher le message informatif à sa propre ligne
 - [user-stories-uc-01:contradicted-2 — stale, US-UC-01-mode-local-sans-compte.md] Remplacer en US-UC-01:122 et :53-58 la cible « écran de création de campagne » par l'espace de travail principal

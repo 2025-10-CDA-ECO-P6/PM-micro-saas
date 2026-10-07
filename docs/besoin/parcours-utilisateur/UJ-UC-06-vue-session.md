@@ -70,10 +70,11 @@ flowchart TD
     O -->|Non| P[Barre de recherche — UC-14]
 
     M --> Q[Épingle le document\nSession.PinDocument]
-    N --> Q
+    N --> NA[Note rattachée à la session\nSession.AttachNote — jamais épinglée]
     Q --> R[Document disponible dans panneau Épinglés]
 
     R --> S[MJ clique Terminer\nSession.Close — LIVE → CLOSED]
+    NA --> S
     S --> T{Notes rétroactives ?}
     T -->|Oui| U[MJ ajoute notes de session en CLOSED]
     T -->|Non| V[Session.Archive — CLOSED → ARCHIVED]
@@ -164,9 +165,9 @@ Nadia prépare une session de Dungeon World. Elle veut lancer en moins de 30 sec
 
 - **A1 — Lancement sans scénario** : `scenarioId = null`. La session est créée en `LIVE` normalement. Aucun contenu de scénario n'est préchargé dans les panneaux.
 - **A2 — Modification configuration de la vue session en direct** : la config est modifiable pendant la session LIVE sans interrompre la session. La modification est effective immédiatement. La session reste en `LIVE`.
-- **A3 — Notes rétroactives en CLOSED** : disponibles uniquement pour le MJ. Les joueurs ne peuvent plus créer de notes de session en `CLOSED`.
+- **A3 — Notes rétroactives en CLOSED** : disponibles uniquement pour le MJ. Les joueurs ne peuvent plus créer de notes de session en `CLOSED` *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - **E1 — Perte de connexion pendant la saisie d'une note de session** : le contenu est conservé en draft local. Synchronisation automatique au retour de la connexion. La note n'est pas perdue.
-- **Mode local** : la vue session MJ est disponible sans compte. Les notes de session joueurs et la vue joueur ne sont pas disponibles. La session reste disponible localement d'une fermeture du navigateur à l'autre, sans garantie de conservation permanente.
+- **Mode local** : la vue session MJ est disponible sans compte. Les notes de session joueurs *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* et la vue joueur ne sont pas disponibles. La session reste disponible localement d'une fermeture du navigateur à l'autre, sans garantie de conservation permanente.
 - **personnelle joueur inaccessible au MJ** : règle forte — même le rôle OWNER/GM ne peut pas lire les notes de session personnelle joueur d'un joueur.
 
 ---
@@ -200,7 +201,7 @@ Depuis la vue session `LIVE`, le MJ peut déclencher le partage d'un document vi
 
 #### Vers UC-09 (vue joueur)
 
-La vue joueur exposée par UC-09 est le pendant de la vue session MJ : elle affiche les documents `PUBLIC` de l'espace et les notes de session `PLAYER_PRIVATE` propres au joueur. La vue joueur est disponible uniquement si le MJ a un compte actif (mode local exclu — RB-01-06). Les joueurs accèdent à leur vue via un lien de session ponctuel (`GuestAccess`, portée `SESSION`) généré par le MJ depuis la vue session ou le panneau membres. Les documents que le MJ partage en session (UC-08) apparaissent dans la vue joueur en temps réel ; les documents restés `GM_ONLY` n'y sont jamais visibles même s'ils sont épinglés dans la session MJ.
+La vue joueur exposée par UC-09 est le pendant de la vue session MJ : elle affiche les documents `PUBLIC` de l'espace (et, plus tard, les notes de session `PLAYER_PRIVATE` propres au joueur *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*). La vue joueur est disponible uniquement si le MJ a un compte actif (mode local exclu — RB-01-06). Les joueurs accèdent à leur vue via un lien de session ponctuel (`GuestAccess`, portée `SESSION`) généré par le MJ depuis la vue session. Les documents que le MJ partage en session (UC-08) apparaissent dans la vue joueur en temps réel ; les documents restés `GM_ONLY` n'y sont jamais visibles même s'ils sont épinglés dans la session MJ.
 
 #### Vers UC-14 (recherche globale)
 

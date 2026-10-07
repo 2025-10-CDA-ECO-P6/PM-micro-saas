@@ -15,7 +15,7 @@ Le parcours de Lucas est celui du seul persona non-MJ du corpus. Il commence à 
 
 1. L'accès sans compte via lien ponctuel — le moment d'adoption critique.
 2. La consultation de ce que le MJ partage pendant la session.
-3. La prise de notes personnelles pendant la session.
+3. La prise de notes personnelles pendant la session *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 4. La fin de vie de l'accès invité — expiration, fenêtre de grâce, sort de ses notes.
 5. La décision éventuelle de créer un compte pour rejoindre la campagne durablement.
 
@@ -33,7 +33,7 @@ Cliquer sur le lien que son MJ lui a envoyé (Discord, WhatsApp, peu importe) et
 
 ### Précondition vérifiée
 
-UC-09 précondition : "Le MJ a un compte (au minimum gratuit)" et "Le MJ a généré un lien de session ponctuel depuis la vue session ou le panneau membres (UC-06)." Ces préconditions portent sur le MJ, pas sur Lucas. Lucas n'a aucune précondition à satisfaire de son côté.
+UC-09 précondition : "Le MJ a un compte (au minimum gratuit)" et "Le MJ a généré un lien de session ponctuel depuis la vue session." Ces préconditions portent sur le MJ, pas sur Lucas. Lucas n'a aucune précondition à satisfaire de son côté.
 
 ### Comportements observables
 
@@ -47,7 +47,7 @@ UC-09 précondition : "Le MJ a un compte (au minimum gratuit)" et "Le MJ a gén�
 
 - Les documents `PUBLIC` de la campagne.
 - Les documents épinglés de la session (uniquement ceux avec `visibility = PUBLIC` — un document épinglé mais `GM_ONLY` n'est pas visible en vue joueur, même épinglé, RB-09-04 / US-09-01 notes de conception).
-- Une zone de création de notes de session personnelles.
+- Une zone de création de notes de session personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - Sa fiche de personnage si le MJ lui a associé un personnage (`PLAYER_CHARACTER`).
 
 ### Ce que Lucas ne voit pas
@@ -93,11 +93,13 @@ Le partage est par document, visible par l'ensemble des joueurs autorisés — p
 
 ### Couture vers l'étape 3
 
-Lucas peut prendre des notes personnelles à tout moment pendant une session `LIVE` (UC-06 règle métier : "Joueur : peut créer des notes de session uniquement pendant une session `LIVE`"). La précondition est que la session soit `LIVE` et que Lucas ait un `GuestAccess` actif. Les deux conditions sont satisfaites. **Couture continue.**
+Lucas pourra prendre des notes personnelles à tout moment pendant une session `LIVE` *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* (UC-06 règle métier : "Joueur : peut créer des notes de session uniquement pendant une session `LIVE`"). La précondition est que la session soit `LIVE` et que Lucas ait un `GuestAccess` actif. Les deux conditions sont satisfaites. **Couture continue.**
 
 ---
 
-## Étape 3 — Prendre des notes personnelles pendant la session
+## Étape 3 — Prendre des notes personnelles pendant la session *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*
+
+Cette étape est hors MVP : au MVP, Lucas ne prend aucune note de session. Le texte est conservé pour la reprise ; les règles d'effacement et d'auteur sur `PLAYER_PRIVATE` (RB-09-19) restent valables.
 
 **UC porteur :** [UC-06](../../cas-d-utilisation/UC-06-vue-session.md) | **UJ porteur :** [UJ-UC-12](../UJ-UC-12-consulter-espace-joueur.md), [UJ-UC-09](../UJ-UC-09-acces-session-joueur.md)
 
@@ -113,9 +115,9 @@ Consigner ses propres observations pendant la partie — décisions de son perso
 - Les notes peuvent être liées à un personnage associé (`characterId`) si un personnage lui a été attribué par le MJ.
 - Un joueur invité peut créer des notes de session personnelles si son `GuestAccess` est associé à un personnage (UC-06 règle métier : "Un joueur invité sans compte peut créer une note de session personnelle si son accès invité est associé à un personnage associé.")
 
-### Vérification sur pièces — la note reste récupérable la séance suivante
+### Vérification sur pièces — ce qui survit à la fin de l'accès
 
-UC-06 règle métier : "La note reste récupérable lors d'une séance suivante via un nouveau lien sécurisé associé au même personnage." Cela suppose que le `GuestAccess` suivant soit associé au même personnage. La mécanique de récupération inter-sessions n'est pas détaillée dans UC-06 ni dans UC-09 : comment le nouveau `GuestAccess` est-il rattaché aux notes de l'ancien ? Ce point est une zone muette (voir table des coutures, C5).
+UC-06 règle métier : la fiche du personnage associé reste ré-associable lors d'une séance suivante via un nouveau lien sécurisé vers le même personnage, ce qui permet à l'invité de retrouver le contexte de son personnage. En revanche, les notes personnelles (`PLAYER_PRIVATE`) prises par un invité non converti en compte ne survivent à la fin de son accès que s'il crée un compte avant cette fin (US-09-04, RB-09-14, RB-09-19) ; RB-09-22 prévoit l'avertissement donné en temps utile. Sans compte, la récupération des notes d'une séance à l'autre est donc impossible, et cette impossibilité est documentée (voir table des coutures, C5).
 
 ### État laissé par l'étape 3
 
@@ -139,7 +141,7 @@ Lucas ne fait rien d'actif. Son accès expire. La fenêtre de 24 heures après l
 ### Comportements observables — expiration normale
 
 - Le `GuestAccess` passe de `ACTIVE` à `EXPIRED` à l'issue de la session + 24 heures de grâce (RB-09-01, RB-09-07).
-- Si Lucas tente de rouvrir le lien après expiration, il voit un message sobre : "Ce lien n'est plus actif", avec une invitation à contacter le MJ (RB-09-09, US-09-02). Aucune information sur l'existence de la campagne n'est révélée.
+- Si Lucas tente de rouvrir le lien après expiration, il voit un message sobre : "Ce lien n'est pas utilisable", avec une invitation à contacter le MJ (RB-09-09, US-09-02). Aucune information sur l'existence de la campagne n'est révélée.
 
 ### Sort des données à la fin définitive du GuestAccess (non converti en compte)
 
@@ -169,7 +171,7 @@ L'étape 5 (rejoindre la campagne durablement) est conditionnée par Lucas ayant
 
 ### Ce que Lucas cherche à faire
 
-Conserver ses notes d'une session à l'autre, accéder à l'historique de la campagne, ne plus avoir à saisir un nom à chaque session. Ce qui peut motiver Lucas à faire cet effort : voir la valeur des notes personnelles sur plusieurs sessions, ou constater que l'outil lui est utile plus que D&D Beyond pour ce qu'il fait avec son groupe.
+Conserver ses notes d'une session à l'autre *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*, accéder à l'historique de la campagne, ne plus avoir à saisir un nom à chaque session. Ce qui peut motiver Lucas à faire cet effort : voir la valeur des notes personnelles sur plusieurs sessions, ou constater que l'outil lui est utile plus que D&D Beyond pour ce qu'il fait avec son groupe.
 
 ### Précondition de l'accès à la vue joueur (UC-12) vérifiée
 
@@ -179,20 +181,20 @@ La vue joueur (UC-12) présuppose que Lucas dispose d'un `SpaceMembership` actif
 
 - Depuis la vue invité, Lucas clique sur "Créer un compte" (US-09-04 scénario nominal).
 - Il crée son compte via UC-10. Son `GuestAccess` existant est rattaché au nouveau compte — l'historique d'accès est préservé.
-- Ses notes `PLAYER_PRIVATE` prises en mode invité sont migrées vers son compte (RB-09-14, US-09-04 règle métier). Aucune note n'est perdue.
+- Ses notes `PLAYER_PRIVATE` prises en mode invité seront migrées vers son compte (RB-09-14, US-09-04 règle métier) *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*. Aucune note n'est perdue.
 - La migration est irréversible — Lucas ne peut pas repasser en mode sans compte sur ce compte (RB-09-17).
 - Le MJ est notifié qu'un joueur invité a créé un compte (US-09-04 critères d'acceptation). Il peut proposer à Lucas de le promouvoir en membre permanent de la campagne (`SpaceMembership`). Cette promotion nécessite la validation du MJ (RB-09-16).
 
 ### Ce que Lucas obtient avec un compte
 
-- Accès à l'historique des sessions et aux documents de lore `PUBLIC` entre les séances (UC-12 postconditions, US-09-03 règle RB-09-13).
-- Ses notes `PLAYER_PRIVATE` conservées d'une session à l'autre.
+- Sous condition d'un `SpaceMembership` ou d'un lien d'espace partagé (`GuestAccessScope = SPACE`) : accès à l'historique des sessions et aux documents de lore `PUBLIC` entre les séances (UC-12 postconditions, US-09-03 règle RB-09-13).
+- Ses notes `PLAYER_PRIVATE` conservées d'une session à l'autre *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*.
 - Accès sans saisir de nom à chaque session (UC-09 A1 : "Le joueur est déjà connecté à son compte Haversack — accès direct avec historique de compte").
-- Via UC-12 (vue joueur, périmètre `SPACE`) : accès au lore complet partagé, pas seulement aux documents de la session en cours.
+- Sous la même condition, via UC-12 (vue joueur, périmètre `SPACE`) : accès à l'historique des sessions, pas seulement aux documents de la session en cours.
 
 ### Ce que Lucas n'obtient pas avec un simple compte
 
-L'accès à l'historique complet de la campagne (lore, sessions précédentes) nécessite un lien de campagne permanent (`GuestAccessScope = SPACE` ou `SpaceMembership`) généré par le MJ via UC-11 — pas simplement d'avoir un compte. UC-12 décrit la vue obtenue une fois ce lien ou ce membership actif ; l'entrée dans ce périmètre passe par UC-09 (octroi d'accès) et UC-11 (lien généré par le MJ), pas par la simple création de compte (US-09-03 notes de conception : "La génération du lien permanent est couverte par UC-11").
+L'accès à l'historique des sessions précédentes de la campagne nécessite un lien de campagne permanent (`GuestAccessScope = SPACE` ou `SpaceMembership`) généré par le MJ via UC-11 — pas simplement d'avoir un compte. UC-12 décrit la vue obtenue une fois ce lien ou ce membership actif ; l'entrée dans ce périmètre passe par UC-09 (octroi d'accès) et UC-11 (lien généré par le MJ), pas par la simple création de compte (US-09-03 notes de conception : "La génération du lien permanent est couverte par UC-11").
 
 ### État laissé par l'étape 5
 
@@ -218,8 +220,8 @@ La persona est explicite : "Pourquoi créerait-il un compte plutôt que de reste
 **4. La coexistence avec D&D Beyond reste non résolue**
 La persona le nomme explicitement : "La coexistence avec D&D Beyond n'est pas résolue non plus : si les joueurs ont déjà leur fiche ailleurs, le module personnage de Haversack est redondant." Le corpus ne répond pas à ce point. Il n'y a pas de module d'import de fiche depuis D&D Beyond dans le périmètre MVP (vision-produit.md §2.4 : "Inventaire personnage — Compète avec D&D Beyond sans pouvoir l'égaler" est listé comme hors périmètre). Ce n'est pas une rupture de parcours, c'est un positionnement produit assumé.
 
-**5. Récupération des notes inter-sessions via le même personnage : mécanique non spécifiée**
-UC-06 règle métier dit que la note d'un invité "reste récupérable lors d'une séance suivante via un nouveau lien sécurisé associé au même personnage." Mais la mécanique concrète de cette récupération (comment le nouveau `GuestAccess` est associé aux notes de l'ancien via le personnage ?) n'est pas spécifiée dans UC-06, UC-09 ni dans les user stories. Voir table des coutures C5.
+**5. Récupération des notes inter-sessions sans compte : impossible, et documenté**
+UC-06 règle métier : seule la fiche du personnage associé reste ré-associable d'une séance à l'autre via un nouveau lien sécurisé vers le même personnage. Les notes personnelles (`PLAYER_PRIVATE`) d'un invité non converti ne survivent pas à la fin de son accès sans création de compte avant cette fin (US-09-04, RB-09-14, RB-09-19, avertissement RB-09-22). La récupération des notes sans compte est donc documentée comme impossible ; elle n'est pas une mécanique manquante. Voir table des coutures C5.
 
 ---
 
@@ -229,9 +231,9 @@ UC-06 règle métier dit que la note d'un invité "reste récupérable lors d'un
 |---|---|---|---|---|
 | C1 | Lien valide → accès immédiat sans compte | 1 | **Continue** | UC-09 scénario nominal : token `GuestAccess` valide → saisie du `displayName` seul → `GuestAccess` actif. RB-09-02 : "La saisie d'un nom d'affichage est obligatoire pour activer le `GuestAccess`. L'email et le mot de passe ne sont pas requis." Précondition satisfaite (MJ a un compte, lien généré depuis UC-06). |
 | C2 | GuestAccess actif → vue session joueur avec documents PUBLIC | 1 → 2 | **Continue** | UC-06 scénario nominal vue joueur : "Le joueur accède à la campagne pendant une session `LIVE`. Le système lui présente une vue joueur simplifiée. Cette vue affiche les documents partagés par le MJ (`visibility = visible par les joueurs`) [...]." US-09-01 RB-09-04 : "Le joueur invité dispose des mêmes droits fonctionnels qu'un joueur avec compte dans le périmètre de son `GuestAccess`." |
-| C3 | Vue session joueur → création de notes PLAYER_PRIVATE | 2 → 3 | **Continue** | UC-06 règle métier : "Joueur : peut créer des notes de session uniquement pendant une session `LIVE`. Visibilité par défaut : personnelle joueur." RB-09-04 : les notes personnelles sont dans le périmètre fonctionnel d'un invité. La note est rattachée à `guestAccessId`. |
+| C3 | Vue session joueur → création de notes PLAYER_PRIVATE *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* | 2 → 3 | **Continue** | UC-06 règle métier : "Joueur : peut créer des notes de session uniquement pendant une session `LIVE`. Visibilité par défaut : personnelle joueur." RB-09-04 : les notes personnelles sont dans le périmètre fonctionnel d'un invité. La note est rattachée à `guestAccessId`. |
 | C4 | Session CLOSED → expiration du GuestAccess après grâce | 3 → 4 | **Continue** | UC-09 règle métier : "Un lien de session ponctuel est valable le temps de la session + une fenêtre de grâce de 24 h ferme." RB-09-01 confirme. UC-09 A3 et US-09-02 couvrent le cas du lien expiré côté Lucas. RB-09-18 et RB-09-19 couvrent le sort des données. |
-| C5 | Notes PLAYER_PRIVATE d'une session → récupération la séance suivante via personnage | 3 → session suivante | **Continue (documentée)** | La fiche de personnage (`PLAYER_CHARACTER`) de Lucas reste ré-associable lors d'une séance suivante — ce qui lui permet de retrouver le contexte de son personnage dans la campagne (UC-06, UC-11 corrigés, décision issue du modèle de domaine). Ses notes personnelles (`PLAYER_PRIVATE`) créées en mode invité ne survivent à la fin de son accès que s'il crée un compte avant cette fin (US-09-04, RB-09-14, RB-09-19) — la récupération inter-sessions via un nouveau `GuestAccess` pur (sans compte) n'est pas possible, car la confidentialité `PLAYER_PRIVATE` est indexée par `guestAccessId` qui change à chaque accès, et le modèle de domaine ne prévoit pas de chemin de lecture cross-`GuestAccess`. Cette limite de périmètre assumée est documentée dans UC-06 et UC-11, et Lucas en est averti en temps utile pour agir avant la fin de son accès (RB-09-22). La levée de cette limite (identité invité persistante inter-sessions) relève d'un changement de positionnement produit traité au plan, pas du périmètre MVP. |
-| C6 | GuestAccess actif → création de compte et migration sans perte | 4 → 5 | **Continue (fenêtre temporelle contrainte)** | US-09-04 couvre la migration invité→compte avec préservation des notes (RB-09-14). Condition : Lucas doit déclencher la migration pendant que son `GuestAccess` est encore `ACTIVE`. Si le `GuestAccess` est expiré, les notes ont déjà été supprimées (RB-09-19) — la migration ne peut plus les récupérer. Cette contrainte temporelle est une friction identifiée dans UJ-UC-09 mais n'est pas une rupture si Lucas agit dans la fenêtre. |
+| C5 | Notes PLAYER_PRIVATE d'une session → récupération la séance suivante via personnage *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* | 3 → session suivante | **Continue (documentée)** | La fiche de personnage (`PLAYER_CHARACTER`) de Lucas reste ré-associable lors d'une séance suivante — ce qui lui permet de retrouver le contexte de son personnage dans la campagne (UC-06, UC-11 corrigés, décision issue du modèle de domaine). Ses notes personnelles (`PLAYER_PRIVATE`) créées en mode invité ne survivent à la fin de son accès que s'il crée un compte avant cette fin (US-09-04, RB-09-14, RB-09-19) — la récupération inter-sessions via un nouveau `GuestAccess` pur (sans compte) n'est pas possible, car la confidentialité `PLAYER_PRIVATE` est indexée par `guestAccessId` qui change à chaque accès, et le modèle de domaine ne prévoit pas de chemin de lecture cross-`GuestAccess`. Cette limite de périmètre assumée est documentée dans UC-06 et UC-11, et Lucas en est averti en temps utile pour agir avant la fin de son accès (RB-09-22). La levée de cette limite (identité invité persistante inter-sessions) relève d'un changement de positionnement produit traité au plan, pas du périmètre MVP. |
+| C6 | GuestAccess actif → création de compte et migration sans perte | 4 → 5 | **Continue (fenêtre temporelle contrainte)** | US-09-04 couvre la migration invité→compte avec préservation des notes (RB-09-14) *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*. Condition : Lucas doit déclencher la migration pendant que son `GuestAccess` est encore `ACTIVE`. Si le `GuestAccess` est expiré, les notes ont déjà été supprimées (RB-09-19) — la migration ne peut plus les récupérer. Cette contrainte temporelle est une friction identifiée dans UJ-UC-09 mais n'est pas une rupture si Lucas agit dans la fenêtre. |
 | C7 | Compte créé → membre permanent de la campagne via MJ | 5 | **Continue (validation MJ requise)** | L'octroi du `SpaceMembership` relève d'UC-09 (côté joueur, migration invité→compte) et d'UC-11 (côté MJ, validation). La précondition de la vue joueur (UC-12) — disposer d'un `SpaceMembership` actif — est satisfaite après cette validation. RB-09-16 : "La promotion en `Member` permanent nécessite la validation du MJ." Lucas ne peut pas s'auto-promouvoir. La promotion est à l'initiative du MJ après notification (US-09-04). Cette dépendance est documentée dans le corpus et n'est pas une rupture. |
-| C8 | Accès SESSION → accès à l'historique complet de la campagne | 1 ou 5 | **Continue (documentée)** | Avec un `GuestAccess` de portée `SESSION`, Lucas n'a pas accès à l'historique des sessions précédentes ni au lore complet de la campagne (UJ-UC-12 flux : "Documents épinglés + PUBLIC / Pas d'historique campagne / Pas de lore complet"). L'accès à l'historique complet nécessite un `GuestAccess` de portée `SPACE` ou un `SpaceMembership` — les deux nécessitent un compte et un lien permanent généré par le MJ via UC-11. **Spécifié** : le périmètre `SESSION` vs `SPACE` est une décision MJ au moment de générer l'invitation (UC-11 scénario nominal, US-11-01). Le comportement résultant côté joueur est tracé (UC-09 Scénario nominal B, accès historique/lore via lien permanent ou compte). **Limite assumée** : la demande par Lucas d'un accès campagne via l'interface est hors-bande (Lucas demande socialement au MJ). Le seul signal in-app joueur→MJ existant est la notification de création de compte (US-09-04). Si le produit voulait un canal in-app de "demande d'accès campagne" initié par le joueur, ce serait une fonctionnalité NOUVELLE, hors de cette couture. **Localisation : UC-09 Scénario nominal B, UC-11 scénario nominal, US-11-01, UJ-UC-09 flux fonctionnel nœud "Valide — permanent."** |
+| C8 | Accès SESSION → accès à l'historique complet de la campagne | 1 ou 5 | **Continue (documentée)** | Avec un `GuestAccess` de portée `SESSION`, Lucas voit les documents épinglés de la session et tous les documents `PUBLIC` de l'espace, mais n'a pas accès à l'historique des sessions précédentes (UJ-UC-12 flux : "Documents épinglés + tous les documents PUBLIC / Pas d'historique des sessions"). L'accès à l'historique complet nécessite un `GuestAccess` de portée `SPACE` ou un `SpaceMembership` — les deux nécessitent un compte et un lien permanent généré par le MJ via UC-11. **Spécifié** : le périmètre `SESSION` vs `SPACE` est une décision MJ au moment de générer l'invitation (UC-11 scénario nominal, US-11-01). Le comportement résultant côté joueur est tracé (UC-09 Scénario nominal B, accès historique/lore via lien permanent ou compte). **Limite assumée** : la demande par Lucas d'un accès campagne via l'interface est hors-bande (Lucas demande socialement au MJ). Le seul signal in-app joueur→MJ existant est la notification de création de compte (US-09-04). Si le produit voulait un canal in-app de "demande d'accès campagne" initié par le joueur, ce serait une fonctionnalité NOUVELLE, hors de cette couture. **Localisation : UC-09 Scénario nominal B, UC-11 scénario nominal, US-11-01, UJ-UC-09 flux fonctionnel nœud "Valide — permanent."** |

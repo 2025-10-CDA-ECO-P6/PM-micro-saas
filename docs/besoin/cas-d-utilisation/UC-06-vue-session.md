@@ -6,7 +6,7 @@ MJ
 
 ## Acteurs secondaires
 
-Joueurs (accès en lecture/notes de session depuis leur propre vue pendant une session LIVE)
+Joueurs (accès en lecture depuis leur propre vue pendant une session LIVE)
 
 ## Objectif
 
@@ -16,12 +16,12 @@ Permettre au MJ de piloter une session de jeu en accédant rapidement aux inform
 
 La vue session est l'interface centrale pendant une partie de jeu de rôle. Contrairement au mode préparation, elle est optimisée pour la rapidité : le MJ n'a pas le temps de naviguer dans des arborescences profondes. L'enjeu est de réduire la latence entre "le MJ cherche une information" et "le MJ la trouve", sans jamais casser le rythme de la table.
 
-En parallèle, les joueurs disposent de leur propre vue restreinte depuis laquelle ils peuvent consulter ce que le MJ leur a partagé et prendre leurs notes de session personnelles joueur.
+En parallèle, les joueurs disposent de leur propre vue restreinte depuis laquelle ils peuvent consulter ce que le MJ leur a partagé. La prise de notes de session par le joueur est hors MVP (voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur)).
 
 ## Besoin utilisateur
 
 - **MJ** : piloter la session avec un accès immédiat aux dossiers et documents qu'il a configurés, tout en pouvant créer de nouveaux éléments ou partager des informations sans quitter la vue.
-- **Joueurs** : accéder aux informations qui leur ont été partagées et consigner leurs propres notes pendant la session.
+- **Joueurs** : accéder aux informations qui leur ont été partagées.
 
 ## Déclencheur
 
@@ -31,7 +31,7 @@ Le MJ clique sur "Lancer la session" pour démarrer une nouvelle session (qui s'
 
 - Un espace partagé (`CAMPAIGN` ou `ONE_SHOT`) existe et le MJ y a accès.
 - Le MJ est membre `OWNER` ou `GM` de l'espace.
-- Le MJ est authentifié **ou** en mode local sans compte. La vue session MJ est disponible dans les deux cas. La vue joueur (partage, accès invité) nécessite un compte — en conséquence, aucune note de session de joueur ne peut exister en mode local.
+- Le MJ est authentifié **ou** en mode local sans compte. La vue session MJ est disponible dans les deux cas. La vue joueur (partage, accès invité) nécessite un compte.
 
 ## Scénario nominal — Lancement et navigation MJ
 
@@ -52,7 +52,7 @@ leurs lieux ou leurs scènes. Aucune structure n'est imposée par l'application.
 **Panneaux de dossiers configurés** *(colonnes principales)*
 - Chaque panneau correspond à un dossier de l'espace sélectionné dans la configuration de la vue session.
 - Le MJ voit les documents du dossier avec leurs informations résumées (titre, type, propriétés utiles si renseignées).
-- L'ordre et la sélection des panneaux sont configurables hors session (paramètres de l'espace).
+- L'ordre et la sélection des panneaux sont configurables hors session (paramètres de l'espace), et aussi en session `LIVE`, dans la surface session et non dans les paramètres de l'espace.
 - Si le MJ a associé un scénario à la session (`Session.scenarioId`), le document scénario apparaît dans le panneau de son dossier.
 
 - Zone de saisie libre pour créer des notes de session liés à la session en cours.
@@ -67,7 +67,7 @@ leurs lieux ou leurs scènes. Aucune structure n'est imposée par l'application.
 - Clic sur un document ouvre un panneau de consultation en lecture rapide.
 
 **Barre de recherche globale**
-- Recherche dans l'ensemble du contenu textuel des documents de l'espace accessibles au MJ.
+- Recherche par titre des documents de l'espace accessibles au MJ ; la recherche MVP ne porte pas sur le contenu des blocs (voir [UC-14](UC-14-recherche.md)).
 - Résultats pondérés : éléments de la session active en premier.
 - Permet d'ouvrir un document dans un panneau latéral sans quitter la vue session.
 
@@ -90,19 +90,13 @@ leurs lieux ou leurs scènes. Aucune structure n'est imposée par l'application.
 
 ## Scénario nominal — Vue joueur pendant la session LIVE
 
-> **Frontière UC-12.** La **vue joueur pendant `LIVE`** décrite ici **étend la vue post-accès d'UC-12** : UC-12 couvre la consultation (fiche, documents `PUBLIC`, choix du personnage actif) ; UC-06 y ajoute, pendant une session `LIVE`, la **capacité de prendre des notes de session**. La ligne de partage est la capacité (écrire en LIVE = UC-06), pas le contenu (identique).
+> **Frontière UC-12.** La **vue joueur pendant `LIVE`** décrite ici **étend la vue post-accès d'UC-12** : UC-12 couvre la consultation (fiche, documents `PUBLIC`, choix du personnage actif) ; UC-06 y ajoute, pendant une session `LIVE`, la mise à jour en direct des documents que le MJ partage (A4). La prise de notes de session par le joueur est hors MVP (voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur)).
 
 1. Le joueur accède à l'espace pendant une session `LIVE`.
 2. Le système lui présente une vue joueur simplifiée.
 3. Cette vue affiche :
-   - les documents partagés par le MJ (`visibility = visible par les joueurs`) ;
-   - les notes de session personnelles du joueur ;
-   - une zone de création de notes de session personnelles.
-4. Le joueur peut créer une `note de session` personnelle :
-   - `visibility = personnelle joueur`, personnage associé par défaut si associé à un personnage.
-   - La note n'est accessible qu'à son auteur.
-5. Le joueur ne voit pas les notes de session privé MJ du MJ.
-6. Le joueur ne voit pas les notes de session personnelle joueur des autres joueurs.
+   - les documents partagés par le MJ (`visibility = visible par les joueurs`).
+4. Le joueur ne voit pas les notes de session privé MJ du MJ.
 
 ---
 
@@ -159,6 +153,17 @@ La session a été interrompue (perte de connexion, pause) et le MJ la reprend.
 3. Le document apparaît dans le panneau Documents épinglés.
 4. Pour désépingler : le MJ clique sur "Retirer" — l'entrée est supprimée de documents épinglés. Le document reste intact dans l'espace.
 
+### A7 — Archiver une session close
+
+Le MJ a terminé une session (`CLOSED`) et veut la figer.
+
+1. Le MJ ouvre la session `CLOSED` depuis la vue de l'espace.
+2. Il choisit "Archiver la session". Le système avertit que l'archivage est définitif et place la session en lecture seule intégrale.
+3. Le MJ confirme.
+4. Le système passe la session en `ARCHIVED` (`CLOSED → ARCHIVED`). La session et ses notes restent consultables, sans aucune modification possible (E3).
+
+L'archivage est une action explicite du MJ : il n'est déclenché ni par un délai, ni par l'archivage de l'espace.
+
 ---
 
 ## Exceptions
@@ -183,7 +188,7 @@ Un joueur tente d'accéder à la vue session du MJ.
 Le MJ tente d'accéder à la vue session d'une session `CLOSED` ou `ARCHIVED`.
 
 - `CLOSED` : le système affiche la vue lecture seule de la session clôturée côté joueurs ; le MJ peut encore ajouter des notes de session rétroactives et modifier le résumé.
-- `ARCHIVED` : lecture seule intégrale, aucune modification possible.
+- `ARCHIVED` : lecture seule intégrale, aucune modification possible (transition décrite en A7).
 
 ### E4 — Session sans scénario associé
 
@@ -201,6 +206,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 - Les modifications de documents épinglés de la session sont persistées.
 - Les documents partagés aux joueurs ont leur visibilité mise à jour.
 - La session reste au statut `LIVE` jusqu'à clôture explicite par le MJ.
+- Une session `CLOSED` reste `CLOSED` jusqu'à son archivage explicite par le MJ (A7) ; une session `ARCHIVED` est en lecture seule intégrale.
 
 ---
 
@@ -226,9 +232,7 @@ La session a été créée sans `scenarioId` (session improvisée).
 - `type optionnel: LIVE_NOTE`
 - dossier associé — dossier "Notes" de l'espace par défaut
 - blocs
-- Visibilité : visible par les joueurs, privé MJ ou personnelle joueur
-- Personnage associé, pour les notes personnelles joueur
-- `guestAccessId: GuestAccessId?` — renseigné si l'auteur est un accès invité
+- Visibilité : visible par les joueurs ou privé MJ
 - audit : auteur, date de création, date de modification
 - référence depuis la session : notes rattachées à la session
 
@@ -248,19 +252,16 @@ La session a été créée sans `scenarioId` (session improvisée).
 ## Règles métier
 
 - La vue session MJ est accessible uniquement au MJ de l'espace.
-- Les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées et leurs propres notes de session personnelles joueur.
+- Les joueurs disposent d'une vue distincte : ils ne voient que les informations partagées.
 - **Mode local et vue joueur** : en mode local sans compte, il n'existe ni vue joueur ni accès invité — la vue session est utilisée par le MJ seul, et seules des notes de session du MJ peuvent exister. Toute participation de joueurs à une session présuppose un compte MJ.
 - **notes de session en session LIVE** :
   - MJ : peut créer des notes de session à tout moment pendant `LIVE`. Visibilité par défaut : privé MJ. Peut basculer en visible par les joueurs.
-  - Joueur : peut créer des notes de session uniquement pendant une session `LIVE`. Visibilité par défaut : personnelle joueur, liée au personnage associé si renseigné.
 - **notes de session après session** :
   - MJ : peut créer et modifier des notes de session rétroactives sur une session `CLOSED` (pour compléter ses notes après la partie).
-  - Joueur : ne peut créer des notes de session que pendant `LIVE`.
-- Une `note de session` avec `visibility = personnelle joueur` est inaccessible au MJ, quelles que soient ses permissions sur l'espace.
-- Un joueur invité sans compte peut créer une note de session personnelle si son accès invité est associé à un personnage associé. La fiche du personnage associé reste ré-associable lors d'une séance suivante via un nouveau lien sécurisé vers le même personnage — ce qui permet à l'invité de retrouver le contexte de son personnage. En revanche, les notes personnelles (`PLAYER_PRIVATE`) prises par un invité non converti en compte ne survivent à la fin de son accès que s'il crée un compte avant cette fin (US-09-04, RB-09-14, RB-09-19) — voir RB-09-22 pour l'avertissement donné en temps utile.
+- **Notes de session du joueur** : hors MVP (Could Have, voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur)). Au MVP, ni le joueur authentifié ni l'invité ne prennent de note de session ; seules existent les notes de session du MJ. Les règles de ces notes (RB-09-14, RB-09-19, RB-09-22, RB-12-02) suivent la fonctionnalité.
 - Partager un document change sa `visibility` à visible par les joueurs dans la bibliothèque de contenu (opération permanente) — ce n'est pas un partage temporaire de session.
 - documents épinglés de la session est une liste modifiable manuellement à tout moment pendant une session `LIVE`.
-- La machine d'états `Session` est unidirectionnelle : `LIVE → CLOSED → ARCHIVED`.
+- La machine d'états `Session` est unidirectionnelle : `LIVE → CLOSED → ARCHIVED`. Le passage `CLOSED → ARCHIVED` est une action explicite du MJ (A7) : ni un délai ni l'archivage de l'espace ne l'effectuent.
 - Un document sans `visibility = visible par les joueurs` n'est pas visible dans la vue joueur, même s'il est épinglé dans la session.
 - **Validation d'usage** : il est possible de constater a posteriori qu'une session a été réellement utilisée pendant une partie (session ouverte ET interaction avec du contenu ou création de notes), de façon anonyme et sans accéder au contenu narratif lui-même. Ce constat permet de mesurer l'apport réel de la vue session pendant les parties.
 - **Lien de session ponctuel** : depuis la vue session, le MJ peut générer un lien de session ponctuel pour inviter des joueurs (accès immédiat, couvert par UC-09). La gestion des membres permanents et le lien de campagne permanent relèvent d'UC-11.
@@ -282,13 +283,12 @@ La session a été créée sans `scenarioId` (session improvisée).
 - Le MJ peut créer un élément à la volée → UC-07.
 - Le MJ peut partager une information → UC-08.
 - Le MJ peut terminer la session (clôture interne, passage `LIVE → CLOSED`).
+- Le MJ peut archiver explicitement une session `CLOSED` (passage `CLOSED → ARCHIVED`) ; la session archivée est en lecture seule intégrale.
 
 ### Vue Joueur
 
 - Le joueur voit les informations partagées (visible par les joueurs).
-- Le joueur peut créer une note de session personnelle joueur pendant une session `LIVE`.
 - Le joueur ne voit pas les notes de session privé MJ du MJ.
-- Le joueur ne voit pas les notes de session personnelle joueur des autres joueurs.
 
 ### Persistance
 

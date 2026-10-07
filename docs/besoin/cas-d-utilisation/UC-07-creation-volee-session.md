@@ -33,7 +33,7 @@ Le MJ clique sur "Créer" ou utilise un raccourci depuis la vue session.
 ## Préconditions
 
 - Une session est en statut LIVE ou CLOSED.
-- Le MJ est propriétaire de l'espace (compte cloud) ou en mode local (UC-01).
+- Le MJ est membre `OWNER` ou `GM` de l'espace (compte cloud) ou en mode local (UC-01).
 
 ## Scénario nominal
 

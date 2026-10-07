@@ -707,14 +707,14 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 
 | Champ | Valeur |
 |---|---|
-| But | le MJ compose un document complet — champ de type facultatif, contenu structuré ou libre, portée de lecture, renvois vers d'autres documents, backlinks |
+| But | le MJ compose un document complet — champ de type facultatif, contenu structuré ou libre, portée de lecture, renvois vers d'autres documents (les backlinks sont hors MVP : US-04-06, conservée pour la reprise) |
 | Épique | US-UC-04 |
 | Jalon | J1 |
 | Dépend de | TB-065, TB-066, TB-067, TB-064 |
 | Périmètre d'écriture | fiche `editeur-document` |
 | En conflit avec | — |
-| Taille | L — un seul module, mais dix-neuf cas de recette et sept stories rattachés (US-03-05 n'y apporte qu'un seul scénario, les backlinks) : la surface de vérification dépasse le plafond `M` |
-| Critères d'acceptation | `wireframes/sv3-preparation/editeur-document/editeur-document.md` ; `zoning.md §S6 AR-11` (placement des backlinks figé) ; US-04-01, US-04-02, US-04-03, US-04-04, US-04-05 et US-04-06, leurs scénarios nommés ; CR-UC04-01 → CR-UC04-18 (dérivés de la colonne `Source` du cahier) ; US-03-05 §"Voir les backlinks depuis la fiche d'un PNJ" ; CR-UC03-16 (dérivé de la colonne `Source` du cahier) |
+| Taille | L — un seul module, mais dix-neuf cas de recette et sept stories rattachés (US-03-05 n'y apporte qu'un seul scénario, les backlinks, hors MVP) : la surface de vérification dépasse le plafond `M` |
+| Critères d'acceptation | `wireframes/sv3-preparation/editeur-document/editeur-document.md` ; `zoning.md §S6 AR-11` (placement des backlinks figé, hors MVP) ; US-04-01, US-04-02, US-04-03, US-04-04 et US-04-05, leurs scénarios nommés ; US-04-06 (hors MVP, texte conservé : non exigée à la recette du MVP) ; CR-UC04-01 → CR-UC04-18 (dérivés de la colonne `Source` du cahier ; CR-UC04-18 est hors MVP) ; US-03-05 §"Voir les backlinks depuis la fiche d'un PNJ" (hors MVP, texte conservé) ; CR-UC03-16 (dérivé de la colonne `Source` du cahier ; hors MVP) |
 | Code de renvoi | — |
 | Cas dérivés | `CR-UC04-19`, `CR-UC04-20` et `CR-UC04-21` ne portent pas de user story en source (exceptions de fiche de use case et `NFR-CONF-01`) : leur rattachement à cette tranche est une lecture de leur source, non un calcul. |
 
@@ -755,7 +755,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 
 | Champ | Valeur |
 |---|---|
-| But | le MJ lie un document existant de l'espace à son scénario ou à une scène, et voit les backlinks depuis la fiche du document lié |
+| But | le MJ lie un document existant de l'espace à son scénario ou à une scène, (les backlinks depuis la fiche du document lié sont hors MVP) |
 | Épique | US-UC-03 |
 | Jalon | J1 |
 | Dépend de | TB-065, TB-070 |

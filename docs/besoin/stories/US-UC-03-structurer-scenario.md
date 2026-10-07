@@ -33,7 +33,7 @@ Permettre au MJ de préparer un scénario utilisable en session : création, str
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-03 — Structurer un scénario](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-03 — Structurer un scénario](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -278,7 +278,7 @@ Scénario : Le contenu privé et le contenu partageable sont bien séparés
 **Notes de conception** :
 - Lier = appeler création d'un lien entre documents sur le document source (scénario ou scène).
 - Les documents liés peuvent être de n'importe quel type : `NPC`, `LOCATION`, `NOTE`, etc.
-- Les backlinks (ex. : quels scénarios référencent ce PNJ) sont calculés en lecture — ils ne sont pas stockés dans le modèle fonctionnel.
+- Les backlinks (ex. : quels scénarios référencent ce PNJ) sont hors MVP (voir Stories exclues ou repoussées). Calculés en lecture à la reprise, ils ne seraient pas stockés dans le modèle fonctionnel.
 - Dépend de UC-04 (les documents liés doivent exister) et UC-05 (navigation dans les dossiers pour sélectionner un document).
 
 **Critères d'acceptation** :
@@ -299,18 +299,12 @@ Scénario: Supprimer un lien sans supprimer le document cible
   Quand le MJ supprime ce lien depuis l'éditeur
   Alors le lien est supprimé
   Et le document cible (PNJ) n'est pas supprimé et reste accessible dans l'espace
-
-Scénario: Voir les backlinks depuis la fiche d'un PNJ
-  Étant donné qu'un PNJ référencé dans un ou plusieurs scénarios
-  Quand le MJ consulte la fiche du PNJ
-  Alors il voit la liste des scénarios qui référencent ce PNJ
 ```
 
 - [ ] Le MJ peut rechercher et lier un document existant de l'espace à un scénario.
 - [ ] Le MJ peut rechercher et lier un document existant de l'espace à une scène.
 - [ ] Les documents liés sont visibles depuis l'éditeur du scénario/de la scène.
 - [ ] Le MJ peut supprimer un lien sans supprimer le document cible.
-- [ ] Depuis la fiche d'un PNJ, le MJ peut voir les scénarios qui le référencent (backlinks).
 
 ---
 
@@ -398,6 +392,19 @@ Scénario: Créer un document à la volée depuis l'éditeur de scénario
 | Réordonnancement par drag-and-drop des scènes | UX définie en wireframe (`editeur-scenario.md`). Mécanique retenue : **déplacement explicite** (annoncé assistivement, NFR-ACC-02 ; hérite du réordonnancement de blocs, NFR-ACC-01). L'ordre fonctionnel est porté par `DocumentLink.order`. |
 | Partage temporaire d'un contenu pendant une session | Couvert par UC-08 (révélation en session), hors périmètre UC-03. |
 | Duplication d'un scénario | Non défini dans UC-03, à envisager dans une version ultérieure. |
+| Backlinks depuis la fiche d'un PNJ ou d'une scène (scénario et critère de US-03-05) | Hors MVP — réponse de l'opérateur (onboarding du 2026-10-07), comme US-04-06 : les backlinks arrivent avec les relations structurées (UC-F06, voir [UC-HORS-MVP](../vision/perimetre/exclusions.md)). Le texte est conservé ci-dessous. |
+
+**US-03-05 — Backlinks depuis la fiche d'un document lié** *(hors MVP — texte conservé pour la reprise)*
+
+- Critère d'acceptation : depuis la fiche d'un PNJ, le MJ peut voir les scénarios qui le référencent (backlinks).
+- Cas de la question ouverte 4 : le backlink calculé « référencée par N scénarios » visible en lecture sur la fiche d'une scène.
+
+```gherkin
+Scénario: Voir les backlinks depuis la fiche d'un PNJ
+  Étant donné qu'un PNJ référencé dans un ou plusieurs scénarios
+  Quand le MJ consulte la fiche du PNJ
+  Alors il voit la liste des scénarios qui référencent ce PNJ
+```
 
 ---
 
@@ -432,4 +439,4 @@ Scénario: Créer un document à la volée depuis l'éditeur de scénario
 1. **Visibilité par bloc** : DÉCIDÉ — Option A (deux documents liés). L'UX crée et lie le document de révélation automatiquement via un bouton dédié. La visibilité par bloc n'est pas supportée en MVP.
 2. **Statuts** : DÉCIDÉ — Option A arrêtée. `scenarioStatus` (enum `DRAFT|READY|PLAYED|ARCHIVED`, défaut `DRAFT`) dans `Document.properties` du type `SCENARIO`. Rationale : propriétés structurées = seul chemin d'écriture validé (ADR-002) ; champ générique ne s'applique qu'aux scénarios, non aux autres types (NOTE, PNJ, LIEU).
 3. **Réordonnancement des scènes** : DÉCIDÉ — Mécanique = **déplacement explicite** (wireframe `editeur-scenario.md` ; NFR-ACC-02 annonce assistive, hérite NFR-ACC-01 ; drag-and-drop *pur* écarté). L'ordre fonctionnel est porté par `DocumentLink.order`.
-4. **Scène multi-scénarios** : DÉCIDÉ — multi-parent autorisé nativement. Une scène = `Document` type SCENE, liée via `DocumentLink` par plusieurs scénarios (cardinalité n↔n). Sémantique : « **Ajouter une scène** » (US-03-02) crée **toujours une scène fraîche possédée** (create+link) ; le **partage** n'est atteignable que via « **lier un document existant** » (US-03-05, où SCENE devient cible éligible) — ce chemin **expose l'intention** de liaison. Supprimer une scène d'un scénario = supprimer le **lien**, pas le document (la scène survit pour l'autre scénario). Le **backlink calculé** « référencée par N scénarios » doit être visible en lecture sur la fiche de la scène.
+4. **Scène multi-scénarios** : DÉCIDÉ — multi-parent autorisé nativement. Une scène = `Document` type SCENE, liée via `DocumentLink` par plusieurs scénarios (cardinalité n↔n). Sémantique : « **Ajouter une scène** » (US-03-02) crée **toujours une scène fraîche possédée** (create+link) ; le **partage** n'est atteignable que via « **lier un document existant** » (US-03-05, où SCENE devient cible éligible) — ce chemin **expose l'intention** de liaison. Supprimer une scène d'un scénario = supprimer le **lien**, pas le document (la scène survit pour l'autre scénario). Le **backlink calculé** « référencée par N scénarios » sur la fiche de la scène est hors MVP (voir Stories exclues ou repoussées, comme US-04-06).

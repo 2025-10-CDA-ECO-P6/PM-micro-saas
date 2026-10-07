@@ -20,7 +20,7 @@ sa propre logique de préparation :
 Trois outils, trois logiques, trois endroits où chercher. C'est épuisant à maintenir.
 
 Si Haversack lui dit qu'il est agnostique au système de jeu, il va tester ça immédiatement. Les
-4 dossiers créés par défaut (PNJ, Personnages joueurs, Scénarios, Notes) lui poseront une question
+4 dossiers créés par défaut (Personnages, Joueurs, Scénarios, Notes) lui poseront une question
 directe : c'est une organisation qui a du sens pour D&D, mais pas pour Blades in the Dark où les
 factions sont l'entité centrale, ni pour Call of Cthulhu où l'organisation naturelle est par
 scénario puis par acte.

@@ -48,7 +48,7 @@ sequenceDiagram
     App->>SM: Valider invitation (token)
     alt Invitation invalide / expirée
         SM-->>App: Erreur
-        App-->>Joueur: "Ce lien n'est plus actif"
+        App-->>Joueur: "Ce lien n'est pas utilisable"
     else Invitation valide
         SM-->>App: SpaceId + scope
         App->>SM: Space.AddMember(userId, PLAYER)
@@ -68,7 +68,7 @@ sequenceDiagram
     Joueur->>App: Clic sur lien d'invitation (token)
     App->>SM: Valider invitation (token)
     alt Invitation invalide / expirée
-        App-->>Joueur: "Ce lien n'est plus actif"
+        App-->>Joueur: "Ce lien n'est pas utilisable"
     else Invitation valide
         App-->>Joueur: Page de saisie du nom d'affichage
         Joueur->>App: Saisir displayName

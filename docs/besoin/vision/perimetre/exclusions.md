@@ -74,6 +74,16 @@ Ce use case délimite le périmètre de la valeur `FROZEN` dans `SpaceStatus` et
 
 ---
 
+### UC-F08 — Rôle GM (co-MJ)
+
+Un membre d'un espace partagé devient co-maître du jeu (`GM`) : il conduit l'espace avec le propriétaire (`OWNER`), sans pouvoir supprimer l'espace ni gérer les autres GM.
+
+**Pourquoi Won't Have** : aucun use case du MVP ne décrit comment un membre devient GM ; la [matrice de priorités](matrice-de-priorites.md#rôle-gm--co-mj-uc-f08) le classe Won't Have. Le MVP n'attribue que les rôles `OWNER` (le créateur de l'espace) et `PLAYER` (voir [UC-11](../../cas-d-utilisation/UC-11-gerer-membres-espace-partage.md)). Le modèle de domaine garde le rôle `GM` : il n'est pas retiré, il n'est simplement pas attribuable.
+
+**Condition de retour** : À TRANCHER — le use case qui décrirait l'attribution du rôle n'est pas écrit (promotion par l'`OWNER` depuis UC-11, ou invitation portant un rôle : deux options écartées pour le MVP, aucune retenue pour la suite).
+
+---
+
 ## Vision long terme
 
 ### UC-F01 — Utiliser des templates de système de jeu
@@ -153,7 +163,7 @@ Un document typé peut déclarer des relations vers d'autres documents typés :
 - Cet Objet est porté par ce Personnage joueur.
 - Cette Scène se déroule dans ce Lieu.
 
-Les relations sont bidirectionnelles et naviguables : depuis la fiche d'une faction, on voit ses membres. Depuis la fiche d'un personnage, on voit ses objets. Les backlinks que Thomas utilise dans Obsidian deviennent ici des relations structurées et interrogeables.
+Les relations sont bidirectionnelles et naviguables : depuis la fiche d'une faction, on voit ses membres. Depuis la fiche d'un personnage, on voit ses objets. Les backlinks que Thomas utilise dans Obsidian deviennent ici des relations structurées et interrogeables. Les backlinks eux-mêmes (liste des documents qui pointent vers un document donné, US-04-06) sont hors MVP : ils arrivent avec cette couche, et non avant.
 
 **Intérêt** : navigation contextuelle en vue session, requêtes croisées ("quels PNJ sont membres de cette faction ?"), cohérence narrative.
 

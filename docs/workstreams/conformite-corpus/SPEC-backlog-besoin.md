@@ -69,9 +69,22 @@ Le contrat et les entrées : chaque modification correspond-elle à une entrée,
 
 ## Notes de dev
 
-
+- Les 36 entrées sont « fait », dans leur fichier et dans l'index ; 0036 l'est « sans objet au MVP » (0081). Trois lots en parallèle (cas d'utilisation, matrice, stories et autres), fusionnés à trois voies (6 conflits résolus en combinant les deux apports), puis trois passages d'alignement des consommateurs aval, hors couche compris (référence, assurance, interface, domaine, projet), comme le contrat le prévoit.
+- Décisions de l'opérateur (2026-10-07) : au MVP, seul l'OWNER gère les membres (UC-11 ; le droit du GM vaut à l'activation du rôle, hors MVP) ; le message unique d'un lien inutilisable est « Ce lien n'est pas utilisable ».
+- Décisions de l'orchestrateur, par conséquence de décisions déjà prises : 0033 étendue à US-03-05 ; 0032 propagée (phrase des 14 epics, sous-capacités Could Have écrites hors matrice rangées dans la matrice) ; 0081 propagée, les règles RGPD d'effacement des notes restant en vigueur ; chemin des entretiens aligné sur la sélection.
+- Hash du commit : un commit ne peut pas porter son propre hash. Les entrées désignent le commit de la tâche, et `reference.md` porte une table de réépinglage que la tâche `gabarits-domaine` complète avec le hash.
+- Reporté à `backlog-domaine` : `content-library/context.md` (règles 2 et 3, `CanBeReadBy`) contredit l'exception de RB-12-01 (0024).
+- Ambigus, non tranchés : les « notes partagées » du membre (RB-11-13, RB-11-21, UC-11).
 
 ## Notes de revue
 
+Revue « chaque modification correspond-elle à une entrée, et une seule ? », 2026-10-07 : neuf constats.
 
+- `fix` : UC-F08 attribuait une priorité hors matrice. Le rôle GM est classé Won't Have dans la matrice (0026, 0032), et UC-F08 y renvoie.
+- `fix` : notes périmées de 0081 et 0055 mises à jour ; statut de 0036 précisé ; fichiers hors couche ajoutés aux lignes « Appliqué dans » (0024, 0025, 0026, 0029, 0055, 0081, 0084).
+- `fix` : le constat de 0011 ne prescrit plus de remède.
+- `intent` : le hash différé (paradoxe d'un commit sur lui-même), soumis à l'opérateur.
+- Optionnels gardés : chemin des entretiens (sélection), justifications des sections Could Have ajoutées, détail d'interface de l'archivage (UC-06 A7).
+
+Répartition : 3 `fix`, 1 `intent`, 3 optionnels gardés.
 

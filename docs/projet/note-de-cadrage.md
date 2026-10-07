@@ -62,7 +62,7 @@ Le périmètre du MVP est livré **en un seul bloc** : la brique cloud (compte, 
 | Catégorie | Contenu |
 |---|---|
 | **Must Have** | UC-01 à UC-10 (dont UC-05 base — dossiers libres), espace personnel (conteneur par défaut, capture immédiate), instrumentation de validation du MVP, export d'espace (version minimale — promu de Should Have à Must Have le 2026-06-25) |
-| **Should Have** | UC-05 riche (types de document élaborés), UC-11 (gestion des membres), UC-12 (vue joueur), UC-14 (recherche par mot-clé), UC-13 (scénario réutilisable — hors première livraison) |
+| **Should Have** | UC-05 riche (types de document élaborés, templates par défaut des dossiers), UC-11 (gestion des membres), UC-12 (vue joueur), UC-14 (recherche par mot-clé), UC-13 (scénario réutilisable — hors première livraison) |
 | **Could Have** | Types de document personnalisés, réimport de fichier de sauvegarde (post-MVP), notes personnelles joueur persistantes |
 | **Won't Have (cette version)** | Inventaire personnage, clôture formelle de session, lore en use case distinct, relations typées entre documents, moteur de règles, assistant IA, table visuelle, application desktop avec synchronisation CRDT, templates communautaires |
 

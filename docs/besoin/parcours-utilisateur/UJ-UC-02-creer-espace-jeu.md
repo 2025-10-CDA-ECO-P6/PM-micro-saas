@@ -4,9 +4,9 @@
 
 Ce parcours couvre la création d'un espace de jeu — campagne ou one-shot — depuis le tableau de bord jusqu'à la première interaction avec le contenu. Il inclut le scénario de blocage par la limite de synchronisation cloud (compte gratuit).
 
-Le one-shot est techniquement un espace avec `type = ONE_SHOT` ; le MJ ne voit pas ce détail.
+Le one-shot est un espace de `type = ONE_SHOT` ; en première livraison, le MJ choisit ce type dans le formulaire de création (`CAMPAIGN` par défaut).
 
-> **Parcours one-shot MVP** : en première livraison, le one-shot se crée via le parcours campagne nominal (même formulaire, `type = ONE_SHOT` interne). Le parcours express ci-dessous (point d'entrée « Lancer un one-shot » distinct, branche Sonia) est **post-MVP** — conditionné à la livraison de UC-13. Les sections concernées sont annotées.
+> **Parcours one-shot MVP** : en première livraison, le one-shot se crée via le parcours campagne nominal (même formulaire, avec `type = ONE_SHOT` choisi dans le champ type). Le parcours express ci-dessous (point d'entrée « Lancer un one-shot » distinct, branche Sonia) est **post-MVP** — conditionné à la livraison de UC-13. Les sections concernées sont annotées.
 
 ---
 
@@ -35,7 +35,7 @@ journey
     section Création one-shot (post-MVP — parcours express)
       Choisir Lancer un one-shot: 5: Sonia
       Saisir un titre de scénario: 5: Sonia
-      Arriver dans l'éditeur: 5: Sonia
+      Arriver dans l'éditeur ou la vue session: 5: Sonia
     section Prise en main
       Découvrir les dossiers par défaut: 4: Nadia
       Renommer les dossiers: 5: Antoine
@@ -79,7 +79,7 @@ flowchart TD
 | Renommer les dossiers | Antoine | Renommage inexistant ou caché | Action accessible en un clic depuis le nom du dossier |
 | Choisir "Lancer un one-shot" *(post-MVP)* | Sonia | Redirection inattendue vers un formulaire | Parcours express : titre → éditeur, sans étape intermédiaire |
 | Sélectionner un scénario existant *(post-MVP — dépend UC-13)* | Sonia | Catalogue lent à charger ou peu lisible | Liste compacte avec recherche rapide et aperçu titre |
-| Arriver dans l'éditeur *(post-MVP)* | Sonia | Interface d'édition chargée ou désorientante | Vue épurée avec zone de saisie active immédiatement |
+| Arriver dans l'éditeur (nouveau scénario) ou dans la vue session (scénario existant) *(post-MVP)* | Sonia | Interface d'édition chargée ou désorientante | Vue épurée avec zone de saisie active immédiatement |
 
 ---
 
@@ -90,7 +90,7 @@ flowchart TD
 | Moment | Déclencheur | Action attendue |
 |---|---|---|
 | Première campagne créée | Dossiers visibles, accès immédiat | Installation de la confiance — reprise à la prochaine session |
-| One-shot < 30 secondes *(post-MVP — parcours express)* | Accès direct à l'éditeur | Fidélisation Sonia — usage récurrent sans effort |
+| One-shot < 30 secondes *(post-MVP — parcours express)* | Accès direct à l'éditeur (nouveau scénario) ou à la vue session (scénario existant) | Fidélisation Sonia — usage récurrent sans effort |
 | Dossiers renommés (Antoine) | Flexibilité perçue | Satisfaction structurelle — adoption sur plusieurs systèmes |
 | Limite de synchronisation atteinte (gratuit) | Besoin de plus d'espaces synchronisés | Conversion vers offre payante |
 
@@ -100,7 +100,7 @@ flowchart TD
 
 **Sonia — scénario existant**
 - Elle choisit "Lancer un one-shot" et sélectionne un scénario dans son catalogue de 15.
-- Elle arrive dans l'éditeur en mode lecture/édition, sans recréer de structure.
+- Elle arrive dans la vue session pour le scénario sélectionné, sans recréer de structure.
 
 **Antoine — 3e campagne**
 - Il a déjà 2 campagnes actives. La création suit le parcours principal sans blocage.

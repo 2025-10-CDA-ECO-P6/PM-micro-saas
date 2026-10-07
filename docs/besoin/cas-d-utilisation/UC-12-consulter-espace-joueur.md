@@ -36,23 +36,22 @@ Le joueur accède à la vue d'espace ou de session après que son accès a été
 
 1. Le joueur accède à la vue d'espace ou de session.
 2. Le système vérifie que son `GuestAccess` ou son `SpaceMembership` est actif.
-3. Si un personnage lui a été associé par le MJ, la fiche du personnage actif s'affiche.
+3. Si un personnage lui a été associé par le MJ, la fiche du personnage actif s'affiche, quelle que soit la visibilité de cette fiche (RB-12-01).
 4. Les documents `PUBLIC` sont affichés selon le périmètre d'accès (`SESSION` ou `SPACE`).
-5. Le joueur peut consulter sa fiche et ses notes `PLAYER_PRIVATE` liées au personnage actif.
 
 ## Scénarios alternatifs
 
 ### A1 — Joueur associé à plusieurs personnages (choix du personnage actif)
 
-Le joueur est associé à plusieurs personnages dans le même espace. À l'entrée en vue, une interface de sélection lui propose de choisir le personnage actif pour la session en cours. Après sélection, la fiche et les notes `PLAYER_PRIVATE` du personnage actif s'affichent. Le choix ne modifie pas les associations définies par le MJ (RB-12-07). Le joueur peut changer de personnage actif à tout moment (RB-12-09).
+Le joueur est associé à plusieurs personnages dans le même espace. À l'entrée en vue, une interface de sélection lui propose de choisir le personnage actif pour la session en cours. Après sélection, la fiche du personnage actif s'affiche. Le choix ne modifie pas les associations définies par le MJ (RB-12-07). Le joueur peut changer de personnage actif à tout moment (RB-12-09).
 
 ### A2 — Accès périmètre SESSION uniquement
 
-Le joueur dispose d'un accès périmètre `SESSION`. Il voit les documents épinglés de la session et les documents `PUBLIC` de l'espace, mais n'a pas accès à l'historique complet des sessions ni au lore complet de l'espace (RB-12-04).
+Le joueur dispose d'un accès périmètre `SESSION`. Il voit les documents épinglés de la session et tous les documents `PUBLIC` de l'espace, mais n'a pas accès à l'historique des sessions (RB-12-04).
 
 ### A3 — Joueur sans personnage associé
 
-Aucun personnage n'a été associé au joueur par le MJ. Le joueur consulte les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage (RB-12-03).
+Aucun personnage n'a été associé au joueur par le MJ. Le joueur consulte les documents `PUBLIC` ; il n'a aucune fiche à afficher.
 
 ## Exceptions
 
@@ -63,36 +62,34 @@ L'accès n'est plus actif. La vue post-accès ne s'affiche pas. Le joueur est re
 ## Postconditions
 
 - Le joueur consulte sa fiche de personnage actif (si personnage associé) et les documents `PUBLIC` selon son périmètre.
-- Les notes `PLAYER_PRIVATE` de l'auteur sont accessibles sur le personnage actif.
 - Si multi-personnages, le joueur a sélectionné un personnage actif pour la session en cours.
 
 ## Règles métier
 
-- **RB-12-01** : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` et les documents `PLAYER_PRIVATE` d'autres personnages sont invisibles.
-- **RB-12-02** : Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, rattachées au personnage pour l'affichage. Elles persistent entre les sessions pour le **même auteur** (compte stable). Un joueur accédant à un personnage déjà joué par quelqu'un d'autre ne récupère jamais les notes de son prédécesseur (RB-09-19).
-- **RB-12-03** : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
-- **RB-12-04** : Un accès périmètre `SESSION` ne donne pas accès à l'historique complet des sessions ni au lore de l'espace. Seuls les documents `PUBLIC` et les documents épinglés de la session sont visibles.
+- **RB-12-01** : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` lui sont invisibles. Les notes `PLAYER_PRIVATE` sont invisibles à quiconque n'en est pas l'auteur. **Exception** : la fiche d'un personnage associé au joueur est lisible par ce joueur, quelle que soit sa visibilité — associer un personnage à un joueur lui en donne la lecture.
+- **RB-12-02** *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, rattachées au personnage pour l'affichage. Elles persistent entre les sessions pour le **même auteur** (compte stable). Un joueur accédant à un personnage déjà joué par quelqu'un d'autre ne récupère jamais les notes de son prédécesseur (RB-09-19).
+- **RB-12-03** *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
+- **RB-12-04** : Un accès périmètre `SESSION` ne donne pas accès à l'historique des sessions. Il donne accès aux documents épinglés de la session et à tous les documents `PUBLIC` de l'espace.
 - **RB-12-05** : Un accès périmètre `SPACE` (`SpaceMembership`) donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions passées.
-- **RB-12-06** : Un joueur associé à plusieurs personnages doit choisir un personnage actif pour les actions dépendant d'une fiche précise (notes `PLAYER_PRIVATE`, affichage de fiche).
+- **RB-12-06** : Un joueur associé à plusieurs personnages doit choisir un personnage actif pour les actions dépendant d'une fiche précise (affichage de fiche ; les notes `PLAYER_PRIVATE` sont hors MVP).
 - **RB-12-07** : Le choix du personnage actif est propre à la session en cours. Il ne modifie pas les associations définies par le MJ.
 - **RB-12-08** : Un joueur avec un seul personnage associé n'a pas à effectuer de sélection — son personnage est actif par défaut.
 - **RB-12-09** : Le joueur peut changer de personnage actif à tout moment pendant la session.
-- **RB-12-10** : Les notes `PLAYER_PRIVATE` et la fiche affichées correspondent toujours au personnage actif sélectionné.
+- **RB-12-10** : La fiche affichée correspond toujours au personnage actif sélectionné ; les notes `PLAYER_PRIVATE`, hors MVP, suivront le même principe.
 
 ## Critères d'acceptation
 
-- Le joueur avec un personnage associé voit la fiche du personnage actif dès l'accès à la vue.
+- Le joueur avec un personnage associé voit la fiche du personnage actif dès l'accès à la vue, quelle que soit la visibilité de cette fiche.
 - Le joueur voit les documents `PUBLIC` filtrés selon son périmètre (`SESSION` ou `SPACE`).
-- Les notes `PLAYER_PRIVATE` du personnage associé sont accessibles et éditables.
-- Un joueur sans personnage associé voit les documents `PUBLIC` mais ne peut pas créer de notes liées à un personnage.
-- Un accès périmètre `SESSION` ne donne pas accès à l'historique des sessions précédentes ni au lore complet.
+- Un joueur sans personnage associé voit les documents `PUBLIC`.
+- Un accès périmètre `SESSION` donne accès aux documents épinglés de la session et à tous les documents `PUBLIC` de l'espace, sans l'historique des sessions précédentes.
 - Un accès périmètre `SPACE` donne accès à l'ensemble des documents `PUBLIC` et à l'historique.
 - Un joueur associé à plusieurs personnages voit une interface de sélection du personnage actif.
 - Le changement de personnage actif ne modifie pas les associations définies par le MJ.
 
 ## Frontière avec UC-06
 
-UC-06 enrichit cette vue **pendant une session `LIVE`** en autorisant la prise de notes de session ; UC-12 couvre la consultation post-accès (fiche, documents `PUBLIC`, historique selon périmètre) et le choix du personnage actif.
+UC-06 décrit la vue joueur **pendant une session `LIVE`** (documents partagés en direct par le MJ) ; UC-12 couvre la consultation post-accès (fiche, documents `PUBLIC`, historique selon périmètre) et le choix du personnage actif. La prise de notes de session par le joueur est hors MVP (voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur)).
 
 ## Relations
 
@@ -104,9 +101,9 @@ UC-06 enrichit cette vue **pendant une session `LIVE`** en autorisant la prise d
 
 **Principe unificateur** : le personnage actif est un état de **focus / présentation éphémère**, jamais un droit d'accès ; les droits sur les documents dérivent de l'**ensemble des personnages associés** au joueur, pas du seul personnage actif.
 
-- **Personnage actif mémorisé entre sessions** : **session-local au MVP** (RB-12-07) — préférence client, non persistée au MVP ; persistance inter-sessions = *Could Have* post-MVP.
+- **Personnage actif mémorisé entre sessions** : **session-local au MVP** (RB-12-07) — préférence client, non persistée au MVP ; persistance inter-sessions hors MVP, sa priorité est attribuée par la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md) (§ Persistance du personnage actif entre sessions (UC-12)).
 - **Document épinglé lié à un personnage** : **toujours visible**, quel que soit le personnage actif (RB-12-01, RB-08-04, RB-12-10) — le personnage actif ne gouverne que le focus de présentation.
-- **Notes « libres » sans personnage associé** : **non au MVP** — toute note `PLAYER_PRIVATE` requiert un `player_character` (RB-12-02, RB-12-03, RB-12-10) ; note libre non rattachée = *Could Have* post-MVP. Le cycle de vie éphémère des notes d'un invité sans compte (règle métier 10 de *space-management*, RGPD Art. 17) est inchangé.
+- **Notes de session du joueur** : **hors MVP**, toutes (Could Have). Quand elles existeront, toute note `PLAYER_PRIVATE` requerra un `player_character` (RB-12-02, RB-12-03, RB-12-10) ; la note libre non rattachée est hors MVP au même titre. Le cycle de vie éphémère des notes d'un invité sans compte (règle métier 10 de *space-management*, RGPD Art. 17) est inchangé. Sa priorité est attribuée par la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md) (§ Notes libres du joueur, sans personnage associé (UC-12)). Le cycle de vie éphémère des notes d'un invité sans compte (règle métier 10 de *space-management*, RGPD Art. 17) est inchangé.
 - **Priorité `SESSION` + `SPACE` simultanés** : **`SPACE` prioritaire** (superset — RB-12-05 ⊃ RB-12-04) ; cas largement précludé par les invariants 3 et 8 du domaine.
 
 ## Questions à valider en interview

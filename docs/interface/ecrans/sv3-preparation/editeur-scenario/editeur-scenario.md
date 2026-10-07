@@ -177,7 +177,7 @@ hiérarchie de lecture à distance :
 
 ```
 Sources : UC-03 ;
-          AR-11 (backlinks — hérité de editeur-document.md) ;
+          AR-11 (backlinks — hérité de editeur-document.md, hors MVP) ;
           NFR-ACC-02 ; NFR-OFF-05 ;
           châssis S7 (zoning.md §S7)
 ```

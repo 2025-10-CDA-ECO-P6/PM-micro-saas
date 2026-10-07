@@ -2,7 +2,8 @@
 
 - **Id** : 0052
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/besoin/cas-d-utilisation/README.md`, `docs/reference/cahier-des-charges.md`, `docs/besoin/cas-d-utilisation/UC-09-acces-session-joueur.md`, `docs/besoin/cas-d-utilisation/UC-02-creer-espace-jeu.md`, `docs/besoin/cas-d-utilisation/UC-11-gerer-membres-espace-partage.md` (le lien de session ponctuel relève d'UC-09 et se génère depuis la vue session)
 
 - [priority-matrix:contradicted-1 — stale] Retirer de moscow.md:342-343 et du diagramme moscow.md:568-569 la dépendance des liens de session ponctuels envers UC-11
 - [priority-matrix:contradicted-2 — stale] Aligner moscow.md:101 sur Personnages, Joueurs, Scénarios, Notes

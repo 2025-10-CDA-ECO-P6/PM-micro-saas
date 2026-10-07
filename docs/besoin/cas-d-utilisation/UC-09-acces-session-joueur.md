@@ -26,14 +26,14 @@ Le MJ partage un lien d'accès à une session (lien ponctuel) ou à son espace p
 
 - Un espace partagé (`CAMPAIGN` ou `ONE_SHOT`) existe — un espace `PERSONAL` est mono-membre et ne peut recevoir ni invitation ni accès invité (invariant 13 du domaine), hors périmètre d'UC-09.
 - Le MJ a un compte (au minimum gratuit).
-- Pour le chemin session ponctuelle : le MJ a généré un lien de session ponctuel depuis la vue session ou le panneau membres (UC-11).
+- Pour le chemin session ponctuelle : le MJ a généré un lien de session ponctuel depuis la vue session.
 - Pour le chemin espace partagé permanent : le MJ a généré un lien d'espace partagé depuis le panneau membres (UC-11).
 
 > **Note.** Le chemin B (« espace partagé permanent ») correspond à la portée `SPACE` d'`Invitation` et de `GuestAccess` : un régime d'accès **durable**, distinct de la portée `SESSION` (accès ponctuel, chemin A). Cette portée s'applique aussi bien à un espace `CAMPAIGN` qu'à un espace `ONE_SHOT` (glossaire, entrée `Invitation`). Le terme « espace partagé » employé dans cet UC désigne le conteneur (`CAMPAIGN` ou `ONE_SHOT`), jamais l'espace `PERSONAL` (mono-membre, invariant 13).
 
 ## Scénario nominal A — Accès session ponctuel (sans compte)
 
-1. Le MJ génère un lien de session depuis la vue session ou le panneau membres (UC-11).
+1. Le MJ génère un lien de session depuis la vue session.
 2. Il partage le lien (Discord, WhatsApp, email, peu importe).
 3. Le joueur clique sur le lien.
 4. L'application affiche immédiatement les informations partagées par le MJ pour cette session.
@@ -63,22 +63,22 @@ Le MJ partage un lien d'accès à une session (lien ponctuel) ou à son espace p
 ### A2 — Joueur qui veut créer un compte depuis l'accès invité
 
 1. Le joueur a accédé comme invité à plusieurs sessions.
-2. Il veut conserver ses notes personnelles entre sessions.
-3. Il crée un compte depuis la page invité (UC-10) : ce point d'entrée mène à un **état contextualisé**, pas à un formulaire d'inscription générique — le contexte invité (session en cours, notes déjà prises) est préservé et présenté comme le motif de la création de compte, pour une migration sans perte perçue par le joueur. *(Réalisation d'écran → `docs/interface/ecrans/`.)*
-4. Ses notes et accès existants sont migrés vers son compte : accès immédiat, sans attendre la validation de l'adresse de messagerie (cf. Règles métier).
+2. Il veut conserver son accès et son historique entre sessions.
+3. Il crée un compte depuis la page invité (UC-10) : ce point d'entrée mène à un **état contextualisé**, pas à un formulaire d'inscription générique — le contexte invité (session en cours, accès déjà obtenus) est préservé et présenté comme le motif de la création de compte, pour une migration sans perte perçue par le joueur. *(Réalisation d'écran → `docs/interface/ecrans/`.)*
+4. Ses accès existants sont migrés vers son compte : accès immédiat, sans attendre la validation de l'adresse de messagerie (cf. Règles métier).
 5. Il peut ensuite rejoindre l'espace partagé via un lien d'espace partagé (scénario nominal B) ; son admission comme `Member` reste soumise au consentement du MJ (RB-09-16), indépendamment de la validation de son email.
 
-### A3 — Lien expiré ou révoqué
+### A3 — Lien inutilisable (expiré, révoqué, invalide ou mal formé)
 
-1. Le joueur clique sur un lien de session expiré ou que le MJ a révoqué.
-2. L'application affiche un message clair : "Ce lien n'est plus actif."
+1. Le joueur clique sur un lien expiré, révoqué, invalide ou mal formé.
+2. L'application affiche, dans tous ces cas, le même message sobre : "Ce lien n'est pas utilisable." Rien dans l'affichage ne distingue ces cas ni ne révèle si le lien a existé ou si l'espace partagé existe (RB-09-08).
 3. Elle invite le joueur à contacter le MJ pour un nouveau lien.
 
 ## Exceptions
 
 ### E1 — Lien invalide
 
-Le lien est mal formé ou ne correspond à aucune session. L'application affiche une page d'erreur sobre, sans révéler si l'espace partagé existe.
+Le lien est mal formé ou ne correspond à aucune session. L'application affiche le même message que pour un lien expiré ou révoqué (A3, RB-09-08).
 
 ### E2 — Limite de joueurs du compte gratuit atteinte
 
@@ -101,9 +101,9 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
 - Un lien d'espace partagé permanent est valable jusqu'à révocation par le MJ.
 - Le joueur invité (sans compte) a les mêmes droits fonctionnels qu'un joueur authentifié
   dans le périmètre de son lien : il peut voir les contenus publics ou partagés avec lui,
-  consulter sa fiche si un personnage lui est associé, et créer des notes personnelles.
+  consulter sa fiche si un personnage lui est associé.
   La seule différence est technique : il n'a pas de compte persistant.
-- La création d'un compte depuis l'accès invité migre l'accès sans perdre les notes déjà prises. Cette migration **est** une inscription (UC-10) : elle en hérite la règle d'accès sans en ajouter — **accès immédiat**, **validation de l'adresse de messagerie non bloquante** (RB-10-05, ADR-015 §2.1, invariant 7 I&A). Aucun gate spécifique à la migration ne conditionne cet accès à `emailVerified`. En revanche, l'accès **Member** permanent à l'espace partagé reste distinct et gouverné par le **consentement du MJ** (RB-09-16) — la validation de l'email ne s'y substitue pas.
+- La création d'un compte depuis l'accès invité migre l'accès existant sans perte. Les notes de session du joueur sont hors MVP (voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur)) : leur préservation à la migration (RB-09-14) suit la fonctionnalité. Cette migration **est** une inscription (UC-10) : elle en hérite la règle d'accès sans en ajouter — **accès immédiat**, **validation de l'adresse de messagerie non bloquante** (RB-10-05, ADR-015 §2.1, invariant 7 I&A). Aucun gate spécifique à la migration ne conditionne cet accès à `emailVerified`. En revanche, l'accès **Member** permanent à l'espace partagé reste distinct et gouverné par le **consentement du MJ** (RB-09-16) — la validation de l'email ne s'y substitue pas.
 - Le MJ avec un compte gratuit peut inviter jusqu'à 4 joueurs par session. Le compte Pro lève cette limite.
 - **Distinction de consentement** : suivre un lien d'invitation à portée **`SPACE`** généré par le MJ (UC-11) vaut validation — le `SpaceMembership` est créé `PENDING` puis activé (`Activate()`), l'invitation préalable du MJ tenant lieu de validation au sens de RB-09-16. En revanche, un joueur invité ne peut pas **s'auto-promouvoir** membre sans lien d'invitation à portée `SPACE` du MJ — une telle demande crée un `SpaceMembership` `PENDING` en attente de validation explicite du MJ (RB-09-16, parcours-03). La validation se fait côté MJ (UC-11).
 - **Ownership `GuestAccess`** : UC-09 est le propriétaire des données et du cycle de vie des enregistrements `GuestAccess`. Leur création, expiration, révocation et conversion sont pilotées par les règles de cet UC ; les règles RGPD qui s'y appliquent (RB-09-18, RB-09-19) sont définies dans les user stories.
@@ -116,7 +116,7 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
 - Le joueur voit en temps réel les informations que le MJ partage pendant la session.
 - Le lien expire correctement après la session.
 - Le joueur peut créer un compte depuis la page invité sans perdre ses données de session.
-- Un lien révoqué affiche un message clair sans révéler d'information sur l'espace partagé.
+- Un lien expiré, révoqué, invalide ou mal formé affiche le même message, sans révéler d'information sur l'espace partagé ni si le lien a existé.
 
 **Chemin B — espace partagé permanent (avec compte)**
 - Un joueur authentifié suivant un lien d'espace partagé obtient un `SpaceMembership` actif dans l'espace partagé (cycle `PENDING → Activate()` respecté ; l'invitation du MJ tient lieu de validation).
@@ -126,5 +126,4 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
 ## Questions à valider en interview
 
 - Le nom d'affichage seul est-il suffisant, ou faut-il un identifiant léger (pseudo ou code) pour éviter les collisions ?
-- Quelle est la durée de grâce acceptable après la fin de session pour un lien ponctuel ?
 - Les joueurs veulent-ils recevoir un récapitulatif post-session sans avoir de compte ?

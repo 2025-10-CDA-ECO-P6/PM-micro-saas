@@ -22,7 +22,7 @@ Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapid
   - Nominal : recherche par titre dans l'espace actif
   - A1 : aucun résultat (état vide avec suggestions)
   - A2 : filtrer les résultats par type de contenu
-  - A3 : filtrer par tag (Could Have — mentionné dans stories exclues)
+  - A3 : filtrer par tag (hors MVP — mentionné dans stories exclues ; priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#filtrage-par-tag-en-recherche-uc-14-a3))
   - A4 : recherche joueur (limitée aux documents `PUBLIC`)
   - E1 : accès non autorisé (documents `GM_ONLY` non retournés aux joueurs)
 
@@ -30,7 +30,7 @@ Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapid
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-14 — Rechercher et filtrer l'information](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir. Le bloc que la table précédente reportait (`Should Have`) est celui que `moscow.md` accorde à l'ensemble d'UC-14 : le reporter au grain story restait une attribution que cette fiche n'a pas l'autorité de faire, même quand la valeur recopiée coïncidait avec la source.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-14 — Rechercher et filtrer l'information](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir. Le bloc que la table précédente reportait (`Should Have`) est celui que `moscow.md` accorde à l'ensemble d'UC-14 : le reporter au grain story restait une attribution que cette fiche n'a pas l'autorité de faire, même quand la valeur recopiée coïncidait avec la source.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -109,7 +109,7 @@ flowchart LR
 **Règles métier** :
 - RB-14-01 : La recherche est limitée aux documents de l'espace actif.
 - RB-14-02 : Un MJ voit les documents `GM_ONLY` et `PUBLIC` dans ses résultats.
-- RB-14-03 : Un joueur ne voit que les documents `PUBLIC` dans ses résultats — les documents `GM_ONLY` ne sont jamais retournés à un joueur.
+- RB-14-03 : Un joueur trouve en recherche les documents `PUBLIC` ; les documents `GM_ONLY` ne lui sont jamais retournés. La recherche respecte la visibilité, comme RB-06-23 (US-UC-06). Au MVP, les documents `PUBLIC` sont ses seuls résultats : ses notes `PLAYER_PRIVATE` relèvent des notes de session du joueur, hors MVP (Could Have). Quand elles existeront, il retrouvera en recherche ses propres notes, et lui seul.
 - RB-14-04 : Les `LIVE_NOTE` des sessions passées sont recherchables comme tout document.
 
 **Critères d'acceptation** :
@@ -261,8 +261,8 @@ Scénario : Recherche joueur depuis la vue session (A4, E1)
 |---|---|
 | Recherche full-text sur le contenu des blocs | Post-MVP — la recherche porte sur le titre uniquement dans le MVP. Complexité d'indexation non justifiée à ce stade. |
 | Recherche cross-espace | Post-MVP — les résultats sont limités à l'espace actif (RB-14-01). |
-| Filtrer par tag (A3) | Could Have — à inclure si l'implémentation est triviale (filtre additionnel sur les tags existants de `Content Library`). Repoussé si le coût d'implémentation dépasse la valeur MVP. |
-| Historique des recherches récentes | Could Have — apport UX pour les MJ fréquents, non prioritaire pour le MVP. |
+| Filtrer par tag (A3) | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#filtrage-par-tag-en-recherche-uc-14-a3), § Filtrage par tag en recherche (UC-14, A3)) — à inclure si l'implémentation est triviale (filtre additionnel sur les tags existants de `Content Library`). Repoussé si le coût d'implémentation dépasse la valeur MVP. |
+| Historique des recherches récentes | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#historique-des-recherches-récentes-uc-14), § Historique des recherches récentes (UC-14)) — apport UX pour les MJ fréquents, non prioritaire pour le MVP. |
 | Recherche par date de création ou de modification | Post-MVP — nécessite un tri et des critères additionnels hors périmètre du MVP. |
 
 ---
@@ -282,7 +282,7 @@ Scénario : Recherche joueur depuis la vue session (A4, E1)
 | Nominal — recherche par titre dans l'espace actif | US-14-01 |
 | A1 — aucun résultat | US-14-01, US-14-02 |
 | A2 — filtrer par type de contenu | US-14-02 |
-| A3 — filtrer par tag | Exclu MVP (Could Have) |
+| A3 — filtrer par tag | Exclu MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#filtrage-par-tag-en-recherche-uc-14-a3), § Filtrage par tag en recherche (UC-14, A3)) |
 | A4 — recherche joueur limitée aux documents PUBLIC | US-14-01, US-14-03 |
 | E1 — documents GM_ONLY non retournés aux joueurs | US-14-01, US-14-03 |
 
@@ -292,4 +292,4 @@ Scénario : Recherche joueur depuis la vue session (A4, E1)
 
 - **Seuil de pondération session active** — **FERMÉE** : l'ensemble des documents liés à la session active est explicitement énuméré en RB-14-08 (épinglés, `LIVE_NOTE` de session en cours, documents du scénario associé). Le poids relatif fin relève du wireframe/implémentation, hors conception.
 - **Nombre de résultats affichés** — **FERMÉE** : décision prise = **top N + pagination (chargement progressif)**. Inscrite en RB-14-10. Justification : optimisation du périmètre d'affichage selon l'espace disponible et les performances.
-- **Filtre par tag (A3)** — **FERMÉE** : reste `Could Have — hors MVP` (arbitrage confirmé, voir UC-14 §A3). La fonction tag elle-même répond à un besoin d'organisation propre du MJ, indépendant de la recherche — voir UC-04 pour ses règles métier et son critère d'acceptation ; la recherche par tag n'en est qu'un filtre additionnel optionnel, jamais la justification de son existence.
+- **Filtre par tag (A3)** — **FERMÉE** : reste hors MVP (arbitrage confirmé, voir UC-14 §A3 ; priorité attribuée par la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#filtrage-par-tag-en-recherche-uc-14-a3)). La fonction tag elle-même répond à un besoin d'organisation propre du MJ, indépendant de la recherche — voir UC-04 pour ses règles métier et son critère d'acceptation ; la recherche par tag n'en est qu'un filtre additionnel optionnel, jamais la justification de son existence.

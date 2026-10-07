@@ -32,7 +32,7 @@ Permettre au MJ de créer instantanément un document durable dans l'espace depu
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-07 — Créer un élément à la volée en session](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-07 — Créer un élément à la volée en session](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -119,6 +119,7 @@ flowchart LR
 - RB-07-03 : La visibilité par défaut est `GM_ONLY`.
 - RB-07-04 : Un document durable est auto-épinglé par défaut dans `Session.pinnedDocumentIds` en session LIVE ; le MJ peut le désépingler. En session CLOSED, l'épinglage reste optionnel. (Une note de session est rattachée via `Session.AttachNote` — cf. Bounded contexts pressentis.)
 - RB-07-05 : La création à la volée est impossible depuis une session ARCHIVED.
+- RB-07-09 : Un raccourci clavier ouvre le panneau de création rapide depuis la vue session, au MVP. La touche est à définir avec les NFR d'accessibilité ([NFR-ACC-01](../nfr/NFR-ACC-01-utilisabilite-sans-dispositif-de-pointage.md)).
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut ouvrir un panneau de création rapide depuis la vue session.
@@ -151,6 +152,11 @@ Scénario : Le MJ crée un document générique à la volée (A4)
   Quand le MJ crée un document de type "Lieu" intitulé "Auberge du Pont Brisé"
   Alors le document est créé, lié à l'espace, visibility = GM_ONLY
   Et il est épinglé dans la session
+
+Scénario : Le MJ ouvre le panneau de création rapide au clavier
+  Étant donné qu'une session est en status LIVE
+  Quand le MJ utilise le raccourci clavier d'ouverture du panneau de création rapide
+  Alors le panneau de création rapide s'ouvre sans usage du pointeur
 
 Scénario : Création refusée si titre vide (E1)
   Étant donné qu'une session est en status LIVE
@@ -216,7 +222,6 @@ Scénario : Création impossible en ARCHIVED
 | Enrichissement du document pendant la session | Hors périmètre UC-07. L'enrichissement est une consultation/édition de document (Content Library). |
 | Association joueur / personnage joueur pendant la création | Hors scope UC-07. L'association est traitée lors de l'enrichissement post-session. |
 | Création à la volée pour les joueurs | Hors périmètre — UC-07 est réservé au MJ. |
-| Raccourci clavier pour le panneau de création rapide | Question ouverte — non décidé pour le MVP. |
 
 ---
 
@@ -245,4 +250,4 @@ Scénario : Création impossible en ARCHIVED
 ## Questions ouvertes
 
 1. ~~Le document créé à la volée est-il épinglé automatiquement, ou le MJ choisit de l'épingler manuellement ?~~ **Résolue** : un document durable est auto-épinglé par défaut en session LIVE, désépinglable par le MJ (aligné UC-07 amendé + AR-12) ; en session CLOSED, l'épinglage reste optionnel. Une note de session n'est jamais épinglée — elle est rattachée via `Session.AttachNote` (voir RB-07-04, Bounded contexts pressentis).
-2. Y a-t-il un raccourci clavier pour ouvrir le panneau de création rapide en session ?
+2. ~~Y a-t-il un raccourci clavier pour ouvrir le panneau de création rapide en session ?~~ **DÉCIDÉ** (2026-10-07, [décision 0034](../../project/backlog/0034-specifier-dans-us-uc-07-un-raccourci-clavier-pour-le-panneau.md)) : oui, au MVP (RB-07-09). La touche est à définir avec les NFR d'accessibilité.

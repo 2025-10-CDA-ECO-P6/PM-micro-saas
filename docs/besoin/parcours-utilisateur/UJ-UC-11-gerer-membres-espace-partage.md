@@ -78,7 +78,7 @@ flowchart TD
     Rev --> RevConfirm[Confirmation MJ]
     RevConfirm --> Revoked[Invitation REVOKED\nIdentity and Access invalide le token]
     Revoked --> JoueurLien{Joueur tente le lien apres revocation}
-    JoueurLien --> LienMort[Message Ce lien n est plus actif\nOpacite espace - UC-09 US-09-02]
+    JoueurLien --> LienMort[Message Ce lien n est pas utilisable\nOpacite espace - UC-09 US-09-02]
 
     Action -->|Retirer un membre| Rem[US-11-03\nRetirer un membre]
     Rem --> RemConfirm[Confirmation MJ]

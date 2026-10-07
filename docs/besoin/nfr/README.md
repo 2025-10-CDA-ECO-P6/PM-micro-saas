@@ -12,6 +12,10 @@
 > **Règle de lecture.** Un critère d'observation est exprimé en expérience vécue, jamais en
 > métrique d'infrastructure. Un identifiant stable (NFR-XXX-NN) permet de tracer chaque
 > exigence depuis les user stories et les critères d'acceptation.
+>
+> **Périmètre.** Ces exigences couvrent les Must Have et les Should Have de la première
+> livraison. UC-13 en est exclu : il est hors première livraison (voir la
+> [matrice de priorités](../vision/perimetre/matrice-de-priorites.md)).
 
 ---
 

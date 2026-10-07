@@ -33,7 +33,7 @@ Les espaces de type `CAMPAIGN` et `ONE_SHOT` sont créés par ces parcours. L'es
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-02 — Créer et configurer un espace (campagne ou one-shot)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-02 — Créer et configurer un espace (campagne ou one-shot)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -448,6 +448,8 @@ flowchart LR
 | Un espace créé en mode local est pleinement fonctionnel | US-02-01 |
 | One-shot archivable manuellement (comme une campagne) | US-02-02 |
 | MJ dispose d'un espace PERSONAL sans le créer | US-02-00 |
+
+**Absence de RB-02-21, RB-02-22 et RB-02-23 dans les tables ci-dessus** : SOUS-SPÉCIFIÉ. Ces trois règles (archivage refusé tant qu'une session `LIVE` est en cours, désarchivage, garde de quota au désarchivage) sont définies dans UC-02. Elles y ont été ajoutées le 2026-09-02 (commit f4214d1), le même jour où cette fiche était retouchée, sans qu'aucune story, ni aucune ligne de couverture, ni la matrice de priorités ne les reprenne. Aucun commit n'enregistre une coupe volontaire : c'est un trou connu, pas une coupe volontaire.
 
 ---
 

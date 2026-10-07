@@ -39,7 +39,7 @@ Ouvrir l'outil, commencer immédiatement, sans remplir de formulaire. Elle a une
 - Mode local actif : aucun `User` instancié, données dans le stockage local du navigateur.
 - Un **espace personnel** (`SpaceType.PERSONAL`) préexiste comme conteneur par défaut, avec son seul dossier virtuel « Non classés » — Émilie en est la propriétaire (`MemberRole.OWNER`), et non « MJ » sur cet espace mono-membre (glossaire §`MJ`).
 - Une `Campagne` existe, avec ses quatre dossiers système et son dossier virtuel « Non classés ».
-- Une `SessionViewConfig` est créée automatiquement à `CampaignCreated` (glossaire §5).
+- Une `SessionViewConfig` est créée automatiquement à `SpaceCreated` (glossaire §5).
 
 ### Couture vers l'étape 2
 
@@ -201,7 +201,7 @@ Après la session, Émilie retrouve les documents créés à la volée. Certains
 
 ### Couture vers l'étape 7
 
-Émilie souhaite partager certains documents ou informations avec ses joueurs lors de la prochaine session. UC-08 précondition : « Le MJ est authentifié et propriétaire de la campagne. » Émilie est en mode local — elle n'est pas authentifiée et aucun `User` n'est instancié (glossaire §2, Mode local). La précondition n'est pas satisfaite.
+Émilie souhaite partager certains documents ou informations avec ses joueurs lors de la prochaine session. UC-08 préconditions : « Un espace existe. », « Des joueurs ou des accès invités peuvent accéder à l'espace ou à la session. », « Le contenu à partager existe ou est créé par le MJ. » Émilie est en mode local — aucun `User` n'est instancié (glossaire §2, Mode local) et aucun joueur ni accès invité ne peut accéder à son espace, le partage exigeant un compte (RB-01-06). La deuxième précondition n'est pas satisfaite.
 
 **Couture conditionnelle documentée : UC-08 n'est pas accessible en mode local, UC-10 s'intercale.** Ce parcours d'intercalation est formulé dans UC-10 (Contexte : le MJ qui a conduit des sessions en mode local crée son compte, migre sa campagne avec tout son historique, puis invite ses joueurs) et porté par UJ-UC-01 (tentative de partage comme point de conversion). Voir couture C7 dans la table récapitulative.
 

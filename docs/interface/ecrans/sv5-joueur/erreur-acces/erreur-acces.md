@@ -40,15 +40,15 @@ Intention : le joueur dont l'accès ne peut pas être accordé (lien expiré, r�
 ```
 [ ZONE DE MESSAGE D'ERREUR ]
   type     : principal
-  rôle     : affiche un message sobre indiquant que le lien n'est plus actif et
-             invitant le joueur à contacter le MJ pour un nouveau lien ;
+  rôle     : affiche le message unique « Ce lien n'est pas utilisable » et
+             invite le joueur à contacter le MJ pour un nouveau lien ;
              le message est identique quel que soit le motif précis (lien expiré,
              révoqué, invalide, quota atteint) — même registre pour tous les cas
              afin de ne pas révéler l'existence de la campagne (RB-09-21 ; AR-03)
   priorité : principal
   visibilité : joueur seul
-  ancrage  : UC-09 A3 (« Ce lien n'est plus actif — contacter le MJ pour un nouveau
-             lien ») ; UC-09 E1 (lien invalide — message sobre sans révéler si la
+  ancrage  : UC-09 A3 (« Ce lien n'est pas utilisable » — contacter le MJ pour un nouveau
+             lien ; RB-09-08) ; UC-09 E1 (lien invalide — même message que A3, sans révéler si la
              campagne existe) ; UC-09 E2 (quota FREE atteint — même registre)
              ; RB-09-21 (le joueur surnuméraire voit un message sobre sans information
              sur la campagne)

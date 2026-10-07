@@ -22,7 +22,7 @@ Parcours couvrant deux flux distincts : l'accès d'un joueur via lien ponctuel s
 journey
     title Acces a une session en tant que joueur
     section MJ genere le lien de session
-        Ouvrir la vue session ou le panneau membres: 5: Émilie, 4: Thomas
+        Ouvrir la vue session: 5: Émilie, 4: Thomas
         Cliquer Generer un lien de session: 5: Émilie, 5: Thomas
         Copier le lien et le partager: 5: Émilie, 4: Thomas
     section Joueur rejoint via lien ponctuel
@@ -33,7 +33,7 @@ journey
     section Joueur consulte les informations partagees
         Voir les documents PUBLIC de l espace partage: 5: Lucas
         Voir les documents epingles de la session: 5: Lucas
-        Prendre des notes personnelles: 4: Lucas
+        Prendre des notes personnelles - hors MVP: 4: Lucas
     section MJ invite un membre regulier via lien permanent
         Generer un lien permanent pour un membre: 5: Thomas
         Partager le lien au joueur: 5: Thomas
@@ -41,7 +41,7 @@ journey
         Joueur acces a l historique et au lore: 5: Thomas
     section Acces expire ou revoque
         Joueur tente d ouvrir un lien expire: 2: Lucas
-        Voir le message lien non actif: 3: Lucas
+        Voir le message « Ce lien n'est pas utilisable »: 3: Lucas
         Contacter le MJ pour un nouveau lien: 3: Lucas
 ```
 
@@ -63,8 +63,7 @@ flowchart TD
     F --> G[Identity and Access valide le token]
 
     G --> H{Token valide ?}
-    H -->|Expire ou revoque| I[Message lien non actif\nContacter le MJ]
-    H -->|Invalide ou mal forme| J[Page d erreur sobre\nOpacite sur l existence de l espace partage]
+    H -->|Expire, revoque, invalide ou mal forme| I[Message lien non utilisable\nContacter le MJ\nOpacite sur l existence du lien et de l espace partage]
 
     H -->|Valide — ponctuel| K{Joueur deja connecte ?}
     K -->|Non| L[Saisit uniquement un nom d affichage]
@@ -78,10 +77,10 @@ flowchart TD
     O -->|Non| Q[Invite a creer un compte\nUC-10]
     Q --> P
 
-    N --> R[Documents PUBLIC\nDocuments epingles de la session\nNotes personnelles PLAYER_PRIVATE]
+    N --> R[Documents PUBLIC\nDocuments epingles de la session\nNotes personnelles PLAYER_PRIVATE - hors MVP]
 
     N --> S{Joueur veut creer un compte ?}
-    S -->|Oui| T[Migration GuestAccess vers compte\nNotes preservees — US-09-04]
+    S -->|Oui| T[Migration GuestAccess vers compte\nNotes preservees (hors MVP) — US-09-04]
     T --> P
     S -->|Non| U[Acces expire apres session + 24h de grace]
 ```
@@ -93,9 +92,9 @@ flowchart TD
 | Étape | Persona(s) | Friction | Opportunité produit |
 |---|---|---|---|
 | SOUS-SPÉCIFIÉ | Lucas | **Saisie du nom d'affichage superflue si le joueur est déjà connecté** : Lucas peut avoir un compte Haversack sans le savoir ou sans être connecté. L'interface doit détecter silencieusement une session existante et proposer "Continuer en tant que Lucas (connecté)" plutôt que redemander un nom. | SOUS-SPÉCIFIÉ |
-| SOUS-SPÉCIFIÉ | Lucas | **Manque de retour visuel sur l'expiration imminente** : Lucas ne sait pas que son accès expire 24 heures après la fin de session. Si le MJ clôture la session tard dans la nuit, Lucas peut perdre l'accès à ses notes avant de les relire — sans avoir été averti. | SOUS-SPÉCIFIÉ |
-| SOUS-SPÉCIFIÉ | Lucas | **Friction lors de la création de compte depuis l'accès invité** : le moment où Lucas veut créer un compte pour garder ses notes coïncide souvent avec la fin de session (fatigue, rush). Si la procédure d'inscription est longue ou exige une validation d'email immédiate, il abandonne. | SOUS-SPÉCIFIÉ |
-| SOUS-SPÉCIFIÉ | Lucas | **Opacité du message d'erreur pour un lien expiré vs invalide** : le principe d'opacité est correct d'un point de vue sécurité, mais Lucas ne comprend pas pourquoi le lien ne fonctionne pas. Le message doit être sobre mais suffisamment actionnable ("contacter le MJ") pour éviter la confusion. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Lucas | **Manque de retour visuel sur l'expiration imminente** : Lucas ne sait pas que son accès expire 24 heures après la fin de session. Si le MJ clôture la session tard dans la nuit, Lucas peut perdre l'accès à ses notes avant de les relire *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* — sans avoir été averti. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Lucas | **Friction lors de la création de compte depuis l'accès invité** : le moment où Lucas veut créer un compte pour garder ses notes *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* coïncide souvent avec la fin de session (fatigue, rush). Si la procédure d'inscription est longue ou exige une validation d'email immédiate, il abandonne. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | Lucas | **Opacité du message d'erreur pour un lien inutilisable (expiré, révoqué, invalide ou mal formé)** : le principe d'opacité est correct d'un point de vue sécurité, mais Lucas ne comprend pas pourquoi le lien ne fonctionne pas. Le message doit être sobre mais suffisamment actionnable ("contacter le MJ") pour éviter la confusion. | SOUS-SPÉCIFIÉ |
 | SOUS-SPÉCIFIÉ | Thomas | **Génération du lien — Thomas ne sait pas si le lien permanent est déjà actif** : si Thomas génère plusieurs liens pour le même espace partagé ou modifie les membres, l'interface doit clairement indiquer l'état actif/révoqué de chaque lien dans le panneau membres. | SOUS-SPÉCIFIÉ |
 
 ---
@@ -106,7 +105,7 @@ flowchart TD
 
 - **Détection silencieuse de session existante** : à l'arrivée sur la page de lien, l'interface vérifie si un compte est déjà connecté et propose directement l'accès avec ce compte, sans redemander le nom. Un lien discret "Continuer en tant qu'invité" reste disponible.
 
-- **Bandeau de migration non intrusif** : après quelques sessions passées en invité, un bandeau discret en bas de la vue joueur propose "Créer un compte pour garder tes notes". Il ne bloque pas l'accès et ne s'affiche qu'une fois par session.
+- **Bandeau de migration non intrusif** : après quelques sessions passées en invité, un bandeau discret en bas de la vue joueur propose "Créer un compte pour garder tes notes" *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*. Il ne bloque pas l'accès et ne s'affiche qu'une fois par session.
 
 - **Indicateur d'expiration visible dans la vue joueur** : une mention discrète ("Accès valide jusqu'au [date+24h]") dans la vue joueur permet à Lucas d'anticiper l'expiration et de créer un compte ou de demander un nouveau lien à temps.
 

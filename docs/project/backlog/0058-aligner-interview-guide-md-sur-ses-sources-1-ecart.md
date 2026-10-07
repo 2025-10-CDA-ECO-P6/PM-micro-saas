@@ -2,7 +2,8 @@
 
 - **Id** : 0058
 - **Date** : 2026-10-07
-- **Statut** : ouvert
+- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)
+- **Appliqué dans** : docs/besoin/decouverte/guide-d-entretien.md
 
 - [interview-guide:contradicted-1 — stale] Retirer « UC-14 périmètre MVP à trancher » du guide et renvoyer au périmètre titres seuls de UC-14, l'hypothèse restant à tester pour le post-MVP
 

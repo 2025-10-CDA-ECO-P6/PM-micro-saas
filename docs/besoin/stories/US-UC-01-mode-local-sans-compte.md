@@ -29,7 +29,7 @@ Permettre à un MJ de commencer à utiliser Haversack immédiatement, sans frict
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement au grain du use case, dans [`moscow.md`, § UC-01 — Mode local sans compte](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-01 — Mode local sans compte](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -43,13 +43,14 @@ flowchart TD
     B -- Oui --> C[Écran d'accueil\nDeux options proposées]
     B -- Non --> D[Données récupérées depuis le stockage local]
     D --> E{Données trouvées ?}
-    E -- Oui --> K[Écran création de campagne]
+    E -- Oui --> Q[Dernier espace ouvert]
     E -- Non --> G[Message données introuvables\nUS-01-06]
     C --> H[Commencer sans compte]
     C --> I[Créer un compte / Se connecter]
     H --> J[Message court stockage local\navec lien FAQ]
-    J --> K
-    K --> L[Le MJ prépare sa campagne]
+    J --> K[Espace de travail principal]
+    K --> L[Le MJ prépare son contenu]
+    Q --> L
     L --> M{Action cloud tentée ?}
     M -- Non --> L
     M -- Oui --> N[Fonctionnalité visible mais désactivée\nCTA conversion — US-01-04]
@@ -135,7 +136,7 @@ flowchart LR
     Quand il choisit "Commencer sans compte"
     Alors l'application affiche un message court sur le stockage local
     Et un lien vers la FAQ est disponible
-    Et le MJ est redirigé vers l'écran de création de campagne
+    Et le MJ est redirigé vers l'espace de travail principal
 
   Scénario: Le MJ reçoit un message informatif au premier démarrage
     Étant donné que le MJ ouvre l'application pour la première fois
@@ -510,7 +511,8 @@ Ces deux bandeaux sont portés par les stories existantes (US-01-01 pour le prem
 |---|---|
 | RB-01-01 : aucune donnée envoyée au serveur en mode local | US-01-01 |
 | RB-01-09 : migration obligatoire à la création de compte | US-01-05 |
-| RB-01-02 : message informatif non bloquant au premier démarrage | US-01-01 (message informatif au premier démarrage uniquement — le bandeau persistant générique est supprimé ; les deux bandeaux ciblés sont portés par RB-01-14) |
+| RB-01-02 : l'application propose systématiquement les deux options (sans compte / avec compte) à l'écran d'accueil, sans hiérarchie visuelle forçant l'inscription | US-01-01 |
+| Message informatif non bloquant au premier démarrage | US-01-01 (message informatif au premier démarrage uniquement — le bandeau persistant générique est supprimé ; les deux bandeaux ciblés sont portés par RB-01-14) |
 | RB-01-06 : fonctionnalités de partage nécessitent un compte | US-01-04 |
 | RB-01-14 : bandeaux durabilité + confidentialité | US-01-01 (RB-01-14), US-01-02 (logique de durabilité), US-01-06 (E1) |
 | RB-01-15 : aucun élément protégé conservé en mode local | US-01-01 (garanties du mode local) |

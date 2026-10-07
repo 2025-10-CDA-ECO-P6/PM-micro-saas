@@ -12,10 +12,10 @@
 | Catégorie | Nb | Éléments |
 |---|---|---|
 | **Must Have** | 10 UC + espace personnel + instrumentation + export d'espace | UC-01 à UC-10 (dont UC-05 base — dossiers libres) + espace personnel (capture-first, conteneur par défaut) + instrumentation de validation du MVP + export d'espace (version minimale — promotion du 2026-06-25) |
-| **Should Have** | 5 | UC-05 riche (dossiers et types élaborés), UC-11, UC-12, UC-14, UC-13 *(hors première livraison)* |
-| **Could Have** | 3 | Types personnalisés, réimport de fichier de sauvegarde *(post-MVP ; distinct de l'export Must Have)*, notes joueur |
+| **Should Have** | 5 | UC-05 riche (types de document élaborés et templates par défaut des dossiers), UC-11, UC-12, UC-14, UC-13 *(hors première livraison)* |
+| **Could Have** | 15 | Types personnalisés, réimport de fichier de sauvegarde *(post-MVP ; distinct de l'export Must Have)*, notes de session du joueur, persistance du personnage actif entre sessions (UC-12), notes libres du joueur sans personnage (UC-12), synchronisation source → instance d'un scénario réutilisable (UC-13), journal d'activité des membres (UC-11), notification du joueur au partage d'un document (UC-12), persistance des notes d'un invité d'une session à l'autre (UC-12), notification au MJ à l'utilisation d'une invitation (UC-11), récapitulatif post-session par email à l'invité (UC-09), template de vue session (UC-06), historique des partages (UC-08), historique des recherches récentes (UC-14), filtrage par tag en recherche (UC-14, A3) |
 | **Won't Have** | — | Voir détail ci-dessous |
-| **Post-MVP (spécifiés)** | 1 | UC-15 *(gel d'espaces au downgrade de tier — hors catégorisation MoSCoW du MVP, arbitrage du 2026-09-01, voir §UC-15 ci-dessous)* |
+| **Post-MVP (spécifiés)** | 2 | UC-15 *(gel d'espaces au downgrade de tier — hors catégorisation MoSCoW du MVP, arbitrage du 2026-09-01, voir §UC-15 ci-dessous)*, variante one-shot express d'UC-02 *(UC-02 §A1, voir §Variante one-shot express ci-dessous)* |
 
 ---
 
@@ -100,12 +100,14 @@ Fonctionne en mode local.
 **Pourquoi Must Have** : colonne vertébrale du pilier 1 (document générique).
 Sans dossiers libres, tout le contenu est à plat et l'agnosticisme système n'existe pas.
 
-La structure par défaut doit être neutre — des labels comme "Personnages", "Lieux", "Notes",
-"Sessions" plutôt que "PNJ", "Monstres", "Sorts". Antoine (Blades in the Dark) et Émilie
+La structure par défaut doit être neutre — des labels comme "Personnages", "Joueurs", "Scénarios",
+"Notes" plutôt que "PNJ", "Monstres", "Sorts". Antoine (Blades in the Dark) et Émilie
 (systèmes narratifs) doivent pouvoir renommer ou ignorer la structure.
 
 Chaque espace — y compris l'espace `PERSONAL` — dispose de sa propre arborescence de dossiers
-créée à l'initialisation de l'espace.
+créée à l'initialisation de l'espace. Pour un espace `CAMPAIGN` ou `ONE_SHOT`, ce sont les quatre
+dossiers système ci-dessus ; pour l'espace `PERSONAL`, l'arborescence initiale se réduit au dossier
+virtuel « Non classés » : le MJ y ajoute ses propres dossiers.
 
 **Critère de sortie** : un MJ crée des dossiers nommés librement. La structure par défaut
 est système-agnostique.
@@ -330,6 +332,11 @@ Contrepoids du reclassement de UC-10 en Must Have : pour ne pas gonfler le péri
 au-delà du minimum cohérent, la couche riche est différée. Le pilier 1 se valide avec les dossiers
 libres ; les types de document enrichissent l'expérience mais ne la conditionnent pas.
 
+Les **templates par défaut des dossiers** (un dossier peut porter un modèle réutilisable dont
+tout nouveau document du dossier est la copie) relèvent de la même couche riche, avec la même
+priorité que l'association type ↔ dossier. Le socle Must de UC-05 reste les dossiers nommés
+librement.
+
 Les types de document optionnels préparent l'architecture pour les relations entre documents
 et, à terme, l'émulation partielle de systèmes de jeu — sans que cela soit visible ou
 contraignant pour l'utilisateur de base. Antoine (Blades in the Dark) et Émilie (systèmes
@@ -337,7 +344,8 @@ narratifs) bénéficient de cette couche, mais peuvent travailler sans elle.
 
 **Critère de sortie** : les types de document built-in sont proposés sans être imposés.
 Le MJ peut associer un type (PNJ, Lieu, Objet…) à un dossier ou un document pour enrichir
-ses entrées sans contraindre la structure.
+ses entrées sans contraindre la structure. Il peut aussi associer un template par défaut à un
+dossier.
 
 **Risque si absent** : le pilier 1 reste fonctionnel mais moins différenciant.
 
@@ -345,13 +353,13 @@ ses entrées sans contraindre la structure.
 
 ### UC-11 — Gérer les membres d'un espace
 
-**Pourquoi Should Have** : couvre deux besoins distincts — membres permanents (Thomas, groupes
-stables, invitation durable) et accès ponctuels (Sonia, joueurs changeants, lien de session
-temporaire). Sans ce use case, le MJ ne peut pas inviter ses joueurs réguliers ni créer les
-liens de session nécessaires à UC-08.
+**Pourquoi Should Have** : couvre l'administration des accès durables — membres permanents
+(Thomas, groupes stables, invitation durable) et lien d'espace permanent. Le lien de session
+ponctuel (Sonia, joueurs changeants) n'en dépend pas : le MJ le génère depuis la vue session et
+il relève d'UC-09. Sans UC-11, le MJ ne peut pas inviter ses joueurs réguliers.
 
-**Critère de sortie** : le MJ peut inviter un membre permanent et générer un lien de session
-temporaire. Il peut révoquer un accès.
+**Critère de sortie** : le MJ peut inviter un membre permanent et générer un lien d'espace
+permanent. Il peut révoquer un accès.
 
 ---
 
@@ -433,6 +441,20 @@ première livraison.
 
 ---
 
+## Variante one-shot express (UC-02 §A1) — Post-MVP (spécifiés)
+
+**Décision** : la variante « parcours express » de UC-02 — lancer un one-shot depuis le tableau
+de bord, avec un scénario existant ou un nouveau titre, en une action et sans configuration de
+campagne — est classée « Post-MVP (spécifiés) », comme UC-15 : hors catégorisation MoSCoW du MVP,
+et reportée après la première livraison, comme l'est UC-02 §A1.
+
+**Motif** : le parcours express dépend du catalogue de scénarios réutilisables (UC-13, Should Have,
+hors première livraison — arbitrage du 2026-06-10). UC-02 reste Must Have pour son scénario
+nominal : en première livraison, un one-shot se crée par le parcours nominal de création d'espace,
+avec `type = ONE_SHOT`.
+
+---
+
 ## Could Have — Valeur réelle, non prioritaire pour la validation initiale
 
 Ces fonctionnalités répondent à des besoins identifiés mais ne conditionnent pas la validation
@@ -467,8 +489,10 @@ et que la migration manuelle est citée comme frein principal.
 
 ### Notes personnelles joueur
 
-Un joueur avec un compte prend des notes privées liées à une session, persistantes entre
-les parties.
+Un joueur prend des notes de session privées, pendant une session `LIVE` comme entre les
+parties. Aucune prise de notes par le joueur n'existe au MVP : ni en `LIVE`, ni persistante
+d'une session à l'autre. Le joueur n'écrit une note que s'il a un personnage associé
+(RB-12-03).
 
 **Valeur** : utile pour les groupes stables et les campagnes longues. Complète l'expérience
 joueur au-delà de la simple consultation.
@@ -476,6 +500,130 @@ joueur au-delà de la simple consultation.
 **Pourquoi Could Have et non Should Have** : Lucas (joueur type) préfère Discord et son carnet.
 Les joueurs one-shot (Sonia) n'ont aucun besoin de persistance. La valeur n'apparaît que pour
 les groupes réguliers après plusieurs semaines d'usage.
+
+**Option écartée** (arbitrage du 2026-10-07) : la prise de notes en `LIVE` en Must Have, avec
+seule la persistance d'une session à l'autre en Could Have. Toutes les notes de session du
+joueur sont sorties du MVP.
+
+---
+
+### Persistance du personnage actif entre sessions (UC-12)
+
+Le personnage actif d'un joueur est mémorisé d'une session à l'autre. UC-12 le décide
+session-local : une préférence client, non persistée.
+
+**Pourquoi Could Have** : la sélection du personnage actif ne gouverne que le focus de
+présentation, jamais un droit d'accès ; la persister n'est pas nécessaire à la vue post-accès.
+
+**Déclencheur de montée** : les retours des utilisateurs.
+
+---
+
+### Notes libres du joueur, sans personnage associé (UC-12)
+
+Un joueur prend une note `PLAYER_PRIVATE` qui n'est rattachée à aucun personnage.
+
+**Pourquoi Could Have** : toute note `PLAYER_PRIVATE` requiert un personnage associé
+(RB-12-02, RB-12-03, RB-12-10) ; UC-12 n'offre aucun emplacement de note libre.
+
+---
+
+### Synchronisation source → instance d'un scénario réutilisable (UC-13)
+
+Un diff ou une synchronisation entre le scénario source et ses instances.
+
+**Pourquoi Could Have** : une instance est une copie indépendante du scénario source
+(`Document.Instantiate`) ; UC-13 ne prévoit ni diff ni synchronisation. Le MJ décide seul de
+promouvoir à nouveau un source amélioré.
+
+---
+
+### Journal d'activité des membres (UC-11)
+
+Un historique des actions d'invitation et de gestion des membres : qui a rejoint l'espace, quand,
+et quel accès a été retiré.
+
+**Pourquoi Could Have** : le MJ gère ses membres sans journal ; la liste des membres et des
+invitations suffit à la validation du concept. US-UC-11 l'exclut du MVP (audit log non
+prioritaire).
+
+---
+
+### Notification du joueur au partage d'un document (UC-12)
+
+Le joueur est averti activement quand le MJ lui partage un nouveau document.
+
+**Pourquoi Could Have** : le joueur découvre le nouveau document en consultant sa vue ; la
+notification active n'est pas nécessaire à la vue post-accès. US-UC-12 l'exclut du MVP
+(fonctionnalité de notification non prioritaire).
+
+---
+
+### Persistance des notes d'un invité d'une session à l'autre (UC-12)
+
+Les notes `PLAYER_PRIVATE` d'un invité sans compte survivent à la fin de son `GuestAccess` et
+sont retrouvées par un nouveau lien vers le même personnage.
+
+**Pourquoi Could Have** : au MVP, ces notes sont supprimées à la fin définitive du `GuestAccess`
+(RGPD, art. 17) ; aucune note de session du joueur n'existe de toute façon au MVP (voir *Notes
+personnelles joueur*). US-UC-12 classe cette persistance Could Have, post-MVP.
+
+---
+
+### Notification au MJ à l'utilisation d'une invitation (UC-11)
+
+Le MJ est averti activement quand un joueur utilise le lien d'invitation qu'il a généré.
+
+**Pourquoi Could Have** : le MJ voit l'état de ses invitations et de ses membres dans le panneau
+membres ; la notification active n'est pas nécessaire à la validation du concept. US-UC-11
+l'exclut du MVP (fonctionnalité de notification non prioritaire).
+
+---
+
+### Récapitulatif post-session par email à l'invité (UC-09)
+
+Un récapitulatif de la session est envoyé par email au joueur invité sans compte.
+
+**Pourquoi Could Have** : l'envoi suppose une adresse email, que l'invité sans compte ne
+renseigne pas au MVP. US-UC-09 l'exclut du MVP.
+
+---
+
+### Template de vue session (UC-06)
+
+Le MJ réutilise la configuration de sa vue session d'une campagne ou d'un one-shot à l'autre.
+
+**Pourquoi Could Have** : l'auto-save de la vue session et son mode édition hors session
+suffisent au MVP ; le template n'est pas nécessaire à la validation du concept. US-UC-06
+l'exclut du MVP.
+
+---
+
+### Historique des partages (UC-08)
+
+Le MJ consulte la date à laquelle chaque document a été partagé aux joueurs.
+
+**Pourquoi Could Have** : la date de partage est tracée dans `AuditInfo` mais n'est pas
+affichée au MVP. US-UC-08 l'exclut du MVP.
+
+---
+
+### Historique des recherches récentes (UC-14)
+
+La recherche propose les requêtes récentes du MJ.
+
+**Pourquoi Could Have** : apport d'ergonomie pour les MJ fréquents, non nécessaire à la
+recherche par mot-clé du MVP. US-UC-14 l'exclut du MVP.
+
+---
+
+### Filtrage par tag en recherche (UC-14, A3)
+
+Le MJ restreint les résultats de la recherche aux documents portant un tag donné (UC-14 A3).
+
+**Pourquoi Could Have** : la recherche par mot-clé suffit au MVP ; le filtrage par tags est un
+usage complémentaire et différé des tags, à évaluer en phase suivante selon les usages réels
+(voir § UC-14). Les tags eux-mêmes restent disponibles au MVP pour l'organisation du MJ (UC-04).
 
 ---
 
@@ -507,11 +655,20 @@ n'ajoute aucune valeur différenciante.
 
 ---
 
+### Rôle GM — co-MJ (UC-F08)
+
+**Pourquoi non** : aucun use case du MVP ne décrit comment un membre devient GM ; le MVP n'attribue que les rôles `OWNER` et `PLAYER` (entrée de backlog 0026). Le modèle de domaine garde le rôle. Détail et condition de retour : [exclusions, UC-F08](exclusions.md#uc-f08--rôle-gm-co-mj).
+
+---
+
 ### Relations entre documents typés (UC-F06 — phase 1)
 
 **Pourquoi non** : nécessite que les types de document built-in soient stables et adoptés.
 La complexité UX des relations bidirectionnelles est élevée. À construire après validation
 de l'adoption des types de document.
+
+Les **backlinks** (liste des documents qui pointent vers un document donné) font partie de ce
+périmètre : ils sont hors MVP, avec les relations structurées qui les remplacent.
 
 **Prérequis technique à ne pas rater** : le schéma `Document` doit prévoir
 `documentTypeId` et `properties` (structure de données structurée) dès le MVP pour éviter une migration
@@ -573,8 +730,7 @@ UC-01 (Mode local)
                     └── UC-09 (Accès joueur)
 
 UC-10 (Compte — Must)  ← Must car UC-08/09 (Must) en dépendent
-  ├── UC-11 (Membres — Should)
-  │     └── UC-09 (liens de session)
+  ├── UC-11 (Membres permanents — Should)
   ├── UC-12 (Vue joueur — Should)
   └── UC-13 (One-shot — Should, hors première livraison) ── dépend aussi de UC-02, UC-03
             ↑ infrastructure fournie par [espace PERSONAL] ; interface bibliothèque post-MVP
