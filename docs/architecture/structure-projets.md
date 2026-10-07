@@ -1,4 +1,6 @@
-# Structure des projets .NET et périmètre du mode local TypeScript
+# Structure de la solution
+
+> **Nature** : Document dérivé : il porte la structure concrète des projets et ne tranche rien qu'une décision ne fixe déjà. Un point qu'aucune décision ne règle est marqué à décider.
 
 > Ce document est la source de vérité de la structure concrète des projets .NET (granularité, noms, responsabilités)
 > et du périmètre du mode local TypeScript dans le navigateur.
@@ -6,7 +8,7 @@
 
 ---
 
-## 1 — Objet et sources
+## 1. Objet et sources
 
 Ce document décrit comment les limites architecturales DDD se concrétisent dans la structure physique des projets .NET
 et comment le mode local TypeScript s'inscrit dans l'architecture globale.
@@ -17,7 +19,7 @@ qui échafaude ou navigue la solution.
 
 ---
 
-## 2 — Principe structurant : Clean Architecture et inversion des dépendances
+## 2. Principe structurant
 
 L'architecture suit le principe de **Clean Architecture** (Robert C. Martin) avec **inversion des dépendances** :
 

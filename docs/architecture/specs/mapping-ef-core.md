@@ -112,3 +112,9 @@ Ces deux prédicats sont « structurels et indépendants de l'appelant » et por
 | 4 | Forme structurée de `content` par valeur de `BlockType` (non modélisée — mais `jsonb` libre est un choix déjà acté, pas un trou de mapping) | Décision actée, forme non modélisée |
 | 5 | Câblage technique des query filters P2/P3 et du contournement sur le chemin de restauration | Renvoyé à B5.1 |
 | 8 | Mécanisme exact de propagation de l'invariant soft-delete par jointure aux tables enfant | Renvoyé à B5.1 |
+
+---
+
+## Traçabilité
+
+Les sources sont citées au fil du document, à chaque règle (mention « Décision reportée » suivie de l'ADR et de ses lignes).

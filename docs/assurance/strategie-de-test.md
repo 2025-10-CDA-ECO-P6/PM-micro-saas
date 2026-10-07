@@ -1,4 +1,4 @@
-# Cahier de stratégie de test et de recette — Haversack
+# Stratégie de test
 
 | Champ | Valeur |
 |---|---|
@@ -48,7 +48,7 @@ Chaque case de la table de recette porte un identifiant `CR-UCNN-KK` où `NN` es
 
 ---
 
-## 2. Approche de test
+## 2. Approche
 
 **Stratégie fondée sur le risque.** Les zones à fort enjeu du corpus reçoivent la couverture la plus dense : confidentialité MJ/joueur (séparation `PLAYER_PRIVATE` / `GM_ONLY` / `PUBLIC`, NFR-CONF-01), autorisation (chemins de lecture filtrés, IDOR), authentification (cycle de vie des tokens, réinitialisation), migration de données (mode local → cloud, irréversible pour le MJ en cas de perte), temps réel (anti-fuite SignalR après révocation). Une zone à plus faible enjeu (ex. réordonnancement de dossiers) reçoit une couverture proportionnée, sans sur-instrumentation.
 
@@ -64,7 +64,7 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 
 ### 3.1 Unitaire (domaine / invariants métier)
 
-**Objet** — Vérifier les invariants du modèle de domaine indépendamment de toute infrastructure (base de données, réseau, interface).
+**Objet** : Vérifier les invariants du modèle de domaine indépendamment de toute infrastructure (base de données, réseau, interface).
 
 **Périmètre** :
 - Machine d'états `Session` unidirectionnelle `LIVE → CLOSED → ARCHIVED` : chaque transition est irréversible, `ARCHIVED` refuse toute modification (`docs/domaine/session-conduct/context.md`).
@@ -75,13 +75,13 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 - `Document.Instantiate()` : copie profonde indépendante d'un template — la source reste intacte, la modification d'une instance n'affecte pas la source.
 - Exclusivité personnage ↔ membership actif.
 
-**Critères d'entrée** — Le modèle de domaine (agrégats `Session`, `Document`, `Space`, `Folder`) est implémenté en C# et compile ; les règles métier ci-dessus sont traçables à une règle nommée du corpus.
+**Critères d'entrée** : Le modèle de domaine (agrégats `Session`, `Document`, `Space`, `Folder`) est implémenté en C# et compile ; les règles métier ci-dessus sont traçables à une règle nommée du corpus.
 
-**Critères de sortie** — Chaque règle métier listée ci-dessus dispose d'au moins un test unitaire vert ; aucune règle listée n'est couverte uniquement par un niveau supérieur (intégration/e2e).
+**Critères de sortie** : Chaque règle métier listée ci-dessus dispose d'au moins un test unitaire vert ; aucune règle listée n'est couverte uniquement par un niveau supérieur (intégration/e2e).
 
 ### 3.2 Intégration
 
-**Objet** — Vérifier les chemins traversant plusieurs composants applicatifs ou l'accès aux données.
+**Objet** : Vérifier les chemins traversant plusieurs composants applicatifs ou l'accès aux données.
 
 **Périmètre** :
 - Query filters EF Core globaux P2/P3 (`spaces.deleted_at`, `documents.is_deleted`) actifs sur **tous** les chemins de lecture (énumération, lecture par ID, projections) → test nommé **B5.1**.
@@ -92,13 +92,13 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 - Contrat OpenAPI des endpoints d'authentification, codes de réponse 400/401/403/429 → **B1.10** — le détail de certains codes (403 vs 404 sur une ressource non autorisée, schéma exact du 429) reste un point ouvert (§12, PO-13).
 - Données invité persistées sur un espace vivant (`guest_accesses.display_name` hors fenêtre de purge) → **B1.6**.
 
-**Critères d'entrée** — Les contrats applicatifs cités (`IResourceAccessPolicy`, `ITokenValidator`, etc.) sont déclarés ; un environnement EF Core + PostgreSQL de test est disponible.
+**Critères d'entrée** : Les contrats applicatifs cités (`IResourceAccessPolicy`, `ITokenValidator`, etc.) sont déclarés ; un environnement EF Core + PostgreSQL de test est disponible.
 
-**Critères de sortie** — B5.1 couvre tous les chemins de lecture énumérés ; B1.5 couvre les 4 contrats d'authentification cités ; B1.10 couvre les codes de réponse contractuels des endpoints d'authentification ; B1.6 couvre la persistance des données invité sur espace vivant ; P7 couvre le dry-run et le rapport de rejets ; aucune divergence REST/SignalR détectée sur le jeu de cas testé.
+**Critères de sortie** : B5.1 couvre tous les chemins de lecture énumérés ; B1.5 couvre les 4 contrats d'authentification cités ; B1.10 couvre les codes de réponse contractuels des endpoints d'authentification ; B1.6 couvre la persistance des données invité sur espace vivant ; P7 couvre le dry-run et le rapport de rejets ; aucune divergence REST/SignalR détectée sur le jeu de cas testé.
 
 ### 3.3 e2e
 
-**Objet** — Vérifier les parcours complets, y compris les transitions de contexte réseau.
+**Objet** : Vérifier les parcours complets, y compris les transitions de contexte réseau.
 
 **Périmètre** :
 - Hors connexion intégral : préparation et session sans réseau, durabilité inter-sessions, aucune perte silencieuse de données locales accompagnée des bandeaux requis, résilience à une perte réseau cloud passagère.
@@ -108,27 +108,27 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 - Runtime SignalR (groupes de diffusion, révocation en session, reconnexion), authentification du canal invité → **B1.7** — le test anti-fuite associé (cas de référence révocation) relève du niveau Sécurité (§3.5, **B8.2**).
 - Parcours joueur complet : accès sans compte via lien de session, puis bascule invité → compte sans perte d'accès.
 
-**Critères d'entrée** — Le mode local (store IndexedDB) et le cloud (EF Core) sont tous deux opérationnels dans l'environnement de test ; un jeu de données d'export versionné est disponible comme fixture.
+**Critères d'entrée** : Le mode local (store IndexedDB) et le cloud (EF Core) sont tous deux opérationnels dans l'environnement de test ; un jeu de données d'export versionné est disponible comme fixture.
 
-**Critères de sortie** — Le parcours hors connexion intégral s'exécute sans appel réseau observé ; la migration bout-en-bout produit un rapport de rejets exploitable sur au moins un cas d'échec ; le parcours joueur sans compte → compte ne perd aucun accès observé ; B1.7 couvre le runtime SignalR (groupes, révocation, reconnexion) sans divergence avec le pipeline REST.
+**Critères de sortie** : Le parcours hors connexion intégral s'exécute sans appel réseau observé ; la migration bout-en-bout produit un rapport de rejets exploitable sur au moins un cas d'échec ; le parcours joueur sans compte → compte ne perd aucun accès observé ; B1.7 couvre le runtime SignalR (groupes, révocation, reconnexion) sans divergence avec le pipeline REST.
 
 ### 3.4 Test d'architecture (CI)
 
-**Objet** — Vérifier les frontières structurelles du code, en remplacement de la discipline de revue de code jugée insuffisante en contexte d'équipe restreinte.
+**Objet** : Vérifier les frontières structurelles du code, en remplacement de la discipline de revue de code jugée insuffisante en contexte d'équipe restreinte.
 
 **Périmètre** :
 - Frontières des 4 bounded contexts — livrable du jalon « Socle », sous sa forme initiale (frontières BC uniquement).
 - Définition exhaustive du test (liste complète des handlers scopés/non-scopés, couverture des contrats `ITokenValidator`/`ITokenDenylist`) → **B3.2**, renvoi ultérieur au jalon « Cloud + migration ».
 
-**Critères d'entrée** — Le squelette Domain/Application (4 bounded contexts en frontières logiques) existe.
+**Critères d'entrée** : Le squelette Domain/Application (4 bounded contexts en frontières logiques) existe.
 
-**Critères de sortie** — Le test échoue si une référence traverse une frontière de bounded context non autorisée ; il tourne en pipeline CI à chaque build.
+**Critères de sortie** : Le test échoue si une référence traverse une frontière de bounded context non autorisée ; il tourne en pipeline CI à chaque build.
 
 **Précision de périmètre** : ce niveau n'apparaît pas dans le cahier de recette par use case (§10) — il est adossé au jalon « Socle » (frontière structurelle des bounded contexts), non rattachable à un use case particulier.
 
 ### 3.5 Sécurité (adversarial)
 
-**Objet** — Vérifier les scénarios d'attaque et les fuites de confidentialité.
+**Objet** : Vérifier les scénarios d'attaque et les fuites de confidentialité.
 
 **Périmètre** :
 - IDOR (accès à une ressource par identifiant sans autorisation) → **B5.2**.
@@ -140,13 +140,13 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 - Tokens de réinitialisation de mot de passe : borne dure ≤ 15 min, usage unique, invalidation des tokens précédents.
 - Token `GuestAccess` jamais transmis en query-string ni journalisé (source : roadmap §3.6 / ADR-004 — pas les US).
 
-**Critères d'entrée** — Les contrats d'autorisation et d'authentification sont câblés (pas seulement déclarés) ; un jeu de comptes de test multi-rôles est disponible (MJ, joueur, invité).
+**Critères d'entrée** : Les contrats d'autorisation et d'authentification sont câblés (pas seulement déclarés) ; un jeu de comptes de test multi-rôles est disponible (MJ, joueur, invité).
 
-**Critères de sortie** — Le test anti-fuite B8.2 couvre au minimum le cas de référence « push vers un invité après révocation » → attendu interdit ; aucun accès `PLAYER_PRIVATE` non-auteur n'est observé sur le jeu de cas testé, y compris pour `OWNER`/`GM`.
+**Critères de sortie** : Le test anti-fuite B8.2 couvre au minimum le cas de référence « push vers un invité après révocation » → attendu interdit ; aucun accès `PLAYER_PRIVATE` non-auteur n'est observé sur le jeu de cas testé, y compris pour `OWNER`/`GM`.
 
 ### 3.6 Axe transverse — Accessibilité (dérivé NFR-ACC-01→04)
 
-**Objet** — Vérifier les exigences d'accessibilité dérivées des NFR-ACC-01 à 04.
+**Objet** : Vérifier les exigences d'accessibilité dérivées des NFR-ACC-01 à 04.
 
 **Périmètre** :
 - Parcours clavier complet, MJ et joueur, sans dispositif de pointage (NFR-ACC-01).
@@ -155,15 +155,15 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 - Lisibilité en conditions de faible éclairage — contraste texte/arrière-plan (NFR-ACC-03).
 - Tailles de texte adaptées à une lecture rapide en session (NFR-ACC-04).
 
-**Critères d'entrée** — L'interface Angular des parcours MJ et joueur est implémentée pour le périmètre testé.
+**Critères d'entrée** : L'interface Angular des parcours MJ et joueur est implémentée pour le périmètre testé.
 
-**Critères de sortie** — Chaque parcours clavier listé est exécutable sans dispositif de pointage ; chaque changement d'état pertinent déclenche une annonce assistive observable.
+**Critères de sortie** : Chaque parcours clavier listé est exécutable sans dispositif de pointage ; chaque changement d'état pertinent déclenche une annonce assistive observable.
 
 **Précision de calibrage** : le référentiel WCAG 2.1 niveau AA est cité par les NFR sources comme **calibrage d'implémentation** — il oriente la réalisation sans se substituer au besoin produit formulé dans les NFR. Ce document ne convertit pas WCAG 2.1 AA en critère de recette produit ; il reste un repère technique pour l'implémentation.
 
 ### 3.7 Axe transverse — Réactivité perçue (dérivé NFR-PERF-01→04)
 
-**Objet** — Vérifier les exigences de réactivité perçue dérivées des NFR-PERF-01 à 04, en observation qualitative.
+**Objet** : Vérifier les exigences de réactivité perçue dérivées des NFR-PERF-01 à 04, en observation qualitative.
 
 **Périmètre** :
 - Fluidité de la navigation en session (NFR-PERF-01).
@@ -171,9 +171,9 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 - Continuité sans interruption perceptible pendant une session (NFR-PERF-03).
 - Résultats de recherche perçus comme immédiats (NFR-PERF-04).
 
-**Critères d'entrée** — Le parcours ou la fonctionnalité concernée est implémenté en environnement représentatif (pas nécessairement en charge).
+**Critères d'entrée** : Le parcours ou la fonctionnalité concernée est implémenté en environnement représentatif (pas nécessairement en charge).
 
-**Critères de sortie** — Observation qualitative documentée (fluidité perçue, absence d'interruption observée, réactivité jugée immédiate) pour chacun des 4 NFR ; aucun seuil chiffré n'est exigé pour clore ce niveau.
+**Critères de sortie** : Observation qualitative documentée (fluidité perçue, absence d'interruption observée, réactivité jugée immédiate) pour chacun des 4 NFR ; aucun seuil chiffré n'est exigé pour clore ce niveau.
 
 **Marqueur explicite** : aucun seuil chiffré (ms, percentile p95) n'est dérivable du corpus pour ces quatre exigences — l'instrumentation produit (télémétrie) n'a pas fixé de valeur de décision. Tout critère de recette perf chiffré est un point ouvert (§12), jamais une valeur inventée ici.
 
@@ -194,7 +194,7 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 
 ---
 
-## 5. Environnements & données de test
+## 5. Environnements & données
 
 **Mode local** — Store IndexedDB navigateur sans serveur ; object stores définis par ADR-017 §1.1 § Object stores, un périmètre plus large que celui du payload de migration décrit par ADR-016 §1.2 § Périmètre sérialisé. `navigator.storage.persist()` accordé et refusé-best-effort — les deux branches sont à simuler. CSP `connect-src 'self'` observable (test « aucun appel réseau »).
 
@@ -212,7 +212,7 @@ Cinq niveaux de test et deux axes transverses dérivés des NFR. Pour chacun : O
 
 ---
 
-## 6. Organisation, rôles & responsabilités
+## 6. Rôles
 
 Table calibrée pour une équipe restreinte (développeur·se solo ou équipe réduite prenant en charge implémentation et recette).
 
@@ -230,7 +230,7 @@ Cette table reste factuelle : elle ne présuppose ni rôle QA dédié ni outilla
 
 ---
 
-## 7. Processus de test & gestion des anomalies
+## 7. Processus & anomalies
 
 **Cycle de vie d'une anomalie** : `Nouvelle → Confirmée → Corrigée → Vérifiée → Close`.
 
@@ -259,7 +259,7 @@ Cette table reste factuelle : elle ne présuppose ni rôle QA dédié ni outilla
 
 ---
 
-## 8. Critères d'entrée/sortie globaux & Definition of Done de test
+## 8. Critères globaux & DoD de test
 
 **Critères d'entrée en recette** :
 - Le build du jalon concerné est déployable sur l'environnement de recette.
@@ -339,6 +339,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 ### UC-01 — Mode local sans compte (Must / Should)
 
 **Environnement(s)** : mode local (US-01-05 couvre la transition local → cloud).
+**Sources** : User stories
 **Sources US** : US-01-01, US-01-02, US-01-04, US-01-05, US-01-06, US-01-07, US-01-09.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -373,6 +374,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 ### UC-02 — Créer un espace de jeu (Must / Should)
 
 **Environnement(s)** : local + cloud (FREE/PRO). L'espace `PERSONAL` préexiste dans les deux cas.
+**Sources** : User stories
 **Sources US** : US-02-00, US-02-01, US-02-03. (US-02-02, US-02-04 : post-MVP, dépendent UC-13 — non recettées ici.)
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -400,6 +402,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 ### UC-03 — Structurer un scénario (Must / Should)
 
 **Environnement(s)** : contexte d'espace (local ou cloud).
+**Sources** : User stories
 **Sources US** : US-03-01, US-03-02, US-03-03, US-03-04, US-03-05, US-03-06, US-03-07.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -433,6 +436,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 ### UC-04 — Gérer les documents d'un espace (Must / Should / Could)
 
 **Environnement(s)** : contexte d'espace (campagne ou personnel).
+**Sources** : User stories
 **Sources US** : US-04-01, US-04-02, US-04-03, US-04-04, US-04-05, US-04-06 (hors MVP : seul CR-UC04-18 en dérive).
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -464,6 +468,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 ### UC-05 — Organiser par dossiers (Must / Should)
 
 **Environnement(s)** : contexte d'espace (local ou cloud).
+**Sources** : User stories
 **Sources US** : US-05-01, US-05-02, US-05-03, US-05-04, US-05-05.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -486,6 +491,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 ### UC-06 — Vue session (Must / Should)
 
 **Environnement(s)** : session `LIVE`/`CLOSED`/`ARCHIVED` ; MJ utilisable en mode local ; vue joueur nécessite compte ou accès invité (pas de mode local côté joueur).
+**Sources** : User stories
 **Sources US** : US-06-01 à US-06-10.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -527,6 +533,7 @@ Cette section produit une table de recette par use case du MVP. Chaque case de r
 ### UC-07 — Créer à la volée (Must / Should)
 
 **Environnement(s)** : session LIVE (US-07-01) et CLOSED (US-07-02) ; impossible en ARCHIVED ; mode local possible ; réservé au MJ.
+**Sources** : User stories
 **Sources US** : US-07-01, US-07-02.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -559,6 +566,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 ### UC-08 — Partager une information aux joueurs (Must)
 
 **Environnement(s)** : cloud ; session LIVE requise pour les cas de propagation temps réel.
+**Sources** : User stories
 **Sources US** : US-08-01, US-08-02, US-08-03.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -581,6 +589,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 ### UC-09 — Accéder à une session en tant que joueur (Must / Should)
 
 **Environnement(s)** : cloud ; lien ponctuel (`GuestAccess`) ou permanent (`Member`) ; session LIVE ; comptes FREE/PRO.
+**Sources** : User stories
 **Sources US** : US-09-01, US-09-02, US-09-03, US-09-04.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -608,6 +617,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 ### UC-10 — Créer un compte et synchroniser dans le cloud (Must — zone authentification sensible)
 
 **Environnement(s)** : cloud ; local avec/sans données ; email + mot de passe ou connexion fédérée (Google/Discord) ; `emailVerified` vrai/faux ; statuts `ACTIVE`/`SUSPENDED`/`DELETED`.
+**Sources** : User stories
 **Sources US** : US-10-01 à US-10-06.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -644,6 +654,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 ### UC-11 — Gérer les membres d'une campagne (Should)
 
 **Environnement(s)** : cloud ; MJ propriétaire (`OWNER`) ; `GuestAccess` et `Member`.
+**Sources** : User stories
 **Sources US** : US-11-01, US-11-02, US-11-03, US-11-04.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -672,6 +683,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 ### UC-12 — Consulter sa campagne en tant que joueur, vue post-accès (Should — zone IDOR/isolation)
 
 **Environnement(s)** : cloud ; `GuestAccess` ou `Member` ; périmètre SESSION ou SPACE ; 0/1/N personnages associés.
+**Sources** : User stories
 **Sources US** : US-12-01, US-12-02.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -696,6 +708,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 > **Recette différée** : ce use case est **Should Have, hors première livraison**. UC-13 conditionne le parcours express one-shot d'UC-02 §A1 (US-02-02/US-02-04), lui-même reporté tant que UC-13 n'est pas livré. Les cas suivants sont produits pour tracer la matière disponible ; ils ne sont pas exigibles à la livraison MVP.
 
 **Environnement(s)** : cloud ou local ; espace `PERSONAL`.
+**Sources** : User stories
 **Sources US** : US-13-01, US-13-02, US-13-03.
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
@@ -716,6 +729,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 ### UC-14 — Rechercher rapidement une information (Should)
 
 **Environnement(s)** : contexte d'espace + vue session ; visibilité MJ (GM_ONLY + PUBLIC) vs joueur (PUBLIC seul).
+**Sources** : User stories
 **Sources US** : US-14-01, US-14-02, US-14-03.
 
 **Note MVP** : la recherche full-text sur le contenu des blocs et les types personnalisés sont post-MVP ; au MVP, la recherche porte sur le titre uniquement, sur les 8 types built-in.
@@ -743,6 +757,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 > **Tous les cas de cette section sont marqués « dérivé de RB-15-xx (pas de Gherkin) — post-MVP »**. UC-15 est l'amont source-de-vérité de ce comportement (le domaine `space-management.md` en est l'aval documenté) ; aucune user story ni scénario Gherkin ne porte ce use case.
 
 **Environnement(s)** : cloud ; déclencheur = événement de facturation `AccountTierChanged` ; jamais d'action MJ directe.
+**Sources** : User stories (aucune pour UC-15 ; dérivé RB-15-01..06).
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
 |---|---|---|---|---|---|---|
@@ -776,7 +791,9 @@ Suite de la sous-section « Cas transverses » ci-dessus (CR-TRANS-01 à 06). Ca
 
 ---
 
-## 11. Matrice de traçabilité (les 15 use cases)
+## 11. Matrice de traçabilité
+
+Matrice des 15 use cases.
 
 | UC | Intitulé | Statut MVP | US couvertes | Plage de cas de recette | NFR | Tests nommés | Niveaux |
 |---|---|---|---|---|---|---|---|
@@ -824,7 +841,7 @@ Suite de la sous-section « Cas transverses » ci-dessus (CR-TRANS-01 à 06). Ca
 
 ---
 
-## 13. Métriques & reporting
+## 13. Métriques & contrôle d'intégrité des citations
 
 Les métriques ci-dessous sont définies **qualitativement** — tout seuil chiffré (taux cible, pourcentage plancher) est un point ouvert (§12), jamais une valeur inventée ici.
 

@@ -143,7 +143,9 @@ Ce squelette existe pour que la rédaction juriste dispose, section par section,
 
 ---
 
-## Points de qualification préalables — non tranchés ici
+## Ce que ce document ne fait pas
+
+### Points de qualification préalables — non tranchés ici
 
 Avant même de rédiger un DPA définitif, deux qualifications juridiques amont conditionnent son périmètre et ne sont **pas tranchées par la conception** :
 
@@ -154,7 +156,7 @@ Ces deux points sont consolidés dans le cadrage de validation pré-lancement EU
 
 ---
 
-## Renvois croisés
+## Renvois
 
 | Sujet | Source conception |
 |---|---|

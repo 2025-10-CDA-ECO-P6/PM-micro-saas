@@ -139,4 +139,4 @@ Après chaque tâche « backlog », le commit de départ de `conform-verify` pas
 |---|---|---|
 | `backlog-besoin` | le commit « docs(conformite-corpus): applique le backlog de la couche besoin » | `e99aa88` |
 | `backlog-domaine` | le commit « docs(conformite-corpus): applique le backlog de la couche domaine » | `dca4540` |
-| `backlog-interface` | le commit « docs(conformite-corpus): applique le backlog de la couche interface » | inscrit par la tâche `gabarits-decisions-architecture-assurance` |
+| `backlog-interface` | le commit « docs(conformite-corpus): applique le backlog de la couche interface » | `4ce7faa` |

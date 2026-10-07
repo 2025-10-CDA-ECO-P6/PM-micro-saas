@@ -2,6 +2,7 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-10
+- **Nature** : mixte
 
 > **Annotation du 2026-06-12** — Renommage `campaign_id`→`space_id`, racine `campaigns`→`spaces`, saga `CampaignDeleted`→`SpaceDeleted`, granularité transactionnelle « par campagne »→« par espace » (ADR-018). Précision : l'espace `PERSONAL` est inclus dans le périmètre sérialisé et soumis aux mêmes règles transactionnelles que les autres espaces. Voir §1.2, §3.1 et §4.
 

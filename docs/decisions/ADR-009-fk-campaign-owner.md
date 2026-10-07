@@ -4,6 +4,7 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
+- **Nature** : conception
 - **Reformalisation de** : décision antérieure connue sous « CRIT-04 » / « ADR-12 » (fichier supprimé lors des remises à zéro)
 
 ---

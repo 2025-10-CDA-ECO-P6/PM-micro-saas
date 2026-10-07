@@ -47,6 +47,7 @@ Le plan calculé relève, sur tout le corpus, 247 sections manquantes ou mal pla
 - `docs/decisions/**`
 - `docs/architecture/**`
 - `docs/assurance/**`
+- hors couche, pour la seule réécriture des citations littérales de titres renommés (contrainte : « les liens vers l'ancien titre sont réécrits dans le même commit ») : `docs/projet/conventions-dod.md`, `docs/projet/plan-de-travail.md`
 
 ## Revue
 
@@ -72,9 +73,24 @@ Le diff contre le gabarit : forme seulement, aucune perte de fond ?
 
 ## Notes de dev
 
-
+- Trois lots parallèles : les ADR et les documents d'architecture générale ; les specs d'architecture et les cadres de conformité ; la stratégie de test et le dossier de sécurité. 111 écarts de gabarit, dont 109 corrigés.
+- `conform-verify-complet.sh d6bbafd --declared docs/workstreams/conformite-corpus/declares-gabarits-decisions-architecture-assurance.txt` : code 0.
+- Natures des ADR : prises de la colonne Nature de `docs/decisions/README.md` et des bandeaux. ADR-016, 017 et 018 valent « mixte », la valeur fermée la plus proche de « mixte (dominante pré-implémentation) ». Aucun statut d'ADR ne change : le complément du statut d'ADR-018 passe dans un bandeau.
+- Citations littérales des titres renommés, réécrites hors couche dans `docs/projet/conventions-dod.md` et `docs/projet/plan-de-travail.md`.
+- Décisions de l'orchestrateur, prises par délégation de l'opérateur :
+  - **§9 « Critères de sortie par jalon » de la stratégie de test gardé en place** ; le contrôle le signale, car la section revient au propriétaire des jalons (`build-roadmap`). **Justification** : la roadmap de build porte déjà des critères de sortie par jalon. Déplacer le §9 fusionnerait deux définitions, ce qui relève du fond et sort du contrat, et renumeroterait les §10 à §13, cités partout. Le doublon va à la tâche 15 (doublons) ;
+  - **UC-15, champ Sources** : « User stories (aucune pour UC-15 ; dérivé RB-15-01..06) », que le contrôle signale encore. **Justification** : « User stories » nu affirmerait des stories qui n'existent pas, et `SOUS-SPÉCIFIÉ` cacherait un fait connu ;
+  - **sections « Traçabilité » des specs** : une phrase de renvoi vers les sources citées au fil du corps, et non `SOUS-SPÉCIFIÉ`. **Justification** : la décision 12 de l'opérateur ne vaut que pour un contenu écrit nulle part.
+- Restes, différés : les sections 3 à 8 de `structure-projets.md` gardent leurs titres hors gabarit (une trentaine de citations littérales) ; l'index des ADR garde d'anciens libellés (« campagne ») ; les lignes « Source » de `structure-projets.md`, que la recette demande, ne sont pas contrôlées.
 
 ## Notes de revue
 
+Revue « forme seulement, aucune perte de fond ? », 2026-10-07 : six constats.
 
+- `fix` : `plan-de-travail.md:1161` citait l'ancien titre du §8 de la stratégie de test ; la citation est réécrite.
+- `fix` : le bandeau d'ADR-018 portait un libellé « Nature » qui contredisait l'en-tête ; il devient « Statut d'origine : … ».
+- Gardé : « **Sources** : User stories » au-dessus de « **Sources US** ». **Justification** : le contrôle exige cette valeur exacte, et renommer la ligne existante ferait revenir l'écart sur les 14 UC.
+- Optionnels gardés : les regroupements « Pourquoi ce document existe » et « Ce que ce document ne fait pas » des cadres de conformité ; la numérotation mixte de `structure-projets.md` ; la description de `architecture/README.md`.
+- `deferred` : `decisions-en-attente.md:167` décrit l'ancien titre du §5 du dossier de sécurité.
 
+Répartition : 2 `fix`, 4 gardés, 1 `deferred`.

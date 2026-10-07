@@ -5,7 +5,7 @@
 
 ---
 
-## Pourquoi cette roadmap existe
+## Pourquoi ce document existe
 
 Le corpus de conception (ADR-012, ADR-013, ADR-018) a identifié, au fil des décisions RGPD, une série de points qui **ne peuvent pas être tranchés en conception** — soit parce qu'ils relèvent d'une qualification juridique (Art. 8, Art. 28, mise en balance Art. 6§1(f), Art. 17§3(e)), soit parce qu'ils nécessitent un document contractuel (DPA) ou un document d'information (politique de confidentialité, mentions Art. 13/14) que la conception ne produit pas.
 
@@ -118,7 +118,9 @@ L'ordre proposé ci-dessous suit une logique de dépendance : un jalon en amont 
 
 ---
 
-## Points connexes non repris comme jalons
+## Ce que ce document ne fait pas
+
+### Points connexes non repris comme jalons
 
 Au-delà des jalons 1-6 ci-dessus, plusieurs points connexes de conformité RGPD, déjà identifiés par le corpus de conception, ne sont pas repris comme jalons distincts de cette roadmap (hors périmètre du DPA/politique de confidentialité au sens strict), mais leur issue peut affecter la rédaction des jalons 3-4 :
 
@@ -131,7 +133,7 @@ Cette roadmap ne reprend pas ces points en jalons distincts, mais signale leur d
 
 ---
 
-## Renvois croisés
+## Renvois
 
 | Jalon | Source(s) conception |
 |---|---|

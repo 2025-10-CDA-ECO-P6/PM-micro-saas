@@ -1,12 +1,12 @@
-# Dossier de sécurité — Haversack
+# Dossier de sécurité
 
 ## Statut du document
 
-**Nature.** Ce dossier consolide, dans un format unique destiné à une lecture externe (RSSI, auditeur, conseil juridique, équipe de construction), la posture de sécurité issue du corpus de conception d'Haversack — décisions d'architecture (ADR), spécifications fonctionnelles et non fonctionnelles, contrats d'API. **Ce dossier ne crée aucune décision de sécurité** : il consolide, structure et met en relation des décisions actées ailleurs. Chaque contre-mesure, chaque menace et chaque point ouvert porte l'ancre exacte du document source qui l'établit.
+**Nature** : Ce dossier consolide, dans un format unique destiné à une lecture externe (RSSI, auditeur, conseil juridique, équipe de construction), la posture de sécurité issue du corpus de conception d'Haversack — décisions d'architecture (ADR), spécifications fonctionnelles et non fonctionnelles, contrats d'API. **Ce dossier ne crée aucune décision de sécurité** : il consolide, structure et met en relation des décisions actées ailleurs. Chaque contre-mesure, chaque menace et chaque point ouvert porte l'ancre exacte du document source qui l'établit.
 
-**Portée temporelle.** Ce document est une consolidation pré-construction (« pré-build »). Il devra être confirmé, complété et daté à l'entrée en phase de construction, en particulier sur les points marqués `[À TRANCHER]` et sur les validations juridiques identifiées en section 5.3.
+**Portée temporelle** : Ce document est une consolidation pré-construction (« pré-build »). Il devra être confirmé, complété et daté à l'entrée en phase de construction, en particulier sur les points marqués `[À TRANCHER]` et sur les validations juridiques identifiées en section 5.3.
 
-**Portée fonctionnelle.** Haversack est une plateforme de jeu de rôle narratif multi-joueurs. Le présent dossier couvre l'ensemble des mécanismes de sécurité applicative et de conformité RGPD documentés à ce stade : authentification, autorisation, canal temps réel, stockage local, migration, effacement de données et télémétrie. Il ne couvre pas les aspects d'infrastructure (hébergement, réseau, durcissement système) qui ne font pas partie du corpus consolidé ici.
+**Portée fonctionnelle** : Haversack est une plateforme de jeu de rôle narratif multi-joueurs. Le présent dossier couvre l'ensemble des mécanismes de sécurité applicative et de conformité RGPD documentés à ce stade : authentification, autorisation, canal temps réel, stockage local, migration, effacement de données et télémétrie. Il ne couvre pas les aspects d'infrastructure (hébergement, réseau, durcissement système) qui ne font pas partie du corpus consolidé ici.
 
 ---
 
@@ -56,7 +56,7 @@ Neuf surfaces d'attaque sont identifiées dans le corpus de conception.
 
 ---
 
-## 3. Modèle de menaces (STRIDE) par surface
+## 3. Modèle de menaces (STRIDE)
 
 Cette section ne présente, par surface, que les catégories STRIDE effectivement couvertes par une contre-mesure documentée dans le corpus. Une catégorie non traitée positivement par une mesure identifiée est signalée comme telle et renvoyée à la section 5.
 
@@ -246,7 +246,7 @@ La topologie scale-out multi-instances actée par ADR-004 (§Compléments post-r
 
 ---
 
-## 5. Points ouverts et dette de sécurité
+## 5. Points ouverts et dette
 
 ### 5.1 Dettes nommées et valeurs renvoyées à l'implémentation
 

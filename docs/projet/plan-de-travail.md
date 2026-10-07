@@ -1158,7 +1158,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | HORS MAILLE — nature : renseignement de la colonne Verdict d'un document de recette — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | M — 0 modules, 3 renvois |
-| Critères d'acceptation | `cahier-strategie-test-et-recette.md §8 — Critères d'entrée/sortie globaux & Definition of Done de test` ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only » (4 critères) ; `roadmap-entree-build.md §3.2 § Critères de sortie factuels` (4 critères) |
+| Critères d'acceptation | `cahier-strategie-test-et-recette.md §8. Critères globaux & DoD de test` ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only » (4 critères) ; `roadmap-entree-build.md §3.2 § Critères de sortie factuels` (4 critères) |
 | Code de renvoi | — |
 | Point d'attention | `cahier-strategie-test-et-recette.md §13 § Contrôle d'intégrité des citations` impose, à chaque jalon, de vérifier que chaque ligne `CR-` cite un scénario Gherkin ou une RB réel et à jour dans le corpus source. |
 

@@ -108,3 +108,9 @@ Points ouverts additionnels :
 
 - Comportement de `SetProperties()` sur un `Document` sans `documentTypeId` — non fixé par ADR-002.
 - Contenu exact de la validation « permissive par défaut » pour les types custom/modifiés — le principe est acté (ADR-002:60), sa forme précise ne l'est pas.
+
+---
+
+## Traçabilité
+
+Les sources sont citées au fil du document, à chaque règle (mention « Décision reportée » suivie de l'ADR et de ses lignes).

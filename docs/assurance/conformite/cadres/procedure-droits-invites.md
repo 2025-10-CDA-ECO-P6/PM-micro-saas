@@ -11,7 +11,9 @@
 
 ---
 
-## Périmètre de cette procédure
+## Pourquoi ce document existe
+
+### Périmètre de cette procédure
 
 **Couvert par ce document** :
 - Le canal de saisine d'une demande de droits par un invité sans compte, et les données minimales que l'invité doit fournir pour que le support puisse instruire sa demande.
@@ -113,16 +115,6 @@ Ce cas ne concerne pas un invité `GuestAccess`, mais relève de la même procé
 
 ---
 
-## 6. Renvois croisés
-
-| Sujet | Référence |
-|---|---|
-| Droits invités, base légale du `display_name`, information Art. 13, rétention `GuestAccess` | **ADR-013** |
-| Procédure d'effacement de compte, délai Art. 12§3, mécanisme de notification (§8) | **ADR-012** |
-| Modèle d'autorisation API et posture RGPD générale | **ADR-007** |
-
----
-
 ## Points à valider (juriste / sécurité) — récapitulatif
 
 | # | Point | Section | Nature de la validation |
@@ -138,9 +130,21 @@ Aucune action opérationnelle sur ces six points ne doit être prise sur la seul
 
 ---
 
-## Hors-scope de cette procédure
+## Ce que ce document ne fait pas
+
+### Hors-scope de cette procédure
 
 - Aucune qualification légale n'est tranchée ici (base légale, cas d'invocation de l'extension de délai, niveau de preuve suffisant) — chaque point est marqué « à valider juriste » ou « à valider juriste/sécurité » ci-dessus.
 - Ce document ne modifie ni ne redéfinit la politique de sélection des données déjà actée dans ADR-013 (§2/§3) ou ADR-012 (§2/§3) — il en décrit l'exécution sur demande individuelle.
 - Aucune clause contractuelle (CGU, DPA) n'est rédigée ici — matière contractuelle distincte, hors périmètre d'une procédure opérationnelle.
 - Aucun autre fichier n'est produit ou modifié par cette tâche.
+
+---
+
+## Renvois
+
+| Sujet | Référence |
+|---|---|
+| Droits invités, base légale du `display_name`, information Art. 13, rétention `GuestAccess` | **ADR-013** |
+| Procédure d'effacement de compte, délai Art. 12§3, mécanisme de notification (§8) | **ADR-012** |
+| Modèle d'autorisation API et posture RGPD générale | **ADR-007** |

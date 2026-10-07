@@ -126,3 +126,9 @@ Le critère opérationnel d'ADR-012 §3(b) couvre trois chemins précis (C1/C2/C
 Si l'une de ces références existe sur un document par ailleurs qualifié « non partagé » par C1/C2/C3, la séquence de l'étape 2 ci-dessus (qui ne NULL-e que les colonnes portées par le document sélectionné lui-même) laisserait une FK `RESTRICT` non résolue, bloquant le DELETE de l'étape 3.
 
 `[À TRANCHER — ticket]` : ADR-012 §3(b) ne tranche pas si ces trois chemins de référence entrante doivent (a) exclure le document du périmètre « non partagé » (élargissement du critère C2), ou (b) être déliés en étape 1 au même titre que les colonnes propres au document. Ce point n'est pas arbitré dans le corpus source consulté et n'est pas inventé ici.
+
+---
+
+## Traçabilité
+
+Les sources sont citées au fil du document, à chaque règle (mention « Décision reportée » suivie de l'ADR et de ses lignes).

@@ -128,7 +128,7 @@ Le détail des traitements appliqués aux données personnelles à la suppressio
 
 `[À VALIDER — JURISTE]`
 
-## 11. Traçabilité
+## 11. Traçabilité — sources de ce document
 
 Ce document consolide fidèlement les sources suivantes du corpus de conception. Il n'invente aucune règle qui n'y figure pas.
 

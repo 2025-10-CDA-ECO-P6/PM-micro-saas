@@ -2,6 +2,7 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
+- **Nature** : conception
 
 > *Annotation du 2026-06-12 — ADR-018 : ajout de la catégorie contenu d'espace `PERSONAL` (hard-delete inconditionnel) ; override du défaut de conservation pour les espaces partagés.*
 

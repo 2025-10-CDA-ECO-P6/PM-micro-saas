@@ -1,12 +1,10 @@
 # Spec — Seuil de coût session concurrente → repli SSE → polling adaptatif
 
-> **Nature** : spec pré-build (approche de report fidèle au corpus). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucune formule de coût non explicitement actée dans le corpus n'est introduite ici. Les extraits de configuration ci-dessous sont **illustratifs et non normatifs** — ils balisent la forme du livrable de configuration attendu, pas son contenu.
->
-> **Source normative** : [ADR-004 — Transport temps réel : SignalR](../../decisions/ADR-004-transport-temps-reel.md), notamment les lignes 36 et 47 (« Compléments post-revue »).
->
-> **Lecteur visé** : l'équipe qui configurera le module `Haversack.Infrastructure.Notifications` (ADR-004 §Décision, ADR-008:24) à l'entrée en build, et l'exploitant qui suivra le coût d'hébergement en production une fois le mécanisme en place.
->
-> **Statut** : cadre à compléter — non implémentable en l'état, les trous nommés ci-dessous bloquent le passage en développement.
+- **Statut** : cadre à compléter — non implémentable en l'état, les trous nommés ci-dessous bloquent le passage en développement.
+- **Sources** : [ADR-004 — Transport temps réel : SignalR](../../decisions/ADR-004-transport-temps-reel.md), notamment les lignes 36 et 47 (« Compléments post-revue »).
+- **Périmètre** : [SOUS-SPÉCIFIÉ — périmètre couvert et exclu non écrit dans le document]
+- **Nature** : spec pré-build (approche de report fidèle au corpus). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucune formule de coût non explicitement actée dans le corpus n'est introduite ici. Les extraits de configuration ci-dessous sont **illustratifs et non normatifs** — ils balisent la forme du livrable de configuration attendu, pas son contenu.
+- **Lecteur visé** : l'équipe qui configurera le module `Haversack.Infrastructure.Notifications` (ADR-004 §Décision, ADR-008:24) à l'entrée en build, et l'exploitant qui suivra le coût d'hébergement en production une fois le mécanisme en place.
 
 ---
 

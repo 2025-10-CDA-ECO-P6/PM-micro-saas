@@ -2,6 +2,7 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-10
+- **Nature** : mixte
 
 > **Nature : mixte — à dominante pré-implémentation** — modèle de stockage et politique de sécurité client à confirmer à l'entrée en build ; parts de conception qui contraignent le modèle dès maintenant : l'invariant migration-only (aucune synchronisation continue au MVP), les bandeaux de durabilité et de confidentialité du mode local, et le non-chiffrement at-rest assumé. *(Annotation du 2026-06-10 — qualification postérieure à l'arbitrage T-03.)*
 

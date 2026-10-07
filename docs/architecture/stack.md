@@ -1,4 +1,4 @@
-# Stack technique — Haversack
+# Stack technologique
 
 > **Note de couches documentaires** : document de sélection technologique (couche décision). Déplacé de `docs/conception/` vers `docs/architecture/` le 2026-06-10. Voir [ADR-003](../decisions/ADR-003-stack-front.md) pour la trace de la décision landing + application.
 
@@ -18,7 +18,7 @@
 
 ---
 
-## Landing page — Angular (SSR/prerender)
+## Composant — Landing page, Angular (SSR/prerender)
 
 ### Pourquoi
 
@@ -52,7 +52,7 @@ La landing page partage un écosystème unique avec l'application : Angular pour
 
 ---
 
-## Application web — Angular (SPA)
+## Composant — Application web, Angular (SPA)
 
 ### Pourquoi
 
@@ -85,7 +85,7 @@ Haversack est une application avec beaucoup d'état, de vues imbriquées, de for
 
 ---
 
-## Backend — ASP.NET Core (.NET / C#)
+## Composant — Backend, ASP.NET Core (.NET / C#)
 
 ### Pourquoi
 
@@ -116,7 +116,7 @@ ASP.NET Core est un choix naturel pour une architecture DDD + Clean Architecture
 
 ---
 
-## Base de données — PostgreSQL
+## Composant — Base de données, PostgreSQL
 
 ### Pourquoi
 
@@ -146,7 +146,7 @@ PostgreSQL supporte nativement la recherche plein texte (FTS), le JSONB pour les
 
 ---
 
-## Architecture globale — Clean Architecture + Monolithe modulaire + DDD
+## Composant — Architecture globale, Clean Architecture + Monolithe modulaire + DDD
 
 ### Pourquoi
 

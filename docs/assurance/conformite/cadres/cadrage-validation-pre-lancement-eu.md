@@ -119,6 +119,15 @@ Ce cadrage constitue, au même titre que les autres préalables non réalisables
 
 ---
 
+## Ce que ce document ne fait pas
+
+- Il ne tranche aucune qualification légale (Art. 8, Art. 28, Art. 17, intérêt légitime) : chaque axe reste un énoncé de question.
+- Il ne fixe ni délai ni procédure de saisine juriste — ces éléments relèvent de la roadmap juridique.
+- Il ne rédige aucune clause contractuelle (le DPA reste un document distinct, `dpa-skeleton.md`, lui-même non contractuel).
+- Il ne modifie ni ne réinterprète les ADR sources : en cas de désaccord de lecture, l'ADR d'origine fait foi.
+
+---
+
 ## Renvois
 
 - `docs/decisions/ADR-012-rgpd-effacement-compte.md` — section *Conformité conçue, non certifiée*.
@@ -126,12 +135,3 @@ Ce cadrage constitue, au même titre que les autres préalables non réalisables
 - `docs/decisions/ADR-018-espace-personnel-generalisation-space.md` — section *Conformité conçue, non certifiée* et *Compléments post-revue*.
 - `docs/decisions/ADR-015-securite-authentification-mvp.md` — §2.3.
 - [`docs/assurance/conformite/cadres/dpa-skeleton.md`](dpa-skeleton.md) — squelette de sections DPA (axe 2).
-
----
-
-## Ce que ce document ne fait pas
-
-- Il ne tranche aucune qualification légale (Art. 8, Art. 28, Art. 17, intérêt légitime) : chaque axe reste un énoncé de question.
-- Il ne fixe ni délai ni procédure de saisine juriste — ces éléments relèvent de la roadmap juridique.
-- Il ne rédige aucune clause contractuelle (le DPA reste un document distinct, `dpa-skeleton.md`, lui-même non contractuel).
-- Il ne modifie ni ne réinterprète les ADR sources : en cas de désaccord de lecture, l'ADR d'origine fait foi.

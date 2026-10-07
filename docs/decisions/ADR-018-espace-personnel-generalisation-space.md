@@ -1,8 +1,11 @@
 # ADR-018 — Contenu personnel de premier ordre : généralisation de `Campaign` en `Space`
 
-- **Statut** : Accepté — décision de conception pré-implémentation, à confirmer à l'entrée en build
+- **Statut** : Accepté
 - **Date** : 2026-06-12
+- **Nature** : mixte
 - **Décisions liées** : ADR-011 (cascade `CampaignDeleted` / `UserAnonymized`), ADR-012 (RGPD effacement de compte), ADR-013 (données invités), ADR-017 §1.1 (modèle IndexedDB, store campaign-rooté)
+
+> Statut d'origine : décision de conception pré-implémentation, à confirmer à l'entrée en build.
 
 > **Confirmation d'entrée en build du 2026-09-04** — décision confirmée par Pierre-Marie Marchio, porteur du projet.
 

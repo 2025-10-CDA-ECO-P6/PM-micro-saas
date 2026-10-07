@@ -1,4 +1,4 @@
-# Fondations DDD
+# Fondations architecturales
 
 > Pourquoi DDD a été choisi pour Haversack, et ce que les concepts clés
 > signifient concrètement dans ce projet.

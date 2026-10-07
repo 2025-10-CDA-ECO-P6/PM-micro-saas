@@ -2,6 +2,7 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-10
+- **Nature** : pré-implémentation
 
 > **Nature : décision pré-implémentation** — décision d'architecture actée en phase conception, à confirmer à l'entrée en build. Le raisonnement et les alternatives écartées restent la référence. *(Annotation du 2026-06-10 — arbitrage T-03.)*
 

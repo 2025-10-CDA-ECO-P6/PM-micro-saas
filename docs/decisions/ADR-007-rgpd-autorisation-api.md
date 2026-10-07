@@ -4,6 +4,7 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
+- **Nature** : conception
 
 ---
 

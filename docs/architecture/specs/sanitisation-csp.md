@@ -1,8 +1,8 @@
 # Politique de sanitisation HTML et CSP
 
-> Spec pré-build, cluster sécurité & contrats API. Dérivée fidèlement de **ADR-016** (Sérialisation locale et contrat de migration, l.148, l.239) et **ADR-017** (Modèle IndexedDB local et sécurité du mode local, l.159, l.161, l.169-173, l.187, l.255, l.256). Statut : ADR-016 mixte à dominante pré-implémentation, ADR-017 mixte à dominante pré-implémentation (en-têtes des deux ADR) — à confirmer à l'entrée en build.
->
-> **Portée** : cette spec formalise le plancher de sanitisation opposable et la posture CSP actée par les deux ADR. Aucune valeur laissée ouverte n'est fixée ici — tout point non tranché est marqué `[À TRANCHER — <ticket>]`. Les mentions de bibliothèques (`Konscious.Security.Cryptography`, `DOMPurify`, etc.) figurant dans les ADR sont **illustratives**, non reprises ici comme décision.
+- **Statut** : Spec pré-build, cluster sécurité & contrats API. ADR-016 mixte à dominante pré-implémentation, ADR-017 mixte à dominante pré-implémentation (en-têtes des deux ADR) — à confirmer à l'entrée en build.
+- **Sources** : Dérivée fidèlement de **ADR-016** (Sérialisation locale et contrat de migration, l.148, l.239) et **ADR-017** (Modèle IndexedDB local et sécurité du mode local, l.159, l.161, l.169-173, l.187, l.255, l.256).
+- **Périmètre** : cette spec formalise le plancher de sanitisation opposable et la posture CSP actée par les deux ADR. Aucune valeur laissée ouverte n'est fixée ici — tout point non tranché est marqué `[À TRANCHER — <ticket>]`. Les mentions de bibliothèques (`Konscious.Security.Cryptography`, `DOMPurify`, etc.) figurant dans les ADR sont **illustratives**, non reprises ici comme décision.
 
 ---
 
@@ -102,7 +102,9 @@ Ce que ces deux maillons impliquent pour cette spec : **la sanitisation applicat
 
 ---
 
-## Confirmation de fidélité
+## Traçabilité
+
+### Confirmation de fidélité
 
 - Aucun exemple illustratif d'ADR (bibliothèques nommées à titre d'exemple, `DOMPurify`, `Konscious.Security.Cryptography`) n'est promu ici en décision — ils ne sont pas repris comme choix arrêté.
 - Les deux maillons non-vérifiables-en-CI (§6) sont nommés explicitement, conformément aux ADR sources, et ne sont pas présentés comme couverts.

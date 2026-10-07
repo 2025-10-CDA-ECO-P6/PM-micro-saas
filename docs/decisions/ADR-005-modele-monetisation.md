@@ -2,6 +2,7 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-06-09
+- **Nature** : produit — fusionné
 
 > **Nature : décision produit — fusionnée** — la substance de cette décision a été fusionnée dans la couche vision (`docs/besoin/vision/perimetre/matrice-de-priorites.md` et `vision-produit.md`) le 2026-06-10. Ce document est une trace historique ; le raisonnement et les alternatives écartées restent lisibles ici.
 

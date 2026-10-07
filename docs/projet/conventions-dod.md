@@ -41,10 +41,10 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 *Source : [ADR-003 — Stack front, § Décision](../decisions/ADR-003-stack-front.md), § Compléments post-revue (l.51, landing SSG/prerender statique au MVP).*
 
 **Backend — ASP.NET Core.** ASP.NET Core (.NET / C#), Entity Framework Core, PostgreSQL, ASP.NET Identity.
-*Source : [Stack technique, § Vue d'ensemble](../architecture/stack.md) (tableau de synthèse).*
+*Source : [Stack technologique, § Vue d'ensemble](../architecture/stack.md) (tableau de synthèse).*
 
 **Architecture — Clean Architecture + monolithe modulaire + DDD, inversion des dépendances.** Le domaine définit les interfaces (contrats vers la persistance, les notifications, etc.) ; l'infrastructure les implémente. La présentation dépend du domaine et de l'application, jamais l'inverse. Le sens des dépendances est Domaine → Application → Infrastructure, quelle que soit la granularité physique des projets — jamais l'inverse.
-*Source : [structure-projets.md, § 2 — Principe structurant](../architecture/structure-projets.md) ; [ADR-008 — Structure physique de la solution, § Décision](../decisions/ADR-008-structure-solution.md) (l.28, « Clean Architecture conservée »).*
+*Source : [structure-projets.md, § 2. Principe structurant](../architecture/structure-projets.md) ; [ADR-008 — Structure physique de la solution, § Décision](../decisions/ADR-008-structure-solution.md) (l.28, « Clean Architecture conservée »).*
 
 **Quatre bounded contexts en frontières logiques.** Identity & Access, Space Management, Content Library, Session Conduct sont des frontières logiques — organisées en namespaces distincts et contrats internes clairs — pas une assembly séparée par contexte au MVP. Un bounded context peut être promu en projet physique séparé à tout moment si un besoin réel émerge (montée en équipe, dépendances incompatibles, performance de build).
 *Source : [ADR-008, § Décision](../decisions/ADR-008-structure-solution.md) ; [structure-projets.md, § Domaine et Application : projets uniques](../architecture/structure-projets.md) et [§ 5 — Promotion ultérieure des bounded contexts](../architecture/structure-projets.md).*
@@ -74,7 +74,7 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
   *Source : [structure-projets.md, § Domaine et Application : projets uniques](../architecture/structure-projets.md).*
 
 - **Style C# aligné DDD.** Records immuables, sealed hierarchies, pattern matching — un style cohérent avec les value objects et la modélisation du domaine.
-  *Source : [Stack technique, § Backend › Pourquoi](../architecture/stack.md) (l.101, choix natif value objects/records/sealed classes) ; [§ Backend › Points forts](../architecture/stack.md) (l.106, « C# adapté au DDD : records immuables, pattern matching, sealed hierarchies »).*
+  *Source : [Stack technologique, § Composant — Backend › Pourquoi](../architecture/stack.md) (l.101, choix natif value objects/records/sealed classes) ; [§ Composant — Backend › Points forts](../architecture/stack.md) (l.106, « C# adapté au DDD : records immuables, pattern matching, sealed hierarchies »).*
 
 ### Non couvert par le corpus
 
@@ -89,10 +89,10 @@ Ce guide est un document projet autonome, dérivé du corpus de conception. Il p
 ### Dérivable du corpus
 
 - **TypeScript strict par défaut.**
-  *Source : [Stack technique, § Application web › Points forts](../architecture/stack.md) (l.73).*
+  *Source : [Stack technologique, § Composant — Application web › Points forts](../architecture/stack.md) (l.73).*
 
 - **Écosystème Angular unique, partagé landing + application.** Formulaires réactifs, injection de dépendances native — cohérente avec la culture .NET du projet.
-  *Source : [Stack technique, § Application web › Points forts](../architecture/stack.md) ; [ADR-003](../decisions/ADR-003-stack-front.md).*
+  *Source : [Stack technologique, § Composant — Application web › Points forts](../architecture/stack.md) ; [ADR-003](../decisions/ADR-003-stack-front.md).*
 
 - **Mode local TypeScript = persistance CRUD + validations minimales.** Le mode local (navigateur, sans compte) n'exécute pas le domaine C# complet : c'est une couche de persistance avec des validations TypeScript minimales (par exemple : titre de document non vide, structure de blocs valide). Le domaine serveur reste la source de vérité unique. Invariant impératif : `validation locale ⊆ validation serveur` — le mode local peut accepter un état que le serveur refuserait, jamais l'inverse.
   *Source : [structure-projets.md, § 7 — Périmètre du mode local TypeScript](../architecture/structure-projets.md).*

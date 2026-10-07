@@ -1,4 +1,6 @@
-# Architecture détaillée : vue transverse par préoccupation
+# Architecture transverse
+
+> **Nature** : Consolidation : elle ne tranche rien. Elle rassemble les préoccupations transverses et renvoie, pour chaque affirmation, au document qui la fixe.
 
 > Ce document est la **vue par préoccupation technique transverse**, complémentaire de la carte structurelle du système : il regroupe les décisions d'architecture déjà actées, organisées par axe technique (persistance, sécurité, RGPD, temps réel, mode local) plutôt que par ordre chronologique ou par ordre de lecture. Il **consolide et renvoie** — la source de vérité de chaque décision reste l'ADR ou le fichier de fondations cité en regard de chaque affirmation. Pour la carte structurelle du système (vues C4, choix de structure), voir le [Dossier d'Architecture Technique](../reference/dossier-architecture.md).
 >

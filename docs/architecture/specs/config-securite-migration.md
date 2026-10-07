@@ -1,8 +1,8 @@
 # Registre des seuils et valeurs de configuration — sécurité & migration
 
-> Spec pré-build, cluster sécurité & contrats API. Dérivée fidèlement de **ADR-015** (Sécurité authentification MVP, l.53-55, l.59, l.63, l.111-112, l.190, l.194, l.196, l.206, l.277, l.293), **ADR-016** (Sérialisation locale et contrat de migration, l.183, l.238, l.254) et **ADR-011** (Cascade & intégrité référentielle, l.166, l.277). Statut : ADR-015 et ADR-011 = décision pré-implémentation ; ADR-016 = mixte à dominante pré-implémentation (en-têtes des trois ADR) — à confirmer à l'entrée en build.
->
-> **Portée** : ce registre reporte les **bornes normatives réellement fixées** par les ADR sources — pas les valeurs d'exemple de leurs Annexes. Là où l'ADR fixe une borne dure ou une plage, cette spec la reporte telle quelle. Là où l'ADR renvoie explicitement une valeur exacte à un ticket d'implémentation, la case « Valeur retenue » reste `[À TRANCHER — <ticket>]` — aucune valeur n'est inventée ici. Les exemples chiffrés des Annexes ADR (Argon2id 64 MiB / 3 itérations, 20/10 req/min, claim 1 h) sont **illustratifs dans l'ADR source, non repris ici comme valeur retenue**.
+- **Statut** : Spec pré-build, cluster sécurité & contrats API. ADR-015 et ADR-011 = décision pré-implémentation ; ADR-016 = mixte à dominante pré-implémentation (en-têtes des trois ADR) — à confirmer à l'entrée en build.
+- **Sources** : Dérivée fidèlement de **ADR-015** (Sécurité authentification MVP, l.53-55, l.59, l.63, l.111-112, l.190, l.194, l.196, l.206, l.277, l.293), **ADR-016** (Sérialisation locale et contrat de migration, l.183, l.238, l.254) et **ADR-011** (Cascade & intégrité référentielle, l.166, l.277).
+- **Périmètre** : ce registre reporte les **bornes normatives réellement fixées** par les ADR sources — pas les valeurs d'exemple de leurs Annexes. Là où l'ADR fixe une borne dure ou une plage, cette spec la reporte telle quelle. Là où l'ADR renvoie explicitement une valeur exacte à un ticket d'implémentation, la case « Valeur retenue » reste `[À TRANCHER — <ticket>]` — aucune valeur n'est inventée ici. Les exemples chiffrés des Annexes ADR (Argon2id 64 MiB / 3 itérations, 20/10 req/min, claim 1 h) sont **illustratifs dans l'ADR source, non repris ici comme valeur retenue**.
 
 ---
 
@@ -81,6 +81,8 @@ Le mécanisme (claim expirable, purge reclaimable après expiration) est tranch�
 
 ---
 
-## Confirmation de fidélité
+## Traçabilité
+
+### Confirmation de fidélité
 
 Aucun exemple illustratif d'Annexe (paramètres Argon2id, seuils rate limiting 20/10 req/min, timeout de claim « 1 heure ») n'est promu ici en valeur retenue. Chaque ligne du registre distingue explicitement la borne normative fixée par l'ADR (reportée telle quelle) de la valeur numérique exacte laissée à l'implémentation (`[À TRANCHER — <ticket>]`).

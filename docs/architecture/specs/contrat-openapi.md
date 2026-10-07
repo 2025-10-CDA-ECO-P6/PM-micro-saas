@@ -1,8 +1,8 @@
 # Contrat API — codes de statut, non-révélation d'existence, annotations sécurité
 
-> Spec pré-build, cluster sécurité & contrats API. Dérivée fidèlement de **ADR-014** (Modèle d'autorisation API, l.101, l.240-247, l.266-268, l.282) et **ADR-015** (Sécurité authentification MVP, l.101, l.178-187, l.295). Statut ADR-015 : décision pré-implémentation, à confirmer à l'entrée en build (ADR-015, en-tête).
->
-> **Portée** : cette spec formalise la sémantique des codes HTTP et les annotations de sécurité observables au niveau du contrat API. Elle ne fixe **aucune valeur** que l'ADR source laisse ouverte — toute valeur non fixée est marquée `[À TRANCHER — <ticket>]`. Les exemples chiffrés éventuels des Annexes ADR (rate limiting 20/10 req/min, claim 1 h, etc.) sont **illustratifs dans l'ADR source, non repris ici comme autorité**.
+- **Statut** : Spec pré-build, cluster sécurité & contrats API. Statut ADR-015 : décision pré-implémentation, à confirmer à l'entrée en build (ADR-015, en-tête).
+- **Sources** : Dérivée fidèlement de **ADR-014** (Modèle d'autorisation API, l.101, l.240-247, l.266-268, l.282) et **ADR-015** (Sécurité authentification MVP, l.101, l.178-187, l.295).
+- **Périmètre** : cette spec formalise la sémantique des codes HTTP et les annotations de sécurité observables au niveau du contrat API. Elle ne fixe **aucune valeur** que l'ADR source laisse ouverte — toute valeur non fixée est marquée `[À TRANCHER — <ticket>]`. Les exemples chiffrés éventuels des Annexes ADR (rate limiting 20/10 req/min, claim 1 h, etc.) sont **illustratifs dans l'ADR source, non repris ici comme autorité**.
 
 ---
 
@@ -125,3 +125,9 @@ Le contrat OpenAPI doit annoter, par endpoint scopé à une ressource d'espace, 
 | Schéma exact du corps de réponse 429 | B1.10 | Implémentation |
 | Code HTTP exact du rejet silencieux de liaison OAuth | B1.10 | Implémentation |
 | Format de l'annotation de sécurité OpenAPI (`IResourceAccessPolicy`) | B1.10 | Implémentation |
+
+---
+
+## Traçabilité
+
+Les sources sont citées au fil du document, à chaque règle (colonne « Source ADR » du tableau du § 2, colonne « Source » du tableau du § 5, citations ADR en tête de section).

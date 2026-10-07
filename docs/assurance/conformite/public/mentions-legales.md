@@ -46,3 +46,7 @@ Ce document reprend ce statut tel quel — il ne choisit pas d'hébergeur à la 
 
 - [`cgu.md`](cgu.md) — conditions générales d'utilisation du service.
 - [`politique-confidentialite.md`](politique-confidentialite.md) — traitement des données personnelles.
+
+## Traçabilité — sources de ce document
+
+Les sources sont citées au fil du document, dans les rubriques 2 et 3 (renvois vers ADR-013 § 2 et vers le dossier d'architecture, § 5).
