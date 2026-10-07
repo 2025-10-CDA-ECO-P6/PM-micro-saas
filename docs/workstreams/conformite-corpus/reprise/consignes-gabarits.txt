@@ -1,0 +1,25 @@
+CONSIGNES COMMUNES DE L'ORCHESTRATEUR (tâche de gabarits, travail en lot parallèle)
+
+Tu travailles UNIQUEMENT dans le worktree git détaché que te donne ton message (commit 939821c de la branche chantier/conformite-corpus). Tous tes chemins docs/... sont relatifs à ce worktree. Le répertoire `.claude/` est ignoré par git : il n'existe donc PAS dans ton worktree. Lis les recettes, les libellés et les exemples dans le dépôt principal, par leurs chemins absolus :
+  /home/pierre-marie/code/Perso/Projects/Haversack/.claude/corpus/modules/<module>.md   (la recette, plus le bloc de déclaration)
+  /home/pierre-marie/code/Perso/Projects/Haversack/.claude/corpus/labels               (les libellés en français : colonne 3)
+  /home/pierre-marie/code/Perso/Projects/Haversack/.claude/corpus/examples/<module>/   (l'instance d'exemple)
+  /home/pierre-marie/code/Perso/Projects/Haversack/.claude/skills/write/SKILL.md      (§ --amend)
+
+1. Tu ne modifies QUE les fichiers de ton lot, listés plus bas. N'écris rien dans le dépôt principal (/home/pierre-marie/code/Perso/Projects/Haversack) ni dans un autre worktree.
+2. Ta liste d'écarts au gabarit fait foi : c'est la sortie exacte du contrôle `template`, filtrée sur ton lot. Corrige chaque ligne de cette liste en appliquant la recette du module.
+3. FORME SEULEMENT. Le contenu de chaque section est conservé mot pour mot. Ce qui n'a pas de place dans le gabarit va dans la section optionnelle la plus proche. Sinon, liste-le dans ton rapport : ne supprime jamais rien. Aucun identifiant ne change, ni aucun titre de scénario.
+4. Un titre de section (heading) que tu renommes peut casser des ancres ailleurs dans le corpus. Liste dans ton rapport chaque heading renommé, avec son ancien et son nouveau texte. Je réécrirai moi-même les liens des autres fichiers.
+5. Gherkin : les mots-clés suivent `gherkin.keywords` des libellés (Scénario, Étant donné que, Quand, Alors, Et, Mais), avec deux-points derrière `Scénario`. Décision de l'orchestrateur : une ligne `Feature: X` devient le commentaire `# Fonctionnalité : X` dans le même bloc. `Background:`, `Scenario Outline:`, `Examples:` éventuels : signale-les, ne les invente pas.
+6. Ne lance PAS `write.sh check` : il relance un contrôle global de 11 minutes. Ne lance pas non plus dotnet test ni les vérificateurs : je les lance une fois, sur l'ensemble.
+7. Quand tu as fini, écris ton diff complet par `git -C <ton worktree> diff > <chemin indiqué>`. Ne commite pas.
+8. Si un écart ne peut pas se corriger sans changer le fond, ou si la recette est ambiguë, ne tranche pas : mets-le dans ton rapport, avec ta proposition.
+9. Write si Edit est refusé.
+10. Rapport final de moins de 6 000 caractères, en français : les écarts corrigés, en nombre, par nature ; les headings renommés (ancien → nouveau) ; ce qui a été déplacé ; ce qui reste, avec la raison ; le chemin du diff.
+
+DÉCISIONS DE L'OPÉRATEUR (2026-10-07), valables pour toutes les tâches de gabarits :
+11. Élision : on garde le français correct, « Étant donné qu'un… ». Le contrôle le signale à tort : c'est un défaut de l'outillage, toléré.
+12. Contenu absent : une section, une colonne ou un champ requis par le gabarit, dont le contenu n'est écrit nulle part dans le corpus, est créé avec le seul marqueur `SOUS-SPÉCIFIÉ` (liste fermée, ADR-019). Rien d'autre n'y est écrit, et rien n'est inventé.
+13. Un qualificatif exigé par la recette et posé par jugement (par exemple nominal ou limite) est accepté, à condition que le texte du critère reste intact. Liste chacun de ces classements dans ton rapport.
+14. Les conversions de forme qu'impose le gabarit (« **Label** : », en-têtes de colonnes, puces passées en tableau, titres) sont déclarées à verify. Écris-les dans ton fichier de lignes déclarées.
+15. Pour te vérifier vite : lance `bash /home/pierre-marie/code/Perso/Projects/Haversack/.claude/skills/check/corpus-checks.sh template --root <racine minimale>`, sur une racine du scratchpad qui ne contient que tes fichiers et docs/corpus.md (copie de .claude comprise si nécessaire). C'est rapide.

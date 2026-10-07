@@ -1,0 +1,15 @@
+CONSIGNES COMMUNES DE L'ORCHESTRATEUR (tâche backlog, travail en lot parallèle)
+
+Tu travailles UNIQUEMENT dans le worktree git détaché que te donne ton message (commit 5071d48 de chantier/conformite-corpus). Tous les chemins docs/... sont relatifs à ce worktree. `.claude/` est ignoré par git, donc absent du worktree : lis les règles et les recettes dans le dépôt principal, /home/pierre-marie/code/Perso/Projects/Haversack/.claude/ (rules/corpus-*.md, corpus/modules/, corpus/labels). N'écris rien dans le dépôt principal.
+
+1. Tes entrées se trouvent dans docs/project/backlog/<n>-*.md. Elles citent les ANCIENS chemins (docs/conception/..., moscow.md, usecases/, user-stories/, gestion-projet/...). Leur nouveau chemin se lit dans docs/workstreams/conformite-corpus/table-deplacement.tsv. Les numéros de ligne cités ont bougé : retrouve chaque endroit par son texte.
+2. Applique chaque entrée exactement comme elle le décrit. Corrige d'abord à la source (ordre d'autorité, ADR-019 : personas → vision → use cases → UJ/US/NFR → domaine → glossaire), puis dans ses consommateurs. Après chaque réécriture, cherche la chaîne d'origine dans tout docs/ (hors workstreams et project/backlog), et aligne les citations qui la reprennent. Liste-les.
+3. Une entrée peut toucher un fichier hors docs/besoin/ (vision, matrice, decisions-en-attente, guide de lecture...) : applique-la en entier et dis-le.
+4. N'invente aucune décision. Une entrée que tu ne peux pas appliquer telle quelle (contradiction nouvelle, cible introuvable, texte ambigu) reste « ouvert » : ajoute à l'entrée une ligne `- **Raison** : …`, puis mets-la dans ton rapport comme question pour l'opérateur, avec ta proposition.
+5. Une entrée appliquée : dans son fichier, `- **Statut** : ouvert` devient `- **Statut** : fait — commit de la tâche backlog-besoin (chantier conformite-corpus)`. Ajoute en dessous `- **Appliqué dans** : <fichiers touchés>`.
+6. Ne renumérote ni ne réutilise jamais un identifiant. Un identifiant neuf (RB, US…) se demande à `bash /home/pierre-marie/code/Perso/Projects/Haversack/.claude/hooks/lib/corpus.sh next-id <racine> <module> <unité> <parent>`, avec ton worktree pour racine. Si la commande a besoin de .claude, crée temporairement un lien symbolique, puis retire-le.
+7. Respecte les gabarits déjà posés (tâche précédente) : un nouveau contenu prend la forme du gabarit du module.
+8. Pour un « à vérifier » (git log, recoupement…), fais la vérification, écris la conclusion là où l'entrée la demande, et cite ta preuve (commit, ligne).
+9. Lance seulement `dotnet run --project tools/VerifCorpus` dans ton worktree (0 mort, 0 ancre morte, 0 orphelin). Ni dotnet test ni les autres outils : je les lance sur l'ensemble.
+10. À la fin : `git -C <worktree> diff > <chemin indiqué>`. Ne commite pas. Write si Edit est refusé.
+11. Rapport de moins de 7 000 caractères, en français. Pour chaque entrée : fait ou ouvert, ce qui a changé et où, les consommateurs alignés. Puis les questions pour l'opérateur, la sortie de VerifCorpus et le chemin du diff.

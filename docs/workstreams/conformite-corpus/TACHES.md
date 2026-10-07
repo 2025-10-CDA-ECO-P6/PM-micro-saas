@@ -1,5 +1,7 @@
 # Tâches — Mise en conformité du corpus
 
+Pour reprendre le chantier dans une nouvelle session : [reprise/REPRISE.md](reprise/REPRISE.md).
+
 Ordre imposé par l'ADR-021 et l'ADR-022 : chaque tâche est un commit sur la branche dédiée `chantier/conformite-corpus` (ADR-023), exécuté dans sa propre session ; la tâche 24 fusionne le tout en un seul commit (`claude -n conformite-corpus-<tâche>`).
 
 ## 1. reference-de-depart
