@@ -4,7 +4,7 @@
 |---|---|
 | Statut | Index de consolidation par décideur — mis à jour le 2026-09-03, les lignes barrées portent une décision prise |
 | Audience | équipe de build, responsable produit, cadrage juridique interne, comité des risques, conception d'interface |
-| Sources | `docs/reference/cahier-specifications-techniques.md` §11, `docs/assurance/strategie-de-test.md` §12, `docs/reference/conception-detaillee.md` §8, `docs/assurance/securite/dossier-securite.md` §5, `docs/interface/zonage.md` §S10, `docs/projet/registre-des-risques.md`, chaque décision d'architecture portant une section § Points à trancher, `docs/architecture/specs/telemetrie.md` §6, `docs/architecture/specs/repli-temps-reel.md` §5, `docs/projet/plan-de-travail.md`, `docs/projet/roadmap-de-build.md` |
+| Sources | `docs/reference/cahier-specifications-techniques.md` §11, `docs/assurance/strategie-de-test.md` §12, `docs/reference/conception-detaillee.md` §11, `docs/assurance/securite/dossier-securite.md` §5, `docs/interface/zonage.md` §S10, `docs/projet/registre-des-risques.md`, chaque décision d'architecture portant une section § Points à trancher, `docs/architecture/specs/telemetrie.md` §6, `docs/architecture/specs/repli-temps-reel.md` §5, `docs/projet/plan-de-travail.md`, `docs/projet/roadmap-de-build.md` |
 
 ---
 
@@ -167,7 +167,7 @@ Un registre peut porter une entrée qu'une décision postérieure a déjà close
 
 - `docs/reference/cahier-specifications-techniques.md § 11` — points ouverts et confirmations attendues à l'entrée en build, groupés par section du cahier (contraintes techniques, modèle de données, sécurité, RGPD, contrats d'API, migration, observabilité, exigences non fonctionnelles).
 - `docs/assurance/strategie-de-test.md § 12` — registre des points ouverts, identifiants `PO-nn`, avec propriétaire de décision par entrée.
-- `docs/reference/conception-detaillee.md § 8` — points ouverts et limites de vérifiabilité de la conception détaillée.
+- `docs/reference/conception-detaillee.md § 11` — points ouverts et limites de vérifiabilité de la conception détaillée.
 - `docs/assurance/securite/dossier-securite.md § 5` — points ouverts et dette de sécurité.
 - `docs/interface/zonage.md § S10` — points ouverts sur le modèle de navigation (graphe S3).
 - `docs/projet/registre-des-risques.md` — registre d'évaluation des risques, entrées `T-nn` (technique), `P-nn` (produit), `J-nn` (juridique), `D-nn` (délai-coût).
