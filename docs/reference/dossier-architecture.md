@@ -48,7 +48,7 @@ Consolidation : elle ne tranche rien. Elle est une carte du système dessinée �
 | Statut | Signification |
 |---|---|
 | Sauf mention contraire | les décisions cartographiées dans ce document sont **actées en conception et à confirmer à l'entrée en build** — elles ne décrivent pas un système déjà construit |
-| `[À DÉCIDER — <axe>]` | une décision non prise ; l'axe nomme qui ou quoi la tranche ([registre des marqueurs](../conventions.md#registre-des-marqueurs)) |
+| `[À TRANCHER — <axe>]` | point ouvert ; l'axe nomme qui ou quoi le tranche ([ADR-019, § 5](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#5-marqueurs)) |
 
 ---
 
@@ -249,7 +249,7 @@ Deux lieux d'exécution structurent le déploiement :
 
 La landing est servie en SSG depuis un CDN ([ADR-003](../decisions/ADR-003-stack-front.md)). Les connexions persistantes du canal temps réel imposent des **sticky sessions** côté hébergement, d'où une denylist externe et une signature JWT asymétrique ([ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.4 et Croisements) ; la clé de signature est gérée en secret manager ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.2). La frontière local↔cloud n'est traversée que par la migration one-shot, complétée d'un gate anti-appropriation ([ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)). Le déploiement du monolithe est **atomique** — aucun module ne se déploie seul ([stack.md](../architecture/stack.md)). **Aucun stockage objet n'est prévu au MVP.** L'extensibilité vers d'autres clients (PWA, Tauri, Capacitor, MAUI) se fait par des projets de présentation distincts consommant la même API, sans modification du domaine ([stack.md](../architecture/stack.md), [ADR-003](../decisions/ADR-003-stack-front.md)).
 
-**`[À DÉCIDER — hébergement]` — hébergeur.** [`stack.md`](../architecture/stack.md) recense des options (Railway, Supabase, Render, auto-hébergé) sans arbitrer. Ce document cartographie la contrainte structurelle (sticky sessions imposées par le transport temps réel), pas une topologie d'hébergement : aucun choix de fournisseur n'est acté ici ni ailleurs dans le corpus actuel.
+**`[À TRANCHER — hébergement]` — hébergeur.** [`stack.md`](../architecture/stack.md) recense des options (Railway, Supabase, Render, auto-hébergé) sans arbitrer. Ce document cartographie la contrainte structurelle (sticky sessions imposées par le transport temps réel), pas une topologie d'hébergement : aucun choix de fournisseur n'est acté ici ni ailleurs dans le corpus actuel.
 
 ```mermaid
 graph TD
@@ -261,7 +261,7 @@ graph TD
 
     CDN["CDN — landing SSG"]
 
-    subgraph Serveur["Lieu d'exécution — Serveur (hébergeur [À DÉCIDER — hébergement])"]
+    subgraph Serveur["Lieu d'exécution — Serveur (hébergeur [À TRANCHER — hébergement])"]
         MONO["Monolithe ASP.NET Core"]
         PG[("PostgreSQL")]
         HUB["Hub SignalR<br/>(sticky sessions requises)"]
@@ -312,7 +312,7 @@ graph TD
 **Statut pré-implémentation généralisé.** C'est le point le plus structurant de ce document : à l'exception des rares cas explicitement marqués autrement, chaque choix cartographié est une décision de conception à confirmer à l'entrée en build — voir la légende des statuts en §1.
 
 **Points ouverts, non tranchés dans ce document** :
-- [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[À DÉCIDER — produit]`, statut que porte l'ADR à cet endroit (`[À TRANCHER — PRODUIT]`).
+- [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[À TRANCHER — PRODUIT]`, statut que porte l'ADR à cet endroit.
 - [ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md) — deux validations juridiques ouvertes avant tout lancement EU, consolidées dans [`cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md) : la qualification au regard de l'Art. 17 du hard-delete inconditionnel du contenu personnel, et le périmètre du DPA (Art. 28) pour un contenu personnel décrivant des tiers identifiables. Ces deux points sont des items de conformité ouverts, non des décisions d'architecture ; ils ne sont pas tranchés ici.
 
 ---
