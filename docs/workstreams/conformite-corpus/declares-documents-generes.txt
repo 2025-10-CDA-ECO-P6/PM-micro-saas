@@ -1,5 +1,0 @@
-module|conventions|-
-module|event-catalogue|-
-module|traceability|-
-module|corpus-changelog|-
-Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Conventions de tenue du corpus](../decisions/ADR-019-conventions-de-tenue-du-corpus.md), qui fait foi. En résumé :

@@ -330,7 +330,7 @@ Les trois premiers doivent passer (code 0). `VerifCouvertureRecette` sort en cod
 
 Ce qui est ouvert :
 
-- **Le chantier de mise en conformité** ([cadrage](docs/workstreams/conformite-corpus/CADRAGE.md), décidé par l'ADR-020 à l'ADR-023). Il réorganise le corpus en un dossier par couche et applique le backlog d'alignement, en 24 tâches. Il n'est pas commencé.
+- **Le chantier de mise en conformité** (décidé par l'ADR-020 à l'ADR-023 ; cadrage : `docs/workstreams/conformite-corpus/CADRAGE.md @ 52003bc`). Il réorganise le corpus en un dossier par couche et applique le backlog d'alignement, en 24 tâches. Ses documents de travail (`docs/workstreams/`) restent locaux, hors du suivi git, comme `.claude/`.
 - **Le reste à faire du corpus** ([plan de travail](docs/projet/plan-de-travail.md)). Le 2026-10-07, une relecture complète du corpus a relevé 118 contradictions et 75 incertitudes ([ADR-019](docs/decisions/ADR-019-conventions-de-tenue-du-corpus.md)). Le chantier de conformité en a appliqué les 92 entrées, et le backlog qui les portait est retiré (`docs/project/backlog/README.md @ 51a7cdc`).
 - **Les questions ouvertes** ([decisions-en-attente.md](docs/projet/decisions-en-attente.md)).
 - **Les décisions pré-implémentation**, à confirmer à l'entrée en build : la liste est dans [roadmap-entree-build.md](docs/projet/roadmap-de-build.md).
