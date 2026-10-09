@@ -144,7 +144,7 @@ classDiagram
     Folder ..> FolderCreated : produces
     Folder ..> FolderDeleted : produces
     DocumentBlock --> BlockType
-    Folder "1" o-- "0..*" Document : contains
-    Folder "0..1" o-- "0..*" Folder : parent
+    Document "0..*" --> "1" Folder : folderId
+    Folder "0..*" --> "0..1" Folder : parentFolderId
     note for Document "CanBeReadBy : reader est un membre (UserId et rôle) ou un invité (GuestAccessId), avec ses personnages associés (règle 2)"
 ```
