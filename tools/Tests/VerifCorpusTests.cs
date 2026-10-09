@@ -364,6 +364,131 @@ public class CorpusSain : IDisposable
 }
 
 /// <summary>
+/// Libellé d'un renvoi « § N » : quand le renvoi porte aussi un libellé de section, la
+/// section N de la cible doit porter ce libellé. Une renumérotation de la cible qui
+/// laisserait un renvoi à l'ancien numéro le fait pointer vers une autre section sans
+/// que le numéro seul le révèle. Un renvoi sans libellé n'est pas contrôlé ici.
+/// </summary>
+public class ControleDuLibelleDesRenvoisASection : IDisposable
+{
+    private readonly RepertoireTemporaire _tmp = new();
+    private readonly string _depot;
+
+    public ControleDuLibelleDesRenvoisASection()
+    {
+        _depot = _tmp.Chemin;
+        Helpers.InitialiserDepotGit(_depot);
+        Helpers.Ecrire(Path.Combine(_depot, "README.md"), "# Dépôt de fixture\n\n[page A](docs/page-a.md)\n");
+        Helpers.Ecrire(
+            Path.Combine(_depot, "docs/page-a.md"),
+            "# Page A\n\nVoir [page B, § 3 — Choix et justification](page-b.md).\n");
+        Helpers.Ecrire(
+            Path.Combine(_depot, "docs/page-b.md"),
+            "# Page B\n\n## 2. Principe structurant\n\n## 3. Choix et justification\n\n## 4. **Les Risques** : liste\n");
+        Helpers.CommiterTout(_depot, "renvois § avec libellé");
+    }
+
+    public void Dispose() => _tmp.Dispose();
+
+    private string Executer(string contenuPageA)
+    {
+        Helpers.Ecrire(Path.Combine(_depot, "docs/page-a.md"), "# Page A\n\n" + contenuPageA + "\n");
+        var resultat = Helpers.ExecuterOutil("VerifCorpus", [_depot]);
+        _derniereSortie = resultat.CodeSortie;
+        return resultat.Stdout;
+    }
+
+    private int _derniereSortie;
+
+    [Fact]
+    public void DevraitNeRienSignalerPourUnRenvoiDontLeLibelleEstCeluiDeLaSectionCitee()
+    {
+        string sortie = Executer("Voir [page B, § 3 — Choix et justification](page-b.md).");
+        Assert.Contains("renvois § au libellé discordant : 0", sortie);
+        Assert.Contains("renvois § libellés contrôlés    : 1", sortie);
+        Assert.DoesNotContain("[LIBELLÉ DISCORDANT]", sortie);
+        Assert.Equal(0, _derniereSortie);
+    }
+
+    [Fact]
+    public void DevraitSignalerUnRenvoiDontLeLibelleEstCeluiDUneAutreSectionDeLaCible()
+    {
+        string sortie = Executer("Voir [page B, § 2 — Choix et justification](page-b.md).");
+        Assert.Contains("renvois § au libellé discordant : 1", sortie);
+        Assert.Contains(
+            "[LIBELLÉ DISCORDANT] docs/page-a.md:3 -> page-b.md § 2 — « Choix et justification » ≠ « 2. Principe structurant »",
+            sortie);
+        Assert.Contains("renvois § à section inexistante : 0", sortie);
+        Assert.Equal(1, _derniereSortie);
+    }
+
+    [Fact]
+    public void DevraitNePasControlerUnRenvoiSansLibelle()
+    {
+        string sortie = Executer("Voir [page B, § 2](page-b.md) et [page B](page-b.md) §2.");
+        Assert.Contains("renvois § au libellé discordant : 0", sortie);
+        Assert.Contains("renvois § libellés contrôlés    : 0", sortie);
+        Assert.Equal(0, _derniereSortie);
+    }
+
+    [Fact]
+    public void DevraitSignalerUnLibelleDansLeTexteDuLienColleAuNumero()
+    {
+        string sortie = Executer("Voir [§2 Choix et justification](page-b.md).");
+        Assert.Contains("[LIBELLÉ DISCORDANT] docs/page-a.md:3 -> page-b.md § 2", sortie);
+        Assert.Equal(1, _derniereSortie);
+    }
+
+    [Fact]
+    public void DevraitSignalerUnLibelleEcritEnTexteApresLeLien()
+    {
+        string sortie = Executer("Voir [page B](page-b.md) § 2 — Choix et justification, puis la suite.");
+        Assert.Contains("[LIBELLÉ DISCORDANT] docs/page-a.md:3 -> page-b.md § 2", sortie);
+        Assert.Equal(1, _derniereSortie);
+    }
+
+    [Fact]
+    public void DevraitAccepterUnLibelleAbregeSansCasseNiEmphaseNiPonctuationDeFin()
+    {
+        string sortie = Executer(
+            "Voir [page B, § 3 — **choix et justification**.](page-b.md), [page B, § 3 Choix](page-b.md) "
+            + "et [page B, § 4. Les risques](page-b.md).");
+        Assert.Contains("renvois § au libellé discordant : 0", sortie);
+        Assert.Contains("renvois § libellés contrôlés    : 3", sortie);
+        Assert.Equal(0, _derniereSortie);
+    }
+
+    [Fact]
+    public void DevraitAccepterLaPartieDuTitreQuiSuitLeTiretLongOuUnLibelleInterneALaSectionEtSignalerLeMemeLibelleSousUnAutreNumero()
+    {
+        Helpers.Ecrire(
+            Path.Combine(_depot, "docs/page-b.md"),
+            "# Page B\n\n## 5. Domaine — Conventions de commit\n\n"
+            + "## 6. Positionnement\n\n| Outil | Forces |\n\n**Différenciants de la page :**\n\n"
+            + "### 6.1 Détail\n\n## 7. Autre\n");
+        string sortie = Executer(
+            "Voir [page B, § 5 — Conventions de commit](page-b.md) et [page B, § 6 — Différenciants](page-b.md).");
+        Assert.Contains("renvois § au libellé discordant : 0", sortie);
+        Assert.Contains("renvois § libellés contrôlés    : 2", sortie);
+        Assert.Equal(0, _derniereSortie);
+
+        sortie = Executer("Voir [page B, § 7 — Différenciants](page-b.md).");
+        Assert.Contains("[LIBELLÉ DISCORDANT] docs/page-a.md:3 -> page-b.md § 7 — « Différenciants » ≠ « 7. Autre »", sortie);
+        Assert.Equal(1, _derniereSortie);
+    }
+
+    [Fact]
+    public void DevraitNePasPrendreUneProsePourUnLibelle()
+    {
+        string sortie = Executer(
+            "Voir [page B](page-b.md) §2 et le reste, [page B](page-b.md) §2 — une explication libre, "
+            + "[page B, § 2 et § 3](page-b.md).");
+        Assert.Contains("renvois § au libellé discordant : 0", sortie);
+        Assert.Equal(0, _derniereSortie);
+    }
+}
+
+/// <summary>
 /// Volet « panne d'environnement » (code 2) du contrat arbitré — comportement
 /// neuf du portage, sans équivalent Python (le script d'origine ne distinguait
 /// pas panne et défaut : les deux terminaient en 0).

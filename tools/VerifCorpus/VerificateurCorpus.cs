@@ -148,7 +148,8 @@ internal static class VerificateurCorpus
         EcrireRapport(sortie, fichiers, nRel, nAnc, cibleKo, ancreKo, orphelins, desequilibres, sections);
 
         return new Verdict(
-            cibleKo.Count, ancreKo.Count, orphelins.Count, desequilibres.Count, sections.Inconnus.Count);
+            cibleKo.Count, ancreKo.Count, orphelins.Count, desequilibres.Count, sections.Inconnus.Count,
+            sections.Discordants.Count);
     }
 
     private sealed record EcartSection(string Source, int Ligne, string Cible, string Section)
@@ -156,11 +157,19 @@ internal static class VerificateurCorpus
         public string Cle => $"{Source} -> {Cible} § {Section}";
     }
 
-    private sealed record ResultatSections(int Controles, int Acceptes, List<EcartSection> Inconnus);
+    private sealed record LibelleDiscordant(
+        string Source, int Ligne, string Cible, string Section, string Libelle, List<string> Titres);
+
+    private sealed record ResultatSections(
+        int Controles,
+        int Acceptes,
+        List<EcartSection> Inconnus,
+        int LibellesControles,
+        List<LibelleDiscordant> Discordants);
 
     /// <summary>
     /// Apparie chaque renvoi « § » à un fichier cible existant avec les sections de ce
-    /// fichier. Un renvoi dont le fichier cible n'existe pas ou n'est pas un .md n'est
+    /// fichier, puis vérifie le libellé de celui qui en porte un. Un renvoi dont le fichier cible n'existe pas ou n'est pas un .md n'est
     /// pas contrôlé ici : il l'est déjà comme lien à cible inexistante.
     /// </summary>
     private static ResultatSections ControlerRenvoisSection(
@@ -169,9 +178,10 @@ internal static class VerificateurCorpus
         Dictionary<string, List<RenvoiSection>> renvoisParFichier)
     {
         var acceptes = LireListeEcartsSection(racine);
-        var indexSections = new Dictionary<string, List<string>>(StringComparer.Ordinal);
-        int controles = 0, nAcceptes = 0;
+        var indexSections = new Dictionary<string, IndexSections>(StringComparer.Ordinal);
+        int controles = 0, nAcceptes = 0, libellesControles = 0;
         var inconnus = new List<EcartSection>();
+        var discordants = new List<LibelleDiscordant>();
         // Nombre d'occurrences déjà couvertes par la liste, par clé : le (n+1)-ième renvoi
         // vers la même section absente depuis le même fichier n'est plus accepté.
         var consommes = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -196,7 +206,22 @@ internal static class VerificateurCorpus
                 }
 
                 controles++;
-                if (RenvoisSection.Existe(renvoi.Texte, sections)) continue;
+                if (RenvoisSection.Existe(renvoi.Texte, sections))
+                {
+                    // Pas de liste de référence pour le libellé : tout écart fait échouer.
+                    if (RenvoisSection.LibelleControlable(renvoi.Texte, renvoi.Libelle, sections))
+                    {
+                        libellesControles++;
+                        var titres = RenvoisSection.TitresSiLibelleDiscordant(renvoi.Texte, renvoi.Libelle, sections);
+                        if (titres is not null)
+                        {
+                            discordants.Add(new LibelleDiscordant(
+                                rel, renvoi.Ligne, renvoi.Cible.Length == 0 ? rel : renvoi.Cible,
+                                renvoi.Section, renvoi.Libelle!, titres));
+                        }
+                    }
+                    continue;
+                }
 
                 var ecart = new EcartSection(
                     rel, renvoi.Ligne, renvoi.Cible.Length == 0 ? rel : renvoi.Cible, renvoi.Section);
@@ -212,7 +237,7 @@ internal static class VerificateurCorpus
                 }
             }
         }
-        return new ResultatSections(controles, nAcceptes, inconnus);
+        return new ResultatSections(controles, nAcceptes, inconnus, libellesControles, discordants);
     }
 
     /// <summary>
@@ -269,6 +294,8 @@ internal static class VerificateurCorpus
         sortie.WriteLine($"renvois § contrôlés           : {sections.Controles}");
         sortie.WriteLine($"renvois § à section inexistante : {sections.Inconnus.Count}");
         sortie.WriteLine($"renvois § écarts acceptés       : {sections.Acceptes}");
+        sortie.WriteLine($"renvois § libellés contrôlés    : {sections.LibellesControles}");
+        sortie.WriteLine($"renvois § au libellé discordant : {sections.Discordants.Count}");
 
         foreach (var (etiquette, items) in new[] { ("CIBLE", cibleKo), ("ANCRE", ancreKo) })
         {
@@ -289,6 +316,12 @@ internal static class VerificateurCorpus
         foreach (var e in sections.Inconnus)
         {
             sortie.WriteLine($"  [SECTION INEXISTANTE] {e.Source}:{e.Ligne} -> {e.Cible} § {e.Section}");
+        }
+        foreach (var d in sections.Discordants)
+        {
+            string reels = string.Join(" | ", d.Titres.Select(t => $"« {t} »"));
+            sortie.WriteLine(
+                $"  [LIBELLÉ DISCORDANT] {d.Source}:{d.Ligne} -> {d.Cible} § {d.Section} — « {d.Libelle} » ≠ {reels}");
         }
     }
 
