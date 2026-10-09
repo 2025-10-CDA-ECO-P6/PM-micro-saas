@@ -226,7 +226,7 @@ flowchart TD
         direction TB
         LienSession["Lien de session reçu"]
         SaisieNom["Saisie nom d'affichage\n+ information RGPD"]
-        VueJoueur["Vue joueur\n(documents partagés + notes personnelles)"]
+        VueJoueur["Vue joueur\n(documents partagés)"]
         ErreurAcces["Page d'erreur d'accès\n(lien expiré, révoqué, invalide)"]
 
         LienSession --> SaisieNom
@@ -309,7 +309,7 @@ flowchart TD
 | Nom | Rôle | Surface | Contexte | Type d'espace | Forme cible | UC / US / UJ couverts |
 |---|---|---|---|---|---|---|
 | **Accès par lien + saisie du nom d'affichage** | Première page visible par le joueur à l'ouverture du lien ; avant la saisie du nom, ne montre que les métadonnées du lien (nom de l'espace ou de la session, MJ, information RGPD) — aucun document tant que le `GuestAccess` n'est pas créé (`GuestAccess.Create`, flux 4 de [space-management](../domaine/space-management/flows.md)) ; demande uniquement un nom d'affichage ; information RGPD sur la durée de conservation | Joueur | Session | n.a. (l'écran est indépendant du type d'espace — le joueur n'a pas accès à la structure de l'espace) | Grand écran + tablette (mobile structuré non implémenté au MVP) | UC-09 scénario A ; RB-09-20 |
-| **Vue joueur post-accès** | Consultation des documents partagés par le MJ ; prise de notes personnelles pendant une session LIVE ; fiche du personnage associé si disponible | Joueur | Session | n.a. (l'écran est indépendant du type d'espace — le joueur n'a pas accès à la structure de l'espace) | Grand écran + tablette | UC-12, UC-06 §vue joueur ; US-06-07, US-06-08 |
+| **Vue joueur post-accès** | Consultation des documents partagés par le MJ ; fiche du personnage associé si disponible ; prise de notes personnelles hors MVP | Joueur | Session | n.a. (l'écran est indépendant du type d'espace — le joueur n'a pas accès à la structure de l'espace) | Grand écran + tablette | UC-12, UC-06 §vue joueur ; US-06-07, US-06-08 |
 | **Page d'erreur d'accès** | Message sobre en cas de lien expiré, révoqué ou invalide ; ne révèle pas l'existence de la campagne | Joueur | Transversal | n.a. (l'écran est indépendant du type d'espace — aucune information sur l'espace n'est révélée) | Grand écran + tablette | UC-09 A3, E1, E2 |
 
 ---
