@@ -1226,9 +1226,9 @@ Ces tranches ne se rattachent à aucune épique ni à aucun jalon du plan : leur
 | Périmètre d'écriture | HORS MAILLE — nature : rédaction documentaire du corpus — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | S — 0 modules, 2 renvois |
-| Critères d'acceptation | `docs/workstreams/conformite-corpus/TACHES.md § 19 @ 51a7cdc`, « Figé si » ; `docs/workstreams/conformite-corpus/SPEC-write-operating-model-et-content-guide.md § Contrat @ 51a7cdc`, « Ce qui doit être vrai à la fin » |
+| Critères d'acceptation | le modèle de fonctionnement et le guide de contenu ont chacun au moins une instance, écrite avec l'opérateur et qui ne reprend que ce que ses sources établissent ; leur index existe et la carte de `docs/` les liste ; une section sans source n'est pas écrite (repris de `docs/workstreams/conformite-corpus/TACHES.md § 19 @ 51a7cdc`) |
 | Code de renvoi | — |
-| Point d'attention | aucune source écrite aujourd'hui : la tranche demande un entretien avec l'opérateur. Elle n'est pas émulée par des agents, qui inventeraient les choix du modèle de fonctionnement (`reprise/REPRISE.md § Décisions de l'opérateur`, « Entretiens, 2026-10-07 »). |
+| Point d'attention | aucune source écrite aujourd'hui : la tranche demande un entretien avec l'opérateur. Elle n'est pas émulée par des agents, qui inventeraient les choix du modèle de fonctionnement (décision de l'opérateur du 2026-10-07, `docs/workstreams/conformite-corpus/reprise/REPRISE.md @ 51a7cdc`, « Entretiens »). |
 | Origine | origin: docs/workstreams/conformite-corpus/TACHES.md § 19 @ 51a7cdc |
 
 ---
@@ -1244,9 +1244,9 @@ Ces tranches ne se rattachent à aucune épique ni à aucun jalon du plan : leur
 | Périmètre d'écriture | HORS MAILLE — nature : rédaction documentaire du corpus — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | S — 0 modules, 2 renvois |
-| Critères d'acceptation | `docs/workstreams/conformite-corpus/TACHES.md § 20 @ 51a7cdc`, « Figé si » ; `docs/workstreams/conformite-corpus/SPEC-write-interview-reports.md § Contrat @ 51a7cdc`, « Ce qui doit être vrai à la fin » |
+| Critères d'acceptation | au moins un compte rendu d'un entretien réel, mené selon le [guide d'entretien](../besoin/decouverte/guide-d-entretien.md), est écrit, indexé, et reporte ses résultats au § 8 du guide ; aucun verbatim n'est inventé (repris de `docs/workstreams/conformite-corpus/TACHES.md § 20 @ 51a7cdc`) |
 | Code de renvoi | — |
-| Point d'attention | la tranche reste bloquée tant qu'aucun entretien réel n'a eu lieu : aucun verbatim n'est inventé (`reprise/REPRISE.md § Décisions de l'opérateur`, « Entretiens, 2026-10-07 »). |
+| Point d'attention | la tranche reste bloquée tant qu'aucun entretien réel n'a eu lieu : aucun verbatim n'est inventé (décision de l'opérateur du 2026-10-07, `docs/workstreams/conformite-corpus/reprise/REPRISE.md @ 51a7cdc`, « Entretiens »). |
 | Origine | origin: docs/workstreams/conformite-corpus/TACHES.md § 20 @ 51a7cdc |
 
 ---
@@ -1262,7 +1262,7 @@ Ces tranches ne se rattachent à aucune épique ni à aucun jalon du plan : leur
 | Périmètre d'écriture | HORS MAILLE — nature : rédaction documentaire du corpus — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | S — 0 modules, 1 renvoi |
-| Critères d'acceptation | `docs/workstreams/conformite-corpus/reprise/REPRISE.md § Restes connus @ 51a7cdc`, et les notes de dev et de revue des specs des tâches 15 à 18 du même chantier, au même commit |
+| Critères d'acceptation | chacun des points suivants est aligné, ou rendu à l'opérateur dans les [décisions en attente](decisions-en-attente.md) : (1) épinglage en session — UC-06 et parcours-02 alignés sur RB-06-17 et RB-07-04 ; (2) les six contradictions entre fiches d'écran relevées par l'entrée 0002 du backlog retiré (`docs/project/backlog/0002-recouper-le-corps-des-20-fiches-ecran-entre-elles.md @ 51a7cdc`) ; (3) les maquettes `acces-lien-saisie-nom.dc.html` et `parametres-campagne.dc.html` alignées sur leurs fiches ; (4) les « Transitions inter-UC » des UJ-04 à 06 migrées vers les parcours bout-en-bout, les opportunités des UJ-08 à 14 rapprochées de leurs frictions ; (5) le constat de parcours-01 sur les sessions migrées réécrit selon UC-10 ; (6) le jalon d'US-UC-11 et US-UC-12, J3 dans ce plan et approfondissement du cœur dans la roadmap produit ; (7) l'épique et le jalon de TB-105 à TB-107 ; (8) les surfaces SV1 à SV5 déclarées dans le zonage ; (9) l'espace archivé dit dans UC-12, US-UC-12 et la stratégie de test ; (10) `docs/reference/ordre-d-autorite.md` renvoie à l'ordre d'autorité au lieu de le recopier |
 | Code de renvoi | — |
 | Origine | origin: docs/workstreams/conformite-corpus/reprise/REPRISE.md § Restes connus @ 51a7cdc |
 

@@ -2,6 +2,7 @@
 
 > Contexte produit et positionnement → [vision.md](../vision/vision.md)
 > Priorisation détaillée → [matrice-de-priorites.md](../vision/perimetre/matrice-de-priorites.md)
+> Vue d'ensemble en diagrammes → [diagrammes.md](diagrammes.md)
 
 ---
 
