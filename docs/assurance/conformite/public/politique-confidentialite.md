@@ -169,7 +169,7 @@ Toute personne dont les données sont traitées par Haversack dispose des droits
 
 **Pour un joueur invité sans compte** : une procédure dédiée existe, décrite dans [`procedure-droits-invites.md`](../cadres/procedure-droits-invites.md). En résumé :
 - la demande s'adresse par email à `support@haversack.io`, en mentionnant le nom d'affichage utilisé en session et l'espace concerné ;
-- une vérification d'identité proportionnée est effectuée avant toute action (la méthode exacte n'est pas encore arrêtée — `[À VALIDER — JURISTE/SÉCURITÉ]`) ;
+- une vérification d'identité proportionnée est effectuée avant toute action (la méthode exacte n'est pas encore arrêtée ; son choix relève du juriste, avec l'avis de la sécurité — `[À VALIDER — JURISTE]`) ;
 - le délai de traitement est d'1 mois, extensible à 2 mois selon la complexité, avec information du demandeur dans le premier mois (Art. 12§3) ;
 - la portée exacte de l'effacement ou de l'opposition lorsque la donnée de l'invité est imbriquée dans un contenu partagé conservé sous intérêt légitime tiers reste `[À VALIDER — JURISTE]`.
 
