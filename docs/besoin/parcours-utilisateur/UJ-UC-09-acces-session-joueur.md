@@ -39,8 +39,8 @@ journey
     section MJ invite un membre regulier via lien permanent
         Generer un lien permanent pour un membre: 5: Thomas
         Partager le lien au joueur: 5: Thomas
-        Joueur cree un compte si necessaire: 3: Thomas
-        Joueur acces a l historique et au lore: 5: Thomas
+        Joueur cree un compte si necessaire: 3: Lucas
+        Joueur acces a l historique et au lore: 5: Lucas
     section Acces expire ou revoque
         Joueur tente d ouvrir un lien expire: 2: Lucas
         Voir le message « Ce lien n'est pas utilisable »: 3: Lucas
