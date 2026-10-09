@@ -16,6 +16,8 @@ namespace VerifMarqueursIdentifiants;
 /// <item><b>gras</b> — <c>**T-04 — …**</c> en tête de ligne, suivi d'un tiret long
 /// (<c>- **T-04 (reclaim)** …</c> est un renvoi).</item>
 /// </list>
+/// La clé d'un écart est <c>identifiant|fichier</c> : la liste de référence
+/// accepte un identifiant dans un fichier donné, pas un identifiant en général.
 /// Une famille dont les définitions ne se trouvent que dans un fichier (un
 /// tableau d'identifiants cité ailleurs en première cellule) est bornée à ce
 /// fichier. Les familles propres à un document (H, A, E, C, S, L, #, SV, ARB,
@@ -109,7 +111,13 @@ internal static class ControleIdentifiants
             if (lieux.Count < 2) continue;
             foreach (var lieu in lieux)
             {
-                constats.Add(lieu with { Message = $"{identifiant} défini ici ({lieux.Count} définitions)" });
+                // La clé porte le fichier : une définition acceptée qui change de fichier
+                // n'est plus celle que la liste accepte, même si leur nombre ne bouge pas.
+                constats.Add(lieu with
+                {
+                    Cle = $"{identifiant}|{lieu.Fichier}",
+                    Message = $"{identifiant} défini ici ({lieux.Count} définitions)",
+                });
             }
         }
         return constats;

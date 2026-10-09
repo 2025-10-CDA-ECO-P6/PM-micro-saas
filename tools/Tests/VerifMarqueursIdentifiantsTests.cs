@@ -313,7 +313,10 @@ public class ControleDesIdentifiants : DepotDeControle
     {
         EcrireDoc("besoin/stories/US-UC-06-vue-session.md", "# Epic\n\n- RB-06-25 : La vue se rafraîchit.\n");
         EcrireDoc("besoin/cas-d-utilisation/UC-06-vue-session.md", "# UC-06 — Vue\n\n- **RB-06-25** : La vue se rafraîchit.\n");
-        string reference = EcrireReference("identifiants.txt", "# commentaire\nRB-06-25|2\n");
+        string reference = EcrireReference(
+            "identifiants.txt",
+            "# commentaire\nRB-06-25|docs/besoin/stories/US-UC-06-vue-session.md|1\n"
+            + "RB-06-25|docs/besoin/cas-d-utilisation/UC-06-vue-session.md|1\n");
 
         var resultat = Lancer(referenceIdentifiants: reference);
 
@@ -328,7 +331,10 @@ public class ControleDesIdentifiants : DepotDeControle
         EcrireDoc("besoin/stories/US-UC-06-vue-session.md", "# Epic\n\n- RB-06-25 : La vue se rafraîchit.\n");
         EcrireDoc("besoin/cas-d-utilisation/UC-06-vue-session.md", "# UC-06 — Vue\n\n- **RB-06-25** : La vue se rafraîchit.\n");
         EcrireDoc("projet/notes.md", "# Notes\n\n- RB-06-25 : encore une définition.\n");
-        string reference = EcrireReference("identifiants.txt", "RB-06-25|2\n");
+        string reference = EcrireReference(
+            "identifiants.txt",
+            "RB-06-25|docs/besoin/stories/US-UC-06-vue-session.md|1\n"
+            + "RB-06-25|docs/besoin/cas-d-utilisation/UC-06-vue-session.md|1\n");
 
         var resultat = Lancer(referenceIdentifiants: reference);
 
@@ -338,10 +344,35 @@ public class ControleDesIdentifiants : DepotDeControle
     }
 
     [Fact]
+    public void DevraitSignalerUneDefinitionAccepteeQuiChangeDeFichier()
+    {
+        // D21 : la liste accepte RB-06-25 dans deux fichiers. La seconde définition
+        // quitte cas-d-utilisation/ pour projet/ : le nombre de définitions reste
+        // deux, mais l'une d'elles n'est plus celle que la liste accepte.
+        EcrireDoc("besoin/stories/US-UC-06-vue-session.md", "# Epic\n\n- RB-06-25 : La vue session se rafraîchit.\n");
+        EcrireDoc("projet/notes.md", "# Notes\n\n- **RB-06-25** : La vue session se rafraîchit.\n");
+        string reference = EcrireReference(
+            "identifiants.txt",
+            "RB-06-25|docs/besoin/stories/US-UC-06-vue-session.md|1\n"
+            + "RB-06-25|docs/besoin/cas-d-utilisation/UC-06-vue-session.md|1\n");
+
+        var resultat = Lancer(referenceIdentifiants: reference);
+
+        Assert.Equal(1, resultat.CodeSortie);
+        Assert.Contains("ÉCART NOUVEAU RB-06-25|docs/projet/notes.md : 1 constat(s)", resultat.Stdout);
+        Assert.Contains("docs/projet/notes.md:3", resultat.Stdout);
+        // La définition restée en place est toujours acceptée ; seule l'ancienne place est à retirer.
+        Assert.DoesNotContain("DISPARU RB-06-25|docs/besoin/stories/US-UC-06-vue-session.md", resultat.Stdout);
+        Assert.Contains("DISPARU RB-06-25|docs/besoin/cas-d-utilisation/UC-06-vue-session.md", resultat.Stdout);
+    }
+
+    [Fact]
     public void DevraitEchouerSurUnAutreIdentifiantQueCeluiQueLaListeDeReferenceAccepte()
     {
         EcrireDoc("besoin/stories/US-UC-06-vue-session.md", "# Epic\n\n- RB-06-26 : La vue se rafraîchit.\n- RB-06-26 : Doublon.\n");
-        string reference = EcrireReference("identifiants.txt", "RB-06-25|2\n");
+        string reference = EcrireReference(
+            "identifiants.txt",
+            "RB-06-25|docs/besoin/stories/US-UC-06-vue-session.md|2\n");
 
         var resultat = Lancer(referenceIdentifiants: reference);
 

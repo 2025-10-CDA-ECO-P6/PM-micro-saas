@@ -1,4 +1,5 @@
 # Identifiants que le corpus définit déjà plus d'une fois (ADR-019 § 2, § 10) et que le contrôle accepte.
-# Une ligne par identifiant : identifiant|nombre de définitions acceptées.
-# Un identifiant absent de cette liste, ou défini plus souvent qu'ici, fait échouer le contrôle.
+# Une ligne par identifiant et par fichier : identifiant|fichier|nombre de définitions acceptées dans ce fichier.
+# Une définition dans un fichier absent de cette liste, ou plus fréquente qu'ici, fait échouer le contrôle :
+# une définition acceptée qui change de fichier est donc un écart.
 # Une entrée que le corpus ne justifie plus est signalée « DISPARU » : la retirer.

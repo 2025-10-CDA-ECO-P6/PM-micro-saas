@@ -620,3 +620,85 @@ public class CasRetireDansLeCahierNePeseAucuneAbsence : IDisposable
         Assert.Contains("CITÉ                                           : 0", resultat.Stdout);
     }
 }
+
+/// <summary>
+/// D20 (vérités 1 et 2 du chantier correctifs-outils) — la section « Vue des
+/// épiques » se trouve par son intitulé, quel que soit le niveau de son titre ;
+/// son périmètre s'arrête au prochain titre de niveau égal ou supérieur, et une
+/// section introuvable est une panne nommée, jamais un périmètre vide.
+///
+/// Le plan construit porte, après la section, un tableau « Épique / Jalon »
+/// qu'une lecture trop large prendrait pour de la vue des épiques : il rendrait
+/// <c>CR-UC02-01</c> en trou au lieu de l'absence hors MVP.
+/// </summary>
+public class SectionDesEpiquesTrouveeParSonIntitule : IDisposable
+{
+    private readonly RepertoireTemporaire _tmp = new();
+
+    public void Dispose() => _tmp.Dispose();
+
+    private const string Cahier =
+        "| ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |\n" +
+        "|---|---|---|---|---|---|---|\n" +
+        "| CR-UC01-01 | [nominal] Cas cité | — | — | — | US-01-01 §\"scénario cité\" | — |\n" +
+        "| CR-UC01-02 | [nominal] Cas silencieux | — | — | — | US-01-01 §\"scénario silencieux\" | — |\n" +
+        "| CR-UC02-01 | [nominal] Hors de la vue | — | — | — | US-02-01 §\"scénario\" | — |\n";
+
+    // « niveau » : les dièses du titre de la section ; ses sous-titres en portent un de plus.
+    private static string Plan(string niveau) =>
+        $"{niveau} 4. Vue des épiques\n\n" +
+        $"{niveau}# J1\n\n" +
+        "| Épique | But | Jalon | Dépend de | Tranches |\n" +
+        "|---|---|---|---|---|\n" +
+        "| US-UC-01 — Cas nominal | but de l'épique | J1 | — | TB-001 |\n\n" +
+        $"{niveau} 5. J0 — épiques et tranches\n\n" +
+        "| Épique | But | Jalon |\n" +
+        "|---|---|---|\n" +
+        "| US-UC-02 — Hors de la vue | tableau d'une autre section | J1 |\n\n" +
+        "##### TB-001 — Une tranche\n\n" +
+        "| Champ | Valeur |\n" +
+        "|---|---|\n" +
+        "| Critères d'acceptation | CR-UC01-01 |\n";
+
+    [Theory]
+    [InlineData("#")]
+    [InlineData("##")]
+    [InlineData("###")]
+    [InlineData("####")]
+    public void DevraitLireLaMemeSectionQuelQueSoitLeNiveauDeSonTitre(string niveau)
+    {
+        FixturesCouvertureRecette.ConstruireRacine(_tmp.Chemin, Cahier, Plan(niveau));
+
+        var resultat = Helpers.ExecuterOutil("VerifCouvertureRecette", [_tmp.Chemin]);
+
+        Assert.Contains("ABSENT — TROU (ni cité, ni légitime)           : 1", resultat.Stdout);
+        Assert.Contains("[TROU] CR-UC01-02 (US-UC-01, jalon J1)", resultat.Stdout);
+        Assert.Contains("ABSENT — HORS MVP (use case hors §4, légitime) : 1", resultat.Stdout);
+        Assert.DoesNotContain("[TROU] CR-UC02-01", resultat.Stdout);
+        Assert.Equal(1, resultat.CodeSortie);
+    }
+
+    [Fact]
+    public void DevraitSortirEnErreurNommantLaSectionQuandLePlanNeLaPortePas()
+    {
+        string plan =
+            "## 4. Vue des chantiers\n\n" +
+            "| Épique | But | Jalon | Dépend de | Tranches |\n" +
+            "|---|---|---|---|---|\n" +
+            "| US-UC-01 — Cas nominal | but | J1 | — | TB-001 |\n\n" +
+            "## 5. J0 — épiques et tranches\n\n" +
+            "##### TB-001 — Une tranche\n\n" +
+            "| Champ | Valeur |\n" +
+            "|---|---|\n" +
+            "| Critères d'acceptation | CR-UC01-01 |\n";
+        FixturesCouvertureRecette.ConstruireRacine(_tmp.Chemin, Cahier, plan);
+
+        var resultat = Helpers.ExecuterOutil("VerifCouvertureRecette", [_tmp.Chemin]);
+
+        Assert.Equal(2, resultat.CodeSortie);
+        Assert.Contains("panne d'exécution", resultat.Stderr);
+        // L'intitulé seul est nommé : la recherche ne dépend ni du niveau ni du numéro.
+        Assert.Contains("« Vue des épiques » introuvable", resultat.Stderr);
+        Assert.DoesNotContain("[TROU]", resultat.Stdout);
+    }
+}
