@@ -3,7 +3,7 @@
 | Champ | Valeur |
 |---|---|
 | Version | SOUS-SPÉCIFIÉ |
-| Date | 2026-09-02 |
+| Date | 2026-10-09 |
 | Statut | SOUS-SPÉCIFIÉ |
 | Porteur | SOUS-SPÉCIFIÉ |
 | Validation | SOUS-SPÉCIFIÉ |
@@ -13,6 +13,7 @@
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
 | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans changement de structure : marqueurs ramenés à la liste fermée, lignes de la vue de traçabilité complétées, diagramme de la vue composants, facturation (tier) alignée sur le domaine, éléments non sourcés retirés |
 
 **Sommaire**
 
@@ -47,8 +48,7 @@ Consolidation : elle ne tranche rien. Elle est une carte du système dessinée �
 | Statut | Signification |
 |---|---|
 | Sauf mention contraire | les décisions cartographiées dans ce document sont **actées en conception et à confirmer à l'entrée en build** — elles ne décrivent pas un système déjà construit |
-| `[non tranché]` | point explicitement ouvert |
-| `[à ratifier]` | point explicitement ouvert |
+| `[À DÉCIDER — <axe>]` | une décision non prise ; l'axe nomme qui ou quoi la tranche ([registre des marqueurs](../conventions.md#registre-des-marqueurs)) |
 
 ---
 
@@ -86,12 +86,12 @@ Le système Haversack met en relation cinq natures d'acteurs et cinq systèmes e
 - **Co-MJ** — `MemberRole.GM`.
 - **Joueur authentifié** — `SpaceMembership` de rôle `PLAYER`.
 - **Joueur invité sans compte** — `GuestAccess`, scope `SPACE` ou `SESSION` ([ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §1).
-- **Utilisateur solo / mode local** — aucun `User` n'existe en mode local ([ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md) §1.1) ; propriétaire de facto d'un espace `PERSONAL` local, sans `ownerId` assigné.
+- **Utilisateur solo / mode local** — aucun `User` n'existe en mode local ([ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md) §1.1, [identity-access/context.md](../domaine/identity-access/context.md)) ; propriétaire de facto d'un espace `PERSONAL` local, sans `ownerId` assigné.
 
 **Systèmes externes** :
 - **Fournisseurs OAuth / IdP** — Google, Discord ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.2).
 - **Infrastructure d'envoi d'email** ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.1).
-- **Système de facturation** — émet `AccountTierChanged` (PRO ↔ FREE).
+- **Système de facturation** — notifie le changement de tier (`TierChanged`, PRO ↔ FREE) ; l'application le traduit en `User.ChangeTier`, qui publie l'événement domaine `AccountTierChanged` ([identity-access/flows.md](../domaine/identity-access/flows.md), Flux 5 ; [identity-access/context.md](../domaine/identity-access/context.md), règle métier 3).
 - **Secret manager / magasin de certificats** — clé de signature JWT, rotation ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.2).
 - **CDN** — sert la landing en SSG ([ADR-003](../decisions/ADR-003-stack-front.md)).
 
@@ -148,7 +148,7 @@ graph TD
 - **API ↔ IdP** — OAuth2 ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md)).
 - **API ↔ secret manager** — clé de signature JWT ([ADR-015 §3.2](../decisions/ADR-015-securite-authentification-mvp.md)).
 - **API ↔ infrastructure email** — envoi des emails de validation et de bienvenue ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.1).
-- **Facturation → API** — le système de facturation émet `AccountTierChanged` (PRO ↔ FREE) consommé par l'API.
+- **Facturation → API** — le système de facturation notifie le changement de tier (`TierChanged`, PRO ↔ FREE) ; l'API le traduit en commande applicative `User.ChangeTier`, dont l'événement domaine `AccountTierChanged` est consommé par Space Management ([identity-access/flows.md](../domaine/identity-access/flows.md), Flux 5).
 
 ```mermaid
 graph TD
@@ -192,25 +192,43 @@ graph TD
 
 *Vue composants (C4 niveau 3).*
 
+Le diagramme montre les composants du monolithe modulaire : le noyau partagé et les quatre bounded contexts. Les contextes dépendent du noyau et ne dépendent pas les uns des autres ; leurs échanges passent par des identifiants, des événements domaine ou des contrats applicatifs ([domaine/README.md](../domaine/README.md#architecture-générale), [core/kernel.md](../domaine/core/kernel.md)). Les éléments de la couche Application, décrits dans la dernière sous-section, ne sont pas dessinés : le diagramme ne montre que ce que la carte des contextes pose.
+
+```mermaid
+graph TD
+    subgraph Monolithe["Monolithe modulaire"]
+        CORE["Core / SharedKernel"]
+        IA["Identity & Access"]
+        SM["Space Management"]
+        CL["Content Library"]
+        SC["Session Conduct"]
+    end
+
+    IA --> CORE
+    SM --> CORE
+    CL --> CORE
+    SC --> CORE
+```
+
 ### Core / SharedKernel
 
 Noyau partagé, pas un bounded context. Porte les abstractions communes : `AggregateRoot` / `Entity` / `ValueObject` / `DomainEvent` ; les identifiants typés (`UserId`, `SpaceId`, `GuestAccessId`, `SessionId`, `DocumentId`, `FolderId`) ; les value objects `Email` / `Slug` / `Tag` ; les primitives de traçabilité `AuditInfo` et `SoftDelete` ; l'enum partagée `Visibility`. Source : [core/kernel.md](../domaine/core/kernel.md).
 
 ### Identity & Access
 
-Agrégat unique `User` (shadow entity — les secrets d'authentification sont délégués à l'infrastructure d'identité). Contrats applicatifs observables portés par [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) : `ITokenValidator`, `ITokenDenylist`, `ITokenSigner`, `IEmailVerificationPolicy` (§5) et `IPasswordHasher<User>` (§1.2, Argon2id). Un Hosted Service assure la purge périodique des JTI expirés.
+Agrégat unique `User` (shadow entity — les secrets d'authentification sont délégués à l'infrastructure d'identité). Contrats applicatifs observables portés par [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) : `ITokenValidator`, `ITokenDenylist`, `ITokenSigner`, `IEmailVerificationPolicy` (§5) et `IPasswordHasher<User>` (§1.2, Argon2id). Un Hosted Service assure la purge périodique des JTI expirés. Source : [identity-access/context.md](../domaine/identity-access/context.md).
 
 ### Space Management
 
-Gardien de l'accès. Agrégat principal `Space` (`SpaceType {CAMPAIGN, ONE_SHOT, PERSONAL}`), entités enfants `SpaceMembership` et `Invitation` ; `GuestAccess` est un agrégat séparé (cycle de vie orthogonal). Port `ISpaceRepository`. Il n'existe pas d'agrégat `ScenarioLibrary` — la réutilisabilité est subsumée par l'espace `PERSONAL` ([ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md)).
+Gardien de l'accès. Agrégat principal `Space` (`SpaceType {CAMPAIGN, ONE_SHOT, PERSONAL}`), entités enfants `SpaceMembership` et `Invitation` ; `GuestAccess` est un agrégat séparé (cycle de vie orthogonal). Il n'existe pas d'agrégat `ScenarioLibrary` — la réutilisabilité est subsumée par l'espace `PERSONAL` ([ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md)). Source : [space-management/context.md](../domaine/space-management/context.md).
 
 ### Content Library
 
-Référentiel du principe « Tout est Document ». Agrégat `Document` (composé de `DocumentBlock`, du value object `DocumentLink`, et de `DocumentTag`), agrégat `Folder`, entité de référence `DocumentType`. Méthodes souveraines du domaine : `Document.CanBeReadBy(...)` (résolution de la visibilité — [ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §Frontière fondamentale) ; `Document.SetProperties()` via le value object `DocumentProperties` validé contre le `propertiesSchema` du type ([ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md)) ; `Document.Instantiate()` ; `Document.LinkDocument()` (invariant anti-lien cross-espace, rejeté au niveau domaine). Port `IDocumentRepository`.
+Référentiel du principe « Tout est Document ». Agrégat `Document` (composé de `DocumentBlock`, du value object `DocumentLink`, et de `DocumentTag`), agrégat `Folder`, entité de référence `DocumentType`. Méthodes souveraines du domaine : `Document.CanBeReadBy(...)` (résolution de la visibilité — [ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §Frontière fondamentale) ; `Document.SetProperties()` via le value object `DocumentProperties` validé contre le `propertiesSchema` du type ([ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md)) ; `Document.Instantiate()` ; `Document.LinkDocument()` (invariant anti-lien cross-espace, rejeté au niveau domaine — [ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §4). Port `IDocumentRepository` ([fondations.md](../architecture/fondations.md), § Repository). Source : [content-library/context.md](../domaine/content-library/context.md).
 
 ### Session Conduct
 
-Consomme ce que Content Library prépare, sans posséder de contenu propre. Agrégat `Session` (existence d'une machine d'états `LIVE → CLOSED → ARCHIVED`, sans détail des transitions — relève du SDD), agrégat `SessionViewConfig` avec le value object `SessionViewFolder`. Les notes de session sont des `Document` de type `LIVE_NOTE`. Port `ISessionRepository`.
+Consomme ce que Content Library prépare, sans posséder de contenu propre. Agrégat `Session` (existence d'une machine d'états `LIVE → CLOSED → ARCHIVED`, sans détail des transitions — relève du SDD), agrégat `SessionViewConfig` avec le value object `SessionViewFolder`. Les notes de session sont des `Document` de type `LIVE_NOTE`. Source : [session-conduct/context.md](../domaine/session-conduct/context.md).
 
 ### Transverse — couche Application
 
@@ -229,9 +247,9 @@ Deux lieux d'exécution structurent le déploiement :
 - **(a) Navigateur** — SPA + IndexedDB, mode local pleinement hors-ligne, `connect-src 'self'`, aucune donnée envoyée au serveur en mode local ([ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)).
 - **(b) Serveur** — monolithe ASP.NET Core, PostgreSQL, hub SignalR, denylist externe.
 
-La landing est servie en SSG depuis un CDN ([ADR-003](../decisions/ADR-003-stack-front.md)). Les connexions persistantes du canal temps réel imposent des **sticky sessions** côté hébergement, d'où une denylist externe et une clé de signature en secret manager ([ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md)). La frontière local↔cloud n'est traversée que par la migration one-shot, complétée d'un gate anti-appropriation ([ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)). Le déploiement du monolithe est **atomique** — aucun module ne se déploie seul ([stack.md](../architecture/stack.md)). **Aucun stockage objet n'est prévu au MVP.** L'extensibilité vers d'autres clients (PWA, Tauri, Capacitor, MAUI) se fait par des projets de présentation distincts consommant la même API, sans modification du domaine ([stack.md](../architecture/stack.md), [ADR-003](../decisions/ADR-003-stack-front.md)).
+La landing est servie en SSG depuis un CDN ([ADR-003](../decisions/ADR-003-stack-front.md)). Les connexions persistantes du canal temps réel imposent des **sticky sessions** côté hébergement, d'où une denylist externe et une signature JWT asymétrique ([ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.4 et Croisements) ; la clé de signature est gérée en secret manager ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.2). La frontière local↔cloud n'est traversée que par la migration one-shot, complétée d'un gate anti-appropriation ([ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)). Le déploiement du monolithe est **atomique** — aucun module ne se déploie seul ([stack.md](../architecture/stack.md)). **Aucun stockage objet n'est prévu au MVP.** L'extensibilité vers d'autres clients (PWA, Tauri, Capacitor, MAUI) se fait par des projets de présentation distincts consommant la même API, sans modification du domaine ([stack.md](../architecture/stack.md), [ADR-003](../decisions/ADR-003-stack-front.md)).
 
-**`[non tranché]` — hébergeur.** [`stack.md`](../architecture/stack.md) recense des options (Railway, Supabase, Render, auto-hébergé) sans arbitrer. Ce document cartographie la contrainte structurelle (sticky sessions imposées par le transport temps réel), pas une topologie d'hébergement : aucun choix de fournisseur n'est acté ici ni ailleurs dans le corpus actuel.
+**`[À DÉCIDER — hébergement]` — hébergeur.** [`stack.md`](../architecture/stack.md) recense des options (Railway, Supabase, Render, auto-hébergé) sans arbitrer. Ce document cartographie la contrainte structurelle (sticky sessions imposées par le transport temps réel), pas une topologie d'hébergement : aucun choix de fournisseur n'est acté ici ni ailleurs dans le corpus actuel.
 
 ```mermaid
 graph TD
@@ -243,7 +261,7 @@ graph TD
 
     CDN["CDN — landing SSG"]
 
-    subgraph Serveur["Lieu d'exécution — Serveur (hébergeur [non tranché])"]
+    subgraph Serveur["Lieu d'exécution — Serveur (hébergeur [À DÉCIDER — hébergement])"]
         MONO["Monolithe ASP.NET Core"]
         PG[("PostgreSQL")]
         HUB["Hub SignalR<br/>(sticky sessions requises)"]
@@ -268,16 +286,20 @@ graph TD
 
 | Section | Décisions |
 |---|---|
-| Choix et justification | ADR-001, ADR-002, ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, ADR-018, stack.md |
-| Contexte du système | ADR-001, ADR-003, ADR-009, ADR-011, ADR-014 §1, ADR-015 §2.1/§2.2/§3.2, ADR-017 §1.1 |
-| Conteneurs | ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, structure-projets.md, stack.md |
-| Composants — Identity & Access | ADR-015 §5, identity-access/context.md |
+| Métadonnées et nature du document | ADR-019 §1, transverse.md |
+| Légende des statuts | ADR-019 §5, conventions.md |
+| Choix et justification | ADR-001, ADR-002, ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, ADR-018, stack.md, structure-projets.md |
+| Contexte du système | ADR-001, ADR-003, ADR-009, ADR-011, ADR-014 §1, ADR-015 §2.1/§2.2/§3.2, ADR-017 §1.1, identity-access/context.md, identity-access/flows.md |
+| Conteneurs | ADR-001, ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, structure-projets.md, stack.md, identity-access/flows.md |
+| Composants — vue d'ensemble (diagramme) | domaine/README.md, core/kernel.md |
+| Composants — Identity & Access | ADR-015 §1.2/§5, identity-access/context.md |
 | Composants — Space Management | ADR-018, space-management/context.md |
-| Composants — Content Library | ADR-002, ADR-014 §Frontière fondamentale, content-library/context.md |
+| Composants — Content Library | ADR-002, ADR-014 §Frontière fondamentale/§4, content-library/context.md, fondations.md |
 | Composants — Session Conduct | session-conduct/context.md |
-| Composants — Transverse (couche Application) | ADR-011, ADR-014 §3/§6 |
+| Composants — Transverse (couche Application) | ADR-011, ADR-014 §3/§6, ADR-016, space-management/context.md |
 | Composants — Core/SharedKernel | core/kernel.md |
 | Déploiement | ADR-003, ADR-004, ADR-015, ADR-016, ADR-017, stack.md |
+| Limites cartographiques | ADR-015 §2.3, ADR-018, stack.md, specs/telemetrie.md, cadrage-validation-pre-lancement-eu.md |
 
 ---
 
@@ -290,7 +312,7 @@ graph TD
 **Statut pré-implémentation généralisé.** C'est le point le plus structurant de ce document : à l'exception des rares cas explicitement marqués autrement, chaque choix cartographié est une décision de conception à confirmer à l'entrée en build — voir la légende des statuts en §1.
 
 **Points ouverts, non tranchés dans ce document** :
-- [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[à ratifier]` en décision produit.
+- [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[À DÉCIDER — produit]`, statut que porte l'ADR à cet endroit (`[À TRANCHER — PRODUIT]`).
 - [ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md) — deux validations juridiques ouvertes avant tout lancement EU, consolidées dans [`cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md) : la qualification au regard de l'Art. 17 du hard-delete inconditionnel du contenu personnel, et le périmètre du DPA (Art. 28) pour un contenu personnel décrivant des tiers identifiables. Ces deux points sont des items de conformité ouverts, non des décisions d'architecture ; ils ne sont pas tranchés ici.
 
 ---
