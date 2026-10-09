@@ -303,7 +303,7 @@ Cette pratique complète 8.5 sans la remplacer : 8.5 dit quels termes sont **pro
 
 #### 8.8 Conventions de tenue du corpus
 
-Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Conventions de tenue du corpus](../decisions/ADR-019-conventions-de-tenue-du-corpus.md), qui fait foi. En résumé :
+Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Conventions de tenue du corpus](../decisions/ADR-019-conventions-de-tenue-du-corpus.md), qui fait foi, et reprises en partie (ordre d'autorité, identifiants, renvois, marqueurs, glossaire) dans le document des [Conventions du corpus](../conventions.md). En résumé :
 
 | Axe | Règle |
 |---|---|

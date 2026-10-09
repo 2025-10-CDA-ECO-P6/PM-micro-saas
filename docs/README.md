@@ -32,3 +32,5 @@ le contenu.
 | `project/backlog/` | Backlog issu de l'onboarding du corpus (2026-10-07) — écarts à aligner et réponses à reporter dans les documents sources | [project/backlog/README.md](project/backlog/README.md) |
 
 La sélection des modules du corpus, lue par l'outillage d'assistance (`.claude/`), est tenue dans [corpus.md](corpus.md).
+
+Les règles de tenue du corpus sont tenues dans [conventions.md](conventions.md). Trois documents sont générés ou alimentés par l'outillage : la matrice des cas d'utilisation dans [tracabilite.md](tracabilite.md), le catalogue des événements dans [domaine/evenements.md](domaine/evenements.md) et le journal des changements normatifs dans [journal-du-corpus.md](journal-du-corpus.md).
