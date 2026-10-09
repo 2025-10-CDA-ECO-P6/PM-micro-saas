@@ -13,6 +13,7 @@
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
 | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans restructuration : attribution de E-02, E-04 et E-05 reprise sur les sources vivantes (ADR-005 § Conséquences, ADR-006 § Compléments post-revue) ; « Vision-produit.md » devenu `vision.md` ; citation de la vision § 5bis rétablie ; clause des marqueurs alignée sur ADR-019 § 5 ; ligne de traçabilité du § 1 sourcée ; renvois « Volet 1.2 », « 2.3 » et « Volet 3.1 » rendus en liens |
 
 **Sommaire**
 
@@ -26,7 +27,7 @@
 
 ## 1. Nature et portée du document
 
-Cadre de méthode : il fixe comment chiffrer le coût, dimensionner le marché et aller au marché, et ne tranche rien. Une valeur pas encore fournie est marquée à compléter.
+Cadre de méthode : il fixe comment chiffrer le coût, dimensionner le marché et aller au marché, et ne tranche rien. Une valeur pas encore fournie est marquée `À TRANCHER`.
 
 > Les valeurs chiffrées de coût et de marché sont différées (post-MVP / étude marché) ; ce document, cadre méthodologique, pose la méthode et les hypothèses, pas des chiffres définitifs.
 
@@ -60,7 +61,7 @@ Ces valeurs sont elles-mêmes qualifiées de **volatiles** par le corpus (CdC an
 
 ### 1.1 Contexte et hypothèse de méthode
 
-ADR-005 diffère explicitement le chiffrage du coût d'infrastructure post-MVP, *« après évaluation du coût d'infrastructure par utilisateur »* (ADR-005, Décision). Le finding **E-02** (ADR-005, § Conséquences) charge cette note de poser : le coût d'un utilisateur gratuit, le revenu net d'un utilisateur Pro, et le ratio de break-even.
+ADR-005 diffère explicitement le chiffrage du coût d'infrastructure post-MVP, *« après évaluation du coût d'infrastructure par utilisateur »* (ADR-005, Décision). ADR-005 (§ Conséquences) charge cette note de poser : le coût d'un utilisateur gratuit, le revenu net d'un utilisateur Pro, et le ratio de break-even. `[SOUS-SPÉCIFIÉ — le finding E-02, que cette note citait pour ce point, n'a plus de source dans le corpus]`
 
 Ce volet pose la **formule** de chacun de ces trois éléments. Aucune valeur unitaire de coût n'est inscrite — `[À TRANCHER — mesure coût infra post-MVP]`.
 
@@ -99,7 +100,7 @@ Revenu_net_utilisateur_Pro = Tarif_Pro (≈ 7 €/mois, CdC annexe « Valeurs de
                             − Coût_infra_Pro(stockage 5 Go+, synchro, trafic de partage, sans plafond d'espaces)
 ```
 
-`Coût_infra_Pro` suit la même décomposition que le Volet 1.2, avec deux différences structurelles à noter pour le chiffrage post-MVP :
+`Coût_infra_Pro` suit la même décomposition que [Coût par utilisateur gratuit (Volet 1, § 1.2)](#12-coût-par-utilisateur-gratuit), avec deux différences structurelles à noter pour le chiffrage post-MVP :
 - le stockage n'est plus plafonné à 500 Mo mais à 5 Go et plus — le coût marginal de stockage par palier Go doit être établi ;
 - le nombre d'espaces actifs n'est plus plafonné à 3 — le coût de synchronisation devient fonction d'un usage non borné, ce qui change la nature du calcul (coût variable pur, non un forfait par quota).
 
@@ -107,7 +108,7 @@ Revenu_net_utilisateur_Pro = Tarif_Pro (≈ 7 €/mois, CdC annexe « Valeurs de
 
 ### 1.4 Ratio de break-even
 
-Le finding **E-02** (ADR-005) demande le ratio de conversion gratuit→Pro nécessaire pour couvrir le coût des utilisateurs gratuits.
+ADR-005 (§ Conséquences) demande le ratio de conversion gratuit→Pro nécessaire pour couvrir le coût des utilisateurs gratuits.
 
 **Formule (méthode)** :
 
@@ -132,7 +133,7 @@ Interprétation attendue (à confirmer une fois les coûts unitaires connus) : c
 
 ### 2.1 Contexte et hypothèse de méthode
 
-ADR-005 (§ Conséquences) diffère post-MVP le dimensionnement du marché (TAM/SAM) et l'ARPU cible (finding **E-04**), ainsi que la stratégie d'acquisition GTM (finding **E-05**). Ce volet pose la méthode de calcul et les segments identifiables dans le corpus — aucune valeur de population ou de taille de marché n'est inscrite.
+ADR-005 (§ Conséquences) diffère post-MVP le dimensionnement du marché (TAM/SAM) et l'ARPU cible, ainsi que la stratégie d'acquisition GTM. ADR-006 (§ Compléments post-revue) nomme **E-04** (taille et solvabilité du marché) et **E-05** (GTM) à propos de l'hypothèse marché. Ce volet pose la méthode de calcul et les segments identifiables dans le corpus — aucune valeur de population ou de taille de marché n'est inscrite.
 
 ### 2.2 TAM — marché total adressable
 
@@ -178,7 +179,7 @@ ARPU = (N_Pro × Tarif_Pro) / (N_Pro + N_gratuits)
 
 Le corpus inscrit un mécanisme d'adoption explicite, indépendant de toute donnée de marché :
 
-- **Le partage est inclus au palier gratuit.** ADR-005 (Décision) maintient explicitement cette accroche : *« L'accroche "le partage est gratuit" est maintenue, mais l'échelle de l'usage et du partage est ce qui est monétisé »*. Vision-produit.md §3 formule la même règle : *« Haversack intègre le partage joueurs dans le tier gratuit, ce qui aligne l'adoption MJ et joueurs »*.
+- **Le partage est inclus au palier gratuit.** ADR-005 (Décision) maintient explicitement cette accroche : *« L'accroche "le partage est gratuit" est maintenue, mais l'échelle de l'usage et du partage est ce qui est monétisé »*. vision.md §3 formule la même règle : *« Haversack intègre le partage joueurs dans le tier gratuit, ce qui aligne l'adoption MJ et joueurs »*.
 - **Mécanique virale attendue** `[À TRANCHER — validation post-lancement]` : chaque MJ au palier gratuit qui partage une session (UC-08) expose l'outil à ses joueurs sans qu'ils créent de compte (UC-09) — un joueur qui devient à son tour MJ d'une table est un canal d'acquisition organique, non payant. Ce mécanisme est cohérent avec la référence explicite du corpus à Obsidian (*« modèle proche d'Obsidian (local gratuit, sync payant) »*, vision.md §3) où le partage, lui, est la variable différenciante ajoutée par Haversack.
 - **Ce que le corpus ne monétise pas** : la vision est explicite — le partage lui-même n'est jamais le levier payant (ADR-005, alternative *« Pro = le partage complet »* explicitement écartée : *« sacrifie le différenciateur […] réduit le vecteur d'adoption virale »*). La monétisation porte sur l'**échelle** (nombre d'espaces, stockage), pas sur l'acte de partager.
 
@@ -194,16 +195,16 @@ Rappel de la règle de palier (CdC §2.4, ADR-005) : le déclencheur Gratuit→P
 
 ### 3.4 Canaux et tactiques d'acquisition
 
-Le corpus ne fixe pas de plan de canaux — finding **E-05** (ADR-005) est explicitement différé post-MVP. Sur la base des segments de personas dérivés en 2.3, les hypothèses de canaux suivantes sont **plausibles au vu du corpus**, sans être une décision :
+Le corpus ne fixe pas de plan de canaux — la stratégie d'acquisition GTM est explicitement différée post-MVP (ADR-005, § Conséquences ; ADR-006, § Compléments post-revue, **E-05**). Sur la base des segments de personas dérivés dans [SAM — marché atteignable (Volet 2, § 2.3)](#23-sam--marché-atteignable), les hypothèses de canaux suivantes sont **plausibles au vu du corpus**, sans être une décision :
 
 | Canal hypothétique | Rationale (persona associée) | Statut |
 |---|---|---|
 | Communautés en ligne de JDR (forums, Discord de jeu, Reddit) | Émilie, Antoine — MJ déjà actifs dans des communautés de systèmes narratifs / non-D&D | `[À TRANCHER — plan GTM post-MVP]` |
 | Conventions et événements one-shot | Sonia — profil convention/one-shot, actuellement non servi par la première livraison (UC-13 hors MVP) ; canal pertinent seulement après re-priorisation de UC-13 | `[À TRANCHER — plan GTM post-MVP]` |
-| Bouche-à-oreille joueur→MJ | Mécanique virale du Volet 3.1 — un joueur invité sans compte peut devenir MJ d'une future table | `[À TRANCHER — plan GTM post-MVP]` |
+| Bouche-à-oreille joueur→MJ | Mécanique virale de [Moteur d'adoption virale (Volet 3, § 3.1)](#31-moteur-dadoption-virale-dérivable-du-corpus) — un joueur invité sans compte peut devenir MJ d'une future table | `[À TRANCHER — plan GTM post-MVP]` |
 | Créateurs de contenu JDR (streaming, chaînes dédiées) | Non dérivable directement des personas actuels du corpus | `[À TRANCHER — plan GTM post-MVP]` |
 
-**Point de vigilance GTM** : le segment Sonia (one-shot/convention) n'est structurellement pas servi par la première livraison (matrice-de-priorites.md, UC-13 *« hors première livraison »*). Un canal GTM construit autour des conventions arriverait donc en avance sur le produit livrable, sauf si la condition de retour de UC-13 (*« si les entretiens ou l'usage révèlent que le profil one-shot est une part significative […], UC-13 est réexaminé »*, vision.md §5bis) est déclenchée.
+**Point de vigilance GTM** : le segment Sonia (one-shot/convention) n'est structurellement pas servi par la première livraison (matrice-de-priorites.md, UC-13 *« hors première livraison »*). Un canal GTM construit autour des conventions arriverait donc en avance sur le produit livrable, sauf si la condition de retour de UC-13 (*« si les entretiens ou l'usage révèlent que le profil one-shot exclusif (Sonia — conventions, groupes changeants, catalogue de scénarios) est une part significative […], UC-13 est réexaminé »*, vision.md §5bis) est déclenchée.
 
 ---
 
@@ -213,9 +214,9 @@ Le corpus ne fixe pas de plan de canaux — finding **E-05** (ADR-005) est expli
 
 | Volet | Donnée manquante | Origine du différé |
 |---|---|---|
-| 1 — Coût & break-even | Coût unitaire stockage/synchro/trafic, coût infra Pro, taux de conversion réel gratuit→Pro | ADR-005, finding E-02 |
-| 2 — Marché | Taille TAM, taille SAM, ARPU observé | ADR-005, finding E-04 |
-| 3 — GTM | Plan de canaux et tactiques d'acquisition, périmètre géographique de lancement | ADR-005, finding E-05 |
+| 1 — Coût & break-even | Coût unitaire stockage/synchro/trafic, coût infra Pro, taux de conversion réel gratuit→Pro | ADR-005, § Conséquences |
+| 2 — Marché | Taille TAM, taille SAM, ARPU observé | ADR-005, § Conséquences ; ADR-006, § Compléments post-revue (E-04) |
+| 3 — GTM | Plan de canaux et tactiques d'acquisition, périmètre géographique de lancement | ADR-005, § Conséquences ; ADR-006, § Compléments post-revue (E-05) |
 
 Aucune de ces données n'est estimée dans ce document : le corpus de conception ne les porte pas, et ADR-005 les qualifie explicitement de travail post-MVP. Ce document fournit la méthode et les entrées connues (CdC annexe « Valeurs de référence chiffrées ») nécessaires pour les instruire dès qu'une mesure de coût infra et une étude marché seront disponibles.
 
@@ -225,9 +226,9 @@ Aucune de ces données n'est estimée dans ce document : le corpus de conception
 
 | Section | Sources |
 |---|---|
-| 1. Nature et portée du document | SOUS-SPÉCIFIÉ |
+| 1. Nature et portée du document | ADR-005 (Décision, § Conséquences) ; ADR-019 (§ 5. Marqueurs) |
 | 2. Lecteur et usage | ADR-005 ; cahier des charges annexe « Valeurs de référence chiffrées », §2.4 ; vision produit ; MoSCoW |
-| 3. Volet 1 — Coût d'infrastructure & break-even | ADR-005 (Décision, § Conséquences, finding E-02) ; cahier des charges §2.4, annexe « Valeurs de référence chiffrées » |
-| 4. Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU) | ADR-005 (§ Conséquences, findings E-04 et E-05) ; vision.md §1, §4.1 ; cahier des charges annexe « Valeurs de référence chiffrées » |
-| 5. Volet 3 — Stratégie go-to-market | ADR-005 (Décision, § Compléments post-revue, finding E-05) ; vision.md §2.2, §3, §5bis ; cahier des charges §2.4 ; matrice-de-priorites.md |
-| 6. Ce qui reste à trancher | ADR-005 (findings E-02, E-04, E-05) ; cahier des charges annexe « Valeurs de référence chiffrées » |
+| 3. Volet 1 — Coût d'infrastructure & break-even | ADR-005 (Décision, § Conséquences) ; cahier des charges §2.4, annexe « Valeurs de référence chiffrées » |
+| 4. Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU) | ADR-005 (§ Conséquences) ; ADR-006 (§ Compléments post-revue, E-04 et E-05) ; vision.md §1, §4.1 ; cahier des charges annexe « Valeurs de référence chiffrées » |
+| 5. Volet 3 — Stratégie go-to-market | ADR-005 (Décision, § Conséquences, § Compléments post-revue) ; ADR-006 (§ Compléments post-revue, E-05) ; vision.md §2.2, §3, §5bis ; cahier des charges §2.4 ; matrice-de-priorites.md |
+| 6. Ce qui reste à trancher | ADR-005 (§ Conséquences) ; ADR-006 (§ Compléments post-revue, E-04 et E-05) ; cahier des charges annexe « Valeurs de référence chiffrées » |

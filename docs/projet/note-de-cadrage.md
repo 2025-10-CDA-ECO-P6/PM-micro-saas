@@ -202,7 +202,7 @@ Les éléments suivants sont absents du corpus de conception, de planification o
 - `../besoin/vision/perimetre/matrice-de-priorites.md` — priorisation détaillée du périmètre (Must/Should/Could/Won't Have).
 
 **Cahier des charges**
-- `../context/cahier-des-charges.md` — document officiel de référence pour la construction du MVP, consolidant le corpus de conception.
+- `../reference/cahier-des-charges.md` — document officiel de référence pour la construction du MVP, consolidant le corpus de conception.
 
 **Planning**
 - `roadmap-de-build.md` — séquence technique d'entrée en build (jalons J0-J3, points de décision, préalables bloquants).
@@ -212,4 +212,4 @@ Les éléments suivants sont absents du corpus de conception, de planification o
 **Business**
 - `../reference/note-business.md` — méthode de calcul du coût d'infrastructure, du dimensionnement de marché et de la stratégie go-to-market.
 
-Ces renvois pointent vers les sources de conception, de planification et de business qui font foi ; cette note n'en constitue qu'une consolidation de gouvernance, sans autorité de corpus propre en cas de divergence de détail.
+Ces renvois pointent vers les sources du besoin (vision, matrice de priorités), qui font foi, et vers des documents de consolidation et de pilotage (cahier des charges, planning, note business), qui ne font jamais foi : en cas d'écart, ce sont eux qu'on corrige ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)) ; cette note n'en constitue qu'une consolidation de gouvernance, sans autorité de corpus propre en cas de divergence de détail.
