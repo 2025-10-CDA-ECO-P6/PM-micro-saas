@@ -32,11 +32,16 @@ internal static class Helpers
     private static string NomExecutable(string nomOutil) =>
         OperatingSystem.IsWindows() ? $"{nomOutil}.exe" : nomOutil;
 
+    // Où CompilationDesOutils compile les outils en fichier unique : sous bin/,
+    // que .gitignore écarte, à côté des tests.
+    public static readonly string DossierOutils = Path.Combine(Ici, "bin", "outils");
+
     // Les outils en fichier unique (tools/FICHIER-UNIQUE.md) : nom du binaire
-    // lancé -> dossier de sortie sous outils/, compilé par la cible
-    // CompilerOutilsFichierUnique de CaracterisationOutils.csproj. Le nom du
-    // binaire n'est pas toujours celui de l'outil : le faux gh de FauxGh
+    // lancé -> dossier de l'outil sous tools/, dont le dernier segment nomme
+    // aussi le fichier d'entrée et le dossier de sortie sous DossierOutils. Le
+    // nom du binaire n'est pas toujours celui de l'outil : le faux gh de FauxGh
     // s'appelle « gh », nom sous lequel le PATH restreint le cherche.
+    // ComparateurJournaux n'est référencé par aucun test : il n'est pas compilé.
     private static readonly Dictionary<string, string> OutilsFichierUnique = new()
     {
         ["VerifCorpus"] = "VerifCorpus",
@@ -45,17 +50,21 @@ internal static class Helpers
         ["VerifCouvertureRecette"] = "VerifCouvertureRecette",
         ["CreerIssues"] = "CreerIssues",
         ["CreerProjet"] = "CreerProjet",
-        ["gh"] = "FauxGh",
-        ["GardeIdentiteGh"] = "GardeIdentiteGh",
+        ["gh"] = "Harnais/FauxGh",
+        ["GardeIdentiteGh"] = "Harnais/GardeIdentiteGh",
     };
+
+    /// <summary>Fichier d'entrée de chaque outil en fichier unique que les tests lancent.</summary>
+    public static IEnumerable<string> SourcesDesOutils =>
+        OutilsFichierUnique.Values.Select(d => Path.Combine(RacineOutils, d, Path.GetFileName(d) + ".cs"));
 
     /// <summary>
     /// Chemin du binaire natif d'un outil en fichier unique, compilé dans
-    /// <c>outils/&lt;Outil&gt;/</c> du répertoire de sortie par la cible
-    /// <c>CompilerOutilsFichierUnique</c> de ce projet.
+    /// <c>&lt;Outil&gt;/</c> de <see cref="DossierOutils"/> par
+    /// <c>CompilationDesOutils</c> avant le premier test.
     /// </summary>
     public static string CheminBinaire(string nomOutil) =>
-        Path.Combine(AppContext.BaseDirectory, "outils", OutilsFichierUnique[nomOutil], NomExecutable(nomOutil));
+        Path.Combine(DossierOutils, Path.GetFileName(OutilsFichierUnique[nomOutil]), NomExecutable(nomOutil));
 
     /// <summary>
     /// Exécute un binaire de `tools/` en sous-processus contre les arguments
@@ -230,7 +239,7 @@ internal static class Helpers
     /// <summary>
     /// Répertoire portant <c>git</c> réel ET le faux <c>gh</c> de ce harnais
     /// (<c>tools/Harnais/FauxGh</c>, outil en fichier unique compilé dans
-    /// <c>outils/FauxGh/</c> du répertoire de sortie de ce projet de test) —
+    /// <c>FauxGh/</c> de <see cref="DossierOutils"/>) —
     /// jamais le vrai <c>gh</c>. À utiliser comme PATH (intégral) d'un
     /// sous-processus dont on veut exercer une branche « gh disponible »
     /// sans jamais risquer un appel réseau réel.

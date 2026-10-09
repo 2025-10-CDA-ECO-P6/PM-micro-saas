@@ -55,6 +55,14 @@ Un fichier unique n'hérite pas du `.csproj`. Chaque propriété qu'il portait s
 - Le code de sortie de `dotnet run --file` est celui que renvoie le programme.
 - Le cache de compilation se fie à la date de modification des sources. Un fichier restauré avec son ancienne date (`cp -p`, extraction d'archive) peut laisser en place un binaire compilé depuis une autre version : faire un `touch` sur le fichier (ou lancer `dotnet run --no-cache --file …`) avant de conclure.
 
+## La suite de tests
+
+`tools/Tests/Tests.cs` suit la même forme (shebang, `#:property`, un `#:include` par fichier) et ajoute `#:package xunit@2.9.3` : les attributs et les `Assert` de xUnit, sans son moteur d'exécution. Le lanceur maison (`LanceurDeTests.cs`) trouve les `[Fact]` et les `[Theory]` + `[InlineData]`, exécute les tests en série (une instance par test, `Dispose` ensuite) et sort en code 0 si tout passe, 1 si un test échoue, 2 en panne du lanceur (outil non compilé, aucun test trouvé, construction xUnit non prise en charge : fixture, collection, `Skip`, test asynchrone, autre source de données).
+
+- Lancer : `dotnet run --file tools/Tests/Tests.cs`. Lister les noms sans rien exécuter : `dotnet run --file tools/Tests/Tests.cs -- --lister`.
+- La ligne de compte est `Réussis: <n>, Échoués: <n>, Total: <n>, Durée: <n> s`, que lit le motif `[Tt]otal[[:space:]]*:[[:space:]]*[0-9]+`.
+- Avant les tests, le lanceur compile chaque outil lancé par les tests dans `tools/Tests/bin/outils/<Outil>/` (`dotnet build --no-incremental`, une fois, en série) : le piège du cache ci-dessus ne peut pas laisser tester un binaire d'une autre version.
+
 ## Ce que la convention ne couvre pas
 
 Elle fixe la forme, pas le partage de code entre outils. Deux fichiers de même nom dans deux outils ne sont pas forcément identiques : avant de les fusionner, on compare leur comportement, car une fusion peut changer ce que fait l'un des outils.

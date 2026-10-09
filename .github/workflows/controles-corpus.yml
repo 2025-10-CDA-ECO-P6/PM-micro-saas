@@ -58,7 +58,7 @@ jobs:
           global-json-file: global.json
 
       - name: Tests de caractérisation de l'outillage
-        run: dotnet test tools/Tests/CaracterisationOutils.csproj
+        run: dotnet run --file tools/Tests/Tests.cs
 
       - name: Liens, ancres, orphelins et renvois « § » (VerifCorpus)
         if: ${{ !cancelled() }}
