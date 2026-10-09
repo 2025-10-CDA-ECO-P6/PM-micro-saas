@@ -6,6 +6,12 @@
 > Source d'autorité pour la cohérence inter-fiches : toute fiche de description d'écran suit ces conventions sans les redéfinir.
 > Les sections de ce document se citent par leur repère C1 à C3, qui est leur ordre : C2 désigne la section Les deux registres de nommage.
 
+**Sommaire**
+
+- [Discipline et test d'autoportance](#discipline-et-test-dautoportance)
+- [Les deux registres de nommage](#les-deux-registres-de-nommage)
+- [Légende de notation](#légende-de-notation)
+
 ---
 
 ## Discipline et test d'autoportance

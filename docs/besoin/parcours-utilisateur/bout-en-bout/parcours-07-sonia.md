@@ -7,6 +7,18 @@
 > Index des parcours → [README](README.md)
 > Fiche persona → [../persona/persona-07-sonia.md](../../decouverte/personas/persona-07-sonia.md)
 
+**Sommaire**
+
+- [Présentation](#présentation)
+- [Étape 1 — Ouvrir l'application et créer un espace de jeu](#étape-1--ouvrir-lapplication-et-créer-un-espace-de-jeu)
+- [Étape 2 — Préparer le scénario du one-shot](#étape-2--préparer-le-scénario-du-one-shot)
+- [Étape 3 — Lancer la session et utiliser la vue session](#étape-3--lancer-la-session-et-utiliser-la-vue-session)
+- [Étape 4 — Créer un compte pour pouvoir partager avec les joueurs](#étape-4--créer-un-compte-pour-pouvoir-partager-avec-les-joueurs)
+- [Étape 5 — Partager des informations et accès joueur sans compte](#étape-5--partager-des-informations-et-accès-joueur-sans-compte)
+- [L'arrêt — Ce que Sonia ne peut pas faire dans le MVP](#larrêt--ce-que-sonia-ne-peut-pas-faire-dans-le-mvp)
+- [Limite tracée et condition de retour](#limite-tracée-et-condition-de-retour)
+- [Table récapitulative des coutures](#table-récapitulative-des-coutures)
+
 ---
 
 ## Présentation

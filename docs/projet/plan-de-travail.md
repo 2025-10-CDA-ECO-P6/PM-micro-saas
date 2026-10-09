@@ -8,6 +8,48 @@
 | Audience | la ou les personnes qui prennent en charge l'implémentation — **une à trois**, seules ou en petit collectif |
 | Sources | `docs/projet/roadmap-de-build.md`, `docs/projet/conventions-dod.md`, `docs/architecture/structure-projets.md`, `docs/besoin/vision/perimetre/matrice-de-priorites.md`, les fiches `usecases/UC-NN`, `user-stories/US-UC-NN`, `docs/domaine/*/context.md`, `docs/decisions/ADR-NNN`, `docs/architecture/specs/*.md`, `docs/interface/ecrans/**`, `docs/assurance/strategie-de-test.md` |
 
+**Sommaire**
+
+- [Nature et portée du document](#nature-et-portée-du-document)
+- [1. Règles de lecture](#1-règles-de-lecture)
+- [2. Natures du périmètre d'écriture](#2-natures-du-périmètre-décriture)
+- [3. Échelle de taille](#3-échelle-de-taille)
+- [4. Vue des épiques](#4-vue-des-épiques)
+  - [J0](#j0)
+  - [J1](#j1)
+  - [J2 — niveau épique seul (raison en §7)](#j2--niveau-épique-seul-raison-en-7)
+  - [J3 — niveau épique seul (raison en §8)](#j3--niveau-épique-seul-raison-en-8)
+- [5. J0 — épiques et tranches](#5-j0--épiques-et-tranches)
+  - [EP-01 — Confirmation des décisions pré-implémentation](#ep-01--confirmation-des-décisions-pré-implémentation)
+  - [EP-02 — Échafaudage de la solution .NET](#ep-02--échafaudage-de-la-solution-net)
+  - [EP-03 — Contrôle d'architecture en intégration continue](#ep-03--contrôle-darchitecture-en-intégration-continue)
+  - [EP-04 — Contrat d'autorisation en couche Application](#ep-04--contrat-dautorisation-en-couche-application)
+  - [EP-05 — Conventions outillées et socle d'ingénierie](#ep-05--conventions-outillées-et-socle-dingénierie)
+- [6. J1 — épiques et tranches](#6-j1--épiques-et-tranches)
+  - [Suite de EP-04 — Contrat d'autorisation en couche Application (tranche J1)](#suite-de-ep-04--contrat-dautorisation-en-couche-application-tranche-j1)
+  - [EP-29 — Couture cliente et socle du store local](#ep-29--couture-cliente-et-socle-du-store-local)
+  - [EP-10 — Châssis applicatif transverse](#ep-10--châssis-applicatif-transverse)
+  - [US-UC-01 — Mode local sans compte](#us-uc-01--mode-local-sans-compte)
+  - [US-UC-02 — Créer un espace de jeu](#us-uc-02--créer-un-espace-de-jeu)
+  - [US-UC-05 — Organiser par dossiers](#us-uc-05--organiser-par-dossiers)
+  - [US-UC-04 — Gérer les documents d'un espace](#us-uc-04--gérer-les-documents-dun-espace)
+  - [US-UC-03 — Structurer un scénario](#us-uc-03--structurer-un-scénario)
+  - [US-UC-06 — Utiliser la vue session](#us-uc-06--utiliser-la-vue-session)
+  - [US-UC-07 — Créer un élément à la volée](#us-uc-07--créer-un-élément-à-la-volée)
+  - [US-UC-14 — Rechercher et filtrer l'information](#us-uc-14--rechercher-et-filtrer-linformation)
+  - [EP-30 — Validations minimales du mode local](#ep-30--validations-minimales-du-mode-local)
+  - [EP-08 — Durabilité et sécurité du mode local](#ep-08--durabilité-et-sécurité-du-mode-local)
+  - [EP-09 — Export d'espace, version minimale](#ep-09--export-despace-version-minimale)
+  - [EP-11 — Instrumentation de validation du MVP](#ep-11--instrumentation-de-validation-du-mvp)
+  - [EP-12 — Recette et clôture du jalon J1](#ep-12--recette-et-clôture-du-jalon-j1)
+  - [Rédaction du corpus — tranches reportées du chantier conformite-corpus](#rédaction-du-corpus--tranches-reportées-du-chantier-conformite-corpus)
+- [7. J2 — épiques seulement](#7-j2--épiques-seulement)
+- [8. J3 — épiques seulement](#8-j3--épiques-seulement)
+- [9. Lots parallélisables](#9-lots-parallélisables)
+- [10. Ce que ce plan n'ordonne pas](#10-ce-que-ce-plan-nordonne-pas)
+- [11. Identifiants retirés](#11-identifiants-retirés)
+- [12. Renvois](#12-renvois)
+
 ---
 
 ## Nature et portée du document

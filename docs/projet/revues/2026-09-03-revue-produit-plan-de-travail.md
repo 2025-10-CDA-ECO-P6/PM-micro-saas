@@ -11,6 +11,40 @@
 | Objet | juger la **pertinence** de la décomposition du plan de travail, et instruire son redécoupage en tranches verticales |
 | Sources | `docs/projet/plan-de-travail.md`, `docs/projet/methode-de-ticket.md`, `docs/projet/guide-de-lecture.md`, `docs/projet/roadmap-de-build.md`, `docs/besoin/vision/vision.md`, `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/conception/domain/*.md`, `docs/assurance/strategie-de-test.md`, `docs/architecture/structure-projets.md` |
 
+**Sommaire**
+
+- [Périmètre revu](#périmètre-revu)
+- [1. Mesures](#1-mesures)
+- [2. Constats](#2-constats)
+  - [2.1 Le graphe sature à trois — au-delà, une personne de plus n'ouvre rien](#21-le-graphe-sature-à-trois--au-delà-une-personne-de-plus-nouvre-rien)
+  - [2.2 La séquentialité ne vient pas de la maille d'écriture — elle vient de l'empilement des couches](#22-la-séquentialité-ne-vient-pas-de-la-maille-décriture--elle-vient-de-lempilement-des-couches)
+  - [2.3 Huit tâches de domaine ne sont pas clôturables sur leurs propres critères d'acceptation](#23-huit-tâches-de-domaine-ne-sont-pas-clôturables-sur-leurs-propres-critères-dacceptation)
+  - [2.4 Quatre plages de critères sont engagées deux fois, et une englobe un cas retiré](#24-quatre-plages-de-critères-sont-engagées-deux-fois-et-une-englobe-un-cas-retiré)
+  - [2.5 Rien d'observable par un utilisateur avant le maillon 18 d'une chaîne de 22](#25-rien-dobservable-par-un-utilisateur-avant-le-maillon-18-dune-chaîne-de-22)
+  - [2.6 Vingt-quatre tâches sur cinquante-cinq ne satisfont pas la condition d'entrée du plan](#26-vingt-quatre-tâches-sur-cinquante-cinq-ne-satisfont-pas-la-condition-dentrée-du-plan)
+  - [2.7 La condition d'entrée a un trou : un renvoi vers un point à trancher passe l'épreuve](#27-la-condition-dentrée-a-un-trou--un-renvoi-vers-un-point-à-trancher-passe-lépreuve)
+  - [2.8 Ce qui est sain, mesuré, et ne doit pas bouger](#28-ce-qui-est-sain-mesuré-et-ne-doit-pas-bouger)
+- [3. Proposition instruite — le redécoupage en tranches verticales](#3-proposition-instruite--le-redécoupage-en-tranches-verticales)
+  - [3.1 L'unité de la tranche : la user story](#31-lunité-de-la-tranche--la-user-story)
+  - [3.2 La maille de désignation du périmètre d'écriture : l'agrégat](#32-la-maille-de-désignation-du-périmètre-décriture--lagrégat)
+  - [3.3 Ce que la maille par agrégat ne nomme toujours pas](#33-ce-que-la-maille-par-agrégat-ne-nomme-toujours-pas)
+  - [3.4 La forme d'une tranche verticale — ce qui change, ce qui ne change pas](#34-la-forme-dune-tranche-verticale--ce-qui-change-ce-qui-ne-change-pas)
+  - [3.5 La règle qui décide quand le front se détache](#35-la-règle-qui-décide-quand-le-front-se-détache)
+  - [3.6 Ce que deviennent les épiques](#36-ce-que-deviennent-les-épiques)
+  - [3.7 Les identifiants : absorption tracée, aucun renumérotage](#37-les-identifiants--absorption-tracée-aucun-renumérotage)
+  - [3.8 Trois tâches actuelles redécoupées — exemples travaillés](#38-trois-tâches-actuelles-redécoupées--exemples-travaillés)
+  - [3.9 Le contrôle mécanique de la proposition](#39-le-contrôle-mécanique-de-la-proposition)
+  - [3.10 Ce que le redécoupage coûte](#310-ce-que-le-redécoupage-coûte)
+- [4. Les deux trous encore ouverts, sous l'angle produit](#4-les-deux-trous-encore-ouverts-sous-langle-produit)
+  - [4.1 L'instrumentation de validation — un préalable, pas une dette](#41-linstrumentation-de-validation--un-préalable-pas-une-dette)
+  - [4.2 L'arborescence interne des projets — une dette acceptable, sauf sur un point](#42-larborescence-interne-des-projets--une-dette-acceptable-sauf-sur-un-point)
+- [5. Arbitrages à remonter — constatés, non résolus](#5-arbitrages-à-remonter--constatés-non-résolus)
+  - [5.1 La décision marché est conditionnée à un signal qui n'existe qu'après le jalon d'après](#51-la-décision-marché-est-conditionnée-à-un-signal-qui-nexiste-quaprès-le-jalon-daprès)
+  - [5.2 Où l'ordre de valeur et l'ordre de dépendance divergent — et pourquoi ils peuvent coexister](#52-où-lordre-de-valeur-et-lordre-de-dépendance-divergent--et-pourquoi-ils-peuvent-coexister)
+  - [5.3 L'axe « par couche » de la taxonomie de libellés perd son sens pour une tranche](#53-laxe--par-couche--de-la-taxonomie-de-libellés-perd-son-sens-pour-une-tranche)
+- [6. Ce que cette revue n'a pas tranché](#6-ce-que-cette-revue-na-pas-tranché)
+- [7. Renvois](#7-renvois)
+
 ---
 
 ## Périmètre revu

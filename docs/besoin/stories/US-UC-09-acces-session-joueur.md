@@ -1,5 +1,19 @@
 # Epic — Accéder à une session en tant que joueur (UC-09)
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Vue d'ensemble](#vue-densemble)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+- [Stories exclues ou repoussées](#stories-exclues-ou-repoussées)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Questions ouvertes](#questions-ouvertes)
+
 ## Objectif utilisateur
 
 Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lien, sans créer de compte, avec une friction minimale. Le nom d'affichage seul suffit. Un lien d'espace partagé permanent (avec compte) est également couvert pour les membres réguliers.

@@ -6,6 +6,16 @@
 > Index des parcours → [README](README.md)
 > Fiche persona → [persona-06-remi.md](../../decouverte/personas/persona-06-remi.md)
 
+**Sommaire**
+
+- [Présentation](#présentation)
+- [Étape 1 — Ouvrir l'application sans compte](#étape-1--ouvrir-lapplication-sans-compte)
+- [Étape 2 — Explorer la structure documentaire](#étape-2--explorer-la-structure-documentaire)
+- [Étape 3 — Utiliser la vue session en mode local](#étape-3--utiliser-la-vue-session-en-mode-local)
+- [L'arrêt — Rémi face à la création de compte](#larrêt--rémi-face-à-la-création-de-compte)
+- [Limite tracée et condition de retour](#limite-tracée-et-condition-de-retour)
+- [Table récapitulative des coutures](#table-récapitulative-des-coutures)
+
 ---
 
 ## Présentation

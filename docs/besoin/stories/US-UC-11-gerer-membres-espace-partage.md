@@ -1,5 +1,19 @@
 # Epic — Gérer les membres d'un espace partagé (UC-11)
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Vue d'ensemble](#vue-densemble)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+- [Stories exclues ou repoussées](#stories-exclues-ou-repoussées)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Questions ouvertes](#questions-ouvertes)
+
 ## Objectif utilisateur
 
 Permettre au MJ de contrôler qui accède à son espace : générer des liens d'invitation partageables, associer un joueur à un personnage, révoquer une invitation active, retirer un membre. L'invitation par lien est le seul vecteur MVP — l'invitation par email est hors périmètre.

@@ -5,6 +5,22 @@
 > La notation utilise les familles de marqueurs de `interface/conventions.md` — à lire avant d'utiliser ce gabarit.
 > L'exemple-pilote (§ Exemple) instancie le gabarit sur la vue session MJ.
 
+**Sommaire**
+
+- [Discipline rappelée](#discipline-rappelée)
+- [Structure du gabarit](#structure-du-gabarit)
+  - [En-tête de fiche](#en-tête-de-fiche)
+  - [Noyau obligatoire](#noyau-obligatoire)
+  - [Sections conditionnelles](#sections-conditionnelles)
+  - [Traçabilité](#traçabilité)
+- [Exemple — Vue session MJ](#exemple--vue-session-mj)
+  - [En-tête de fiche](#en-tête-de-fiche-1)
+  - [Noyau obligatoire](#noyau-obligatoire-1)
+  - [Modes](#modes-1)
+  - [Partage et visibilité](#partage-et-visibilité-1)
+  - [Mode local (déclenché — surface MJ)](#mode-local-déclenché--surface-mj)
+  - [Hors périmètre, différé, sous-spécifié](#hors-périmètre-différé-sous-spécifié-1)
+
 ---
 
 ## Discipline rappelée

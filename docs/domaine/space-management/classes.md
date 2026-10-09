@@ -1,5 +1,9 @@
 # Space Management — Diagramme de classes
 
+**Sommaire**
+
+- [Diagramme](#diagramme)
+
 ## Diagramme
 
 ```mermaid

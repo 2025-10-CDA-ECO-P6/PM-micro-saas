@@ -5,6 +5,19 @@
 > **Audience** : Développeur·se de build (y compris externe), à l'entrée en build (J0)
 > **Sources** : `docs/architecture/**` (stack, ADR, structure des projets, spécifications), `docs/assurance/strategie-de-test.md`, `docs/projet/roadmap-de-build.md`
 
+**Sommaire**
+
+- [0. Objet, audience et autorité](#0-objet-audience-et-autorité)
+- [1. Domaine de convention — Stack et principes d'architecture](#1-domaine-de-convention--stack-et-principes-darchitecture)
+- [2. Domaine de convention — Conventions de code C](#2-domaine-de-convention--conventions-de-code-c)
+- [3. Domaine de convention — Conventions de code TypeScript / Angular](#3-domaine-de-convention--conventions-de-code-typescript--angular)
+- [4. Domaine de convention — Structure des projets](#4-domaine-de-convention--structure-des-projets)
+- [5. Domaine de convention — Conventions de commit et de branche](#5-domaine-de-convention--conventions-de-commit-et-de-branche)
+- [6. Domaine de convention — Gates d'intégration continue](#6-domaine-de-convention--gates-dintégration-continue)
+- [7. Domaine de convention — Conventions de sécurité de code](#7-domaine-de-convention--conventions-de-sécurité-de-code)
+- [8. Domaine de convention — Conventions de maintenance du corpus documentaire](#8-domaine-de-convention--conventions-de-maintenance-du-corpus-documentaire)
+- [9. Définition de fini](#9-définition-de-fini)
+
 ---
 
 ## 0. Objet, audience et autorité
@@ -307,7 +320,7 @@ Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Co
 
 | Axe | Règle |
 |---|---|
-| Ordre d'autorité | Personas → vision → use cases → UJ / US / NFR → domaine → glossaire. Les documents de `context/` et de `gestion-projet/` ne font jamais foi : en cas d'écart, ce sont eux qu'on corrige. |
+| Ordre d'autorité | Personas → vision → use cases → UJ / US / NFR → domaine → glossaire. Les documents de `reference/` et de `projet/` ne font jamais foi : en cas d'écart, ce sont eux qu'on corrige. |
 | Identifiants | Une table unique des familles. Le numéro suivant est le plus grand de la famille + 1. Un identifiant n'est jamais réutilisé. |
 | Gabarits | Un gabarit déclaré par type de document. Dans une US, le Gherkin est l'unique porteur des critères d'acceptation. |
 | Renvois | Un lien relatif (chemin, plus ancre ou « § »), jamais un nom de fichier nu. Un renvoi dont la cible n'existe pas est mort. |

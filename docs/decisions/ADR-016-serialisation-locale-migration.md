@@ -10,6 +10,17 @@
 
 > **Confirmation d'entrée en build du 2026-09-04** — la part pré-implémentation de cette décision est confirmée par Pierre-Marie Marchio, porteur du projet. Les parts de conception nommées dans le bandeau de nature ci-dessus contraignent le modèle depuis l'acceptation de l'ADR et ne sont pas l'objet de cette confirmation.
 
+**Sommaire**
+
+- [Périmètre de cet ADR](#périmètre-de-cet-adr)
+- [Contexte](#contexte)
+- [Décision](#décision)
+- [Alternatives considérées](#alternatives-considérées)
+- [Conséquences](#conséquences)
+- [Points à trancher](#points-à-trancher)
+- [Croisements](#croisements)
+- [Compléments post-revue](#compléments-post-revue)
+
 ---
 
 ## Périmètre de cet ADR

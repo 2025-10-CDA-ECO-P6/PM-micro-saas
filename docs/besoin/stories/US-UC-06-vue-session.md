@@ -1,5 +1,29 @@
 # Epic — Vue session (UC-06)
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Vue d'ensemble](#vue-densemble)
+  - [Bounded contexts pressentis](#bounded-contexts-pressentis)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+  - [US-06-01 — Lancer une session](#us-06-01--lancer-une-session)
+  - [US-06-02 — Configurer les panneaux de la vue session](#us-06-02--configurer-les-panneaux-de-la-vue-session)
+  - [US-06-03 — Naviguer dans les dossiers pendant la session](#us-06-03--naviguer-dans-les-dossiers-pendant-la-session)
+  - [US-06-04 — Prendre des notes de session MJ](#us-06-04--prendre-des-notes-de-session-mj)
+  - [US-06-05 — Épingler un document pendant la session](#us-06-05--épingler-un-document-pendant-la-session)
+  - [US-06-06 — Terminer une session](#us-06-06--terminer-une-session)
+  - [US-06-07 — Accéder à la vue joueur pendant une session LIVE](#us-06-07--accéder-à-la-vue-joueur-pendant-une-session-live)
+  - [US-06-09 — Reprendre une session interrompue](#us-06-09--reprendre-une-session-interrompue)
+  - [US-06-10 — Ajouter des notes rétroactives après session CLOSED](#us-06-10--ajouter-des-notes-rétroactives-après-session-closed)
+- [Stories exclues ou repoussées](#stories-exclues-ou-repoussées)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Questions ouvertes](#questions-ouvertes)
+
 ## Objectif utilisateur
 
 Permettre au MJ de piloter une session de jeu depuis un tableau de bord configurable : lancement immédiat, accès aux documents de l'espace organisés par dossiers, prise de notes de session, épinglage de documents clés, partage avec les joueurs et fermeture propre de la session. La vue session est utilisable en mode local (sans compte) pour le MJ, et avec compte pour l'accès joueur.

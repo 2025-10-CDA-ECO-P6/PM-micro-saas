@@ -8,6 +8,35 @@
 | Référentiel méthodologique | ISO 31000 (management du risque — principes et lignes directrices). |
 | Audience | pilotage de projet et présentation à un tiers (investisseur, auditeur, délégué à la protection des données), équipe de build comme référence de suivi. |
 
+**Sommaire**
+
+- [Nature et portée du document](#nature-et-portée-du-document)
+- [1. Méthode et échelles](#1-méthode-et-échelles)
+  - [1.0 Jalons de la trajectoire de build](#10-jalons-de-la-trajectoire-de-build)
+  - [1.1 Typologie des entrées](#11-typologie-des-entrées)
+  - [1.2 Échelles de cotation](#12-échelles-de-cotation)
+  - [1.3 Rubrique d'ancrage d'impact par dimension](#13-rubrique-dancrage-dimpact-par-dimension)
+  - [1.4 Convention inhérent / résiduel](#14-convention-inhérent--résiduel)
+  - [1.5 Statut de validation, tendance, confiance](#15-statut-de-validation-tendance-confiance)
+  - [1.6 Appétence au risque et seuil d'escalade](#16-appétence-au-risque-et-seuil-descalade)
+  - [1.7 Légende des colonnes du registre détaillé (section 3)](#17-légende-des-colonnes-du-registre-détaillé-section-3)
+- [3. Registre des risques](#3-registre-des-risques)
+  - [3.1 Axe technique (T-01 à T-29)](#31-axe-technique-t-01-à-t-29)
+  - [3.2 Axe produit (P-01 à P-14)](#32-axe-produit-p-01-à-p-14)
+  - [3.3 Axe juridique (J-01 à J-18)](#33-axe-juridique-j-01-à-j-18)
+  - [3.4 Axe délai-coût (D-01 à D-08)](#34-axe-délai-coût-d-01-à-d-08)
+- [2. Vues de synthèse](#2-vues-de-synthèse)
+  - [2.1 Matrice de criticité inhérente (risques uniquement)](#21-matrice-de-criticité-inhérente-risques-uniquement)
+  - [2.2 Top risques (criticité inhérente Élevée ou Très élevée)](#22-top-risques-criticité-inhérente-élevée-ou-très-élevée)
+  - [2.3 Vue Hypothèses de validation](#23-vue-hypothèses-de-validation)
+  - [2.4 Vue des points de décision (go/no-go)](#24-vue-des-points-de-décision-gono-go)
+  - [2.5 Points à ratifier, dettes majeures et questions ouvertes à lacune réelle](#25-points-à-ratifier-dettes-majeures-et-questions-ouvertes-à-lacune-réelle)
+- [4. Gouvernance du registre](#4-gouvernance-du-registre)
+- [5. Relations et dépendances](#5-relations-et-dépendances)
+- [6. Annexe A — Références documentaires nommées](#6-annexe-a--références-documentaires-nommées)
+- [7. Annexe B — Réserve de méthode](#7-annexe-b--réserve-de-méthode)
+- [8. Glossaire](#8-glossaire)
+
 ---
 
 ## Nature et portée du document

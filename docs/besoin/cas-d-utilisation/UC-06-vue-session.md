@@ -1,5 +1,25 @@
 # UC-06 — Utiliser la vue session
 
+**Sommaire**
+
+- [Acteur principal](#acteur-principal)
+- [Acteurs secondaires](#acteurs-secondaires)
+- [Objectif](#objectif)
+- [Contexte](#contexte)
+- [Besoin utilisateur](#besoin-utilisateur)
+- [Déclencheur](#déclencheur)
+- [Préconditions](#préconditions)
+- [Scénario nominal — Lancement et navigation MJ](#scénario-nominal--lancement-et-navigation-mj)
+- [Scénario nominal — Vue joueur pendant la session LIVE](#scénario-nominal--vue-joueur-pendant-la-session-live)
+- [Scénarios alternatifs](#scénarios-alternatifs)
+- [Exceptions](#exceptions)
+- [Postconditions](#postconditions)
+- [Données manipulées](#données-manipulées)
+- [Règles métier](#règles-métier)
+- [Critères d'acceptation](#critères-dacceptation)
+- [Relations avec d'autres use cases](#relations-avec-dautres-use-cases)
+- [Questions à valider en interview](#questions-à-valider-en-interview)
+
 ## Acteur principal
 
 MJ

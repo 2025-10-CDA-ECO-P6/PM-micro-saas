@@ -35,7 +35,7 @@ modèle d'affaires détaillé sont traités dans un document dédié.
 
 ---
 
-## Sommaire
+**Sommaire**
 
 - [Résumé exécutif](#résumé-exécutif)
 - [Paliers de valeur](#paliers-de-valeur)

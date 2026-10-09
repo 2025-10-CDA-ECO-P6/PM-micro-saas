@@ -10,6 +10,15 @@
 
 > **Confirmation d'entrée en build du 2026-09-04** — décision confirmée par Pierre-Marie Marchio, porteur du projet.
 
+**Sommaire**
+
+- [Contexte](#contexte)
+- [Décision](#décision)
+- [Alternatives considérées](#alternatives-considérées)
+- [Conséquences](#conséquences)
+- [Points à trancher](#points-à-trancher)
+- [Compléments post-revue](#compléments-post-revue)
+
 ---
 
 ## Contexte

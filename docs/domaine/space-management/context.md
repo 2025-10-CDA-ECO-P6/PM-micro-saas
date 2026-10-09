@@ -8,6 +8,21 @@
 > ni le déroulement de session (→ Session Conduct).
 > Il fournit les identités d'accès que ces contextes consomment.
 
+**Sommaire**
+
+- [Ce que ce contexte fait](#ce-que-ce-contexte-fait)
+- [Ce que ce contexte ne fait PAS](#ce-que-ce-contexte-ne-fait-pas)
+- [Agrégats](#agrégats)
+- [Scénario réutilisable — subsumé (ADR-018)](#scénario-réutilisable--subsumé-adr-018)
+- [Value Objects](#value-objects)
+- [Enums](#enums)
+- [One-shot — spécificités](#one-shot--spécificités)
+- [Invariants métier](#invariants-métier)
+- [Règles métier](#règles-métier)
+- [Événements domaine](#événements-domaine)
+- [Intégration avec les autres contextes](#intégration-avec-les-autres-contextes)
+- [Diagrammes](#diagrammes)
+
 ---
 
 ## Ce que ce contexte fait

@@ -14,6 +14,16 @@
 |---|---|---|---|
 | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
 
+**Sommaire**
+
+- [1. Nature et portée du document](#1-nature-et-portée-du-document)
+- [2. Lecteur et usage](#2-lecteur-et-usage)
+- [3. Volet 1 — Coût d'infrastructure & break-even](#3-volet-1--coût-dinfrastructure--break-even)
+- [4. Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU)](#4-volet-2--dimensionnement-de-marché-tamsamarpu)
+- [5. Volet 3 — Stratégie go-to-market](#5-volet-3--stratégie-go-to-market)
+- [6. Ce qui reste à trancher](#6-ce-qui-reste-à-trancher)
+- [7. Traçabilité](#7-traçabilité)
+
 ## 1. Nature et portée du document
 
 Cadre de méthode : il fixe comment chiffrer le coût, dimensionner le marché et aller au marché, et ne tranche rien. Une valeur pas encore fournie est marquée à compléter.

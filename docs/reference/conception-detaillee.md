@@ -22,7 +22,7 @@ Ce document **consolide et renvoie** — il ne tranche rien qui ne soit déjà t
 
 Ce document n'est **ni une nouvelle décision de conception, ni une décision d'architecture** : il ne prépare pas de travail d'implémentation au sens où l'entendent les specs pré-build, et il ne remplace aucun ADR. Pour l'historique et le statut de chaque décision, voir le [registre ADR](../decisions/README.md) ; pour une découverte dans l'ordre pédagogique, voir l'[index d'architecture](../architecture/README.md) ; pour la vue transverse par préoccupation technique, voir [transverse.md](../architecture/transverse.md). L'audience visée est l'équipe de conception elle-même et tout relecteur qui aborde ce corpus à l'entrée en build.
 
-## Sommaire
+**Sommaire**
 
 - [Résumé exécutif](#résumé-exécutif)
 - [Conventions de lecture](#conventions-de-lecture)
@@ -72,6 +72,10 @@ Ce document n'est **ni une nouvelle décision de conception, ni une décision d'
   - [8.3 — Limites de vérifiabilité en build](#83--limites-de-vérifiabilité-en-build)
 - [9. Traçabilité](#9-traçabilité)
 - [10. Sources](#10-sources)
+  - [Décisions d'architecture (ADR)](#décisions-darchitecture-adr)
+  - [Spécifications techniques](#spécifications-techniques)
+  - [Modèle de domaine](#modèle-de-domaine)
+  - [Autres documents d'architecture](#autres-documents-darchitecture)
 
 ## Résumé exécutif
 

@@ -8,6 +8,21 @@
 | Audience | la ou les personnes qui prennent en charge une tâche du plan de travail, seules ou en petit collectif — y compris une personne découvrant le projet sans pouvoir en joindre l'auteur |
 | Sources | `docs/projet/plan-de-travail.md`, `docs/projet/conventions-dod.md`, `docs/assurance/strategie-de-test.md`, `docs/projet/roadmap-de-build.md`, `docs/architecture/structure-projets.md` |
 
+**Sommaire**
+
+- [Nature et portée du document](#nature-et-portée-du-document)
+- [1. Modèle de ticket](#1-modèle-de-ticket)
+- [Zone générée](#zone-générée)
+- [2. Définition de prêt](#2-définition-de-prêt)
+- [3. Taxonomie de libellés](#3-taxonomie-de-libellés)
+- [4. Chemin d'entrée](#4-chemin-dentrée)
+- [5. Cycle de vie](#5-cycle-de-vie)
+- [6. Où naissent les tickets](#6-où-naissent-les-tickets)
+- [7. Ce que cette méthode ne tranche pas](#7-ce-que-cette-méthode-ne-tranche-pas)
+- [8. Itération](#8-itération)
+- [9. Registre de trajectoire](#9-registre-de-trajectoire)
+- [10. Renvois](#10-renvois)
+
 ---
 
 ## Nature et portée du document
@@ -146,13 +161,11 @@ La valeur `Anomalie` n'est pas un niveau de test : c'est le type de ticket que p
 
 ## 4. Chemin d'entrée
 
-Le [`README.md`](../../README.md) racine porte déjà, en sa section [« Reprendre le projet — Écrire la première ligne de code (J0) »](../../README.md#écrire-la-première-ligne-de-code-j0), un ordre de lecture pour une personne qui reprend le projet en vue d'écrire la première ligne de code. Ce document ne le refait pas — il le prolonge, jusqu'à la prise du premier ticket :
+Le [`README.md`](../../README.md) racine porte déjà, en sa section [« Reprendre le projet : par où commencer — Écrire la première ligne de code (J0) »](../../README.md#écrire-la-première-ligne-de-code-j0), un ordre de lecture pour une personne qui reprend le projet en vue d'écrire la première ligne de code. Ce document ne le refait pas — il le prolonge, jusqu'à la prise du premier ticket :
 
-1. **Les étapes de [« Reprendre le projet — Écrire la première ligne de code (J0) »](../../README.md#écrire-la-première-ligne-de-code-j0)** — renvoi seul, non recopié ici : elles apportent la carte du corpus documentaire, la séquence de jalons et ses conditions de passage, les conventions de code et la Definition of Done, puis la structure concrète des projets .NET.
-2. **[`guide-de-lecture.md`](guide-de-lecture.md)** — apporte l'entrée par fonctionnalité produit : pour toute capacité du périmètre, le renvoi vers son besoin, ses règles métier, sa maquette, les décisions d'architecture qui la contraignent, sa spécification technique et ses cas de recette.
-3. **[`plan-de-travail.md`](plan-de-travail.md)** — apporte la décomposition en épiques et en tâches exécutables du périmètre engagé, avec dépendances techniques, périmètre d'écriture et conflits calculés depuis ce périmètre.
-4. **Ce document** — apporte le modèle de ticket, la condition d'entrée à vérifier avant de prendre une tâche (§2), et le cycle de vie à suivre jusqu'à sa clôture (§5).
-5. **La prise du premier ticket** — choisir, dans le plan, une tâche dont la Définition de prêt (§2) est satisfaite ; ouvrir un ticket dans le dépôt du projet en suivant le modèle du §1 ; renseigner `Pris par` au moment de la prise.
+1. **Les étapes de [« Reprendre le projet : par où commencer — Écrire la première ligne de code (J0) »](../../README.md#écrire-la-première-ligne-de-code-j0)** — renvoi seul, non recopié ici : elles apportent la vision produit, la séquence de jalons et ses conditions de passage, les conventions de code et la définition de fini, la pile et la structure concrète des projets .NET, puis le registre des décisions, le plan de travail et le guide de lecture par fonctionnalité.
+2. **Ce document** — apporte le modèle de ticket, la condition d'entrée à vérifier avant de prendre une tâche (§2), et le cycle de vie à suivre jusqu'à sa clôture (§5).
+3. **La prise du premier ticket** — choisir, dans le plan, une tâche dont la Définition de prêt (§2) est satisfaite ; ouvrir un ticket dans le dépôt du projet en suivant le modèle du §1 ; renseigner `Pris par` au moment de la prise.
 
 ---
 

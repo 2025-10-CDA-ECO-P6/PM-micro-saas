@@ -1,37 +1,40 @@
 # Haversack — Documentation
 
-Outil d'assistance au Maître du Jeu pour la préparation et la conduite de parties de jeu de rôle.
+Outil d'assistance au Maître du Jeu pour la préparation et la conduite de parties de jeu de rôle. Pour découvrir le projet et choisir un parcours de lecture, partir du [README du dépôt](../README.md).
 
 ---
 
 ## Comment ce corpus est organisé
 
-Ce corpus distingue deux paliers. [`context/`](reference/README.md) rassemble les documents
-**de référence** — autoportants, lisibles seuls, exportables hors de ce dépôt (on peut en
-remettre un à un prestataire ou dans un dossier de due diligence sans joindre le reste). Les
-autres dossiers portent le **corpus de traçabilité détaillé** dont ces documents de référence
-sont la consolidation : c'est là que vivent les décisions, leur justification et leur détail.
+Le corpus se range en un dossier par couche, du besoin vers sa réalisation. Deux dossiers consolident le reste sans jamais faire foi : [`reference/`](reference/README.md) rassemble les documents **de référence** — autoportants, lisibles seuls, exportables hors de ce dépôt — et [`projet/`](projet/README.md) porte le pilotage. Les autres dossiers portent le **corpus de traçabilité détaillé** : c'est là que vivent les décisions, leur justification et leur détail.
 
-Chaque dossier ci-dessous est propriétaire de son propre index ; ce document n'en recopie pas
-le contenu.
+Chaque dossier ci-dessous est propriétaire de son propre index ; ce document n'en recopie pas le contenu. L'ordre d'autorité entre les couches est dans [conventions.md](conventions.md).
 
 ---
 
 ## Les dossiers
 
-| Dossier | Nature | Index |
+| Dossier | Rôle | Index |
 |---|---|---|
-| `context/` | Documents de référence de premier rang — le quoi fonctionnel, le quoi technique, la carte du système, le comment, le cadrage business | [reference/README.md](reference/README.md) |
-| `gestion-projet/` | Pilotage du projet — cadrage, planification, organisation, risques, conventions de travail | [projet/README.md](projet/README.md) |
-| `securite/` | Sécurité technique consolidée, distincte des cadrages de conformité légale (RGPD) internes en attente de validation juriste | [assurance/securite/README.md](assurance/securite/README.md) |
-| `test/` | Stratégie de test et de recette | [assurance/README.md](assurance/README.md) |
-| `deploiement/` | Environnements, pipelines et procédures de déploiement — dossier réservé, à remplir pendant le développement | [architecture/deploiement/README.md](architecture/deploiement/README.md) |
-| `ecoconception/` | Démarche d'écoconception — dossier réservé, sujet non engagé à ce jour | [assurance/ecoconception/README.md](assurance/ecoconception/README.md) |
-| `architecture/` | Corpus détaillé de traçabilité technique — décisions d'architecture (ADR), structure des projets, spécifications pré-build | [architecture/README.md](architecture/README.md) |
-| `besoin/`, `domaine/`, `interface/` | Corpus détaillé de traçabilité produit et domaine, organisé selon l'ordre d'autorité besoin → domaine → interface | [reference/ordre-d-autorite.md](reference/ordre-d-autorite.md) |
+| `besoin/` | Le besoin produit : personas, vision et priorités, use cases, user stories, user journeys, parcours de bout en bout, exigences non fonctionnelles | [besoin/README.md](besoin/README.md) |
+| `domaine/` | Le modèle de domaine DDD : un dossier par contexte métier et un noyau partagé, avec règles, agrégats, événements, diagrammes et modèles de données | [domaine/README.md](domaine/README.md) |
+| `interface/` | La conception de l'interface : zonage et navigation, conventions, fiches d'écran et maquettes basse fidélité | [interface/README.md](interface/README.md) |
+| `decisions/` | Le registre unique des décisions d'architecture (ADR) | [decisions/README.md](decisions/README.md) |
+| `architecture/` | La documentation technique : fondations DDD, stack, structure des projets, préoccupations transverses et spécifications pré-build ; porte aussi le dossier [`deploiement/`](architecture/deploiement/README.md), réservé | [architecture/README.md](architecture/README.md) |
+| `assurance/` | La stratégie de test et de recette, la [sécurité technique](assurance/securite/README.md), les cadrages de conformité (RGPD) en attente de validation juridique, et le dossier [`ecoconception/`](assurance/ecoconception/README.md), réservé | [assurance/README.md](assurance/README.md) |
+| `reference/` | Les documents de référence autoportants, consolidations du corpus détaillé | [reference/README.md](reference/README.md) |
+| `projet/` | Le pilotage : cadrage, roadmaps, plan de travail, méthode de ticket, conventions et définition de fini, risques, décisions en attente, revues | [projet/README.md](projet/README.md) |
 
-La sélection des modules du corpus, lue par l'outillage d'assistance (`.claude/`), est tenue dans [corpus.md](corpus.md).
+---
 
-Le backlog d'alignement de l'onboarding (2026-10-07) a été appliqué puis retiré le 2026-10-09 ; son histoire se lit dans `docs/project/backlog/README.md @ 51a7cdc`, et le reste à faire dans le [plan de travail](projet/plan-de-travail.md).
+## Les documents d'entrée
 
-Les règles de tenue du corpus sont tenues dans [conventions.md](conventions.md). Trois documents sont générés ou alimentés par l'outillage : la matrice des cas d'utilisation dans [tracabilite.md](tracabilite.md), le catalogue des événements dans [domaine/evenements.md](domaine/evenements.md) et le journal des changements normatifs dans [journal-du-corpus.md](journal-du-corpus.md).
+| Document | Rôle |
+|---|---|
+| [conventions.md](conventions.md) | Les conventions de tenue du corpus : ordre d'autorité, registre des identifiants, registre des marqueurs, renvois |
+| [glossaire.md](glossaire.md) | La référence de forme des termes du corpus ; il fixe le nom des termes, pas leur sens |
+| [corpus.md](corpus.md) | La sélection des modules du corpus lue par l'outillage d'assistance (`.claude/`) |
+| [journal-du-corpus.md](journal-du-corpus.md) | Le journal des changements normatifs du corpus, alimenté par l'outillage |
+| [tracabilite.md](tracabilite.md) | La matrice des use cases vers leurs stories, règles, cas de test, tâches, écrans et décisions, générée par l'outillage |
+
+Le catalogue des événements du domaine, lui aussi alimenté par l'outillage, est dans [domaine/evenements.md](domaine/evenements.md).

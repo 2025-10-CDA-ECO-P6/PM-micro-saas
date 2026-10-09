@@ -1,5 +1,16 @@
 # Dossier de sécurité
 
+**Sommaire**
+
+- [Statut du document](#statut-du-document)
+- [1. Périmètre et actifs sensibles](#1-périmètre-et-actifs-sensibles)
+- [2. Surface d'attaque](#2-surface-dattaque)
+- [3. Modèle de menaces (STRIDE)](#3-modèle-de-menaces-stride)
+- [4. Contre-mesures](#4-contre-mesures)
+- [5. Points ouverts et dette](#5-points-ouverts-et-dette)
+- [6. Tensions résolues](#6-tensions-résolues)
+- [7. Note de fidélité](#7-note-de-fidélité)
+
 ## Statut du document
 
 **Nature** : Ce dossier consolide, dans un format unique destiné à une lecture externe (RSSI, auditeur, conseil juridique, équipe de construction), la posture de sécurité issue du corpus de conception d'Haversack — décisions d'architecture (ADR), spécifications fonctionnelles et non fonctionnelles, contrats d'API. **Ce dossier ne crée aucune décision de sécurité** : il consolide, structure et met en relation des décisions actées ailleurs. Chaque contre-mesure, chaque menace et chaque point ouvert porte l'ancre exacte du document source qui l'établit.

@@ -6,6 +6,17 @@
 - **Date** : 2026-06-09
 - **Nature** : conception
 
+**Sommaire**
+
+- [Périmètre de cet ADR](#périmètre-de-cet-adr)
+- [Contexte](#contexte)
+- [Frontière fondamentale — deux couches d'autorisation](#frontière-fondamentale--deux-couches-dautorisation)
+- [Décision](#décision)
+- [Alternatives considérées](#alternatives-considérées)
+- [Conséquences](#conséquences)
+- [Points à trancher](#points-à-trancher)
+- [Compléments post-revue](#compléments-post-revue)
+
 ---
 
 ## Périmètre de cet ADR

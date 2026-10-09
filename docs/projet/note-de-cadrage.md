@@ -13,19 +13,19 @@ Ce document ne tranche aucune décision nouvelle et n'introduit aucune donnée n
 
 ---
 
-## Sommaire
+**Sommaire**
 
-1. [Raison d'être et résumé exécutif](#1-raison-dêtre-et-résumé-exécutif)
-2. [Objectifs et enjeux](#2-objectifs-et-enjeux)
-3. [Périmètre](#3-périmètre)
-4. [Parties prenantes et rôles](#4-parties-prenantes-et-rôles)
-5. [Jalons](#5-jalons)
-6. [Organisation et gouvernance](#6-organisation-et-gouvernance)
-7. [Hypothèses de validation](#7-hypothèses-de-validation)
-8. [Critères de succès](#8-critères-de-succès)
-9. [Points de décision go/no-go](#9-points-de-décision-gono-go)
-10. [Éléments à compléter](#10-éléments-à-compléter)
-11. [Documents de référence](#11-documents-de-référence)
+- [1. Raison d'être et résumé exécutif](#1-raison-dêtre-et-résumé-exécutif)
+- [2. Objectifs et enjeux](#2-objectifs-et-enjeux)
+- [3. Périmètre](#3-périmètre)
+- [4. Parties prenantes et rôles](#4-parties-prenantes-et-rôles)
+- [5. Jalons](#5-jalons)
+- [6. Organisation et gouvernance](#6-organisation-et-gouvernance)
+- [7. Hypothèses de validation](#7-hypothèses-de-validation)
+- [8. Critères de succès](#8-critères-de-succès)
+- [9. Points de décision go/no-go](#9-points-de-décision-gono-go)
+- [10. Éléments à compléter](#10-éléments-à-compléter)
+- [11. Documents de référence](#11-documents-de-référence)
 
 ---
 

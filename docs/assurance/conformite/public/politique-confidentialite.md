@@ -6,6 +6,23 @@
 >
 > Chaque point qui relève d'une qualification légale (base légale d'un traitement, durée de conservation non fixée par la conception, transfert hors UE, qualification de responsable ou de sous-traitant) est balisé `[À VALIDER — JURISTE]`. Chaque point que le corpus de conception ne permet pas de renseigner est balisé `[À COMPLÉTER — …]`. Aucune affirmation de ce document ne doit être lue comme une position juridique arrêtée.
 
+**Sommaire**
+
+- [0. Portée de ce document](#0-portée-de-ce-document)
+- [1. Qui traite vos données](#1-qui-traite-vos-données)
+- [2. Les trois catégories d'utilisateurs et leurs données](#2-les-trois-catégories-dutilisateurs-et-leurs-données)
+- [3. Finalités des traitements](#3-finalités-des-traitements)
+- [4. Base légale de chaque traitement](#4-base-légale-de-chaque-traitement)
+- [5. Durées de conservation](#5-durées-de-conservation)
+- [6. Destinataires et sous-traitants](#6-destinataires-et-sous-traitants)
+- [7. Vos droits et comment les exercer](#7-vos-droits-et-comment-les-exercer)
+- [8. Mesure d'audience anonyme](#8-mesure-daudience-anonyme)
+- [9. Effacement — ce qui se passe réellement](#9-effacement--ce-qui-se-passe-réellement)
+- [10. Transferts de données hors Union européenne](#10-transferts-de-données-hors-union-européenne)
+- [11. Mineurs](#11-mineurs)
+- [12. Modifications de cette politique](#12-modifications-de-cette-politique)
+- [Traçabilité — sources de ce document](#traçabilité--sources-de-ce-document)
+
 ---
 
 ## 0. Portée de ce document

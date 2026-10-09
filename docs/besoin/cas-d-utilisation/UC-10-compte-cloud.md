@@ -5,6 +5,27 @@
 > Le point d'entrée reste UC-01 (mode local sans compte) : UC-10 couvre le passage au cloud
 > — sauvegarde, partage avec les joueurs, accès multi-device.
 
+**Sommaire**
+
+- [Acteur principal](#acteur-principal)
+- [Acteurs secondaires](#acteurs-secondaires)
+- [Objectif](#objectif)
+- [Contexte](#contexte)
+- [Besoin utilisateur](#besoin-utilisateur)
+- [Déclencheur](#déclencheur)
+- [Préconditions](#préconditions)
+- [Scénario nominal — Inscription depuis le mode local](#scénario-nominal--inscription-depuis-le-mode-local)
+- [Scénario nominal — Inscription sans données locales](#scénario-nominal--inscription-sans-données-locales)
+- [Scénario nominal — Connexion](#scénario-nominal--connexion)
+- [Scénario nominal — Connexion via un fournisseur d'identité externe](#scénario-nominal--connexion-via-un-fournisseur-didentité-externe)
+- [Scénarios alternatifs](#scénarios-alternatifs)
+- [Exceptions](#exceptions)
+- [Postconditions](#postconditions)
+- [Données manipulées](#données-manipulées)
+- [Règles métier](#règles-métier)
+- [Critères d'acceptation](#critères-dacceptation)
+- [Questions à valider en interview](#questions-à-valider-en-interview)
+
 ## Acteur principal
 
 MJ ou Joueur

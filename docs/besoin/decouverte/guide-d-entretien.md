@@ -6,16 +6,16 @@
 
 ---
 
-## Table des matières
+**Sommaire**
 
-1. [Objectif des interviews](#1-objectif)
-2. [Profils à interviewer](#2-profils-à-interviewer)
-3. [Questions par thème](#3-questions-par-thème)
-4. [Piliers critiques — Hypothèses et questions structurantes](#4-hypothèses-critiques)
-5. [Questions prioritaires (top 10)](#5-questions-prioritaires)
-6. [Anti-patterns à éviter](#6-anti-patterns)
-7. [Template de compte-rendu](#7-modèle-de-compte-rendu)
-8. [Résultats de la campagne d'entretiens](#8-résultats)
+- [1. Objectif](#1-objectif)
+- [2. Profils à interviewer](#2-profils-à-interviewer)
+- [3. Questions par thème](#3-questions-par-thème)
+- [4. Hypothèses critiques](#4-hypothèses-critiques)
+- [5. Questions prioritaires](#5-questions-prioritaires)
+- [6. Anti-patterns](#6-anti-patterns)
+- [7. Modèle de compte rendu](#7-modèle-de-compte-rendu)
+- [8. Résultats](#8-résultats)
 
 ---
 

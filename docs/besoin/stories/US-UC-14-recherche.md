@@ -1,5 +1,19 @@
 # Epic — Rechercher rapidement une information (UC-14)
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Vue d'ensemble](#vue-densemble)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+- [Stories exclues ou repoussées](#stories-exclues-ou-repoussées)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Questions ouvertes](#questions-ouvertes)
+
 ## Objectif utilisateur
 
 Permettre au MJ (et au joueur, dans un périmètre restreint) de retrouver rapidement un document de l'espace actif — PNJ, scène, note, lieu, personnage joueur — en cherchant par titre (correspondance) et en filtrant par type (regroupement des résultats). La recherche est disponible depuis la bibliothèque de contenu (préparation) et depuis la vue session (en cours de partie, dans un panneau latéral sans quitter la session).

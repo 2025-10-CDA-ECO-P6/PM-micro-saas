@@ -1,5 +1,24 @@
 # UC-04 — Gérer les documents d'un espace
 
+**Sommaire**
+
+- [Acteur principal](#acteur-principal)
+- [Acteurs secondaires](#acteurs-secondaires)
+- [Objectif](#objectif)
+- [Contexte](#contexte)
+- [Besoin utilisateur](#besoin-utilisateur)
+- [Déclencheur](#déclencheur)
+- [Préconditions](#préconditions)
+- [Scénario nominal](#scénario-nominal)
+- [Clarification du modèle documentaire](#clarification-du-modèle-documentaire)
+- [Scénarios alternatifs](#scénarios-alternatifs)
+- [Exceptions](#exceptions)
+- [Postconditions](#postconditions)
+- [Données manipulées](#données-manipulées)
+- [Règles métier](#règles-métier)
+- [Critères d'acceptation](#critères-dacceptation)
+- [Questions à valider en interview](#questions-à-valider-en-interview)
+
 ## Acteur principal
 
 MJ

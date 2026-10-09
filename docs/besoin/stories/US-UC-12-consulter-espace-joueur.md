@@ -1,5 +1,20 @@
 # Epic — Consulter son espace en tant que joueur (vue post-accès) (UC-12)
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Relation avec UC-09 et UC-11](#relation-avec-uc-09-et-uc-11)
+- [Vue d'ensemble](#vue-densemble)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+- [Stories exclues ou repoussées](#stories-exclues-ou-repoussées)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Décisions (ex-Questions ouvertes)](#décisions-ex-questions-ouvertes)
+
 ## Objectif utilisateur
 
 Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11), une vue cohérente de sa fiche de personnage et des informations partagées. UC-12 couvre spécifiquement la perspective joueur post-accès : accès à la fiche, consultation des documents `PUBLIC`, et choix du personnage actif quand le joueur est associé à plusieurs personnages dans un même espace.

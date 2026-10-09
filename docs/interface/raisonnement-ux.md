@@ -6,6 +6,18 @@
 > Les résolutions sont portées dans le zoning et les fiches concernées — ce document en est le rationale, pas la source des arbitrages.
 > Hiérarchie d'autorité respectée : personas > vision produit > use cases > parcours / user stories / NFR > interface ([zonage.md](zonage.md)) > [fiches d'écran](ecrans/README.md).
 
+**Sommaire**
+
+- [1. Statut](#1-statut)
+- [2. Réflexion — L'espace personnel (question phare) — décision : le mix assumé](#2-réflexion--lespace-personnel-question-phare--décision--le-mix-assumé)
+- [3. Réflexion — Cohérence d'ensemble — architecture de l'information & navigation](#3-réflexion--cohérence-densemble--architecture-de-linformation--navigation)
+- [4. Réflexion — Charge informationnelle](#4-réflexion--charge-informationnelle)
+- [5. Réflexion — Zones sous-spécifiées](#5-réflexion--zones-sous-spécifiées)
+- [6. Réflexion — Adéquation aux personas](#6-réflexion--adéquation-aux-personas)
+- [7. Réflexion — Décisions actées](#7-réflexion--décisions-actées)
+- [9. Réflexion — Alignement wireframes ↔ corpus (2026-06-25)](#9-réflexion--alignement-wireframes--corpus-2026-06-25)
+- [8. Résolutions](#8-résolutions)
+
 ---
 
 ## 1. Statut

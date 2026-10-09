@@ -6,6 +6,16 @@
 > Use cases détaillés → [cas-d-utilisation/README.md](../cas-d-utilisation/README.md)
 > Priorisation MoSCoW → [matrice-de-priorites.md](perimetre/matrice-de-priorites.md)
 
+**Sommaire**
+
+- [1. Problème utilisateur](#1-problème-utilisateur)
+- [2. Positionnement](#2-positionnement)
+- [3. Modèle de monétisation](#3-modèle-de-monétisation)
+- [4. Acteurs](#4-acteurs)
+- [5. Positionnement concurrentiel](#5-positionnement-concurrentiel)
+- [5bis. Traces d'arbitrage vision ↔ périmètre MVP](#5bis-traces-darbitrage-vision--périmètre-mvp)
+- [6. Architecture documentaire — vision d'évolution](#6-architecture-documentaire--vision-dévolution)
+
 ---
 
 ## 1. Problème utilisateur

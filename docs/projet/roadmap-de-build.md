@@ -4,6 +4,18 @@
 > **Statut** : artefact de planification dédié, référencé par [CdC §11](../reference/cahier-des-charges.md#11-phasage) et [ADR-011 §Points à trancher](../decisions/ADR-011-cascade-integrite-referentielle.md) comme le document produit « en amont de l'entrée en construction ». Audience : équipe de build (développeur·se solo ou équipe restreinte prenant en charge l'implémentation) et responsable produit (arbitrages de point de décision).
 > **Date de production** : 2026-07-15.
 
+**Sommaire**
+
+- [Bandeau de cadrage — ce que ce document fait et ne fait pas](#bandeau-de-cadrage--ce-que-ce-document-fait-et-ne-fait-pas)
+- [1. Séquence macro typée](#1-séquence-macro-typée)
+- [2. Vue de synthèse](#2-vue-de-synthèse)
+- [3. Détail par jalon](#3-détail-par-jalon)
+- [4. Ordre C#-first — interne à chaque jalon](#4-ordre-c-first--interne-à-chaque-jalon)
+- [5. Réconciliation de nomenclature](#5-réconciliation-de-nomenclature)
+- [Annexe A — Livrables & tests nommés par ADR, par jalon](#annexe-a--livrables--tests-nommés-par-adr-par-jalon)
+- [Annexe B — Prérequis hors jalon](#annexe-b--prérequis-hors-jalon)
+- [Renvois](#renvois)
+
 ---
 
 ## Bandeau de cadrage — ce que ce document fait et ne fait pas

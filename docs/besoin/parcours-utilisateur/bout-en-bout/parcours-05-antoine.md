@@ -5,6 +5,20 @@
 > Aucun nom de technologie, aucun ADR cité comme source d'autorité.
 > Renvoi : [README](README.md) · [Fiche persona](../../decouverte/personas/persona-05-antoine.md)
 
+**Sommaire**
+
+- [Présentation du parcours](#présentation-du-parcours)
+- [Étape 1 — Création de compte et accès au tableau de bord](#étape-1--création-de-compte-et-accès-au-tableau-de-bord)
+- [Étape 2 — Création de trois espaces de campagne distincts](#étape-2--création-de-trois-espaces-de-campagne-distincts)
+- [Étape 3 — Adaptation de la structure documentaire par système](#étape-3--adaptation-de-la-structure-documentaire-par-système)
+- [Étape 4 — Constitution du contenu de préparation](#étape-4--constitution-du-contenu-de-préparation)
+- [Étape 5 — Configuration de la vue session par campagne](#étape-5--configuration-de-la-vue-session-par-campagne)
+- [Étape 6 — Conduite d'une session multi-campagnes](#étape-6--conduite-dune-session-multi-campagnes)
+- [Étape 7 — Invitation des joueurs réguliers et gestion des membres](#étape-7--invitation-des-joueurs-réguliers-et-gestion-des-membres)
+- [Étape 8 — Session avec joueurs : partage d'informations en direct](#étape-8--session-avec-joueurs--partage-dinformations-en-direct)
+- [Points de friction propres à Antoine](#points-de-friction-propres-à-antoine)
+- [Table récapitulative des coutures](#table-récapitulative-des-coutures)
+
 ---
 
 ## Présentation du parcours

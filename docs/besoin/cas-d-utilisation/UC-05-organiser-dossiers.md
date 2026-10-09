@@ -1,5 +1,25 @@
 # UC-05 — Organiser par dossiers
 
+**Sommaire**
+
+- [Acteur principal](#acteur-principal)
+- [Acteurs secondaires](#acteurs-secondaires)
+- [Objectif](#objectif)
+- [Contexte](#contexte)
+- [Besoin utilisateur](#besoin-utilisateur)
+- [Déclencheur](#déclencheur)
+- [Préconditions](#préconditions)
+- [Scénario nominal — Créer un dossier](#scénario-nominal--créer-un-dossier)
+- [Scénario nominal — Associer un template à un dossier](#scénario-nominal--associer-un-template-à-un-dossier)
+- [Scénario nominal — Déplacer un document](#scénario-nominal--déplacer-un-document)
+- [Scénarios alternatifs](#scénarios-alternatifs)
+- [Exceptions](#exceptions)
+- [Postconditions](#postconditions)
+- [Données manipulées](#données-manipulées)
+- [Règles métier](#règles-métier)
+- [Critères d'acceptation](#critères-dacceptation)
+- [Questions à valider en interview](#questions-à-valider-en-interview)
+
 ## Acteur principal
 
 MJ

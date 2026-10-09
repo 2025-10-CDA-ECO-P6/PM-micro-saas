@@ -5,6 +5,20 @@
 > Aucun nom de technologie, aucun ADR cité comme source d'autorité.
 > Renvoi : [README](README.md) · [Fiche persona](../../decouverte/personas/persona-02-emilie.md)
 
+**Sommaire**
+
+- [Présentation du parcours](#présentation-du-parcours)
+- [Étape 1 — Démarrage sans compte et création d'une campagne minimale](#étape-1--démarrage-sans-compte-et-création-dune-campagne-minimale)
+- [Étape 2 — Configuration minimale des dossiers (ou absence de configuration)](#étape-2--configuration-minimale-des-dossiers-ou-absence-de-configuration)
+- [Étape 3 — Lancement de session improvisée](#étape-3--lancement-de-session-improvisée)
+- [Étape 4 — Capture à la volée pendant la séance](#étape-4--capture-à-la-volée-pendant-la-séance)
+- [Étape 5 — Fermeture de session et notes rétroactives](#étape-5--fermeture-de-session-et-notes-rétroactives)
+- [Étape 6 — Rangement et enrichissement a posteriori](#étape-6--rangement-et-enrichissement-a-posteriori)
+- [Étape 7 — Création de compte pour partager avec les joueurs](#étape-7--création-de-compte-pour-partager-avec-les-joueurs)
+- [Étape 8 — Session suivante avec partage joueurs](#étape-8--session-suivante-avec-partage-joueurs)
+- [Points de friction propres à Émilie](#points-de-friction-propres-à-émilie)
+- [Table récapitulative des coutures](#table-récapitulative-des-coutures)
+
 ---
 
 ## Présentation du parcours

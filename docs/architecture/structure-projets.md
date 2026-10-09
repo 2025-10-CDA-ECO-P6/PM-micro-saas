@@ -6,6 +6,18 @@
 > et du périmètre du mode local TypeScript dans le navigateur.
 > Il s'appuie sur [ADR-008](../decisions/ADR-008-structure-solution.md), [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md) et [ADR-003](../decisions/ADR-003-stack-front.md).
 
+**Sommaire**
+
+- [1. Objet et sources](#1-objet-et-sources)
+- [2. Principe structurant](#2-principe-structurant)
+- [3 — Granularité des projets .NET (MVP)](#3--granularité-des-projets-net-mvp)
+- [4 — Nommage du noyau partagé : `SharedKernel`](#4--nommage-du-noyau-partagé--sharedkernel)
+- [5 — Promotion ultérieure des bounded contexts](#5--promotion-ultérieure-des-bounded-contexts)
+- [6 — Frontières outillées en CI : test d'architecture obligatoire](#6--frontières-outillées-en-ci--test-darchitecture-obligatoire)
+- [7 — Périmètre du mode local TypeScript](#7--périmètre-du-mode-local-typescript)
+- [8 — Ordre de construction : C#-first, au sens de l'autorité du contrat](#8--ordre-de-construction--c-first-au-sens-de-lautorité-du-contrat)
+- [Prochaines étapes](#prochaines-étapes)
+
 ---
 
 ## 1. Objet et sources

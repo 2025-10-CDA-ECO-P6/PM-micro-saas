@@ -18,7 +18,7 @@
 
 Ce cahier des charges est le document officiel de référence pour la construction du MVP de Haversack. Il consolide et met en forme, dans un registre de cahier des charges, le travail de conception mené par l'équipe. Le corpus de conception (`docs/besoin/`, `docs/domaine/`, `docs/interface/`) reste la source de vérité détaillée : en cas de divergence de détail entre ce document et le corpus, le corpus fait foi.
 
-## Sommaire
+**Sommaire**
 
 - [Résumé exécutif](#résumé-exécutif)
 - [1. Présentation et contexte](#1-présentation-et-contexte)

@@ -2,6 +2,20 @@
 
 - **Gherkin** : Scénario, Étant donné que, Quand, Alors, Et, Mais
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Vue d'ensemble](#vue-densemble)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+- [Stories exclues ou repoussées](#stories-exclues-ou-repoussées)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Questions ouvertes](#questions-ouvertes)
+
 ## Objectif utilisateur
 
 Permettre au MJ de préparer un scénario utilisable en session : création, structuration en scènes, visibilité du contenu, liens vers d'autres documents, gestion du statut.

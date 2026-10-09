@@ -1,5 +1,17 @@
 # User Journey — Vue session (UC-06)
 
+**Sommaire**
+
+- [Périmètre](#périmètre)
+- [Personas concernés](#personas-concernés)
+- [Carte d'expérience](#carte-dexpérience)
+- [Flux fonctionnel](#flux-fonctionnel)
+- [Points de friction](#points-de-friction)
+- [Opportunités UX](#opportunités-ux)
+- [Scénarios par persona](#scénarios-par-persona)
+- [Scénarios alternatifs et d'erreur](#scénarios-alternatifs-et-derreur)
+- [Liens](#liens)
+
 ## Périmètre
 
 Parcours du MJ depuis le lancement d'une session jusqu'à sa fermeture, en passant par la navigation dans les dossiers, la prise de notes de session et l'épinglage de documents. Couvre trois profils : Émilie (improvisatrice, notes de session intensives), Thomas (préparation en amont, valeur centrée sur les panneaux configurés), Nadia (lancement rapide, peu de configuration). La vue joueur est traitée en tant qu'étape du parcours session mais son détail est couvert par UC-09.

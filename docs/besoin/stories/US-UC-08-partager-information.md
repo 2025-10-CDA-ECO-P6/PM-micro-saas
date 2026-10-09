@@ -1,5 +1,19 @@
 # Epic — Partager une information aux joueurs (UC-08)
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Vue d'ensemble](#vue-densemble)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+- [Stories exclues ou repoussées](#stories-exclues-ou-repoussées)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Questions ouvertes](#questions-ouvertes)
+
 ## Objectif utilisateur
 
 Permettre au MJ de contrôler la visibilité de ses documents d'espace. Tout document est `GM_ONLY` par défaut. Le MJ peut le rendre visible par tous les joueurs (`PUBLIC`) de façon durable, et retirer ce partage à tout moment. Ce n'est pas un partage temporaire de session — la visibilité persiste entre les séances jusqu'à action explicite du MJ.

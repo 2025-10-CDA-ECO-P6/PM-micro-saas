@@ -6,6 +6,16 @@
 
 > *Annotation du 2026-06-12 — ADR-018 : ajout de la catégorie contenu d'espace `PERSONAL` (hard-delete inconditionnel) ; override du défaut de conservation pour les espaces partagés.*
 
+**Sommaire**
+
+- [Périmètre de cet ADR](#périmètre-de-cet-adr)
+- [Contexte](#contexte)
+- [Décision](#décision)
+- [Alternatives considérées](#alternatives-considérées)
+- [Conséquences](#conséquences)
+- [Points à trancher](#points-à-trancher)
+- [Conformité conçue, non certifiée](#conformité-conçue-non-certifiée)
+
 ---
 
 ## Périmètre de cet ADR

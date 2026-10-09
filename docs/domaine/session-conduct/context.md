@@ -7,6 +7,21 @@
 > Ce contexte **consomme** ce que Content Library prépare.
 > Il ne possède aucun contenu — il l'expose et l'orchestre pendant la séance.
 
+**Sommaire**
+
+- [Ce que ce contexte fait](#ce-que-ce-contexte-fait)
+- [Ce que ce contexte ne fait PAS](#ce-que-ce-contexte-ne-fait-pas)
+- [Machine d'états de Session](#machine-détats-de-session)
+- [Agrégats](#agrégats)
+- [Value Objects](#value-objects)
+- [Vue session — philosophie](#vue-session--philosophie)
+- [Invariants métier](#invariants-métier)
+- [Règles métier](#règles-métier)
+- [Événements domaine](#événements-domaine)
+- [Intégration avec les autres contextes](#intégration-avec-les-autres-contextes)
+- [Notes de session — Documents de type LIVE_NOTE](#notes-de-session--documents-de-type-livenote)
+- [Diagrammes](#diagrammes)
+
 ---
 
 ## Ce que ce contexte fait

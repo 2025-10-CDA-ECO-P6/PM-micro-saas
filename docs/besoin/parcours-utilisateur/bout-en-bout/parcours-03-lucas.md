@@ -5,6 +5,17 @@
 > → [Index des parcours](README.md)
 > → [Fiche persona](../../decouverte/personas/persona-03-lucas.md)
 
+**Sommaire**
+
+- [Présentation du parcours](#présentation-du-parcours)
+- [Étape 1 — Clic sur le lien, accès sans compte](#étape-1--clic-sur-le-lien-accès-sans-compte)
+- [Étape 2 — Consulter ce que le MJ partage pendant la session](#étape-2--consulter-ce-que-le-mj-partage-pendant-la-session)
+- [Étape 3 — Prendre des notes personnelles pendant la session *(hors MVP — notes de session du joueur, Could Have ; voir la matrice de priorités)*](#étape-3--prendre-des-notes-personnelles-pendant-la-session-hors-mvp--notes-de-session-du-joueur-could-have--voir-la-matrice-de-priorités)
+- [Étape 4 — Fin de vie de l'accès invité : expiration, sort des notes](#étape-4--fin-de-vie-de-laccès-invité--expiration-sort-des-notes)
+- [Étape 5 (optionnelle) — Créer un compte, rejoindre la campagne durablement](#étape-5-optionnelle--créer-un-compte-rejoindre-la-campagne-durablement)
+- [Points de friction propres à Lucas](#points-de-friction-propres-à-lucas)
+- [Table récapitulative des coutures](#table-récapitulative-des-coutures)
+
 ---
 
 ## Présentation du parcours

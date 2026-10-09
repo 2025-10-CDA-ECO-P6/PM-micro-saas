@@ -5,6 +5,12 @@
 > **Notation et nommage** : `docs/interface/conventions.md`.
 > **Arbitrages figés** : `docs/interface/zonage.md §S6 AR-03, AR-06, AR-10, AR-14`.
 
+**Sommaire**
+
+- [En-tête de fiche](#en-tête-de-fiche)
+- [Noyau obligatoire](#noyau-obligatoire)
+- [Sections conditionnelles](#sections-conditionnelles)
+
 ---
 
 ## En-tête de fiche

@@ -2,6 +2,20 @@
 
 > **Should Have — hors première livraison (post-MVP)** — Cet epic, ainsi que le parcours express one-shot qu'il conditionne (UC-02 §A1, US-02-02, US-02-04), sont reportés après la première livraison. Voir vision §5bis et UC-13. En MVP, le one-shot se crée via le parcours campagne nominal (US-02-01, `type = ONE_SHOT`).
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Vue d'ensemble](#vue-densemble)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+- [Stories exclues ou repoussées](#stories-exclues-ou-repoussées)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Questions ouvertes](#questions-ouvertes)
+
 ## Objectif utilisateur
 
 Permettre au MJ de créer un scénario une fois et de le rejouer avec des groupes différents, en conservant le contenu source intact. L'unité de travail de Sonia n'est pas la campagne — c'est le scénario. Elle veut "lancer ce scénario ce soir" sans recréer une structure depuis zéro à chaque fois.

@@ -14,6 +14,18 @@
 |---|---|---|---|
 | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
 
+**Sommaire**
+
+- [0. Métadonnées et nature du document](#0-métadonnées-et-nature-du-document)
+- [1. Légende des statuts](#1-légende-des-statuts)
+- [2. Choix et justification](#2-choix-et-justification)
+- [3. Contexte du système](#3-contexte-du-système)
+- [4. Conteneurs](#4-conteneurs)
+- [5. Composants](#5-composants)
+- [6. Déploiement](#6-déploiement)
+- [7. Vue de traçabilité, sections vers décisions](#7-vue-de-traçabilité-sections-vers-décisions)
+- [8. Limites cartographiques](#8-limites-cartographiques)
+
 ## 0. Métadonnées et nature du document
 
 Consolidation : elle ne tranche rien. Elle est une carte du système dessinée à partir des décisions ; la décision citée fait foi.

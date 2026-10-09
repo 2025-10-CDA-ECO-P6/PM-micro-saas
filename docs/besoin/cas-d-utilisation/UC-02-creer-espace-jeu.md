@@ -1,5 +1,24 @@
 # UC-02 — Créer un espace de jeu
 
+**Sommaire**
+
+- [Acteur principal](#acteur-principal)
+- [Acteurs secondaires](#acteurs-secondaires)
+- [Objectif](#objectif)
+- [Contexte](#contexte)
+- [Déclencheur](#déclencheur)
+- [Préconditions](#préconditions)
+- [Scénario nominal — Créer une campagne](#scénario-nominal--créer-une-campagne)
+- [Scénario alternatif A1 — Lancer un one-shot (parcours express)](#scénario-alternatif-a1--lancer-un-one-shot-parcours-express)
+- [Scénario alternatif A2 — Création en mode brouillon](#scénario-alternatif-a2--création-en-mode-brouillon)
+- [Scénario alternatif A3 — Campagne sans système de jeu](#scénario-alternatif-a3--campagne-sans-système-de-jeu)
+- [Exceptions](#exceptions)
+- [Postconditions](#postconditions)
+- [Données manipulées](#données-manipulées)
+- [Règles métier](#règles-métier)
+- [Critères d'acceptation](#critères-dacceptation)
+- [Questions à valider en interview](#questions-à-valider-en-interview)
+
 ## Acteur principal
 
 MJ

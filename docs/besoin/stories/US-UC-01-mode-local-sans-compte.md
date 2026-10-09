@@ -2,6 +2,21 @@
 
 - **Gherkin** : Scénario, Étant donné que, Quand, Alors, Et, Mais
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Vue d'ensemble](#vue-densemble)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+- [Stories repoussées post-MVP](#stories-repoussées-post-mvp)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Questions ouvertes](#questions-ouvertes)
+- [Décisions liées](#décisions-liées)
+
 ---
 
 ## Objectif utilisateur

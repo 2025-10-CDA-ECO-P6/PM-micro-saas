@@ -9,6 +9,20 @@
 
 > **Confirmation d'entrée en build du 2026-09-04** — décision confirmée par Pierre-Marie Marchio, porteur du projet.
 
+**Sommaire**
+
+- [Périmètre de cet ADR](#périmètre-de-cet-adr)
+- [Contexte](#contexte)
+- [Décision](#décision)
+- [Alternatives considérées](#alternatives-considérées)
+- [Conséquences](#conséquences)
+- [Recommandations MoSCoW](#recommandations-moscow)
+- [Chaîne d'artefacts à construire ensuite](#chaîne-dartefacts-à-construire-ensuite)
+- [Points à trancher](#points-à-trancher)
+- [Incohérences signalées — hors périmètre](#incohérences-signalées--hors-périmètre)
+- [Conformité conçue, non certifiée](#conformité-conçue-non-certifiée)
+- [Compléments post-revue](#compléments-post-revue)
+
 ---
 
 ## Périmètre de cet ADR

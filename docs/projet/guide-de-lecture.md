@@ -9,6 +9,14 @@
 
 > **En cas de conflit entre ce guide et une source citée, la source citée fait foi.** Ce guide est un artefact de renvoi, jamais une autorité de corpus — il ne redéfinit aucune décision, aucune règle et aucun statut, il les rassemble par fonctionnalité et y renvoie fidèlement.
 
+**Sommaire**
+
+- [Lire le guide](#lire-le-guide)
+- [Périmètre couvert](#périmètre-couvert)
+- [Fonctionnalités](#fonctionnalités)
+- [Ce que ce guide ne couvre pas](#ce-que-ce-guide-ne-couvre-pas)
+- [Renvois](#renvois)
+
 ---
 
 ## Lire le guide

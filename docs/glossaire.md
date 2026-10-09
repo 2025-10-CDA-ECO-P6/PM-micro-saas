@@ -7,6 +7,17 @@
 > Ordre d'autorité (du plus faisant foi au moins) : personas → vision produit → use cases → user journeys / user stories / NFR → domaine → glossaire.
 > En cas de conflit sur le fond (le besoin), l'artefact le plus en amont fait foi. Le glossaire n'arbitre jamais un conflit de besoin. Une entrée de glossaire qui contredit un use case est l'entrée à corriger, pas le use case.
 
+**Sommaire**
+
+- [Préambule](#préambule)
+- [2. Termes du contexte — Identity & Access](#2-termes-du-contexte--identity--access)
+- [3. Termes du contexte — Space Management](#3-termes-du-contexte--space-management)
+- [4. Termes du contexte — Content Library](#4-termes-du-contexte--content-library)
+- [5. Termes du contexte — Session Conduct](#5-termes-du-contexte--session-conduct)
+- [6. Termes transverses](#6-termes-transverses)
+- [7. Termes écartés](#7-termes-écartés)
+- [8. Conventions transverses](#8-conventions-transverses)
+
 ---
 
 ## Préambule

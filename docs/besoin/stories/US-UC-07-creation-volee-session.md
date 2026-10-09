@@ -1,5 +1,19 @@
 # Epic — Créer un élément à la volée pendant la session (UC-07)
 
+**Sommaire**
+
+- [Objectif utilisateur](#objectif-utilisateur)
+- [Personas concernés](#personas-concernés)
+- [Use cases couverts](#use-cases-couverts)
+- [Priorité MoSCoW](#priorité-moscow)
+- [Vue d'ensemble](#vue-densemble)
+- [Dépendances](#dépendances)
+- [User stories](#user-stories)
+- [Stories exclues ou repoussées](#stories-exclues-ou-repoussées)
+- [Ordre de livraison recommandé](#ordre-de-livraison-recommandé)
+- [Vérification de couverture](#vérification-de-couverture)
+- [Questions ouvertes](#questions-ouvertes)
+
 ## Objectif utilisateur
 
 Permettre au MJ de créer instantanément un document durable dans l'espace depuis la vue session — note, PNJ, lieu, faction, personnage joueur, objet ou contenu libre — sans quitter le contexte de partie. Le titre seul suffit à valider la création. Un document durable est épinglé automatiquement par défaut dans la session (LIVE, désépinglable) ; une note de session est rattachée à la session via `AttachNote` (jamais épinglée). L'élément peut être enrichi après la partie.

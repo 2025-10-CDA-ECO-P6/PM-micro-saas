@@ -6,6 +6,19 @@
 > Persona : [Thomas — MJ préparateur](../../decouverte/personas/persona-01-thomas.md)
 > Index parcours : [README](README.md)
 
+**Sommaire**
+
+- [Présentation du parcours](#présentation-du-parcours)
+- [Étape 1 — Démarrage en mode local sans compte](#étape-1--démarrage-en-mode-local-sans-compte)
+- [Étape 2 — Structuration du contenu : espace de jeu, scénario, documents, dossiers](#étape-2--structuration-du-contenu--espace-de-jeu-scénario-documents-dossiers)
+- [Étape 3 — Conduite d'une session avec la vue session](#étape-3--conduite-dune-session-avec-la-vue-session)
+- [Étape 4 — Partage d'information aux joueurs en cours de session](#étape-4--partage-dinformation-aux-joueurs-en-cours-de-session)
+- [Étape 5 — Accès d'un joueur sans compte à la session](#étape-5--accès-dun-joueur-sans-compte-à-la-session)
+- [Étape 6 — Migration vers un compte cloud avec gate de reconnaissance](#étape-6--migration-vers-un-compte-cloud-avec-gate-de-reconnaissance)
+- [Coutures vérifiées / Ruptures constatées](#coutures-vérifiées--ruptures-constatées)
+- [Ruptures nouvelles](#ruptures-nouvelles)
+- [Points de friction du parcours](#points-de-friction-du-parcours)
+
 ---
 
 ## Présentation du parcours

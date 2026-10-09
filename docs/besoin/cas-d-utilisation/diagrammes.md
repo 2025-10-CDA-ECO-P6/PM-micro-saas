@@ -8,6 +8,15 @@
 > dans une autre. Le `MJ` peut utiliser l'application sans compte (mode local, UC-01).
 > `JoueurInvite` est un joueur sans compte — accès temporaire via lien de session (UC-09).
 
+**Sommaire**
+
+- [Légende](#légende)
+- [1. Vue simplifiée](#1-vue-simplifiée)
+- [2. Vue globale](#2-vue-globale)
+- [3. Vue centrée MJ](#3-vue-centrée-mj)
+- [4. Vue centrée joueur](#4-vue-centrée-joueur)
+- [5. Parcours campagne vs one-shot](#5-parcours-campagne-vs-one-shot)
+
 ---
 
 ## Légende

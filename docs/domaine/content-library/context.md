@@ -7,6 +7,21 @@
 > Il ne gère pas le déroulement de session (→ Session Conduct),
 > ni les droits d'accès à l'espace (→ Space Management).
 
+**Sommaire**
+
+- [Principe fondamental — Tout est Document](#principe-fondamental--tout-est-document)
+- [Ce que ce contexte fait](#ce-que-ce-contexte-fait)
+- [Ce que ce contexte ne fait PAS](#ce-que-ce-contexte-ne-fait-pas)
+- [Agrégats](#agrégats)
+- [Value Objects](#value-objects)
+- [Cas d'usage illustrés](#cas-dusage-illustrés)
+- [Invariants métier](#invariants-métier)
+- [Règles métier](#règles-métier)
+- [Événements domaine](#événements-domaine)
+- [Intégration avec les autres contextes](#intégration-avec-les-autres-contextes)
+- [Note sur la bibliothèque personnelle (UC-13)](#note-sur-la-bibliothèque-personnelle-uc-13)
+- [Diagrammes](#diagrammes)
+
 ---
 
 ## Principe fondamental — Tout est Document

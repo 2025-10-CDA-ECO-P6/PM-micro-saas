@@ -8,6 +8,18 @@
 
 > **Confirmation d'entrée en build du 2026-09-04** — décision confirmée par Pierre-Marie Marchio, porteur du projet.
 
+**Sommaire**
+
+- [Périmètre de cet ADR](#périmètre-de-cet-adr)
+- [Contexte](#contexte)
+- [Décision](#décision)
+- [Alternatives considérées](#alternatives-considérées)
+- [Conséquences](#conséquences)
+- [Points à trancher](#points-à-trancher)
+- [Croisements](#croisements)
+- [Compléments post-revue](#compléments-post-revue)
+- [Annexe — Esquisses pré-implémentation *(hors corps décisionnel)*](#annexe--esquisses-pré-implémentation-hors-corps-décisionnel)
+
 ---
 
 ## Périmètre de cet ADR
