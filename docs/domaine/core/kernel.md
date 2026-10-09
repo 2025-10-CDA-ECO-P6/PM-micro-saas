@@ -20,10 +20,10 @@ il dépend du Core, qui est une dépendance stable et agnostique.
 
 | Concept | Description | Utilisé dans |
 |---|---|---|
-| `AggregateRoot` | Classe de base pour tous les agrégats. Porte la collection d'événements domaine non publiés. | SOUS-SPÉCIFIÉ |
+| `AggregateRoot` | Classe de base pour tous les agrégats : l'entité racine de l'agrégat, qui dérive donc d'`Entity`. Porte la collection d'événements domaine non publiés. | SOUS-SPÉCIFIÉ |
 | `Entity` | Classe de base pour les entités (identité par ID). | SOUS-SPÉCIFIÉ |
 | `ValueObject` | Classe de base pour les value objects (identité par valeur). | SOUS-SPÉCIFIÉ |
-| `DomainEvent` | Classe de base pour les événements domaine. | SOUS-SPÉCIFIÉ |
+| `DomainEvent` | Classe de base pour les événements domaine. Porte `occurredAt`, l'horodatage de l'événement, dont héritent tous les événements. | SOUS-SPÉCIFIÉ |
 
 ### IDs typés
 

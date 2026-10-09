@@ -85,7 +85,6 @@ classDiagram
         <<domainEvent>>
         +identifiant documentId
         +identifiant spaceId
-        +horodatage occurredAt
     }
 
     class DocumentVisibilityChanged {
@@ -93,14 +92,12 @@ classDiagram
         +identifiant documentId
         +Visibility previousVisibility
         +Visibility newVisibility
-        +horodatage occurredAt
     }
 
     class DocumentDeleted {
         <<domainEvent>>
         +identifiant documentId
         +identifiant spaceId
-        +horodatage occurredAt
     }
 
     class DocumentInstantiated {
@@ -108,7 +105,6 @@ classDiagram
         +identifiant sourceDocumentId
         +identifiant newDocumentId
         +identifiant spaceId
-        +horodatage occurredAt
     }
 
     class DocumentLinked {
@@ -116,28 +112,24 @@ classDiagram
         +identifiant sourceDocumentId
         +identifiant targetDocumentId
         +entier order
-        +horodatage occurredAt
     }
 
     class DocumentUnlinked {
         <<domainEvent>>
         +identifiant sourceDocumentId
         +identifiant targetDocumentId
-        +horodatage occurredAt
     }
 
     class FolderCreated {
         <<domainEvent>>
         +identifiant folderId
         +identifiant spaceId
-        +horodatage occurredAt
     }
 
     class FolderDeleted {
         <<domainEvent>>
         +identifiant folderId
         +identifiant spaceId
-        +horodatage occurredAt
     }
 
     Document "1" *-- "0..*" DocumentBlock : blocks

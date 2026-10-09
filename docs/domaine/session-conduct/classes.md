@@ -53,34 +53,29 @@ classDiagram
         <<domainEvent>>
         +identifiant sessionId
         +identifiant spaceId
-        +horodatage occurredAt
     }
 
     class SessionClosed {
         <<domainEvent>>
         +identifiant sessionId
         +identifiant spaceId
-        +horodatage occurredAt
     }
 
     class SessionArchived {
         <<domainEvent>>
         +identifiant sessionId
-        +horodatage occurredAt
     }
 
     class DocumentPinned {
         <<domainEvent>>
         +identifiant sessionId
         +identifiant documentId
-        +horodatage occurredAt
     }
 
     class DocumentUnpinned {
         <<domainEvent>>
         +identifiant sessionId
         +identifiant documentId
-        +horodatage occurredAt
     }
 
     Session --> SessionStatus

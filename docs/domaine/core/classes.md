@@ -68,7 +68,6 @@ classDiagram
     class SoftDelete {
         +isDeleted: booléen
         +deletedAt: date?
-        +Delete()
     }
 
     class Visibility {

@@ -42,7 +42,6 @@ classDiagram
         <<domainEvent>>
         +identifiant userId
         +Email email
-        +horodatage occurredAt
     }
 
     class AccountTierChanged {
@@ -50,39 +49,33 @@ classDiagram
         +identifiant userId
         +AccountTier previousTier
         +AccountTier newTier
-        +horodatage occurredAt
     }
 
     class UserDeleted {
         <<domainEvent>>
         +identifiant userId
-        +horodatage occurredAt
     }
 
     class UserAnonymized {
         <<domainEvent>>
         +identifiant userId
-        +horodatage occurredAt
     }
 
     class DisplayNameUpdated {
         <<domainEvent>>
         +identifiant userId
         +texte newDisplayName
-        +horodatage occurredAt
     }
 
     class EmailVerified {
         <<domainEvent>>
         +identifiant userId
-        +horodatage occurredAt
     }
 
     class EmailChangeRequested {
         <<domainEvent>>
         +identifiant userId
         +Email newEmail
-        +horodatage occurredAt
     }
 
     class FederatedIdentityLinked {
@@ -90,19 +83,16 @@ classDiagram
         +identifiant userId
         +texte provider
         +texte externalId
-        +horodatage occurredAt
     }
 
     class InitialPasswordSet {
         <<domainEvent>>
         +identifiant userId
-        +horodatage occurredAt
     }
 
     class AccountSuspended {
         <<domainEvent>>
         +identifiant userId
-        +horodatage occurredAt
     }
 
     User --> AccountStatus
