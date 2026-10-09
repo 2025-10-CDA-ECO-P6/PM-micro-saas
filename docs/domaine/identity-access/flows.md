@@ -21,7 +21,7 @@ sequenceDiagram
         App-->>MJ: Gate de reconnaissance (données locales détectées)
         MJ->>App: Confirme la migration
         App->>App: Migrer les données locales (stockage local → cloud)
-        Note over App: Orchestration applicative :<br/>importe espaces, documents,<br/>dossiers depuis l'export local
+        Note over App: Orchestration applicative :<br/>importe espaces, documents, dossiers<br/>et historique de session (sessions terminées,<br/>notes de session, épinglés, résumés)
     end
     App-->>MJ: Compte créé
 ```
@@ -35,9 +35,12 @@ sequenceDiagram
     actor Utilisateur
     participant App as Application Layer
     participant Identity as Infrastructure d'identité
+    participant IA as I&A Domain
 
     Utilisateur->>App: Connexion (email, password)
     App->>Identity: SignIn(email, password)
+    App->>IA: Lire User.status (invariant 2 : ACTIVE requis)
+    IA-->>App: status
     alt Identifiants valides et compte ACTIVE
         Identity-->>App: Jeton d'accès + jeton de renouvellement
         App-->>Utilisateur: Authentifié
@@ -81,7 +84,7 @@ sequenceDiagram
     participant CL as Content Library
 
     Utilisateur->>App: Supprimer mon compte
-    alt Adresse de messagerie non validée
+    break Adresse de messagerie non validée
         App-->>Utilisateur: Refusé — valider l'adresse d'abord
     end
     App->>SM: GetBlockingSpaces(userId)

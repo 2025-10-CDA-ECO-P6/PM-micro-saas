@@ -85,6 +85,9 @@ sequenceDiagram
     participant CL as Content Library
 
     MJ->>App: Utiliser ce scénario pour un nouveau groupe (sourceDocId, spaceId)
+    break Source isReusable = false (invariant 8)
+        App-->>MJ: Refusé — document non réutilisable
+    end
     App->>CL: Document.Instantiate(spaceId, folderId)
     Note over CL: Copie profonde :<br/>blocs + liens + propriétés<br/>sourceDocumentId = sourceDocId<br/>isReusable = false sur l'instance
     CL-->>App: DocumentInstantiated (newDocId)
@@ -121,8 +124,13 @@ sequenceDiagram
     MJ->>App: Créer un PNJ à la volée (title, sessionId)
     App->>CL: Document.Create(spaceId, folderId, title, typeId=NPC)
     CL-->>App: DocumentCreated (docId)
-    App->>SC: Ajouter le document à la session active (sessionId, docId)
-    App-->>MJ: PNJ créé et visible dans la vue session (< 10 secondes)
+    alt Session LIVE (épinglage par défaut, UC-07)
+        App->>SC: Session.PinDocument(docId)
+        SC-->>App: DocumentPinned event
+        App-->>MJ: PNJ créé et visible dans la vue session (< 10 secondes)
+    else Session CLOSED
+        App-->>MJ: PNJ créé (épinglage manuel optionnel)
+    end
 ```
 
 ## Flux 8 — Consulter les backlinks d'un document

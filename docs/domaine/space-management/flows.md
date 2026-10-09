@@ -34,7 +34,7 @@ sequenceDiagram
 
     MJ->>App: Générer un lien d'invitation (scope, options)
     App->>SM: Space.CreateInvitation(LINK, scope, expiresAt?, maxUses?)
-    SM-->>App: Invitation créée (token)
+    SM-->>App: InvitationCreated event (token)
     App-->>MJ: Lien d'invitation (URL avec token)
     MJ->>MJ: Partage le lien (Discord, email, etc.)
 ```
@@ -54,6 +54,9 @@ sequenceDiagram
         App-->>Joueur: "Ce lien n'est pas utilisable"
     else Invitation valide
         SM-->>App: SpaceId + scope
+        break Plafond FREE de 4 joueurs atteint (invariant 11)
+            App-->>Joueur: Refusé — limite de joueurs atteinte
+        end
         App->>SM: Space.AddMember(userId, PLAYER)
         SM-->>App: MemberJoined event
         App->>SM: SpaceMembership.Activate()
@@ -77,6 +80,9 @@ sequenceDiagram
     else Invitation valide
         App-->>Joueur: Page de saisie du nom d'affichage
         Joueur->>App: Saisir displayName
+        break Plafond FREE de 4 joueurs atteint (invariant 11)
+            App-->>Joueur: Refusé — limite de joueurs atteinte
+        end
         App->>SM: GuestAccess.Create(spaceId, scope, sessionId?)
         SM-->>App: GuestAccessCreated (token)
         App->>SM: GuestAccess.SetDisplayName(displayName)
@@ -95,7 +101,7 @@ sequenceDiagram
 
     Billing->>App: Résiliation abonnement Pro (userId)
     App->>IA: User.ChangeTier(FREE)
-    IA-->>App: AccountTierChanged(userId, FREE)
+    IA-->>App: AccountTierChanged(userId, previousTier = PRO, newTier = FREE)
     App->>SM: GetActiveSpaces(userId, types = CAMPAIGN/ONE_SHOT)
     SM-->>App: Liste des espaces actifs CAMPAIGN/ONE_SHOT (triée par date de création) — PERSONAL exclu
     loop Pour chaque espace excédentaire (rang > 3)

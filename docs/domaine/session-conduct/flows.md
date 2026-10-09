@@ -49,6 +49,9 @@ sequenceDiagram
     participant SC as Session Conduct
 
     MJ->>App: Démarrer une session (title, scenarioId?)
+    break Une session LIVE existe déjà pour l'espace (invariant 8)
+        App-->>MJ: Refusé — clôturer la session en cours d'abord
+    end
     App->>SC: Session.Start(spaceId, title, scenarioId?)
     SC-->>App: SessionStarted event
     App->>SC: Charger SessionViewConfig(spaceId)
@@ -83,9 +86,13 @@ sequenceDiagram
     MJ->>App: Partager ce document avec les joueurs (documentId)
     App->>CL: Document.Share()
     CL-->>App: DocumentVisibilityChanged (→ PUBLIC)
-    App->>SC: Session.PinDocument(documentId)
-    SC-->>App: DocumentPinned event
-    App-->>MJ: Document partagé et épinglé
+    alt Session LIVE (auto-épinglage, UC-08 A3)
+        App->>SC: Session.PinDocument(documentId)
+        SC-->>App: DocumentPinned event
+        App-->>MJ: Document partagé et épinglé
+    else Session CLOSED
+        App-->>MJ: Document partagé (pas d'épinglage automatique)
+    end
     Note over App: Le partage est permanent (Content Library).<br/>L'épingle est locale à la session.
 ```
 
@@ -101,7 +108,7 @@ sequenceDiagram
     MJ->>App: Nouvelle note (content, visibility)
     App->>CL: Document.Create(spaceId, folderId=dossier de rôle NOTES (repli Non classés), typeId=LIVE_NOTE)
     CL-->>App: DocumentCreated (docId)
-    App->>CL: Document.UpdateContent([TextBlock(content)])
+    App->>CL: Document.UpdateContent([DocumentBlock(type = TEXT, content)])
     App->>SC: Session.AttachNote(docId)
     SC-->>App: OK
     App-->>MJ: Note enregistrée
@@ -120,9 +127,13 @@ sequenceDiagram
     MJ->>App: Créer un PNJ à la volée (title, sessionId)
     App->>CL: Document.Create(spaceId, folderId, title, typeId=NPC)
     CL-->>App: DocumentCreated (docId)
-    App->>SC: Session.PinDocument(docId)
-    SC-->>App: DocumentPinned event
-    App-->>MJ: PNJ créé et épinglé dans la vue session
+    alt Session LIVE (épinglage par défaut, UC-07)
+        App->>SC: Session.PinDocument(docId)
+        SC-->>App: DocumentPinned event
+        App-->>MJ: PNJ créé et épinglé dans la vue session
+    else Session CLOSED
+        App-->>MJ: PNJ créé (épinglage manuel optionnel)
+    end
 ```
 
 ## Flux 8 — Clôturer une session
@@ -137,7 +148,7 @@ sequenceDiagram
     MJ->>App: Clôturer la session
     App->>SC: Session.Close()
     SC-->>App: SessionClosed event
-    App->>SM: Déclencher expiration GuestAccess SESSION (spaceId, sessionId)
+    App->>SM: Démarrer le countdown d'expiration GuestAccess SESSION (spaceId, sessionId), +24h de grâce
     SM-->>App: OK
     App-->>MJ: Session clôturée — résumé éditable
 ```
@@ -158,7 +169,7 @@ sequenceDiagram
         App-->>Joueur: "Ce lien n'est pas utilisable"
     else GuestAccess valide
         SM-->>App: GuestAccessId + spaceId + characterId?
-        App->>SC: Charger vue session (documents PUBLIC, notes de session PUBLIC)
+        App->>SC: Charger vue session (documents PUBLIC, notes de session PUBLIC, fiche du personnage associé)
         SC-->>App: Contenu autorisé
         App-->>Joueur: Vue joueur — documents partagés en temps réel
     end
