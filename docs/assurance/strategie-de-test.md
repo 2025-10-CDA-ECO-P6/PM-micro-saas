@@ -338,27 +338,27 @@ Les critères ne sont plus recopiés ici : la roadmap de build (§ 3) en est pro
 
 ### Jalon « Socle »
 
-Critères de sortie : [roadmap de build § 3.1 — J0, Socle](../projet/roadmap-de-build.md#31-j0--socle), qui fait foi.
+Critères de sortie : [roadmap de build § 3.1 — J0 — Socle](../projet/roadmap-de-build.md#31-j0--socle), qui fait foi.
 
 ### Jalon « Local-only »
 
-Critères de sortie : [roadmap de build § 3.2 — J1, Local-only](../projet/roadmap-de-build.md#32-j1--local-only), qui fait foi.
+Critères de sortie : [roadmap de build § 3.2 — J1 — Local-only](../projet/roadmap-de-build.md#32-j1--local-only), qui fait foi.
 
 ### [DÉCISION MARCHÉ] — hors-CI, ne pas convertir en dette de test
 
-Critère de décision : [roadmap de build § 3.3 — décision marché](../projet/roadmap-de-build.md#33-décision-marché--gono-go-avant-le-build-lourd-cloud--temps-réel), qui fait foi. Propre à cette stratégie de test : **critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
+Critère de décision : [roadmap de build § 3.3 — [DÉCISION MARCHÉ] — go/no-go avant le build lourd cloud + temps réel](../projet/roadmap-de-build.md#33-décision-marché--gono-go-avant-le-build-lourd-cloud--temps-réel), qui fait foi. Propre à cette stratégie de test : **critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
 
 ### Jalon « Cloud + migration »
 
-Critères de sortie : [roadmap de build § 3.4 — J2, Cloud + migration](../projet/roadmap-de-build.md#34-j2--cloud--migration), qui fait foi.
+Critères de sortie : [roadmap de build § 3.4 — J2 — Cloud + migration](../projet/roadmap-de-build.md#34-j2--cloud--migration), qui fait foi.
 
 ### [VALIDATION JURIDIQUE EU] — hors-CI, ne pas convertir en dette de test
 
-Critère de sortie : [roadmap de build § 3.5 — validation juridique EU](../projet/roadmap-de-build.md#35-validation-juridique-eu--validation-juridique-pré-lancement), qui fait foi. Cette validation n'est pas convertie en dette de test.
+Critère de sortie : [roadmap de build § 3.5 — [VALIDATION JURIDIQUE EU] — validation juridique pré-lancement](../projet/roadmap-de-build.md#35-validation-juridique-eu--validation-juridique-pré-lancement), qui fait foi. Cette validation n'est pas convertie en dette de test.
 
 ### Jalon « Partage + temps réel »
 
-Critères de sortie : [roadmap de build § 3.6 — J3, Partage + temps réel](../projet/roadmap-de-build.md#36-j3--partage--temps-réel), qui fait foi.
+Critères de sortie : [roadmap de build § 3.6 — J3 — Partage + temps réel](../projet/roadmap-de-build.md#36-j3--partage--temps-réel), qui fait foi.
 Le seuil de repli SSE → polling adaptatif reste un point ouvert (§12) : préalable bloquant pour la clôture opérationnelle du jalon, pas un critère de sortie.
 
 ---
