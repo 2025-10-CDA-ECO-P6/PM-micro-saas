@@ -12,7 +12,7 @@ La version minimale est celle où `#:include` existe. Sur une machine qui n'a qu
 
 - Le fichier d'entrée est `tools/<Outil>/<Outil>.cs`. Il porte les instructions de premier niveau et rien d'autre que la déclaration de l'outil : directives, puis programme.
 - Les autres sources de l'outil restent dans `tools/<Outil>/`, un fichier par type, comme avant. Aucun fichier d'une autre racine n'est inclus sans que le chemin le dise.
-- Le témoin `tools/Exemples/temoin.cs` suit la même forme, avec ses sources dans `tools/Exemples/temoin/`. Ce n'est pas un outil : on le retire dès qu'un outil réel suit la convention et peut servir d'exemple.
+- Exemple de référence : `tools/VerifCorpus/VerifCorpus.cs`.
 - Le fichier d'entrée ne se trouve jamais dans un dossier qui garde un `.csproj`. Ce projet compilerait le fichier avec ses instructions de premier niveau, en double.
 
 ## Comment il inclut ses autres sources
@@ -20,7 +20,7 @@ La version minimale est celle où `#:include` existe. Sur une machine qui n'a qu
 Une directive `#:include` par fichier, chemin relatif au fichier d'entrée, écrit en entier :
 
 ```csharp
-#:include temoin/CodeDeSortie.cs
+#:include VerificateurCorpus.cs
 ```
 
 - **Jamais de motif** (`*`, `**`) : un `#:include` par motif désactive le cache de compilation.
