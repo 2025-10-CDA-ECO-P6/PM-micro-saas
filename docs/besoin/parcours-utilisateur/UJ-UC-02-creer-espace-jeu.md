@@ -50,11 +50,11 @@ flowchart TD
     B --> C[Nouvelle campagne]
     B --> D[Lancer un one-shot]
 
-    C --> E{Compte gratuit :\nplafond de 3 espaces\nsynchronisés atteint ?}
-    E -->|Non — ou mode local,\naucun plafond| F[Saisir le nom\ndescription et système facultatifs]
+    C --> E{Compte gratuit :\nplafond de 3 espaces\nCAMPAIGN/ONE_SHOT actifs atteint ?}
+    E -->|Non — ou mode local,\naucun plafond| F[Saisir le nom\ndescription et système facultatifs\ntype : CAMPAIGN par défaut ou ONE_SHOT]
     E -->|Oui — gratuit| H[Blocage\nCTA : passer à PRO]
     F --> I[Validation]
-    I --> J[Espace campagne\n4 dossiers par défaut]
+    I --> J[Espace du type choisi\n4 dossiers par défaut]
     J --> K[Ajouter du contenu]
     J --> L[Renommer les dossiers]
 

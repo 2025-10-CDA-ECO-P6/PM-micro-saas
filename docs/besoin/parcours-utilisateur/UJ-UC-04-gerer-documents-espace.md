@@ -68,6 +68,8 @@ flowchart TD
 
     C -->|Note rapide| D[Titre généré automatiquement\ninterface — ex. Note — 15 mai 2026 21:34]
     C -->|Création complète| E[Renseigne titre\nchamp obligatoire]
+    C -->|Depuis un dossier avec template| TP[Copie indépendante du template\nA3]
+    TP --> F
 
     D --> F[Rédige le contenu libre\nblocs]
     E --> G[Choisit un type optionnel\nnote, PNJ, lieu, scénario, scène]

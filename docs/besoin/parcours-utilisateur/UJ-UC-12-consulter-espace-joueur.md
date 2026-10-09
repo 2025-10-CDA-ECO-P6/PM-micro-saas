@@ -49,7 +49,9 @@ journey
 flowchart TD
     Entree[Joueur entre dans la session\nGuestAccess ou Member actif\nUC-09]
 
-    Entree --> CheckPerso{Personnage associe\npar le MJ ?}
+    Entree --> Actif{Acces actif ?}
+    Actif -->|Non - inactif ou expire| Renvoi[Vue non affichee\nRenvoi vers le flux d acces UC-09]
+    Actif -->|Oui| CheckPerso{Personnage associe\npar le MJ ?}
 
     CheckPerso -->|Aucun personnage| SansPerso[Vue joueur sans fiche\nDocuments PUBLIC visibles\nAucune note PLAYER_PRIVATE\nliee a un personnage]
 

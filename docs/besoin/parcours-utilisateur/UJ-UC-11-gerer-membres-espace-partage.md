@@ -68,6 +68,7 @@ flowchart TD
     Wait -->|Oui - avec compte| MemberActive[Member ACTIVE → vue UC-12]
     Wait -->|Oui - sans compte| GuestOK[Creation de compte UC-10\npuis Member ACTIVE]
     Wait -->|Joueur deja membre| E1[E1 - Doublon detecte\nMJ informe - pas de creation]
+    Wait -->|Espace archive| LienMort
     Wait -->|Lien expire ou quota atteint| AutoRevoke[Invitation EXPIRED\nautomatiquement]
 
     Action -->|Revoquer une invitation| Rev[US-11-02\nRevoquer invitation]

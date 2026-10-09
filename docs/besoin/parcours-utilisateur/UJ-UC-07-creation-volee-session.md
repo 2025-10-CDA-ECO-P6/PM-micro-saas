@@ -53,6 +53,9 @@ flowchart TD
 
     B -->|Émilie — PNJ inattendu| C[Ouvre le panneau\nChoisit PNJ\nSaisit le nom]
     B -->|Antoine — type précis| D[Ouvre le panneau\nChoisit un type built-in\nex. LOCATION\nSaisit le nom]
+    B -->|Note de session| NS[Ouvre le panneau\nChoisit note de session\nSaisit le titre]
+    NS --> NSA[Note LIVE_NOTE rattachée à la session\nSession.AttachNote — jamais épinglée]
+    Z[MJ en vue d'une session ARCHIVED] --> X[Création à la volée refusée\nlecture seule complète]
     B -->|Nadia — CLOSED, post-session| E[Ouvre le panneau\nChoisit NOTE\nSaisit le titre]
 
     C --> F[Document.Create\nspaceId, type = PNJ, title, visibility = GM_ONLY\ndossier d'accueil = Personnages]
@@ -63,6 +66,7 @@ flowchart TD
     G --> I
     H --> J[Document disponible dans Content Library\nÉpinglage optionnel en CLOSED]
 
+    I -->|Non — CLOSED| J
     I -->|Oui| K[Session.PinDocument\ndocumentId → pinnedDocumentIds]
     K --> L[Document visible dans Épinglés\ndisponible pendant la session]
     L --> M[Session continue\nMJ reprend la partie]

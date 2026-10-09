@@ -55,8 +55,8 @@ journey
 flowchart TD
     A[MJ genere un lien] --> B{Type de lien}
 
-    B -->|Ponctuel session| C[GuestAccess token\nlie a la session]
-    B -->|Permanent espace partage| D[Member invitation token\nlie a l espace partage]
+    B -->|Ponctuel session| C[Invitation portee SESSION\nliee a la session]
+    B -->|Permanent espace partage| D[Invitation portee SPACE\nliee a l espace partage]
 
     C --> E[MJ partage le lien\nDiscord, WhatsApp, email]
     D --> E
@@ -65,8 +65,9 @@ flowchart TD
     F --> G[Identity and Access valide le token]
 
     G --> H{Token valide ?}
-    H -->|Expire, revoque, invalide ou mal forme| I[Message lien non utilisable\nContacter le MJ\nOpacite sur l existence du lien et de l espace partage]
+    H -->|Expire, revoque, invalide, mal forme\nou espace archive| I[Message lien non utilisable\nContacter le MJ\nOpacite sur l existence du lien et de l espace partage]
 
+    H -->|Valide mais limite FREE atteinte\n5e joueur| I2[Acces refuse - message sobre\nMJ invite a passer PRO]
     H -->|Valide — ponctuel| K{Joueur deja connecte ?}
     K -->|Non| L[Saisit uniquement un nom d affichage]
     K -->|Oui| M[Acces direct avec historique de compte]

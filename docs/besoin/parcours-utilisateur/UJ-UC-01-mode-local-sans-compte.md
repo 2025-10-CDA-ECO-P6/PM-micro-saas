@@ -66,6 +66,8 @@ flowchart TD
     FC --> G[Ajoute du contenu\nPrépare une session]
     G --> H{Ferme le navigateur}
     H --> I[Retour le lendemain\nContenu retrouvé]
+    H --> A3[Données introuvables\nmessage distinct d'une première visite\nA3]
+    G --> E1[Stockage navigateur plein\nmessage et proposition de compte\nE1]
     I --> J[Tente de partager\nune info avec les joueurs]
     J --> K[Bouton visible\nmais désactivé — CTA compte]
     K --> L{Décision}

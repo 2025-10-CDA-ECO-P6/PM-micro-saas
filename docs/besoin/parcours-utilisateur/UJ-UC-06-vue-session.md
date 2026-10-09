@@ -97,6 +97,7 @@ flowchart TD
     K --> O{Document trouvé ?}
     O -->|Oui| M
     O -->|Non| P[Barre de recherche — UC-14]
+    P --> Q
 
     M --> Q[Épingle le document\nSession.PinDocument]
     N --> NA[Note rattachée à la session\nSession.AttachNote — jamais épinglée]

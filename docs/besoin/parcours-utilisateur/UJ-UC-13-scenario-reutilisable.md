@@ -61,7 +61,7 @@ flowchart TD
     Tableau --> AccesLib[Acces a la bibliotheque\nMes scenarios reutilisables\nespace personnel du MJ]
     Tableau --> AccesCampagne[Acces a un espace\net a un scenario existant]
 
-    AccesCampagne --> Marquer[Marquer comme reutilisable\nisReusable = true\nUS-13-01]
+    AccesCampagne --> Marquer[Marquer comme reutilisable\ndeplace ou copie vers l espace personnel\nisReusable = true\nUS-13-01]
     Marquer --> LibMaj[Scenario visible dans la bibliotheque\nvia l espace personnel]
 
     AccesLib --> Catalogue[Liste des scenarios isReusable\ndans l espace personnel]
@@ -74,6 +74,7 @@ flowchart TD
     Rejouer --> ContexteChoix{Espace cible}
 
     ContexteChoix -->|One-shot ce soir| CreerOneShot[Creer espace one-shot\nnom minimal\nA3\nMoins de 30 secondes]
+    ContexteChoix -->|Espace archive| RefusArchive[Instanciation refusee\nchoisir un espace actif ou creer un one-shot]
     ContexteChoix -->|Campagne existante| CampagneExistante[Selectionner une campagne\nexistante]
 
     CreerOneShot --> CopieProfonde[Copie profonde\nScenario + scenes\nDocuments lies PNJ et lieux\nInstance creee dans l espace cible]

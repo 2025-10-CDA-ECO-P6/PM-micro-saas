@@ -72,7 +72,7 @@ flowchart TD
     J --> K
 
     K -->|Oui| L[Document.Unshare\nPUBLIC vers GM_ONLY\nDocumentVisibilityChanged]
-    L --> M[Document redevenu GM_ONLY\nJoueurs ne voient plus le document\nDocument reste dans documents epingles — visible MJ uniquement]
+    L --> M[Document redevenu GM_ONLY\nJoueurs ne voient plus le document\nS il etait epingle, il reste dans documents epingles — visible MJ uniquement]
 
     K -->|Non| N[Partage durable\npersiste jusqu a retrait explicite]
 ```

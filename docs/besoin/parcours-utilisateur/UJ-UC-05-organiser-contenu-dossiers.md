@@ -52,7 +52,7 @@ journey
 
 ```mermaid
 flowchart TD
-    A[Espace créé] --> B[Dossiers système présents\nPersonnages, Joueurs, Scénarios, Notes]
+    A[Espace créé] --> B[CAMPAIGN ou ONE_SHOT : dossiers système\nPersonnages, Joueurs, Scénarios, Notes\nPERSONAL : Non classés seul]
     B --> C{Profil MJ}
 
     C -->|Antoine| D[Crée des dossiers thématiques\nFactions, Indices, Objets]

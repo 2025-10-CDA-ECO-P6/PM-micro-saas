@@ -73,7 +73,7 @@ flowchart TD
     J --> L{Resultat de la recherche}
     K --> L
 
-    L -->|Aucun resultat| M[Etat vide\nSuggestion de modifier la recherche\nou de retirer le filtre]
+    L -->|Aucun resultat| M[Etat vide\nSuggestion de creer un document\nou de modifier la recherche ou retirer le filtre]
     L -->|Resultats trouves, depuis bibliotheque| N[Resultats regroupes par type\nMJ selectionne un document\nDocument s ouvre dans la vue document]
     L -->|Resultats trouves, depuis vue session| O[Conduite de session pondere les resultats\nElements de la session active en tete]
 
