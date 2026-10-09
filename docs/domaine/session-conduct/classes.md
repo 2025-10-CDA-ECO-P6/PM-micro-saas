@@ -30,6 +30,7 @@ classDiagram
         +identifiant spaceId
         +liste de SessionViewFolder focusedFolders
         +horodatage updatedAt
+        +Create(spaceId, folderIds)$
         +AddFolder(folderId, order)
         +RemoveFolder(folderId)
         +ReorderFolders(orderedFolderIds)

@@ -34,7 +34,7 @@
 | SessionClosed | Session.Close() (session-conduct) | Application (déclenche l'expiration des GuestAccess SESSION dans Space Management — règle métier 6) | - |
 | SessionStarted | Session.Start() (session-conduct) | Application (notification membres) | - |
 | SpaceArchived | Space.Archive() (space-management) | Content Library, Session Conduct | - |
-| SpaceCreated | Space.Create() (space-management) | Content Library (créer les dossiers système), Application | UC-02 |
+| SpaceCreated | Space.Create() (space-management) | Content Library (créer les dossiers système), Session Conduct (créer le SessionViewConfig d'un espace partagé, après les dossiers), Application | UC-02 |
 | SpaceDeleted | Space.Delete() (space-management) | Content Library, Session Conduct, Application | - |
 | SpaceFrozen | Space.Freeze() (space-management) | Application (notification au MJ) | UC-15 |
 | SpaceUnarchived | Space.Unarchive() (space-management) | Content Library, Session Conduct | - |

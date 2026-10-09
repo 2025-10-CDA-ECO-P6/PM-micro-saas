@@ -292,7 +292,7 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 
 | Événement | Producteur | Consommateurs |
 |---|---|---|
-| `SpaceCreated` | `Space.Create()` | Content Library (créer les dossiers système), Application |
+| `SpaceCreated` | `Space.Create()` | Content Library (créer les dossiers système), Session Conduct (créer le `SessionViewConfig` d'un espace partagé, après les dossiers), Application |
 | `MemberJoined` | `Space.AddMember()` | Application (notification) |
 | `MemberActivated` | `SpaceMembership.Activate()` | Session Conduct (autoriser l'accès en session), Application |
 | `MemberRemoved` | `Space.RemoveMember()` | Session Conduct (retirer l'accès actif si session en cours) |

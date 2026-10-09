@@ -119,6 +119,7 @@ Créé automatiquement à `SpaceCreated` (espaces partagés uniquement) avec les
 
 | Méthode | Description |
 |---|---|
+| `Create(spaceId, folderIds)` | Crée la configuration d'un espace partagé à `SpaceCreated`, avec les quatre dossiers système nommés fournis par Content Library. |
 | `AddFolder(folderId, order)` | Ajoute un dossier aux panneaux de la vue session |
 | `RemoveFolder(folderId)` | Retire un dossier des panneaux |
 | `ReorderFolders(orderedFolderIds)` | Réordonne les dossiers |

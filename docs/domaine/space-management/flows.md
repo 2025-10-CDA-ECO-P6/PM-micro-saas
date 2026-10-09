@@ -8,6 +8,7 @@ sequenceDiagram
     participant App as Application Layer
     participant SM as Space Management
     participant CL as Content Library
+    participant SC as Session Conduct
 
     Note over MJ,CL: L'espace PERSONAL n'est pas créé ici : il naît à UserRegistered (invariant 14),<br/>avec le seul dossier virtuel (Non classés)
     MJ->>App: Créer un espace (name, type = CAMPAIGN ou ONE_SHOT)
@@ -18,6 +19,7 @@ sequenceDiagram
         App->>SM: Space.Create(ownerId, name, type, description?, gameSystem?)
         SM-->>App: SpaceCreated event
         App->>CL: Créer les dossiers système (Personnages, Joueurs, Scénarios, Notes) + dossier virtuel (Non classés)
+        App->>SC: SessionViewConfig.Create(spaceId, dossiers système) — flux 1 de Session Conduct
         App-->>MJ: Espace créé
     end
 ```
