@@ -1,28 +1,28 @@
-# Site de documentation (MkDocs + Material) : le corpus de `docs/` publié sur
-# GitHub Pages. Construction stricte sur toute pull request qui touche le site ou
-# le corpus ; publication sur la seule branche `main`.
+# Site de documentation (DocFX) : le corpus de `docs/` publié sur GitHub Pages.
+# Construction stricte sur toute pull request qui touche le site ou le corpus ;
+# publication sur la seule branche `main`.
 #
 # Prérequis côté dépôt, à régler une fois à la main : Settings > Pages > Source =
 # « GitHub Actions ». Ce fichier ne l'active pas.
 #
-# `--strict` fait échouer la construction sur tout avertissement MkDocs (lien ou
-# ancre cassés, fichier hors navigation) : le journal de l'étape nomme le défaut.
-# Les versions des dépendances sont épinglées dans docs-site/requirements.txt, la
-# configuration vit dans mkdocs.yml et le hook dans docs-site/haversack_docs.py.
+# La construction est le projet C# docs-site/ (DocFX utilisé comme bibliothèque, pas
+# d'outil à installer) : il sort en code 1 sur tout avertissement DocFX, sur une entrée
+# inutile de la table des titres, et sur un lien ou une ancre cassés dans le HTML
+# construit. Le journal de l'étape nomme le défaut. La configuration vit dans
+# docs-site/docfx.json, qui porte aussi l'URL du dépôt (_repoUrl), seul endroit où
+# elle est écrite.
 name: Site de documentation
 
 on:
   pull_request:
     paths:
       - "docs/**"
-      - "mkdocs.yml"
       - "docs-site/**"
       - ".github/workflows/docs-site.yml"
   push:
     branches: [main]
     paths:
       - "docs/**"
-      - "mkdocs.yml"
       - "docs-site/**"
       - ".github/workflows/docs-site.yml"
 
@@ -36,35 +36,28 @@ jobs:
   construire:
     name: Construire le site (strict)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     # contents: read — lire le corpus, rien d'autre : la construction n'écrit
     #   rien sur GitHub.
     permissions:
       contents: read
-    env:
-      # Material affiche un bandeau d'avertissement sur MkDocs 2.0 ; il n'a aucun
-      # effet sur la construction et noie le journal.
-      NO_MKDOCS_2_WARNING: "true"
     steps:
       - name: Récupérer le dépôt
         # Épinglée par empreinte de commit, même motif et même version que
         # controles-corpus.yml.
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Installer Python
-        # Épinglée par empreinte de commit ; la version Python est celle sur
-        # laquelle les dépendances épinglées ont été mesurées.
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - name: Installer le SDK .NET
+        # Épinglée par empreinte de commit, même motif et même version que
+        # controles-corpus.yml.
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
-          python-version: "3.12"
-          cache: pip
-          cache-dependency-path: docs-site/requirements.txt
-
-      - name: Installer les dépendances épinglées
-        run: pip install -r docs-site/requirements.txt
+          # Même sélecteur que controles-corpus.yml : le membre « 10.0 » est celui
+          # que les .csproj du dépôt figent (net10.0).
+          dotnet-version: "10.0.x"
 
       - name: Construire le site (tout avertissement fait échouer)
-        run: mkdocs build --strict
+        run: dotnet run --project docs-site
 
       - name: Préparer l'artefact Pages
         # Ni préparé ni publié sur une pull request : elle ne fait que vérifier.
@@ -77,7 +70,7 @@ jobs:
         # Épinglée par empreinte de commit.
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: site
+          path: docs-site/_site
 
   deployer:
     name: Déployer sur GitHub Pages

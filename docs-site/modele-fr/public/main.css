@@ -1,0 +1,20 @@
+/* Barre de navigation : les quatorze entrées (documents de la racine et sections) ne tiennent pas
+   sur la largeur d'un écran courant. Chaque libellé reste sur une ligne et la liste défile
+   horizontalement, de sorte que la recherche et le sélecteur de thème restent à l'écran. Les
+   conteneurs flex de l'en-tête (nav, panneau, barre) doivent pouvoir se rétrécir sous la largeur
+   de leur contenu, faute de quoi la liste déborde au lieu de défiler. */
+#autocollapse,
+#navpanel,
+#navbar {
+  min-width: 0;
+}
+
+#navbar .navbar-nav {
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+#navbar .nav-link {
+  white-space: nowrap;
+}

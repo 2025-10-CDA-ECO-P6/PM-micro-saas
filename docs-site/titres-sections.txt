@@ -1,0 +1,19 @@
+# Titres des dossiers SANS README.md, dans la navigation du site : chemin relatif à docs/ = titre.
+# Un dossier avec README.md prend le premier titre de ce README.md (sans la mention « Haversack »),
+# jamais celui d'ici : une entrée pour un tel dossier fait échouer la construction.
+# Un dossier sans README.md et sans entrée ici prend son nom, tirets en espaces, première lettre en
+# majuscule : n'ajoute une entrée que si ce défaut est mal orthographié (accents) ou mal casé.
+architecture/specs = Spécifications
+assurance/conformite = Conformité
+besoin/decouverte = Découverte
+besoin/vision/perimetre = Périmètre
+domaine/content-library = Content Library
+domaine/identity-access = Identity Access
+domaine/session-conduct = Session Conduct
+domaine/space-management = Space Management
+interface/ecrans/sv-session = SV Session
+interface/ecrans/sv1-transversaux = SV1 Transversaux
+interface/ecrans/sv2-entree-espace = SV2 Entrée dans l'espace
+interface/ecrans/sv3-preparation = SV3 Préparation
+interface/ecrans/sv4-espace-personnel = SV4 Espace personnel
+interface/ecrans/sv5-joueur = SV5 Joueur

@@ -41,11 +41,12 @@ Les outils de `tools/` passent un à un en programmes C# d'un seul fichier, sans
 
 ## Prévisualiser le site de documentation
 
-La documentation est aussi publiée sous forme de site, construit avec MkDocs. Les fichiers qui le configurent, dont `docs-site/requirements.txt`, arrivent avec le site. Une fois présents, depuis la racine du dépôt :
+La documentation est aussi publiée sous forme de site, construit avec DocFX par le projet C# `docs-site/`. Depuis la racine du dépôt, cette commande construit le site, le contrôle et le sert sur <http://localhost:8080/> (Ctrl+C pour l'arrêter) :
 
 ```bash
-pip install -r docs-site/requirements.txt
-mkdocs serve
+dotnet run --project docs-site -- --servir
 ```
+
+Sans `--servir`, elle construit et contrôle seulement : le code de sortie est 1 au moindre avertissement, lien ou ancre cassés. La sortie est dans `docs-site/_site/`, hors suivi de version. Le fonctionnement et l'entretien du site sont décrits dans [`docs-site/README.md`](docs-site/README.md).
 
 [dotnet]: https://dotnet.microsoft.com/download

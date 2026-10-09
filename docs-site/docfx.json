@@ -1,0 +1,23 @@
+{
+  "build": {
+    "content": [
+      { "files": ["**/*.md", "**/toc.yml"], "src": "_work/docs" }
+    ],
+    "resource": [
+      { "files": ["**/*.html", "**/*.js"], "src": "_work/docs" }
+    ],
+    "output": "_site",
+    "template": ["default", "modern", "modele-fr"],
+    "markdownEngineProperties": {
+      "markdigExtensions": ["tasklists", "emphasisextras"]
+    },
+    "globalMetadata": {
+      "_appTitle": "Haversack — documentation",
+      "_appName": "Haversack",
+      "_lang": "fr",
+      "_enableSearch": true,
+      "_disableContribution": true,
+      "_repoUrl": "https://github.com/2025-10-CDA-ECO-P6/PM-micro-saas"
+    }
+  }
+}

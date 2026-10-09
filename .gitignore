@@ -157,8 +157,9 @@ logs/
 __pycache__/
 *.py[cod]
 
-# ── Site de documentation (sortie de mkdocs build) ───
-site/
+# ── Site de documentation (copie de travail et sortie de docs-site) ───
+docs-site/_work/
+docs-site/_site/
 
 # ── Docs locaux / audits (non versionnés) ────────────
 /docs/audit/

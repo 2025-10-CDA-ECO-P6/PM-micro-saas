@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Même version du SDK que les projets de tools/ : un seul SDK à installer pour
+         tout le dépôt, et celui que fige global.json. -->
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>SiteDocumentation</RootNamespace>
+    <AssemblyName>SiteDocumentation</AssemblyName>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- DocFX en bibliothèque, pas en outil dotnet : aucune installation côté poste ou
+         côté CI, la version est celle de cette ligne. À revérifier à chaque montée :
+         le rendu du modèle « modern » et les clés de modele-fr/token.json en dépendent. -->
+    <PackageReference Include="Docfx.App" Version="2.81.0" />
+    <!-- Lecture du HTML construit pour contrôler les liens et les ancres. -->
+    <PackageReference Include="AngleSharp" Version="1.*" />
+  </ItemGroup>
+
+</Project>
