@@ -59,7 +59,7 @@ La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'
 flowchart TD
     A[MJ accède au tableau de bord] --> B{Action choisie}
     B -- Nouvelle campagne --> C[Formulaire de création\nnom obligatoire\ndescription et système optionnels]
-    B -- Lancer un one-shot --> D{Scénario existant ?}
+    B -- Lancer un one-shot, post-MVP --> D{Scénario existant ?}
     C --> E{Formulaire valide ?}
     E -- Non, nom manquant --> F[Message d'erreur\nchamp nom requis]
     F --> C
@@ -71,12 +71,12 @@ flowchart TD
     D -- Non, nouveau scénario --> L[Saisie du titre uniquement]
     L --> M{Quota atteint ?}
     M -- Oui --> H
-    M -- Non --> N[Espace créé]
+    M -- Non --> N[Espace créé\n4 dossiers nommés + dossier virtuel Non classés]
     N --> O[Redirection vers l'éditeur de scénario]
     D -- Oui, scénario existant --> P[Sélection dans la bibliothèque\nUS-02-04]
     P --> Q{Quota atteint ?}
     Q -- Oui --> H
-    Q -- Non --> R[Espace créé]
+    Q -- Non --> R[Espace créé\n4 dossiers nommés + dossier virtuel Non classés]
     R --> S[Redirection vers la vue session]
 ```
 
@@ -104,6 +104,7 @@ flowchart LR
 
     US0201 --> US0203
     US0202 --> US0203
+    UC13 --> US0202
     UC13 --> US0204
     US0202 --> US0204
 ```

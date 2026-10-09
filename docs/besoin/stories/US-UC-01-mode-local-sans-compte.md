@@ -94,6 +94,7 @@ flowchart LR
     US0104[US-01-04\nVoir les fonctionnalités cloud]
     US0105[US-01-05\nMigration après gate]
     US0106[US-01-06\nDonnées introuvables]
+    US0107[US-01-07\nExporter un espace]
     UC10[UC-10\nCréation de compte]
 
     US0109[US-01-09\nCapturer sans campagne]

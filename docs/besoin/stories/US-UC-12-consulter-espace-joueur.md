@@ -71,7 +71,11 @@ UC-12 couvre uniquement : la vue joueur post-accès (fiche + documents `PUBLIC`)
 flowchart TD
     Acces[Joueur a acces a la session\nGuestAccess ou Member actif\nUS-09-01 ou US-09-03]
 
-    Acces --> PersonnageAssocie{Personnage associe\npar le MJ ?}
+    Acces --> Perimetre{Perimetre d acces ?}
+    Perimetre -->|SESSION| SessionSeul[Perimetre session\nDocuments epingles\nTous les documents PUBLIC\nPas d acces a l historique des sessions]
+    Perimetre -->|SPACE| EspacePerim[Perimetre espace\nTous les documents PUBLIC\nHistorique des sessions]
+    SessionSeul --> PersonnageAssocie{Personnage associe\npar le MJ ?}
+    EspacePerim --> PersonnageAssocie
 
     PersonnageAssocie -->|Non| SansPerso["Vue joueur sans fiche\nDocuments PUBLIC uniquement\nPas de notes PLAYER_PRIVATE\nliees a un personnage (notes : hors MVP)"]
 
@@ -83,8 +87,6 @@ flowchart TD
     ChoixPerso --> UnPerso
 
     UnPerso --> VueJoueur["Vue joueur complete\nFiche du personnage\nDocuments PUBLIC\nNotes PLAYER_PRIVATE (hors MVP)"]
-
-    PersonnageAssocie -->|Acces SESSION uniquement| SessionSeul[Perimetre session\nDocuments epingles\nTous les documents PUBLIC\nPas d acces a l historique des sessions]
 ```
 
 ### Bounded contexts pressentis

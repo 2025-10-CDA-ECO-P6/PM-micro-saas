@@ -93,7 +93,8 @@ flowchart TD
     E -->|Terminer la session| O[Session.Close\nLIVE → CLOSED]
     O --> P{Notes rétroactives ?}
     P -->|Oui| Q[MJ ajoute des documents LIVE_NOTE\nen CLOSED]
-    P -->|Non| R[Session.Archive\nCLOSED → ARCHIVED]
+    P -->|MJ archive| R[Session.Archive\nCLOSED → ARCHIVED]
+    Q -->|MJ archive| R
 
     D --> S[Vue joueur — pendant LIVE]
     S --> T["Documents partagés (+ notes de session personnelle joueur du joueur : hors MVP)"]
@@ -125,14 +126,14 @@ flowchart LR
     UC05[UC-05\nOrganiser le contenu]
     UC07[UC-07\nCréation à la volée]
     UC08[UC-08\nPartage de document]
-    UC09[UC-09\nAccès invité / accès invité]
+    UC09[UC-09\nAccès joueur via lien]
 
     US0601 --> US0602
     US0601 --> US0603
     US0601 --> US0604
     US0601 --> US0605
     US0601 --> US0606
-    US0606 --> US0609
+    US0601 --> US0609
     US0606 --> US0610
     US0607 --> US0608
     UC09 --> US0607

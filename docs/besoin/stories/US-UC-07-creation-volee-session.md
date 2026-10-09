@@ -75,7 +75,8 @@ flowchart TD
     I -->|LIVE| J[Session.PinDocument\ndocumentId ajouté à pinnedDocumentIds\nauto par défaut, désépinglable]
     I -->|CLOSED| K[Document créé — épinglage optionnel]
 
-    O --> L[Document disponible dans son dossier de la bibliothèque\net dans Notes de session]
+    O --> L2[Note visible dans Notes de session]
+    L2 --> L[Document disponible dans son dossier de la bibliothèque]
     J --> L
     K --> L
 

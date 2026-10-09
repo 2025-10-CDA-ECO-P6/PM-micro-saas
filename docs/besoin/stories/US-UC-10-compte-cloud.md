@@ -90,7 +90,10 @@ flowchart TD
     F -->|Connexion federee| H[Connexion via fournisseur\nd identite externe]
 
     G --> I{Donnees locales\nexistantes ?}
-    H --> I
+    H --> HX{Compte existant\npour cet email ?}
+    HX -->|Non| I
+    HX -->|Oui, adresse verifiee| S
+    HX -->|Oui, adresse non verifiee| HB[Ni liaison ni nouveau compte\ntraitement a trancher RB-10-08]
     I -->|Oui| J[Gate de reconnaissance\npuis migration vers le cloud]
     I -->|Non| K[Compte cree\nCreation de campagne]
     J --> L[Compte cree\nDonnees locales migrees]
@@ -104,6 +107,7 @@ flowchart TD
     P --> R{Identifiants valides ?}
     R -->|Oui| S[Connexion reussie\nTableau de bord]
     R -->|Non| T[Message d erreur generique\npas de distinction email / mdp]
+    R -->|Compte suspendu ou supprime| T2[Connexion refusee\nRB-10-07]
 
     Q --> S
 ```

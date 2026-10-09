@@ -67,8 +67,8 @@ flowchart TD
     H -->|Existants| I[Lie des documents existants]
     H -->|Nouveaux| J[Crée un document depuis l'éditeur]
     H -->|Non| K[Continue]
-    E --> L[Définit la visibilité]
-    G --> L
+    E --> M
+    G --> L[Ajoute une révélation\ndocument lié à la scène, optionnel]
     L --> M[Définit le statut]
     M --> N[Sauvegarde]
     N --> O[Scénario disponible dans l'espace]

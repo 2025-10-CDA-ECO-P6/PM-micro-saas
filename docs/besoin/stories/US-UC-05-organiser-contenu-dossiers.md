@@ -107,7 +107,7 @@ flowchart LR
     US0505[US-05-05\nRéordonner les dossiers]
 
     UC04[UC-04\nDocuments d'espace]
-    UC13[UC-13\nGérer les templates]
+    UC13[UC-13\nScénario réutilisable]
 
     US0501 --> US0502
     US0501 --> US0503
