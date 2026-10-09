@@ -21,30 +21,13 @@ internal static class MailleDesignation
         "sanitisation", "politique de sécurité de contenu", "projection d'export",
     };
 
-    // Module d'outillage : liste fermée à quatre libellés (§2, entre guillemets typographiques `…`).
-    //
-    // Divergence C — cf.
-    // tools/Tests/DivergencesEntreOutilsTests.cs::DivergenceC_MailleLueOuCodeeEnDur.
-    // Seul le TRAITEMENT de cette divergence est arbitré ici : reproduire telle quelle,
-    // sans corriger. Le FOND — laquelle des deux implémentations est juste — n'est pas
-    // tranché par ce commentaire. Cette liste est codée en dur, jamais extraite du §2 du
-    // plan comme le fait le générateur d'issues.
-    public static readonly HashSet<string> Outillage = new(StringComparer.Ordinal)
-    {
-        "le projet de test d'architecture", "le projet de test de bout en bout",
-        "la configuration de la solution", "la configuration d'intégration continue",
-    };
+    // Les modules d'outillage ne figurent pas ici : ils se lisent dans le § 2 du plan
+    // (ModulesOutillage), jamais recopiés en dur.
 
     // Namespaces de bounded context : n'apparaissent comme module que sur la seule tranche qui les
-    // crée — TB-003, nommée en toutes lettres par le §2 lui-même.
-    //
-    // Divergence D — cf.
-    // tools/Tests/DivergencesEntreOutilsTests.cs::DivergenceD_VerrouDuNamespaceSurLaTrancheDeCreation.
-    // Seul le TRAITEMENT de cette divergence est arbitré ici : reproduire telle quelle,
-    // sans corriger. Le FOND — NON un défaut, mais quel choix de MODÉLISATION retenir —
-    // n'est pas tranché par ce commentaire. Cette clause d'exception, avec son identifiant
-    // de tranche en dur, est reproduite telle quelle — le générateur d'issues ne
-    // l'implémente pas.
+    // crée — TB-003, nommée en toutes lettres par le § 2 lui-même. CreerIssues applique la même
+    // clause (MailleDuPlan.ExtraireNamespaces), lue dans le plan ; l'accord des deux outils est
+    // vérifié par tools/Tests/DivergencesEntreOutilsTests.cs::AccordD_VerrouDuNamespaceSurLaTrancheDeCreation.
     public static readonly HashSet<string> NamespacesBc = new(StringComparer.Ordinal)
     {
         "IdentityAccess", "SpaceManagement", "ContentLibrary", "SessionConduct",
@@ -82,7 +65,8 @@ internal static class MailleDesignation
         string tacheId,
         IReadOnlyDictionary<string, string> agregats,
         IReadOnlySet<string> fiches,
-        IReadOnlySet<string> stores)
+        IReadOnlySet<string> stores,
+        IReadOnlySet<string> outillage)
     {
         if (agregats.ContainsKey(item)) return "agrégat";
         if (Transverses.Contains(item)) return "transverse nommé";
@@ -93,7 +77,7 @@ internal static class MailleDesignation
                 : null;
         }
         if (Client.Contains(item)) return "module de la couche cliente";
-        if (Outillage.Contains(item)) return "module d'outillage";
+        if (outillage.Contains(item)) return "module d'outillage";
         if (ProjetRoleClos.Contains(item)) return "projet .NET (rôle, unicité tranchée)";
         if (MotifProjetRoleOuvert.IsMatch(item)) return OuvertJ0;
 

@@ -77,6 +77,7 @@ internal static class Orchestrateur
 
         var taxonomie = Taxonomie.Extraire(contenuMethode);
         var maille = MailleDuPlan.Extraire(contenuPlan, racine);
+        var namespaces = MailleDuPlan.ExtraireNamespaces(contenuPlan);
         var slugsWireframes = WireframeSlugs.Lister(racine);
         var taches = PlanDeTravail.ExtraireTaches(contenuPlan);
 
@@ -106,7 +107,7 @@ internal static class Orchestrateur
             string valeurPerimetre = tache.Champs.GetValueOrDefault("Périmètre d'écriture", "");
             var (segments, marqueur) = ResolutionMaille.DecouperPerimetre(valeurPerimetre);
             var (libellesCouche, residuels) = ResolutionMaille.MapperNature(
-                segments, marqueur, maille, slugsWireframes, naturesTrancheValides);
+                segments, marqueur, maille, slugsWireframes, naturesTrancheValides, namespaces.ResolublesSur(tache.Id));
             resolue.Couches = libellesCouche;
             resolue.SegmentsResiduels = residuels;
 

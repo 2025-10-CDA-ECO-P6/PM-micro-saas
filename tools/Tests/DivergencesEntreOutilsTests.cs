@@ -1,45 +1,53 @@
-// Tests d'INVARIANT — distincts des golden masters et des caractérisations
-// comportementales du reste de ce projet — portage du script Python
-// d'origine, `tools/tests/test_divergences_entre_outils.py`. Ils exposent quatre
-// désaccords RÉELS et NON ARBITRÉS entre `tools/VerifMailleAgregat` (le
-// vérificateur) et `tools/CreerIssues` (le générateur), sur des entrées que
-// le plan de travail réel ne porte pas encore. Un différentiel de sortie
-// est aveugle par construction à ces divergences : le plan actuel ne
-// déclenche aucune des quatre, donc aucun golden master construit dessus ne
-// les verrait jamais. Ces tests les rendent visibles sur des entrées
-// CONSTRUITES, portant chacune le déclencheur.
+// Tests d'ACCORD entre `tools/VerifMailleAgregat` (le vérificateur) et
+// `tools/CreerIssues` (le générateur) — distincts des golden masters et des
+// caractérisations comportementales du reste de ce projet. Ils portent sur
+// quatre points (A à D) où les deux outils lisaient autrefois le plan de
+// travail avec des règles différentes, sur des entrées que le plan réel ne
+// déclenche pas (sauf D, sur TB-003). Un différentiel de sortie sur le plan
+// réel est aveugle à ces écarts : ces tests les exercent sur des entrées
+// CONSTRUITES, portant chacune le déclencheur, et affirment que les deux
+// outils concluent pareil.
 //
-// Portée : ce fichier EXPOSE, il ne CORRIGE rien. L'arbitrage de laquelle des
-// deux implémentations est juste — ou, pour la divergence D, du choix de
-// modélisation à retenir — appartient au donneur d'ordre.
+// Arbitrage : le plan de travail est la source de vérité des tâches
+// (ADR-019 § 7), donc chaque outil applique ce que le plan dit, n'invente
+// aucune règle qu'il ne porte pas, et signale une forme hors règle au lieu de
+// la sauter en silence.
+//   A. Une tâche se titre `##### TB-<chiffres> — <intitulé>` (cinq dièses,
+//      tiret cadratin) ; un titre de niveau 4 à 6 qui commence par `TB-` sans
+//      cette forme est un défaut (code de sortie 1 des deux outils, ligne
+//      nommée).
+//   B. L'identifiant est lu en entier, sans plafond de chiffres ; un
+//      identifiant défini deux fois est un défaut, jamais un écrasement.
+//   C. La maille d'outillage se lit dans le § 2 du plan, sans liste en dur.
+//   D. Un namespace de bounded context ne se résout que sur la seule tranche
+//      qui les crée, dans les deux outils.
 //
-// Différence de mécanique assumée avec l'original Python : chaque test
-// Python affirmait l'invariant SOUHAITÉ (les deux outils s'accordent) et
-// était marqué `@unittest.expectedFailure`, donc rouge tant que la
-// divergence existe. Ce marqueur a un défaut : un échec-attendu ne dit rien
-// quand la divergence DISPARAÎT — il devient un succès inattendu, que la
-// plupart des exécuteurs (dont celui-ci, xUnit, qui n'a pas d'équivalent
-// direct de `expectedFailure`) signalent mal ou pas du tout. Chaque test
-// ci-dessous affirme au contraire la divergence ELLE-MÊME (les deux outils
-// se comportent DIFFÉREMMENT sur l'entrée déclenchante) : il est VERT tant
-// que la divergence existe — état actuel, voulu, documenté — et ROUGIT le
-// jour où quelqu'un l'arbitre, forçant à venir lire ce qui a été décidé et à
-// mettre le test à jour. L'arbitrage reste ouvert dans les quatre cas.
+// Historique : ces tests affirmaient auparavant le DÉSACCORD lui-même
+// (verts tant que les deux outils différaient, rouges au jour de
+// l'arbitrage). Chacun affirme maintenant l'accord, et échoue sur l'ancien
+// code des deux outils.
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace CaracterisationOutils;
 
-/// <summary>Fixtures partagées par les quatre divergences de ce fichier.</summary>
+/// <summary>Fixtures partagées par les quatre accords de ce fichier.</summary>
 internal static class FixturesDivergences
 {
     public const string DomaineMd =
         "# Personnage (domaine)\n\n## Agrégats\n\n### Personnage\n\nRacine d'agrégat, décrit un personnage joueur.\n";
 
-    // Identique à FixturesCreerIssues.PlanPreambule (CreerIssuesTests.cs) —
-    // dupliqué plutôt que partagé : ce fichier documente des divergences
-    // entre deux outils, une dépendance croisée vers les fixtures de l'un
-    // d'eux irait à l'encontre de cette neutralité.
-    public const string PlanPreambule =
+    // Reprend la forme du § 2 du plan réel : les quatre namespaces et la clause
+    // « sur la seule tranche qui les crée » sont portés par la ligne du module
+    // transverse nommé, et la tranche qui les crée est nommée par le paragraphe
+    // « Aucun namespace de bounded context… ». Identique, pour le reste, à
+    // FixturesCreerIssues.PlanPreambule (CreerIssuesTests.cs) — dupliqué plutôt
+    // que partagé : ce fichier compare deux outils, une dépendance croisée vers
+    // les fixtures de l'un d'eux irait à l'encontre de cette neutralité.
+    public const string LigneOutillageParDefaut =
+        "- un **module d'outillage** : `la configuration de la solution`, `la configuration d'intégration continue`\n";
+
+    public static string PlanPreambule(string ligneOutillage = LigneOutillageParDefaut) =>
         "# Plan de travail (fixture de test)\n\n" +
         "## §2 Maille de désignation\n\n" +
         "**Les six modules de la couche cliente et leur ancrage.**\n\n" +
@@ -51,9 +59,25 @@ internal static class FixturesDivergences
         "| `projection d'export` | Rendu d'export |\n\n" +
         "**L'agrégat couvre ses deux moitiés.**\n\n" +
         "Le domaine et son module d'accès forment la même unité d'écriture.\n\n" +
-        "- un **module d'outillage** : `la configuration de la solution`, `la configuration d'intégration continue`\n" +
-        "- un **module transverse nommé** : `SharedKernel`, `Haversack.Infrastructure.Notifications`\n\n" +
+        ligneOutillage +
+        "- un **module transverse nommé** : `SharedKernel`, `Haversack.Infrastructure.Notifications`, ou — "
+        + "**sur la seule tranche qui les crée** — l'un des quatre namespaces de bounded context "
+        + "`IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct`\n\n" +
+        "**Aucun namespace de bounded context n'apparaît comme module**, sauf sur la seule tranche qui les crée (TB-003) : "
+        + "un namespace est un tiroir, pas une unité d'écriture.\n\n" +
         "### Tâches\n\n";
+
+    /// <summary>Une fiche de tâche ; <paramref name="titre"/> est la ligne de titre entière.</summary>
+    public static string Fiche(string titre, string perimetre) =>
+        titre + "\n\n" +
+        "| Champ | Valeur |\n|---|---|\n" +
+        "| Jalon | J1 — traversée verticale |\n" +
+        $"| Périmètre d'écriture | {perimetre} |\n" +
+        "| Dépend de | — |\n" +
+        "| En conflit avec | — |\n\n";
+
+    public static string Tache(string id, string perimetre) =>
+        Fiche($"##### {id} — Tâche de fixture {id}", perimetre);
 
     public static void ConstruireDepot(string depot, string planMd)
     {
@@ -61,7 +85,7 @@ internal static class FixturesDivergences
         Helpers.Ecrire(Path.Combine(depot, "docs/projet/methode-de-ticket.md"), FixturesCreerIssues.MethodeMd);
         Helpers.Ecrire(Path.Combine(depot, "docs/projet/plan-de-travail.md"), planMd);
         Helpers.Ecrire(Path.Combine(depot, "docs/domaine/personnage/context.md"), DomaineMd);
-        Helpers.CommiterTout(depot, "fixture de divergence");
+        Helpers.CommiterTout(depot, "fixture d'accord");
         // Révision simulée déjà poussée uniquement pour que l'AVERTISSEMENT
         // sur la révision, hors sujet ici, n'ajoute pas de bruit à la
         // démonstration (cf. RegimesDeLaRevisionEnModeABlanc, CreerIssuesTests.cs).
@@ -73,36 +97,43 @@ internal static class FixturesDivergences
         var environnement = new Dictionary<string, string> { ["PATH"] = Helpers.RepertoireBinSansGh(racineBin) };
         return Helpers.ExecuterOutilAvecEnvironnement("CreerIssues", [], depot, environnement);
     }
+
+    public static ResultatExecution ExecuterVerificateur(string depot) =>
+        Helpers.ExecuterOutil("VerifMailleAgregat", [depot, "docs/projet/plan-de-travail.md"]);
+
+    /// <summary>Numéro (à partir de 1) de la première ligne du plan qui commence par <paramref name="debut"/>.</summary>
+    public static int NumeroDeLigne(string planMd, string debut) =>
+        Array.FindIndex(planMd.Split('\n'), l => l.StartsWith(debut, StringComparison.Ordinal)) + 1;
+
+    /// <summary>Identifiants que le vérificateur déclare non résolus.</summary>
+    public static List<string> NonResolusDuVerificateur(string stdout) =>
+        Regex.Matches(stdout, @"\[NON RÉSOLU\] (TB-\d+)").Select(m => m.Groups[1].Value).ToList();
+
+    /// <summary>Identifiants que le générateur classe sans libellé de nature déductible.</summary>
+    public static List<string> SansNatureDuGenerateur(string stdout) =>
+        Regex.Matches(stdout, @"^  - (TB-\d+) : ", RegexOptions.Multiline).Select(m => m.Groups[1].Value).ToList();
 }
 
 /// <summary>
-/// Divergence A — les deux outils analysent le titre de tranche avec des
-/// règles différentes :
-///   CreerIssues (PlanDeTravail.cs)         ^##### (TB-\d+) — (.+)$   (5 dièses
-///                                           EXACTS, tiret cadratin obligatoire)
-///   VerifMailleAgregat (PlanDeTravail.cs)  \n#{4,6}\s+(?=TB-)         (4 à 6
-///                                           dièses, aucune contrainte de tiret)
-///
-/// EN PRATIQUE : une tranche titrée avec 4 dièses et un tiret court à la
-/// place du cadratin est VUE et contrôlée par le vérificateur — mais
-/// INVISIBLE, sans aucun signalement, pour le générateur : elle ne recevrait
-/// jamais d'issue GitHub, silencieusement, alors même que le plan la déclare
-/// conforme.
+/// Accord A — le titre de tâche. Les deux outils reconnaissent une tâche par
+/// <c>##### TB-&lt;chiffres&gt; — &lt;intitulé&gt;</c> et signalent, en nommant la
+/// ligne, un titre de niveau 4 à 6 qui commence par <c>TB-</c> sans cette forme.
+/// Avant l'arbitrage, le vérificateur voyait une tâche titrée à quatre dièses
+/// et tiret court que le générateur sautait sans rien dire : elle ne recevait
+/// jamais d'issue.
 /// </summary>
-public class DivergenceA_FormatDuTitreDeTranche : IDisposable
+public class AccordA_FormatDuTitreDeTache : IDisposable
 {
     private readonly RepertoireTemporaire _tmpDepot = new();
     private readonly RepertoireTemporaire _tmpBin = new();
+    private readonly int _ligneDuTitreMalForme;
 
-    public DivergenceA_FormatDuTitreDeTranche()
+    public AccordA_FormatDuTitreDeTache()
     {
-        string plan = FixturesDivergences.PlanPreambule +
-            "#### TB-050 – Tâche à quatre dièses et tiret court\n\n" +
-            "| Champ | Valeur |\n|---|---|\n" +
-            "| Jalon | J1 — traversée verticale |\n" +
-            "| Périmètre d'écriture | Personnage |\n" +
-            "| Dépend de | — |\n" +
-            "| En conflit avec | — |\n";
+        string plan = FixturesDivergences.PlanPreambule()
+            + FixturesDivergences.Tache("TB-009", "Personnage")
+            + FixturesDivergences.Fiche("#### TB-010 - Intitulé à quatre dièses et tiret court", "châssis");
+        _ligneDuTitreMalForme = FixturesDivergences.NumeroDeLigne(plan, "#### TB-010 - ");
         FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
     }
 
@@ -113,58 +144,35 @@ public class DivergenceA_FormatDuTitreDeTranche : IDisposable
     }
 
     [Fact]
-    public void ArbitrageOuvert_LeVerificateurVoitUneTacheQueLeGenerateurNeVoitPas()
+    public void LeVerificateurCompteLeTitreMalFormeCommeUnDefautEtNommeLaLigne()
     {
-        var resultatVerificateur = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/projet/plan-de-travail.md"]);
-        Assert.Contains("tâches du plan                        : 1", resultatVerificateur.Stdout);
+        var resultat = FixturesDivergences.ExecuterVerificateur(_tmpDepot.Chemin);
+        Assert.Equal(1, resultat.CodeSortie);
+        Assert.Contains($"ligne {_ligneDuTitreMalForme}", resultat.Stdout);
+        Assert.Contains("#### TB-010 - Intitulé", resultat.Stdout);
+    }
 
-        var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
-        // Le générateur en lit 0 : ce test rougira le jour où l'un des deux
-        // motifs de titre sera aligné sur l'autre — c'est le signal recherché,
-        // pas un défaut de ce test.
-        Assert.Contains("Tâches lues dans le plan : 0", resultatGenerateur.Stdout);
+    [Fact]
+    public void LeGenerateurSArreteSurLeTitreMalFormeEtNommeLaLigne()
+    {
+        var resultat = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
+        Assert.Equal(1, resultat.CodeSortie);
+        Assert.Contains($"ligne {_ligneDuTitreMalForme}", resultat.Stderr);
+        Assert.Contains("#### TB-010 - Intitulé", resultat.Stderr);
     }
 }
 
 /// <summary>
-/// Divergence B — le nombre de chiffres admis dans l'identifiant :
-///   VerifMailleAgregat (PlanDeTravail.cs)   TB-\d{3}   exactement trois chiffres,
-///                                            non ancré en fin de motif
-///   CreerIssues (PlanDeTravail.cs)          TB-\d+     n'importe quel nombre
-///
-/// EN PRATIQUE : `VerifMailleAgregat` extrait l'identifiant via un motif non
-/// ancré en fin de chaîne — il capture seulement les trois premiers chiffres.
-/// `TB-1000` est donc lu comme `TB-100` : si une tâche `TB-100` existe par
-/// ailleurs dans le même plan, la seconde écrase silencieusement la première
-/// dans le dictionnaire des tâches — une tâche entière disparaît du
-/// décompte, remplacée par les données de l'autre. `CreerIssues`, qui
-/// construit une LISTE et non un dictionnaire indexé par identifiant
-/// tronqué, ne connaît pas cette collision et voit les deux tâches.
+/// Accord B — l'identifiant. Les deux outils lisent l'identifiant entier :
+/// <c>TB-1000</c> n'est pas <c>TB-100</c>. Avant l'arbitrage, le vérificateur
+/// tronquait <c>TB-1000</c> à trois chiffres et la tâche écrasait <c>TB-100</c>
+/// dans son dictionnaire, sans rien signaler. Un identifiant défini deux fois
+/// est un défaut des deux outils, jamais un écrasement.
 /// </summary>
-public class DivergenceB_NombreDeChiffresDansLIdentifiant : IDisposable
+public class AccordB_IdentifiantEntier : IDisposable
 {
     private readonly RepertoireTemporaire _tmpDepot = new();
     private readonly RepertoireTemporaire _tmpBin = new();
-
-    public DivergenceB_NombreDeChiffresDansLIdentifiant()
-    {
-        string plan = FixturesDivergences.PlanPreambule +
-            "##### TB-100 — Tâche à trois chiffres\n\n" +
-            "| Champ | Valeur |\n|---|---|\n" +
-            "| Jalon | J1 — traversée verticale |\n" +
-            "| Périmètre d'écriture | Personnage |\n" +
-            "| Dépend de | — |\n" +
-            "| En conflit avec | — |\n\n" +
-            "---\n\n" +
-            "##### TB-1000 — Tâche à quatre chiffres\n\n" +
-            "| Champ | Valeur |\n|---|---|\n" +
-            "| Jalon | J1 — traversée verticale |\n" +
-            "| Périmètre d'écriture | châssis |\n" +
-            "| Dépend de | — |\n" +
-            "| En conflit avec | — |\n";
-        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
-    }
 
     public void Dispose()
     {
@@ -173,113 +181,56 @@ public class DivergenceB_NombreDeChiffresDansLIdentifiant : IDisposable
     }
 
     [Fact]
-    public void ArbitrageOuvert_LeVerificateurNeCompteQuUneTacheLaOuLeGenerateurEnCompteDeux()
+    public void LesDeuxOutilsVoientDeuxTachesDistinctesPourTb100EtTb1000()
     {
+        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin,
+            FixturesDivergences.PlanPreambule()
+            + FixturesDivergences.Tache("TB-100", "Personnage")
+            + FixturesDivergences.Tache("TB-1000", "châssis"));
+
+        var resultatVerificateur = FixturesDivergences.ExecuterVerificateur(_tmpDepot.Chemin);
+        Assert.Contains("tâches du plan                        : 2", resultatVerificateur.Stdout);
+        Assert.Equal(0, resultatVerificateur.CodeSortie);
+
         var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
-        // Prémisse, vraie aujourd'hui : le générateur (\d+) distingue bien
-        // les deux identifiants et voit deux tâches.
         Assert.Contains("Tâches lues dans le plan : 2", resultatGenerateur.Stdout);
-
-        var resultatVerificateur = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/projet/plan-de-travail.md"]);
-        // TB-1000 est tronqué en TB-100 et écrase la vraie TB-100 dans le
-        // dictionnaire des tâches ; le vérificateur n'en compte plus qu'une.
-        // Ce test rougira le jour où l'un des deux motifs sera aligné sur
-        // l'autre.
-        Assert.Contains("tâches du plan                        : 1", resultatVerificateur.Stdout);
-    }
-}
-
-/// <summary>
-/// Divergence C — la maille de désignation, dans les deux sens :
-///   CreerIssues (MailleDuPlan.cs)          LIT le §2 du plan à chaque exécution
-///   VerifMailleAgregat (MailleDesignation.cs) porte la liste d'outillage EN DUR
-///                                              (quatre libellés figés dans le code)
-///
-/// EN PRATIQUE : si le §2 gagne un cinquième libellé d'outillage, le
-/// générateur le résout (il le lit) tandis que le vérificateur le refuse
-/// toujours, quand bien même le corpus l'autorise désormais — une fausse
-/// alerte de non-conformité sur un module pourtant légitime.
-/// </summary>
-public class DivergenceC_MailleLueOuCodeeEnDur : IDisposable
-{
-    private readonly RepertoireTemporaire _tmpDepot = new();
-    private readonly RepertoireTemporaire _tmpBin = new();
-
-    public DivergenceC_MailleLueOuCodeeEnDur()
-    {
-        string plan = FixturesDivergences.PlanPreambule.Replace(
-            "- un **module d'outillage** : `la configuration de la solution`, `la configuration d'intégration continue`",
-            "- un **module d'outillage** : `la configuration de la solution`, `la configuration d'intégration continue`, "
-            + "`le pipeline de publication npm`") +
-            "##### TB-060 — Publication automatisée du paquet npm\n\n" +
-            "| Champ | Valeur |\n|---|---|\n" +
-            "| Jalon | J1 — traversée verticale |\n" +
-            "| Périmètre d'écriture | le pipeline de publication npm |\n" +
-            "| Dépend de | — |\n" +
-            "| En conflit avec | — |\n";
-        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
-    }
-
-    public void Dispose()
-    {
-        _tmpDepot.Dispose();
-        _tmpBin.Dispose();
     }
 
     [Fact]
-    public void ArbitrageOuvert_LeGenerateurResoutUnCinquiemeLibelleDOutillageQueLeVerificateurRefuse()
+    public void LesDeuxOutilsSignalentUnIdentifiantDefiniDeuxFois()
     {
+        string plan = FixturesDivergences.PlanPreambule()
+            + FixturesDivergences.Tache("TB-100", "Personnage")
+            + FixturesDivergences.Tache("TB-100", "châssis");
+        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
+
+        var resultatVerificateur = FixturesDivergences.ExecuterVerificateur(_tmpDepot.Chemin);
+        Assert.Equal(1, resultatVerificateur.CodeSortie);
+        Assert.Contains("TB-100", resultatVerificateur.Stdout.Split('\n')
+            .Single(l => l.Contains("[IDENTIFIANT EN DOUBLE]", StringComparison.Ordinal)));
+
         var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
-        // Prémisse, vraie aujourd'hui : le générateur (lecture dynamique du
-        // §2) résout la tâche sans réserve.
-        Assert.Contains("Tâches sans libellé de nature déductible (0)", resultatGenerateur.Stdout);
-
-        var resultatVerificateur = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/projet/plan-de-travail.md"]);
-        // Le vérificateur (maille codée en dur) refuse toujours le nouveau
-        // libellé. Ce test rougira le jour où l'un des deux sera aligné sur
-        // l'autre.
-        Assert.Contains("item ne se résolvant pas la maille  : 1", resultatVerificateur.Stdout);
+        Assert.Equal(1, resultatGenerateur.CodeSortie);
+        Assert.Contains("TB-100", resultatGenerateur.Stderr);
+        Assert.Contains("deux fois", resultatGenerateur.Stderr);
     }
 }
 
 /// <summary>
-/// Divergence D — NON un défaut, une différence de MODÉLISATION — sur le
-/// verrou du namespace de bounded context :
-///   VerifMailleAgregat (MailleDesignation.cs)  implémente la clause du §2
-///                                               « sur la seule tranche qui les
-///                                               crée » : un namespace ne
-///                                               résout que sur TB-003.
-///   CreerIssues (ResolutionMaille.cs)          n'implémente PAS cette clause :
-///                                               sa résolution ne prend aucun
-///                                               paramètre d'identifiant de
-///                                               tâche.
-///
-/// EN PRATIQUE, mesuré sur TB-003 elle-même : le vérificateur la compte
-/// résolue (la clause du §2 appliquée) ; le générateur la classe sans
-/// libellé de nature déductible — n'ayant pas la notion de namespace, il ne
-/// le résout NULLE PART, pas même sur la tranche qui le crée. Ce n'est pas
-/// que le générateur « admette le namespace partout » (il ne le résout nulle
-/// part) : il traite TB-003 comme n'importe quelle autre tranche, faute
-/// d'implémenter la clause d'exception que le vérificateur, lui, porte.
+/// Accord C — la maille d'outillage. Les deux outils lisent les modules
+/// d'outillage dans le § 2 du plan : un cinquième libellé ajouté au § 2 est
+/// accepté par les deux. Avant l'arbitrage, le vérificateur codait quatre
+/// libellés en dur et refusait le nouveau, une fausse alerte sur un module
+/// pourtant légitime. Chaque outil garde son propre lecteur du § 2 (le
+/// générateur tire trop de choses de son dossier pour qu'un fichier commun
+/// soit inclus par les deux) : le second test vérifie qu'ils en tirent la même
+/// liste, y compris sur un libellé de renvoi markdown, que ni l'un ni l'autre
+/// ne compte comme module.
 /// </summary>
-public class DivergenceD_VerrouDuNamespaceSurLaTrancheDeCreation : IDisposable
+public class AccordC_MailleLueDansLePlan : IDisposable
 {
     private readonly RepertoireTemporaire _tmpDepot = new();
     private readonly RepertoireTemporaire _tmpBin = new();
-
-    public DivergenceD_VerrouDuNamespaceSurLaTrancheDeCreation()
-    {
-        string plan = FixturesDivergences.PlanPreambule +
-            "##### TB-003 — Création du namespace IdentityAccess\n\n" +
-            "| Champ | Valeur |\n|---|---|\n" +
-            "| Jalon | J0 — fondations |\n" +
-            "| Périmètre d'écriture | IdentityAccess |\n" +
-            "| Dépend de | — |\n" +
-            "| En conflit avec | — |\n";
-        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
-    }
 
     public void Dispose()
     {
@@ -288,16 +239,86 @@ public class DivergenceD_VerrouDuNamespaceSurLaTrancheDeCreation : IDisposable
     }
 
     [Fact]
-    public void ArbitrageOuvert_LeVerificateurResoutTB003AlorsQueLeGenerateurLaClasseSansNatureDeductible()
+    public void LesDeuxOutilsAcceptentUnCinquiemeModuleDOutillageAjouteAuPlan()
     {
-        var resultatVerificateur = Helpers.ExecuterOutil(
-            "VerifMailleAgregat", [_tmpDepot.Chemin, "docs/projet/plan-de-travail.md"]);
+        string plan = FixturesDivergences.PlanPreambule(
+                FixturesDivergences.LigneOutillageParDefaut.TrimEnd('\n') + ", `le pipeline de publication npm`\n")
+            + FixturesDivergences.Tache("TB-060", "le pipeline de publication npm");
+        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
+
+        var resultatVerificateur = FixturesDivergences.ExecuterVerificateur(_tmpDepot.Chemin);
+        Assert.Contains("item ne se résolvant pas la maille  : 0", resultatVerificateur.Stdout);
         Assert.Contains("périmètre entièrement résolu        : 1", resultatVerificateur.Stdout);
+        Assert.Equal(0, resultatVerificateur.CodeSortie);
 
         var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
-        // Le générateur classe TB-003 sans libellé de nature déductible. Ce
-        // test rougira le jour où l'un des deux sera aligné sur l'autre — ou
-        // que le choix de modélisation sera explicitement tranché.
-        Assert.Contains("TB-003 : aucun segment reconnu dans le périmètre d'écriture", resultatGenerateur.Stdout);
+        Assert.Contains("Tâches sans libellé de nature déductible (0)", resultatGenerateur.Stdout);
+    }
+
+    [Fact]
+    public void LesDeuxOutilsTirentLaMemeListeDeLaLigneOutillageDuPlan()
+    {
+        string ligne = "- un **module d'outillage** : [`libellé de renvoi`](autre.md), `premier module`, `second module`\n";
+        string plan = FixturesDivergences.PlanPreambule(ligne)
+            + FixturesDivergences.Tache("TB-070", "premier module")
+            + FixturesDivergences.Tache("TB-071", "second module")
+            + FixturesDivergences.Tache("TB-072", "libellé de renvoi")
+            + FixturesDivergences.Tache("TB-073", "module absent du plan");
+        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
+
+        var refusesParLeVerificateur = FixturesDivergences.NonResolusDuVerificateur(
+            FixturesDivergences.ExecuterVerificateur(_tmpDepot.Chemin).Stdout);
+        var refusesParLeGenerateur = FixturesDivergences.SansNatureDuGenerateur(
+            FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin).Stdout);
+
+        Assert.Equal(["TB-072", "TB-073"], refusesParLeVerificateur);
+        Assert.Equal(refusesParLeVerificateur, refusesParLeGenerateur);
+    }
+}
+
+/// <summary>
+/// Accord D — le verrou du namespace de bounded context. Le § 2 du plan
+/// n'admet un namespace comme module que « sur la seule tranche qui les
+/// crée » (TB-003). Les deux outils appliquent cette clause : TB-003 résout
+/// son namespace, une autre tranche qui le nomme ne résout pas. Avant
+/// l'arbitrage, le vérificateur appliquait la clause et le générateur résolvait
+/// le namespace sur n'importe quelle tranche, parce que la ligne du module
+/// transverse nommé, qu'il lit en bloc, énumère aussi les quatre namespaces.
+/// </summary>
+public class AccordD_VerrouDuNamespaceSurLaTrancheDeCreation : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+
+    public AccordD_VerrouDuNamespaceSurLaTrancheDeCreation()
+    {
+        string plan = FixturesDivergences.PlanPreambule()
+            + FixturesDivergences.Fiche("##### TB-003 — Création du namespace IdentityAccess", "IdentityAccess")
+            + FixturesDivergences.Tache("TB-050", "SpaceManagement");
+        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void LesDeuxOutilsResolventLeNamespaceSurTb003EtLeRefusentSurUneAutreTranche()
+    {
+        var resultatVerificateur = FixturesDivergences.ExecuterVerificateur(_tmpDepot.Chemin);
+        Assert.Contains("périmètre entièrement résolu        : 1", resultatVerificateur.Stdout);
+        Assert.Equal(["TB-050"], FixturesDivergences.NonResolusDuVerificateur(resultatVerificateur.Stdout));
+
+        var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
+        Assert.Equal(["TB-050"], FixturesDivergences.SansNatureDuGenerateur(resultatGenerateur.Stdout));
+    }
+
+    [Fact]
+    public void LeGenerateurPoseUnLibelleDeNatureSurTb003()
+    {
+        var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
+        Assert.Matches(@"\+ TB-003 — [^\n]*libellés : \[[^\]\n]*'Socle'", resultatGenerateur.Stdout);
     }
 }

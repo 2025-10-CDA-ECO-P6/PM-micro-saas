@@ -5,7 +5,9 @@ namespace VerifMailleAgregat;
 /// verticales : chaque item de « Périmètre d'écriture » du plan doit se
 /// résoudre dans l'une des natures admises, `En conflit avec` doit coïncider
 /// avec l'intersection recalculée des périmètres, et aucune fiche vivante ne
-/// doit renvoyer vers un identifiant retiré. Ne lit et n'écrit rien au-delà
+/// doit renvoyer vers un identifiant retiré. Chaque titre de tâche doit aussi
+/// porter la forme du plan, et chaque identifiant n'y être défini qu'une fois :
+/// un écart est compté comme défaut, jamais sauté. Ne lit et n'écrit rien au-delà
 /// de la racine reçue et du <see cref="TextWriter"/> fourni.
 /// </summary>
 internal static class VerificateurMailleAgregat
@@ -17,7 +19,9 @@ internal static class VerificateurMailleAgregat
         var st = AutresNatures.StoresLocaux(racine);
 
         string textePlan = PlanDeTravail.LireTexte(racine, cheminPlanRelatif);
-        var tb = PlanDeTravail.ExtraireTaches(textePlan);
+        var lecture = PlanDeTravail.ExtraireTaches(textePlan);
+        var tb = lecture.Taches;
+        var outillage = ModulesOutillage.Lire(textePlan);
         var retires = PlanDeTravail.ExtraireIdentifiantsRetires(textePlan);
 
         var idsTries = tb.Keys.ToList();
@@ -39,7 +43,7 @@ internal static class VerificateurMailleAgregat
             var ouverts = new List<string>();
             foreach (var item in tache.Items)
             {
-                string? nature = MailleDesignation.Resout(item, id, ag, fi, st);
+                string? nature = MailleDesignation.Resout(item, id, ag, fi, st, outillage);
                 if (nature is null) mauvais.Add(item);
                 else if (string.Equals(nature, MailleDesignation.OuvertJ0, StringComparison.Ordinal)) ouverts.Add(item);
             }
@@ -100,9 +104,10 @@ internal static class VerificateurMailleAgregat
         int totalRenvoisMorts = renvoisMorts.Sum(r => r.Ids.Count);
 
         EcrireRapport(sortie, ag, fi, st, tb, nonResolus, enAttenteJ0, ok, horsMailles, trous,
-            ecarts, identifiantsAmbigus, renvoisMorts, totalRenvoisMorts);
+            ecarts, identifiantsAmbigus, renvoisMorts, totalRenvoisMorts, lecture);
 
-        return new Verdict(nonResolus.Count, ecarts.Count, identifiantsAmbigus, totalRenvoisMorts);
+        return new Verdict(nonResolus.Count, ecarts.Count, identifiantsAmbigus, totalRenvoisMorts,
+            lecture.TitresNonConformes.Count, lecture.IdentifiantsEnDouble.Count);
     }
 
     private static void EcrireRapport(
@@ -119,7 +124,8 @@ internal static class VerificateurMailleAgregat
         List<(string A, string B, List<string> Partage, bool Declare)> ecarts,
         int identifiantsAmbigus,
         List<(string Tache, string Champ, List<string> Ids)> renvoisMorts,
-        int totalRenvoisMorts)
+        int totalRenvoisMorts,
+        LectureDesTaches lecture)
     {
         sortie.WriteLine($"agrégats extraits du modèle de domaine ({ag.Count}) :");
         var agTries = ag.Keys.ToList();
@@ -169,6 +175,28 @@ internal static class VerificateurMailleAgregat
         foreach (var (tacheId, champ, ids) in renvoisMorts.Take(40))
         {
             sortie.WriteLine($"    [RENVOI MORT] {tacheId} ({champ}) -> {ReprPython.Liste(ids)}");
+        }
+
+        // --- Défauts de lecture du plan : ajoutés seulement quand il y en a ------------
+        // Pas de ligne « : 0 » en plus : sur un plan sain la sortie reste exactement celle
+        // d'avant ces deux contrôles.
+        if (lecture.TitresNonConformes.Count > 0)
+        {
+            sortie.WriteLine();
+            sortie.WriteLine($"titres de tâche hors de la forme `##### TB-<chiffres> — <intitulé>` : {lecture.TitresNonConformes.Count}");
+            foreach (var (ligne, titre) in lecture.TitresNonConformes.Take(40))
+            {
+                sortie.WriteLine($"    [TITRE NON CONFORME] ligne {ligne} : {titre}");
+            }
+        }
+        if (lecture.IdentifiantsEnDouble.Count > 0)
+        {
+            sortie.WriteLine();
+            sortie.WriteLine($"identifiants de tâche définis plus d'une fois : {lecture.IdentifiantsEnDouble.Count}");
+            foreach (var (id, lignes) in lecture.IdentifiantsEnDouble.Take(40))
+            {
+                sortie.WriteLine($"    [IDENTIFIANT EN DOUBLE] {id} : lignes {string.Join(", ", lignes)}");
+            }
         }
     }
 }

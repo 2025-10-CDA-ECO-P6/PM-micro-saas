@@ -29,14 +29,14 @@ internal static class FixturesMailleAgregat
 {
     public const string ModeleDomaine = "# Personnage (domaine)\n\n## Agrégats\n\n### Personnage\n\nRacine d'agrégat.\n";
 
-    // `ExtraireTaches` découpe sur `\n#{4,6}\s+(?=TB-)` : un match exige un `\n`
-    // AVANT le marqueur de titre. Sans texte de préambule avant le premier
-    // titre `##### TB-…`, ce premier titre n'est précédé d'aucun `\n` et son
-    // bloc entier devient le [0] jeté par la boucle `for idx = 1..` —
-    // silencieusement absorbé comme s'il s'agissait du préambule. D'où ce
-    // préambule minimal, obligatoire dans toute fixture de plan pour cet
-    // outil (comportement de l'outil, pas un choix de fixture arbitraire).
-    public const string PreambulePlan = "# Plan de travail (fixture)\n\n§2 — Maille de désignation, non pertinente pour ce test.\n\n";
+    // Préambule minimal de toute fixture de plan pour cet outil. Il porte la puce
+    // « module d'outillage » du § 2, que le vérificateur lit pour résoudre ces
+    // modules (ModulesOutillage.cs) : sans elle il s'arrête en panne d'exécution
+    // (PanneMailleIllisible).
+    public const string PreambulePlan =
+        "# Plan de travail (fixture)\n\n§2 — Maille de désignation, non pertinente pour ce test.\n\n"
+        + "- un **module d'outillage** : `le projet de test d'architecture`, `le projet de test de bout en bout`, "
+        + "`la configuration de la solution`, `la configuration d'intégration continue`\n\n";
 
     public static void ConstruireRacine(string racine, string planMd, bool avecDomaine = true)
     {
@@ -424,5 +424,32 @@ public class PanneUtf8InvalideDansLePlan : IDisposable
             "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         Assert.Equal(2, resultat.CodeSortie);
         Assert.Contains("panne d'exécution", resultat.Stderr);
+    }
+}
+
+public class PanneMailleIllisible : IDisposable
+{
+    private readonly RepertoireTemporaire _tmp = new();
+
+    public PanneMailleIllisible()
+    {
+        // Plan sans la puce « module d'outillage » : le § 2 a changé de forme.
+        Helpers.Ecrire(Path.Combine(_tmp.Chemin, "docs/domaine/personnage/context.md"), FixturesMailleAgregat.ModeleDomaine);
+        Helpers.Ecrire(
+            Path.Combine(_tmp.Chemin, "docs/projet/plan-de-travail.md"),
+            "# Plan de travail (fixture)\n\n§2 — sans la puce des modules d'outillage.\n\n"
+            + "##### TB-901 — Tâche résolue proprement\n\n| Champ | Valeur |\n|---|---|\n"
+            + "| Périmètre d'écriture | Personnage |\n| Dépend de | — |\n| En conflit avec | — |\n");
+    }
+
+    public void Dispose() => _tmp.Dispose();
+
+    [Fact]
+    public void DevraitTerminerEnCodeDeSortieDeuxQuandLeParagrapheDOutillageDuPlanEstIllisible()
+    {
+        var resultat = Helpers.ExecuterOutil(
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
+        Assert.Equal(2, resultat.CodeSortie);
+        Assert.Contains("module d'outillage", resultat.Stderr);
     }
 }

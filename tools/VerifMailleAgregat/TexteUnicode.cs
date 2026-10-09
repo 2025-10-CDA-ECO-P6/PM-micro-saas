@@ -47,6 +47,36 @@ internal static class TexteUnicode
     }
 
     /// <summary>
+    /// Équivalent de <c>str.splitlines()</c> : coupe sur les frontières de ligne de
+    /// Python (<c>\n</c>, <c>\r</c>, <c>\r\n</c> compté une fois, <c>\v</c>, <c>\f</c>,
+    /// U+001C–U+001E, U+0085, U+2028, U+2029), jamais sur le seul <c>\n</c>. Aucune
+    /// ligne vide finale n'est produite pour un texte se terminant par une frontière.
+    /// </summary>
+    public static List<string> SepererLignesPython(string texte)
+    {
+        var resultat = new List<string>();
+        int debut = 0, i = 0;
+        while (i < texte.Length)
+        {
+            char c = texte[i];
+            if (c is '\n' or '\r' or '\v' or '\f' or '\x1c' or '\x1d' or '\x1e' or '\x85' or '\u2028' or '\u2029')
+            {
+                resultat.Add(texte[debut..i]);
+                i++;
+                if (c == '\r' && i < texte.Length && texte[i] == '\n') i++;
+                debut = i;
+                continue;
+            }
+            i++;
+        }
+        if (debut < texte.Length)
+        {
+            resultat.Add(texte[debut..]);
+        }
+        return resultat;
+    }
+
+    /// <summary>
     /// Convertit un retour chariot isolé (non suivi d'un saut de ligne) en saut
     /// de ligne, seul cas que la lecture texte universelle de Python traduit
     /// silencieusement et qu'aucune lecture .NET brute ne traduit. Une paire

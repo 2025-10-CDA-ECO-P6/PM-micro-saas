@@ -22,8 +22,10 @@
 #:include AutresNatures.cs
 #:include ComparateurCodePoints.cs
 #:include LecteurTexte.cs
+#:include LectureDesTaches.cs
 #:include MailleDesignation.cs
 #:include ModeleDomaine.cs
+#:include ModulesOutillage.cs
 #:include PanneExecutionException.cs
 #:include PlanDeTravail.cs
 #:include ReprPython.cs
