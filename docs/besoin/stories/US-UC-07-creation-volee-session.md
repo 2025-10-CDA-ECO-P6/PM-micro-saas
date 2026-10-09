@@ -64,7 +64,7 @@ flowchart TD
     C -->|Personnage joueur| F[Saisit un nom\ntype = PJ, association joueur = null]
     C -->|Document libre| G[Saisit un titre\ntype libre ou autre]
 
-    D --> H[Document.Create\ncampaignId, folderId par défaut, type, title\nvisibility = GM_ONLY]
+    D --> H[Document.Create\nspaceId, folderId par défaut, type, title\nvisibility = GM_ONLY]
     E --> H
     F --> H
     G --> H
@@ -119,7 +119,7 @@ flowchart LR
 
 **Notes de conception** :
 - Opération cross-context :
-  1. `Document.Create(campaignId, folderId, title, typeId?)` dans Content Library.
+  1. `Document.Create(spaceId, folderId, title, typeId?)` dans Content Library.
   2. Selon le type : `Session.AttachNote(documentId)` (note de session) ou `Session.PinDocument(documentId)` (document durable) dans Session Conduct.
 - Le dossier d'accueil est déterminé par le type : PNJ → dossier Personnages, NOTE → dossier Notes, PJ → dossier Personnages joueurs. Si aucun dossier typé n'existe ou si le type est indéterminé → dossier "Non classés".
 - Visibilité par défaut : `GM_ONLY`.
