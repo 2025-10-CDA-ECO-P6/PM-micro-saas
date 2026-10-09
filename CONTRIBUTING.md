@@ -11,7 +11,7 @@ Ce dépôt contient la conception du produit, en français, et l'outillage C# qu
 
 ## Avant de commiter
 
-Les contrôles tournent en intégration continue ([`controles-corpus.yml`](.github/workflows/controles-corpus.yml)) à chaque modification de `docs/` ou de `tools/`. Lancez-les aussi en local avant tout commit qui touche `docs/`. Il faut le [SDK .NET 10][dotnet].
+Les contrôles tournent en intégration continue ([`controles-corpus.yml`](.github/workflows/controles-corpus.yml)) à chaque modification de `docs/` ou de `tools/`. Lancez-les aussi en local avant tout commit qui touche `docs/`. Il faut le [SDK .NET 10][dotnet], en version 10.0.300 au moins (fixée par `global.json`).
 
 Depuis la racine du dépôt, lancez chaque commande telle quelle, sans tube ni redirection, pour lire son vrai code de sortie :
 
@@ -36,6 +36,8 @@ dotnet run --project tools/VerifCouvertureRecette
 Le sens détaillé de chaque sortie est dans le [guide de conventions, § 8.8](docs/projet/conventions-dod.md#88-conventions-de-tenue-du-corpus).
 
 `tools/CreerIssues` et `tools/CreerProjet` ne vérifient rien : ils reportent le plan de travail en issues et en tableau de projet GitHub, par le workflow [`recalcul-suivi-projet.yml`](.github/workflows/recalcul-suivi-projet.yml).
+
+Les outils de `tools/` passent un à un en programmes C# d'un seul fichier, sans projet : leur forme suit la [convention des outils en fichier unique](tools/FICHIER-UNIQUE.md).
 
 ## Prévisualiser le site de documentation
 
