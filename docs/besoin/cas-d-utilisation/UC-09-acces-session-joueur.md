@@ -39,7 +39,7 @@ Le MJ partage un lien d'accès à une session (lien ponctuel) ou à son espace p
 4. L'application affiche les métadonnées du lien : nom de l'espace ou de la session, MJ, information RGPD. Aucun document n'est affiché avant la saisie du nom.
 5. Le joueur saisit uniquement un **nom d'affichage** (pas d'email, pas de mot de passe).
 6. Il peut consulter les documents partagés, les informations révélées en temps réel pendant la session.
-7. À la fin de la session, son accès expire.
+7. Son accès expire 24 h après la fin de la session (fenêtre de grâce, RB-09-01).
 
 ## Scénario nominal B — Accès espace partagé permanent (joueur authentifié)
 
