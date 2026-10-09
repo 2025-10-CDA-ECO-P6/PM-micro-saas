@@ -9,18 +9,15 @@ sequenceDiagram
     participant SM as Space Management
     participant CL as Content Library
 
-    MJ->>App: Créer un espace (name, type)
-    App->>App: Vérifier quota FREE (≤ 3 espaces actifs CAMPAIGN/ONE_SHOT) — sans objet pour type = PERSONAL, hors quota
+    Note over MJ,CL: L'espace PERSONAL n'est pas créé ici : il naît à UserRegistered (invariant 14),<br/>avec le seul dossier virtuel (Non classés)
+    MJ->>App: Créer un espace (name, type = CAMPAIGN ou ONE_SHOT)
+    App->>App: Vérifier quota FREE (≤ 3 espaces actifs CAMPAIGN/ONE_SHOT)
     alt Quota dépassé
         App-->>MJ: Bloqué — upgrade requis
     else Quota OK
         App->>SM: Space.Create(ownerId, name, type, description?, gameSystem?)
         SM-->>App: SpaceCreated event
-        alt type = CAMPAIGN ou ONE_SHOT
-            App->>CL: Créer les dossiers système (Personnages, Joueurs, Scénarios, Notes) + dossier virtuel (Non classés)
-        else type = PERSONAL
-            App->>CL: Créer uniquement le dossier virtuel (Non classés)
-        end
+        App->>CL: Créer les dossiers système (Personnages, Joueurs, Scénarios, Notes) + dossier virtuel (Non classés)
         App-->>MJ: Espace créé
     end
 ```
@@ -57,6 +54,8 @@ sequenceDiagram
         SM-->>App: SpaceId + scope
         App->>SM: Space.AddMember(userId, PLAYER)
         SM-->>App: MemberJoined event
+        App->>SM: SpaceMembership.Activate()
+        SM-->>App: MemberActivated event
         App-->>Joueur: Accès à l'espace
     end
 ```
