@@ -3,7 +3,7 @@
 | Champ | Valeur |
 |---|---|
 | Version | 1.2 |
-| Date | 2026-09-02 |
+| Date | 2026-10-09 |
 | Statut | SOUS-SPÉCIFIÉ |
 | Porteur | SOUS-SPÉCIFIÉ |
 | Validation | SOUS-SPÉCIFIÉ |
