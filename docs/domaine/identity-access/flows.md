@@ -114,13 +114,20 @@ sequenceDiagram
     Billing->>App: TierChanged(userId, newTier)
     App->>IA: User.ChangeTier(newTier)
     IA-->>App: AccountTierChanged event
-    App->>SM: Réagir à AccountTierChanged
+    Note over App,SM: Réaction à AccountTierChanged orchestrée par l'Application,<br/>détail dans le flux 5 de Space Management
     alt Downgrade PRO → FREE (résiliation)
-        SM->>SM: Geler les espaces excédentaires (> 3)
-        SM-->>App: OK
+        App->>SM: GetActiveSpaces(userId, types = CAMPAIGN/ONE_SHOT)
+        SM-->>App: Espaces actifs triés par date de création (PERSONAL exclu)
+        loop Pour chaque espace excédentaire (rang > 3)
+            App->>SM: Space.Freeze()
+            SM-->>App: SpaceFrozen event
+            App->>App: Notifier le MJ (SpaceFrozen)
+        end
     else Upgrade FREE → PRO
-        SM->>SM: Space.Unfreeze() sur les espaces FROZEN (dans la limite du quota cible) → SpaceUnfrozen
-        SM-->>App: OK
+        loop Pour chaque espace FROZEN du propriétaire (dans la limite du quota cible)
+            App->>SM: Space.Unfreeze()
+            SM-->>App: SpaceUnfrozen event
+        end
     end
     App-->>Billing: Confirmé
 ```

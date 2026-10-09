@@ -101,6 +101,7 @@ sequenceDiagram
     loop Pour chaque espace excédentaire (rang > 3)
         App->>SM: Space.Freeze()
         SM-->>App: SpaceFrozen event
+        App->>App: Notifier le MJ (SpaceFrozen)
     end
     App-->>Billing: Confirmé
 ```
