@@ -75,6 +75,8 @@ public class ControleDesMarqueurs : DepotDeControle
     [InlineData("Le point reste ouvert [RÉSOLU — ADR-018].", "RÉSOLU")]
     [InlineData("Le point est [NOUVEAU STATUT — motif].", "NOUVEAU STATUT")]
     [InlineData("- **FLAG JURISTE** : quel instant fait foi ?", "FLAG JURISTE")]
+    [InlineData("- [REPORTÉ — J2] le chiffrage détaillé.", "REPORTÉ")]
+    [InlineData("- **REPORTÉ** au jalon J2.", "REPORTÉ")]
     public void DevraitSignalerChaqueFormeConvertieOuHorsListeEmployeeCommeStatut(string ligne, string marqueur)
     {
         EcrireDoc("projet/points.md", $"# Points\n\n{ligne}\n");
@@ -96,7 +98,8 @@ public class ControleDesMarqueurs : DepotDeControle
             + "- **DÉCIDÉ** (2026-10-07, ADR-019) : le registre.\n"
             + "- Retiré. Remplacé par ADR-020.\n"
             + "- [À VALIDER — JURISTE] [HORS PÉRIMÈTRE — ADR-018] [ABSENT PAR NATURE — motif] [DÉSACTIVÉ — condition]\n"
-            + "- [HORS-MVP — S8] REPORTÉ au jalon J2, TROU, HORS MAILLE.\n");
+            + "- [HORS-MVP — S8] TROU, HORS MAILLE.\n"
+            + "- Migration ascendante du payload : dette nommée, post-MVP (ADR-016, § 1.4).\n");
 
         var resultat = Lancer();
 

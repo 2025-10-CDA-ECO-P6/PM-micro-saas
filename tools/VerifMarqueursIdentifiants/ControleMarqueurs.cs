@@ -30,12 +30,16 @@ internal static class ControleMarqueurs
 {
     private static readonly string[] FormesConverties = ["RÉSOLU", "FERMÉE", "TRANCHÉ", "Clos"];
 
-    // La liste fermée : ADR-019 § 5.
+    // La liste fermée : ADR-019 § 5, ajustement du 2026-10-09. La dette reportée à un
+    // jalon nommé s'écrit « dette nommée, <jalon> (<renvoi>) » : une tournure de prose,
+    // que le contrôle ne lit pas ; `REPORTÉ`, forme du registre généré de
+    // docs/conventions.md, n'est pas dans l'ADR et le corpus ne l'emploie pas.
     private static readonly string[] ListeFermee =
     [
         "À TRANCHER",
         "SOUS-SPÉCIFIÉ",
         "DÉCIDÉ",
+        "À VALIDER",
         "Retiré",
         "Remplacé par",
     ];
@@ -47,10 +51,8 @@ internal static class ControleMarqueurs
         // docs/conventions.md, registre des marqueurs.
         "À DÉCIDER",
         "HORS PÉRIMÈTRE",
-        "REPORTÉ",
         "ABSENT PAR NATURE",
         "DÉSACTIVÉ",
-        "À VALIDER",
         "À COMPLÉTER",
         "TROU",
         "HORS MAILLE",
