@@ -80,7 +80,7 @@ flowchart TD
     N --> R[Documents PUBLIC\nDocuments epingles de la session\nNotes personnelles PLAYER_PRIVATE - hors MVP]
 
     N --> S{Joueur veut creer un compte ?}
-    S -->|Oui| T[Migration GuestAccess vers compte\nNotes preservees (hors MVP) — US-09-04]
+    S -->|Oui| T["Migration GuestAccess vers compte\nNotes preservees (hors MVP) — US-09-04"]
     T --> P
     S -->|Non| U[Acces expire apres session + 24h de grace]
 ```
