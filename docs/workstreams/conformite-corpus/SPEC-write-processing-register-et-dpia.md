@@ -59,9 +59,20 @@ Le contrat et les sources : aucune valeur inventée ?
 
 ## Notes de dev
 
-
+- Deux instances écrites : `docs/assurance/securite/registre-des-traitements.md` (10 traitements, PR-01 à PR-10) et `docs/assurance/securite/analyse-d-impact.md` (11 risques, IR-01 à IR-11, et 12 mesures). Elles sont indexées dans `docs/assurance/securite/README.md` et inscrites au journal du corpus.
+- Chemins : les libellés par défaut disent `docs/securite/`, que l'opérateur a rangé sous `docs/assurance/` ; la sélection porte les chemins réels.
+- Aucune valeur sans source. Chaque durée, délai ou base légale porte sa référence (ADR-012, ADR-013, ADR-015, dossier de sécurité, télémétrie, cadrages de conformité). Une qualification juridique non donnée par les sources porte `[À VALIDER — JURISTE]`. Ce que le besoin ne tranche pas porte `[SOUS-SPÉCIFIÉ — …]` : la gravité et la vraisemblance des risques (aucune échelle sourcée), le schéma des événements de télémétrie.
+- Contrôle `template` sur une racine minimale : 0 écart, en quelques secondes. Contrôle `markers` : 0 marqueur hors liste. `conform-verify-complet.sh a4a2bf7 --declared docs/workstreams/conformite-corpus/declares-processing-register-et-dpia.txt` : code 0.
 
 ## Notes de revue
 
+Revue « aucune valeur inventée ? », 2026-10-09 : huit constats, tous appliqués.
 
+- `fix` : la durée de PR-10 citait la durée du contrat de sous-traitance ; la conservation cite maintenant le § 8 du squelette de DPA.
+- `fix` : PR-03 restreint aux `session_live_notes` `PLAYER_PRIVATE` (ADR-012 : les notes partagées sont conservées sous auteur anonymisé).
+- `fix` : PR-06, la base légale d'ADR-013 § 1 ne couvre que le nom d'affichage et les journaux ; le reste porte le marqueur juriste.
+- `fix` : les sous-traitants ultérieurs ont une liste indicative, non contractuelle (squelette de DPA § 5, ADR-013), citée avant le marqueur.
+- `fix` (optionnels pris) : la réserve « à confirmer selon la stratégie de backup » sur les 30 jours de sauvegardes ; PR-08, l'identifiant de session invité et la durée en mode local prennent `SOUS-SPÉCIFIÉ`.
+- `fix` (décision de l'orchestrateur, par délégation) : PR-02 et PR-07 portent la base légale que donnent leurs sources (intérêt légitime, ADR-012 § 1 et ADR-013 § 1), sans marqueur juriste. **Justification** : ce marqueur couvre une qualification qu'aucune source ne donne.
 
+Répartition : 8 `fix`.

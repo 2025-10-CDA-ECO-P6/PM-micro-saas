@@ -10,6 +10,11 @@
 
 - [dossier-securite.md](dossier-securite.md) — modèle de menaces, surfaces d'attaque et contre-mesures, consolidés depuis le corpus de conception (ADR, spécifications fonctionnelles et non fonctionnelles, contrats d'API).
 
+## Données personnelles
+
+- [registre-des-traitements.md](registre-des-traitements.md) — registre des traitements : finalité, base légale, données, personnes, destinataires, durée, transferts et mesures de chaque traitement arrêté par les décisions RGPD ; les cellules sans source portent un marqueur.
+- [analyse-d-impact.md](analyse-d-impact.md) — analyse d'impact relative à la protection des données : nécessité, risques pour les personnes et mesures, sur les traitements du registre.
+
 ## Conformité légale
 
 Les quatre documents suivants sont des **cadres internes**, tous en attente de validation par

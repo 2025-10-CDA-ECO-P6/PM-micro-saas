@@ -182,8 +182,8 @@ module|event-catalogue|docs/domaine/evenements.md
 module|traceability|docs/tracabilite.md
 module|corpus-changelog|docs/journal-du-corpus.md
 module|wireframe-mockups|docs/interface/ecrans
-module|processing-register|-
-module|dpia|-
+module|processing-register|docs/assurance/securite/registre-des-traitements.md
+module|dpia|docs/assurance/securite/analyse-d-impact.md
 module|interview-reports|-
 module|release-plan|-
 module|operating-model|-
