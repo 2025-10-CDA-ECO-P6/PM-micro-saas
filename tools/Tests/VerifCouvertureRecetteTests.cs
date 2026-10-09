@@ -28,8 +28,9 @@ internal static class FixturesCouvertureRecette
 
 /// <summary>
 /// Golden master — décomptes mesurés sur le corpus réel au commit de contrôle
-/// <c>f04b9da</c> : 257 cas réels, 2 retirés (`CR-UC01-04`, `CR-UC02-11` —
-/// marqués morts dans leur propre colonne Cas), 134 cités, 85 absents de jalon
+/// <c>f04b9da</c>, réadjugé le 2026-10-09 après l'ajout de `CR-UC10-27` (cas de
+/// l'espace en corbeille, UC-10, jalon J2) : 258 cas réels, 2 retirés (`CR-UC01-04`,
+/// `CR-UC02-11` — marqués morts dans leur propre colonne Cas), 134 cités, 86 absents de jalon
 /// ultérieur (UC-08/09/10/11/12, intégralement J2/J3), 16 hors MVP (UC-13 :
 /// 10 cas, UC-15 : 6 cas), 18 de synthèse (les dix-huit `CR-TRANS-*`), et les
 /// 2 mêmes cas retrouvés indépendamment en source déclarée retirée (§13) — les
@@ -47,12 +48,12 @@ public class SurCorpusReelCouvertureRecette
     {
         var resultat = Helpers.ExecuterOutil("VerifCouvertureRecette", [Helpers.RacineDepot]);
         string stdout = resultat.Stdout;
-        Assert.Contains("cas de recette réels extraits : 257", stdout);
+        Assert.Contains("cas de recette réels extraits : 258", stdout);
         Assert.Contains("RETIRÉ (le cahier le marque mort, ne pèse pas)  : 2", stdout);
         Assert.Contains("[RETIRÉ] CR-UC01-04 ->", stdout);
         Assert.Contains("[RETIRÉ] CR-UC02-11 ->", stdout);
         Assert.Contains("CITÉ                                           : 134", stdout);
-        Assert.Contains("ABSENT — JALON ULTÉRIEUR (J2/J3, légitime)     : 85", stdout);
+        Assert.Contains("ABSENT — JALON ULTÉRIEUR (J2/J3, légitime)     : 86", stdout);
         Assert.Contains("ABSENT — HORS MVP (use case hors §4, légitime) : 16", stdout);
         Assert.Contains("SYNTHÈSE (second niveau, cite d'autres CR-)    : 18", stdout);
         Assert.Contains("ABSENT — TROU (ni cité, ni légitime)           : 2", stdout);

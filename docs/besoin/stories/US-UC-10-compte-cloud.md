@@ -473,6 +473,13 @@ Scénario : Suppression bloquée — propriétaire d'un espace CAMPAIGN ou ONE_S
   Et il indique les espaces concernés
   Et il lui demande de gérer ces espaces avant de pouvoir supprimer son compte
 
+Scénario : Suppression autorisée — l'espace partagé à membres actifs est en corbeille
+  Étant donné que Thomas est authentifié et que son adresse de messagerie est validée
+  Et que le seul espace CAMPAIGN ou ONE_SHOT à membres actifs dont il est propriétaire est en corbeille
+  Quand il demande la suppression de son compte et confirme après avoir pris connaissance des conséquences
+  Alors le système ne bloque pas la suppression au titre de cet espace
+  Et l'espace en corbeille suit sa propre purge
+
 Scénario : Suppression bloquée — adresse de messagerie non validée
   Étant donné qu'un utilisateur est authentifié mais que son adresse de messagerie n'est pas validée
   Quand il tente de demander la suppression de son compte

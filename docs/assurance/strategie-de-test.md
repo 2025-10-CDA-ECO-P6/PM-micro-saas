@@ -692,6 +692,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 | CR-UC10-24 | [sécurité, dérivé] Réutilisation d'un lien de réinitialisation déjà consommé refusée | Un lien de réinitialisation a déjà été utilisé, qu'il ait abouti ou non | Ce même lien est réutilisé | La réutilisation est refusée — le lien est à usage unique | RB-10-12 (dérivé, pas de Gherkin) | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-25 | [sécurité, dérivé] Émission d'un nouveau lien invalide les liens précédents | Un utilisateur a déjà reçu un lien de réinitialisation actif | Il redemande un nouveau lien de réinitialisation | Tous les liens précédemment émis pour ce compte deviennent invalides | RB-10-12 (dérivé, pas de Gherkin) | ☐ OK ☐ KO ☐ N/A |
 | CR-UC10-26 | [erreur, sécurité, dérivé] Changement de mot de passe refusé sans le mot de passe actuel | Un utilisateur est connecté à son compte | Il tente de changer son mot de passe sans fournir le mot de passe actuel, ou en fournissant un mot de passe actuel incorrect | Le changement est refusé | RB-10-15 (dérivé, pas de Gherkin) | ☐ OK ☐ KO ☐ N/A |
+| CR-UC10-27 | [nominal] Suppression autorisée si l'espace à membres actifs est en corbeille | Un utilisateur authentifié, email validé, n'est propriétaire d'un espace CAMPAIGN ou ONE_SHOT à membres actifs que si cet espace est en corbeille | Il demande la suppression de son compte et confirme | La suppression n'est pas bloquée au titre de l'espace en corbeille ; l'espace suit sa propre purge (ADR-010, ADR-011) | US-10-06 §"Suppression autorisée — l'espace partagé à membres actifs est en corbeille" | ☐ OK ☐ KO ☐ N/A |
 
 ---
 
@@ -850,7 +851,7 @@ Matrice des 15 use cases.
 | UC-07 | Créer à la volée | Must / Should | US-07-01, 02 | CR-UC07-01..09 | PERF-03 | — | U, I |
 | UC-08 | Partager une information | Must | US-08-01, 02, 03 | CR-UC08-01..12 | PERF-03, CONF-01 | B8.2 | U, I, SEC |
 | UC-09 | Accéder à une session en tant que joueur | Must / Should | US-09-01 à 04 | CR-UC09-01..17 | CONF-01/03, PERF-02, ACC-01/02 | B1.6, B1.7, B8.2 | U, I, E2E, SEC |
-| UC-10 | Compte cloud + migration | Must | US-10-01 à 06 | CR-UC10-01..26 | CONF-02/03, OFF-04 | B1.5, B1.10, B3.2, P7, sagas SpaceDeleted/UserAnonymized | U, I, E2E, SEC |
+| UC-10 | Compte cloud + migration | Must | US-10-01 à 06 | CR-UC10-01..27 | CONF-02/03, OFF-04 | B1.5, B1.10, B3.2, P7, sagas SpaceDeleted/UserAnonymized | U, I, E2E, SEC |
 | UC-11 | Gérer les membres | Should | US-11-01 à 04 | CR-UC11-01..18 | CONF-03 | B1.6 | U, I, SEC |
 | UC-12 | Vue joueur post-accès | Should | US-12-01, 02 | CR-UC12-01..12 | CONF-01, ACC-*, PERF-* | B5.2 | U, I, SEC |
 | UC-13 | Scénario réutilisable | Should — hors première livraison (post-MVP) | US-13-01, 02, 03 | CR-UC13-01..10 | I18N-03 | — | U, I |
