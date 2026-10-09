@@ -57,6 +57,8 @@ Rien à installer pour découvrir le projet :
 1. lisez la [documentation en ligne][site], ou son point d'entrée dans le dépôt, [`docs/README.md`](docs/README.md), qui propose un parcours de lecture selon votre rôle ;
 2. parcourez les [fiches et maquettes d'écran](docs/interface/ecrans/README.md).
 
+Le site de documentation est construit depuis `docs/` et republié automatiquement à chaque modification : rien n'y est recopié à la main. Son fonctionnement et le choix de DocFX sont expliqués dans [`docs-site/README.md`](docs-site/README.md).
+
 ## Structure du dépôt
 
 ```text
@@ -70,6 +72,7 @@ docs/                  conception du produit, en français
   reference/           documents de synthèse, lisibles seuls
   projet/              roadmaps, plan de travail, risques, conventions
 tools/                 outillage C# : contrôles du corpus et leurs tests
+docs-site/             site de documentation (DocFX, en C#) construit depuis docs/
 .github/workflows/     intégration continue
 ```
 
