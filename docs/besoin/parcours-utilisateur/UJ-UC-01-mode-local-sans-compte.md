@@ -58,10 +58,10 @@ flowchart TD
     B --> C[Commencer sans compte]
     C --> D[Message : données stockées\ndans ce navigateur]
     D --> E{Que fait-il en premier ?}
-    E -->|Capture-first| CF[Crée une idée\nlieu / PNJ / scénario\ndirectement]
+    E -->|Parcours principal — capture| CF[Crée une idée\nlieu / PNJ / scénario\ndirectement]
     CF --> CFR[Contenu atterrit dans\nl'espace personnel\nsans espace de jeu créé]
     CFR --> G
-    E -->|Parcours principal| F[Écran de création d'espace de jeu]
+    E -->|Optionnel — UC-02| F[Écran de création d'espace de jeu]
     F --> FC[Crée un espace de jeu]
     FC --> G[Ajoute du contenu\nPrépare une session]
     G --> H{Ferme le navigateur}

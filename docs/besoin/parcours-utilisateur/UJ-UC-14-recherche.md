@@ -29,7 +29,7 @@ journey
         Appliquer un filtre de type optionnel: 4: Thomas, 2: Émilie, 3: Nadia
     section Consulter les resultats
         Voir les resultats ponderes en haut pour la session active: 5: Émilie
-        Voir les resultats listes par pertinence: 5: Thomas, 4: Nadia
+        Voir les resultats regroupes par type: 5: Thomas, 4: Nadia
         Constater un etat vide et ajuster la recherche: 2: Thomas, 2: Nadia, 1: Émilie
     section Acceder au document
         Ouvrir le document depuis la bibliotheque: 5: Thomas, 4: Nadia
@@ -59,13 +59,13 @@ flowchart TD
     H --> I
 
     I -->|MJ| J[Retourne documents GM_ONLY et PUBLIC\nde l espace actif]
-    I -->|Joueur| K[Retourne uniquement les documents PUBLIC\nde l espace actif\nGM_ONLY exclus]
+    I -->|Joueur| K[Retourne les documents visibles par ce joueur\nPUBLIC + fiche de son personnage\nRB-12-01]
 
     J --> L{Resultat de la recherche}
     K --> L
 
     L -->|Aucun resultat| M[Etat vide\nSuggestion de modifier la recherche\nou de retirer le filtre]
-    L -->|Resultats trouves, depuis bibliotheque| N[Liste des resultats par pertinence\nMJ selectionne un document\nDocument s ouvre dans la vue document]
+    L -->|Resultats trouves, depuis bibliotheque| N[Resultats regroupes par type\nMJ selectionne un document\nDocument s ouvre dans la vue document]
     L -->|Resultats trouves, depuis vue session| O[Conduite de session pondere les resultats\nElements de la session active en tete]
 
     O --> P[Panneau lateral affiche les resultats\nVue session reste active]

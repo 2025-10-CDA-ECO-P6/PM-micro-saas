@@ -92,7 +92,7 @@ flowchart TD
     SelectMembre --> SelectPerso[MJ selectionne le personnage\npersonnage joueur de l espace]
     SelectPerso --> UniqueCheck{Personnage deja associe ?}
     UniqueCheck -->|Oui| UniqueErr[Erreur - personnage\ndeja associe a un autre membre]
-    UniqueCheck -->|Non| AssocOK[Association creee\nJoueur accede a la fiche\net aux notes PLAYER_PRIVATE]
+    UniqueCheck -->|Non| AssocOK[Association creee\nJoueur accede a la fiche\nGM_ONLY ou PUBLIC — RB-12-01]
 ```
 
 ---

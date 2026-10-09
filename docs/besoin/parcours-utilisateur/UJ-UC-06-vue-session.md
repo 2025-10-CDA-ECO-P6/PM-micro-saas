@@ -89,8 +89,10 @@ flowchart TD
     NA --> S
     S --> T{Notes rétroactives ?}
     T -->|Oui| U[MJ ajoute notes de session en CLOSED]
-    T -->|Non| V[Session.Archive — CLOSED → ARCHIVED]
-    U --> V
+    T -->|Non| AR{MJ archive ?\naction explicite}
+    U --> AR
+    AR -->|Oui| V[Session.Archive — CLOSED → ARCHIVED]
+    AR -->|Non| W[Session reste CLOSED]
 ```
 
 ---

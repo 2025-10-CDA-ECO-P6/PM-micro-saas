@@ -51,12 +51,12 @@ flowchart TD
     A2[Thomas veut acces\nmulti-device] --> C[Page inscription directe]
     A3[Lucas recoit un lien\nd invitation UC-09] --> D[Page inscription\ndepuis lien d invitation]
 
-    B --> E[Formulaire inscription\nemail, nom d affichage, mot de passe]
-    C --> E
-    D --> E
+    B --> F{Methode choisie}
+    C --> F
+    D --> F
 
-    E --> F{Methode choisie}
-    F -->|Email et mot de passe| G[Validation des donnees\nEmail unique - RB-10-01]
+    F -->|Email et mot de passe| E[Formulaire inscription\nemail, nom d affichage, mot de passe]
+    E --> G[Validation des donnees\nEmail unique - RB-10-01]
     F -->|Connexion federee| H[Fournisseur d identite externe\nConnexion federee]
 
     G --> I{Email deja utilise ?}

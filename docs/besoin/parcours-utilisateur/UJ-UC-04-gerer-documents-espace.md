@@ -39,7 +39,7 @@ journey
         Laisser privé par défaut: 5: Émilie, 4: Antoine, 5: Nadia
         Rendre visible par les joueurs: 3: Émilie, 4: Antoine, 3: Nadia
     section Retrouver
-        Rechercher par titre ou tag: 3: Émilie, 4: Antoine, 2: Nadia
+        Rechercher par titre: 3: Émilie, 4: Antoine, 2: Nadia
         Naviguer depuis un lien: 2: Émilie, 5: Antoine, 2: Nadia
         Retrouver après longue absence: 3: Émilie, 3: Antoine, 2: Nadia
 ```
@@ -79,7 +79,7 @@ flowchart TD
     O --> P{Action ultérieure}
     P -->|Modifier| Q[Édite titre, contenu, type]
     P -->|Changer visibilité| R[Partage ou retire le partage]
-    P -->|Retrouver| T[Recherche par titre ou tag\nUC-14]
+    P -->|Retrouver| T[Recherche par titre\nUC-14 — tag hors MVP]
 ```
 
 ---

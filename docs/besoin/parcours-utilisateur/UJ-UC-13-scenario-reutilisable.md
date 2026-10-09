@@ -87,7 +87,7 @@ flowchart TD
 
     LancerSession --> ApresSession[Apres la session\nnotes dans l instance\nsource intact dans l espace personnel]
     ApresSession --> TypeEspace{Type d espace cible}
-    TypeEspace -->|One-shot| ArchiManuel[Espace one-shot reste CLOSED\nArchivage manuel par le MJ]
+    TypeEspace -->|One-shot| ArchiManuel[Espace one-shot reste actif\nArchivage manuel possible — UC-02]
     TypeEspace -->|Campagne| HistoriqueRun[Run ajoute a l historique\ndu scenario source]
     ArchiManuel --> HistoriqueRun
 ```

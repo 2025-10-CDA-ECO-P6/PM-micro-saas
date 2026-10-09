@@ -40,12 +40,12 @@ flowchart TD
     A[MJ en vue session\nLIVE ou CLOSED] --> B{Déclencheur}
 
     B -->|Émilie — PNJ inattendu| C[Ouvre le panneau\nChoisit PNJ\nSaisit le nom]
-    B -->|Antoine — type précis| D[Ouvre le panneau\nChoisit le type Blades PNJ\nSaisit le nom]
+    B -->|Antoine — type précis| D[Ouvre le panneau\nChoisit un type built-in\nex. LOCATION\nSaisit le nom]
     B -->|Nadia — CLOSED, post-session| E[Ouvre le panneau\nChoisit NOTE\nSaisit le titre]
 
-    C --> F[Document.Create\ncampaignId, type = PNJ, title, visibility = GM_ONLY\ndossier d'accueil = Personnages]
-    D --> G[Document.Create\ncampaignId, type choisi, title, visibility = GM_ONLY\ndossier d'accueil selon le type]
-    E --> H[Document.Create\ncampaignId, type = NOTE, title, visibility = GM_ONLY\ndossier d'accueil = Notes]
+    C --> F[Document.Create\nspaceId, type = PNJ, title, visibility = GM_ONLY\ndossier d'accueil = Personnages]
+    D --> G[Document.Create\nspaceId, type choisi, title, visibility = GM_ONLY\ndossier d'accueil selon le type]
+    E --> H[Document.Create\nspaceId, type = NOTE, title, visibility = GM_ONLY\ndossier d'accueil = Notes]
 
     F --> I{Session LIVE ?}
     G --> I
