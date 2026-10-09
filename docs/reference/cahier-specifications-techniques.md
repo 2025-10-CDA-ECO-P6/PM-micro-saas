@@ -2,8 +2,8 @@
 
 | Champ | Valeur |
 |---|---|
-| Version | 1.0 |
-| Date | 2026-07-16 |
+| Version | 1.1 |
+| Date | 2026-10-09 |
 | Statut | Version de référence — consolidation du corpus |
 | Porteur | SOUS-SPÉCIFIÉ |
 | Validation | SOUS-SPÉCIFIÉ |
@@ -18,6 +18,7 @@
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
 | 1.0 | 2026-07-16 | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| 1.1 | 2026-10-09 | SOUS-SPÉCIFIÉ | Correction du fond, sans restructuration : renvois, ordre d'autorité, marqueurs et sources des points ouverts, points déjà décidés retirés de la § 11, tableaux de renvoi, statuts des specs et § 12 alignés sur leurs sources |
 
 **Sommaire**
 
@@ -105,18 +106,18 @@
   - [Bornes MVP à répercuter comme décisions de périmètre](#bornes-mvp-à-répercuter-comme-décisions-de-périmètre)
   - [Tableau de renvoi — §10](#tableau-de-renvoi--10)
 - [11. Points ouverts](#11-points-ouverts)
-  - [§3 — Contraintes techniques](#3--contraintes-techniques)
-  - [§4 — Modèle de données & domaine](#4--modèle-de-données--domaine)
-  - [§5 — Sécurité & autorisation](#5--sécurité--autorisation)
-  - [§6 — Conformité RGPD technique](#6--conformité-rgpd-technique)
+  - [§3 — Contraintes](#3--contraintes)
+  - [§4 — Données](#4--données)
+  - [§5 — Sécurité](#5--sécurité)
+  - [§6 — Conformité](#6--conformité)
   - [§7 — Contrats d'API](#7--contrats-dapi)
-  - [§8 — Migration & sérialisation](#8--migration--sérialisation)
-  - [§9 — Observabilité & télémétrie](#9--observabilité--télémétrie)
-  - [§10 — Exigences non-fonctionnelles](#10--exigences-non-fonctionnelles)
+  - [§8 — Migration](#8--migration)
+  - [§9 — Observabilité](#9--observabilité)
+  - [§10 — Exigences non fonctionnelles](#10--exigences-non-fonctionnelles)
 - [12. Traçabilité, source vers section](#12-traçabilité-source-vers-section)
   - [Specs pré-build](#specs-pré-build)
   - [Cahier des charges](#cahier-des-charges)
-  - [Décisions d'architecture (18 ADR)](#décisions-darchitecture-18-adr)
+  - [Décisions d'architecture (ADR-001 à ADR-018)](#décisions-darchitecture-adr-001-à-adr-018)
 
 ---
 
@@ -140,7 +141,7 @@ Ce document ne porte aucune autorité propre ; il consolide et renvoie. En cas d
 
 L'ordre suivant n'est jamais renversé par ce document :
 
-**personas → vision → use cases (source de vérité) → user stories / NFR → domaine → glossaire.**
+**personas → vision produit → use cases (source de vérité) → user journeys / user stories / NFR → domaine → glossaire.**
 
 Toute référence ajoutée par ce document pointe vers le haut de cette hiérarchie, ou vers un pair de même niveau normatif (ADR, spec pré-build) déjà accepté dans le registre. Ce cahier ne devient à aucun moment une source que le corpus amont citerait en retour.
 
@@ -152,7 +153,7 @@ Cas-test à citer pour distinguer les deux registres : « toutes les FK sont `RE
 
 ### Convention de report des points ouverts
 
-Tout point non tranché du corpus est reporté tel quel sous la forme `[À TRANCHER — <axe/référence>]`, jamais comblé par une valeur ou une hypothèse. Ces points sont consolidés au registre des points ouverts (§11).
+Tout point non tranché du corpus est reporté tel quel sous la forme `[À TRANCHER — <axe/référence>]`, ou sous le marqueur que sa source écrit (`[À VALIDER — JURISTE]` pour une qualification juridique), jamais comblé par une valeur ou une hypothèse. Ces points sont consolidés au registre des points ouverts (§11).
 
 ---
 
@@ -209,7 +210,7 @@ La solution est structurée en six projets .NET/Angular, nommés et détaillés 
 
 ### Temps réel : SignalR
 
-Le partage d'informations en temps réel du MJ vers les joueurs s'appuie sur **SignalR**, natif à ASP.NET Core, avec **repli automatique** (WebSocket → Server-Sent Events → long-polling) selon les capacités du réseau. Le module est isolé dans `Haversack.Infrastructure.Notifications` dès le démarrage. La visibilité de la ressource concernée conditionne systématiquement ce qui est poussé : aucune information diffusée ne contourne les règles de partage fixées par le MJ, la même politique d'autorisation s'appliquant identiquement au canal REST et au canal SignalR (voir §3).
+Le partage d'informations en temps réel du MJ vers les joueurs s'appuie sur **SignalR**, natif à ASP.NET Core, avec **repli automatique** (WebSocket → Server-Sent Events → long-polling) selon les capacités du réseau. Le module est isolé dans `Haversack.Infrastructure.Notifications` dès le démarrage. La visibilité de la ressource concernée conditionne systématiquement ce qui est poussé : aucune information diffusée ne contourne les règles de partage fixées par le MJ, la même politique d'autorisation s'appliquant identiquement au canal REST et au canal SignalR (voir §5 et §7).
 
 ### Frontière d'exécution local / cloud
 
@@ -253,7 +254,7 @@ Le passage d'un espace en purge s'appuie sur un **claim exclusif**, posé avant 
 
 ### Contrainte d'hébergement temps réel
 
-Le choix de SignalR (§2) impose des connexions persistantes et des sessions collantes (« sticky sessions ») côté hébergement. La configuration retenue est sobre : repli forcé vers Server-Sent Events tant que la communication reste unidirectionnelle (MJ → joueurs), fermeture de la connexion en fin de session active, et heartbeat allongé (les événements sont rares en session de jeu de rôle). Un mécanisme de repli vers un polling adaptatif est prévu au-delà d'un seuil de coût par session concurrente — ce seuil, sa métrique et sa cadence de repli restent `[À TRANCHER — spec repli-temps-reel.md §3]`, non chiffrés dans le corpus à ce stade.
+Le choix de SignalR (§2) impose des connexions persistantes et des sessions collantes (« sticky sessions ») côté hébergement. La configuration retenue est sobre : repli forcé vers Server-Sent Events tant que la communication reste unidirectionnelle (MJ → joueurs), fermeture de la connexion en fin de session active, et heartbeat allongé (les événements sont rares en session de jeu de rôle). Un mécanisme de repli vers un polling adaptatif est prévu au-delà d'un seuil de coût par session concurrente — ce seuil, sa métrique et sa cadence de repli restent `[À TRANCHER — spec repli-temps-reel.md §5]`, non chiffrés dans le corpus à ce stade.
 
 ### Mode local : capacité de stockage et posture migration-only
 
@@ -273,7 +274,9 @@ Le palier local persiste les données exclusivement dans le navigateur, sans lim
 | ADR-011 — Cascade & intégrité référentielle | pré-implémentation | Accepté | Toutes FK `RESTRICT`, sagas `SpaceDeleted`/`UserAnonymized`, transaction par espace, idempotence |
 | ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | Configuration sobre (SSE forcé, fermeture fin de session, heartbeat allongé) |
 | `docs/architecture/specs/repli-temps-reel.md` §2-3 | spec pré-build | cadre à compléter | Mécanisme de repli vers polling adaptatif ; seuil, métrique, cadence non chiffrés — `[À TRANCHER]` |
+| `docs/architecture/specs/config-securite-migration.md` | spec pré-build | à confirmer à l'entrée en build | Timeout d'expiration du claim `purge_claimed_at` : mécanisme tranché, valeur renvoyée à B1 — `[À TRANCHER — B1]` |
 | ADR-017 — Modèle IndexedDB local | mixte (dominante pré-implémentation) | Accepté | Absence de plafond de création en mode local, posture migration-only, absence de synchronisation continue |
+| ADR-005 — Modèle de monétisation | décision produit, fusionnée en vision | Accepté | Quotas de stockage par palier (Pro : stockage étendu) — renvoi seul, empreinte technique faible |
 | CdC §7.5 (+ renvoi annexe « Valeurs de référence chiffrées ») | synthèse produit | — | Quotas de stockage par palier, valeurs chiffrées en renvoi |
 
 ---
@@ -294,7 +297,7 @@ Huit types de document système sont seedés pour le MVP : scénario, scène, PN
 
 ### Ontologie de l'espace (`Space`)
 
-L'agrégat central du modèle est l'**espace** (`Space`), frontière de cohérence pour les membres, les invitations et le rattachement du contenu. La campagne, le one-shot et l'espace personnel ne sont pas des concepts distincts mais des **spécialisations d'un seul agrégat**, distinguées par un type (`SpaceType ∈ {CAMPAIGN, ONE_SHOT, PERSONAL}`) : les différences de comportement entre ces trois formes sont comportementales, pas structurelles. L'espace personnel est créé par défaut à la création du compte, mono-membre par construction, et n'est jamais décompté du quota du palier gratuit.
+L'agrégat central du modèle est l'**espace** (`Space`), frontière de cohérence pour les membres, les invitations et le rattachement du contenu. La campagne, le one-shot et l'espace personnel ne sont pas des concepts distincts mais des **spécialisations d'un seul agrégat**, distinguées par un type (`SpaceType ∈ {CAMPAIGN, ONE_SHOT, PERSONAL}`) : les différences de comportement entre ces trois formes sont comportementales, pas structurelles. L'espace personnel est créé par défaut à la création du compte, mono-membre par construction, et n'est jamais décompté du quota du palier gratuit. Il est aussi la zone d'atterrissage par défaut d'un document créé sans espace explicite : comportement opérationnel du MVP, DÉCIDÉ 2026-06-12 ([matrice de priorités, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md#espace-personnel--conteneur-par-défaut-et-capture-first-must-have--adr-018)).
 
 ### Intégrité référentielle : matrice des FK cross-module
 
@@ -322,12 +325,12 @@ Les contextes bornés ne dépendent jamais directement les uns des autres : leur
 | Source | Nature | Statut | Ce qu'elle porte |
 |---|---|---|---|
 | ADR-002 — « Tout est Document » et gouvernance de `properties` | conception | Accepté | `DocumentId` unique, `DocumentProperties`, régime de validation par type |
-| `docs/architecture/specs/document-properties-schemas.md` | spec pré-build | — | 8 types système seedés ; schémas dérivés (scenario, live_note) ; `propertiesSchema` vide au MVP pour les 6 autres types |
+| `docs/architecture/specs/document-properties-schemas.md` | spec pré-build | à confirmer à l'entrée en build | 8 types système seedés ; schémas dérivés (scenario, live_note) ; `propertiesSchema` vide au MVP pour les 6 autres types |
 | ADR-018 — Généralisation Campaign en Space | mixte (dominante pré-implémentation) | Accepté | `SpaceType ∈ {CAMPAIGN, ONE_SHOT, PERSONAL}`, espace personnel mono-membre, hors quota |
 | ADR-009 — FK `spaces.ownerId → users` | conception | Accepté | FK cross-module fondatrice ; décompte 17 FK cross-module (renvoi ADR-011) |
 | ADR-010 — Suppression d'espace (soft-delete + purge + saga) | conception | Accepté | Distinction `Archive()` / `Delete()`, corbeille 30 jours, événement `SpaceDeleted` |
 | ADR-011 — Cascade & intégrité référentielle | pré-implémentation | Accepté | Matrice des 38 FK, 17 FK cross-module recensées, deux sagas, deux cycles traités |
-| `docs/architecture/specs/mapping-ef-core.md` | spec pré-build | — | Converters d'IDs typés, owned types, `jsonb`, query filters, colonnes promues, FK `RESTRICT` |
+| `docs/architecture/specs/mapping-ef-core.md` | spec pré-build | à confirmer à l'entrée en build | Converters d'IDs typés, owned types, `jsonb`, query filters, colonnes promues, FK `RESTRICT` |
 | `docs/domaine/core/kernel.md` | domaine (conception) | — | Contenu du noyau partagé, règles de gouvernance d'admission, exception RGPD `SoftDelete` |
 | CdC §8 | synthèse produit | — | Formulation d'origine du modèle de données et domaine |
 
@@ -364,7 +367,7 @@ Le token de réinitialisation de mot de passe est à usage unique, invalidant to
 
 Les fournisseurs retenus pour le MVP sont **Google et Discord**, chacun satisfaisant deux conditions cumulatives : un claim d'email vérifié jugé fiable, et une adresse email canonique (non un alias de relais). La fiabilité de ce claim est une dépendance externe non vérifiable par la validation continue Haversack, quel que soit le fournisseur ; le gate applicatif qui l'encadre reste, lui, testable par un fournisseur simulé.
 
-La liaison d'un compte OAuth à un compte préexistant est **interdite si l'email de ce compte n'est pas prouvé vérifié**, avec rejet silencieux (aucun message ne révèle l'existence du compte). Le cas d'un compte préexistant non vérifié portant la même adresse email qu'une preuve OAuth fraîche est résolu par une reprise de la coquille (bascule de son statut de vérification, neutralisation obligatoire du mot de passe préexistant, liaison à l'identité fédérée) plutôt que par la création d'un doublon — un doublon sur la même adresse n'étant pas implémentable au regard de l'unicité de l'email dans le système. Cette résolution reste `[À TRANCHER — à ratifier produit]` ; le sort du contenu éventuel déjà rattaché à la coquille reprise est une facette distincte, renvoyée au dossier juridique. L'ajout futur d'un fournisseur à email de relais non canonique (ex. masquage d'adresse) est une dette nommée : il imposerait de revisiter la règle de liaison par email, non déclenchée par le périmètre MVP (Google et Discord, tous deux à email canonique).
+La liaison d'un compte OAuth à un compte préexistant est **interdite si l'email de ce compte n'est pas prouvé vérifié**, avec rejet silencieux (aucun message ne révèle l'existence du compte). Le cas d'un compte préexistant non vérifié portant la même adresse email qu'une preuve OAuth fraîche est résolu par une reprise de la coquille (bascule de son statut de vérification, neutralisation obligatoire du mot de passe préexistant, liaison à l'identité fédérée) plutôt que par la création d'un doublon — un doublon sur la même adresse n'étant pas implémentable au regard de l'unicité de l'email dans le système. Cette résolution reste `[À TRANCHER — PRODUIT]` ; le sort du contenu éventuel déjà rattaché à la coquille reprise est une facette distincte, renvoyée au dossier juridique. L'ajout futur d'un fournisseur à email de relais non canonique (ex. masquage d'adresse) est une dette nommée : il imposerait de revisiter la règle de liaison par email, non déclenchée par le périmètre MVP (Google et Discord, tous deux à email canonique).
 
 ### Invariant d'autorisation
 
@@ -389,9 +392,11 @@ Le stockage local IndexedDB n'est pas chiffré at-rest — aucun secret utilisat
 | ADR-015 — Sécurité authentification MVP | pré-implémentation | Accepté | Politique mot de passe, Argon2id/bcrypt, cycle de vie des jetons, rotation/denylist, rate limiting, OAuth Google/Discord, reclaim-in-place, résidu CWE-204 |
 | ADR-014 — Modèle d'autorisation API | conception | Accepté | Invariant d'autorisation composé (appartenance + visibilité), mécanisme unique REST/temps réel, non-révélation d'existence |
 | ADR-007 — RGPD et modèle d'autorisation API | conception | Accepté | Invariant d'autorisation fondateur, formalisé par ADR-014 ; reclassement des constats bloquants MVP formalisés par ADR-015 |
-| `docs/architecture/specs/config-securite-migration.md` | spec pré-build | cadre à compléter | Registre des seuils (longueur mdp, Argon2id, durées de jetons, rate limiting, TTL reset) — bornes fixées vs valeurs renvoyées à B1.5 |
-| `docs/architecture/specs/contrat-openapi.md` | spec pré-build | cadre à compléter | Principe de non-révélation d'existence, cas 403 tranchés, 403 vs 404 renvoyé B1.10 |
-| `docs/architecture/specs/sanitisation-csp.md` | spec pré-build | cadre à compléter | Plancher de sanitisation liste blanche, posture CSP, ordre validation puis sanitisation |
+| ADR-016 — Sérialisation locale et contrat de migration | mixte, dominante pré-implémentation | Accepté | Plancher de sanitisation côté serveur par liste blanche positive, appliqué aussi à l'import (§2.4) |
+| ADR-017 — Modèle IndexedDB local | mixte, dominante pré-implémentation | Accepté | Sécurité du mode local : sanitisation côté client, CSP, ordre validation puis sanitisation à l'import de fichier, non-chiffrement at-rest assumé et bandeau de confidentialité |
+| `docs/architecture/specs/config-securite-migration.md` | spec pré-build | à confirmer à l'entrée en build | Registre des seuils (longueur mdp, Argon2id, durées de jetons, rate limiting, TTL reset) — bornes fixées vs valeurs renvoyées à B1.5 |
+| `docs/architecture/specs/contrat-openapi.md` | spec pré-build | à confirmer à l'entrée en build | Principe de non-révélation d'existence, cas 403 tranchés, 403 vs 404 renvoyé B1.10 |
+| `docs/architecture/specs/sanitisation-csp.md` | spec pré-build | à confirmer à l'entrée en build | Plancher de sanitisation liste blanche, posture CSP, ordre validation puis sanitisation |
 | `docs/besoin/nfr/NFR-CONF-01` à `04` | NFR produit | — | Séparation notes privées/vue joueurs, isolation mode local, suppression effective, transparence des risques — renvoi croisé §10 |
 | `docs/domaine/core/kernel.md` | domaine (conception) | — | Énumération `Visibility`, primitives de traçabilité mobilisées par l'invariant d'autorisation |
 | CdC §7.3 | synthèse produit | — | Formulation d'origine de la sécurité & authentification |
@@ -436,7 +441,7 @@ Cinq axes, consolidés dans un cadrage dédié destiné à une revue juridique, 
 4. Suffisance, au regard de l'Art. 17, de la suppression inconditionnelle du contenu de l'espace personnel, y compris les deux points subsidiaires sur l'instant de référence en cas de déplacement de document entre espace personnel et espace partagé.
 5. Sort du contenu éventuellement déjà rattaché à un compte non vérifié repris par une preuve d'identité fédérée fraîche (reclaim-in-place, §5).
 
-Chacun de ces cinq axes reste `[À TRANCHER — FLAG JURISTE]` ; ce cahier ne les requalifie pas en décisions et ne préjuge d'aucune issue.
+Chacun de ces cinq axes reste `[À VALIDER — JURISTE]` ; ce cahier ne les requalifie pas en décisions et ne préjuge d'aucune issue.
 
 ### Tableau de renvoi — §6
 
@@ -447,7 +452,8 @@ Chacun de ces cinq axes reste `[À TRANCHER — FLAG JURISTE]` ; ce cahier ne le
 | ADR-007 — RGPD et modèle d'autorisation API | conception | Accepté | Principe fondateur de l'anonymisation par réécriture ; formalisé par ADR-012 et ADR-013 |
 | ADR-011 — Cascade & intégrité référentielle | pré-implémentation | Accepté | Sagas `SpaceDeleted` / `UserAnonymized` consommées par la politique RGPD ci-dessus |
 | ADR-010 — Suppression d'espace | conception | Accepté | Corbeille + purge J+30 pour les espaces supprimables par le MJ, raffiné par ADR-011 pour le mécanisme complet |
-| `docs/architecture/specs/requete-effacement-non-partage.md` | spec pré-build, illustrative non normative | cadre à compléter | Critère opérationnel « document non partagé », instant de référence, trou nommé sur les références nullable entrantes |
+| ADR-018 — Généralisation de `Campaign` en `Space` | mixte (dominante pré-implémentation) | Accepté | Purge inconditionnelle du contenu de l'espace personnel à la suppression de compte ; périmètre du contrat de sous-traitance étendu à l'espace personnel |
+| `docs/architecture/specs/requete-effacement-non-partage.md` | spec pré-build, illustrative non normative | — | Critère opérationnel « document non partagé », instant de référence, trou nommé sur les références nullable entrantes |
 | `docs/assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md` | dossier juridique | à valider juriste | Les 5 axes de validation légale préalable au lancement EU, consolidés depuis ADR-012/013/018/015 |
 | CdC §7.4 | synthèse produit | — | Formulation d'origine de la conformité RGPD |
 
@@ -489,8 +495,8 @@ Le contrat d'échange local↔cloud (enveloppe `schemaVersion` / `exportedAt` / 
 | ADR-015 — Sécurité authentification MVP | pré-implémentation | Accepté | Interfaces observables d'authentification, périmètre du rate limiting 429 |
 | ADR-016 — Sérialisation locale et contrat de migration | mixte, dominante pré-implémentation | Accepté | Contrat de payload versionné (détail §8) |
 | ADR-002 — « Tout est Document » et gouvernance de `properties` | conception | Accepté | Méthode de domaine comme point de passage obligatoire, deux régimes de validation |
-| `docs/architecture/specs/contrat-openapi.md` | spec pré-build | cadre à compléter | Sémantique 403 déjà tranchée, exclusion des backlinks, 429 sur endpoints d'authentification, points renvoyés B1.10 |
-| `docs/architecture/specs/document-properties-schemas.md` | spec pré-build | cadre à compléter | Contrat `DocumentProperties`, deux régimes de validation, schémas dérivés vs à trancher des huit types système |
+| `docs/architecture/specs/contrat-openapi.md` | spec pré-build | à confirmer à l'entrée en build | Sémantique 403 déjà tranchée, exclusion des backlinks, 429 sur endpoints d'authentification, points renvoyés B1.10 |
+| `docs/architecture/specs/document-properties-schemas.md` | spec pré-build | à confirmer à l'entrée en build | Contrat `DocumentProperties`, deux régimes de validation, schémas dérivés vs à trancher des huit types système |
 | ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | Mécanisme de décision d'accès partagé entre REST et diffusion temps réel |
 
 ---
@@ -537,8 +543,8 @@ Le seuil de `schemaVersion` minimale maintenue côté serveur et l'horizon de r�
 | ADR-017 — Modèle IndexedDB local | mixte, dominante pré-implémentation | Accepté | Structure aggregate-rooted, index restreints, versionnement du store distinct du payload, absence de plafond de création en mode local |
 | ADR-001 — Exécution du domaine en mode local | conception | Accepté | Fondation — invariant validation locale ⊆ serveur, migration comme import revalidé |
 | ADR-018 — Généralisation de `Campaign` en `Space` | mixte (dominante pré-implémentation) | Accepté | Inclusion de l'espace `PERSONAL` dans le périmètre sérialisé et la transactionnalité par espace |
-| `docs/architecture/specs/sanitisation-csp.md` §2 | spec pré-build | cadre à compléter | Ordre validation puis sanitisation à l'import JSON local |
-| `docs/architecture/specs/config-securite-migration.md` | spec pré-build | cadre à compléter | Seuil `schemaVersion` et rétention du lot de migration renvoyés P7 |
+| `docs/architecture/specs/sanitisation-csp.md` §2 | spec pré-build | à confirmer à l'entrée en build | Ordre validation puis sanitisation à l'import JSON local |
+| `docs/architecture/specs/config-securite-migration.md` | spec pré-build | à confirmer à l'entrée en build | Seuil `schemaVersion` et rétention du lot de migration renvoyés P7 |
 | `docs/architecture/structure-projets.md` §7 | synthèse structurelle | — | Structure de solution mobilisée par le handler d'import |
 | CdC §7.2, §7.4 | synthèse produit | — | Formulation d'origine de la migration et de l'export |
 
@@ -550,9 +556,9 @@ Cette section consolide l'instrumentation compensatoire de validation du MVP et 
 
 ### Instrumentation d'activation par pilier
 
-Le MVP livrant en un seul bloc (préparation, vue de session, cloud, partage) plutôt qu'en temps de livraison séparés, une instrumentation compensatoire mesure l'occurrence d'usage sur trois piliers, chacun composite (une seule création ne suffit pas à qualifier l'activation) : activation préparation (espace créé + N documents créés), activation vue de session (session ouverte + usage réel constaté), activation partage (document partagé + au moins un joueur l'ayant ouvert). Cette instrumentation mesure une **occurrence**, jamais le **contenu narratif** produit ou partagé par le MJ — cohérent avec l'isolation des données en mode local (renvoi §5/§6).
+Le MVP livrant en un seul bloc (préparation, vue de session, cloud, partage) plutôt qu'en temps de livraison séparés, une instrumentation compensatoire mesure l'occurrence d'usage sur trois piliers, chacun composite (une seule création ne suffit pas à qualifier l'activation) : activation préparation (espace créé + N documents créés), activation vue de session (session ouverte + usage réel constaté), activation partage (document partagé + au moins un joueur l'ayant ouvert). Cette instrumentation mesure une **occurrence**, jamais le **contenu narratif** produit ou partagé par le MJ — cohérent avec l'isolation des données en mode local (renvoi §5/§6). Le seuil N de l'activation préparation est de trois documents, et l'« usage réel constaté » de l'activation vue de session est au moins une action du MJ pendant la session — DÉCIDÉ 2026-09-03 ([matrice de priorités, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md#instrumentation-de-validation-du-mvp)).
 
-Une capture d'email **non bloquante**, accompagnée d'un dispositif d'analytics qualifié d'« anonyme RGPD », s'applique **dès le mode local** — avant même la création d'un compte cloud.
+Une capture d'email **non bloquante**, accompagnée d'un dispositif d'analytics qualifié d'« anonyme RGPD », s'applique **dès le mode local** — avant même la création d'un compte cloud. Le transport de la mesure est tranché : les compteurs sont écrits dans le store local et ne quittent le navigateur qu'à la création d'un compte, ce qui rend l'outil analytics externe sans objet en mode local ; la capture d'email est proposée une seule fois, après l'activation préparation, et un refus ou une absence de réponse vaut refus définitif — DÉCIDÉ 2026-09-03 ([matrice de priorités, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md#instrumentation-de-validation-du-mvp)).
 
 ### Suivi de coût et repli du canal temps réel
 
@@ -568,8 +574,8 @@ Deux maillons ne sont, par nature, pas vérifiables par une validation continue 
 
 | Source | Nature | Statut | Ce qu'elle porte |
 |---|---|---|---|
-| `docs/architecture/specs/telemetrie.md` | spec pré-build | cadre à compléter | Trois piliers d'activation composites, principe occurrence sans contenu narratif, cinq des six points tranchés (2026-09-03), seul le schéma d'événements ouvert |
-| `docs/architecture/specs/repli-temps-reel.md` §4-5 | spec pré-build | cadre à compléter | Seuil de coût comme livrable de configuration, configuration sobre actée, quatre points ouverts |
+| `docs/architecture/specs/telemetrie.md` | spec pré-build | cinq points sur six tranchés (2026-09-03) | Trois piliers d'activation composites, principe occurrence sans contenu narratif, cinq des six points tranchés (2026-09-03), seul le schéma d'événements ouvert |
+| `docs/architecture/specs/repli-temps-reel.md` §1-2, §4-5 | spec pré-build | cadre à compléter | Seuil de coût comme livrable de configuration, configuration sobre actée, quatre points ouverts |
 | ADR-006 — Périmètre MVP | décision produit, fusionnée en vision | Accepté | Origine de l'instrumentation compensatoire par pilier et de la capture email/analytics anonyme |
 | ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | Origine du seuil de coût par session concurrente et de la configuration sobre |
 | `docs/besoin/nfr/NFR-CONF-02` | NFR produit | — | Principe d'isolation des données en mode local, contrainte sur les mesures d'usage |
@@ -590,7 +596,7 @@ Les vingt fiches NFR du corpus de conception (`docs/besoin/nfr/`) portent les id
 | NFR-PERF-03 | Continuité sans interruption lors des actions en session | `[À TRANCHER — seuil de performance non chiffré dans le corpus]` |
 | NFR-PERF-04 | Résultats de recherche immédiats — recherche titre-only au MVP (renvoi §4, UC-14) | `[À TRANCHER — seuil de performance non chiffré dans le corpus]` |
 
-Les quatre seuils chiffrés sont ouverts par conception — le corpus ne fixe aucune métrique de latence ou de délai.
+Les quatre seuils chiffrés sont ouverts par conception — le corpus ne fixe aucune métrique de latence ou de délai ([stratégie de test, § 12](../assurance/strategie-de-test.md#12-registre-des-points-ouverts), PO-01).
 
 ### Hors connexion
 
@@ -615,7 +621,7 @@ Le corps technique de CONF-01 à CONF-04 est porté par les §5 et §6 ci-dessus
 | NFR-ACC-03 | Contraste suffisant en conditions de faible éclairage |
 | NFR-ACC-04 | Tailles de texte adaptées à la lecture rapide en session |
 
-Le référentiel WCAG 2.1 niveau AA fournit un cadre de mesure pour ces quatre exigences ; son statut de critère opposable et son calibrage exact restent `[À TRANCHER]`.
+Le référentiel WCAG 2.1 niveau AA fournit un cadre de mesure pour ces quatre exigences, sans s'y substituer : il oriente l'implémentation et n'est pas converti en critère de recette produit ([NFR, § Accessibilité](../besoin/nfr/README.md#4-accessibilité) ; [stratégie de test, § 3.6](../assurance/strategie-de-test.md)).
 
 ### Internationalisation
 
@@ -647,32 +653,31 @@ Les bornes suivantes sont des **décisions de périmètre assumées**, pas des t
 
 Le corpus technique consolidé dans ce cahier est de nature pré-implémentation : les points listés ci-dessous sont à confirmer ou à trancher à l'entrée en construction, section par section. Aucun n'est comblé par ce cahier — chacun est reporté tel qu'il apparaît dans sa source.
 
-### §3 — Contraintes techniques
+### §3 — Contraintes
 
 - Timeout d'expiration du claim `purge_claimed_at` de la saga de suppression — `[À TRANCHER — config-securite-migration.md / ADR-011 B1]`.
 
-### §4 — Modèle de données & domaine
+### §4 — Données
 
-- Schémas de `propertiesSchema` des six types de document système (scène, PNJ, lieu, note, personnage joueur, révélation) — DÉCIDÉ 2026-09-03 : vides au MVP, leur contenu vit dans les blocs ([document-properties-schemas.md, § 5](../architecture/specs/document-properties-schemas.md)).
+Aucun point ouvert dans cette section.
 
-### §5 — Sécurité & autorisation
+### §5 — Sécurité
 
 - Paramètres exacts d'Argon2id (mémoire, itérations, parallélisme) — `[À TRANCHER — B1.5]`.
 - Valeurs exactes des seuils de rate limiting (par-IP, par-compte, borne supérieure) — `[À TRANCHER — B1.5]`.
 - Valeur exacte du TTL du token de réinitialisation dans la plage 10-15 min — `[À TRANCHER — B1.5]`.
 - Fraîcheur maximale et déclenchement de la ré-authentification IdP pour la définition d'un premier mot de passe sur compte fédéré — `[À TRANCHER — B1.5]`.
-- Résolution reclaim-in-place du cas email OAuth = compte préexistant non vérifié — `[À TRANCHER — à ratifier produit]`.
-- Ajout futur d'un fournisseur OAuth à email de relais non canonique — dette nommée, non déclenchée par le périmètre MVP.
+- Résolution reclaim-in-place du cas email OAuth = compte préexistant non vérifié — `[À TRANCHER — PRODUIT]`.
+- Ajout futur d'un fournisseur OAuth à email de relais non canonique — dette nommée, non déclenchée par le périmètre MVP ([ADR-015, § Points à trancher](../decisions/ADR-015-securite-authentification-mvp.md#points-à-trancher)).
 - Bibliothèque de sanitisation exacte côté serveur — `[À TRANCHER — B1.2]` ([sanitisation-csp.md, § 5](../architecture/specs/sanitisation-csp.md)) ; le reste du point (listes blanches, bibliothèque côté client, directives CSP complètes) est tranché.
 
-### §6 — Conformité RGPD technique
+### §6 — Conformité
 
-- Critère opérationnel exact de « document non partagé » : la requête précise reste à écrire à l'implémentation.
-- Seuil d'invocation de l'extension du délai de traitement à 2 mois — à documenter dans la procédure de support.
-- Qualification juridique de l'instant de référence figé en cas de déplacement d'un document entre espace personnel et espace partagé, dans les deux sens — non arbitrée par le mécanisme technique de figement.
-- Trou nommé sur les références nullable entrantes non couvertes par le critère de sélection (colonnes portées par d'autres documents ou par des accès invités pointant vers un document sélectionné pour suppression).
-- Les 5 axes du dossier juridique — `[À TRANCHER — FLAG JURISTE]` : qualification Art. 8 (mineurs), qualification sous-traitant Art. 28 et périmètre du contrat associé (y compris l'espace personnel), mise en balance de l'intérêt légitime (documents conservés + nom d'affichage invité), suffisance Art. 17 du hard-delete inconditionnel de l'espace personnel, sort du contenu d'une coquille reprise par reclaim-in-place.
-- Activation de l'espace personnel comme zone d'atterrissage par défaut et redéfinition de l'hypothèse H1 associée — DÉCIDÉ 2026-06-12 : comportement opérationnel en MVP, arbitré explicitement ([matrice de priorités, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md#espace-personnel--conteneur-par-défaut-et-capture-first-must-have--adr-018)).
+- Critère opérationnel exact de « document non partagé » : la requête précise reste à écrire à l'implémentation — `[À TRANCHER — ADR-012, § Points à trancher]` ([ADR-012](../decisions/ADR-012-rgpd-effacement-compte.md#points-à-trancher)).
+- Seuil d'invocation de l'extension du délai de traitement à 2 mois — à documenter dans la procédure de support — `[À TRANCHER — ADR-012, § Points à trancher]` ([ADR-012](../decisions/ADR-012-rgpd-effacement-compte.md#points-à-trancher)).
+- Qualification juridique de l'instant de référence figé en cas de déplacement d'un document entre espace personnel et espace partagé, dans les deux sens — non arbitrée par le mécanisme technique de figement — `[À VALIDER — JURISTE]` ([ADR-012, § 7](../decisions/ADR-012-rgpd-effacement-compte.md)).
+- Trou nommé sur les références nullable entrantes non couvertes par le critère de sélection (colonnes portées par d'autres documents ou par des accès invités pointant vers un document sélectionné pour suppression) — `[À TRANCHER — ticket]` ([requete-effacement-non-partage.md, § 5](../architecture/specs/requete-effacement-non-partage.md)).
+- Les 5 axes du [cadrage de validation juridique pré-lancement EU](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md) — `[À VALIDER — JURISTE]` : qualification Art. 8 (mineurs), qualification sous-traitant Art. 28 et périmètre du contrat associé (y compris l'espace personnel), mise en balance de l'intérêt légitime (documents conservés + nom d'affichage invité), suffisance Art. 17 du hard-delete inconditionnel de l'espace personnel, sort du contenu d'une coquille reprise par reclaim-in-place.
 
 ### §7 — Contrats d'API
 
@@ -683,64 +688,59 @@ Le corpus technique consolidé dans ce cahier est de nature pré-implémentation
 - Schéma exact du corps de réponse 429 — `[À TRANCHER — B1.10]`.
 - Code HTTP exact du rejet silencieux de liaison OAuth — `[À TRANCHER — B1.10]`.
 - Format de l'annotation de sécurité portée par le contrat OpenAPI — `[À TRANCHER — B1.10]`.
-- Comportement de la méthode d'écriture des propriétés en l'absence de type de document déclaré — DÉCIDÉ 2026-09-03 : l'écriture est refusée sans type ([document-properties-schemas.md, § 1](../architecture/specs/document-properties-schemas.md)).
 
-### §8 — Migration & sérialisation
+### §8 — Migration
 
 - Seuil de `schemaVersion` minimale maintenue côté serveur — `[À TRANCHER — P7]`.
 - Horizon de rétention du registre des identifiants de lot de migration — `[À TRANCHER — P7]`.
-- Migration ascendante du payload (compatibilité des versions de `schemaVersion` antérieures) — dette nommée, post-MVP.
+- Migration ascendante du payload (compatibilité des versions de `schemaVersion` antérieures) — dette nommée, post-MVP ([ADR-016, § 1.4](../decisions/ADR-016-serialisation-locale-migration.md) et § Dettes nommées (non silencieuses)).
 
-### §9 — Observabilité & télémétrie
+### §9 — Observabilité
 
-- Valeur du seuil N du pilier préparation — DÉCIDÉ 2026-09-03 : N = 3 documents ([matrice de priorités, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md#instrumentation-de-validation-du-mvp)).
-- Opérationnalisation du critère « usage réel constaté » du pilier vue de session — DÉCIDÉ 2026-09-03 : au moins une action du MJ en session ([matrice de priorités, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md#instrumentation-de-validation-du-mvp)).
-- Outil analytics retenu (sans objet en mode local), technique de traitement des données, mécanisme de capture email non bloquante — DÉCIDÉ 2026-09-03 ([telemetrie.md, § 6](../architecture/specs/telemetrie.md)).
 - Schéma d'événements formalisé (noms exacts, typage) — `[À TRANCHER — telemetrie.md §6]`.
 - Définition de la métrique de coût, valeur du seuil de repli, cadence cible du polling adaptatif, mécanisme de détection du dépassement — `[À TRANCHER — repli-temps-reel.md §5]`.
 
-### §10 — Exigences non-fonctionnelles
+### §10 — Exigences non fonctionnelles
 
-- Les quatre seuils chiffrés de performance perçue (PERF-01 à 04) — `[À TRANCHER — seuil de performance non chiffré dans le corpus]`.
-- Statut du référentiel WCAG 2.1 AA comme critère opposable et son calibrage exact — `[À TRANCHER]`.
+- Les quatre seuils chiffrés de performance perçue (PERF-01 à 04) — `[À TRANCHER — seuil de performance non chiffré dans le corpus]` ([stratégie de test, § 12](../assurance/strategie-de-test.md#12-registre-des-points-ouverts), PO-01).
 
 ---
 
 ## 12. Traçabilité, source vers section
 
-Cette matrice prouve que chaque spec pré-build, chaque section technique du cahier des charges, et chaque décision d'architecture du registre trouve sa ou ses sections d'accueil dans ce cahier. Les ADR précurseurs raffinés par une décision ultérieure sont signalés comme tels — la relation de subsomption est portée, pas aplatie.
+Cette matrice prouve que chaque spec pré-build, chaque section technique du cahier des charges, et chaque décision d'architecture du registre (ADR-001 à ADR-018) trouve sa ou ses sections d'accueil dans ce cahier ; les ADR-019 à ADR-023, de nature méthode, règlent la tenue du corpus et n'y sont pas consolidées. Les ADR précurseurs raffinés par une décision ultérieure sont signalés comme tels — la relation de subsomption est portée, pas aplatie.
 
 ### Specs pré-build
 
 | Source | Type | Section | Nature/Statut |
 |---|---|---|---|
-| `docs/architecture/specs/config-securite-migration.md` | spec | §3, §4, §5, §8 | cadre à compléter |
-| `docs/architecture/specs/contrat-openapi.md` | spec | §5, §7 | cadre à compléter |
-| `docs/architecture/specs/document-properties-schemas.md` | spec | §4, §7 | cadre à compléter |
-| `docs/architecture/specs/mapping-ef-core.md` | spec | §4 | cadre à compléter — empreinte technique de configuration EF Core, portée par renvoi seulement |
+| `docs/architecture/specs/config-securite-migration.md` | spec | §3, §4, §5, §8 | à confirmer à l'entrée en build |
+| `docs/architecture/specs/contrat-openapi.md` | spec | §5, §7 | à confirmer à l'entrée en build |
+| `docs/architecture/specs/document-properties-schemas.md` | spec | §4, §7 | à confirmer à l'entrée en build |
+| `docs/architecture/specs/mapping-ef-core.md` | spec | §4 | à confirmer à l'entrée en build — empreinte technique de configuration EF Core, portée par renvoi seulement |
 | `docs/architecture/specs/repli-temps-reel.md` | spec | §3, §9 | cadre à compléter |
-| `docs/architecture/specs/requete-effacement-non-partage.md` | spec, illustrative non normative | §6 | cadre à compléter |
-| `docs/architecture/specs/sanitisation-csp.md` | spec | §5, §8 | cadre à compléter |
-| `docs/architecture/specs/telemetrie.md` | spec | §9 | cadre à compléter |
+| `docs/architecture/specs/requete-effacement-non-partage.md` | spec, illustrative non normative | §6 | — |
+| `docs/architecture/specs/sanitisation-csp.md` | spec | §5, §8 | à confirmer à l'entrée en build |
+| `docs/architecture/specs/telemetrie.md` | spec | §9 | cinq points sur six tranchés (2026-09-03) |
 
 ### Cahier des charges
 
 | Source | Type | Section | Nature/Statut |
 |---|---|---|---|
 | CdC §6 — Exigences non fonctionnelles | §CdC | §10 | synthèse produit |
-| CdC §7 — Contraintes | §CdC | §1, §2, §3, §5, §6 | synthèse produit, section provisoire |
+| CdC §7 — Contraintes | §CdC | §1, §2, §3, §5, §6, §8, §9 | synthèse produit, section provisoire |
 | CdC §8 — Modèle de données et domaine | §CdC | §4 | synthèse produit |
 
-### Décisions d'architecture (18 ADR)
+### Décisions d'architecture (ADR-001 à ADR-018)
 
 | ADR | Section | Nature/Statut |
 |---|---|---|
 | ADR-001 — Exécution du domaine en mode local | §1, §3, §8 | conception, Accepté |
 | ADR-002 — « Tout est Document » et gouvernance de `properties` | §1, §4, §7 | conception, Accepté |
 | ADR-003 — Stack front : mono-écosystème Angular | §2 | pré-implémentation, Accepté |
-| ADR-004 — Transport temps réel : SignalR | §2, §3, §9 | pré-implémentation, Accepté |
-| ADR-005 — Modèle de monétisation | §3 (renvoi seul — quotas) | décision produit, fusionnée en vision — empreinte technique faible, traitée en renvoi |
-| ADR-006 — Périmètre MVP | §9 (renvoi seul — origine de l'instrumentation) | décision produit, fusionnée en vision — empreinte technique faible, traitée en renvoi |
+| ADR-004 — Transport temps réel : SignalR | §2, §3, §7, §9 | pré-implémentation, Accepté |
+| ADR-005 — Modèle de monétisation | §3 (renvoi seul — quotas) | décision produit, fusionnée en vision, Accepté — empreinte technique faible, traitée en renvoi |
+| ADR-006 — Périmètre MVP | §9 (renvoi seul — origine de l'instrumentation) | décision produit, fusionnée en vision, Accepté — empreinte technique faible, traitée en renvoi |
 | ADR-007 — RGPD et modèle d'autorisation API | §5, §6 | conception, Accepté — **précurseur**, formalisé par ADR-012 et ADR-013 (RGPD, §6) ainsi que par ADR-014 et ADR-015 (modèle d'autorisation et sécurité authentification, §5) ; relation de subsomption portée, non aplatie |
 | ADR-008 — Structure physique de la solution | §1, §2, §3 | pré-implémentation, Accepté |
 | ADR-009 — FK `spaces.ownerId → users` | §4 | conception, Accepté — **précurseur**, raffiné par ADR-011 (matrice de cascade complète) et ADR-018 (renommage `Space`) ; relation de subsomption portée, non aplatie |
@@ -752,6 +752,6 @@ Cette matrice prouve que chaque spec pré-build, chaque section technique du cah
 | ADR-015 — Sécurité authentification MVP | §2, §5, §7 | pré-implémentation, Accepté |
 | ADR-016 — Sérialisation locale et contrat de migration | §5, §7, §8 | mixte, dominante pré-implémentation, Accepté |
 | ADR-017 — Modèle IndexedDB local | §3, §5, §8 | mixte, dominante pré-implémentation, Accepté |
-| ADR-018 — Généralisation de `Campaign` en `Space` | §4, §6, §11 | mixte (dominante pré-implémentation), Accepté |
+| ADR-018 — Généralisation de `Campaign` en `Space` | §4, §6, §8 | mixte (dominante pré-implémentation), Accepté |
 
 *Fin de la présente version. Ce cahier consolide §0 à §12 du corpus technique. Toute évolution ultérieure du corpus (nouvelle décision, levée d'un point `[À TRANCHER]`, ADR post-MVP) est répercutée dans ce cahier lors de sa prochaine mise à jour, jamais anticipée ici.*
