@@ -337,11 +337,11 @@ Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Co
 
 | Commande | Ce qu'elle contrôle | Sortie attendue |
 |---|---|---|
-| `dotnet test tools/Tests/CaracterisationOutils.csproj` | Les golden masters de l'outillage, y compris sur le corpus réel | tous les tests passent |
-| `dotnet run --project tools/VerifCorpus` | Les liens, ancres et orphelins, ainsi que l'équilibre des blocs de code | code 0 |
-| `dotnet run --project tools/VerifMailleAgregat` | La maille du plan de travail et les conflits recalculés | code 0 |
-| `dotnet run --project tools/VerifMarqueursIdentifiants` | Les marqueurs de statut hors de la liste fermée de l'ADR-019 § 5, et les identifiants définis deux fois, confrontés aux listes de référence versionnées à côté de l'outil | code 0 ; code 1 sur un écart absent de ces listes (il est nommé en sortie) |
-| `dotnet run --project tools/VerifCouvertureRecette` | La couverture des cas de recette par le plan de travail, et les sources déclarées retirées dans le cahier (il ne compare pas les citations de scénarios Gherkin à leur source) | code 1 tant que des `TROU` ou `SOURCE RETIRÉE` sont assumés ; ils sont listés en sortie |
+| `dotnet run --file tools/Tests/Tests.cs` | Les golden masters de l'outillage, y compris sur le corpus réel | tous les tests passent |
+| `dotnet run --file tools/VerifCorpus/VerifCorpus.cs` | Les liens, ancres et orphelins, ainsi que l'équilibre des blocs de code | code 0 |
+| `dotnet run --file tools/VerifMailleAgregat/VerifMailleAgregat.cs` | La maille du plan de travail et les conflits recalculés | code 0 |
+| `dotnet run --file tools/VerifMarqueursIdentifiants/VerifMarqueursIdentifiants.cs` | Les marqueurs de statut hors de la liste fermée de l'ADR-019 § 5, et les identifiants définis deux fois, confrontés aux listes de référence versionnées à côté de l'outil | code 0 ; code 1 sur un écart absent de ces listes (il est nommé en sortie) |
+| `dotnet run --file tools/VerifCouvertureRecette/VerifCouvertureRecette.cs` | La couverture des cas de recette par le plan de travail, et les sources déclarées retirées dans le cahier (il ne compare pas les citations de scénarios Gherkin à leur source) | code 1 tant que des `TROU` ou `SOURCE RETIRÉE` sont assumés ; ils sont listés en sortie |
 
 ---
 
