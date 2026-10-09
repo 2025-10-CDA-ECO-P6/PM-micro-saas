@@ -30,16 +30,26 @@ journey
         Renseigner le titre: 5: Émilie, Antoine, Nadia
     section Structure
         Rester en mode monobloc: 5: Émilie, Nadia
-        Ajouter une première scène: 2: Émilie, 5: Antoine, 3: Nadia
-        Ordonner les scènes: 2: Émilie, 5: Antoine, 3: Nadia
+        Ajouter une première scène: 2: Émilie
+        Ajouter une première scène: 5: Antoine
+        Ajouter une première scène: 3: Nadia
+        Ordonner les scènes: 2: Émilie
+        Ordonner les scènes: 5: Antoine
+        Ordonner les scènes: 3: Nadia
     section Contenu
-        Écrire le contenu des blocs: 5: Émilie, 4: Antoine, 5: Nadia
-        Lier des PNJ et lieux existants: 3: Émilie, 5: Antoine, 2: Nadia
-        Définir la visibilité du document: 3: Émilie, 4: Antoine, 3: Nadia
+        Écrire le contenu des blocs: 5: Émilie, Nadia
+        Écrire le contenu des blocs: 4: Antoine
+        Lier des PNJ et lieux existants: 3: Émilie
+        Lier des PNJ et lieux existants: 5: Antoine
+        Lier des PNJ et lieux existants: 2: Nadia
+        Définir la visibilité du document: 3: Émilie, Nadia
+        Définir la visibilité du document: 4: Antoine
     section Sauvegarde
-        Définir un statut: 2: Émilie, 4: Antoine, 3: Nadia
-        Sauvegarder: 5: Émilie, 5: Antoine, 5: Nadia
-        Retrouver le scénario dans l'espace: 5: Émilie, 5: Antoine, 5: Nadia
+        Définir un statut: 2: Émilie
+        Définir un statut: 4: Antoine
+        Définir un statut: 3: Nadia
+        Sauvegarder: 5: Émilie, Antoine, Nadia
+        Retrouver le scénario dans l'espace: 5: Émilie, Antoine, Nadia
 ```
 
 ## Flux fonctionnel

@@ -22,18 +22,27 @@ Parcours du MJ et du joueur depuis le déclenchement d'une recherche jusqu'à l'
 journey
     title Rechercher rapidement une information
     section Declencher la recherche
-        Ouvrir la barre de recherche depuis la bibliotheque: 5: Thomas, 4: Nadia
-        Ouvrir la barre de recherche depuis la vue session: 4: Émilie, 3: Thomas
+        Ouvrir la barre de recherche depuis la bibliotheque: 5: Thomas
+        Ouvrir la barre de recherche depuis la bibliotheque: 4: Nadia
+        Ouvrir la barre de recherche depuis la vue session: 4: Émilie
+        Ouvrir la barre de recherche depuis la vue session: 3: Thomas
     section Saisir les criteres
-        Taper un titre ou une partie de titre: 5: Thomas, 5: Émilie, 4: Nadia
-        Appliquer un filtre de type optionnel: 4: Thomas, 2: Émilie, 3: Nadia
+        Taper un titre ou une partie de titre: 5: Thomas, Émilie
+        Taper un titre ou une partie de titre: 4: Nadia
+        Appliquer un filtre de type optionnel: 4: Thomas
+        Appliquer un filtre de type optionnel: 2: Émilie
+        Appliquer un filtre de type optionnel: 3: Nadia
     section Consulter les resultats
         Voir les resultats ponderes en haut pour la session active: 5: Émilie
-        Voir les resultats regroupes par type: 5: Thomas, 4: Nadia
-        Constater un etat vide et ajuster la recherche: 2: Thomas, 2: Nadia, 1: Émilie
+        Voir les resultats regroupes par type: 5: Thomas
+        Voir les resultats regroupes par type: 4: Nadia
+        Constater un etat vide et ajuster la recherche: 2: Thomas, Nadia
+        Constater un etat vide et ajuster la recherche: 1: Émilie
     section Acceder au document
-        Ouvrir le document depuis la bibliotheque: 5: Thomas, 4: Nadia
-        Ouvrir le document dans le panneau lateral en session: 5: Émilie, 3: Thomas
+        Ouvrir le document depuis la bibliotheque: 5: Thomas
+        Ouvrir le document depuis la bibliotheque: 4: Nadia
+        Ouvrir le document dans le panneau lateral en session: 5: Émilie
+        Ouvrir le document dans le panneau lateral en session: 3: Thomas
         Fermer le panneau lateral sans perdre le contexte de session: 5: Émilie
 ```
 

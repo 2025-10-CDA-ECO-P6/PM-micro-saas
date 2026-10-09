@@ -26,19 +26,20 @@ journey
         Vouloir acceder depuis un autre appareil: 5: Thomas
         Cliquer sur un lien d invitation de campagne: 5: Lucas
     section Inscription email et mot de passe
-        Ouvrir le formulaire d inscription: 5: Émilie, 5: Thomas, 4: Lucas
-        Saisir email, nom d affichage, mot de passe: 4: Émilie, 4: Thomas, 4: Lucas
-        Soumettre et obtenir acces immediat: 5: Émilie, 5: Thomas, 5: Lucas
+        Ouvrir le formulaire d inscription: 5: Émilie, Thomas
+        Ouvrir le formulaire d inscription: 4: Lucas
+        Saisir email, nom d affichage, mot de passe: 4: Émilie, Thomas, Lucas
+        Soumettre et obtenir acces immediat: 5: Émilie, Thomas, Lucas
     section Migration avec gate de reconnaissance des donnees locales
         Confirmer les donnees locales detectees avant import: 5: Émilie
         Retrouver son espace intact dans le cloud: 5: Émilie
     section Connexion ulterieure
-        Saisir email et mot de passe: 4: Émilie, 4: Thomas
+        Saisir email et mot de passe: 4: Émilie, Thomas
         Se connecter via un fournisseur d identite externe: 5: Thomas
-        Acceder au tableau de bord: 5: Émilie, 5: Thomas, 5: Lucas
+        Acceder au tableau de bord: 5: Émilie, Thomas, Lucas
     section Gestion du compte
         Reinitialiser son mot de passe: 3: Émilie
-        Mettre a jour son nom d affichage: 4: Émilie, 4: Thomas
+        Mettre a jour son nom d affichage: 4: Émilie, Thomas
 ```
 
 ---

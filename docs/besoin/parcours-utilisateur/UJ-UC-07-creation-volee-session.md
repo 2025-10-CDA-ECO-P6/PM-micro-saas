@@ -22,15 +22,27 @@ Parcours du MJ depuis le déclencheur de création rapide en session jusqu'à la
 journey
     title Créer un élément à la volée — UC-07
     section Déclencheur
-        Repérer le point d'entrée de création en session: 4: Émilie, 3: Antoine, 2: Nadia
-        Ouvrir le panneau de création rapide: 5: Émilie, 4: Antoine, 3: Nadia
+        Repérer le point d'entrée de création en session: 4: Émilie
+        Repérer le point d'entrée de création en session: 3: Antoine
+        Repérer le point d'entrée de création en session: 2: Nadia
+        Ouvrir le panneau de création rapide: 5: Émilie
+        Ouvrir le panneau de création rapide: 4: Antoine
+        Ouvrir le panneau de création rapide: 3: Nadia
     section Création
-        Choisir le type de document: 4: Émilie, 5: Antoine, 3: Nadia
-        Saisir le titre seul et valider: 5: Émilie, 4: Antoine, 4: Nadia
-        Document créé et épinglé automatiquement: 5: Émilie, 5: Antoine, 4: Nadia
+        Choisir le type de document: 4: Émilie
+        Choisir le type de document: 5: Antoine
+        Choisir le type de document: 3: Nadia
+        Saisir le titre seul et valider: 5: Émilie
+        Saisir le titre seul et valider: 4: Antoine, Nadia
+        Document créé et épinglé automatiquement: 5: Émilie, Antoine
+        Document créé et épinglé automatiquement: 4: Nadia
     section Intégration post-session
-        Retrouver le document dans le bon dossier: 3: Émilie, 5: Antoine, 4: Nadia
-        Enrichir le document hors session: 2: Émilie, 4: Antoine, 3: Nadia
+        Retrouver le document dans le bon dossier: 3: Émilie
+        Retrouver le document dans le bon dossier: 5: Antoine
+        Retrouver le document dans le bon dossier: 4: Nadia
+        Enrichir le document hors session: 2: Émilie
+        Enrichir le document hors session: 4: Antoine
+        Enrichir le document hors session: 3: Nadia
 ```
 
 ## Flux fonctionnel

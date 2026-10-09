@@ -22,17 +22,30 @@ Parcours du MJ depuis la découverte des dossiers de son espace jusqu'à la pers
 journey
     title Organiser le contenu en dossiers — UC-05
     section Configuration initiale
-        Espace créé — dossiers système disponibles: 5: Antoine, 5: Nadia, 3: Thomas
-        Renommer un dossier système: 4: Antoine, 1: Nadia, 5: Thomas
-        Supprimer un dossier système inutile: 3: Antoine, 1: Nadia, 4: Thomas
+        Espace créé — dossiers système disponibles: 5: Antoine, Nadia
+        Espace créé — dossiers système disponibles: 3: Thomas
+        Renommer un dossier système: 4: Antoine
+        Renommer un dossier système: 1: Nadia
+        Renommer un dossier système: 5: Thomas
+        Supprimer un dossier système inutile: 3: Antoine
+        Supprimer un dossier système inutile: 1: Nadia
+        Supprimer un dossier système inutile: 4: Thomas
     section Personnalisation
-        Créer un dossier thématique: 5: Antoine, 1: Nadia, 4: Thomas
-        Associer un template à un dossier: 5: Antoine, 1: Nadia, 2: Thomas
-        Réordonner les dossiers: 4: Antoine, 1: Nadia, 3: Thomas
+        Créer un dossier thématique: 5: Antoine
+        Créer un dossier thématique: 1: Nadia
+        Créer un dossier thématique: 4: Thomas
+        Associer un template à un dossier: 5: Antoine
+        Associer un template à un dossier: 1: Nadia
+        Associer un template à un dossier: 2: Thomas
+        Réordonner les dossiers: 4: Antoine
+        Réordonner les dossiers: 1: Nadia
+        Réordonner les dossiers: 3: Thomas
     section Organisation courante
-        Créer un document dans un dossier avec template: 5: Antoine, 3: Nadia, 3: Thomas
-        Déplacer un document vers un autre dossier: 4: Antoine, 3: Nadia, 3: Thomas
-        Retrouver un document dans la bonne catégorie: 4: Antoine, 4: Nadia, 4: Thomas
+        Créer un document dans un dossier avec template: 5: Antoine
+        Créer un document dans un dossier avec template: 3: Nadia, Thomas
+        Déplacer un document vers un autre dossier: 4: Antoine
+        Déplacer un document vers un autre dossier: 3: Nadia, Thomas
+        Retrouver un document dans la bonne catégorie: 4: Antoine, Nadia, Thomas
 ```
 
 ## Flux fonctionnel

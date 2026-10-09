@@ -22,9 +22,11 @@ Parcours couvrant deux flux distincts : l'accès d'un joueur via lien ponctuel s
 journey
     title Acces a une session en tant que joueur
     section MJ genere le lien de session
-        Ouvrir la vue session: 5: Émilie, 4: Thomas
-        Cliquer Generer un lien de session: 5: Émilie, 5: Thomas
-        Copier le lien et le partager: 5: Émilie, 4: Thomas
+        Ouvrir la vue session: 5: Émilie
+        Ouvrir la vue session: 4: Thomas
+        Cliquer Generer un lien de session: 5: Émilie, Thomas
+        Copier le lien et le partager: 5: Émilie
+        Copier le lien et le partager: 4: Thomas
     section Joueur rejoint via lien ponctuel
         Cliquer sur le lien recu: 5: Lucas
         Voir la page d acces sans inscription: 5: Lucas

@@ -34,22 +34,39 @@ Parcours du MJ depuis le lancement d'une session jusqu'à sa fermeture, en passa
 journey
     title Vue session — UC-06
     section Lancement
-        Ouvrir l'écran de lancement: 5: Émilie, 4: Thomas, 5: Nadia
-        Saisir le titre et sélectionner un scénario: 4: Émilie, 5: Thomas, 3: Nadia
-        Session créée en LIVE — vue ouverte: 5: Émilie, 3: Thomas, 5: Nadia
+        Ouvrir l'écran de lancement: 5: Émilie, Nadia
+        Ouvrir l'écran de lancement: 4: Thomas
+        Saisir le titre et sélectionner un scénario: 4: Émilie
+        Saisir le titre et sélectionner un scénario: 5: Thomas
+        Saisir le titre et sélectionner un scénario: 3: Nadia
+        Session créée en LIVE — vue ouverte: 5: Émilie, Nadia
+        Session créée en LIVE — vue ouverte: 3: Thomas
     section Navigation
-        Découvrir les panneaux configurés: 3: Émilie, 5: Thomas, 3: Nadia
-        Configurer les panneaux en direct (configuration de la vue session): 2: Émilie, 4: Thomas, 2: Nadia
-        Naviguer dans un dossier pour retrouver un document: 4: Émilie, 5: Thomas, 2: Nadia
+        Découvrir les panneaux configurés: 3: Émilie, Nadia
+        Découvrir les panneaux configurés: 5: Thomas
+        Configurer les panneaux en direct (configuration de la vue session): 2: Émilie, Nadia
+        Configurer les panneaux en direct (configuration de la vue session): 4: Thomas
+        Naviguer dans un dossier pour retrouver un document: 4: Émilie
+        Naviguer dans un dossier pour retrouver un document: 5: Thomas
+        Naviguer dans un dossier pour retrouver un document: 2: Nadia
     section Notes et épingles
-        Créer une note de session privé MJ: 5: Émilie, 3: Thomas, 4: Nadia
-        Basculer une note de session en visible par les joueurs: 4: Émilie, 3: Thomas, 3: Nadia
-        Épingler un document depuis un panneau: 4: Émilie, 4: Thomas, 3: Nadia
-        Retrouver un document épinglé rapidement: 5: Émilie, 4: Thomas, 4: Nadia
+        Créer une note de session privé MJ: 5: Émilie
+        Créer une note de session privé MJ: 3: Thomas
+        Créer une note de session privé MJ: 4: Nadia
+        Basculer une note de session en visible par les joueurs: 4: Émilie
+        Basculer une note de session en visible par les joueurs: 3: Thomas, Nadia
+        Épingler un document depuis un panneau: 4: Émilie, Thomas
+        Épingler un document depuis un panneau: 3: Nadia
+        Retrouver un document épinglé rapidement: 5: Émilie
+        Retrouver un document épinglé rapidement: 4: Thomas, Nadia
     section Fin de session
-        Terminer la session (LIVE → CLOSED): 4: Émilie, 4: Thomas, 5: Nadia
-        Ajouter une note rétroactive en CLOSED: 3: Émilie, 4: Thomas, 2: Nadia
-        Archiver la session (CLOSED → ARCHIVED): 3: Émilie, 4: Thomas, 3: Nadia
+        Terminer la session (LIVE → CLOSED): 4: Émilie, Thomas
+        Terminer la session (LIVE → CLOSED): 5: Nadia
+        Ajouter une note rétroactive en CLOSED: 3: Émilie
+        Ajouter une note rétroactive en CLOSED: 4: Thomas
+        Ajouter une note rétroactive en CLOSED: 2: Nadia
+        Archiver la session (CLOSED → ARCHIVED): 3: Émilie, Nadia
+        Archiver la session (CLOSED → ARCHIVED): 4: Thomas
 ```
 
 ## Flux fonctionnel

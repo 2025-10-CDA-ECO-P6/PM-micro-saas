@@ -27,21 +27,36 @@ journey
     section Création
         Ouvrir l'espace: 5: Émilie, Antoine, Nadia
         Accéder à la bibliothèque ou à un dossier: 5: Émilie, Antoine, Nadia
-        Note rapide sans formulaire: 5: Émilie, 2: Antoine, 3: Nadia
-        Création complète titre + type: 2: Émilie, 5: Antoine, 3: Nadia
+        Note rapide sans formulaire: 5: Émilie
+        Note rapide sans formulaire: 2: Antoine
+        Note rapide sans formulaire: 3: Nadia
+        Création complète titre + type: 2: Émilie
+        Création complète titre + type: 5: Antoine
+        Création complète titre + type: 3: Nadia
     section Configuration
-        Choisir un type de document: 2: Émilie, 5: Antoine, 2: Nadia
-        Ajouter des blocs libres: 5: Émilie, 4: Antoine, 5: Nadia
-        Renseigner des propriétés structurées: 1: Émilie, 5: Antoine, 1: Nadia
-        Ajouter des tags: 2: Émilie, 4: Antoine, 2: Nadia
-        Lier des documents existants: 2: Émilie, 5: Antoine, 2: Nadia
+        Choisir un type de document: 2: Émilie, Nadia
+        Choisir un type de document: 5: Antoine
+        Ajouter des blocs libres: 5: Émilie, Nadia
+        Ajouter des blocs libres: 4: Antoine
+        Renseigner des propriétés structurées: 1: Émilie, Nadia
+        Renseigner des propriétés structurées: 5: Antoine
+        Ajouter des tags: 2: Émilie, Nadia
+        Ajouter des tags: 4: Antoine
+        Lier des documents existants: 2: Émilie, Nadia
+        Lier des documents existants: 5: Antoine
     section Visibilité
-        Laisser privé par défaut: 5: Émilie, 4: Antoine, 5: Nadia
-        Rendre visible par les joueurs: 3: Émilie, 4: Antoine, 3: Nadia
+        Laisser privé par défaut: 5: Émilie, Nadia
+        Laisser privé par défaut: 4: Antoine
+        Rendre visible par les joueurs: 3: Émilie, Nadia
+        Rendre visible par les joueurs: 4: Antoine
     section Retrouver
-        Rechercher par titre: 3: Émilie, 4: Antoine, 2: Nadia
-        Naviguer depuis un lien: 2: Émilie, 5: Antoine, 2: Nadia
-        Retrouver après longue absence: 3: Émilie, 3: Antoine, 2: Nadia
+        Rechercher par titre: 3: Émilie
+        Rechercher par titre: 4: Antoine
+        Rechercher par titre: 2: Nadia
+        Naviguer depuis un lien: 2: Émilie, Nadia
+        Naviguer depuis un lien: 5: Antoine
+        Retrouver après longue absence: 3: Émilie, Antoine
+        Retrouver après longue absence: 2: Nadia
 ```
 
 ## Flux fonctionnel

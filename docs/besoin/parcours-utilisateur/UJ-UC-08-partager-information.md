@@ -22,19 +22,28 @@ Parcours du MJ depuis l'identification d'un document à partager jusqu'à la con
 journey
     title Partager une information avec les joueurs
     section Identifier le contenu a partager
-        Ouvrir un document depuis la bibliotheque: 5: Thomas, 4: Nadia
-        Trouver le document depuis la vue session: 4: Émilie, 3: Thomas
+        Ouvrir un document depuis la bibliotheque: 5: Thomas
+        Ouvrir un document depuis la bibliotheque: 4: Nadia
+        Trouver le document depuis la vue session: 4: Émilie
+        Trouver le document depuis la vue session: 3: Thomas
     section Partager
-        Cliquer Partager: 5: Thomas, 5: Émilie, 5: Nadia
-        Confirmer si demande: 3: Thomas, 2: Émilie, 4: Nadia
-        Constater la confirmation visuelle: 4: Thomas, 4: Émilie, 3: Nadia
+        Cliquer Partager: 5: Thomas, Émilie, Nadia
+        Confirmer si demande: 3: Thomas
+        Confirmer si demande: 2: Émilie
+        Confirmer si demande: 4: Nadia
+        Constater la confirmation visuelle: 4: Thomas, Émilie
+        Constater la confirmation visuelle: 3: Nadia
     section Verifier la visibilite joueur
-        Document visible dans l'espace joueur: 5: Thomas, 4: Nadia
-        Document epingle dans la vue session: 5: Émilie, 4: Thomas
+        Document visible dans l'espace joueur: 5: Thomas
+        Document visible dans l'espace joueur: 4: Nadia
+        Document epingle dans la vue session: 5: Émilie
+        Document epingle dans la vue session: 4: Thomas
     section Retirer le partage
-        Trouver le document partage: 4: Thomas, 3: Nadia
-        Cliquer Retirer le partage: 5: Thomas, 4: Nadia
-        Constater que le document est redevenu prive: 4: Thomas, 4: Nadia
+        Trouver le document partage: 4: Thomas
+        Trouver le document partage: 3: Nadia
+        Cliquer Retirer le partage: 5: Thomas
+        Cliquer Retirer le partage: 4: Nadia
+        Constater que le document est redevenu prive: 4: Thomas, Nadia
 ```
 
 ---
