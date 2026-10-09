@@ -13,7 +13,7 @@ classDiagram
         +AccountTier tier
         +date createdAt
         +date updatedAt
-        +Register(email, displayName)$
+        +Register(userId, email, displayName)$
         +VerifyEmail()
         +UpdateDisplayName(name)
         +ChangeEmail(newEmail)

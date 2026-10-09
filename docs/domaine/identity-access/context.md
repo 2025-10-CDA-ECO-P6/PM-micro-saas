@@ -51,7 +51,7 @@ Ce contexte n'a qu'un agrégat, `User`.
 
 | Méthode | Événement produit | Description |
 |---|---|---|
-| `Register(email, displayName)` | `UserRegistered` | Crée un nouveau compte. Tier initial = FREE. `emailVerified = false`. |
+| `Register(userId, email, displayName)` | `UserRegistered` | Crée un nouveau compte. `userId` est l'identifiant déjà attribué par le référentiel d'identité de l'infrastructure (champ `id`). Tier initial = FREE. `emailVerified = false`. |
 | `VerifyEmail()` | `EmailVerified` | Marque l'adresse de messagerie comme vérifiée. `emailVerified` passe à `true`. Appelée après confirmation par lien, ou dès la création d'un compte fédéré quand le fournisseur certifie l'adresse (email réputé vérifié, [ADR-015](../../decisions/ADR-015-securite-authentification-mvp.md) § 2.2) — ce qui permet ensuite `LinkFederatedIdentity`. |
 | `UpdateDisplayName(name)` | `DisplayNameUpdated` | Met à jour le nom d'affichage. |
 | `ChangeEmail(newEmail)` | `EmailChangeRequested` | Demande un changement d'adresse de messagerie. Exige `emailVerified = true`. Repasse `emailVerified` à `false` jusqu'à confirmation de la nouvelle adresse. |
