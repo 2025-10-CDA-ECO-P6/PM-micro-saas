@@ -80,7 +80,7 @@ Le MJ veut activer la sauvegarde cloud ou le partage joueurs. Le joueur veut acc
 
 ## Scénario nominal — Inscription sans données locales
 
-> Un nouvel inscrit sans données locales à migrer est redirigé **directement** vers l'écran de création de campagne — aucun écran de bienvenue ne s'intercale. UC-10 fait foi sur cette cible.
+> Un nouvel inscrit sans données locales à migrer est redirigé **directement** vers l'écran de création de campagne — aucun écran de bienvenue ne s'intercale. UC-10 fait foi sur cette cible. Exception : un joueur qui s'inscrit depuis un lien d'invitation à portée `SPACE` rejoint l'espace qui l'invite (A3).
 
 1. L'utilisateur accède à la page d'inscription.
 2. Il renseigne email, nom d'affichage, mot de passe.
@@ -122,7 +122,7 @@ L'utilisateur modifie son nom d'affichage ou son mot de passe depuis la page pro
 
 ### A3 — Joueur créant un compte depuis un lien d'invitation
 
-Un joueur invité sans compte clique sur un lien d'invitation, crée un compte et rejoint l'espace en une seule action. Son accès invité est transformé en accès membre.
+Un joueur sans compte clique sur un lien d'invitation à portée `SPACE`, crée un compte et rejoint l'espace en une seule action : ce lien, généré par le MJ, vaut son consentement (RB-09-16, RB-11-03). Un joueur qui crée son compte depuis un accès invité de session (UC-09 A2) conserve ses accès existants, mais ne devient `Member` qu'avec le consentement du MJ.
 
 ### A4 — Suppression du compte (droit à l'effacement RGPD)
 

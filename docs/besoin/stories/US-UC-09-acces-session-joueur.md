@@ -76,7 +76,9 @@ flowchart TD
 
     K --> O{Joueur veut creer un compte ?}
     O -->|Oui| P[Migration invite vers compte\nUS-09-04]
-    P --> M
+    P --> V{MJ valide l adhesion ?\nRB-09-16}
+    V -->|Oui| M
+    V -->|Pas encore| W[Acces invite conserve\nGuestAccess CONVERTED]
     O -->|Non| Q[Acces expire apres session + 24h]
 ```
 

@@ -69,7 +69,10 @@ flowchart TD
     LV -->|Oui| M[Liaison au compte existant\nRB-10-08 branche a]
     LV -->|Non| LR[Liaison refusee, aucun doublon cree\nresolution non ratifiee\nRB-10-08 branche b]
 
-    K --> N{Donnees locales\nexistantes ?}
+    K --> INV{Inscription depuis\nun lien SPACE ?}
+    INV -->|Oui| JOIN[Rejoint l espace qui l invite\nA3 — RB-11-03]
+    JOIN --> Q
+    INV -->|Non| N{Donnees locales\nexistantes ?}
     N -->|Oui| O[Gate de reconnaissance\nEspaces + historique de session\nsessions, notes, epingles\nConfirmation requise\nRB-10-04 / ADR-016 §4]
     N -->|Non| RCC[Ecran creation de campagne\nFormulaire de creation premiere campagne]
     O --> P[Evenement publie\nSpace Management\ninitialise tableau de bord]

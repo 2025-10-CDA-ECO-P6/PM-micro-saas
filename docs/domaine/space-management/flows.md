@@ -117,10 +117,11 @@ sequenceDiagram
     App->>IA: User.Register(userId, email, displayName)
     IA-->>App: UserRegistered
     App->>SM: ConvertGuestAccessToMembership(userId, guestToken)
-    SM->>SM: GuestAccess.Convert(userId)
-    SM->>SM: Space.AddMember(userId, PLAYER)
+    SM->>SM: GuestAccess.Convert(userId) — status CONVERTED
+    SM->>SM: Space.AddMember(userId, PLAYER) — SpaceMembership en PENDING
     SM-->>App: GuestAccessConvertedToMember + MemberJoined
-    App-->>Joueur: Compte créé — membre permanent de l'espace
+    App-->>Joueur: Compte créé — accès invité conservé, adhésion en attente du MJ
+    Note over SM: Activate() par le MJ, hors de ce flux (invariant 8, RB-09-16)
 ```
 
 ## Flux 7 — Associer un personnage à un membre

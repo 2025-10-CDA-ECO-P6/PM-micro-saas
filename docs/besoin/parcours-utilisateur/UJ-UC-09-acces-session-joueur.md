@@ -81,7 +81,9 @@ flowchart TD
 
     N --> S{Joueur veut creer un compte ?}
     S -->|Oui| T["Migration GuestAccess vers compte\nNotes preservees (hors MVP) — US-09-04"]
-    T --> P
+    T --> V{MJ valide l adhesion ?\nRB-09-16}
+    V -->|Oui| P
+    V -->|Pas encore| W[Acces invite conserve\nGuestAccess CONVERTED]
     S -->|Non| U[Acces expire apres session + 24h de grace]
 ```
 

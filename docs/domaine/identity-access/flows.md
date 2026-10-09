@@ -139,7 +139,7 @@ sequenceDiagram
     App->>IA: User.Register(userId, email, displayName)
     IA-->>App: UserRegistered event
     App->>SM: ConvertGuestAccessToMembership(userId, guestToken)
-    SM->>SM: GuestAccess → SpaceMembership
+    SM->>SM: GuestAccess → CONVERTED, SpaceMembership en PENDING
     SM-->>App: OK
-    App-->>Joueur: Compte créé, membre permanent de l'espace
+    App-->>Joueur: Compte créé — accès invité conservé, adhésion en attente du MJ
 ```
