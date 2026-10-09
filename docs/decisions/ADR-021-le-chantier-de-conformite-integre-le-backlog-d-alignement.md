@@ -6,11 +6,11 @@
 
 ## Contexte
 
-Le backlog d'onboarding (docs/project/backlog/, 92 entrées) et la mise en conformité touchent les mêmes documents : une correction faite avant un déplacement doit être redéplacée, et un gabarit appliqué avant une correction de contenu doit être repris.
+Le backlog d'onboarding (`docs/project/backlog/README.md @ 51a7cdc`, 92 entrées) et la mise en conformité touchent les mêmes documents : une correction faite avant un déplacement doit être redéplacée, et un gabarit appliqué avant une correction de contenu doit être repris.
 
 ## Décision
 
-Le chantier de conformité intègre le backlog d'alignement : la sélection est d'abord réécrite vers les chemins cibles, puis viennent les déplacements (F1, avec relink et mise à jour de l'outillage C#) et les identifiants (F4). Ensuite, pour chaque couche, une seule tâche applique les gabarits (F2) et les entrées de docs/project/backlog/ qui portent sur ses documents. Les doublons (F3), les documents générés (F5) et la mise en CI des contrôles viennent en dernier. Chaque tâche est un commit vérifié par conform-verify et par les quatre contrôles du corpus.
+Le chantier de conformité intègre le backlog d'alignement : la sélection est d'abord réécrite vers les chemins cibles, puis viennent les déplacements (F1, avec relink et mise à jour de l'outillage C#) et les identifiants (F4). Ensuite, pour chaque couche, une seule tâche applique les gabarits (F2) et les entrées du backlog (`docs/project/backlog/README.md @ 51a7cdc`) qui portent sur ses documents. Les doublons (F3), les documents générés (F5) et la mise en CI des contrôles viennent en dernier. Chaque tâche est un commit vérifié par conform-verify et par les quatre contrôles du corpus.
 
 **Raison.** Les déplacements d'abord : toute opération suivante s'adresse aux chemins définitifs. Une seule passe par document pour les gabarits et le backlog évite de reprendre deux fois les mêmes fichiers.
 

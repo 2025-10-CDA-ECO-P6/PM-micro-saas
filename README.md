@@ -59,7 +59,7 @@ Choisissez le parcours qui correspond à ce que vous venez faire.
 1. [Règles du corpus](#10-règles-du-corpus) : l'ordre d'autorité, qui dit quel document corriger en cas d'écart.
 2. [ADR-019](docs/decisions/ADR-019-conventions-de-tenue-du-corpus.md) : les conventions de tenue (identifiants, gabarits, marqueurs, renvois…).
 3. [Vérifier le corpus](#11-vérifier-le-corpus) : les contrôles à lancer avant de commiter.
-4. [docs/project/backlog/](docs/project/backlog/README.md) : les écarts déjà connus, pour ne pas les redécouvrir.
+4. [plan-de-travail.md](docs/projet/plan-de-travail.md) : le reste à faire, pour ne pas le redécouvrir.
 
 ### Piloter le projet
 
@@ -142,9 +142,9 @@ Chaque dossier a son propre index, qui fait foi sur son contenu. Ce tableau n'en
 
 Ces documents sont lisibles seuls et remis tels quels à un tiers : [cahier des charges](docs/reference/cahier-des-charges.md), [cahier de spécifications techniques](docs/reference/cahier-specifications-techniques.md), [dossier d'architecture](docs/reference/dossier-architecture.md), [dossier de conception détaillée](docs/reference/conception-detaillee.md), [note business](docs/reference/note-business.md). Ils consolident le corpus et ne font jamais foi : en cas d'écart, la source détaillée l'emporte.
 
-### Backlog d'alignement — [docs/project/backlog/](docs/project/backlog/README.md)
+### Backlog d'alignement
 
-Les 92 entrées ouvertes le 2026-10-07 : les réponses du porteur du projet à reporter dans les sources, et les écarts à aligner, document par document.
+Les 92 entrées ouvertes le 2026-10-07 (les réponses du porteur du projet à reporter dans les sources, et les écarts à aligner, document par document) ont été appliquées, et le dossier a été retiré le 2026-10-09. Son histoire se lit dans git : `docs/project/backlog/README.md @ 51a7cdc`. Le reste à faire est dans le [plan de travail](docs/projet/plan-de-travail.md).
 
 ### Outillage — `tools/`
 
@@ -171,7 +171,7 @@ Les 92 entrées ouvertes le 2026-10-07 : les réponses du porteur du projet à r
 | Une décision et ses alternatives écartées | [decisions/](docs/decisions/README.md) |
 | Un détail technique pré-build | [architecture/](docs/architecture/README.md), dossier `specs/` |
 | Une tâche à prendre | [plan-de-travail.md](docs/projet/plan-de-travail.md) |
-| Une question encore ouverte | [decisions-en-attente.md](docs/projet/decisions-en-attente.md) et [backlog/](docs/project/backlog/README.md) |
+| Une question encore ouverte | [decisions-en-attente.md](docs/projet/decisions-en-attente.md) |
 | Tout ce qui touche une fonctionnalité, en un renvoi | [guide-lecture-par-fonctionnalite.md](docs/projet/guide-de-lecture.md) |
 
 ---
@@ -211,7 +211,7 @@ Le one-shot (session unique) est utilisable dès cette première livraison ; son
 
 Sont explicitement exclus de cette première livraison, par choix de positionnement plutôt que par oubli : une table virtuelle visuelle, un moteur de règles ou de gestion de combat, l'intelligence artificielle générative, une application desktop avec synchronisation hors ligne, les relations typées entre documents, et les templates communautaires.
 
-Le détail du périmètre et les priorités de chaque capacité sont la propriété exclusive de [moscow.md](docs/besoin/vision/perimetre/matrice-de-priorites.md) : ce README n'en recopie ni le compte ni le classement. Des arbitrages de périmètre rendus le 2026-10-07 attendent encore d'être reportés dans les sources ; ils sont listés dans le [backlog](docs/project/backlog/README.md).
+Le détail du périmètre et les priorités de chaque capacité sont la propriété exclusive de [moscow.md](docs/besoin/vision/perimetre/matrice-de-priorites.md) : ce README n'en recopie ni le compte ni le classement. Les arbitrages de périmètre rendus le 2026-10-07 ont été reportés dans les sources ; leur histoire se lit dans `docs/project/backlog/README.md @ 51a7cdc`.
 
 ---
 
@@ -331,7 +331,7 @@ Les trois premiers doivent passer (code 0). `VerifCouvertureRecette` sort en cod
 Ce qui est ouvert :
 
 - **Le chantier de mise en conformité** ([cadrage](docs/workstreams/conformite-corpus/CADRAGE.md), décidé par l'ADR-020 à l'ADR-023). Il réorganise le corpus en un dossier par couche et applique le backlog d'alignement, en 24 tâches. Il n'est pas commencé.
-- **Le backlog d'alignement** ([docs/project/backlog/](docs/project/backlog/README.md)). Le 2026-10-07, une relecture complète du corpus a relevé 118 contradictions et 75 incertitudes. Les arbitrages du porteur du projet et les écarts à corriger forment 92 entrées, à reporter dans les sources puis à verser dans le plan de travail.
+- **Le reste à faire du corpus** ([plan de travail](docs/projet/plan-de-travail.md)). Le 2026-10-07, une relecture complète du corpus a relevé 118 contradictions et 75 incertitudes ([ADR-019](docs/decisions/ADR-019-conventions-de-tenue-du-corpus.md)). Le chantier de conformité en a appliqué les 92 entrées, et le backlog qui les portait est retiré (`docs/project/backlog/README.md @ 51a7cdc`).
 - **Les questions ouvertes** ([decisions-en-attente.md](docs/projet/decisions-en-attente.md)).
 - **Les décisions pré-implémentation**, à confirmer à l'entrée en build : la liste est dans [roadmap-entree-build.md](docs/projet/roadmap-de-build.md).
 - **L'identité visuelle** (logo, charte graphique), non définie.

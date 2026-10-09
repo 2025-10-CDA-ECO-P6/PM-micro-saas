@@ -53,7 +53,7 @@ Les ADR sont le registre unique des décisions. La vision (§ 5bis), les arbitra
 
 ### 7. Reste à faire
 
-`plan-de-travail.md` (TB-nnn) est la source de vérité des tâches. `decisions-en-attente.md` est l'index unique des questions ouvertes : les sections locales y renvoient. `docs/project/backlog/` reçoit les constats de l'onboarding, versés ensuite dans le plan.
+`plan-de-travail.md` (TB-nnn) est la source de vérité des tâches. `decisions-en-attente.md` est l'index unique des questions ouvertes : les sections locales y renvoient. Le backlog qui a reçu les constats de l'onboarding (2026-10-07) a été appliqué en entier, puis retiré le 2026-10-09 : `docs/project/backlog/README.md @ 51a7cdc`.
 
 ### 8. Vérification
 
@@ -87,13 +87,13 @@ Chaque niveau de flux a un seul propriétaire :
 
 **Raison.** Chacune de ces douze règles reprend la pratique majoritaire du corpus quand elle était saine, et la corrige quand elle produisait les écarts relevés. Le porteur du projet les a choisies axe par axe le 2026-10-07, sur proposition et après avoir vu, pour chaque axe, la pratique observée et ses défauts.
 
-**Références.** Entretien d'onboarding du 2026-10-07 ; docs/corpus.md ; docs/project/backlog/README.md
+**Références.** Entretien d'onboarding du 2026-10-07 ; docs/corpus.md ; docs/project/backlog/README.md @ 51a7cdc
 
 ## Alternatives considérées
 
 - Garder chaque pratique telle qu'observée, sans règle écrite : écarté, c'est précisément ce qui a produit les 118 contradictions relevées.
 - Registre des décisions avec remplacement strict (toute modification d'une ADR acceptée passe par une nouvelle ADR) : écarté, car le corpus amende déjà ses ADR par des compléments datés, et une nouvelle ADR pour chaque ajustement disperserait une même décision.
-- Reste à faire tenu entièrement dans docs/project/backlog/, le plan n'en étant que la projection : écarté, car plan-de-travail.md porte déjà les dépendances et la maille des tâches, et l'outillage (VerifMailleAgregat, CreerIssues) s'appuie sur lui.
+- Reste à faire tenu entièrement dans le backlog (`docs/project/backlog/README.md @ 51a7cdc`), le plan n'en étant que la projection : écarté, car plan-de-travail.md porte déjà les dépendances et la maille des tâches, et l'outillage (VerifMailleAgregat, CreerIssues) s'appuie sur lui.
 - Contrôles déclarés sans CI : écarté, car un contrôle qu'on ne lance pas à chaque changement ne signale l'écart qu'après coup.
 
 ## Conséquences
@@ -104,7 +104,7 @@ Ce qui devient vrai :
 - un point ouvert se reconnaît à un seul mot ;
 - un repreneur sait quelles commandes vérifient le corpus.
 
-Ce qui coûte : l'alignement du corpus existant sur ces règles. Il est inscrit dans `docs/project/backlog/` (entrées 0001 à 0092) : gabarits des US et des UJ, marqueurs à convertir, doublon RB-05-01, renvois « § » non contrôlés.
+Ce qui coûte : l'alignement du corpus existant sur ces règles. Il a été inscrit dans le backlog (`docs/project/backlog/README.md @ 51a7cdc`, entrées 0001 à 0092) : gabarits des US et des UJ, marqueurs à convertir, doublon RB-05-01, renvois « § » non contrôlés.
 
 Deux contrôles automatiques restent à écrire :
 - l'extension de VerifCorpus aux renvois « § » ;

@@ -250,4 +250,4 @@ Scénario : Création impossible en ARCHIVED
 ## Questions ouvertes
 
 1. ~~Le document créé à la volée est-il épinglé automatiquement, ou le MJ choisit de l'épingler manuellement ?~~ **Résolue** : un document durable est auto-épinglé par défaut en session LIVE, désépinglable par le MJ (aligné UC-07 amendé + AR-12) ; en session CLOSED, l'épinglage reste optionnel. Une note de session n'est jamais épinglée — elle est rattachée via `Session.AttachNote` (voir RB-07-04, Bounded contexts pressentis).
-2. ~~Y a-t-il un raccourci clavier pour ouvrir le panneau de création rapide en session ?~~ **DÉCIDÉ** (2026-10-07, [décision 0034](../../project/backlog/0034-specifier-dans-us-uc-07-un-raccourci-clavier-pour-le-panneau.md)) : oui, au MVP (RB-07-09). La touche est à définir avec les NFR d'accessibilité.
+2. ~~Y a-t-il un raccourci clavier pour ouvrir le panneau de création rapide en session ?~~ **DÉCIDÉ** (2026-10-07, décision 0034, `docs/project/backlog/0034-specifier-dans-us-uc-07-un-raccourci-clavier-pour-le-panneau.md @ 51a7cdc`) : oui, au MVP (RB-07-09). La touche est à définir avec les NFR d'accessibilité.

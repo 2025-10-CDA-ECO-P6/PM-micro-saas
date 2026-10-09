@@ -313,7 +313,7 @@ Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Co
 | Renvois | Un lien relatif (chemin, plus ancre ou « § »), jamais un nom de fichier nu. Un renvoi dont la cible n'existe pas est mort. |
 | Marqueurs | Liste fermée. Ouvert : `À TRANCHER`, `SOUS-SPÉCIFIÉ`. Clos : `DÉCIDÉ` (date + renvoi). Fin de vie : `Retiré`, `Remplacé par <id>`. |
 | Registre | Les ADR sont le registre unique. Un ajustement se fait dans une section datée ; un changement de sens fait l'objet d'une nouvelle ADR. |
-| Reste à faire | Le plan de travail pour les tâches, `decisions-en-attente.md` pour les questions ouvertes, `docs/project/backlog/` pour les constats de l'onboarding. |
+| Reste à faire | Le plan de travail pour les tâches, `decisions-en-attente.md` pour les questions ouvertes. Les constats de l'onboarding, tous appliqués, ont été retirés le 2026-10-09 (`docs/project/backlog/README.md @ 51a7cdc`). |
 | Vérification | Les quatre contrôles de la section suivante, lancés en CI sur toute modification de `docs/`. |
 | Langue | La documentation est en français. Tout ce qui touche au code est en anglais. |
 | Règles métier | Une RB est définie une seule fois, dans son épique US ; les autres documents la citent. |

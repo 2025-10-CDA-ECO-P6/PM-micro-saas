@@ -1133,7 +1133,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Taille | M — un module, 4 renvois |
 | Critères d'acceptation | `vision/moscow.md § Instrumentation de validation du MVP`, pilier 1 — activation préparation : un espace créé et au moins trois documents, ou un geste structurant (un dossier créé, ou un document déplacé hors de « Non classés ») ; `vision/moscow.md § Instrumentation de validation du MVP`, pilier 2 — activation vue session : au moins une action du MJ pendant la session ; `vision/moscow.md § Instrumentation de validation du MVP`, mention « Comment cette mesure sort du navigateur » — compteurs écrits dans le store local, transmis à la création de compte, aucun appel sortant en mode local ; `vision/vision-produit.md §2.3`, encadré « Limite structurelle de l'instrument » — le biais en faveur des convertis est nommé et doit être rappelé à toute lecture des résultats |
 | Code de renvoi | — |
-| Préalable, non dette | le pilier « activation partage » que `moscow.md § Instrumentation de validation du MVP` nomme suppose un partage aux joueurs, livré en J3 — deux jalons après le point de décision. Ce pilier est donc retiré du critère de la décision de marché, qui ne mesure que ce que J1 livre, et mesuré après elle (DÉCIDÉ 2026-10-07, [entrée de backlog 0090](../project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md)). |
+| Préalable, non dette | le pilier « activation partage » que `moscow.md § Instrumentation de validation du MVP` nomme suppose un partage aux joueurs, livré en J3 — deux jalons après le point de décision. Ce pilier est donc retiré du critère de la décision de marché, qui ne mesure que ce que J1 livre, et mesuré après elle (DÉCIDÉ 2026-10-07, entrée de backlog 0090, `docs/project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md @ 51a7cdc`). |
 
 ##### TB-093 — Capture de contact non bloquante en mode local
 
@@ -1165,6 +1165,64 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Critères d'acceptation | `cahier-strategie-test-et-recette.md §8. Critères globaux & DoD de test` ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only » (4 critères) ; `roadmap-entree-build.md §3.2 § Critères de sortie factuels` (4 critères) |
 | Code de renvoi | — |
 | Point d'attention | `cahier-strategie-test-et-recette.md §13 § Contrôle d'intégrité des citations` impose, à chaque jalon, de vérifier que chaque ligne `CR-` cite un scénario Gherkin ou une RB réel et à jour dans le corpus source. |
+
+
+### Rédaction du corpus — tranches reportées du chantier conformite-corpus
+
+Ces tranches ne se rattachent à aucune épique ni à aucun jalon du plan : leur épique et leur jalon sont `SOUS-SPÉCIFIÉ` tant que l'opérateur ne les a pas rangés. Elles ne visent aucun module de code et n'ordonnent rien du build.
+
+##### TB-105 — Écrire le modèle de fonctionnement et le guide de contenu
+
+| Champ | Valeur |
+|---|---|
+| But | le modèle de fonctionnement et le guide de contenu ont chacun au moins une instance écrite avec l'opérateur, et leur index existe |
+| Épique | SOUS-SPÉCIFIÉ — aucune épique du plan ne porte la rédaction du corpus |
+| Jalon | SOUS-SPÉCIFIÉ — aucune source ne rattache cette tranche à un jalon J0-J3 |
+| Dépend de | — |
+| Périmètre d'écriture | HORS MAILLE — nature : rédaction documentaire du corpus — ne vise aucun module de code |
+| En conflit avec | — |
+| Taille | S — 0 modules, 2 renvois |
+| Critères d'acceptation | `docs/workstreams/conformite-corpus/TACHES.md § 19 @ 51a7cdc`, « Figé si » ; `docs/workstreams/conformite-corpus/SPEC-write-operating-model-et-content-guide.md § Contrat @ 51a7cdc`, « Ce qui doit être vrai à la fin » |
+| Code de renvoi | — |
+| Point d'attention | aucune source écrite aujourd'hui : la tranche demande un entretien avec l'opérateur. Elle n'est pas émulée par des agents, qui inventeraient les choix du modèle de fonctionnement (`reprise/REPRISE.md § Décisions de l'opérateur`, « Entretiens, 2026-10-07 »). |
+| Origine | origin: docs/workstreams/conformite-corpus/TACHES.md § 19 @ 51a7cdc |
+
+---
+
+##### TB-106 — Écrire les comptes rendus d'entretien
+
+| Champ | Valeur |
+|---|---|
+| But | au moins un compte rendu d'entretien réel est écrit |
+| Épique | SOUS-SPÉCIFIÉ — aucune épique du plan ne porte la rédaction du corpus |
+| Jalon | SOUS-SPÉCIFIÉ — aucune source ne rattache cette tranche à un jalon J0-J3 |
+| Dépend de | — |
+| Périmètre d'écriture | HORS MAILLE — nature : rédaction documentaire du corpus — ne vise aucun module de code |
+| En conflit avec | — |
+| Taille | S — 0 modules, 2 renvois |
+| Critères d'acceptation | `docs/workstreams/conformite-corpus/TACHES.md § 20 @ 51a7cdc`, « Figé si » ; `docs/workstreams/conformite-corpus/SPEC-write-interview-reports.md § Contrat @ 51a7cdc`, « Ce qui doit être vrai à la fin » |
+| Code de renvoi | — |
+| Point d'attention | la tranche reste bloquée tant qu'aucun entretien réel n'a eu lieu : aucun verbatim n'est inventé (`reprise/REPRISE.md § Décisions de l'opérateur`, « Entretiens, 2026-10-07 »). |
+| Origine | origin: docs/workstreams/conformite-corpus/TACHES.md § 20 @ 51a7cdc |
+
+---
+
+##### TB-107 — Reprendre les différés du chantier conformite-corpus
+
+| Champ | Valeur |
+|---|---|
+| But | les différés que le chantier de conformité a laissés sont repris, ou rendus à l'opérateur pour décision |
+| Épique | SOUS-SPÉCIFIÉ — aucune épique du plan ne porte la rédaction du corpus |
+| Jalon | SOUS-SPÉCIFIÉ — aucune source ne rattache cette tranche à un jalon J0-J3 |
+| Dépend de | — |
+| Périmètre d'écriture | HORS MAILLE — nature : rédaction documentaire du corpus — ne vise aucun module de code |
+| En conflit avec | — |
+| Taille | S — 0 modules, 1 renvoi |
+| Critères d'acceptation | `docs/workstreams/conformite-corpus/reprise/REPRISE.md § Restes connus @ 51a7cdc`, et les notes de dev et de revue des specs des tâches 15 à 18 du même chantier, au même commit |
+| Code de renvoi | — |
+| Origine | origin: docs/workstreams/conformite-corpus/reprise/REPRISE.md § Restes connus @ 51a7cdc |
+
+---
 
 ---
 
