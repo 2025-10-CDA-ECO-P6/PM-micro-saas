@@ -154,6 +154,7 @@ Conteneur organisationnel. Structure l'arborescence du contenu dans un espace.
 | Méthode | Événement produit | Description |
 |---|---|---|
 | `Create(spaceId, name, parentId?)` | `FolderCreated` | Crée un dossier. `parentId` optionnel — `null` = niveau racine. |
+| `CreateSystem(spaceId, name, systemRole?, isVirtual)` | `FolderCreated` | Crée un dossier système (`isSystem = true`) à `SpaceCreated` : les quatre dossiers nommés, dont `Notes` avec `systemRole = NOTES`, et le dossier virtuel « Non classés » (`isVirtual = true`). Réservée à cette réaction : `Create` ne fixe jamais ces attributs. |
 | `Rename(name)` | — | Renomme le dossier. |
 | `Delete()` | `FolderDeleted` | Supprime le dossier. Ses documents sont déplacés vers le dossier virtuel « Non classés » ou vers un autre dossier choisi par le MJ (invariant 7). |
 
@@ -346,7 +347,7 @@ Document (SCENE) "Entrée de la crypte"
 | `DocumentLinked` | `Document.LinkDocument()` | — (backlinks calculés en lecture) |
 | `DocumentUnlinked` | `Document.UnlinkDocument()` | — |
 | `DocumentInstantiated` | `Document.Instantiate()` | Space Management si besoin |
-| `FolderCreated` | `Folder.Create()` | — |
+| `FolderCreated` | `Folder.Create()` / `Folder.CreateSystem()` | — |
 | `FolderDeleted` | `Folder.Delete()` | Session Conduct (retirer les documents du dossier supprimé si actifs en session) |
 
 ---

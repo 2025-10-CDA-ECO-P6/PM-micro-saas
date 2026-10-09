@@ -10,15 +10,15 @@ sequenceDiagram
 
     SM-->>App: SpaceCreated(spaceId, ownerId, type)
     alt type = CAMPAIGN ou ONE_SHOT
-        App->>CL: Folder.Create(spaceId, "Personnages", isSystem=true)
-        App->>CL: Folder.Create(spaceId, "Joueurs", isSystem=true)
-        App->>CL: Folder.Create(spaceId, "Scénarios", isSystem=true)
-        App->>CL: Folder.Create(spaceId, "Notes", isSystem=true, systemRole=NOTES)
-        App->>CL: Folder.Create(spaceId, "Non classés", isSystem=true, isVirtual=true)
+        App->>CL: Folder.CreateSystem(spaceId, "Personnages")
+        App->>CL: Folder.CreateSystem(spaceId, "Joueurs")
+        App->>CL: Folder.CreateSystem(spaceId, "Scénarios")
+        App->>CL: Folder.CreateSystem(spaceId, "Notes", systemRole=NOTES)
+        App->>CL: Folder.CreateSystem(spaceId, "Non classés", isVirtual=true)
         Note over CL: Dossier virtuel — garantit folderId non-nullable sur Document
         CL-->>App: 4 dossiers système nommés + 1 dossier virtuel créés
     else type = PERSONAL
-        App->>CL: Folder.Create(spaceId, "Non classés", isSystem=true, isVirtual=true)
+        App->>CL: Folder.CreateSystem(spaceId, "Non classés", isVirtual=true)
         Note over CL: Seul dossier créé — aucun dossier système nommé dans un espace personnel
         CL-->>App: 1 dossier virtuel créé
     end

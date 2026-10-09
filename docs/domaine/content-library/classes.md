@@ -60,6 +60,7 @@ classDiagram
         +entier order
         +AuditInfo auditInfo
         +Create(spaceId, name, parentId?)$
+        +CreateSystem(spaceId, name, systemRole?, isVirtual)$
         +Rename(name)
         +Delete()
     }

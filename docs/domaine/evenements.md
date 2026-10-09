@@ -18,7 +18,7 @@
 | EmailChangeRequested | User.ChangeEmail() (identity-access) | Application (envoi de la confirmation à la nouvelle adresse, préalable à sa prise en compte) | - |
 | EmailVerified | User.VerifyEmail() (identity-access) | Interne I&A — aucun autre contexte consommateur ; débloque en interne les opérations sensibles conditionnées par emailVerified (invariant 7) | - |
 | FederatedIdentityLinked | User.LinkFederatedIdentity() (identity-access) | Interne I&A — aucun autre contexte consommateur | - |
-| FolderCreated | Folder.Create() (content-library) | — | - |
+| FolderCreated | Folder.Create() / Folder.CreateSystem() (content-library) | — | - |
 | FolderDeleted | Folder.Delete() (content-library) | Session Conduct (retirer les documents du dossier supprimé si actifs en session) | - |
 | GuestAccessConvertedToMember | GuestAccess.Convert(userId) (space-management) | Application (finalise la création de compte), Session Conduct | - |
 | GuestAccessCreated | GuestAccess.Create() (space-management) | Session Conduct (accès aux informations partagées) | - |
