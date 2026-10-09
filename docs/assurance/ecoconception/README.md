@@ -5,7 +5,7 @@
 
 ---
 
-## État actuel — `[non tranché]`
+## État actuel — `[À TRANCHER — engagement de la démarche]`
 
 Le sujet n'apparaît nulle part dans le corpus de conception actuel : aucun document, aucune
 exigence non fonctionnelle ne le mentionne. Ce dossier est **réservé** ; il n'amorce aucun
