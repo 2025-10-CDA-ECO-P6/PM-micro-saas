@@ -32,13 +32,23 @@ internal static class Helpers
     private static string NomExecutable(string nomOutil) =>
         OperatingSystem.IsWindows() ? $"{nomOutil}.exe" : nomOutil;
 
+    // Les quatre contrôles du corpus, outils en fichier unique : compilés dans
+    // outils/<Outil>/ du répertoire de sortie par la cible
+    // CompilerOutilsFichierUnique de CaracterisationOutils.csproj.
+    private static readonly HashSet<string> OutilsFichierUnique =
+        ["VerifCorpus", "VerifMailleAgregat", "VerifMarqueursIdentifiants", "VerifCouvertureRecette"];
+
     /// <summary>
-    /// Chemin du binaire natif d'un outil porté — copié dans le répertoire de
-    /// sortie de CE projet par la seule vertu du <c>ProjectReference</c> vers
+    /// Chemin du binaire natif d'un outil porté — soit celui d'un outil en
+    /// fichier unique, compilé dans <c>outils/&lt;Outil&gt;/</c> par la cible
+    /// <c>CompilerOutilsFichierUnique</c> de ce projet, soit celui copié dans le
+    /// répertoire de sortie par la seule vertu du <c>ProjectReference</c> vers
     /// son projet exécutable (mesuré : aucun fichier de solution requis).
     /// </summary>
     public static string CheminBinaire(string nomOutil) =>
-        Path.Combine(AppContext.BaseDirectory, NomExecutable(nomOutil));
+        OutilsFichierUnique.Contains(nomOutil)
+            ? Path.Combine(AppContext.BaseDirectory, "outils", nomOutil, NomExecutable(nomOutil))
+            : Path.Combine(AppContext.BaseDirectory, NomExecutable(nomOutil));
 
     /// <summary>
     /// Exécute un binaire de `tools/` en sous-processus contre les arguments

@@ -17,14 +17,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VerifCorpus\VerifCorpus.csproj" />
-    <ProjectReference Include="..\VerifMailleAgregat\VerifMailleAgregat.csproj" />
-    <ProjectReference Include="..\VerifCouvertureRecette\VerifCouvertureRecette.csproj" />
-    <ProjectReference Include="..\VerifMarqueursIdentifiants\VerifMarqueursIdentifiants.csproj" />
     <ProjectReference Include="..\CreerIssues\CreerIssues.csproj" />
     <ProjectReference Include="..\CreerProjet\CreerProjet.csproj" />
     <ProjectReference Include="..\Harnais\FauxGh\FauxGh.csproj" />
     <ProjectReference Include="..\Harnais\GardeIdentiteGh\GardeIdentiteGh.csproj" />
   </ItemGroup>
+
+  <!-- Les quatre contrôles du corpus sont des outils en fichier unique
+       (tools/FICHIER-UNIQUE.md) : aucun ProjectReference ne les copie. Chacun
+       est compilé une fois par ce build, dans outils/<Outil>/ du répertoire de
+       sortie, d'où les tests lancent l'exécutable natif — jamais `dotnet run`,
+       dont les lancements parallèles se disputeraient les sorties de compilation. -->
+  <ItemGroup>
+    <OutilFichierUnique Include="VerifCorpus;VerifMailleAgregat;VerifMarqueursIdentifiants;VerifCouvertureRecette" />
+  </ItemGroup>
+
+  <Target Name="CompilerOutilsFichierUnique" AfterTargets="Build">
+    <Exec Command="dotnet build &quot;$(MSBuildThisFileDirectory)../%(OutilFichierUnique.Identity)/%(OutilFichierUnique.Identity).cs&quot; -o &quot;$(OutDir)outils/%(OutilFichierUnique.Identity)&quot; --nologo -v q" />
+  </Target>
 
 </Project>

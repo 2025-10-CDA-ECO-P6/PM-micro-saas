@@ -62,17 +62,17 @@ jobs:
 
       - name: Liens, ancres, orphelins et renvois « § » (VerifCorpus)
         if: ${{ !cancelled() }}
-        run: dotnet run --project tools/VerifCorpus
+        run: dotnet run --file tools/VerifCorpus/VerifCorpus.cs
 
       - name: Maille du plan (VerifMailleAgregat)
         if: ${{ !cancelled() }}
-        run: dotnet run --project tools/VerifMailleAgregat
+        run: dotnet run --file tools/VerifMailleAgregat/VerifMailleAgregat.cs
 
       - name: Marqueurs et identifiants (VerifMarqueursIdentifiants)
         if: ${{ !cancelled() }}
         # Sort en code 1 sur un écart absent des listes de référence versionnées
         # à côté de l'outil (reference-marqueurs.txt, reference-identifiants.txt).
-        run: dotnet run --project tools/VerifMarqueursIdentifiants
+        run: dotnet run --file tools/VerifMarqueursIdentifiants/VerifMarqueursIdentifiants.cs
 
       - name: Couverture de la recette (VerifCouvertureRecette)
         if: ${{ !cancelled() }}
@@ -88,9 +88,9 @@ jobs:
         # un code 1 sans aucune ligne [TROU] ni [SOURCE RETIRÉE] est une panne, pas
         # un écart de couverture.
         run: |
-          dotnet build tools/VerifCouvertureRecette --nologo
+          dotnet build tools/VerifCouvertureRecette/VerifCouvertureRecette.cs --nologo
           code=0
-          dotnet run --no-build --project tools/VerifCouvertureRecette > "$RUNNER_TEMP/recette.txt" || code=$?
+          dotnet run --no-build --file tools/VerifCouvertureRecette/VerifCouvertureRecette.cs > "$RUNNER_TEMP/recette.txt" || code=$?
           cat "$RUNNER_TEMP/recette.txt"
           if [ "$code" -ne 0 ] && [ "$code" -ne 1 ]; then
             echo "::error::VerifCouvertureRecette a échoué en panne d'exécution (code $code), pas sur un écart de couverture."

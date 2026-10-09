@@ -1,7 +1,36 @@
+#!/usr/bin/env dotnet
 // N'écris dans ce projet que la vérification d'une propriété du corpus documentaire.
 // À ce titre il ne reçoit pas de tranche (methode-de-ticket.md §7). Des conventions de
 // code C# du corpus (guide-conventions-et-dod.md §2), n'applique que les clauses dont
 // l'objet nommé existe ici — le style et la version du SDK, jamais le modèle de domaine.
+
+// Propriétés de l'ancien .csproj (tools/FICHIER-UNIQUE.md). Version en support à
+// long terme en cours à l'ouverture du build : règle et formulation posées par
+// guide-conventions-et-dod.md §2 — « ce guide énonce la règle, jamais un numéro —
+// un numéro vieillit, la règle non » — qui renvoie lui-même au §8 pour la pratique
+// de fond dont elle découle. Style porté uniquement par les analyzers livrés avec
+// le SDK — aucune dépendance d'analyse tierce.
+#:property TargetFramework=net10.0
+#:property ImplicitUsings=enable
+#:property Nullable=enable
+#:property EnforceCodeStyleInBuild=true
+#:property TreatWarningsAsErrors=true
+#:property PublishAot=false
+#:property RootNamespace=VerifMailleAgregat
+#:property AssemblyName=VerifMailleAgregat
+
+#:include AutresNatures.cs
+#:include ComparateurCodePoints.cs
+#:include LecteurTexte.cs
+#:include MailleDesignation.cs
+#:include ModeleDomaine.cs
+#:include PanneExecutionException.cs
+#:include PlanDeTravail.cs
+#:include ReprPython.cs
+#:include Tache.cs
+#:include TexteUnicode.cs
+#:include Verdict.cs
+#:include VerificateurMailleAgregat.cs
 
 using System.Globalization;
 using System.Text;

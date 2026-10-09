@@ -1,8 +1,37 @@
+#!/usr/bin/env dotnet
 // N'écris dans ce projet que la vérification d'une propriété du corpus documentaire.
 // À ce titre il ne reçoit pas de tranche (methode-de-ticket.md §7). Des conventions de
 // code C# du corpus (guide-conventions-et-dod.md §2), n'applique que les clauses dont
 // l'objet nommé existe ici — le style et la version du SDK, jamais le modèle de domaine.
 // Outil de lecture seule : aucun mode d'application n'existe ni ne doit être ajouté ici.
+
+// Propriétés de l'ancien .csproj (tools/FICHIER-UNIQUE.md). Version en support à
+// long terme en cours à l'ouverture du build : règle et formulation posées par
+// guide-conventions-et-dod.md §2 — « ce guide énonce la règle, jamais un numéro —
+// un numéro vieillit, la règle non » — qui renvoie lui-même au §8 pour la pratique
+// de fond dont elle découle. Style porté uniquement par les analyzers livrés avec
+// le SDK — aucune dépendance d'analyse tierce.
+#:property TargetFramework=net10.0
+#:property ImplicitUsings=enable
+#:property Nullable=enable
+#:property EnforceCodeStyleInBuild=true
+#:property TreatWarningsAsErrors=true
+#:property PublishAot=false
+#:property RootNamespace=VerifCouvertureRecette
+#:property AssemblyName=VerifCouvertureRecette
+
+#:include CahierRecette.cs
+#:include CasClasse.cs
+#:include CasRecette.cs
+#:include CitationsPlan.cs
+#:include Classe.cs
+#:include Classificateur.cs
+#:include LecteurTexte.cs
+#:include PanneExecutionException.cs
+#:include TableauMarkdown.cs
+#:include Verdict.cs
+#:include VerificateurCouvertureRecette.cs
+#:include VueDesEpiques.cs
 
 using System.Globalization;
 using System.Text;
