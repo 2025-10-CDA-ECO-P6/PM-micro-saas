@@ -17,6 +17,7 @@
 | [plan-de-travail.md](plan-de-travail.md) | Plan de travail — décomposition en épiques et en tâches du périmètre de build, avec dépendances et périmètre d'écriture |
 | [methode-de-ticket.md](methode-de-ticket.md) | Méthode de ticket — modèle de ticket, condition d'entrée avant prise et cycle de vie jusqu'à clôture |
 | [roadmap-produit.md](roadmap-produit.md) | Roadmap produit — trajectoire de valeur fonctionnelle |
+| [plan-de-livraison.md](plan-de-livraison.md) | Plan de livraison — ce qui est livré à qui, sous quelle porte et sous quelle condition de retrait, renvoyé aux deux roadmaps |
 | [registre-risques.md](registre-des-risques.md) | Registre d'évaluation des risques (méthode ISO 31000) |
 | [decisions-en-attente.md](decisions-en-attente.md) | Index des décisions en attente, regroupées par décideur et ordonnées par ce qu'elles bloquent dans la séquence J0 → J1 → J2 → J3 → lancement |
 | [revue-produit-plan-de-travail.md](revues/2026-09-03-revue-produit-plan-de-travail.md) | Revue produit du plan de travail — jugement de pertinence de la décomposition et proposition instruite de redécoupage en tranches verticales |

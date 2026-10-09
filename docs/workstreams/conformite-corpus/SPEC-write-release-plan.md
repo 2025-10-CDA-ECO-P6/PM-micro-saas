@@ -59,9 +59,21 @@ Le contrat et les sources : aucune valeur inventée ?
 
 ## Notes de dev
 
-
+- Instance écrite : `docs/projet/plan-de-livraison.md`, indexée dans `docs/projet/README.md` et inscrite au journal du corpus. Le libellé par défaut disait `docs/pilotage/` ; la couche projet vit sous `docs/projet/` (ADR-020).
+- Trois livraisons, toutes sourcées : Local-only (J1) à la cohorte pilote ; le socle ; l'approfondissement du cœur. J0 et J2 ne sont pas des livraisons, faute de mise à disposition d'un public dans les sources. Les critères de sortie ne sont pas recopiés : chaque champ renvoie à la roadmap de build, qui en est propriétaire.
+- Décisions de l'orchestrateur, prises par délégation de l'opérateur :
+  - **la décision de marché est une porte écrite en texte, sans marqueur**. **Justification** : la roadmap la prévoit (§ 3.3) ; ce n'est pas un point de conception non tranché. Le marqueur `À DÉCIDER` exige un modèle de fonctionnement, qui n'est pas écrit (tâche 19 reportée). La validation juridique porte `[À VALIDER — JURISTE]` sur ses 5 axes ;
+  - **J1 est une livraison à la cohorte pilote**. **Justification** : la décision de marché mesure un usage réel de ce que J1 livre (roadmap § 3.3), et la vision nomme ce public (§ 2.3, « cohorte pilote restreinte »).
+- Contrôles `template` et `markers` sur une racine minimale : 0 écart. `conform-verify-complet.sh 34cb703 --declared docs/workstreams/conformite-corpus/declares-release-plan.txt` : code 0.
+- Différé au solde du backlog : le plan de travail place US-UC-11 et US-UC-12 en J3, et la roadmap produit dans l'approfondissement du cœur.
 
 ## Notes de revue
 
+Revue « aucune valeur inventée ? », 2026-10-09 : quatre constats, tous appliqués.
 
+- `intent`, tranché par délégation : la livraison J1 à la cohorte pilote est ajoutée (voir les notes de dev).
+- `fix` : l'attribution de la décision de marché au responsable produit renvoie à la roadmap § 1, qui la porte.
+- `fix` : le marqueur juriste porte sur les 5 axes, et non sur « sans bloquer le build », qu'établit la roadmap.
+- `fix` (optionnel pris) : les constats d'état « non franchi » deviennent des renvois aux décisions en attente.
 
+Répartition : 1 `intent` tranché, 3 `fix`.

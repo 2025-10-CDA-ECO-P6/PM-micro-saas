@@ -185,7 +185,7 @@ module|wireframe-mockups|docs/interface/ecrans
 module|processing-register|docs/assurance/securite/registre-des-traitements.md
 module|dpia|docs/assurance/securite/analyse-d-impact.md
 module|interview-reports|-
-module|release-plan|-
+module|release-plan|docs/projet/plan-de-livraison.md
 module|operating-model|-
 module|content-guide|-
 ```

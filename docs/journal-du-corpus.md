@@ -9,3 +9,4 @@
 | 2026-10-09 | traceability | docs/tracabilite.md | ajouté | 368e8c4 |
 | 2026-10-09 | processing-register | docs/assurance/securite/registre-des-traitements.md | ajouté | a4a2bf7 |
 | 2026-10-09 | dpia | docs/assurance/securite/analyse-d-impact.md | ajouté | a4a2bf7 |
+| 2026-10-09 | release-plan | docs/projet/plan-de-livraison.md | ajouté | 34cb703 |
