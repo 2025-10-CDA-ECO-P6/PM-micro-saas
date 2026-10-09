@@ -1,8 +1,8 @@
 # Note de mapping EF Core — cluster données & persistance
 
 - **Statut** : Spec pré-build — à confirmer à l'entrée en build (même statut que les ADR sources).
-- **Sources** : [ADR-008](../../decisions/ADR-008-structure-solution.md) (§Conséquences) ; [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (l.22, 24, 46, 58) ; [ADR-011](../../decisions/ADR-011-cascade-integrite-referentielle.md) (§1 Mécanisme de cascade, l.132-133, 158) ; [ADR-014](../../decisions/ADR-014-modele-autorisation-api.md) (l.98-99) ; [content-library/context.md](../../domaine/content-library/context.md) ; [content-library/classes.md](../../domaine/content-library/classes.md) ; [content-library/logical-data.md](../../domaine/content-library/logical-data.md).
-- **Périmètre** : les 5 éléments listés par ADR-008:48 comme livrable de mapping EF Core, complétés fidèlement par les décisions de gouvernance ADR-002 et les invariants de cascade/lecture ADR-011/ADR-014 qui portent directement sur le mapping physique.
+- **Sources** : [ADR-008](../../decisions/ADR-008-structure-solution.md) (§Conséquences) ; [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (§ Décision, § Conséquences, § Compléments post-revue (2026-06-09)) ; [ADR-011](../../decisions/ADR-011-cascade-integrite-referentielle.md) (§ 1 Mécanisme de cascade, § Schéma et MLD) ; [ADR-014](../../decisions/ADR-014-modele-autorisation-api.md) (§ 2 Contexte de lecture unifié) ; [content-library/context.md](../../domaine/content-library/context.md) ; [content-library/classes.md](../../domaine/content-library/classes.md) ; [content-library/logical-data.md](../../domaine/content-library/logical-data.md).
+- **Périmètre** : les 5 éléments listés par ADR-008 § Conséquences comme livrable de mapping EF Core, complétés fidèlement par les décisions de gouvernance ADR-002 et les invariants de cascade/lecture ADR-011/ADR-014 qui portent directement sur le mapping physique.
 
 Cette note ne tranche rien qui ne soit pas déjà fixé par un ADR. Ce qui n'est pas fixé est marqué `[À TRANCHER — ticket]`.
 
@@ -10,19 +10,19 @@ Cette note ne tranche rien qui ne soit pas déjà fixé par un ADR. Ce qui n'est
 
 ## 1. Converters d'IDs typés
 
-**Décision reportée** (ADR-002:20) : un seul identifiant physique, `DocumentId`. Les value objects distincts `ScenarioId`, `SceneId`, `CharacterId` sont supprimés — ils ne correspondaient à aucune entité distincte au sens DDD.
+**Décision reportée** (ADR-002 § Décision) : un seul identifiant physique, `DocumentId`. Les value objects distincts `ScenarioId`, `SceneId`, `CharacterId` sont supprimés — ils ne correspondaient à aucune entité distincte au sens DDD.
 
 Des **alias sémantiques de type** (ex. `CharacterRef = DocumentId`) sont autorisés pour la lisibilité du code applicatif, **sans créer de type EF Core distinct** : un seul converter de valeur (`ValueConverter<DocumentId, Guid>` ou équivalent) couvre toutes les colonnes `uuid` qui portent conceptuellement un `DocumentId`, y compris celles nommées `character_id` ou `source_document_id` en base.
 
 **Conséquence de mapping** : pas de converter dédié par alias sémantique — un converter unique pour `DocumentId`, réutilisé partout où l'alias s'applique. Les autres IDs typés du cluster (`FolderId`, `DocumentTypeId`, `DocumentBlockId`) suivent le même principe : un converter par identifiant physiquement distinct, pas par alias de lisibilité.
 
-`[À TRANCHER — ticket]` : la validation runtime associée aux alias sémantiques (ex. « le `DocumentId` associé comme personnage doit référencer un `Document` de type `player_character` », ADR-002:54) est un invariant de domaine, pas un mécanisme EF Core — son point d'implémentation (constructeur de VO, méthode de domaine, ou interceptor EF) reste ouvert.
+`[À TRANCHER — ticket]` : la validation runtime associée aux alias sémantiques (ex. « le `DocumentId` associé comme personnage doit référencer un `Document` de type `player_character` », ADR-002 § Compléments post-revue (2026-06-09), « Validation runtime ajoutée ») est un invariant de domaine, pas un mécanisme EF Core — son point d'implémentation (constructeur de VO, méthode de domaine, ou interceptor EF) reste ouvert.
 
 ---
 
 ## 2. Owned types
 
-**Décision reportée** (ADR-002:22, 46) : `Document.SetProperties()` n'accepte qu'un `DocumentProperties` validé contre le `propertiesSchema` du type. `DocumentProperties` est le value object qui gouverne l'écriture de la colonne `properties` — il est mappé en **owned type** EF Core sur `Document`, propriétaire exclusif de la colonne `documents.properties`.
+**Décision reportée** (ADR-002 § Décision et § Conséquences) : `Document.SetProperties()` n'accepte qu'un `DocumentProperties` validé contre le `propertiesSchema` du type. `DocumentProperties` est le value object qui gouverne l'écriture de la colonne `properties` — il est mappé en **owned type** EF Core sur `Document`, propriétaire exclusif de la colonne `documents.properties`.
 
 Contrat détaillé (VO + schémas par type) : voir `document-properties-schemas.md` (companion de cette note pour ce même champ).
 
@@ -34,9 +34,9 @@ Contrat détaillé (VO + schémas par type) : voir `document-properties-schemas.
 
 ## 3. `jsonb` sur `documents.properties`
 
-**Décision reportée** (ADR-002, ADR-008:48) : `HasColumnType("jsonb")` sur `documents.properties`. Le MLD confirme le type physique : `properties jsonb, nullable` (content-library/logical-data.md:53).
+**Décision reportée** (ADR-002, ADR-008 § Conséquences) : `HasColumnType("jsonb")` sur `documents.properties`. Le MLD confirme le type physique : `properties jsonb, nullable` (content-library/logical-data.md:53).
 
-Cette colonne est exclusivement écrite via `Document.SetProperties()` (ADR-002:22) — aucune écriture JSON directe. Voir `document-properties-schemas.md` pour le contrat de validation complet.
+Cette colonne est exclusivement écrite via `Document.SetProperties()` (ADR-002 § Décision) — aucune écriture JSON directe. Voir `document-properties-schemas.md` pour le contrat de validation complet.
 
 ---
 
@@ -48,13 +48,13 @@ Le MLD confirme la colonne physique : `document_blocks.type varchar(20) NOT NULL
 
 **Conséquence de mapping** : `document_blocks.type` est mappé comme colonne discriminante simple (`varchar` + converter d'énumération `BlockType`), pas comme discriminant TPH EF Core au sens strict — `DocumentBlock` reste une entité unique dont le champ `content` est un `jsonb` non typé fortement, sans hiérarchie de classes C# par valeur de `BlockType`.
 
-`[À TRANCHER — ticket]` : le domaine modélise les *valeurs* du discriminant (`BlockType`) mais ne fixe pas la forme structurée de `content` par valeur (ex. schéma du `content` d'un bloc `TABLE` vs `TEXT`) — cette forme n'est déclarée nulle part dans le companion domaine. Rester `jsonb` libre par décision explicite (ADR-002:58, `DocumentBlock.content` libre, distinct de `properties`) : ce point n'est donc pas un trou mais une décision déjà actée — le mapping EF Core traite `content` comme `jsonb` sans validation de schéma, quel que soit `BlockType`.
+`[À TRANCHER — ticket]` : le domaine modélise les *valeurs* du discriminant (`BlockType`) mais ne fixe pas la forme structurée de `content` par valeur (ex. schéma du `content` d'un bloc `TABLE` vs `TEXT`) — cette forme n'est déclarée nulle part dans le companion domaine. Rester `jsonb` libre par décision explicite (ADR-002 § Compléments post-revue (2026-06-09), `DocumentBlock.content` libre, distinct de `properties`) : ce point n'est donc pas un trou mais une décision déjà actée — le mapping EF Core traite `content` comme `jsonb` sans validation de schéma, quel que soit `BlockType`.
 
 ---
 
 ## 5. Query filters globaux
 
-**Décision reportée** (ADR-014:96-97, prédicats P2/P3 du contexte de lecture unifié) :
+**Décision reportée** (ADR-014 § 2, prédicats P2/P3 du contexte de lecture unifié) :
 
 | # | Filtre | Portée | Table |
 |---|---|---|---|
@@ -63,7 +63,7 @@ Le MLD confirme la colonne physique : `document_blocks.type varchar(20) NOT NULL
 
 Ces deux prédicats sont « structurels et indépendants de l'appelant » et portés par des **query filters EF Core globaux** — renvoi explicite ADR-014 → **B5.1** pour la spécification technique complète du câblage (le renvoi B5.1 n'est pas résolu dans ADR-014 elle-même).
 
-**Cas d'exception au filtre** : l'endpoint de restauration d'espace (réservé à `OWNER`) est le seul chemin autorisé à traverser P2 — il vérifie `deleted_at IS NOT NULL` explicitement (ADR-014:102). Un query filter global doit donc être contournable sur ce chemin précis (`IgnoreQueryFilters()` ciblé ou requête dédiée hors filtre), pas désactivé globalement.
+**Cas d'exception au filtre** : l'endpoint de restauration d'espace (réservé à `OWNER`) est le seul chemin autorisé à traverser P2 — il vérifie `deleted_at IS NOT NULL` explicitement (ADR-014 § 2, « Cas restauration espace en corbeille »). Un query filter global doit donc être contournable sur ce chemin précis (`IgnoreQueryFilters()` ciblé ou requête dédiée hors filtre), pas désactivé globalement.
 
 `[À TRANCHER — ticket]` : le câblage technique précis des query filters (expression `HasQueryFilter`, navigation vers `spaces` depuis les entités qui ne portent pas directement `space_id` en filtre, gestion de `IgnoreQueryFilters` sur le chemin de restauration) est renvoyé à **B5.1** — non résolu par ADR-014.
 
@@ -71,7 +71,7 @@ Ces deux prédicats sont « structurels et indépendants de l'appelant » et por
 
 ## 6. Colonnes promues nullable indexées — `documents.character_id` / `documents.guest_access_id`
 
-**Décision reportée** (ADR-002:56) : les champs `characterId` et `guestAccessId` des `LIVE_NOTE`, initialement envisagés dans `documents.properties` (jsonb), sont **promus en colonnes nullable indexées de premier niveau** sur `documents`. Ce changement débloque l'invariant d'autorisation d'ADR-007.
+**Décision reportée** (ADR-002 § Compléments post-revue (2026-06-09), « Promotion en colonnes ») : les champs `characterId` et `guestAccessId` des `LIVE_NOTE`, initialement envisagés dans `documents.properties` (jsonb), sont **promus en colonnes nullable indexées de premier niveau** sur `documents`. Ce changement débloque l'invariant d'autorisation d'ADR-007.
 
 **Confirmation MLD** (content-library/logical-data.md:63-64, 74-75) :
 - `documents.character_id uuid, nullable` — FK physique réelle intra-module vers `documents.id` (type `player_character`).
@@ -79,7 +79,7 @@ Ces deux prédicats sont « structurels et indépendants de l'appelant » et por
 - Index B-tree partiel `(character_id) WHERE character_id IS NOT NULL` — qualifié « préalable authz OBLIGATOIRE » pour la résolution transitive des documents `PLAYER_PRIVATE`.
 - Index B-tree partiel `(guest_access_id) WHERE guest_access_id IS NOT NULL` — même justification côté auteur invité.
 
-**Confirmation matrice FK** (ADR-011:136, 144) : ces deux colonnes portent le rôle « Cycle 1 » du graphe de cascade (`documents ⇄ guest_accesses`) — NULL-ées en passe 1 de la saga `SpaceDeleted`.
+**Confirmation matrice FK** (ADR-011 § Schéma et MLD, matrice des FK) : ces deux colonnes portent le rôle « Cycle 1 » du graphe de cascade (`documents ⇄ guest_accesses`) — NULL-ées en passe 1 de la saga `SpaceDeleted`.
 
 **Conséquence de mapping** : ces deux colonnes sont mappées comme propriétés scalaires nullable de premier niveau sur l'entité `Document`, avec les deux index partiels ci-dessus déclarés en configuration EF Core (`HasIndex(...).HasFilter(...)`), pas comme faisant partie de l'owned type `DocumentProperties`.
 
@@ -95,9 +95,9 @@ Ces deux prédicats sont « structurels et indépendants de l'appelant » et por
 
 ## 8. Invariant soft-delete par jointure
 
-**Décision reportée** (ADR-011:161) : la visibilité des données d'un espace en corbeille est portée par jointure sur `spaces.deleted_at IS NOT NULL`. **Aucune table enfant ne porte son propre flag `deleted_at`** — l'invariant s'applique à *tous* les chemins de lecture : requêtes d'énumération, lectures directes par ID, queries SignalR, projections CQRS.
+**Décision reportée** (ADR-011 § Schéma et MLD, « Invariant de visibilité du soft-delete ») : la visibilité des données d'un espace en corbeille est portée par jointure sur `spaces.deleted_at IS NOT NULL`. **Aucune table enfant ne porte son propre flag `deleted_at`** — l'invariant s'applique à *tous* les chemins de lecture : requêtes d'énumération, lectures directes par ID, queries SignalR, projections CQRS.
 
-**Conséquence de mapping** : ce n'est pas un query filter portable sur chaque table enfant indépendamment — il exige soit (a) une navigation obligatoire vers `spaces` incluse dans le query filter global de chaque entité enfant qui doit hériter de la visibilité de son espace (`folders`, `documents`, `sessions`, etc.), soit (b) une vérification applicative systématique hors EF Core sur les chemins qui ne passent pas par le filtre global (lecture directe par ID notamment, citée explicitement par ADR-011:161 comme chemin à risque).
+**Conséquence de mapping** : ce n'est pas un query filter portable sur chaque table enfant indépendamment — il exige soit (a) une navigation obligatoire vers `spaces` incluse dans le query filter global de chaque entité enfant qui doit hériter de la visibilité de son espace (`folders`, `documents`, `sessions`, etc.), soit (b) une vérification applicative systématique hors EF Core sur les chemins qui ne passent pas par le filtre global (lecture directe par ID notamment, citée explicitement par ADR-011 § Schéma et MLD (« Invariant de visibilité du soft-delete ») comme chemin à risque).
 
 `[À TRANCHER — ticket]` : le choix entre (a) query filter EF Core avec navigation implicite vers `spaces` et (b) vérification applicative systématique n'est pas arbitré par ADR-011 — c'est un point de configuration du câblage B5.1 (même renvoi que §5 ci-dessus).
 
