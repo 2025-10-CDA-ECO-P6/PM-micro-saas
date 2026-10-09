@@ -8,15 +8,22 @@ sequenceDiagram
     participant App as Application Layer
     participant IA as I&A Domain
     participant Identity as Infrastructure d'identité
+    participant SM as Space Management
 
     MJ->>App: Créer un compte (email, displayName, password)
     App->>Identity: CreateIdentityUser(id, email, password)
     Identity-->>App: OK
     App->>IA: User.Register(userId, email, displayName)
     IA-->>App: UserRegistered event
-    App->>App: Migrer les données locales (stockage local → cloud)
-    Note over App: Orchestration applicative :<br/>importe espaces, documents,<br/>dossiers depuis l'export local
-    App-->>MJ: Compte créé, données migrées
+    App->>SM: Space.Create(ownerId, type = PERSONAL)
+    SM-->>App: SpaceCreated event
+    opt Données locales détectées
+        App-->>MJ: Gate de reconnaissance (données locales détectées)
+        MJ->>App: Confirme la migration
+        App->>App: Migrer les données locales (stockage local → cloud)
+        Note over App: Orchestration applicative :<br/>importe espaces, documents,<br/>dossiers depuis l'export local
+    end
+    App-->>MJ: Compte créé
 ```
 
 ## Flux 2 — Connexion
@@ -71,19 +78,26 @@ sequenceDiagram
     participant App as Application Layer
     participant IA as I&A Domain
     participant SM as Space Management
+    participant CL as Content Library
 
     Utilisateur->>App: Supprimer mon compte
+    alt Adresse de messagerie non validée
+        App-->>Utilisateur: Refusé — valider l'adresse d'abord
+    end
     App->>SM: GetBlockingSpaces(userId)
     Note over SM: Espaces CAMPAIGN/ONE_SHOT avec au moins<br/>un SpaceMembership actif autre que le propriétaire.<br/>PERSONAL n'est jamais bloquant (mono-membre, invariant 3 I&A).
     alt Espaces CAMPAIGN/ONE_SHOT bloquants
         SM-->>App: Liste des espaces bloquants
         App-->>Utilisateur: Bloqué — gérer les espaces d'abord
     else Aucun espace bloquant
+        App-->>Utilisateur: Conséquences de la suppression
+        Utilisateur->>App: Confirme la suppression
         App->>IA: User.Delete()
         IA-->>App: UserDeleted event
         App->>IA: User.Anonymize()
         IA-->>App: UserAnonymized event
         App->>SM: Réagir à UserDeleted — routage par type d'espace :<br/>PERSONAL → hard-delete (saga SpaceDeleted),<br/>CAMPAIGN/ONE_SHOT restants → anonymiser member data
+        App->>CL: Réagir à UserDeleted — hard-delete des documents PLAYER_PRIVATE créés par l'utilisateur
         App-->>Utilisateur: Compte supprimé, déconnecté
     end
 ```
@@ -105,7 +119,7 @@ sequenceDiagram
         SM->>SM: Geler les espaces excédentaires (> 3)
         SM-->>App: OK
     else Upgrade FREE → PRO
-        SM->>SM: Débloquer les quotas
+        SM->>SM: Space.Unfreeze() sur les espaces FROZEN (dans la limite du quota cible) → SpaceUnfrozen
         SM-->>App: OK
     end
     App-->>Billing: Confirmé
