@@ -159,7 +159,7 @@ Rôle dans un espace de jeu partagé (campagne ou one-shot). Dans le modèle de 
 
 ### Joueur
 
-Rôle dans un espace de jeu partagé (campagne ou one-shot). Membre avec le rôle `PLAYER`. Accède aux contenus partagés (`PUBLIC`) et à sa propre fiche de personnage. Peut créer des notes de session personnelles pendant une session. Peut être un `User` authentifié (via `SpaceMembership`) ou un invité sans compte (via `GuestAccess`).
+Rôle dans un espace de jeu partagé (campagne ou one-shot). Membre avec le rôle `PLAYER`. Accède aux contenus partagés (`PUBLIC`) et à sa propre fiche de personnage. La prise de notes de session personnelles est hors MVP ([matrice de priorités](besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur)). Peut être un `User` authentifié (via `SpaceMembership`) ou un invité sans compte (via `GuestAccess`).
 
 ---
 
@@ -183,7 +183,7 @@ Entité (enfant de `Space`) représentant la participation d'un `User` à un esp
 
 ### `Invitation`
 
-Mécanisme d'entrée dans un espace. Peut être de type `LINK` (lien partageable) ou `EMAIL` (hors MVP). De portée `SPACE` (accès permanent à l'espace) ou `SESSION` (accès ponctuel à une session). L'utilisation d'une invitation par un utilisateur authentifié crée un `SpaceMembership` ; par un utilisateur anonyme, crée un `GuestAccess`.
+Mécanisme d'entrée dans un espace. Peut être de type `LINK` (lien partageable) ou `EMAIL` (hors MVP). De portée `SPACE` (accès permanent à l'espace) ou `SESSION` (accès ponctuel à une session). Le lien de portée `SPACE` se génère depuis la section Membres (UC-11) ; utilisé par un utilisateur authentifié, il crée un `SpaceMembership` ; un utilisateur sans compte passe d'abord par la création de compte (UC-10 A3). Le lien de portée `SESSION` se génère depuis la vue session (UC-09) ; utilisé par un anonyme, il crée un `GuestAccess`.
 
 > **Note** : la valeur `CAMPAIGN` d'`InvitationScope` (et de `GuestAccessScope`) a été renommée `SPACE`. Elle portait jusqu'ici le même nom que la valeur `CAMPAIGN` de `SpaceType` — une collision entre deux énumérations distinctes qui a pu laisser croire à une propriété structurelle propre au type d'espace `CAMPAIGN`, alors que cette portée s'applique aussi bien à un espace `CAMPAIGN` qu'à un espace `ONE_SHOT`. Un document antérieur à ce renommage qui porte encore `CAMPAIGN` comme portée d'accès emploie un terme écarté — voir § Termes écartés.
 
@@ -331,7 +331,7 @@ Agrégat représentant une séance de jeu. Cycle de vie unidirectionnel : `LIVE 
 
 ### `SessionViewConfig`
 
-Configuration du tableau de bord session au niveau de l'espace. Définit quels dossiers le MJ met en avant dans sa vue session (`focusedFolders`). Il en existe exactement un par espace, créé automatiquement à `SpaceCreated`.
+Configuration du tableau de bord session au niveau de l'espace. Définit quels dossiers le MJ met en avant dans sa vue session (`focusedFolders`). Il en existe exactement un par espace partagé (`CAMPAIGN` ou `ONE_SHOT`), créé automatiquement à `SpaceCreated` ; un espace `PERSONAL` n'en a pas.
 
 ---
 
@@ -355,9 +355,9 @@ Interface de pilotage pendant une session `LIVE`. Tableau de bord configurable a
 
 ### Vue session joueur
 
-Vue restreinte accessible aux joueurs (authentifiés ou invités) pendant une session `LIVE`. Affiche uniquement les documents `PUBLIC` et les notes de session `PLAYER_PRIVATE` propres au joueur connecté.
+Vue restreinte accessible aux joueurs (authentifiés ou invités) pendant une session `LIVE`. Affiche les documents `PUBLIC` et les documents épinglés de la session, mis à jour en direct. Les notes de session `PLAYER_PRIVATE` du joueur sont hors MVP.
 
-- Voir aussi : `Vue joueur post-accès` — la vue session `LIVE` en est un état particulier, qui ajoute la prise de notes de session au même contenu.
+- Voir aussi : `Vue joueur post-accès` — la vue session `LIVE` en est un état particulier, qui ajoute la mise à jour en direct des documents partagés (et, hors MVP, la prise de notes de session).
 
 ---
 
@@ -365,7 +365,7 @@ Vue restreinte accessible aux joueurs (authentifiés ou invités) pendant une se
 
 Vue accessible au joueur (authentifié ou invité) dès que son `GuestAccess` ou son `SpaceMembership` est actif, indépendamment de l'état de la session — pendant une session `LIVE` comme en dehors. Affiche la fiche du `Personnage actif` (si un personnage est associé), les documents `PUBLIC` et, si le joueur est associé à plusieurs personnages, une sélection du personnage actif. L'étendue exacte dépend du périmètre d'accès : un périmètre `SESSION` limite aux documents épinglés de la session et aux documents `PUBLIC` ; un périmètre `SPACE` donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions. Hors périmètre pour un espace `PERSONAL`, mono-membre.
 
-**Relation avec `Vue session joueur`** : cette vue post-accès est le cadre général ; la vue session `LIVE` en est un état particulier qui y ajoute, le temps de la session, la capacité de créer des notes de session personnelles. Le contenu affiché (fiche, documents `PUBLIC`) est le même dans les deux cas — seule la capacité d'écriture distingue l'état `LIVE`.
+**Relation avec `Vue session joueur`** : cette vue post-accès est le cadre général ; la vue session `LIVE` en est un état particulier qui y ajoute, le temps de la session, la mise à jour en direct des documents que le MJ partage (UC-06 A4). Le contenu affiché (fiche, documents `PUBLIC`) est le même dans les deux cas. La capacité de créer des notes de session personnelles est hors MVP.
 
 - Défini dans : **UC-11** (introduit le terme), **UC-12** (objet du use case).
 - Voir aussi : `Vue session joueur`, `Personnage actif`, `GuestAccess`, `SpaceMembership`, `Espace partagé`.
