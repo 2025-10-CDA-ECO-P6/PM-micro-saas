@@ -164,8 +164,9 @@ flowchart TD
     %% Espace de travail en mode local : capture immédiate dans l'espace personnel
     ModeLocal -->|"Capture immédiate\n(espace personnel par défaut)"| EspacePerso["Espace personnel\n(préparation / capture)"]
 
-    %% Gate de migration : chemin local → cloud quand espaces locaux existent
-    ModeLocal -->|"Espaces locaux détectés\nlors du passage au compte"| GateMigration["Gate de migration\nlocal→cloud"]
+    %% Gate de migration : présenté à la création de compte ou à la connexion quand des données locales existent
+    Inscription -->|"Données locales détectées\n(UC-10)"| GateMigration["Gate de migration\nlocal→cloud"]
+    Connexion -->|"Données locales détectées\n(fournisseur externe)"| GateMigration
     GateMigration --> Tableau
     ModeLocal -->|"Aucun espace local\nou passage direct"| Tableau
 
@@ -190,6 +191,7 @@ flowchart TD
             EspacePerso --> NavDossiersPerso["Navigation par dossiers\n(dossier virtuel « Non classés »)"]
             EspacePerso --> EditeurDocPerso["Éditeur de document"]
             EspacePerso --> RecherchePerso["Recherche\n(titre seul — MVP)"]
+            EspacePerso --> EditeurScenarioPerso["Éditeur de scénario\n(cas spécialisé)"]
             NavDossiersPerso --> EditeurDocPerso
         end
 
@@ -219,17 +221,19 @@ flowchart TD
         Tableau -->|"Reprendre session en cours\n(repère 'session en cours')"| VSLIVE
 
         VSLIVE --> PanneauCreation["Panneau création rapide\nà la volée (UC-07)"]
+        VSClosed --> PanneauCreation
     end
 
     %% Surface joueur (séparée)
     subgraph SurfaceJoueur["Surface joueur (séparée — entrée par lien)"]
         direction TB
-        LienSession["Lien de session reçu"]
+        LienSession["Lien reçu\n(session ou espace partagé)"]
         SaisieNom["Saisie nom d'affichage\n+ information RGPD"]
         VueJoueur["Vue joueur\n(documents partagés)"]
         ErreurAcces["Page d'erreur d'accès\n(lien expiré, révoqué, invalide)"]
 
         LienSession --> SaisieNom
+        LienSession -->|"Utilisateur connecté\n(lien d'espace)"| VueJoueur
         SaisieNom --> VueJoueur
         LienSession --> ErreurAcces
     end
@@ -244,7 +248,7 @@ flowchart TD
     classDef joueur fill:#dcfce7,stroke:#22c55e
     classDef transversal fill:#fef9c3,stroke:#eab308
 
-    class Tableau,NouvelEspace,Campagne,NavDossiers,EditeurDoc,EditeurScenario,Recherche,ParamsCampagne,VSConfig,VSLIVE,VSClosed,Archive,PanneauCreation,EspacePerso,NavDossiersPerso,EditeurDocPerso,RecherchePerso mj
+    class Tableau,NouvelEspace,Campagne,NavDossiers,EditeurDoc,EditeurScenario,Recherche,ParamsCampagne,VSConfig,VSLIVE,VSClosed,Archive,PanneauCreation,EspacePerso,NavDossiersPerso,EditeurDocPerso,RecherchePerso,EditeurScenarioPerso mj
     class LienSession,SaisieNom,VueJoueur,ErreurAcces joueur
     class Accueil,ModeLocal,Inscription,Connexion,GateMigration,Profil,SuppressionRGPD transversal
 ```

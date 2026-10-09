@@ -84,9 +84,13 @@ flowchart LR
     UC06 --> UC08
     UC06 --> UC09
     UC01 --> UC10
+    UC10 --> UC08
+    UC10 --> UC09
     UC10 --> UC11
     UC11 --> UC12
+    UC09 --> UC12
     UC02 --> UC13
+    UC04 --> UC14
     UC05 --> UC14
 ```
 

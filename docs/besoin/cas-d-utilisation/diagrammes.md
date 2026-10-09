@@ -52,9 +52,11 @@ flowchart LR
         UC08(["Partager une information"])
         UC09(["Acces joueur via lien\nsession ou espace partage"])
         UC12(["Consulter son espace\nvue joueur"])
+        UC10(["Creer un compte\ncloud"])
     end
 
     MJ --> UC01
+    MJ --> UC10
     MJ --> UC02
     MJ --> UC_PREP
     MJ --> UC06
@@ -81,10 +83,12 @@ flowchart LR
     Joueur["Joueur"]
     JInvite["Joueur invite"]
     JInvite -- herite --> Joueur
+    Facturation["Systeme de facturation"]
 
     subgraph ACCES["Acces et compte"]
         UC01(["UC-01\nMode local"])
         UC10(["UC-10\nCompte cloud"])
+        UC15(["UC-15\nGel d'espaces au downgrade\npost-MVP"])
     end
     subgraph ESPACES["Espaces de jeu"]
         UC02(["UC-02\nCampagne ou one-shot"])
@@ -118,9 +122,12 @@ flowchart LR
     MJ --> UC08
     MJ --> UC11
     MJ --> UC14
+    MJ --> UC10
     Joueur --> UC09
     Joueur --> UC12
+    Joueur --> UC10
     JInvite --> UC09
+    Facturation --> UC15
 
     UC10 -.->|"extend"| UC01
     UC13 -.->|"extend"| UC02
@@ -128,7 +135,6 @@ flowchart LR
     UC08 -.->|"extend"| UC06
     UC09 -.->|"extend"| UC06
     UC14 -.->|"extend"| UC06
-    UC11 -.->|"include"| UC10
     UC10 -.->|"extend"| UC09
 ```
 
@@ -179,7 +185,6 @@ flowchart LR
 
     UC10 -.->|"extend"| UC01
     UC13 -.->|"extend"| UC02
-    UC11 -.->|"include"| UC10
     UC07 -.->|"extend"| UC06
     UC08 -.->|"extend"| UC06
     UC14 -.->|"extend"| UC06
@@ -214,7 +219,7 @@ flowchart LR
     Joueur --> UC12
 
     UC10 -.->|"extend"| UC09
-    INFO -.->|"include"| UC09
+    UC09 -.->|"include"| INFO
     HIST -.->|"extend"| UC12
 ```
 
@@ -238,7 +243,7 @@ flowchart LR
         C3(["Inviter des membres\npermanents"])
     end
     subgraph ONESHOT["One-shot express — post-MVP (parcours express conditionné à UC-13)"]
-        O1(["Bibliotheque\nde scenarios\npost-MVP"])
+        O1(["Bibliotheque\npersonnelle\npost-MVP"])
         O2(["Lancer un one-shot\nen une action\npost-MVP"])
     end
     subgraph COMMUN["Vue session — commun aux deux contextes"]
@@ -261,12 +266,11 @@ flowchart LR
     C1 --> C2
     C3 -.->|"extend"| C1
     C2 --> S1
-    MJ --> O1
-    O1 --> O2
+    MJ --> O2
+    O1 -.->|"extend"| O2
     O2 --> S1
-    S3 --> UC09
     S5 --> UC09
-    C3 --> UC12
+    C3 --> UC09
     Joueur --> UC09
     Joueur --> UC12
     JInvite --> UC09
