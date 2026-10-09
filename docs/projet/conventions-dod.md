@@ -327,7 +327,7 @@ Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Co
 | Marqueurs | Liste fermée. Ouvert : `À TRANCHER`, `SOUS-SPÉCIFIÉ`. Clos : `DÉCIDÉ` (date + renvoi). Fin de vie : `Retiré`, `Remplacé par <id>`. |
 | Registre | Les ADR sont le registre unique. Un ajustement se fait dans une section datée ; un changement de sens fait l'objet d'une nouvelle ADR. |
 | Reste à faire | Le plan de travail pour les tâches, `decisions-en-attente.md` pour les questions ouvertes. Les constats de l'onboarding, tous appliqués, ont été retirés le 2026-10-09 (`docs/project/backlog/README.md @ 51a7cdc`). |
-| Vérification | Les quatre contrôles de la section suivante, lancés en CI sur toute modification de `docs/`. |
+| Vérification | Les cinq contrôles de la section suivante, lancés en CI sur toute modification de `docs/`. |
 | Langue | La documentation est en français. Tout ce qui touche au code est en anglais. |
 | Règles métier | Une RB est définie une seule fois, dans son épique US ; les autres documents la citent. |
 | Glossaire | Il fait référence pour les noms de termes. Un renommage est propagé partout ; l'ancien nom n'est gardé que comme alias. |
@@ -340,6 +340,7 @@ Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Co
 | `dotnet test tools/Tests/CaracterisationOutils.csproj` | Les golden masters de l'outillage, y compris sur le corpus réel | tous les tests passent |
 | `dotnet run --project tools/VerifCorpus` | Les liens, ancres et orphelins, ainsi que l'équilibre des blocs de code | code 0 |
 | `dotnet run --project tools/VerifMailleAgregat` | La maille du plan de travail et les conflits recalculés | code 0 |
+| `dotnet run --project tools/VerifMarqueursIdentifiants` | Les marqueurs de statut hors de la liste fermée de l'ADR-019 § 5, et les identifiants définis deux fois, confrontés aux listes de référence versionnées à côté de l'outil | code 0 ; code 1 sur un écart absent de ces listes (il est nommé en sortie) |
 | `dotnet run --project tools/VerifCouvertureRecette` | La couverture des cas de recette par le plan de travail, et les sources déclarées retirées dans le cahier (il ne compare pas les citations de scénarios Gherkin à leur source) | code 1 tant que des `TROU` ou `SOURCE RETIRÉE` sont assumés ; ils sont listés en sortie |
 
 ---

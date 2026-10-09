@@ -157,6 +157,89 @@ public class DetectionLienAAncreInexistante : IDisposable
     }
 }
 
+/// <summary>
+/// Ancre d'un titre portant un <c>_</c> — GitHub garde le <c>_</c> intra-mot
+/// (<c>LIVE_NOTE</c> donne <c>live_note</c>) et celui d'un code inline, et ne
+/// retire que les <c>_</c> d'emphase (<c>_italique_</c>, <c>__gras__</c>).
+/// Les liens de cette fixture sont ceux que GitHub résout : aucun ne doit être
+/// signalé.
+/// </summary>
+public class AncreDeTitreAvecSouligne : IDisposable
+{
+    private readonly RepertoireTemporaire _tmp = new();
+    private readonly string _depot;
+
+    public AncreDeTitreAvecSouligne()
+    {
+        _depot = _tmp.Chemin;
+        Helpers.InitialiserDepotGit(_depot);
+        Helpers.Ecrire(Path.Combine(_depot, "README.md"), "# Dépôt de fixture\n");
+        Helpers.Ecrire(
+            Path.Combine(_depot, "docs/page-a.md"),
+            "# Page A\n\n"
+            + "- [intra-mot](page-b.md#notes-de-session--documents-de-type-live_note)\n"
+            + "- [code inline](page-b.md#le-type-snake_case_name)\n"
+            + "- [italique](page-b.md#un-titre-en-italique)\n"
+            + "- [gras](page-b.md#appel-de-init-ici)\n");
+        Helpers.Ecrire(
+            Path.Combine(_depot, "docs/page-b.md"),
+            "# Page B\n\n"
+            + "## Notes de session — Documents de type LIVE_NOTE\n\nTexte.\n\n"
+            + "## Le type `snake_case_name`\n\nTexte.\n\n"
+            + "## Un titre _en italique_\n\nTexte.\n\n"
+            + "## Appel de __init__ ici\n\nTexte.\n");
+        Helpers.CommiterTout(_depot, "ancres avec souligné");
+    }
+
+    public void Dispose() => _tmp.Dispose();
+
+    [Fact]
+    public void DevraitGarderLeSouligneIntraMotEtCeluiDuCodeInlineEtRetirerCeluiDEmphase()
+    {
+        var resultat = Helpers.ExecuterOutil("VerifCorpus", [_depot]);
+        Assert.Contains("liens à ancre inexistante     : 0", resultat.Stdout);
+    }
+}
+
+/// <summary>
+/// Pendant du précédent : l'ancre qui supprimerait le <c>_</c> intra-mot ou
+/// celui d'un code inline n'existe pas sur GitHub, le lien doit être signalé.
+/// </summary>
+public class AncreDeTitreSansLeSouligneIntraMot : IDisposable
+{
+    private readonly RepertoireTemporaire _tmp = new();
+    private readonly string _depot;
+
+    public AncreDeTitreSansLeSouligneIntraMot()
+    {
+        _depot = _tmp.Chemin;
+        Helpers.InitialiserDepotGit(_depot);
+        Helpers.Ecrire(Path.Combine(_depot, "README.md"), "# Dépôt de fixture\n");
+        Helpers.Ecrire(
+            Path.Combine(_depot, "docs/page-a.md"),
+            "# Page A\n\n"
+            + "- [intra-mot](page-b.md#notes-de-session--documents-de-type-livenote)\n"
+            + "- [code inline](page-b.md#le-type-snakecasename)\n");
+        Helpers.Ecrire(
+            Path.Combine(_depot, "docs/page-b.md"),
+            "# Page B\n\n"
+            + "## Notes de session — Documents de type LIVE_NOTE\n\nTexte.\n\n"
+            + "## Le type `snake_case_name`\n\nTexte.\n");
+        Helpers.CommiterTout(_depot, "ancres sans souligné");
+    }
+
+    public void Dispose() => _tmp.Dispose();
+
+    [Fact]
+    public void DevraitSignalerLesLiensDontLAncreSupprimeLeSouligneIntraMot()
+    {
+        var resultat = Helpers.ExecuterOutil("VerifCorpus", [_depot]);
+        Assert.Contains("liens à ancre inexistante     : 2", resultat.Stdout);
+        Assert.Contains("[ANCRE CASSÉE] docs/page-a.md -> page-b.md#notes-de-session--documents-de-type-livenote", resultat.Stdout);
+        Assert.Contains("[ANCRE CASSÉE] docs/page-a.md -> page-b.md#le-type-snakecasename", resultat.Stdout);
+    }
+}
+
 public class DetectionFichierOrphelin : IDisposable
 {
     private readonly RepertoireTemporaire _tmp = new();

@@ -19,7 +19,7 @@
 - [Règles métier](#règles-métier)
 - [Événements domaine](#événements-domaine)
 - [Intégration avec les autres contextes](#intégration-avec-les-autres-contextes)
-- [Notes de session — Documents de type LIVE_NOTE](#notes-de-session--documents-de-type-livenote)
+- [Notes de session — Documents de type LIVE_NOTE](#notes-de-session--documents-de-type-live_note)
 - [Diagrammes](#diagrammes)
 
 ---
