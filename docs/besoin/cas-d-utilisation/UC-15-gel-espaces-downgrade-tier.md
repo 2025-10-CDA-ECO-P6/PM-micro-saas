@@ -6,11 +6,11 @@
 
 ## Acteur principal
 
-Le système — réaction automatique à un événement de facturation (`AccountTierChanged`). Aucune action manuelle du MJ ne déclenche le gel ou le dégel.
+Le système — réaction automatique à la notification d'un changement de tier par le système de facturation (`TierChanged`), dont `User.ChangeTier` fait émettre `AccountTierChanged` ([identity-access/context.md, § Règles métier, règle 3](../../domaine/identity-access/context.md)). Aucune action manuelle du MJ ne déclenche le gel ou le dégel.
 
 ## Acteurs secondaires
 
-Aucun. Le MJ propriétaire de l'espace est l'acteur **concerné** (il subit le gel ou bénéficie du dégel, et en est notifié) mais n'est l'acteur déclencheur d'aucune étape de ce use case — le déclencheur est un événement de facturation, pas une action du MJ dans l'application.
+Aucun. Le MJ propriétaire de l'espace est l'acteur **concerné** (il subit le gel ou bénéficie du dégel, et en est notifié) mais n'est l'acteur déclencheur d'aucune étape de ce use case — le déclencheur est la notification du système de facturation, pas une action du MJ dans l'application.
 
 ## Objectif
 
