@@ -41,7 +41,8 @@ internal static class Helpers
     // aussi le fichier d'entrée et le dossier de sortie sous DossierOutils. Le
     // nom du binaire n'est pas toujours celui de l'outil : le faux gh de FauxGh
     // s'appelle « gh », nom sous lequel le PATH restreint le cherche.
-    // ComparateurJournaux n'est référencé par aucun test : il n'est pas compilé.
+    // ComparateurJournaux, que les tests ne lancent pas, est compilé aussi : un outil que rien ne
+    // compile peut casser sans qu'on le voie.
     private static readonly Dictionary<string, string> OutilsFichierUnique = new()
     {
         ["VerifCorpus"] = "VerifCorpus",
@@ -52,9 +53,10 @@ internal static class Helpers
         ["CreerProjet"] = "CreerProjet",
         ["gh"] = "Harnais/FauxGh",
         ["GardeIdentiteGh"] = "Harnais/GardeIdentiteGh",
+        ["ComparateurJournaux"] = "Harnais/ComparateurJournaux",
     };
 
-    /// <summary>Fichier d'entrée de chaque outil en fichier unique que les tests lancent.</summary>
+    /// <summary>Fichier d'entrée de chaque outil en fichier unique que le lanceur compile.</summary>
     public static IEnumerable<string> SourcesDesOutils =>
         OutilsFichierUnique.Values.Select(d => Path.Combine(RacineOutils, d, Path.GetFileName(d) + ".cs"));
 

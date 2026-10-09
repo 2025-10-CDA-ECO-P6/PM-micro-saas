@@ -933,7 +933,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 
 **D-01 — Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel)**
 *Type : risque.*
-- **Description** : le corpus portait deux usages distincts d'un même symbole de jalon selon la décision d'architecture consultée — l'une l'assimilait au jalon local, l'autre à une préoccupation cloud. **Ce point est résolu** : l'axe canonique J0-J3, nommé par contenu, est ratifié (décision produit, 2026-09-01, `roadmap-de-build.md` §5) et la décision d'architecture source a été clarifiée en conséquence. Le point résiduel, distinct et non couvert par cette ratification : certains rattachements entre codes de renvoi d'ADR et jalons de build restent des **ancrages inférés plutôt que documentés littéralement** — notamment le rapprochement du lot `P0.5` avec la phase de conception (CdC §11), qui n'établit qu'une antériorité déduite, pas un ancrage littéral, et reste à confirmer explicitement dans l'artefact de planification dédié.
+- **Description** : le corpus portait deux usages distincts d'un même symbole de jalon selon la décision d'architecture consultée — l'une l'assimilait au jalon local, l'autre à une préoccupation cloud. **Ce point est résolu** : l'axe canonique J0-J3, nommé par contenu, est ratifié (décision produit, 2026-09-01, `roadmap-de-build.md` §5) et la décision d'architecture source a été clarifiée en conséquence. Le point résiduel, distinct et non couvert par cette ratification : certains rattachements entre codes de renvoi d'ADR et jalons de build restent des **ancrages inférés plutôt que documentés littéralement** — notamment le rapprochement du lot `P0.5` avec la phase de conception (CdC §12), qui n'établit qu'une antériorité déduite, pas un ancrage littéral, et reste à confirmer explicitement dans l'artefact de planification dédié.
 - **Probabilité** : Quasi-certaine — incohérence de nomenclature déjà présente dans le corpus *(cotation portée à la prochaine revue du comité des risques : le facteur dominant — le double référent — est désormais résolu ; seul l'ancrage inféré résiduel subsiste)*.
 - **Impact** : Modéré — dimension dominante : coût & délai (erreur d'ordonnancement si l'ancrage inféré est traité comme confirmé sans vérification).
 - **Criticité inhérente** : Élevée.
@@ -943,7 +943,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Propriétaire** : Direction de projet.
 - **Échéance** : socle.
 - **Confiance** : ferme sur la nomenclature de jalon (ratifiée) ; sous réserve sur l'ancrage inféré `P0.5`.
-- **Source** : roadmap d'entrée en build ; cahier des charges §11.
+- **Source** : roadmap d'entrée en build ; cahier des charges §12.
 - **Recoupements** : la roadmap documente la ratification directement ; ce registre le reprend comme point de pilotage sans y ajouter d'élément.
 
 **D-02 — Stabilisation du socle et confirmation des décisions d'architecture pré-implémentation**

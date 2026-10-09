@@ -67,6 +67,8 @@ Quatre contrôles vérifient le corpus, lancés depuis la racine :
 
 Ils sont déclarés dans le guide de conventions et lancés en CI sur toute modification de `docs/`.
 
+*Ajustement du 2026-10-09 : les outils de `tools/` n'ont plus de projet `.csproj` ; chacun se lance par un fichier d'entrée unique (convention `tools/FICHIER-UNIQUE.md`). Les commandes ci-dessus deviennent, dans l'ordre : `dotnet run --file tools/Tests/Tests.cs`, `dotnet run --file tools/VerifCorpus/VerifCorpus.cs`, `dotnet run --file tools/VerifMailleAgregat/VerifMailleAgregat.cs` et `dotnet run --file tools/VerifCouvertureRecette/VerifCouvertureRecette.cs`. Ce que chacune contrôle et sa sortie attendue ne changent pas. La liste à jour, avec le contrôle des marqueurs et des identifiants, est celle du guide de conventions, § 8.8.*
+
 ### 9. Langue
 
 La documentation se lit en français. Le code est en anglais, ainsi que tout ce qui touche au code : identifiants de domaine, noms de types, d'événements, de champs, de tables et d'endpoints, extraits de code. Une prose française cite les noms anglais tels qu'ils seront dans le code.

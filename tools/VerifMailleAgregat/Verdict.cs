@@ -10,10 +10,12 @@ internal sealed record Verdict(
     int ItemsNeSeResolvantPas,
     int EcartsConflits,
     int IdentifiantsAmbigus,
-    int RenvoisMorts)
+    int RenvoisMorts,
+    int TitresNonConformes,
+    int IdentifiantsEnDouble)
 {
     /// <summary>
-    /// Vrai si au moins un des quatre compteurs arbitrés comme « défaut rapporté »
+    /// Vrai si au moins un des six compteurs arbitrés comme « défaut rapporté »
     /// est non nul. Le périmètre « en attente de J0 » n'entre délibérément pas
     /// dans cette liste (arbitrage explicite) : un item non clôturable avant J0
     /// n'est ni une erreur ni un module vérifié, et ne doit pas rendre un code
@@ -23,5 +25,7 @@ internal sealed record Verdict(
         ItemsNeSeResolvantPas > 0
         || EcartsConflits > 0
         || IdentifiantsAmbigus > 0
-        || RenvoisMorts > 0;
+        || RenvoisMorts > 0
+        || TitresNonConformes > 0
+        || IdentifiantsEnDouble > 0;
 }

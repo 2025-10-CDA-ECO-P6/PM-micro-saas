@@ -9,47 +9,9 @@ namespace VerifMailleAgregat;
 /// </summary>
 internal static class MailleDesignation
 {
-    public static readonly HashSet<string> Transverses = new(StringComparer.Ordinal)
-    {
-        "SharedKernel", "Haversack.Infrastructure.Notifications",
-    };
-
-    // Modules de la couche cliente : les six préoccupations nommées par le corpus (§2, tableau).
-    public static readonly HashSet<string> Client = new(StringComparer.Ordinal)
-    {
-        "service d'accès au store", "châssis", "bandeaux transversaux",
-        "sanitisation", "politique de sécurité de contenu", "projection d'export",
-    };
-
-    // Module d'outillage : liste fermée à quatre libellés (§2, entre guillemets typographiques `…`).
-    //
-    // Divergence C — cf.
-    // tools/Tests/DivergencesEntreOutilsTests.cs::DivergenceC_MailleLueOuCodeeEnDur.
-    // Seul le TRAITEMENT de cette divergence est arbitré ici : reproduire telle quelle,
-    // sans corriger. Le FOND — laquelle des deux implémentations est juste — n'est pas
-    // tranché par ce commentaire. Cette liste est codée en dur, jamais extraite du §2 du
-    // plan comme le fait le générateur d'issues.
-    public static readonly HashSet<string> Outillage = new(StringComparer.Ordinal)
-    {
-        "le projet de test d'architecture", "le projet de test de bout en bout",
-        "la configuration de la solution", "la configuration d'intégration continue",
-    };
-
-    // Namespaces de bounded context : n'apparaissent comme module que sur la seule tranche qui les
-    // crée — TB-003, nommée en toutes lettres par le §2 lui-même.
-    //
-    // Divergence D — cf.
-    // tools/Tests/DivergencesEntreOutilsTests.cs::DivergenceD_VerrouDuNamespaceSurLaTrancheDeCreation.
-    // Seul le TRAITEMENT de cette divergence est arbitré ici : reproduire telle quelle,
-    // sans corriger. Le FOND — NON un défaut, mais quel choix de MODÉLISATION retenir —
-    // n'est pas tranché par ce commentaire. Cette clause d'exception, avec son identifiant
-    // de tranche en dur, est reproduite telle quelle — le générateur d'issues ne
-    // l'implémente pas.
-    public static readonly HashSet<string> NamespacesBc = new(StringComparer.Ordinal)
-    {
-        "IdentityAccess", "SpaceManagement", "ContentLibrary", "SessionConduct",
-    };
-    public const string TrancheCreationNamespaces = "TB-003";
+    // Les modules transverses nommés, ceux de la couche cliente, les modules d'outillage, les
+    // namespaces de bounded context et la tranche qui les crée ne figurent pas ici : ils se lisent
+    // dans le § 2 du plan (ModulesOutillage), jamais recopiés en dur.
 
     // Projet .NET désigné par son rôle tant que son nom n'est pas tranché (§2, convention de
     // désignation de structure-projets.md § Convention de désignation) : Domaine et Application
@@ -82,18 +44,17 @@ internal static class MailleDesignation
         string tacheId,
         IReadOnlyDictionary<string, string> agregats,
         IReadOnlySet<string> fiches,
-        IReadOnlySet<string> stores)
+        IReadOnlySet<string> stores,
+        ModulesDuPlan modules)
     {
         if (agregats.ContainsKey(item)) return "agrégat";
-        if (Transverses.Contains(item)) return "transverse nommé";
-        if (NamespacesBc.Contains(item))
+        if (modules.Transverses.Contains(item)) return "transverse nommé";
+        if (modules.Namespaces.Noms.Contains(item))
         {
-            return string.Equals(tacheId, TrancheCreationNamespaces, StringComparison.Ordinal)
-                ? "namespace de bounded context"
-                : null;
+            return modules.Namespaces.ResoutSur(item, tacheId) ? "namespace de bounded context" : null;
         }
-        if (Client.Contains(item)) return "module de la couche cliente";
-        if (Outillage.Contains(item)) return "module d'outillage";
+        if (modules.Client.Contains(item)) return "module de la couche cliente";
+        if (modules.Outillage.Contains(item)) return "module d'outillage";
         if (ProjetRoleClos.Contains(item)) return "projet .NET (rôle, unicité tranchée)";
         if (MotifProjetRoleOuvert.IsMatch(item)) return OuvertJ0;
 

@@ -10,33 +10,26 @@ namespace VerifMailleAgregat;
 /// </summary>
 internal static class PlanDeTravail
 {
-    private static readonly Regex MotifSplitBloc = new(
-        @"\n#{4,6}\s+(?=TB-)", RegexOptions.CultureInvariant);
+    // Un titre de niveau 4 à 6 qui commence par « TB- » est une tâche déclarée : il porte la
+    // forme du plan ou il est signalé, jamais sauté. C'est la règle de CreerIssues
+    // (PlanDeTravail.cs), qui lit le même plan.
+    private static readonly Regex MotifTitreCandidat = new(
+        @"^#{4,6}[ \t]+TB-.*$", RegexOptions.Multiline | RegexOptions.CultureInvariant);
 
-    // Ancrage explicite ajouté : re.match de Python ancre implicitement en tête de
-    // chaîne, Match de .NET cherche. Le bloc analysé ici commence toujours par
-    // « TB-... » (garanti par la coupure ci-dessus, qui coupe juste avant l'identifiant
-    // sans le consommer), donc une recherche non ancrée retrouverait aujourd'hui le
-    // même résultat qu'un ancrage explicite — la divergence est latente, pas active :
-    // c'est justement l'espèce qui se réveille sans bruit si cette garantie de position
-    // venait à changer. Ancré ici pour ne pas en dépendre.
-    private static readonly Regex MotifIdentifiantBloc = new(
-        @"^(TB-\d{3})", RegexOptions.CultureInvariant);
+    // Forme du plan : cinq dièses, identifiant entier, tiret cadratin, intitulé. Le motif
+    // d'identifiant n'a pas de plafond de chiffres (ADR-019 § 2 : « le plus grand + 1 »).
+    private static readonly Regex MotifTitreConforme = new(
+        @"^##### (TB-\d+) — (.+)$", RegexOptions.CultureInvariant);
 
     private static readonly Regex MotifLigneChamp = new(
         @"^\|\s*([^|]+?)\s*\|\s*(.*?)\s*\|\s*$",
         RegexOptions.Multiline | RegexOptions.CultureInvariant);
 
-    // Divergence B — cf.
-    // tools/Tests/DivergencesEntreOutilsTests.cs::DivergenceB_NombreDeChiffresDansLIdentifiant.
-    // Seul le TRAITEMENT de cette divergence est arbitré ici : reproduire telle quelle,
-    // sans corriger. Le FOND — laquelle des deux implémentations est juste — n'est pas
-    // tranché par ce commentaire. Exactement trois chiffres, sans ancre de fin — un
-    // identifiant à quatre chiffres est tronqué en silence aux trois premiers. Réutilisé
-    // aussi bien pour l'identifiant de bloc que pour les renvois « Dépend de » /
-    // « En conflit avec ».
+    // Identifiant entier, sans plafond de chiffres ni troncature : « TB-1000 » n'est pas
+    // « TB-100 ». Réutilisé aussi bien pour les renvois « Dépend de » / « En conflit avec »
+    // que pour les identifiants retirés (§ 11).
     private static readonly Regex MotifIdentifiantReference = new(
-        @"TB-\d{3}", RegexOptions.CultureInvariant);
+        @"TB-\d+", RegexOptions.CultureInvariant);
 
     private static readonly Regex MotifSectionIdentifiantsRetires = new(
         @"^##\s+.*Identifiants retirés.*$",
@@ -46,7 +39,7 @@ internal static class PlanDeTravail
         @"^##\s+", RegexOptions.Multiline | RegexOptions.CultureInvariant);
 
     private static readonly Regex MotifLigneIdentifiantRetire = new(
-        @"^\|\s*(TB-\d{3})\s*\|",
+        @"^\|\s*(TB-\d+)\s*\|",
         RegexOptions.Multiline | RegexOptions.CultureInvariant);
 
     public static string LireTexte(string racine, string cheminPlanRelatif)
@@ -59,15 +52,38 @@ internal static class PlanDeTravail
         return LecteurTexte.LireTexteIntegral(chemin);
     }
 
-    public static Dictionary<string, Tache> ExtraireTaches(string texte)
+    public static LectureDesTaches ExtraireTaches(string texte)
     {
         var resultat = new Dictionary<string, Tache>(StringComparer.Ordinal);
-        var blocs = MotifSplitBloc.Split(texte);
+        var titresNonConformes = new List<(int Ligne, string Titre)>();
+        var lignesParId = new Dictionary<string, List<int>>(StringComparer.Ordinal);
+        var candidats = MotifTitreCandidat.Matches(texte);
 
-        for (int idx = 1; idx < blocs.Length; idx++)
+        for (int idx = 0; idx < candidats.Count; idx++)
         {
-            string bloc = blocs[idx];
-            string id = MotifIdentifiantBloc.Match(bloc).Groups[1].Value;
+            var candidat = candidats[idx];
+            int ligneDuTitre = 1 + texte.AsSpan(0, candidat.Index).Count('\n');
+            string titre = candidat.Value.TrimEnd('\r');
+
+            var conforme = MotifTitreConforme.Match(titre);
+            if (!conforme.Success)
+            {
+                titresNonConformes.Add((ligneDuTitre, titre));
+                continue;
+            }
+
+            string id = conforme.Groups[1].Value;
+            if (!lignesParId.TryGetValue(id, out var lignes))
+            {
+                lignesParId[id] = lignes = [];
+            }
+            lignes.Add(ligneDuTitre);
+            // Un identifiant défini deux fois : la première définition garde la place, la
+            // suivante est signalée plus bas, jamais écrasée l'une par l'autre.
+            if (lignes.Count > 1) continue;
+
+            int finBloc = idx + 1 < candidats.Count ? candidats[idx + 1].Index : texte.Length;
+            string bloc = texte[(candidat.Index + candidat.Length)..finBloc];
 
             var champs = new Dictionary<string, string>(StringComparer.Ordinal);
             foreach (Match ligne in MotifLigneChamp.Matches(bloc))
@@ -114,7 +130,13 @@ internal static class PlanDeTravail
 
             resultat[id] = new Tache(items, horsMaille, trou, conflits, dependDe);
         }
-        return resultat;
+
+        var enDouble = lignesParId
+            .Where(kv => kv.Value.Count > 1)
+            .Select(kv => (kv.Key, kv.Value))
+            .OrderBy(t => t.Key, ComparateurCodePoints.Instance)
+            .ToList();
+        return new LectureDesTaches(resultat, titresNonConformes, enDouble);
     }
 
     /// <summary>

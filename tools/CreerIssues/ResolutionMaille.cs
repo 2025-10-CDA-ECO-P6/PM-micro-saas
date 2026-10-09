@@ -84,10 +84,13 @@ internal static class ResolutionMaille
     /// <summary>
     /// Déduit le libellé de nature de tranche depuis le périmètre d'écriture.
     /// Renvoie (libellés déduits, segments non résolus).
+    /// <paramref name="namespacesResolubles"/> : les namespaces de bounded context
+    /// admis comme module sur la tâche traitée (voir <see cref="NamespacesDeContexte.ResolublesSur"/>).
     /// </summary>
     public static (HashSet<string> Libelles, List<string> Residuels) MapperNature(
         List<string> segments, string? marqueur, IReadOnlyDictionary<string, HashSet<string>> maille,
-        IReadOnlySet<string> slugsWireframes, IReadOnlySet<string> naturesValides)
+        IReadOnlySet<string> slugsWireframes, IReadOnlySet<string> naturesValides,
+        IReadOnlySet<string> namespacesResolubles)
     {
         if (marqueur == "hors_maille")
         {
@@ -130,6 +133,13 @@ internal static class ResolutionMaille
                     natureTrouvee = nature;
                     break;
                 }
+            }
+
+            // Un namespace de bounded context n'est un module que sur la seule tranche qui
+            // le crée (§ 2) : l'appelant ne le passe que pour cette tranche.
+            if (natureTrouvee is null && namespacesResolubles.Contains(segment))
+            {
+                natureTrouvee = "Socle";
             }
 
             if (natureTrouvee is not null)

@@ -37,6 +37,13 @@ internal static class MailleDuPlan
     private static readonly Regex MotifNomEntreAccentsGraves = new(
         @"`([^`]+)`", RegexOptions.CultureInvariant);
 
+    // La clause du § 2 qui verrouille les namespaces de bounded context : portée par la
+    // ligne du module transverse nommé (qui les énumère) puis nommant la tranche qui les
+    // crée dans le paragraphe « Aucun namespace de bounded context… ».
+    private const string MarqueurClauseNamespaces = "sur la seule tranche qui les crée";
+    private static readonly Regex MotifTrancheCreatrice = new(
+        $"{MarqueurClauseNamespaces}{BlancPython.Classe}*\\((TB-\\d+)\\)", RegexOptions.CultureInvariant);
+
     public static Dictionary<string, HashSet<string>> Extraire(string contenuPlan, string racine)
     {
         var agregats = ExtraireAgregats(racine);
@@ -57,6 +64,10 @@ internal static class MailleDuPlan
 
         var outillage = NomsDePuce(contenuPlan, "un **module d'outillage**");
         var transverses = NomsDePuce(contenuPlan, "un **module transverse nommé**");
+        // La ligne du module transverse nommé énumère aussi les quatre namespaces de bounded
+        // context, que le § 2 n'admet que sur la tranche qui les crée : ils ne sont pas des
+        // modules transverses, ExtraireNamespaces les rend à part.
+        transverses.ExceptWith(ExtraireNamespaces(contenuPlan).Noms);
 
         if (agregats.Count == 0 || coucheCliente.Count == 0 || outillage.Count == 0 || transverses.Count == 0)
         {
@@ -74,6 +85,33 @@ internal static class MailleDuPlan
             ["Outillage"] = outillage,
             ["Socle"] = transverses,
         };
+    }
+
+    /// <summary>
+    /// Les namespaces de bounded context du § 2 et la seule tranche sur laquelle ils se
+    /// résolvent, lus dans le plan comme le reste de la maille. Aucun namespace nommé
+    /// sous la clause : ensemble vide. Des namespaces nommés sans tranche qui les crée :
+    /// <see cref="ErreurCorpusException"/> — le document a changé de forme.
+    /// </summary>
+    public static NamespacesDeContexte ExtraireNamespaces(string contenuPlan)
+    {
+        string? ligne = LigneDePuce(contenuPlan, "un **module transverse nommé**");
+        int debutClause = ligne?.IndexOf(MarqueurClauseNamespaces, StringComparison.Ordinal) ?? -1;
+        if (ligne is null || debutClause == -1)
+        {
+            return new NamespacesDeContexte(new HashSet<string>(StringComparer.Ordinal), string.Empty);
+        }
+
+        var noms = NomsEntreAccentsGraves(ligne[debutClause..]);
+        var tranche = MotifTrancheCreatrice.Match(contenuPlan);
+        if (noms.Count > 0 && !tranche.Success)
+        {
+            throw new ErreurCorpusException(
+                $"{Chemins.PlanRelatif} §2 nomme des namespaces de bounded context « {MarqueurClauseNamespaces} » "
+                + "sans nommer cette tranche (« … qui les crée (TB-nnn) ») — le document a changé de forme, "
+                + "ce script doit être corrigé");
+        }
+        return new NamespacesDeContexte(noms, tranche.Success ? tranche.Groups[1].Value : string.Empty);
     }
 
     private static HashSet<string> ExtraireAgregats(string racine)
@@ -134,21 +172,30 @@ internal static class MailleDuPlan
     /// <summary>
     /// Première ligne du plan portant <paramref name="marqueur"/> comme
     /// sous-chaîne — jamais un renvoi de document (libellé de lien markdown
-    /// <c>[`texte`](url)</c>, dont la forme le distingue d'un nom de module) —
-    /// puis les noms entre accents graves qu'elle porte.
+    /// <c>[`texte`](url)</c>, dont la forme le distingue d'un nom de module).
     /// </summary>
-    private static HashSet<string> NomsDePuce(string contenuPlan, string marqueur)
-    {
-        string? ligne = TexteUnicode.SepererLignesPython(contenuPlan)
+    private static string? LigneDePuce(string contenuPlan, string marqueur) =>
+        TexteUnicode.SepererLignesPython(contenuPlan)
             .FirstOrDefault(l => l.Contains(marqueur, StringComparison.Ordinal));
-        if (ligne is null) return new HashSet<string>(StringComparer.Ordinal);
 
-        string sansRenvois = MotifRenvoiMarkdown.Replace(ligne, "");
+    /// <summary>
+    /// Les noms entre accents graves de <paramref name="texte"/>, renvois de
+    /// document écartés.
+    /// </summary>
+    private static HashSet<string> NomsEntreAccentsGraves(string texte)
+    {
+        string sansRenvois = MotifRenvoiMarkdown.Replace(texte, "");
         var resultat = new HashSet<string>(StringComparer.Ordinal);
         foreach (Match m in MotifNomEntreAccentsGraves.Matches(sansRenvois))
         {
             resultat.Add(m.Groups[1].Value);
         }
         return resultat;
+    }
+
+    private static HashSet<string> NomsDePuce(string contenuPlan, string marqueur)
+    {
+        string? ligne = LigneDePuce(contenuPlan, marqueur);
+        return ligne is null ? new HashSet<string>(StringComparer.Ordinal) : NomsEntreAccentsGraves(ligne);
     }
 }

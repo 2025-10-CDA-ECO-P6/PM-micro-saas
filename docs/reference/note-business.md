@@ -21,7 +21,7 @@
 > - **À qui** : au responsable produit de Haversack, qui arbitre la trajectoire business (post-MVP, levée éventuelle, priorisation du plan d'étude marché) ; pas à un exécutant technique.
 > - **À quoi** : à savoir comment chiffrer le coût d'infrastructure, dimensionner le marché et aller au marché. La note pose la méthode et les hypothèses ; elle ne produit aucun chiffre de coût, de taille de marché ou d'ARPU, que le corpus diffère après le MVP (ADR-005, § Conséquences).
 > - **Comment le lire** : la partie 1 dit ce qu'est la note et donne, au § 3, les seules valeurs chiffrées connues ; la partie 2 pose volet par volet (§ 4 à 6) une méthode, des formules ou des hypothèses, et marque `À TRANCHER` chaque valeur absente ; la partie 3 récapitule ce qui reste à trancher (§ 7) et les sources de chaque section (§ 8).
-> - **Ce qui fait foi** : pas ce document. C'est une consolidation : en cas d'écart, c'est lui qu'on corrige (ADR-019, § 1). Font foi les sources que nomme le § 8, à leur rang dans l'ordre d'autorité ; les valeurs du § 3 sont reprises du cahier des charges, lui-même une consolidation, qui les qualifie de volatiles.
+> - **Ce qui fait foi** : jamais ce document ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)). C'est une consolidation : en cas d'écart, c'est lui qu'on corrige. Font foi les sources que nomme le § 8, à leur rang dans l'ordre d'autorité ; les valeurs du § 3 sont reprises du cahier des charges, lui-même une consolidation, qui les qualifie de volatiles.
 
 **Sommaire**
 
@@ -53,7 +53,7 @@ Cadre de méthode : il fixe comment chiffrer le coût, dimensionner le marché e
 
 Ce document s'adresse au **responsable produit** de Haversack — celui qui arbitre la trajectoire business (post-MVP, levée éventuelle, priorisation du plan d'étude marché). Il ne s'adresse pas à un exécutant technique : aucun artefact de code n'y figure, conformément à la phase de conception du repo.
 
-**Ce que ce document fait** : décomposer la méthode de calcul du coût infra, du dimensionnement de marché et de la stratégie go-to-market (GTM), en s'appuyant strictement sur le corpus de conception existant (ADR-005, cahier des charges annexe « Valeurs de référence chiffrées »/§2.4, vision produit, MoSCoW).
+**Ce que ce document fait** : décomposer la méthode de calcul du coût infra, du dimensionnement de marché et de la stratégie go-to-market (GTM), en s'appuyant strictement sur le corpus de conception existant (ADR-005, cahier des charges annexe « Valeurs de référence chiffrées »/§4.4, vision produit, MoSCoW).
 
 **Ce que ce document ne fait pas** : produire des chiffres de coût d'infrastructure, de taille de marché ou d'ARPU. Le corpus les diffère explicitement post-MVP (ADR-005, § Conséquences : *« Une note de coût d'infrastructure est à produire […] post-MVP »* ; *« Le dimensionnement du marché […] sont à instruire post-MVP »*). Toute valeur non présente dans le corpus est marquée `[À TRANCHER — donnée post-MVP / étude marché]` plutôt qu'estimée.
 
@@ -89,7 +89,7 @@ Ce volet pose la **formule** de chacun de ces trois éléments. Aucune valeur un
 
 ### 4.2 Coût par utilisateur gratuit
 
-Le palier Gratuit (CdC §2.4) donne accès à : synchronisation cloud, partage aux joueurs, accès multi-appareil, dans la limite de 3 espaces `CAMPAIGN`/`ONE_SHOT`, 4 joueurs par session, 500 Mo de stockage.
+Le palier Gratuit (CdC §4.4) donne accès à : synchronisation cloud, partage aux joueurs, accès multi-appareil, dans la limite de 3 espaces `CAMPAIGN`/`ONE_SHOT`, 4 joueurs par session, 500 Mo de stockage.
 
 Les **drivers de coût** identifiables à partir de cette description fonctionnelle :
 
@@ -113,7 +113,7 @@ Chaque terme de droite est `[À TRANCHER — mesure coût infra post-MVP]` : la 
 
 ### 4.3 Revenu net par utilisateur Pro
 
-Le palier Pro (CdC §2.4 et annexe « Valeurs de référence chiffrées ») : tarif ≈ 7 €/mois, tout le gratuit en illimité, stockage 5 Go et plus, espaces illimités.
+Le palier Pro (CdC §4.4 et annexe « Valeurs de référence chiffrées ») : tarif ≈ 7 €/mois, tout le gratuit en illimité, stockage 5 Go et plus, espaces illimités.
 
 **Formule (méthode)** :
 
@@ -145,7 +145,7 @@ Ou, en termes de ratio unitaire :
   N_Pro / N_gratuits ≥ Ratio_unitaire_break-even
 ```
 
-Interprétation attendue (à confirmer une fois les coûts unitaires connus) : ce ratio unitaire exprime, indépendamment du volume total d'utilisateurs, combien d'utilisateurs gratuits un utilisateur Pro peut financer. Le déclencheur d'upgrade Gratuit→Pro identifié par le corpus (CdC §2.4 : *« déclenché lorsque le MJ dépasse le quota de trois espaces actifs »*) est le seul signal de conversion actuellement instrumenté (H5, CdC annexe « Valeurs de référence chiffrées ») — il n'existe pas aujourd'hui de mesure de taux de conversion réel à insérer dans ce ratio.
+Interprétation attendue (à confirmer une fois les coûts unitaires connus) : ce ratio unitaire exprime, indépendamment du volume total d'utilisateurs, combien d'utilisateurs gratuits un utilisateur Pro peut financer. Le déclencheur d'upgrade Gratuit→Pro identifié par le corpus (CdC §4.4 : *« déclenché lorsque le MJ dépasse le quota de trois espaces actifs »*) est le seul signal de conversion actuellement instrumenté (H5, CdC annexe « Valeurs de référence chiffrées ») — il n'existe pas aujourd'hui de mesure de taux de conversion réel à insérer dans ce ratio.
 
 **Valeurs manquantes pour appliquer ce ratio** : `Coût_utilisateur_gratuit`, `Coût_infra_Pro`, et le taux de conversion réel gratuit→Pro observé — `[À TRANCHER — mesure coût infra post-MVP]`.
 
@@ -209,11 +209,11 @@ Le corpus inscrit un mécanisme d'adoption explicite, indépendant de toute donn
 
 - **Aucun compte requis pour commencer** (UC-01, vision.md §2.2) : un MJ crée un espace et prépare du contenu sans inscription, en mode local.
 - **Aucun compte requis pour le joueur invité** (UC-09) : un lien, un nom d'affichage, un accès immédiat.
-- Conséquence GTM directe : le tunnel d'acquisition n'a pas de barrière d'inscription à l'entrée — la friction n'apparaît qu'au moment où la valeur (partage, sauvegarde cloud) est déjà perçue, ce qui est la logique déclencheur documentée en CdC §2.4 (*« Le passage du palier local au palier gratuit est déclenché naturellement lorsque le MJ souhaite partager une information avec ses joueurs, ou lorsqu'il souhaite sécuriser ses données locales »*).
+- Conséquence GTM directe : le tunnel d'acquisition n'a pas de barrière d'inscription à l'entrée — la friction n'apparaît qu'au moment où la valeur (partage, sauvegarde cloud) est déjà perçue, ce qui est la logique déclencheur documentée en CdC §4.4 (*« Le passage du palier local au palier gratuit est déclenché naturellement lorsque le MJ souhaite partager une information avec ses joueurs, ou lorsqu'il souhaite sécuriser ses données locales »*).
 
 ### 6.3 Monétisation sur l'échelle, pas sur le partage (dérivable du corpus)
 
-Rappel de la règle de palier (CdC §2.4, ADR-005) : le déclencheur Gratuit→Pro est le dépassement du quota de 3 espaces actifs — pas un plafond de partage, de joueurs, ou de fonctionnalité de collaboration. Le levier Pro retenu par ADR-005 (§ Compléments post-revue) est explicitement *« campagnes illimitées + multi-device + stockage étendu »* — le levier « table plus large » (plus de joueurs par session) a été retiré *« aucune persona ne demande davantage de joueurs »*. La stratégie GTM peut donc s'appuyer sur un message stable : *le partage ne coûte jamais plus cher, l'échelle de préparation oui.*
+Rappel de la règle de palier (CdC §4.4, ADR-005) : le déclencheur Gratuit→Pro est le dépassement du quota de 3 espaces actifs — pas un plafond de partage, de joueurs, ou de fonctionnalité de collaboration. Le levier Pro retenu par ADR-005 (§ Compléments post-revue) est explicitement *« campagnes illimitées + multi-device + stockage étendu »* — le levier « table plus large » (plus de joueurs par session) a été retiré *« aucune persona ne demande davantage de joueurs »*. La stratégie GTM peut donc s'appuyer sur un message stable : *le partage ne coûte jamais plus cher, l'échelle de préparation oui.*
 
 ### 6.4 Canaux et tactiques d'acquisition
 
@@ -253,9 +253,9 @@ Aucune de ces données n'est estimée dans ce document : le corpus de conception
 | Section | Sources |
 |---|---|
 | 1. Nature et portée du document | ADR-005 (Décision, § Conséquences) ; ADR-019 (§ 5. Marqueurs) |
-| 2. Lecteur et usage | ADR-005 ; cahier des charges annexe « Valeurs de référence chiffrées », §2.4 ; vision produit ; MoSCoW |
+| 2. Lecteur et usage | ADR-005 ; cahier des charges annexe « Valeurs de référence chiffrées », §4.4 ; vision produit ; MoSCoW |
 | 3. Entrées connues | cahier des charges annexe « Valeurs de référence chiffrées » |
-| 4. Volet 1 — Coût d'infrastructure & break-even | ADR-005 (Décision, § Conséquences) ; cahier des charges §2.4, annexe « Valeurs de référence chiffrées » |
+| 4. Volet 1 — Coût d'infrastructure & break-even | ADR-005 (Décision, § Conséquences) ; cahier des charges §4.4, annexe « Valeurs de référence chiffrées » |
 | 5. Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU) | ADR-005 (§ Conséquences) ; ADR-006 (§ Compléments post-revue, E-04 et E-05) ; vision.md §1, §4.1 ; cahier des charges annexe « Valeurs de référence chiffrées » |
-| 6. Volet 3 — Stratégie go-to-market | ADR-005 (Décision, § Conséquences, § Compléments post-revue) ; ADR-006 (§ Compléments post-revue, E-05) ; vision.md §2.2, §3, §5bis ; cahier des charges §2.4 ; matrice-de-priorites.md |
+| 6. Volet 3 — Stratégie go-to-market | ADR-005 (Décision, § Conséquences, § Compléments post-revue) ; ADR-006 (§ Compléments post-revue, E-05) ; vision.md §2.2, §3, §5bis ; cahier des charges §4.4 ; matrice-de-priorites.md |
 | 7. Ce qui reste à trancher | ADR-005 (§ Conséquences) ; ADR-006 (§ Compléments post-revue, E-04 et E-05) ; cahier des charges annexe « Valeurs de référence chiffrées » |

@@ -16,11 +16,11 @@ Les contrôles tournent en intégration continue ([`controles-corpus.yml`](.gith
 Depuis la racine du dépôt, lancez chaque commande telle quelle, sans tube ni redirection, pour lire son vrai code de sortie :
 
 ```bash
-dotnet test tools/Tests/CaracterisationOutils.csproj
-dotnet run --project tools/VerifCorpus
-dotnet run --project tools/VerifMailleAgregat
-dotnet run --project tools/VerifMarqueursIdentifiants
-dotnet run --project tools/VerifCouvertureRecette
+dotnet run --file tools/Tests/Tests.cs
+dotnet run --file tools/VerifCorpus/VerifCorpus.cs
+dotnet run --file tools/VerifMailleAgregat/VerifMailleAgregat.cs
+dotnet run --file tools/VerifMarqueursIdentifiants/VerifMarqueursIdentifiants.cs
+dotnet run --file tools/VerifCouvertureRecette/VerifCouvertureRecette.cs
 ```
 
 | Outil | Ce qu'il vérifie | Résultat attendu |

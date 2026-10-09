@@ -29,14 +29,37 @@ internal static class FixturesMailleAgregat
 {
     public const string ModeleDomaine = "# Personnage (domaine)\n\n## Agrégats\n\n### Personnage\n\nRacine d'agrégat.\n";
 
-    // `ExtraireTaches` découpe sur `\n#{4,6}\s+(?=TB-)` : un match exige un `\n`
-    // AVANT le marqueur de titre. Sans texte de préambule avant le premier
-    // titre `##### TB-…`, ce premier titre n'est précédé d'aucun `\n` et son
-    // bloc entier devient le [0] jeté par la boucle `for idx = 1..` —
-    // silencieusement absorbé comme s'il s'agissait du préambule. D'où ce
-    // préambule minimal, obligatoire dans toute fixture de plan pour cet
-    // outil (comportement de l'outil, pas un choix de fixture arbitraire).
-    public const string PreambulePlan = "# Plan de travail (fixture)\n\n§2 — Maille de désignation, non pertinente pour ce test.\n\n";
+    // Préambule minimal de toute fixture de plan pour cet outil. Il porte les paragraphes du
+    // § 2 que le vérificateur lit pour résoudre les modules (ModulesOutillage.cs) : la table
+    // de la couche cliente, la puce « module d'outillage », la puce « module transverse
+    // nommé » avec ses namespaces de contexte, et le paragraphe qui nomme la tranche qui les
+    // crée. Sans l'un d'eux il s'arrête en panne d'exécution (PanneMailleIllisible).
+    public const string TableCoucheCliente =
+        "**Les six modules de la couche cliente et leur ancrage.**\n\n"
+        + "| `service d'accès au store` | Accès IndexedDB |\n"
+        + "| `châssis` | Disposition générale |\n"
+        + "| `bandeaux transversaux` | Bandeaux d'état |\n"
+        + "| `sanitisation` | Nettoyage HTML |\n"
+        + "| `politique de sécurité de contenu` | CSP |\n"
+        + "| `projection d'export` | Rendu d'export |\n\n"
+        + "**L'agrégat couvre ses deux moitiés.**\n\n";
+
+    public const string PuceOutillage =
+        "- un **module d'outillage** : `le projet de test d'architecture`, `le projet de test de bout en bout`, "
+        + "`la configuration de la solution`, `la configuration d'intégration continue`\n\n";
+
+    public const string PuceTransverses =
+        "- un **module transverse nommé** : `SharedKernel`, `Haversack.Infrastructure.Notifications`, ou — "
+        + "**sur la seule tranche qui les crée** — l'un des quatre namespaces de bounded context "
+        + "`IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct`\n\n";
+
+    public const string ParagrapheTrancheCreatrice =
+        "**Aucun namespace de bounded context n'apparaît comme module**, sauf sur la seule tranche qui les crée (TB-003) : "
+        + "un namespace est un tiroir, pas une unité d'écriture.\n\n";
+
+    public const string PreambulePlan =
+        "# Plan de travail (fixture)\n\n§2 — Maille de désignation, non pertinente pour ce test.\n\n"
+        + TableCoucheCliente + PuceOutillage + PuceTransverses + ParagrapheTrancheCreatrice;
 
     public static void ConstruireRacine(string racine, string planMd, bool avecDomaine = true)
     {
@@ -424,5 +447,86 @@ public class PanneUtf8InvalideDansLePlan : IDisposable
             "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
         Assert.Equal(2, resultat.CodeSortie);
         Assert.Contains("panne d'exécution", resultat.Stderr);
+    }
+}
+
+public class PanneMailleIllisible : IDisposable
+{
+    private readonly RepertoireTemporaire _tmp = new();
+
+    public PanneMailleIllisible()
+    {
+        // Plan sans la puce « module d'outillage » : le § 2 a changé de forme.
+        Helpers.Ecrire(Path.Combine(_tmp.Chemin, "docs/domaine/personnage/context.md"), FixturesMailleAgregat.ModeleDomaine);
+        Helpers.Ecrire(
+            Path.Combine(_tmp.Chemin, "docs/projet/plan-de-travail.md"),
+            "# Plan de travail (fixture)\n\n§2 — sans la puce des modules d'outillage.\n\n"
+            + "##### TB-901 — Tâche résolue proprement\n\n| Champ | Valeur |\n|---|---|\n"
+            + "| Périmètre d'écriture | Personnage |\n| Dépend de | — |\n| En conflit avec | — |\n");
+    }
+
+    public void Dispose() => _tmp.Dispose();
+
+    [Fact]
+    public void DevraitTerminerEnCodeDeSortieDeuxQuandLeParagrapheDOutillageDuPlanEstIllisible()
+    {
+        var resultat = Helpers.ExecuterOutil(
+            "VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
+        Assert.Equal(2, resultat.CodeSortie);
+        Assert.Contains("module d'outillage", resultat.Stderr);
+    }
+}
+
+/// <summary>
+/// Chaque paragraphe du § 2 que le vérificateur lit pour résoudre les modules est
+/// indispensable : sans lui, le vérificateur ne prétend pas que le plan n'a aucun
+/// module de cette nature, il s'arrête en code 2 et nomme le paragraphe. La puce
+/// « module d'outillage » a son test plus haut (<see cref="PanneMailleIllisible"/>).
+/// </summary>
+public class PanneParagrapheDuParagraphe2Introuvable : IDisposable
+{
+    private readonly RepertoireTemporaire _tmp = new();
+
+    public void Dispose() => _tmp.Dispose();
+
+    private ResultatExecution LancerSurPlan(string preambule)
+    {
+        Helpers.Ecrire(Path.Combine(_tmp.Chemin, "docs/domaine/personnage/context.md"), FixturesMailleAgregat.ModeleDomaine);
+        Helpers.Ecrire(
+            Path.Combine(_tmp.Chemin, "docs/projet/plan-de-travail.md"),
+            "# Plan de travail (fixture)\n\n" + preambule
+            + "##### TB-901 — Tâche résolue proprement\n\n| Champ | Valeur |\n|---|---|\n"
+            + "| Périmètre d'écriture | Personnage |\n| Dépend de | — |\n| En conflit avec | — |\n");
+        return Helpers.ExecuterOutil("VerifMailleAgregat", [_tmp.Chemin, "docs/projet/plan-de-travail.md"]);
+    }
+
+    [Fact]
+    public void DevraitTerminerEnCodeDeSortieDeuxEtNommerLaPuceDesModulesTransverses()
+    {
+        var resultat = LancerSurPlan(
+            FixturesMailleAgregat.TableCoucheCliente + FixturesMailleAgregat.PuceOutillage
+            + FixturesMailleAgregat.ParagrapheTrancheCreatrice);
+        Assert.Equal(2, resultat.CodeSortie);
+        Assert.Contains("module transverse nommé", resultat.Stderr);
+    }
+
+    [Fact]
+    public void DevraitTerminerEnCodeDeSortieDeuxEtNommerLaTableDeLaCoucheCliente()
+    {
+        var resultat = LancerSurPlan(
+            FixturesMailleAgregat.PuceOutillage + FixturesMailleAgregat.PuceTransverses
+            + FixturesMailleAgregat.ParagrapheTrancheCreatrice);
+        Assert.Equal(2, resultat.CodeSortie);
+        Assert.Contains("Les six modules de la couche cliente", resultat.Stderr);
+    }
+
+    [Fact]
+    public void DevraitTerminerEnCodeDeSortieDeuxEtNommerLaTrancheQuiCreeLesNamespaces()
+    {
+        var resultat = LancerSurPlan(
+            FixturesMailleAgregat.TableCoucheCliente + FixturesMailleAgregat.PuceOutillage
+            + FixturesMailleAgregat.PuceTransverses);
+        Assert.Equal(2, resultat.CodeSortie);
+        Assert.Contains("sur la seule tranche qui les crée", resultat.Stderr);
     }
 }

@@ -33,11 +33,17 @@ internal static class Orchestrateur
     // re.findall n'ancre jamais : cherche n'importe où dans le texte.
     private static readonly Regex MotifIdentifiantDansTexte = new(@"TB-\d{3}", RegexOptions.CultureInvariant);
 
-    // Titre de la section qui porte le libellé et le but de chaque épique
-    // (plan-de-travail.md §4) — jamais une clause du corpus reprise en dur
-    // ailleurs : le champ « Épique » d'une fiche de tâche (PlanDeTravail) ne
-    // porte, lui, que la clé seule (ex. « EP-02 »), sans l'intitulé.
-    private const string MarqueurVueDesEpiques = "## 4. Vue des épiques";
+    // La section qui porte le libellé et le but de chaque épique (plan-de-travail.md §4) se
+    // reconnaît à son intitulé, jamais au niveau de son titre : le numéro d'ordre est
+    // facultatif, et le niveau (1 à 6 dièses) est relevé pour borner la section. Le champ
+    // « Épique » d'une fiche de tâche (PlanDeTravail) ne porte, lui, que la clé seule
+    // (ex. « EP-02 »), sans l'intitulé. Même repérage que VerifCouvertureRecette
+    // (VueDesEpiques.cs), qui lit la même section.
+    private const string IntituleVueDesEpiques = "Vue des épiques";
+
+    private static readonly Regex MotifDebutVueDesEpiques = new(
+        @"^(?<niveau>#{1,6})[ \t]+(?:\d+\.[ \t]+)?" + IntituleVueDesEpiques + @"[ \t\r]*$",
+        RegexOptions.Multiline | RegexOptions.CultureInvariant);
 
     // Sépare la clé de l'intitulé dans la première cellule d'une ligne de la
     // Vue des épiques (« EP-02 — Échafaudage de la solution .NET ») — même
@@ -102,8 +108,8 @@ internal static class Orchestrateur
 
         // Cible (libellé complet, but) de chaque épique référencée par au
         // moins une tâche — dérivée de plan-de-travail.md §4 quand cette
-        // clé y est décrite ; repli sur la clé brute, sans but, sinon
-        // (absence tolérée : voir LireLibellesEpiques). C'est cette cible,
+        // clé y est décrite ; repli sur la clé brute, sans but, sinon (section
+        // absente : erreur, voir LireLibellesEpiques). C'est cette cible,
         // jamais la clé seule, qui porte désormais le NOM posé sur l'option
         // du champ « Épique ».
         var libellesEpiques = LireLibellesEpiques(contenuPlan);
@@ -133,10 +139,10 @@ internal static class Orchestrateur
     /// Lit plan-de-travail.md §4 (« Vue des épiques ») et en tire, pour
     /// chaque clé d'épique qui y apparaît, son libellé complet (clé +
     /// intitulé, dans la forme exacte du plan) et son but (colonne voisine).
-    /// Absence de la section tolérée — rend un dictionnaire vide plutôt que
-    /// de lever : un plan de fixture minimal (tests de caractérisation) n'a
-    /// jamais à porter cette section pour rester lisible par cet outil, et
-    /// une clé alors non trouvée retombe sur elle-même comme libellé (voir
+    /// Section absente : <see cref="ErreurCorpusException"/> qui la nomme — un plan
+    /// sans « Vue des épiques » a changé de forme, et poser sur GitHub des options
+    /// nommées par la clé seule le cacherait. Une clé de tâche que la section ne
+    /// décrit pas retombe, elle, sur elle-même comme libellé (voir
     /// l'appelant). Une clé répétée sous plusieurs jalons (ex. une épique
     /// « J0-J1 », présente à la fois sous J0 et sous J1) y est lue plusieurs
     /// fois ; la dernière occurrence lue l'emporte silencieusement — sans
@@ -147,15 +153,22 @@ internal static class Orchestrateur
     {
         var resultat = new Dictionary<string, (string, string)>(StringComparer.Ordinal);
 
-        int debut = contenuPlan.IndexOf(MarqueurVueDesEpiques, StringComparison.Ordinal);
-        if (debut == -1) return resultat;
+        var debut = MotifDebutVueDesEpiques.Match(contenuPlan);
+        if (!debut.Success)
+        {
+            throw new ErreurCorpusException(
+                $"la section « {IntituleVueDesEpiques} » est introuvable dans {Chemins.PlanRelatif} "
+                + "— le document a changé de forme, ce script doit être corrigé");
+        }
 
-        // Bornée par le prochain titre de section de premier niveau (« ## »),
-        // jamais par la fin du document : une section suivante ne doit
+        // Bornée par le prochain titre de niveau égal ou supérieur à celui de la
+        // section, jamais par la fin du document : une section suivante ne doit
         // jamais être lue comme si elle appartenait à la Vue des épiques.
-        int finRecherche = debut + MarqueurVueDesEpiques.Length;
-        int fin = contenuPlan.IndexOf("\n## ", finRecherche, StringComparison.Ordinal);
-        string section = fin != -1 ? contenuPlan[debut..fin] : contenuPlan[debut..];
+        int niveau = debut.Groups["niveau"].Length;
+        int apresEntete = debut.Index + debut.Length;
+        var motifFin = new Regex($@"^#{{1,{niveau}}}[ \t]", RegexOptions.Multiline | RegexOptions.CultureInvariant);
+        var fin = motifFin.Match(contenuPlan, apresEntete);
+        string section = fin.Success ? contenuPlan[debut.Index..fin.Index] : contenuPlan[debut.Index..];
 
         // TableauMarkdown.AnalyserLignes ne rend que les deux premières
         // cellules de chaque ligne de tableau (ici : « clé — intitulé » et

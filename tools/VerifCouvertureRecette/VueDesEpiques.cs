@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 namespace VerifCouvertureRecette;
 
 /// <summary>
-/// Lecture de « §4. Vue des épiques » du plan de travail : associe chaque
+/// Lecture de la section « Vue des épiques » du plan de travail : associe chaque
 /// épique portée par un use case (<c>US-UC-NN</c>) au jalon lu dans sa ligne
 /// de tableau. Une épique <c>EP-nn</c> (aucun use case ne la porte) est
 /// également indexée mais n'est jamais interrogée par ce contrôle — seule la
@@ -11,11 +11,12 @@ namespace VerifCouvertureRecette;
 /// </summary>
 internal static class VueDesEpiques
 {
+    // La section se reconnaît à son intitulé, pas au niveau de son titre : le
+    // numéro d'ordre est facultatif, le niveau (1 à 6 dièses) est relevé pour
+    // borner la section.
     private static readonly Regex MotifDebutSection = new(
-        @"^##\s+4\.\s+Vue des épiques\s*$", RegexOptions.Multiline | RegexOptions.CultureInvariant);
-
-    private static readonly Regex MotifFinSection = new(
-        @"^##\s+5\.", RegexOptions.Multiline | RegexOptions.CultureInvariant);
+        @"^(?<niveau>#{1,6})[ \t]+(?:\d+\.[ \t]+)?Vue des épiques[ \t\r]*$",
+        RegexOptions.Multiline | RegexOptions.CultureInvariant);
 
     private static readonly Regex MotifIdentifiantEpique = new(
         @"^(US-UC-\d+|EP-\d+)\b", RegexOptions.CultureInvariant);
@@ -31,11 +32,15 @@ internal static class VueDesEpiques
         var debut = MotifDebutSection.Match(texte);
         if (!debut.Success)
         {
-            throw new PanneExecutionException("section « 4. Vue des épiques » introuvable dans le plan de travail");
+            throw new PanneExecutionException("section « Vue des épiques » introuvable dans le plan de travail");
         }
 
         int positionApresEntete = debut.Index + debut.Length;
-        var fin = MotifFinSection.Match(texte, positionApresEntete);
+
+        // Fin : le prochain titre de niveau égal ou supérieur à celui de la section.
+        int niveau = debut.Groups["niveau"].Length;
+        var motifFin = new Regex(@$"^#{{1,{niveau}}}[ \t]", RegexOptions.Multiline | RegexOptions.CultureInvariant);
+        var fin = motifFin.Match(texte, positionApresEntete);
         string section = fin.Success ? texte[positionApresEntete..fin.Index] : texte[positionApresEntete..];
 
         string[] lignes = section.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');

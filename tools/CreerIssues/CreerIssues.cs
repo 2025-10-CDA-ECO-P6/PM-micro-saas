@@ -51,6 +51,7 @@
 #:include LecteurTexte.cs
 #:include LimiteMotPython.cs
 #:include MailleDuPlan.cs
+#:include NamespacesDeContexte.cs
 #:include Orchestrateur.cs
 #:include OrigineGit.cs
 #:include PanneEnvironnementException.cs

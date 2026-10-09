@@ -6,7 +6,7 @@ namespace CreerIssues;
 /// authentifié sous <c>--appliquer</c> — jamais un défaut du corpus ou de sa
 /// configuration. C'est cette distinction, portée par le type de l'exception
 /// et non par son message, qui sépare le code de sortie 2 du code de sortie 1
-/// dans le contrat arbitré (voir <c>Program.cs</c>). Fait partie du socle
+/// dans le contrat arbitré (voir <c>CreerIssues.cs</c>). Fait partie du socle
 /// « lecture du plan » : <see cref="RacineDepot"/> et <see cref="OrigineGit"/>
 /// la lèvent sur un échec littéral de <c>git</c>, ce que la vague suivante
 /// (report vers un projet GitHub) doit pouvoir distinguer de la même façon.

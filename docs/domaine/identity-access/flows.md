@@ -88,7 +88,7 @@ sequenceDiagram
         App-->>Utilisateur: Refusé — valider l'adresse d'abord
     end
     App->>SM: GetBlockingSpaces(userId)
-    Note over SM: Espaces CAMPAIGN/ONE_SHOT avec au moins<br/>un SpaceMembership actif autre que le propriétaire.<br/>PERSONAL n'est jamais bloquant (mono-membre, invariant 3 I&A).
+    Note over SM: Espaces CAMPAIGN/ONE_SHOT vivants (hors corbeille) avec au moins<br/>un SpaceMembership actif autre que le propriétaire.<br/>PERSONAL n'est jamais bloquant (mono-membre, invariant 3 I&A).
     alt Espaces CAMPAIGN/ONE_SHOT bloquants
         SM-->>App: Liste des espaces bloquants
         App-->>Utilisateur: Bloqué — gérer les espaces d'abord
