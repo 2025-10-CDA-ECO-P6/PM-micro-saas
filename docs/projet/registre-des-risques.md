@@ -64,9 +64,9 @@ socle
   │
 local-only
   │
-[décision marché]
-  │
 cloud + migration
+  │
+[décision marché]
   │
 [validation juridique EU]
   │
@@ -75,8 +75,8 @@ partage temps réel
 
 - **Socle** : confirmation datée des décisions d'architecture pré-implémentation, squelette du domaine applicatif, test d'architecture en intégration continue.
 - **Local-only** : projection du domaine dans le mode de fonctionnement local (stockage navigateur, interface minimale), sans aucune brique cloud.
-- **[Décision marché]** : décision produit go/no-go sur la télémétrie du jalon local, avant d'engager le build lourd cloud et temps réel — non vérifiable en build.
 - **Cloud + migration** : mapping vers le stockage serveur, authentification, migration des données locales, cascade d'effacement RGPD.
+- **[Décision marché]** : décision produit go/no-go sur la mesure d'usage chez les comptes (qui n'existent qu'à partir du jalon cloud + migration) et les entretiens, avant d'engager le build lourd de partage et temps réel — non vérifiable en build.
 - **[Validation juridique EU]** : validation par avis juriste sur les axes RGPD, condition du lancement commercial dans l'Union européenne — non vérifiable en build ; ne bloque pas le build du jalon suivant, qui peut être construit en parallèle de l'instruction juridique.
 - **Partage temps réel** : diffusion en temps réel, accès joueur invité, protection contre la fuite de contenu entre espaces.
 - **Post-MVP** : fonctionnalités et dettes explicitement reportées après la première livraison, hors séquence des jalons ci-dessus.
@@ -599,12 +599,12 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 
 **P-01 — Décision marché : décision go/no-go non vérifiable en build**
 *Type : point de décision.*
-- **Description** : une décision marché doit être posée avant d'engager le build lourd cloud et temps réel. Elle engage le capital d'investissement de cette phase ; ses seuils de décision ne sont pas fixés.
-- **Classe de conséquence** : engage le capital du build lourd cloud et temps réel ; un no-go arrête l'entrée dans cette phase, pas le socle local déjà livré.
-- **Dispositif de décision** : point de décision go/no-go sur télémétrie interprétée par le responsable produit ; seuils de décision non fixés.
+- **Description** : une décision marché doit être posée avant d'engager le build lourd de partage et temps réel, après le jalon cloud + migration. Elle engage le capital d'investissement de cette phase ; ses seuils de décision ne sont pas fixés.
+- **Classe de conséquence** : engage le capital du build lourd de partage et temps réel ; un no-go arrête l'entrée dans cette phase, pas le socle local ni le jalon cloud + migration déjà livrés.
+- **Dispositif de décision** : point de décision go/no-go sur la mesure d'usage chez les comptes et les entretiens, interprétés par le responsable produit ; seuils de décision non fixés.
 - **Propriétaire** : Direction de projet, en appui du responsable produit.
-- **Échéance** : après le jalon local, avant le jalon cloud + migration.
-- **Confiance** : sous réserve — dépend d'une interprétation produit de la télémétrie, non automatisable par un critère de build. `[NON-VÉRIFIABLE-EN-BUILD]`
+- **Échéance** : après le jalon cloud + migration, avant le jalon partage temps réel.
+- **Confiance** : sous réserve — dépend d'une interprétation produit de la mesure d'usage et des entretiens, non automatisable par un critère de build. `[NON-VÉRIFIABLE-EN-BUILD]`
 - **Source** : roadmap d'entrée en build ; décision d'architecture sur le périmètre du MVP.
 - **Recoupements** : dépend de P-08 (instrumentation) et de P-14 (cohorte pilote) ; voir aussi D-03 (même dépendance lue sous l'angle délai-coût).
 
@@ -960,9 +960,9 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Confiance** : ferme.
 - **Source** : roadmap d'entrée en build ; décision d'architecture sur le périmètre du MVP.
 
-**D-03 — Dépendance cumulative : socle local stable et décision marché favorable**
+**D-03 — Dépendance cumulative : jalon cloud + migration achevé et décision marché favorable**
 *Type : risque.*
-- **Description** : l'entrée dans le jalon cloud dépend de deux conditions cumulatives, non alternatives — la stabilité du jalon local et une décision marché favorable.
+- **Description** : l'entrée dans le jalon partage temps réel dépend de deux conditions cumulatives, non alternatives — l'achèvement du jalon cloud + migration et une décision marché favorable.
 - **Probabilité** : Élevée — dépendance cumulative non levée.
 - **Impact** : Majeur — dimension dominante : coût & délai (engager le build lourd sans la décision marché serait une erreur coûteuse).
 - **Criticité inhérente** : Élevée.
@@ -970,7 +970,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 - **Traitement** : Réduire.
 - **Mitigation** : la décision marché est posée dans son principe (voir P-01).
 - **Propriétaire** : Direction de projet.
-- **Échéance** : entre la décision marché et le jalon cloud + migration.
+- **Échéance** : entre la décision marché et le jalon partage temps réel.
 - **Confiance** : ferme. `[NON-VÉRIFIABLE-EN-BUILD]` sur le volet décision marché.
 - **Source** : roadmap d'entrée en build ; décision d'architecture sur le périmètre du MVP.
 - **Recoupements** : même contrainte que P-01 (décision marché), lue ici sous l'angle de la condition d'entrée dans le jalon suivant plutôt que sous l'angle de la décision elle-même.
@@ -1074,7 +1074,7 @@ Table exhaustive : les 12 entrées de type `risque` dont la criticité inhérent
 | 3 | T-07 | Cascade d'effacement RGPD : complexité du graphe et reprise après incident | Conformité RGPD | Élevée | Moyenne |
 | 3 | T-16 | Filtres de requête (soft-delete par jointure) non arbitrés | Conformité RGPD | Élevée | Moyenne |
 | 3 | P-14 | Dépendance à la cohorte pilote non traitée | Valeur produit | Élevée | Moyenne |
-| 3 | D-03 | Dépendance cumulative socle local stable et décision marché favorable | Coût & délai | Élevée | Moyenne |
+| 3 | D-03 | Dépendance cumulative jalon cloud + migration achevé et décision marché favorable | Coût & délai | Élevée | Moyenne |
 | 9 | D-01 | Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel) | Coût & délai | Élevée | Moyenne |
 | 10 | T-04 | Reclaim-in-place non ratifié `[À TRANCHER — PRODUIT]` | Sécurité & données personnelles | Élevée | Moyenne |
 | 10 | T-10 | Valeurs de seuils de limitation de débit non fixées | Sécurité & données personnelles | Élevée | Moyenne |
@@ -1098,7 +1098,7 @@ Cinq hypothèses de validation produit (H1 à H5), aucune n'est cotée en probab
 
 | Identifiant | Point de décision | Classe de conséquence | Vérifiabilité |
 |---|---|---|---|
-| P-01 | Décision marché — avant le build lourd (cloud, migration, partage temps réel) | Engage le capital du build lourd ; un no-go arrête la phase cloud, pas le socle local | `[NON-VÉRIFIABLE-EN-BUILD]` — décision produit sur interprétation de télémétrie |
+| P-01 | Décision marché — avant le build lourd de partage temps réel | Engage le capital du build lourd ; un no-go arrête la phase partage temps réel, pas le socle local ni le jalon cloud + migration | `[NON-VÉRIFIABLE-EN-BUILD]` — décision produit sur interprétation de la mesure d'usage et des entretiens |
 | J-01 | Validation juridique EU — validation pré-lancement sur 5 axes RGPD | Bloque le lancement commercial dans l'Union européenne, pas le build technique | `[NON-VÉRIFIABLE-EN-BUILD]` — dépend d'un avis juriste externe |
 
 La validation juridique EU est un **indicateur agrégé** des questions ouvertes J-02 à J-05 et de la facette RGPD du risque de reprise de compte fédérée (voir T-04) — il ne s'additionne pas à ces entrées dans une synthèse de criticité, il les enveloppe.
@@ -1145,7 +1145,7 @@ Cette section porte les relations entre entrées qui touchent plusieurs axes ou 
 - **T-04 (reclaim-in-place)** porte trois faces distinctes sur trois axes : la résolution de sécurité elle-même (axe technique), le sort RGPD du contenu de la coquille reprise (enveloppé par la validation juridique EU, J-01), et son statut de point à ratifier (décision produit, gouvernance de build). Les trois faces sont nommées dans l'entrée T-04 ; elles ne constituent pas trois risques séparés.
 - **T-07 ↔ J-05** — la complexité du mécanisme de cascade d'effacement et la qualification juridique du hard-delete inconditionnel de l'espace personnel portent sur le même sujet (article 17 du RGPD) sous deux angles distincts : l'un implémente, l'autre qualifie. Une clarification sur l'un peut modifier les contraintes de l'autre.
 - **D-01 (nomenclature)** est la face délai-coût d'une incohérence documentée directement par la roadmap d'entrée en build — ce registre n'ajoute rien à ce constat, il le reprend comme point de pilotage.
-- **P-01 (décision marché) ↔ D-03** — la dépendance cumulative du jalon cloud (socle local stable et décision marché favorable) est la même contrainte lue depuis l'angle produit (la décision elle-même) et depuis l'angle délai-coût (la condition d'entrée dans le jalon suivant).
+- **P-01 (décision marché) ↔ D-03** — la dépendance cumulative du jalon partage temps réel (jalon cloud + migration achevé et décision marché favorable) est la même contrainte lue depuis l'angle produit (la décision elle-même) et depuis l'angle délai-coût (la condition d'entrée dans le jalon suivant).
 - **D-04 / D-05 (codes à cheval)** renvoient, sur l'axe technique, aux mêmes réalités que celles couvertes par T-05 (câblage de l'autorisation) et T-19 / T-25 (invariants et migration multi-versions) : la double assignation calendaire documentée par la roadmap ne crée pas de risque technique supplémentaire, elle en complique seulement le suivi de planning.
 - **P-14 → P-02 / P-03 / P-04 / P-05 / P-06** — la dépendance à la cohorte pilote est une précondition dure de la mesure des cinq hypothèses produit : le cahier des charges pose que les cinq hypothèses se démontrent auprès d'une cohorte pilote d'utilisateurs réels recrutés. Sans cohorte recrutée, aucune des hypothèses H1 à H5 n'est mesurable, qu'il s'agisse de l'hypothèse centrale (P-03, impact critique) ou des autres, quel que soit l'état de son instrumentation propre.
 - **Chaîne de dépendance dominante de l'axe produit** : P-14 (cohorte) → P-08 (instrumentation) → P-02 à P-06 (hypothèses) → P-01 (décision marché). P-14 et P-08 sont les deux préconditions maîtrisables en interne à traiter en priorité.

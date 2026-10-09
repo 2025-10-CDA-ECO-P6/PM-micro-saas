@@ -1177,7 +1177,7 @@ EP-04 est définie dans la [section 5](#5-j0--épiques-et-tranches), avec sa tra
 | Taille | M — un module, 4 renvois |
 | Critères d'acceptation | `vision/perimetre/matrice-de-priorites.md § Instrumentation de validation du MVP`, pilier 1 — activation préparation : un espace créé et au moins trois documents, ou un geste structurant (un dossier créé, ou un document déplacé hors de « Non classés ») ; `vision/perimetre/matrice-de-priorites.md § Instrumentation de validation du MVP`, pilier 2 — activation vue session : au moins une action du MJ pendant la session ; `vision/perimetre/matrice-de-priorites.md § Instrumentation de validation du MVP`, mention « Comment cette mesure sort du navigateur » — compteurs écrits dans le store local, transmis à la création de compte, aucun appel sortant en mode local ; `vision/vision.md §2.3`, encadré « Limite structurelle de l'instrument » — le biais en faveur des convertis est nommé et doit être rappelé à toute lecture des résultats |
 | Code de renvoi | — |
-| Préalable, non dette | le pilier « activation partage » que `matrice-de-priorites.md § Instrumentation de validation du MVP` nomme suppose un partage aux joueurs, livré en J3 — deux jalons après le point de décision. Ce pilier est donc retiré du critère de la décision de marché, qui ne mesure que ce que J1 livre, et mesuré après elle (DÉCIDÉ 2026-10-07, entrée de backlog 0090, `docs/project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md @ 51a7cdc`). |
+| Préalable, non dette | le pilier « activation partage » que `matrice-de-priorites.md § Instrumentation de validation du MVP` nomme suppose un partage aux joueurs, livré en J3, après le point de décision. Ce pilier est donc retiré du critère de la décision de marché, qui ne mesure que ce que J1 et J2 livrent, et mesuré après elle (DÉCIDÉ 2026-10-07, entrée de backlog 0090, `docs/project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md @ 51a7cdc`). |
 
 ##### TB-093 — Capture de contact non bloquante en mode local
 
@@ -1272,12 +1272,12 @@ Ces tranches ne se rattachent à aucune épique ni à aucun jalon du plan : leur
 
 ## 7. J2 — épiques seulement
 
-La décomposition en tâches de J2 n'est pas produite ici. Deux raisons cumulatives : le contenu réel des tâches J2 dépend de ce que J0 aura tranché sur les arborescences internes des projets .NET et namespaces (marqueurs `[À TRANCHER — J0]`, §2) — un plan qui découperait aujourd'hui des tâches à l'intérieur de ces arborescences trancherait à la place du build ; et l'entrée même en J2 est conditionnée par `[DÉCISION MARCHÉ]` (`roadmap-de-build.md §3.3`), un point de décision `NON-VERIFIABLE-IN-BUILD` non acquis à ce jour. Descendre à la tâche pour un jalon dont l'entrée n'est pas encore actée serait du travail à refaire. Le détail des épiques J2 figure en §4 ; leur contenu, non recopié ici, est renvoyé à `roadmap-de-build.md §3.4` et `Annexe A`.
+La décomposition en tâches de J2 n'est pas produite ici. Deux raisons cumulatives : le contenu réel des tâches J2 dépend de ce que J0 aura tranché sur les arborescences internes des projets .NET et namespaces (marqueurs `[À TRANCHER — J0]`, §2) — un plan qui découperait aujourd'hui des tâches à l'intérieur de ces arborescences trancherait à la place du build ; et l'entrée même en J2 suppose J1 stable (`roadmap-de-build.md §3.4`), non acquis à ce jour. Descendre à la tâche pour un jalon dont l'entrée n'est pas encore actée serait du travail à refaire. Le détail des épiques J2 figure en §4 ; leur contenu, non recopié ici, est renvoyé à `roadmap-de-build.md §3.4` et `Annexe A`.
 
 
 ## 8. J3 — épiques seulement
 
-Même raisonnement qu'en §7 : J3 dépend structurellement de J2 (`roadmap-de-build.md §3.6` — « le canal SignalR filtre par le même `IResourceAccessPolicy` que REST »), lui-même non ouvert. Le détail des épiques J3 figure en §4 ; leur contenu est renvoyé à `roadmap-de-build.md §3.6` et `Annexe A`.
+Même raisonnement qu'en §7 : J3 dépend structurellement de J2 (`roadmap-de-build.md §3.6` — « le canal SignalR filtre par le même `IResourceAccessPolicy` que REST »), lui-même non ouvert, et son entrée est aussi conditionnée par `[DÉCISION MARCHÉ]` (`roadmap-de-build.md §3.3`), un point de décision `NON-VERIFIABLE-IN-BUILD` non acquis à ce jour. Le détail des épiques J3 figure en §4 ; leur contenu est renvoyé à `roadmap-de-build.md §3.6` et `Annexe A`.
 
 
 ---
@@ -1476,7 +1476,7 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 
 ## 10. Ce que ce plan n'ordonne pas
 
-**Les deux points de décision non vérifiables en intégration continue.** `[DÉCISION MARCHÉ]` (renvoi seul : `roadmap-de-build.md §3.3`) et `[VALIDATION JURIDIQUE EU]` (renvoi seul : `roadmap-de-build.md §3.5`) ne sont pas des jalons de build : aucun test, aucun linter ne peut les trancher. Ce plan ne les décompose pas en tâches — il en hérite seulement les effets déjà tracés dans `roadmap-de-build.md §3.4 § Dépendance d'entrée` (entrée en J2 conditionnée, cumulativement, par J1 stable et `[DÉCISION MARCHÉ] = go`) et `§3.5` (le lancement EU, pas le build de J3, est bloqué par `[VALIDATION JURIDIQUE EU]`).
+**Les deux points de décision non vérifiables en intégration continue.** `[DÉCISION MARCHÉ]` (renvoi seul : `roadmap-de-build.md §3.3`) et `[VALIDATION JURIDIQUE EU]` (renvoi seul : `roadmap-de-build.md §3.5`) ne sont pas des jalons de build : aucun test, aucun linter ne peut les trancher. Ce plan ne les décompose pas en tâches — il en hérite seulement les effets déjà tracés dans `roadmap-de-build.md §3.6 § Dépendance d'entrée` (entrée en J3 conditionnée, cumulativement, par J2 et `[DÉCISION MARCHÉ] = go`) et `§3.5` (le lancement EU, pas le build de J3, est bloqué par `[VALIDATION JURIDIQUE EU]`).
 
 **Les points `[À TRANCHER]`.** Ce document en signale un sous-ensemble, un par un, au fil des tâches où ils mordent directement (sur les fiches des tranches qui les closent, §5-6) — il n'en tient pas un registre séparé ni n'en recopie le décompte : le corpus les porte déjà (`conventions-dod.md § Convention de balisage`, `structure-projets.md §3`, `architecture/specs/*.md`).
 

@@ -37,8 +37,8 @@
 - [9. Critères de sortie par jalon](#9-critères-de-sortie-par-jalon)
   - [Jalon « Socle »](#jalon--socle-)
   - [Jalon « Local-only »](#jalon--local-only-)
-  - [[DÉCISION MARCHÉ] — hors-CI, ne pas convertir en dette de test](#décision-marché--hors-ci-ne-pas-convertir-en-dette-de-test)
   - [Jalon « Cloud + migration »](#jalon--cloud--migration-)
+  - [[DÉCISION MARCHÉ] — hors-CI, ne pas convertir en dette de test](#décision-marché--hors-ci-ne-pas-convertir-en-dette-de-test)
   - [[VALIDATION JURIDIQUE EU] — hors-CI, ne pas convertir en dette de test](#validation-juridique-eu--hors-ci-ne-pas-convertir-en-dette-de-test)
   - [Jalon « Partage + temps réel »](#jalon--partage--temps-réel-)
 - [10. Cahier de recette par use case](#10-cahier-de-recette-par-use-case)
@@ -279,7 +279,7 @@ Table calibrée pour une équipe restreinte (développeur·se solo ou équipe r�
 | Test d'architecture (CI) | dev | CI (automatisé) | CI (bloquant si rouge) |
 | Sécurité (adversarial) | dev | dev (checklist B5.2/B8.2/B3.2) | dev, revue dédiée avant jalon Cloud/Partage |
 | Accessibilité / Réactivité perçue | dev | dev (observation manuelle) | dev |
-| Points de décision, non vérifiables en CI (`[DÉCISION MARCHÉ]`, `[VALIDATION JURIDIQUE EU]`) | responsable produit | responsable produit (télémétrie) / juriste externe | responsable produit |
+| Points de décision, non vérifiables en CI (`[DÉCISION MARCHÉ]`, `[VALIDATION JURIDIQUE EU]`) | responsable produit | responsable produit (mesure d'usage et entretiens) / juriste externe | responsable produit |
 
 Cette table reste factuelle : elle ne présuppose ni rôle QA dédié ni outillage de gestion de test spécifique — dev désigne la personne en charge de l'implémentation, seule ou en équipe réduite.
 
@@ -344,13 +344,13 @@ Critères de sortie : [roadmap de build § 3.1 — J0 — Socle](../projet/roadm
 
 Critères de sortie : [roadmap de build § 3.2 — J1 — Local-only](../projet/roadmap-de-build.md#32-j1--local-only), qui fait foi.
 
-### [DÉCISION MARCHÉ] — hors-CI, ne pas convertir en dette de test
-
-Critère de décision : [roadmap de build § 3.3 — [DÉCISION MARCHÉ] — go/no-go avant le build lourd cloud + temps réel](../projet/roadmap-de-build.md#33-décision-marché--gono-go-avant-le-build-lourd-cloud--temps-réel), qui fait foi. Propre à cette stratégie de test : **critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
-
 ### Jalon « Cloud + migration »
 
 Critères de sortie : [roadmap de build § 3.4 — J2 — Cloud + migration](../projet/roadmap-de-build.md#34-j2--cloud--migration), qui fait foi.
+
+### [DÉCISION MARCHÉ] — hors-CI, ne pas convertir en dette de test
+
+Critère de décision : [roadmap de build § 3.3 — [DÉCISION MARCHÉ] — go/no-go avant le build lourd de partage + temps réel](../projet/roadmap-de-build.md#33-décision-marché--gono-go-avant-le-build-lourd-de-partage--temps-réel), qui fait foi. Propre à cette stratégie de test : **critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
 
 ### [VALIDATION JURIDIQUE EU] — hors-CI, ne pas convertir en dette de test
 
@@ -919,3 +919,4 @@ Les métriques ci-dessous sont définies **qualitativement** — tout seuil chif
 
 - **v1.0** — consolidation initiale (192 lignes) : stratégie de test synthétique et cahier de recette agrégé par UC (une ligne par UC, critères d'acceptation groupés).
 - **v2.0** (ce document) — version de référence : structure professionnelle complète (contrôle documentaire, 10 sections de stratégie, cahier de recette pas à pas), cas de recette dérivés un par un des scénarios Gherkin des User Stories avec traçabilité explicite, matrice de traçabilité des 15 UC, registre des points ouverts consolidé, métriques qualitatives et annexes.
+- **2026-10-09** — la décision de marché passe entre J2 et J3 dans la roadmap de build (§ 3.3) : la section du § 9 qui la porte suit le jalon « Cloud + migration » et cite le nouveau titre de ce paragraphe.

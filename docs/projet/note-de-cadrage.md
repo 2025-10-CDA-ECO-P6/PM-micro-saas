@@ -109,7 +109,7 @@ En miroir de l'axe technique, la trajectoire produit se décompose en paliers de
 ### 5.3 Points de décision intercalés
 
 Deux points de décision s'intercalent dans la séquence technique — détaillés en [section 9](#9-points-de-décision-gono-go) :
-- la **DÉCISION MARCHÉ**, positionnée entre J1 et J2 ;
+- la **DÉCISION MARCHÉ**, positionnée entre J2 et J3 ;
 - la **VALIDATION JURIDIQUE EU**, positionnée avant le lancement commercial (elle n'ordonnance pas le build de J3, instructible en parallèle).
 
 ### 5.4 Point résolu — double référent du symbole « J1 »
@@ -122,7 +122,7 @@ Le corpus qualifie explicitement ce phasage d'**indicatif et non figé** : ni l'
 
 ## 6. Organisation et gouvernance
 
-**Instances de décision.** Deux points de décision go/no-go structurent la gouvernance de la trajectoire (détail en [section 9](#9-points-de-décision-gono-go)) : la DÉCISION MARCHÉ (décision produit sur la télémétrie du jalon J1) et la VALIDATION JURIDIQUE EU (avis d'un juriste sur cinq axes RGPD).
+**Instances de décision.** Deux points de décision go/no-go structurent la gouvernance de la trajectoire (détail en [section 9](#9-points-de-décision-gono-go)) : la DÉCISION MARCHÉ (décision produit sur la mesure d'usage des comptes et les entretiens, après J2) et la VALIDATION JURIDIQUE EU (avis d'un juriste sur cinq axes RGPD).
 
 **Point de décision produit.** Le jalon de validation (5.2) constitue un go/no-go conditionnant l'engagement des paliers de valeur suivants : un résultat positif ouvre l'approfondissement du cœur, un résultat partiel ou négatif oriente vers la consolidation.
 
@@ -144,7 +144,7 @@ Le corpus qualifie explicitement ce phasage d'**indicatif et non figé** : ni l'
 
 Le MVP doit démontrer cinq hypothèses (H1 à H5) auprès d'une cohorte pilote d'utilisateurs réels (early adopters recrutés). Chaque hypothèse est assortie d'un seuil chiffré et d'un délai d'observation, constituant un critère de décision objectif — un seuil non atteint impose un constat explicite (réussite partielle, échec de pilier, hypothèse invalidée), jamais une réinterprétation a posteriori.
 
-**H2 est l'hypothèse centrale du produit** : elle porte sur la valeur réelle de la vue de session en pleine partie ; si elle n'est pas confirmée, la proposition de valeur du produit dans son ensemble est invalidée. H1 et H2 sont les hypothèses croisées par la DÉCISION MARCHÉ (H3 et H4 portent sur le partage, livré en J3, H5 sur la conversion cloud, livrée en J2 : elles se mesurent après) (voir [section 9](#9-points-de-décision-gono-go)). H5, distincte des quatre premières, porte spécifiquement sur la conversion et alimente le lien avec le modèle économique.
+**H2 est l'hypothèse centrale du produit** : elle porte sur la valeur réelle de la vue de session en pleine partie ; si elle n'est pas confirmée, la proposition de valeur du produit dans son ensemble est invalidée. H1, H2 et H5 sont les hypothèses croisées par la DÉCISION MARCHÉ, mesurables chez les comptes une fois J2 livré (H3 et H4 portent sur le partage, livré en J3 : elles se mesurent après) (voir [section 9](#9-points-de-décision-gono-go)). H5, distincte des quatre premières, porte spécifiquement sur la conversion et alimente le lien avec le modèle économique.
 
 | # | Hypothèse | Seuil chiffré | Délai |
 |---|---|---|---|
@@ -174,12 +174,12 @@ Les critères produit (hypothèses de validation, section 7) et les critères te
 
 | Point de décision | Nature | Ce qu'il conditionne | Critère de décision |
 |---|---|---|---|
-| **DÉCISION MARCHÉ** | Décision produit, non automatisable | Positionnée entre J1 et J2 ; conditionne l'engagement du build cloud + temps réel (J2/J3) | Télémétrie du jalon J1 (activations préparation et vue session ; le pilier partage, livré en J3, est mesuré après la décision — DÉCIDÉ 2026-10-07, entrée de backlog 0090, `docs/project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md @ 51a7cdc`) croisée avec les hypothèses H1 et H2. Les seuils de décision de la décision marché elle-même restent `[À TRANCHER]`. |
+| **DÉCISION MARCHÉ** | Décision produit, non automatisable | Positionnée entre J2 et J3 ; conditionne l'engagement du build le plus lourd, partage + temps réel (J3) | Mesure d'usage chez les comptes, qui n'existent qu'à partir de J2 (activations préparation et vue session ; le pilier partage, livré en J3, est mesuré après la décision — DÉCIDÉ 2026-10-07, entrée de backlog 0090, `docs/project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md @ 51a7cdc`) croisée avec les hypothèses H1, H2 et H5, et les entretiens. Les seuils de décision de la décision marché elle-même restent `[À TRANCHER]`. |
 | **VALIDATION JURIDIQUE EU** | Avis juridique, non automatisable | Bloque le **lancement commercial en Europe**, pas le build technique de J3 (instructible en parallèle) | Statut binaire sur cinq axes RGPD : qualification service destiné aux mineurs, posture sous-traitance / DPA, mise en balance de l'intérêt légitime et conservation, droit à l'effacement de l'espace personnel, facette RGPD de la ré-appropriation de compte en place. |
 | **Jalon de validation produit** | Décision produit sur les hypothèses H1-H5 | Conditionne l'engagement de l'approfondissement du cœur produit et des paliers suivants | Résultat positif, partiel ou négatif sur les cinq hypothèses de validation (section 7) |
-| **Gates techniques cumulatifs** | Vérifiables en intégration continue ou par revue | Préalables bloquants entre jalons de build successifs | J0 stabilisé avant J1 ; stockage persistant et invariant d'autorisation intégré aux contrats avant J1 ; J1 stable **et** DÉCISION MARCHÉ = go avant J2 ; J2 achevé avant J3 |
+| **Gates techniques cumulatifs** | Vérifiables en intégration continue ou par revue | Préalables bloquants entre jalons de build successifs | J0 stabilisé avant J1 ; stockage persistant et invariant d'autorisation intégré aux contrats avant J1 ; J1 stable avant J2 ; J2 achevé **et** DÉCISION MARCHÉ = go avant J3 |
 
-La DÉCISION MARCHÉ et la VALIDATION JURIDIQUE EU se distinguent structurellement des gates techniques : l'une dépend d'une télémétrie interprétée par le porteur du projet, l'autre d'un avis juriste, et ni l'une ni l'autre ne peuvent être tranchées par un test automatisé, un linter ou un build.
+La DÉCISION MARCHÉ et la VALIDATION JURIDIQUE EU se distinguent structurellement des gates techniques : l'une dépend d'une mesure d'usage et d'entretiens interprétés par le porteur du projet, l'autre d'un avis juriste, et ni l'une ni l'autre ne peuvent être tranchées par un test automatisé, un linter ou un build.
 
 ## 10. Éléments à compléter
 

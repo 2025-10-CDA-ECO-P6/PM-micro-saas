@@ -15,6 +15,7 @@
 | 1.0 | 2026-07-02 | Pierre-Marie Marchio | Rédaction initiale — consolidation du corpus de conception |
 | 1.1 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond, sans restructuration — « ce qui fait foi » aligné sur l'ADR-019 § 1, résumé des différenciants aligné sur la vision, renvois morts réparés, points tranchés de l'annexe « Points à arbitrer » mis au marqueur DÉCIDÉ, suivi des questions ouvertes renvoyé à `decisions-en-attente.md`, traçabilité §13 complétée |
 | 1.2 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond — date du comptage des 4 joueurs inscrite (2026-07-15, date du commit 6ce3e66) |
+| 1.3 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond — phasage (§ 11) : la décision marché passe entre J2 et J3, suivant l'ajustement du 2026-10-09 de l'ADR-006 |
 
 ## Nature et portée du document
 
@@ -1116,7 +1117,7 @@ Le corpus retient un axe **J0 → J1 → J2 → J3** comme repère macro de séq
 - **J2** — cloud + migration.
 - **J3** — partage + temps réel.
 
-Une décision marché s'intercale avant l'engagement du build lourd cloud (entre J1 et J2) ; une validation juridique conditionne le lancement EU, hors séquence technique. Cet axe est ratifié pour l'ensemble du corpus (2026-09-01) — détail et justification dans l'artefact de planification dédié ([`roadmap-de-build.md` §5](../projet/roadmap-de-build.md)).
+Une décision marché s'intercale avant l'engagement du build lourd de partage + temps réel (entre J2 et J3) ; une validation juridique conditionne le lancement EU, hors séquence technique. Cet axe est ratifié pour l'ensemble du corpus (2026-09-01) — détail et justification dans l'artefact de planification dédié ([`roadmap-de-build.md` §5](../projet/roadmap-de-build.md)).
 
 Ce macro-ordonnancement reste indicatif : le contenu précis affecté à chaque jalon, ses dates et ses critères d'entrée/sortie relèvent de l'artefact de planification dédié mentionné ci-dessus, non de la présente section.
 

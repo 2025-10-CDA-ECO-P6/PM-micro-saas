@@ -43,8 +43,8 @@ Ces choix et leurs raisons sont dans la [vision produit, § 2.2](docs/besoin/vis
 |---|---|
 | **J0** Socle | le squelette de l'application et un contrôle automatique de son architecture |
 | **J1** Mode local | l'application utilisable sans compte, les données gardées dans le navigateur |
-| **Décision de marché** | continuer ou non, selon l'usage réel du mode local |
 | **J2** En ligne | le compte, la sauvegarde sur serveur et la reprise des données locales |
+| **Décision de marché** | continuer ou non vers le partage, selon l'usage réel chez les comptes et les entretiens |
 | **Validation juridique** | l'avis d'un juriste, nécessaire avant un lancement en Europe |
 | **J3** Partage | les joueurs invités par un lien voient en direct ce que le MJ leur montre |
 

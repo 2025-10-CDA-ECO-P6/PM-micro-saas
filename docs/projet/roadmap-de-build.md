@@ -43,29 +43,29 @@ J0 (socle)
    │
 J1 (local-only)
    │
-[DÉCISION MARCHÉ]  ── NON-VERIFIABLE-IN-BUILD ── go/no-go
-   │
 J2 (cloud + migration)
+   │
+[DÉCISION MARCHÉ]  ── NON-VERIFIABLE-IN-BUILD ── go/no-go
    │
 [VALIDATION JURIDIQUE EU]  ── NON-VERIFIABLE-IN-BUILD ── go/no-go, avant lancement (pas avant build)
    │
 J3 (partage + temps réel)
 ```
 
-**Note de lecture du diagramme** : la chaîne à flèche unique ci-dessus reflète l'ordre de citation, pas une dépendance de blocage entre `[VALIDATION JURIDIQUE EU]` et J3. La validation juridique EU bloque le **lancement/release EU** (mise en production commerciale) — elle ne bloque **pas le build de J3**, qui peut être construit en parallèle de l'instruction juridique (voir §3.5, « Peut être instruit en parallèle du build »). Seule `[DÉCISION MARCHÉ]`, en amont, conditionne réellement l'entrée dans le jalon suivant (J2).
+**Note de lecture du diagramme** : la chaîne à flèche unique ci-dessus reflète l'ordre de citation, pas une dépendance de blocage entre `[VALIDATION JURIDIQUE EU]` et J3. La validation juridique EU bloque le **lancement/release EU** (mise en production commerciale) — elle ne bloque **pas le build de J3**, qui peut être construit en parallèle de l'instruction juridique (voir §3.5, « Peut être instruit en parallèle du build »). Seule `[DÉCISION MARCHÉ]`, en amont, conditionne réellement l'entrée dans le jalon suivant (J3).
 
 Trois natures de nœuds distinctes composent cette séquence — les confondre serait une erreur d'ordonnancement :
 
 | Nature | Nœuds | Ce qui les caractérise |
 |---|---|---|
 | **(a) Jalon de build** | J0, J1, J2, J3 | Contenu vérifiable en CI ou par revue de code ; critères de sortie factuels (§3) ; ordonnancement interne C#-first (§4) |
-| **(b) Point de décision go/no-go, non vérifiable en CI** | `[DÉCISION MARCHÉ]`, `[VALIDATION JURIDIQUE EU]` | **`NON-VERIFIABLE-IN-BUILD`** — aucun test automatisé, aucun linter, aucune build Haversack ne peut trancher ces deux points de décision ; la dépendance est externe (télémétrie interprétée par le responsable produit pour le premier, avis juriste pour le second) |
+| **(b) Point de décision go/no-go, non vérifiable en CI** | `[DÉCISION MARCHÉ]`, `[VALIDATION JURIDIQUE EU]` | **`NON-VERIFIABLE-IN-BUILD`** — aucun test automatisé, aucun linter, aucune build Haversack ne peut trancher ces deux points de décision ; la dépendance est externe (mesure d'usage des comptes et entretiens, interprétés par le responsable produit, pour le premier ; avis juriste pour le second) |
 | **(c) Préalable bloquant** | rattachés à leur jalon (§3, par nœud) | Condition d'entrée qui doit être levée **avant** que le jalon correspondant ne débute ou ne se termine ; nommément listée par l'ADR source, jamais inventée ici |
 
 **Sources de la séquence** :
 - J1 → J2 → J3, enchaînement sans découplage : [ADR-006 §Conséquences](../decisions/ADR-006-perimetre-mvp.md) — les jalons de build s'enchaînent sans découplage produit entre eux.
 - J0 : préalable de structure non nommé « J0 » explicitement dans ADR-006, mais ses livrables (squelette Domain/Application, test d'archi CI) sont documentés comme antérieurs à tout jalon applicatif dans [ADR-008 §Compléments post-revue](../decisions/ADR-008-structure-solution.md). Cette roadmap le nomme J0 pour compléter la séquence — voir §5 pour la discussion de nomenclature.
-- `[DÉCISION MARCHÉ]` : [ADR-006 §Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) — une décision marché doit être prise avant d'engager le build lourd cloud + temps réel.
+- `[DÉCISION MARCHÉ]` : [ADR-006 §Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) — une décision marché doit être prise avant d'engager le build lourd ; son ajustement du 2026-10-09 la place entre J2 et J3, avant le partage + temps réel.
 - `[VALIDATION JURIDIQUE EU]` : [`cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md) (5 axes, tous « à valider juriste », non vérifiable en CI) ; positionné **avant lancement EU**, distinct d'un jalon de build — voir §3.5 sur cette distinction.
 
 ---
@@ -76,10 +76,10 @@ Trois natures de nœuds distinctes composent cette séquence — les confondre s
 |---|---|---|---|
 | **J0** | Socle : confirmation des 8 ADR pré-implémentation, squelette Domain/Application C#, test d'archi CI, contrat d'autorisation Application | — (point de départ) | Test d'archi CI vert en pipeline |
 | **J1** | Local-only : Domain/App → projection TS/IndexedDB → Angular minimal | J0 stabilisé (ADR-006 §Compléments : « CR-1 est un préalable bloquant ») | Export `schemaVersion` produit et rejouable |
-| **[DÉCISION MARCHÉ]** | Go/no-go produit sur télémétrie J1 | J1 stabilisé | Décision produit tracée |
-| **J2** | Cloud + migration : EF Core, auth, handler d'import, cascade RGPD | J1 stable + décision marché = go | Migration d'un jeu de données J1 réussie de bout en bout |
+| **J2** | Cloud + migration : EF Core, auth, handler d'import, cascade RGPD | J1 stable | Migration d'un jeu de données J1 réussie de bout en bout |
+| **[DÉCISION MARCHÉ]** | Go/no-go produit sur la mesure d'usage des comptes (H1, H2, H5) et les entretiens | J2 stabilisé | Décision produit tracée |
 | **[VALIDATION JURIDIQUE EU]** | Go/no-go avis juriste, 5 axes RGPD | Peut être instruit en parallèle de J2/J3 ; bloque le **lancement EU**, pas le build | 5 axes statués par un juriste |
-| **J3** | Partage + temps réel : SignalR, canal invité, anti-fuite | J2 | Test anti-fuite SignalR (B8.2) vert |
+| **J3** | Partage + temps réel : SignalR, canal invité, anti-fuite | J2 stable + décision marché = go | Test anti-fuite SignalR (B8.2) vert |
 
 ---
 
@@ -125,20 +125,20 @@ origin: docs/assurance/strategie-de-test.md:278 @ 5b5190a ; docs/projet/note-de-
 
 ---
 
-### 3.3 [DÉCISION MARCHÉ] — go/no-go avant le build lourd cloud + temps réel
+### 3.3 [DÉCISION MARCHÉ] — go/no-go avant le build lourd de partage + temps réel
 
-**Nature** : `NON-VERIFIABLE-IN-BUILD`. Positionné **après J1, avant** d'engager le build lourd cloud + temps réel (J2/J3) — [ADR-006 §Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) l.67.
+**Nature** : `NON-VERIFIABLE-IN-BUILD`. Positionné **après J2, avant** d'engager le build lourd de partage + temps réel (J3) — [ADR-006 §Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) l.66, ajustement du 2026-10-09 (placée d'abord entre J1 et J2, la décision a été déplacée). La numérotation du § 3 est conservée pour ne pas défaire les renvois qui citent ce paragraphe : l'ordre des sous-sections n'est pas l'ordre chronologique, que donne le § 1.
 
-**Critère de décision** (non-CI) : télémétrie instrumentée dès le périmètre MVP par pilier — activation préparation (**espace créé** + N documents, le contenu d'un espace personnel sans campagne ne comptant que partiellement s'il traduit un geste structurant — [CdC annexe « Valeurs de référence chiffrées »](../reference/cahier-des-charges.md#valeurs-de-référence-chiffrées)), activation vue session (session ouverte + usage réel) — croisée avec les hypothèses de validation **H1 et H2** ([CdC §2.3](../reference/cahier-des-charges.md#23-hypothèses-de-validation-h1-à-h5)). L'activation partage (document partagé + ≥ 1 joueur l'ayant ouvert) ne fait pas partie de ce critère : la décision ne mesure que ce que J1 livre, et le pilier partage, livré en J3, est mesuré après elle (DÉCIDÉ 2026-10-07, entrée de backlog 0090, `docs/project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md @ 51a7cdc`). Les seuils de décision eux-mêmes ne sont pas fixés par cette roadmap — ils relèvent de l'instrumentation produit, hors périmètre technique de cet artefact.
+**Critère de décision** (non-CI) : la mesure d'usage, par la télémétrie instrumentée dès le périmètre MVP par pilier — activation préparation (**espace créé** + N documents, le contenu d'un espace personnel sans campagne ne comptant que partiellement s'il traduit un geste structurant — [CdC annexe « Valeurs de référence chiffrées »](../reference/cahier-des-charges.md#valeurs-de-référence-chiffrées)), activation vue session (session ouverte + usage réel) — mesurée chez les comptes, croisée avec les hypothèses de validation **H1, H2 et H5** ([CdC §2.3](../reference/cahier-des-charges.md#23-hypothèses-de-validation-h1-à-h5)), et les entretiens du [guide d'entretien](../besoin/decouverte/guide-d-entretien.md). La raison : les compteurs d'usage ne quittent le navigateur qu'à la création d'un compte ([vision § 2.3, « Limite structurelle de l'instrument »](../besoin/vision/vision.md#23-ce-que-le-mvp-doit-démontrer)), et le compte n'existe qu'à partir de J2 ; placée avant J2, la décision n'aurait eu que les entretiens. Les entretiens sont aussi le contrepoids que cet encadré nomme à H1 et H5. L'activation partage (document partagé + ≥ 1 joueur l'ayant ouvert), qui porte H3 et H4, ne fait pas partie de ce critère : la décision ne mesure que ce que J1 et J2 livrent, et le pilier partage, livré en J3, est mesuré après elle (DÉCIDÉ 2026-10-07, entrée de backlog 0090, `docs/project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md @ 51a7cdc`). Les seuils de décision eux-mêmes ne sont pas fixés par cette roadmap — ils relèvent de l'instrumentation produit, hors périmètre technique de cet artefact.
 
-**Ce que cette décision n'est pas** : ce n'est pas un jalon de build, elle ne produit aucun livrable technique. C'est une décision produit qui conditionne l'entrée en J2 — au même titre qu'un point de décision produit go/no-go usuel. Elle ne réintroduit pas de découplage *produit* (MVP unique) — le MVP reste unique, J1 → J2 → J3 restent enchaînés sans découplage produit entre eux (§1). Elle arbitre un découplage d'investissement : engager ou non le capital du build lourd cloud + temps réel (J2/J3), pas une nouvelle scission du périmètre fonctionnel.
+**Ce que cette décision n'est pas** : ce n'est pas un jalon de build, elle ne produit aucun livrable technique. C'est une décision produit qui conditionne l'entrée en J3 — au même titre qu'un point de décision produit go/no-go usuel. Elle ne réintroduit pas de découplage *produit* (MVP unique) — le MVP reste unique, J1 → J2 → J3 restent enchaînés sans découplage produit entre eux (§1). Elle arbitre un découplage d'investissement : engager ou non le capital du build lourd de partage + temps réel (J3), pas une nouvelle scission du périmètre fonctionnel. Le coût accepté : J2 est construit avant le signal de marché, ce que la clause d'origine de l'ADR-006 cherchait à éviter ; la parade est de mener les entretiens du guide d'entretien pendant J1 (comptes rendus : TB-106).
 
 ---
 
 ### 3.4 J2 — Cloud + migration
 
 **Contenu** : (source : [ADR-014](../decisions/ADR-014-modele-autorisation-api.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md), [ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md))
-- **Dépendance d'entrée** : J1 stable **et** `[DÉCISION MARCHÉ]` = go. Les deux conditions sont cumulatives, pas alternatives ([ADR-006 §Conséquences](../decisions/ADR-006-perimetre-mvp.md)).
+- **Dépendance d'entrée** : J1 stable ([ADR-006 §Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) l.64). La `[DÉCISION MARCHÉ]` ne conditionne plus J2, mais J3 (§3.6).
 - **Préalable schéma — promotion ADR-002 (`characterId`/`guestAccessId` des `LIVE_NOTE`)** : ces deux champs passent de `documents.properties` (jsonb) à des **colonnes nullable indexées de premier niveau** sur `documents` ([ADR-002 §Compléments post-revue](../decisions/ADR-002-tout-est-document-gouvernance.md) l.58). C'est un préalable au mapping EF Core (query filters ci-dessous, mêmes colonnes de premier niveau) et une **dépendance bloquante de l'invariant d'autorisation** : ADR-002 documente explicitement que « ce changement débloque l'invariant d'autorisation décrit dans ADR-007 ».
 - **EF Core + query filters globaux** : `spaces.deleted_at IS NOT NULL` (soft-delete), `documents.is_deleted` — prédicats structurels P2/P3 du modèle d'autorisation, portés par des query filters EF Core globaux plutôt que par discipline de handler (→ B5.1, [ADR-014 §Points à trancher](../decisions/ADR-014-modele-autorisation-api.md) l.284).
 - **Auth F-02/F-06/F-10/F-11 + rotation clé JWT** : politique de mot de passe (Argon2id, longueur ≥ 12), rate limiting hybride par-IP/par-compte, cycle de vie des tokens (access ≤ 15 min, refresh ≤ 7 jours, rotation avec détection de réutilisation par famille), liaison OAuth conditionnée à l'email vérifié — le tout derrière des contrats applicatifs observables `ITokenValidator`/`ITokenDenylist`/`ITokenSigner`/`IEmailVerificationPolicy` ([ADR-015 §1-5](../decisions/ADR-015-securite-authentification-mvp.md)). Rotation de clé via `ITokenSigner.RotateKey(...)` sans redéploiement.
@@ -153,7 +153,7 @@ origin: docs/assurance/strategie-de-test.md:278 @ 5b5190a ; docs/projet/note-de-
 - `AccountSuspended` et `UserAnonymized` déclenchent effectivement `ITokenDenylist.RevokeFamilyAsync` (fenêtre résiduelle fermée au sens applicatif, [ADR-015 §3.6](../decisions/ADR-015-securite-authentification-mvp.md)).
 - La saga `SpaceDeleted` s'exécute sans erreur de cycle FK sur un espace de test couvrant les deux cycles documentés (`documents ⇄ guest_accesses`, `documents ⇄ folders`).
 
-**Préalable bloquant rattaché** : J1 stable + `[DÉCISION MARCHÉ]` = go (cumulatif) ; **promotion ADR-002 des colonnes `characterId`/`guestAccessId` (`LIVE_NOTE`)**, préalable schéma qui débloque l'invariant d'autorisation ADR-007 (voir ci-dessus) ; F-02/F-06/F-10/F-11 (auth) déjà reclassés bloquants MVP par [ADR-007 §Compléments](../decisions/ADR-007-rgpd-autorisation-api.md) ; F-04 (base légale invités, [ADR-013](../decisions/ADR-013-rgpd-donnees-invites.md)) — bloquant **avant tout lancement EU**, donc au plus tard à la `[VALIDATION JURIDIQUE EU]`, pas nécessairement avant le début technique de J2.
+**Préalable bloquant rattaché** : J1 stable ; **promotion ADR-002 des colonnes `characterId`/`guestAccessId` (`LIVE_NOTE`)**, préalable schéma qui débloque l'invariant d'autorisation ADR-007 (voir ci-dessus) ; F-02/F-06/F-10/F-11 (auth) déjà reclassés bloquants MVP par [ADR-007 §Compléments](../decisions/ADR-007-rgpd-autorisation-api.md) ; F-04 (base légale invités, [ADR-013](../decisions/ADR-013-rgpd-donnees-invites.md)) — bloquant **avant tout lancement EU**, donc au plus tard à la `[VALIDATION JURIDIQUE EU]`, pas nécessairement avant le début technique de J2.
 
 ---
 
@@ -177,7 +177,7 @@ origin: docs/assurance/strategie-de-test.md:278 @ 5b5190a ; docs/projet/note-de-
 ### 3.6 J3 — Partage + temps réel
 
 **Contenu** : (source : [ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-014](../decisions/ADR-014-modele-autorisation-api.md))
-- **Dépendance d'entrée** : J2 (le canal SignalR filtre par le même `IResourceAccessPolicy` que REST — dépendance structurelle, pas seulement calendaire).
+- **Dépendance d'entrée** : J2 (le canal SignalR filtre par le même `IResourceAccessPolicy` que REST — dépendance structurelle, pas seulement calendaire) **et** `[DÉCISION MARCHÉ]` = go (§3.3). Les deux conditions sont cumulatives, pas alternatives.
 - **SignalR + repli polling** : transport forcé en SSE tant que la communication reste unidirectionnelle MJ→joueurs ; connexion fermée en fin de session LIVE ; heartbeat allongé. **Seuil de coût par session concurrente déclenchant le repli vers polling adaptatif = `[À TRANCHER — ticket]`** (critère de réversibilité, pas un commentaire de documentation, [ADR-004 §Compléments](../decisions/ADR-004-transport-temps-reel.md) l.47).
 - **Auth canal invité, token hors query-string** : le token `GuestAccess` n'est pas transmis en query-string — cookie court-lived ou échange de token avant négociation WebSocket ([ADR-004 §Compléments](../decisions/ADR-004-transport-temps-reel.md) l.49). Déconnexion forcée du hub sur `GuestAccessRevoked`/`GuestAccessExpired` (→ B1.7).
 - **Anti-fuite par visibilité** : chaque événement poussé est filtré selon `PUBLIC`/`PLAYER_PRIVATE`/`GM_ONLY` — pas de diffusion par groupe espace indifférenciée ([ADR-004 §Compléments](../decisions/ADR-004-transport-temps-reel.md) ; [ADR-014 §Décision](../decisions/ADR-014-modele-autorisation-api.md)).
@@ -188,7 +188,7 @@ origin: docs/assurance/strategie-de-test.md:278 @ 5b5190a ; docs/projet/note-de-
 - Le token `GuestAccess` n'apparaît dans aucune URL ni log de requête (vérifiable par revue/scan).
 - Le test anti-fuite SignalR (B8.2) couvre au minimum le cas de référence « push vers un invité après révocation du `GuestAccess` » → attendu interdit ([ADR-014 §Conséquences](../decisions/ADR-014-modele-autorisation-api.md) l.249).
 
-**Préalable bloquant rattaché** : J2 achevé (autorisation câblée, migration opérationnelle) ; le seuil de repli SSE→polling reste un `[À TRANCHER — ticket]` non bloquant pour l'entrée en J3 mais bloquant pour sa clôture opérationnelle.
+**Préalable bloquant rattaché** : J2 achevé (autorisation câblée, migration opérationnelle) + `[DÉCISION MARCHÉ]` = go (cumulatif) ; le seuil de repli SSE→polling reste un `[À TRANCHER — ticket]` non bloquant pour l'entrée en J3 mais bloquant pour sa clôture opérationnelle.
 
 ---
 
