@@ -1,7 +1,7 @@
 # Spec — Instrumentation par pilier, capture email, analytics RGPD
 
 - **Statut** : cinq des six points qui bloquaient le passage en développement sont tranchés (2026-09-03) ; seul le schéma d'événements reste ouvert. Cette spec, fidèle à sa nature de report, **ne les tranche pas ici** — elle renvoie vers les documents qui font autorité : [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) pour les seuils, le transport et la capture de contact, [`vision.md §2.3`](../../besoin/vision/vision.md) pour la limite de l'instrument. Le schéma d'événements formalisé, seul point ouvert, se dérive des décisions ci-dessus au moment de l'implémentation.
-- **Sources** : [ADR-006 — Périmètre MVP](../../decisions/ADR-006-perimetre-mvp.md), section « Compléments post-revue (2026-06-09) ». Contrainte RGPD de cohérence : [`cahier-des-charges.md` §7.4](../../reference/cahier-des-charges.md#74-conformité-rgpd--protection-des-données) et [NFR-CONF-02](../../besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md).
+- **Sources** : [ADR-006 — Périmètre MVP](../../decisions/ADR-006-perimetre-mvp.md), section « Compléments post-revue (2026-06-09) ». Contrainte RGPD de cohérence : [`cahier-des-charges.md` §9.4](../../reference/cahier-des-charges.md#94-conformité-rgpd--protection-des-données) et [NFR-CONF-02](../../besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md).
 - **Périmètre** : [SOUS-SPÉCIFIÉ — périmètre couvert et exclu non écrit dans le document]
 - **Nature** : spec pré-build (approche de report fidèle au corpus). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucun nom d'outil, aucun mécanisme non explicitement acté dans le corpus n'est introduit ici.
 - **Lecteur visé** : l'équipe de build qui opérationnalisera l'instrumentation en entrée des jalons J1/J2/J3 (ADR-006, section Conséquences), et le porteur produit, dont les décisions du 2026-09-03 ont levé les points qui bloquaient l'implémentation.
@@ -94,7 +94,7 @@ L'ADR-006 ne fixe que le champ d'application et la qualification (« non bloquan
 
 Cette instrumentation n'est pas conçue en dehors du cadre de confidentialité déjà acté pour Haversack. Le cahier des charges est explicite sur ce point de cohérence :
 
-> « L'instrumentation de validation du MVP — activation préparation, activation vue de session, activation partage […] — est conçue pour mesurer l'occurrence d'un usage sans capter le contenu narratif créé ou partagé par le MJ, cohérent avec l'isolation des données en mode local (NFR-CONF-02). » ([`cahier-des-charges.md` §7.4](../../reference/cahier-des-charges.md#74-conformité-rgpd--protection-des-données))
+> « L'instrumentation de validation du MVP — activation préparation, activation vue de session, activation partage […] — est conçue pour mesurer l'occurrence d'un usage sans capter le contenu narratif créé ou partagé par le MJ, cohérent avec l'isolation des données en mode local (NFR-CONF-02). » ([`cahier-des-charges.md` §9.4](../../reference/cahier-des-charges.md#94-conformité-rgpd--protection-des-données))
 
 [NFR-CONF-02](../../besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md) confirme ce même principe côté portée de l'exigence : *« Les mesures d'usage anonymes éventuelles : si de telles mesures sont mises en place, elles font l'objet d'un traitement distinct, sans lien avec le contenu local du MJ. »* (NFR-CONF-02, §Portée et hors-portée).
 
@@ -124,5 +124,5 @@ Cinq de ces six points sont tranchés le 2026-09-03 — seuils, opérationnalisa
 | Artefact | Nature du lien |
 |---|---|
 | [ADR-006 — Périmètre MVP](../../decisions/ADR-006-perimetre-mvp.md) | Source normative des trois piliers et de l'exigence email/analytics (section Compléments post-revue) |
-| [`cahier-des-charges.md` §7.4](../../reference/cahier-des-charges.md#74-conformité-rgpd--protection-des-données) | Reformulation synthèse du principe « occurrence sans contenu narratif » (§7.4) |
+| [`cahier-des-charges.md` §9.4](../../reference/cahier-des-charges.md#94-conformité-rgpd--protection-des-données) | Reformulation synthèse du principe « occurrence sans contenu narratif » (§9.4) |
 | [NFR-CONF-02](../../besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md) | Exigence d'isolation des données en mode local ; place explicitement les « mesures d'usage anonymes » hors de sa propre portée, comme traitement distinct |

@@ -72,7 +72,7 @@ L'instrumentation mesure l'activation de trois piliers d'usage, chacun défini p
 
 ### 4.2 Principe non négociable — occurrence, jamais contenu
 
-Chaque événement mesuré est un **fait d'occurrence** (une campagne a été créée, une session a été ouverte, un document a été partagé) — **à aucun moment le contenu narratif** créé ou partagé par le Maître du Jeu (texte des documents, notes, contenu de session) n'est capté par cette instrumentation. Ce principe est posé explicitement au cahier des charges (§7.4) et à l'exigence d'isolation des données en mode local (NFR-CONF-02), et contraint toute résolution future des points encore ouverts ci-dessous.
+Chaque événement mesuré est un **fait d'occurrence** (une campagne a été créée, une session a été ouverte, un document a été partagé) — **à aucun moment le contenu narratif** créé ou partagé par le Maître du Jeu (texte des documents, notes, contenu de session) n'est capté par cette instrumentation. Ce principe est posé explicitement au cahier des charges (§9.4) et à l'exigence d'isolation des données en mode local (NFR-CONF-02), et contraint toute résolution future des points encore ouverts ci-dessous.
 
 ### 4.3 Ce qui n'est pas encore fixé
 
@@ -129,5 +129,5 @@ Cette politique se limite aux traceurs et à leur mécanisme technique. Pour tou
 | `docs/decisions/ADR-017-modele-indexeddb-local.md` §4.5 | Absence de jeton, de compte et de cookie en mode local |
 | `docs/decisions/ADR-004-transport-temps-reel.md` §Compléments post-revue | Transmission du jeton invité hors chaîne de requête, mécanisme non arbitré entre cookie et échange de jeton |
 | `docs/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md` | Portée de l'isolation des données locales, traitement distinct des mesures d'usage anonymes |
-| `docs/reference/cahier-des-charges.md` §7.4 | Principe de mesure d'occurrence sans contenu narratif |
+| `docs/reference/cahier-des-charges.md` §9.4 | Principe de mesure d'occurrence sans contenu narratif |
 | `docs/assurance/conformite/public/politique-confidentialite.md` | Renvoi croisé, catégories de données et durées hors périmètre des traceurs |

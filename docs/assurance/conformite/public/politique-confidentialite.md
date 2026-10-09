@@ -162,7 +162,7 @@ Toute personne dont les données sont traitées par Haversack dispose des droits
 | Rectification | Art. 16 | MJ avec compte, joueur invité |
 | Effacement | Art. 17 | MJ avec compte, joueur invité — voir [§9](#9-effacement--ce-qui-se-passe-réellement) |
 | Opposition | Art. 21 | Applicable dès lors qu'un traitement repose sur l'intérêt légitime (nom d'affichage, journaux techniques de l'invité, conservation de documents partagés) |
-| Portabilité | Art. 20 | **Non implémentée à ce stade** — différée après la première version du produit (ADR-012, hors périmètre). Une fonctionnalité d'export d'un espace existe par ailleurs (format de sérialisation versionné réutilisable, cahier des charges §7.4) ; elle est distincte de l'exercice formel du droit à la portabilité |
+| Portabilité | Art. 20 | **Non implémentée à ce stade** — différée après la première version du produit (ADR-012, hors périmètre). Une fonctionnalité d'export d'un espace existe par ailleurs (format de sérialisation versionné réutilisable, cahier des charges §9.4) ; elle est distincte de l'exercice formel du droit à la portabilité |
 | Limitation du traitement | Art. 18 | Non instruite par la procédure actuelle — applicabilité `[À VALIDER — JURISTE]` |
 
 **Pour un Maître du Jeu avec compte** : les demandes s'exercent via le contact indiqué en [§1](#1-qui-traite-vos-données). La suppression du compte suit la procédure décrite en [§9](#9-effacement--ce-qui-se-passe-réellement).
@@ -179,7 +179,7 @@ Toute personne dont les données sont traitées par Haversack dispose des droits
 
 ## 8. Mesure d'audience anonyme
 
-Une instrumentation existe pour mesurer l'occurrence de trois usages du produit — activation préparation, activation vue de session, activation partage — **sans capter le contenu narratif** créé ou partagé par le MJ, y compris en mode local (cahier des charges §7.4 ; NFR-CONF-02). Cette mesure est décrite en détail, avec ses points laissés ouverts, dans la [politique de cookies et traceurs](politique-cookies.md#4-mesure-daudience--instrumentation-par-pilier), qu'il convient de lire en complément de la présente section.
+Une instrumentation existe pour mesurer l'occurrence de trois usages du produit — activation préparation, activation vue de session, activation partage — **sans capter le contenu narratif** créé ou partagé par le MJ, y compris en mode local (cahier des charges §9.4 ; NFR-CONF-02). Cette mesure est décrite en détail, avec ses points laissés ouverts, dans la [politique de cookies et traceurs](politique-cookies.md#4-mesure-daudience--instrumentation-par-pilier), qu'il convient de lire en complément de la présente section.
 
 Une capture d'adresse email **non bloquante** est également prévue dès le mode local (le MJ n'est pas empêché de progresser s'il ne la fournit pas) ; ni le mécanisme exact de sollicitation ni le traitement de cette adresse ne sont fixés par la conception à ce jour — `[À COMPLÉTER]` (spécification télémétrie §4).
 
@@ -236,7 +236,7 @@ Chaque affirmation technique de ce document est tirée d'une des sources suivant
 | `docs/decisions/ADR-018-espace-personnel-generalisation-space.md` | Purge inconditionnelle de l'espace `PERSONAL`, extension du périmètre DPA |
 | `docs/architecture/specs/telemetrie.md` | Piliers d'activation, capture email non bloquante, principe de mesure d'occurrence sans contenu narratif |
 | `docs/architecture/specs/requete-effacement-non-partage.md` | Critère opérationnel de document « non partagé », instant de référence de la sélection |
-| `docs/reference/cahier-des-charges.md` §7.4 | Synthèse de la posture RGPD, export d'espace |
+| `docs/reference/cahier-des-charges.md` §9.4 | Synthèse de la posture RGPD, export d'espace |
 | `docs/besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md` | Portée de l'isolation des données en mode local |
 | `docs/besoin/nfr/NFR-CONF-03-suppression-effective-donnees-personnelles.md` | Droit à l'effacement, confirmation de suppression |
 | `docs/assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md` | Cinq axes de validation juridique consolidés |

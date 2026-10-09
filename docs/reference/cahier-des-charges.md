@@ -2,11 +2,11 @@
 
 | Champ | Valeur |
 |---|---|
-| Version | 1.4 |
+| Version | 1.5 |
 | Date | 2026-10-09 |
-| Statut | Version de travail — périmètre produit stabilisé ; volet architecture technique à confirmer, cf. [§7](#7-contraintes) |
+| Statut | Version de travail — périmètre produit stabilisé ; volet architecture technique à confirmer, cf. [§9](#9-contraintes) |
 | Porteur | Pierre-Marie Marchio |
-| Validation | Pierre-Marie Marchio — validé en conception ; volet architecture technique ([§7](#7-contraintes)) à re-confirmer à l'entrée en build |
+| Validation | Pierre-Marie Marchio — validé en conception ; volet architecture technique ([§9](#9-contraintes)) à re-confirmer à l'entrée en build |
 
 ### Historique des révisions
 
@@ -17,124 +17,83 @@
 | 1.2 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond — date du comptage des 4 joueurs inscrite (2026-07-15, date du commit 6ce3e66) |
 | 1.3 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond — phasage (§ 11) : la décision marché passe entre J2 et J3, suivant l'ajustement du 2026-10-09 de l'ADR-006 |
 | 1.4 | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans restructuration : titres des ADR-009, 010 et 014 de l'index des décisions alignés sur leurs fichiers (« espace » et non « campagne »), section « Architecture détaillée » renvoyée vers le dossier d'architecture et la conception détaillée au lieu de les dire différés, points non tranchés et points tranchés de l'annexe « Points à arbitrer » regroupés chacun sous son étiquette, version de l'en-tête alignée sur la dernière ligne de l'historique |
+| 1.5 | 2026-10-09 | Pierre-Marie Marchio | Restructuration sans changement de fond : encadré « Lire ce document », cinq parties, sections renumérotées de 1 à 15 (nature et résumé devenus § 1 et 2, anciens § 1 et 2 devenus § 3 et 4, acteurs remontés en § 5 avec « Le MJ comme utilisateur principal » en tête, ancien § 3 devenu § 6 avec « Hors périmètre fonctionnel MVP » avant « Dépendances clés », anciens § 5 et 6 devenus § 7 et 8, anciens § 7 à 9 devenus § 9 à 11, phasage remonté en § 12 avant le glossaire devenu § 13, anciens § 12 et 13 devenus § 14 et 15), sommaire limité aux parties et aux sections, lignes de la traçabilité renumérotées et réordonnées, renvois internes et renvois entrants réparés |
 
-## Nature et portée du document
-
-Ce cahier des charges est le document officiel de référence pour la construction du MVP de Haversack. Il consolide et met en forme, dans un registre de cahier des charges, le travail de conception mené par l'équipe. Le corpus de conception (`docs/besoin/`, `docs/domaine/`, `docs/interface/`, `docs/architecture/`) reste la source de vérité détaillée : ce document ne fait jamais foi, et en cas d'écart avec le corpus c'est lui qu'on corrige ([ADR-019, § 1. Ordre d'autorité](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)).
+> **Lire ce document**
+>
+> - **À qui** : à qui doit connaître le périmètre fonctionnel du MVP sans ouvrir le reste du corpus ; le document se lit seul et peut être remis à un tiers.
+> - **À quoi** : à porter le quoi fonctionnel du MVP — ce que le produit doit faire, pour qui et dans quel périmètre. Il consolide le corpus de conception et ne tranche rien.
+> - **Comment le lire** : cinq parties répondent chacune à une question du lecteur. Qui s'arrête à une page lit le résumé exécutif (§2), qui renvoie à la section développant chacun de ses points. Les chiffres volatils (quotas, tarif, seuils H1 à H5) sont regroupés dans l'annexe « Valeurs de référence chiffrées » ; la section 9 est provisoire, à re-confirmer à l'entrée en build. Les sources sont citées en fin de section et récapitulées en §15.
+> - **Ce qui fait foi** : jamais ce document ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)). En cas d'écart avec le corpus de conception, c'est lui qu'on corrige.
 
 **Sommaire**
 
-- [Résumé exécutif](#résumé-exécutif)
-- [1. Présentation et contexte](#1-présentation-et-contexte)
-  - [1.1 Le produit](#11-le-produit)
-  - [1.2 Le problème adressé](#12-le-problème-adressé)
-  - [1.3 Le besoin non adressé](#13-le-besoin-non-adressé)
-  - [1.4 Positionnement concurrentiel](#14-positionnement-concurrentiel)
-- [2. Objectifs, enjeux et hypothèses](#2-objectifs-enjeux-et-hypothèses)
-  - [2.1 Objectif principal du MVP](#21-objectif-principal-du-mvp)
-  - [2.2 Hypothèses stratégiques](#22-hypothèses-stratégiques)
-  - [2.3 Hypothèses de validation (H1 à H5)](#23-hypothèses-de-validation-h1-à-h5)
-  - [2.4 Modèle de monétisation](#24-modèle-de-monétisation)
-- [3. Périmètre](#3-périmètre)
-  - [Vue de synthèse](#vue-de-synthèse)
-  - [Must Have](#must-have)
-  - [Should Have](#should-have)
-  - [Could Have](#could-have)
-  - [Won't Have (cette version)](#wont-have-cette-version)
-  - [Dépendances clés](#dépendances-clés)
-- [4. Acteurs et besoins](#4-acteurs-et-besoins)
-  - [4.1 Le Maître du Jeu (MJ)](#41-le-maître-du-jeu-mj)
-  - [4.2 Le Joueur](#42-le-joueur)
-  - [4.3 Le Joueur invité](#43-le-joueur-invité)
-  - [4.4 Le MJ comme utilisateur principal](#44-le-mj-comme-utilisateur-principal)
-  - [4.5 Personas de référence](#45-personas-de-référence)
-  - [4.6 Parcours bout-en-bout](#46-parcours-bout-en-bout)
-- [5. Spécifications fonctionnelles](#5-spécifications-fonctionnelles)
-  - [UC-01 — Mode local sans compte](#uc-01--mode-local-sans-compte)
-  - [UC-02 — Créer et configurer un espace (campagne ou one-shot)](#uc-02--créer-et-configurer-un-espace-campagne-ou-one-shot)
-  - [UC-03 — Structurer un scénario](#uc-03--structurer-un-scénario)
-  - [UC-04 — Gérer les documents d'un espace](#uc-04--gérer-les-documents-dun-espace)
-  - [UC-05 — Organiser le contenu en dossiers](#uc-05--organiser-le-contenu-en-dossiers)
-  - [UC-06 — Utiliser la vue de session](#uc-06--utiliser-la-vue-de-session)
-  - [UC-07 — Créer un élément à la volée en session](#uc-07--créer-un-élément-à-la-volée-en-session)
-  - [UC-08 — Partager une information aux joueurs](#uc-08--partager-une-information-aux-joueurs)
-  - [UC-09 — Accès joueur sans compte](#uc-09--accès-joueur-sans-compte)
-  - [UC-10 — Créer un compte et synchroniser dans le cloud](#uc-10--créer-un-compte-et-synchroniser-dans-le-cloud)
-  - [UC-11 — Gérer les membres d'un espace](#uc-11--gérer-les-membres-dun-espace)
-  - [UC-12 — Consulter son espace en tant que joueur (vue post-accès)](#uc-12--consulter-son-espace-en-tant-que-joueur-vue-post-accès)
-  - [UC-13 — Utiliser un scénario réutilisable](#uc-13--utiliser-un-scénario-réutilisable)
-  - [UC-14 — Rechercher et filtrer l'information](#uc-14--rechercher-et-filtrer-linformation)
-  - [Hors périmètre fonctionnel MVP](#hors-périmètre-fonctionnel-mvp)
-- [6. Exigences non fonctionnelles](#6-exigences-non-fonctionnelles)
-  - [6.1 Performance perçue](#61-performance-perçue)
-  - [6.2 Fonctionnement hors connexion](#62-fonctionnement-hors-connexion)
-  - [6.3 Confidentialité](#63-confidentialité)
-  - [6.4 Accessibilité](#64-accessibilité)
-  - [6.5 Internationalisation](#65-internationalisation)
-- [7. Contraintes](#7-contraintes)
-  - [7.1 Principes d'architecture](#71-principes-darchitecture)
-  - [7.2 Stack technique](#72-stack-technique)
-  - [7.3 Sécurité & authentification](#73-sécurité--authentification)
-  - [7.4 Conformité RGPD & protection des données](#74-conformité-rgpd--protection-des-données)
-  - [7.5 Contraintes de stockage](#75-contraintes-de-stockage)
-  - [7.6 Architecture détaillée](#76-architecture-détaillée)
-- [8. Modèle de données et domaine](#8-modèle-de-données-et-domaine)
-  - [Carte des contextes bornés](#carte-des-contextes-bornés)
-  - [Core (noyau partagé)](#core-noyau-partagé)
-  - [Identity & Access](#identity--access)
-  - [Space Management](#space-management)
-  - [Content Library](#content-library)
-  - [Session Conduct](#session-conduct)
-- [9. Conception d'interface](#9-conception-dinterface)
-  - [9.1 Approche et colonne vertébrale](#91-approche-et-colonne-vertébrale)
-  - [9.2 Inventaire des écrans](#92-inventaire-des-écrans)
-  - [9.3 Arbitrages d'interface figés](#93-arbitrages-dinterface-figés)
-  - [9.4 Renvoi wireframes](#94-renvoi-wireframes)
-- [10. Glossaire](#10-glossaire)
-- [11. Phasage](#11-phasage)
-  - [Macro-ordonnancement (axe canonique)](#macro-ordonnancement-axe-canonique)
-  - [Légende — codes de renvoi des ADR](#légende--codes-de-renvoi-des-adr)
-  - [Incohérence historique résolue](#incohérence-historique-résolue)
-- [12. Annexes](#12-annexes)
-  - [Points à arbitrer](#points-à-arbitrer)
-  - [Matrice de traçabilité](#matrice-de-traçabilité)
-  - [Index des décisions](#index-des-décisions)
-  - [Valeurs de référence chiffrées](#valeurs-de-référence-chiffrées)
-- [13. Traçabilité des sections](#13-traçabilité-des-sections)
+- [Partie 1 — Qu'est-ce que ce document, et que faut-il en retenir ?](#partie-1--quest-ce-que-ce-document-et-que-faut-il-en-retenir-)
+  - [1. Nature et portée du document](#1-nature-et-portée-du-document)
+  - [2. Résumé exécutif](#2-résumé-exécutif)
+- [Partie 2 — Quel produit, pour qui, et pourquoi ?](#partie-2--quel-produit-pour-qui-et-pourquoi-)
+  - [3. Présentation et contexte](#3-présentation-et-contexte)
+  - [4. Objectifs, enjeux et hypothèses](#4-objectifs-enjeux-et-hypothèses)
+  - [5. Acteurs et besoins](#5-acteurs-et-besoins)
+- [Partie 3 — Que fait le MVP, et que ne fait-il pas ?](#partie-3--que-fait-le-mvp-et-que-ne-fait-il-pas-)
+  - [6. Périmètre](#6-périmètre)
+  - [7. Spécifications fonctionnelles](#7-spécifications-fonctionnelles)
+  - [8. Exigences non fonctionnelles](#8-exigences-non-fonctionnelles)
+- [Partie 4 — Dans quel cadre et dans quel ordre est-il construit ?](#partie-4--dans-quel-cadre-et-dans-quel-ordre-est-il-construit-)
+  - [9. Contraintes](#9-contraintes)
+  - [10. Modèle de données et domaine](#10-modèle-de-données-et-domaine)
+  - [11. Conception d'interface](#11-conception-dinterface)
+  - [12. Phasage](#12-phasage)
+- [Partie 5 — Où vérifier un mot, une décision, un chiffre ou une source, et que reste-t-il à trancher ?](#partie-5--où-vérifier-un-mot-une-décision-un-chiffre-ou-une-source-et-que-reste-t-il-à-trancher-)
+  - [13. Glossaire](#13-glossaire)
+  - [14. Annexes](#14-annexes)
+  - [15. Traçabilité des sections](#15-traçabilité-des-sections)
+
+## Partie 1 — Qu'est-ce que ce document, et que faut-il en retenir ?
+
+Cette partie dit ce que couvre le document et ce qu'en retient un lecteur qui s'arrête après une page.
+
+## 1. Nature et portée du document
+
+Ce cahier des charges est le document officiel de référence pour la construction du MVP de Haversack. Il consolide et met en forme, dans un registre de cahier des charges, le travail de conception mené par l'équipe. Le corpus de conception (`docs/besoin/`, `docs/domaine/`, `docs/interface/`, `docs/architecture/`) reste la source de vérité détaillée : ce document ne fait jamais foi, et en cas d'écart avec le corpus c'est lui qu'on corrige ([ADR-019, § 1. Ordre d'autorité](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)).
 
 ---
 
-## Résumé exécutif
+## 2. Résumé exécutif
 
-Haversack est un outil web fonctionnant en mode local-first, destiné au Maître du Jeu (MJ) de jeu de rôle sur table. Il répond à un besoin aujourd'hui couvert de façon fragmentaire par des supports hétérogènes — fichiers texte, outils génériques (Notion, Obsidian), Discord, papier, tables virtuelles (Roll20, Foundry) — qui traitent chacun partiellement la préparation narrative d'une campagne et le pilotage d'une session, sans qu'aucun ne couvre les deux avec une logique propre au JDR ([§1](#1-présentation-et-contexte)).
+Haversack est un outil web fonctionnant en mode local-first, destiné au Maître du Jeu (MJ) de jeu de rôle sur table. Il répond à un besoin aujourd'hui couvert de façon fragmentaire par des supports hétérogènes — fichiers texte, outils génériques (Notion, Obsidian), Discord, papier, tables virtuelles (Roll20, Foundry) — qui traitent chacun partiellement la préparation narrative d'une campagne et le pilotage d'une session, sans qu'aucun ne couvre les deux avec une logique propre au JDR ([§3](#3-présentation-et-contexte)).
 
-Le périmètre du MVP est livré en un seul bloc, structuré autour de trois piliers indissociables : la **préparation** du contenu (espaces, dossiers, documents, scénarios structurés en scènes), une **vue de session** dédiée au pilotage en temps réel pendant la partie, et le **partage sélectif** d'informations aux joueurs. Ce dernier pilier rend la brique de compte et de synchronisation cloud non différable dès la première livraison, le partage reposant structurellement sur un compte MJ ([§3](#3-périmètre)).
+Le périmètre du MVP est livré en un seul bloc, structuré autour de trois piliers indissociables : la **préparation** du contenu (espaces, dossiers, documents, scénarios structurés en scènes), une **vue de session** dédiée au pilotage en temps réel pendant la partie, et le **partage sélectif** d'informations aux joueurs. Ce dernier pilier rend la brique de compte et de synchronisation cloud non différable dès la première livraison, le partage reposant structurellement sur un compte MJ ([§6](#6-périmètre)).
 
-Le MVP vise à valider cinq hypothèses chiffrées (H1 à H5), chacune assortie d'un seuil et d'un délai d'observation constituant un critère de décision objectif, non réinterprétable a posteriori une fois l'observation engagée. Parmi elles, l'**hypothèse H2 est l'hypothèse centrale du produit** : elle porte sur la valeur réelle de la vue de session en pleine partie — si elle n'est pas confirmée, la proposition de valeur du produit dans son ensemble est invalidée ([§2.3](#23-hypothèses-de-validation-h1-à-h5)).
+Le MVP vise à valider cinq hypothèses chiffrées (H1 à H5), chacune assortie d'un seuil et d'un délai d'observation constituant un critère de décision objectif, non réinterprétable a posteriori une fois l'observation engagée. Parmi elles, l'**hypothèse H2 est l'hypothèse centrale du produit** : elle porte sur la valeur réelle de la vue de session en pleine partie — si elle n'est pas confirmée, la proposition de valeur du produit dans son ensemble est invalidée ([§4.3](#43-hypothèses-de-validation-h1-à-h5)).
 
-Le modèle de monétisation suit une progression en trois paliers sans contrainte imposée en amont : un usage **local** gratuit et sans compte, un palier **gratuit** avec compte et synchronisation cloud, puis un palier **payant** sans limite de volume ni d'espaces — le passage d'un palier au suivant étant déclenché par un besoin concret (partage aux joueurs, dépassement de quota) plutôt que par une contrainte du produit ([§2.4](#24-modèle-de-monétisation)).
+Le modèle de monétisation suit une progression en trois paliers sans contrainte imposée en amont : un usage **local** gratuit et sans compte, un palier **gratuit** avec compte et synchronisation cloud, puis un palier **payant** sans limite de volume ni d'espaces — le passage d'un palier au suivant étant déclenché par un besoin concret (partage aux joueurs, dépassement de quota) plutôt que par une contrainte du produit ([§4.4](#44-modèle-de-monétisation)).
 
-Le positionnement de Haversack repose sur six différenciants, tels que la vision les pose : une **friction d'entrée nulle**, sans compte requis pour commencer à préparer ou piloter une session, avec la **possession effective des données** par l'utilisateur, y compris la possibilité de les exporter dans un format ouvert, en mode local comme avec un compte ; une **vue de session** dédiée au pilotage en temps réel ; un outil **agnostique au système de jeu** pratiqué (D&D, Call of Cthulhu, Fate, systèmes maison…) ; un **partage** d'information contrôlé par le MJ, document par document ; un **accès joueur** sans création de compte ; et une **organisation du contenu** libre ([§1.4](#14-positionnement-concurrentiel)).
+Le positionnement de Haversack repose sur six différenciants, tels que la vision les pose : une **friction d'entrée nulle**, sans compte requis pour commencer à préparer ou piloter une session, avec la **possession effective des données** par l'utilisateur, y compris la possibilité de les exporter dans un format ouvert, en mode local comme avec un compte ; une **vue de session** dédiée au pilotage en temps réel ; un outil **agnostique au système de jeu** pratiqué (D&D, Call of Cthulhu, Fate, systèmes maison…) ; un **partage** d'information contrôlé par le MJ, document par document ; un **accès joueur** sans création de compte ; et une **organisation du contenu** libre ([§3.4](#34-positionnement-concurrentiel)).
 
 ---
 
-## 1. Présentation et contexte
+## Partie 2 — Quel produit, pour qui, et pourquoi ?
 
-### 1.1 Le produit
+Cette partie présente le produit et le problème qu'il adresse, les objectifs et les hypothèses que le MVP doit valider, et les acteurs qu'il sert.
+
+## 3. Présentation et contexte
+
+### 3.1 Le produit
 
 Haversack est un outil web fonctionnant en mode local-first, destiné à assister le Maître du Jeu (MJ) de jeu de rôle sur table. Il se concentre sur deux fonctions : la préparation narrative en amont d'une session (structuration de scénarios, gestion de la documentation de campagne) et le pilotage de la session elle-même (accès rapide au contenu préparé, prise de notes, création de contenu à la volée). Haversack n'est ni une table virtuelle destinée à gérer combats et mécaniques de jeu, ni un éditeur de texte générique dépourvu de logique métier JDR.
 
-### 1.2 Le problème adressé
+### 3.2 Le problème adressé
 
 Un MJ actif gère un volume d'information important : scénarios, historique des sessions passées, fiches de personnages non-joueurs, notes secrètes, informations à partager avec les joueurs, lore, lieux, factions, objets. Cette information est aujourd'hui dispersée sur des supports hétérogènes et peu adaptés les uns aux autres : fichiers texte, outils de type Notion ou Google Docs, Discord, papier, PDF, ou encore tables virtuelles telles que Roll20 ou Foundry. Chacun de ces supports répond partiellement au besoin mais aucun ne couvre l'ensemble : les fichiers texte sont difficiles à parcourir en session, les outils collaboratifs génériques ne portent pas de logique JDR, Discord disperse l'information dans le fil de discussion, le papier n'est pas cherchable, le PDF est en lecture seule, et les tables virtuelles se concentrent sur le combat au détriment de la narration.
 
 Cette fragmentation a des conséquences directes en session : le MJ perd du temps à rechercher une information, le rythme de jeu est interrompu, certaines informations sont oubliées ou deviennent introuvables, et la charge mentale de préparation reste élevée.
 
-### 1.3 Le besoin non adressé
+### 3.3 Le besoin non adressé
 
 Les solutions existantes se répartissent en deux catégories, chacune insuffisante pour l'usage visé. Les outils génériques (Notion, Obsidian) offrent une grande flexibilité mais aucune logique propre au JDR : le MJ doit construire seul son organisation, sans que celle-ci soit pensée pour un accès rapide pendant la partie. Les tables virtuelles (Roll20, Foundry VTT) sont riches sur le plan mécanique — combat, cartes, jets de dés — mais traitent la préparation narrative et la gestion documentaire comme des fonctions secondaires. Haversack se positionne entre ces deux catégories : un outil dédié aux problèmes concrets du MJ, sans être ni l'un ni l'autre.
 
-### 1.4 Positionnement concurrentiel
+### 3.4 Positionnement concurrentiel
 
 | Outil | Points forts | Limites au regard du besoin MJ |
 |---|---|---|
@@ -151,13 +110,13 @@ Haversack se différencie de ces solutions sur six points : une friction d'entr�
 
 ---
 
-## 2. Objectifs, enjeux et hypothèses
+## 4. Objectifs, enjeux et hypothèses
 
-### 2.1 Objectif principal du MVP
+### 4.1 Objectif principal du MVP
 
 Le MVP doit permettre à un MJ de capturer et structurer son contenu — scénarios, PNJ, notes — dès l'ouverture de l'application, dans son espace personnel par défaut ou dans un espace de jeu partagé (campagne ou one-shot) lorsqu'il le décide, et d'accéder rapidement aux informations importantes pendant une session, sans friction d'onboarding et sans qu'un compte soit obligatoire pour commencer à utiliser l'application.
 
-### 2.2 Hypothèses stratégiques
+### 4.2 Hypothèses stratégiques
 
 Le MVP vise à valider deux hypothèses de nature différente, portées en parallèle.
 
@@ -165,7 +124,7 @@ L'**hypothèse produit** postule qu'un MJ acceptera de payer pour un outil qui r
 
 L'**hypothèse de monétisation** postule qu'un modèle structuré en trois paliers — usage local gratuit, compte gratuit, puis abonnement payant — permet une adoption initiale sans résistance, suivie d'une conversion naturelle vers le cloud au moment où le besoin de partage ou de sauvegarde se manifeste.
 
-### 2.3 Hypothèses de validation (H1 à H5)
+### 4.3 Hypothèses de validation (H1 à H5)
 
 Le MVP doit démontrer cinq hypothèses auprès d'une cohorte pilote d'utilisateurs réels (early adopters recrutés). Chaque hypothèse est assortie d'un seuil chiffré et d'un délai d'observation, constituant un critère de décision objectif à l'issue de la période d'observation. Les seuils sont calibrés pour cette cohorte restreinte et peuvent être ajustés avant le lancement de l'observation, jamais pendant.
 
@@ -183,9 +142,9 @@ Le MVP doit démontrer cinq hypothèses auprès d'une cohorte pilote d'utilisate
 
 Les seuils et délais des cinq hypothèses sont consolidés, avec leur date de validité, en [annexe « Valeurs de référence chiffrées »](#valeurs-de-référence-chiffrées).
 
-Les instruments de constat mobilisés sont exclusivement ceux inscrits au périmètre Must Have : activation préparation, activation vue session, activation partage, mesure d'usage anonyme en mode local, et entretiens utilisateurs (détaillés en [§3](#3-périmètre)).
+Les instruments de constat mobilisés sont exclusivement ceux inscrits au périmètre Must Have : activation préparation, activation vue session, activation partage, mesure d'usage anonyme en mode local, et entretiens utilisateurs (détaillés en [§6](#6-périmètre)).
 
-### 2.4 Modèle de monétisation
+### 4.4 Modèle de monétisation
 
 Le modèle de monétisation repose sur trois paliers, conçus pour n'imposer aucune contrainte agressive : la valeur doit être perçue avant tout engagement, et le passage à un palier supérieur résulte d'une décision rationnelle déclenchée par un besoin concret.
 
@@ -203,7 +162,59 @@ Le passage du palier local au palier gratuit est déclenché naturellement lorsq
 
 ---
 
-## 3. Périmètre
+## 5. Acteurs et besoins
+
+### 5.1 Le MJ comme utilisateur principal
+
+Haversack retient un parti pris délibéré : le MJ est l'utilisateur principal du produit. Ce choix repose sur quatre constats. Le MJ porte l'intégralité de la charge de préparation de la partie. Il est le décideur d'achat : c'est lui qui choisit les outils employés par l'ensemble du groupe. Sa douleur utilisateur est la plus forte et la plus documentable des trois profils décrits ci-après. Enfin, une adoption réussie côté MJ entraîne mécaniquement l'adoption côté joueurs — l'inverse n'est pas vrai.
+
+### 5.2 Le Maître du Jeu (MJ)
+
+Le MJ est l'utilisateur créant et administrant un ou plusieurs espaces — campagne, one-shot ou espace personnel. C'est le seul acteur habilité à créer du contenu, à administrer un espace et à partager une information avec les joueurs. Son compte est optionnel : il peut utiliser l'application en mode local, sans jamais s'inscrire.
+
+Ses douleurs principales tiennent à la gestion d'un volume d'information important et dispersé : le temps perdu à chercher une information en pleine partie, une charge mentale de préparation élevée, des informations réparties sur des supports hétérogènes et peu adaptés les uns aux autres, la difficulté à partager sélectivement une information aux joueurs sans exposer sa préparation privée, et la friction d'adoption d'un nouvel outil — obligation de compte, configuration initiale lourde.
+
+Ses objectifs applicatifs en découlent directement : commencer à préparer immédiatement, sans inscription ; structurer ses scénarios et son contenu à sa façon, quel que soit le système de jeu pratiqué ; réduire sa charge mentale pendant la session grâce à un accès rapide au contenu préparé ; créer des éléments à la volée en session sans interrompre la partie ; partager certaines informations aux joueurs sans exposer ses notes privées.
+
+### 5.3 Le Joueur
+
+Le Joueur est l'utilisateur accédant à une campagne sur invitation du MJ. Son compte est optionnel : il peut accéder en mode invité via un lien de session, sans jamais créer de compte.
+
+Sa douleur principale est la même friction d'adoption que celle du MJ — obligation de compte, configuration — à laquelle s'ajoute la dispersion des informations de campagne entre Discord, papier et outils tiers. Son objectif est de rejoindre une session avec un minimum de friction, idéalement sans aucune inscription, puis d'accéder en temps réel aux informations que le MJ partage pendant la partie. À titre optionnel, avec un compte, il peut retrouver l'historique des sessions entre les parties.
+
+### 5.4 Le Joueur invité
+
+Le Joueur invité est un joueur rejoignant via un lien temporaire, sans création de compte. Son accès est limité à la durée de la session et au périmètre défini par le MJ — un profil typique des one-shots, des conventions et des groupes changeants.
+
+Ses objectifs sont de rejoindre rapidement, sans aucune configuration, et de consulter les informations partagées pour cette session uniquement. Son accès expire à la fin de la session, avec une fenêtre de grâce, et ne donne pas accès à l'historique des sessions précédentes. Il peut à tout moment créer un compte pour convertir son accès en accès membre permanent, sans perdre les données de session déjà consultées.
+
+### 5.5 Personas de référence
+
+Sept personas illustrent la diversité des profils MJ et joueur pris en compte dans la conception. Ils servent à valider les choix fonctionnels retenus, sans se substituer aux besoins exprimés dans les use cases.
+
+| Persona | Profil | Besoin ou douleur saillante |
+|---|---|---|
+| Thomas | MJ préparateur, utilisateur avancé d'Obsidian, résistant au changement d'outil | Veut une structuration fine sans perdre la richesse de son organisation actuelle ; craint la dépendance à un nouvel outil et la perte de contrôle sur ses données |
+| Émilie | MJ improvisatrice, prépare peu, capture en séance | A besoin de créer un élément à la volée en quelques secondes sans casser le rythme de jeu |
+| Lucas | Joueur sans compte, réfractaire aux nouveaux outils | Veut rejoindre une session sans inscription ni configuration |
+| Nadia | MJ occasionnelle, sessions espacées, peu de temps disponible | A besoin de retrouver une information après une longue absence sans se souvenir de son organisation |
+| Antoine | MJ avancé, multi-groupe et multi-système, plusieurs campagnes simultanées | A besoin de structures réutilisables et d'une organisation cohérente entre plusieurs espaces |
+| Rémi | MJ débutant, proche du papier, résistant idéologique au numérique | Craint la complexité et la dépendance au numérique ; la friction d'entrée doit être nulle pour l'accrocher |
+| Sonia | MJ one-shot, anime des parties ponctuelles avec des groupes changeants | Son unité de travail est le scénario, pas la campagne ; veut lancer une partie sans configuration lourde |
+
+### 5.6 Parcours bout-en-bout
+
+Sept parcours bout-en-bout tissent les use cases décrits en [§7](#7-spécifications-fonctionnelles) du point de vue de chacun de ces personas, du premier contact avec l'application jusqu'aux usages avancés — ils ne sont pas détaillés dans ce document mais complètent les fiches de spécification par une lecture transverse des enchaînements réels.
+
+> Sources : docs/besoin/vision/vision.md, docs/besoin/decouverte/personas/README.md, docs/besoin/parcours-utilisateur/bout-en-bout/README.md
+
+---
+
+## Partie 3 — Que fait le MVP, et que ne fait-il pas ?
+
+Cette partie pose le périmètre, ses priorités et ce qu'il exclut, décrit les quatorze use cases du MVP et les exigences non fonctionnelles qui s'y appliquent.
+
+## 6. Périmètre
 
 **Source de la priorité** : Matrice de priorités
 
@@ -271,6 +282,10 @@ Exclusion assumée par choix stratégique, non par oubli.
 - Application desktop avec synchronisation CRDT — complexité disproportionnée pour le MVP.
 - Templates communautaires — nécessite un écosystème à construire après validation du cœur du produit.
 
+### Hors périmètre fonctionnel MVP
+
+Les fonctionnalités explicitement exclues de cette version — table visuelle, moteur de règles, assistant IA, relations typées entre documents, application desktop avec synchronisation, notamment — sont recensées dans la catégorie Won't Have du périmètre ([§6](#6-périmètre)) et détaillées, avec leur trajectoire produit envisagée, dans [exclusions.md](../besoin/vision/perimetre/exclusions.md).
+
 ### Dépendances clés
 
 UC-01 constitue le point d'entrée du produit : l'espace personnel y est provisionné automatiquement, permettant à un document de naître sans qu'un espace de type campagne ou one-shot existe. UC-10 (création de compte) est Must Have exclusivement parce que UC-08 (partage) et UC-09 (accès joueur), tous deux Must Have, en dépendent structurellement — une exigence Must Have ne peut pas reposer sur une exigence Should Have sans rendre le périmètre incohérent. UC-05 base (dossiers libres) précède UC-05 riche (types élaborés), qui reste Should Have. UC-13, bien que hors première livraison, s'appuie sur l'espace personnel comme infrastructure déjà livrée en MVP.
@@ -279,57 +294,9 @@ UC-01 constitue le point d'entrée du produit : l'espace personnel y est provisi
 
 ---
 
-## 4. Acteurs et besoins
+## 7. Spécifications fonctionnelles
 
-### 4.1 Le Maître du Jeu (MJ)
-
-Le MJ est l'utilisateur créant et administrant un ou plusieurs espaces — campagne, one-shot ou espace personnel. C'est le seul acteur habilité à créer du contenu, à administrer un espace et à partager une information avec les joueurs. Son compte est optionnel : il peut utiliser l'application en mode local, sans jamais s'inscrire.
-
-Ses douleurs principales tiennent à la gestion d'un volume d'information important et dispersé : le temps perdu à chercher une information en pleine partie, une charge mentale de préparation élevée, des informations réparties sur des supports hétérogènes et peu adaptés les uns aux autres, la difficulté à partager sélectivement une information aux joueurs sans exposer sa préparation privée, et la friction d'adoption d'un nouvel outil — obligation de compte, configuration initiale lourde.
-
-Ses objectifs applicatifs en découlent directement : commencer à préparer immédiatement, sans inscription ; structurer ses scénarios et son contenu à sa façon, quel que soit le système de jeu pratiqué ; réduire sa charge mentale pendant la session grâce à un accès rapide au contenu préparé ; créer des éléments à la volée en session sans interrompre la partie ; partager certaines informations aux joueurs sans exposer ses notes privées.
-
-### 4.2 Le Joueur
-
-Le Joueur est l'utilisateur accédant à une campagne sur invitation du MJ. Son compte est optionnel : il peut accéder en mode invité via un lien de session, sans jamais créer de compte.
-
-Sa douleur principale est la même friction d'adoption que celle du MJ — obligation de compte, configuration — à laquelle s'ajoute la dispersion des informations de campagne entre Discord, papier et outils tiers. Son objectif est de rejoindre une session avec un minimum de friction, idéalement sans aucune inscription, puis d'accéder en temps réel aux informations que le MJ partage pendant la partie. À titre optionnel, avec un compte, il peut retrouver l'historique des sessions entre les parties.
-
-### 4.3 Le Joueur invité
-
-Le Joueur invité est un joueur rejoignant via un lien temporaire, sans création de compte. Son accès est limité à la durée de la session et au périmètre défini par le MJ — un profil typique des one-shots, des conventions et des groupes changeants.
-
-Ses objectifs sont de rejoindre rapidement, sans aucune configuration, et de consulter les informations partagées pour cette session uniquement. Son accès expire à la fin de la session, avec une fenêtre de grâce, et ne donne pas accès à l'historique des sessions précédentes. Il peut à tout moment créer un compte pour convertir son accès en accès membre permanent, sans perdre les données de session déjà consultées.
-
-### 4.4 Le MJ comme utilisateur principal
-
-Haversack retient un parti pris délibéré : le MJ est l'utilisateur principal du produit. Ce choix repose sur quatre constats. Le MJ porte l'intégralité de la charge de préparation de la partie. Il est le décideur d'achat : c'est lui qui choisit les outils employés par l'ensemble du groupe. Sa douleur utilisateur est la plus forte et la plus documentable des trois profils. Enfin, une adoption réussie côté MJ entraîne mécaniquement l'adoption côté joueurs — l'inverse n'est pas vrai.
-
-### 4.5 Personas de référence
-
-Sept personas illustrent la diversité des profils MJ et joueur pris en compte dans la conception. Ils servent à valider les choix fonctionnels retenus, sans se substituer aux besoins exprimés dans les use cases.
-
-| Persona | Profil | Besoin ou douleur saillante |
-|---|---|---|
-| Thomas | MJ préparateur, utilisateur avancé d'Obsidian, résistant au changement d'outil | Veut une structuration fine sans perdre la richesse de son organisation actuelle ; craint la dépendance à un nouvel outil et la perte de contrôle sur ses données |
-| Émilie | MJ improvisatrice, prépare peu, capture en séance | A besoin de créer un élément à la volée en quelques secondes sans casser le rythme de jeu |
-| Lucas | Joueur sans compte, réfractaire aux nouveaux outils | Veut rejoindre une session sans inscription ni configuration |
-| Nadia | MJ occasionnelle, sessions espacées, peu de temps disponible | A besoin de retrouver une information après une longue absence sans se souvenir de son organisation |
-| Antoine | MJ avancé, multi-groupe et multi-système, plusieurs campagnes simultanées | A besoin de structures réutilisables et d'une organisation cohérente entre plusieurs espaces |
-| Rémi | MJ débutant, proche du papier, résistant idéologique au numérique | Craint la complexité et la dépendance au numérique ; la friction d'entrée doit être nulle pour l'accrocher |
-| Sonia | MJ one-shot, anime des parties ponctuelles avec des groupes changeants | Son unité de travail est le scénario, pas la campagne ; veut lancer une partie sans configuration lourde |
-
-### 4.6 Parcours bout-en-bout
-
-Sept parcours bout-en-bout tissent les use cases décrits en [§5](#5-spécifications-fonctionnelles) du point de vue de chacun de ces personas, du premier contact avec l'application jusqu'aux usages avancés — ils ne sont pas détaillés dans ce document mais complètent les fiches de spécification par une lecture transverse des enchaînements réels.
-
-> Sources : docs/besoin/vision/vision.md, docs/besoin/decouverte/personas/README.md, docs/besoin/parcours-utilisateur/bout-en-bout/README.md
-
----
-
-## 5. Spécifications fonctionnelles
-
-Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches homogènes. Chaque fiche est présentée telle que sa fiche use case source la décrit ; les priorités MoSCoW et les dépendances transverses sont posées en [§3](#3-périmètre).
+Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches homogènes. Chaque fiche est présentée telle que sa fiche use case source la décrit ; les priorités MoSCoW et les dépendances transverses sont posées en [§6](#6-périmètre).
 
 ### UC-01 — Mode local sans compte
 
@@ -712,28 +679,24 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 - Les notes privées du MJ ne sont jamais visibles dans une recherche joueur.
 - Depuis la vue session, les documents liés à la session active apparaissent en tête des résultats.
 
-### Hors périmètre fonctionnel MVP
-
-Les fonctionnalités explicitement exclues de cette version — table visuelle, moteur de règles, assistant IA, relations typées entre documents, application desktop avec synchronisation, notamment — sont recensées dans la catégorie Won't Have du périmètre ([§3](#3-périmètre)) et détaillées, avec leur trajectoire produit envisagée, dans [exclusions.md](../besoin/vision/perimetre/exclusions.md).
-
 > Sources : docs/besoin/cas-d-utilisation/UC-01-mode-local-sans-compte.md à UC-14-recherche.md, docs/besoin/cas-d-utilisation/README.md, docs/besoin/stories/US-UC-01-mode-local-sans-compte.md à US-UC-14-recherche.md
 
 ---
 
-## 6. Exigences non fonctionnelles
+## 8. Exigences non fonctionnelles
 
 Cette section reformule les vingt exigences non fonctionnelles du corpus de conception, exprimées du point de vue de l'expérience vécue par le MJ et le joueur plutôt qu'en métrique d'infrastructure. Chaque exigence est vérifiable par un critère observable ; il est cité en langage besoin, sans seuil chiffré lorsque la source n'en fixe pas.
 
-### 6.1 Performance perçue
+### 8.1 Performance perçue
 
-La vue de session est conçue pour réduire le temps de recherche d'une information en pleine partie, douleur principale identifiée chez le MJ ([§1.2](#12-le-problème-adressé)). Les quatre exigences suivantes portent sur ce que le MJ et le joueur doivent ressentir pendant l'usage, non sur une mesure d'infrastructure.
+La vue de session est conçue pour réduire le temps de recherche d'une information en pleine partie, douleur principale identifiée chez le MJ ([§3.2](#32-le-problème-adressé)). Les quatre exigences suivantes portent sur ce que le MJ et le joueur doivent ressentir pendant l'usage, non sur une mesure d'infrastructure.
 
 - **Fluidité de la navigation en session (NFR-PERF-01)** : en cours de partie, le MJ retrouve un document, épingle un élément ou lance une recherche sans qu'un observateur assis à la table perçoive de pause imputable à l'outil — y compris sur une campagne riche en contenu ou lors de la reprise d'une session interrompue. Critère de vérification : absence de pause perceptible constatée en situation, quelle que soit la densité de contenu de l'espace.
 - **Réactivité à la première interaction (NFR-PERF-02)** : l'application est utilisable dès son ouverture, sans écran de chargement prolongé qui retarderait le début d'une session — pour un MJ disposant déjà de campagnes, pour un MJ l'ouvrant pour la première fois, et pour un joueur accédant via un lien de session, y compris sur un réseau lent en mode local. Critère de vérification : absence de phase d'attente perceptible entre l'ouverture et la première action possible.
 - **Continuité sans interruption lors des actions en session (NFR-PERF-03)** : créer un élément à la volée, épingler un document ou partager une information pendant une session active ne gèle pas l'interface et n'impose pas d'attente avant de poursuivre le pilotage, y compris lors d'un enchaînement rapproché de plusieurs actions. Critère de vérification : absence de gel ou d'indicateur d'attente bloquant après chacune de ces actions.
 - **Résultats de recherche immédiats (NFR-PERF-04)** : la recherche produit des résultats visibles avant que le MJ n'ait eu le temps de détourner le regard de la table, au fil de la frappe et sans validation manuelle, y compris depuis la vue de session (résultats affichés en panneau latéral, sans quitter le contexte, ceux liés à la session active étant pondérés en tête) et sur une campagne dense en contenu. Critère de vérification : affichage des résultats sans relance manuelle et sans délai perceptible supplémentaire lié au volume de contenu.
 
-### 6.2 Fonctionnement hors connexion
+### 8.2 Fonctionnement hors connexion
 
 Le mode local (UC-01) est le point d'entrée sans compte du produit ; il doit fonctionner intégralement sans réseau. Le partage aux joueurs et la sauvegarde cloud restent, par choix de périmètre explicite, dépendants d'une connexion — la synchronisation hors connexion entre plusieurs appareils reste hors périmètre MVP.
 
@@ -743,7 +706,7 @@ Le mode local (UC-01) est le point d'entrée sans compte du produit ; il doit fo
 - **Fonctionnement partiel en cas de perte de réseau passagère en mode cloud (NFR-OFF-04)** : un MJ utilisant un compte qui perd sa connexion en session continue de saisir des notes et de consulter les documents déjà chargés ; les modifications en attente sont conservées et synchronisées automatiquement au retour de la connexion, sans action supplémentaire de sa part. Critère de vérification : aucune note perdue lors d'une interruption réseau passagère, état synchronisé conforme à l'état affiché au retour de connexion.
 - **Continuité d'édition en préparation cloud lors d'une perte de réseau (NFR-OFF-05)** : un MJ utilisant un compte qui perd sa connexion pendant la préparation — édition d'un document ou d'un scénario, hors session — ne perd pas son travail en cours ; les modifications sont conservées et synchronisées au retour de la connexion, sans action de sa part. Ce cas, distinct de NFR-OFF-04 (qui couvre la session active), referme un trou de conception antérieurement signalé sur l'éditeur de document et l'éditeur de scénario en préparation cloud. Critère de vérification : aucune modification perdue lors d'une interruption réseau passagère en cours d'édition, état synchronisé conforme à l'état affiché à la reconnexion.
 
-### 6.3 Confidentialité
+### 8.3 Confidentialité
 
 Haversack repose sur une asymétrie d'information structurante : le MJ prépare des informations secrètes et contrôle ce qui en est révélé, quand et comment. Ce contrôle est une règle métier centrale. La protection des données personnelles s'inscrit par ailleurs dans le cadre du règlement européen sur la protection des données (RGPD).
 
@@ -752,7 +715,7 @@ Haversack repose sur une asymétrie d'information structurante : le MJ prépare 
 - **Suppression effective des données personnelles sur demande (NFR-CONF-03)** : la suppression d'un compte rend les données personnelles (identifiants, adresse de messagerie) effectivement inaccessibles et fait échouer toute tentative de reconnexion ultérieure, sans révéler si le compte a été supprimé ou si les identifiants sont erronés (référence : droit à l'effacement, RGPD article 17). Critère de vérification : confirmation visible de la suppression, échec systématique d'une reconnexion avec les identifiants du compte supprimé.
 - **Transparence sur les risques de confidentialité en mode local partagé (NFR-CONF-04)** : dès l'entrée en mode local, un bandeau non bloquant informe systématiquement le MJ que les données stockées localement sont lisibles par toute personne ayant accès au même appareil, et propose la création d'un compte comme alternative. Ce bandeau reste distinct du bandeau de durabilité (NFR-OFF-03). Critère de vérification : présence continue du bandeau tant que le MJ reste en mode local, sans blocage de l'usage.
 
-### 6.4 Accessibilité
+### 8.4 Accessibilité
 
 Haversack s'utilise dans des conditions concrètes particulières : éclairage faible autour d'une table de jeu, lecture rapide en pleine partie, mains parfois occupées. Le référentiel WCAG 2.1 niveau AA fournit un cadre de mesure pour ces exigences, sans s'y substituer.
 
@@ -761,7 +724,7 @@ Haversack s'utilise dans des conditions concrètes particulières : éclairage f
 - **Lisibilité en conditions de faible éclairage (NFR-ACC-03)** : le contraste entre texte et arrière-plan permet la lecture des documents, notes, résultats de recherche, notifications et libellés d'interface — y compris en mode condensé — dans des conditions d'éclairage d'ambiance typiques d'une soirée de jeu, côté vue MJ comme côté vue joueur, sans ajustement de l'appareil. Critère de vérification : lisibilité constatée sans modification de la luminosité de l'écran ni rapprochement de l'appareil (référence : WCAG 2.1 niveau AA).
 - **Tailles de texte adaptées à la lecture rapide en session (NFR-ACC-04)** : les titres de documents, notes de session et résultats de recherche affichés dans la vue de session sont lisibles d'un coup d'œil à distance normale de l'écran, sans zoom ni configuration préalable, pour le MJ comme pour le joueur. Critère de vérification : lecture possible sans inclinaison de la tête ni rapprochement de l'écran, dès l'ouverture de l'application.
 
-### 6.5 Internationalisation
+### 8.5 Internationalisation
 
 Le produit est développé et lancé en français. Sa conception doit permettre d'accueillir d'autres langues sans refonte de l'expérience — une exigence d'évolutivité produit, non un engagement de calendrier.
 
@@ -773,13 +736,17 @@ Le produit est développé et lancé en français. Sa conception doit permettre 
 
 ---
 
-## 7. Contraintes
+## Partie 4 — Dans quel cadre et dans quel ordre est-il construit ?
+
+Cette partie rassemble les contraintes, le modèle de domaine et les choix d'interface qui encadrent la construction, puis l'ordre dans lequel le périmètre est livré.
+
+## 9. Contraintes
 
 > **Section provisoire.** Les choix décrits ci-dessous s'appuient sur des décisions d'architecture (ADR) de nature pré-implémentation : elles cadrent la trajectoire technique retenue à ce stade, mais n'ont pas encore été confrontées à la construction effective du MVP. Le volet architecture détaillé n'est pas finalisé et fera l'objet d'un travail dédié ultérieur, en amont de l'entrée en build. Les éléments listés dans cette section sont donc provisoires et susceptibles d'ajustement à cette occasion.
 
 Cette section synthétise, au niveau des choix structurants, les décisions d'architecture actées pour le MVP. À la différence des sections précédentes centrées sur le besoin, la nomination des technologies et mécanismes retenus est ici pertinente : elle trace les arbitrages sans en reproduire le détail d'implémentation.
 
-### 7.1 Principes d'architecture
+### 9.1 Principes d'architecture
 
 Le mode local est un pilier non négociable du produit : il consiste en une couche de persistance et de règles de validation minimales exécutée côté navigateur (création, modification, suppression, contrôles élémentaires tels qu'un titre non vide ou une structure de blocs valide), sans réimplémentation du domaine métier complet. Le domaine métier, exécuté côté serveur, demeure la source de vérité unique ; toute migration de données locales vers le cloud est traitée comme un import revalidé par ce domaine, jamais comme une copie de confiance, selon l'invariant que la validation locale reste un sous-ensemble strict de la validation serveur (ADR-001).
 
@@ -787,7 +754,7 @@ Le contenu éditorial du produit suit le principe « tout est document » : chaq
 
 La solution suit les principes de la Clean Architecture avec inversion des dépendances — le domaine métier définit les contrats, l'infrastructure les implémente, la présentation en dépend sans jamais l'inverse — organisée en monolithe modulaire structuré autour de quatre frontières logiques (Identity & Access, Space Management, Content Library, Session Conduct). Ces frontières restent internes à une solution unique pour le MVP, avec possibilité d'extraction en composants séparés si un besoin réel émerge ultérieurement ; les préoccupations techniques transverses (persistance, notifications temps réel, présentation) sont, elles, isolées en composants distincts dès le démarrage (ADR-008).
 
-### 7.2 Stack technique
+### 9.2 Stack technique
 
 Le front est construit sur un écosystème unique — Angular — pour l'application principale comme pour la landing page, ce qui évite la duplication de pipelines et de composants pour une équipe réduite ; la landing page est servie en rendu statique préconstruit pour ses besoins de référencement (ADR-003).
 
@@ -797,7 +764,7 @@ En mode local, les données sont persistées dans le stockage structuré du navi
 
 L'export d'un espace et sa migration vers le cloud reposent sur un format de données unique et versionné, couvrant un périmètre défini de contenu (documents, dossiers, historique de session terminée). La migration est soumise à une confirmation explicite préalable, traitée intégralement ou pas du tout par espace, avec un rapport des éléments rejetés en cas d'échec de revalidation (ADR-016).
 
-### 7.3 Sécurité & authentification
+### 9.3 Sécurité & authentification
 
 Le modèle d'authentification du MVP s'applique exclusivement au mode cloud — le mode local ne comporte aucune authentification. La création d'un compte par email et mot de passe impose une longueur minimale de mot de passe, sans règle de complexité additionnelle imposée, avec un hachage robuste des mots de passe ; une connexion via un fournisseur d'identité externe est également proposée. La validation de l'adresse de messagerie n'est pas bloquante à la connexion mais devient requise avant toute opération sensible (changement d'email ou de mot de passe, liaison d'un compte externe, demande d'effacement des données personnelles). Les jetons d'accès ont une durée de vie courte et les jetons de renouvellement une durée de vie bornée et non prolongeable, avec rotation à chaque usage et révocation immédiate en cas de réutilisation détectée après rotation (ADR-015).
 
@@ -805,25 +772,25 @@ Le modèle d'autorisation d'accès aux API repose sur la composition systématiq
 
 Un joueur invité accède à un espace ou à une session via un lien, sans création de compte, dans un périmètre d'accès borné (session ponctuelle ou campagne durable) défini par le MJ. Cet accès peut être révoqué par le MJ ou converti par le joueur en accès membre permanent sans perte des données de session déjà consultées ; il est soumis au même modèle d'autorisation que les accès à compte (ADR-014, ADR-007).
 
-### 7.4 Conformité RGPD & protection des données
+### 9.4 Conformité RGPD & protection des données
 
 La suppression d'un compte anonymise par réécriture les données identifiantes (adresse de messagerie, nom d'affichage) tout en conservant l'identifiant technique de l'utilisateur pour assurer la continuité des espaces partagés auxquels il appartenait ; les documents strictement privés de l'utilisateur sont supprimés physiquement sans exception, et le contenu de son espace personnel est supprimé intégralement et sans condition (ADR-012, ADR-007).
 
 Le nom d'affichage saisi par un joueur invité est traité sur la base de l'intérêt légitime, avec une information affichée au moment même de sa saisie, avant l'entrée en session. Les données techniques de connexion associées à un accès invité sont conservées au maximum trente jours après la fin de cet accès, et la trace de l'accès lui-même est purgée dans un délai borné après son expiration (ADR-013).
 
-L'instrumentation de validation du MVP — activation préparation, activation vue de session, activation partage (périmètre Must Have, [§3](#3-périmètre)) — est conçue pour mesurer l'occurrence d'un usage sans capter le contenu narratif créé ou partagé par le MJ, cohérent avec l'isolation des données en mode local (NFR-CONF-02).
+L'instrumentation de validation du MVP — activation préparation, activation vue de session, activation partage (périmètre Must Have, [§6](#6-périmètre)) — est conçue pour mesurer l'occurrence d'un usage sans capter le contenu narratif créé ou partagé par le MJ, cohérent avec l'isolation des données en mode local (NFR-CONF-02).
 
-L'export d'un espace (Must Have, [§3](#3-périmètre)) réutilise le même format de sérialisation versionné que celui de la migration locale vers le cloud ([§7.2](#72-stack-technique), ADR-016), garantissant que les données exportées restent lisibles et réutilisables hors de l'application. Cette possibilité d'export, combinée à la suppression effective des données personnelles sur demande (NFR-CONF-03), concrétise le principe de possession des données par l'utilisateur porté par le positionnement produit ([§1.4](#14-positionnement-concurrentiel)).
+L'export d'un espace (Must Have, [§6](#6-périmètre)) réutilise le même format de sérialisation versionné que celui de la migration locale vers le cloud ([§9.2](#92-stack-technique), ADR-016), garantissant que les données exportées restent lisibles et réutilisables hors de l'application. Cette possibilité d'export, combinée à la suppression effective des données personnelles sur demande (NFR-CONF-03), concrétise le principe de possession des données par l'utilisateur porté par le positionnement produit ([§3.4](#34-positionnement-concurrentiel)).
 
-### 7.5 Contraintes de stockage
+### 9.5 Contraintes de stockage
 
-Le palier local persiste les données exclusivement dans le navigateur de l'appareil utilisé par le MJ, sans limite de volume propre au produit au-delà de celle de l'appareil lui-même. Les paliers gratuit et Pro disposent chacun d'un quota de stockage propre, le palier Pro offrant un volume sensiblement supérieur à celui du palier gratuit et sans limite du nombre d'espaces actifs ; l'espace personnel n'est, dans les deux cas, jamais décompté du quota du palier gratuit. Les valeurs chiffrées de ces quotas sont consolidées en [§2.4](#24-modèle-de-monétisation) et [annexe « Valeurs de référence chiffrées »](#valeurs-de-référence-chiffrées).
+Le palier local persiste les données exclusivement dans le navigateur de l'appareil utilisé par le MJ, sans limite de volume propre au produit au-delà de celle de l'appareil lui-même. Les paliers gratuit et Pro disposent chacun d'un quota de stockage propre, le palier Pro offrant un volume sensiblement supérieur à celui du palier gratuit et sans limite du nombre d'espaces actifs ; l'espace personnel n'est, dans les deux cas, jamais décompté du quota du palier gratuit. Les valeurs chiffrées de ces quotas sont consolidées en [§4.4](#44-modèle-de-monétisation) et [annexe « Valeurs de référence chiffrées »](#valeurs-de-référence-chiffrées).
 
-### 7.6 Architecture détaillée
+### 9.6 Architecture détaillée
 
-Cette sous-section consolide, au niveau synthèse, l'état des décisions d'architecture actées pour le MVP — sans en reproduire le détail, dans le prolongement de la logique du reste de [§7](#7-contraintes). La vue transverse par préoccupation, qui recense les décisions actées du registre ADR ([annexe « Index des décisions »](#index-des-décisions)) sous un angle organisé par sujet plutôt que décision par décision, est consolidée dans **`docs/architecture/transverse.md`**.
+Cette sous-section consolide, au niveau synthèse, l'état des décisions d'architecture actées pour le MVP — sans en reproduire le détail, dans le prolongement de la logique du reste de [§9](#9-contraintes). La vue transverse par préoccupation, qui recense les décisions actées du registre ADR ([annexe « Index des décisions »](#index-des-décisions)) sous un angle organisé par sujet plutôt que décision par décision, est consolidée dans **`docs/architecture/transverse.md`**.
 
-**Ce qui est consolidé dès à présent** : la synthèse des choix structurants déjà actés — principes d'architecture, stack technique, sécurité & authentification, conformité RGPD, contraintes de stockage ([§7.1](#71-principes-darchitecture) à [§7.5](#75-contraintes-de-stockage)) — et leur mise en regard transverse dans `transverse.md`, qui organise différemment une matière déjà tranchée sans y ajouter de décision nouvelle.
+**Ce qui est consolidé dès à présent** : la synthèse des choix structurants déjà actés — principes d'architecture, stack technique, sécurité & authentification, conformité RGPD, contraintes de stockage ([§9.1](#91-principes-darchitecture) à [§9.5](#95-contraintes-de-stockage)) — et leur mise en regard transverse dans `transverse.md`, qui organise différemment une matière déjà tranchée sans y ajouter de décision nouvelle.
 
 **Où lire la conception détaillée** : les vues composants figurent dans le [dossier d'architecture](dossier-architecture.md), qui porte les vues C4, et les diagrammes de séquence dans la [conception détaillée](conception-detaillee.md).
 
@@ -831,7 +798,7 @@ Cette sous-section consolide, au niveau synthèse, l'état des décisions d'arch
 
 ---
 
-## 8. Modèle de données et domaine
+## 10. Modèle de données et domaine
 
 Le domaine métier de Haversack est modélisé selon les principes de la conception pilotée par le domaine (Domain-Driven Design), organisé en **quatre contextes bornés** adossés à un **noyau partagé** (shared kernel) qui leur fournit un langage technique commun sans les coupler entre eux. Les contextes bornés ne dépendent jamais les uns des autres directement : leurs échanges passent par des identifiants typés, des événements de domaine ou des contrats applicatifs.
 
@@ -934,9 +901,9 @@ Les diagrammes associés à chaque contexte borné — modèle conceptuel de don
 
 ---
 
-## 9. Conception d'interface
+## 11. Conception d'interface
 
-### 9.1 Approche et colonne vertébrale
+### 11.1 Approche et colonne vertébrale
 
 La conception d'interface du MVP repose sur une ossature de navigation unique : **Tableau de bord (espaces de jeu) → Espace → {Préparation | Vue session MJ}**. L'espace se décline selon les trois types du modèle de domaine (campagne, one-shot, espace personnel) ; l'espace personnel, mono-membre, ne se branche que sur la préparation — il n'a pas de vue session. La **surface joueur** constitue un point d'entrée parallèle et séparé, accessible par lien direct, hors de l'arborescence de l'espace. Le **mode local** (sans compte) est un état transversal, présent sur l'ensemble des surfaces MJ tant qu'un compte n'a pas été créé.
 
@@ -976,7 +943,7 @@ flowchart LR
 
 > Légende : fond bleu — surfaces MJ ; fond vert — surface joueur ; fond jaune — écrans transversaux. L'espace personnel ne se branche pas sur la vue de session (espace mono-membre) ; la surface joueur constitue un point d'entrée parallèle, séparé de l'arborescence de l'espace.
 
-### 9.2 Inventaire des écrans
+### 11.2 Inventaire des écrans
 
 Vingt écrans composent le périmètre d'interface du MVP, regroupés par surface :
 
@@ -1003,7 +970,7 @@ Vingt écrans composent le périmètre d'interface du MVP, regroupés par surfac
 | Joueur | Vue joueur post-accès | Consultation des documents partagés et prise de notes personnelles pendant une session active *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* |
 | Joueur | Page d'erreur d'accès | Message unique « Ce lien n'est pas utilisable » en cas de lien expiré, révoqué ou invalide, sans révéler l'existence de la campagne |
 
-### 9.3 Arbitrages d'interface figés
+### 11.3 Arbitrages d'interface figés
 
 Les arbitrages de conception d'interface tranchés et figés au cours de la phase de zoning font foi dans [`docs/interface/zonage.md` §S6 — Arbitrages tracés](../interface/zonage.md), qui en porte la liste et les motifs. Les tables ci-dessous en regroupent par thème ceux qui étaient figés à la date de la présente version ; s'y référer pour l'orientation, à `zonage.md §S6` pour la liste faisant foi.
 
@@ -1052,7 +1019,7 @@ Les arbitrages de conception d'interface tranchés et figés au cours de la phas
 | AR-14 | L'espace personnel est une destination opérationnelle réelle dès le MVP, à surface réduite — sans vue session, sans joueurs, sans partage ni gestion de membres |
 | AR-15 | Onboarding capture-first : création de contenu immédiate dès la première ouverture, sans étape de création d'espace préalable |
 
-### 9.4 Renvoi wireframes
+### 11.4 Renvoi wireframes
 
 Les vingt fiches de spécification basse fidélité correspondant à cet inventaire d'écrans, leurs wireframes associés, ainsi que la table de couverture reliant chaque use case à son ou ses écrans porteurs, sont conservés dans `docs/interface/ecrans/`. Ce document n'en reproduit ni le détail ni le contenu visuel : il n'en constitue qu'un renvoi de traçabilité.
 
@@ -1069,45 +1036,9 @@ Pour une entrée directe dans la conception d'interface, les écrans les plus re
 
 ---
 
-## 10. Glossaire
+## 12. Phasage
 
-Ce glossaire reprend, en langage besoin, les termes structurants employés dans les sections précédentes. Il synthétise le langage ubiquitaire porté par les quatre contextes du domaine ([§8](#8-modèle-de-données-et-domaine)) sans s'y substituer : le glossaire de conception (`docs/glossaire.md`) fait référence pour le nom des termes, jamais pour le sens d'une règle, que porte sa source ([conventions du corpus, § Autorité de forme et autorité de fond](../conventions.md#autorité-de-forme-et-autorité-de-fond)).
-
-| Terme | Définition |
-|---|---|
-| **Espace** | Conteneur de travail appartenant à un MJ, sous l'une de ses trois formes — campagne, one-shot ou espace personnel. Regroupe les dossiers et les documents et, pour une campagne ou un one-shot, les membres et l'historique des sessions. |
-| **Campagne / One-shot** | Les deux formes d'espace destinées à un jeu partagé avec des joueurs — la campagne pour un jeu mené sur plusieurs sessions, le one-shot pour une partie unique. Au MVP, elles se créent et se comportent de façon identique ; seule leur vocation diffère. |
-| **Espace personnel** | Espace de premier ordre, propre au MJ et mono-membre, provisionné automatiquement dès le premier usage. Il reçoit tout contenu créé sans campagne ni one-shot et n'est jamais décompté du quota d'espaces d'un compte gratuit. |
-| **Document** | Unité de contenu de base d'un espace — note, scénario, scène, fiche de personnage, lieu, ou tout autre écrit du MJ — composée de texte libre et de liens vers d'autres documents. |
-| **Dossier** | Regroupement nommé de documents à l'intérieur d'un espace, librement créé, renommé et organisé par le MJ. |
-| **Type de document** | Spécialisation optionnelle d'un document (personnage non-joueur, lieu, scénario…) qui ajoute des champs structurés sans jamais imposer la forme du contenu libre. |
-| **Scénario** | Document spécialisé dans la préparation narrative d'une aventure, rédigeable d'un seul bloc ou découpé en scènes liées. |
-| **Scène** | Document lié à un scénario, représentant un moment de jeu et pouvant lui-même référencer d'autres documents — personnages, lieux, révélations. |
-| **Session** | Séance de jeu pilotée par le MJ, dont le déroulement suit un sens unique — actif, puis clos, puis archivé — sans retour en arrière possible. |
-| **Vue de session** | Surface de pilotage dédiée à une session en cours, distincte de la préparation, donnant accès aux dossiers mis en avant par le MJ, aux notes et au contenu épinglé. |
-| **Tableau de bord de session** | Appellation du visage MJ de la vue de session, dans son rôle de poste de pilotage configurable pendant la partie. |
-| **Épingler** | Mettre un document en avant dans une session pour un accès rapide, sans que cela modifie sa visibilité ni sa place dans la bibliothèque de contenu de l'espace. |
-| **Partage** | Action par laquelle le MJ rend un document visible par l'ensemble des joueurs de l'espace, de façon durable jusqu'à retrait explicite de sa part. |
-| **Note privée / note de session** | Note prise pendant ou juste après une partie. Privée par défaut lorsqu'elle est écrite par le MJ (basculable vers visible par les joueurs) ; strictement personnelle et jamais visible du MJ lorsqu'elle est écrite par un joueur. |
-| **Membre** | Personne — MJ ou joueur — rattachée durablement à un espace de type campagne ou one-shot, par opposition à un accès invité ponctuel. |
-| **Invitation** | Mécanisme par lequel le MJ ouvre l'accès à son espace, sous forme de lien, à portée durable (campagne) ou ponctuelle (session). |
-| **Accès invité** | Accès temporaire d'un joueur sans compte à une session ou à une campagne, obtenu via un lien, limité dans le temps et convertible en accès membre permanent. |
-| **Lien de session** | Lien d'invitation à portée ponctuelle, valable le temps d'une session et d'une brève fenêtre de grâce après sa clôture. |
-| **MJ (Maître du Jeu)** | Utilisateur qui crée et administre un espace, prépare son contenu et pilote les sessions ; seul acteur habilité à partager une information aux joueurs. |
-| **Joueur** | Utilisateur qui accède à un espace sur invitation du MJ, consulte les informations qui lui sont partagées et peut y prendre des notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*. |
-| **Backlink** | Renvoi vers un document depuis un autre document qui le référence ; hors MVP (ils arrivent avec les relations structurées) — à la reprise, consultable depuis la fiche du document ciblé, sans être stocké séparément du document qui pointe vers lui. |
-| **Mode local** | Manière d'utiliser l'application sans création de compte, avec des données conservées uniquement dans le navigateur du MJ. |
-| **Compte** | Identité créée par un utilisateur — email et mot de passe, ou fournisseur d'identité externe — qui active la synchronisation cloud, le partage aux joueurs et l'accès multi-appareil. |
-| **Palier** | Niveau d'usage du produit — local, gratuit ou payant — déterminant les fonctionnalités disponibles et les limites de volume ou de nombre d'espaces. |
-| **Migration** | Opération qui transfère le contenu du mode local vers un compte nouvellement créé, traitée intégralement ou pas du tout pour chaque espace concerné. |
-
-> Sources : docs/glossaire.md
-
----
-
-## 11. Phasage
-
-Le périmètre livrable est fixé ([§3](#3-périmètre) et [§5](#5-spécifications-fonctionnelles)) ; cette section n'en redéfinit rien — elle **ordonnance** ce périmètre déjà arrêté. Le phasage détaillé (contenu précis de chaque lot, jalons datés, critères d'entrée/sortie) n'est pas arrêté à ce stade et fera l'objet d'un **artefact de planification dédié**, établi en amont de l'entrée en construction. Ce qui suit pose uniquement le macro-ordonnancement de référence, à titre **indicatif et non figé**.
+Le périmètre livrable est fixé ([§6](#6-périmètre) et [§7](#7-spécifications-fonctionnelles)) ; cette section n'en redéfinit rien — elle **ordonnance** ce périmètre déjà arrêté. Le phasage détaillé (contenu précis de chaque lot, jalons datés, critères d'entrée/sortie) n'est pas arrêté à ce stade et fera l'objet d'un **artefact de planification dédié**, établi en amont de l'entrée en construction. Ce qui suit pose uniquement le macro-ordonnancement de référence, à titre **indicatif et non figé**.
 
 ### Macro-ordonnancement (axe canonique)
 
@@ -1142,23 +1073,63 @@ ADR-007, §Conséquences, mentionnait un « jalon J1 » associé à une nomencla
 
 ---
 
-## 12. Annexes
+## Partie 5 — Où vérifier un mot, une décision, un chiffre ou une source, et que reste-t-il à trancher ?
+
+Cette partie donne le glossaire, regroupe en annexe les points à arbitrer, les décisions citées et les valeurs chiffrées, et rattache les sections à leurs sources.
+
+## 13. Glossaire
+
+Ce glossaire reprend, en langage besoin, les termes structurants employés dans les sections précédentes. Il synthétise le langage ubiquitaire porté par les quatre contextes du domaine ([§10](#10-modèle-de-données-et-domaine)) sans s'y substituer : le glossaire de conception (`docs/glossaire.md`) fait référence pour le nom des termes, jamais pour le sens d'une règle, que porte sa source ([conventions du corpus, § Autorité de forme et autorité de fond](../conventions.md#autorité-de-forme-et-autorité-de-fond)).
+
+| Terme | Définition |
+|---|---|
+| **Espace** | Conteneur de travail appartenant à un MJ, sous l'une de ses trois formes — campagne, one-shot ou espace personnel. Regroupe les dossiers et les documents et, pour une campagne ou un one-shot, les membres et l'historique des sessions. |
+| **Campagne / One-shot** | Les deux formes d'espace destinées à un jeu partagé avec des joueurs — la campagne pour un jeu mené sur plusieurs sessions, le one-shot pour une partie unique. Au MVP, elles se créent et se comportent de façon identique ; seule leur vocation diffère. |
+| **Espace personnel** | Espace de premier ordre, propre au MJ et mono-membre, provisionné automatiquement dès le premier usage. Il reçoit tout contenu créé sans campagne ni one-shot et n'est jamais décompté du quota d'espaces d'un compte gratuit. |
+| **Document** | Unité de contenu de base d'un espace — note, scénario, scène, fiche de personnage, lieu, ou tout autre écrit du MJ — composée de texte libre et de liens vers d'autres documents. |
+| **Dossier** | Regroupement nommé de documents à l'intérieur d'un espace, librement créé, renommé et organisé par le MJ. |
+| **Type de document** | Spécialisation optionnelle d'un document (personnage non-joueur, lieu, scénario…) qui ajoute des champs structurés sans jamais imposer la forme du contenu libre. |
+| **Scénario** | Document spécialisé dans la préparation narrative d'une aventure, rédigeable d'un seul bloc ou découpé en scènes liées. |
+| **Scène** | Document lié à un scénario, représentant un moment de jeu et pouvant lui-même référencer d'autres documents — personnages, lieux, révélations. |
+| **Session** | Séance de jeu pilotée par le MJ, dont le déroulement suit un sens unique — actif, puis clos, puis archivé — sans retour en arrière possible. |
+| **Vue de session** | Surface de pilotage dédiée à une session en cours, distincte de la préparation, donnant accès aux dossiers mis en avant par le MJ, aux notes et au contenu épinglé. |
+| **Tableau de bord de session** | Appellation du visage MJ de la vue de session, dans son rôle de poste de pilotage configurable pendant la partie. |
+| **Épingler** | Mettre un document en avant dans une session pour un accès rapide, sans que cela modifie sa visibilité ni sa place dans la bibliothèque de contenu de l'espace. |
+| **Partage** | Action par laquelle le MJ rend un document visible par l'ensemble des joueurs de l'espace, de façon durable jusqu'à retrait explicite de sa part. |
+| **Note privée / note de session** | Note prise pendant ou juste après une partie. Privée par défaut lorsqu'elle est écrite par le MJ (basculable vers visible par les joueurs) ; strictement personnelle et jamais visible du MJ lorsqu'elle est écrite par un joueur. |
+| **Membre** | Personne — MJ ou joueur — rattachée durablement à un espace de type campagne ou one-shot, par opposition à un accès invité ponctuel. |
+| **Invitation** | Mécanisme par lequel le MJ ouvre l'accès à son espace, sous forme de lien, à portée durable (campagne) ou ponctuelle (session). |
+| **Accès invité** | Accès temporaire d'un joueur sans compte à une session ou à une campagne, obtenu via un lien, limité dans le temps et convertible en accès membre permanent. |
+| **Lien de session** | Lien d'invitation à portée ponctuelle, valable le temps d'une session et d'une brève fenêtre de grâce après sa clôture. |
+| **MJ (Maître du Jeu)** | Utilisateur qui crée et administre un espace, prépare son contenu et pilote les sessions ; seul acteur habilité à partager une information aux joueurs. |
+| **Joueur** | Utilisateur qui accède à un espace sur invitation du MJ, consulte les informations qui lui sont partagées et peut y prendre des notes personnelles *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))*. |
+| **Backlink** | Renvoi vers un document depuis un autre document qui le référence ; hors MVP (ils arrivent avec les relations structurées) — à la reprise, consultable depuis la fiche du document ciblé, sans être stocké séparément du document qui pointe vers lui. |
+| **Mode local** | Manière d'utiliser l'application sans création de compte, avec des données conservées uniquement dans le navigateur du MJ. |
+| **Compte** | Identité créée par un utilisateur — email et mot de passe, ou fournisseur d'identité externe — qui active la synchronisation cloud, le partage aux joueurs et l'accès multi-appareil. |
+| **Palier** | Niveau d'usage du produit — local, gratuit ou payant — déterminant les fonctionnalités disponibles et les limites de volume ou de nombre d'espaces. |
+| **Migration** | Opération qui transfère le contenu du mode local vers un compte nouvellement créé, traitée intégralement ou pas du tout pour chaque espace concerné. |
+
+> Sources : docs/glossaire.md
+
+---
+
+## 14. Annexes
 
 Le corpus de conception (`docs/besoin/`, `docs/domaine/`, `docs/interface/`, `docs/architecture/`) reste la source de vérité détaillée sur l'ensemble des points recensés ci-dessous ; ce cahier des charges en est le document officiel dérivé.
 
 ### Points à arbitrer
 
-Les points listés dans cette annexe sont explicitement **non tranchés**, à l'exception de ceux marqués DÉCIDÉ : tranchés depuis leur inscription, ils sont conservés ici comme trace, avec un renvoi vers la décision. Les points non tranchés restent à instruire, notamment en entretiens utilisateurs, avant ou pendant la construction du MVP. Tous sont à distinguer des éléments que le périmètre a déjà **tranchés mais différés** — le contenu Should Have, Could Have et Won't Have du MoSCoW ([§3](#3-périmètre)), UC-13 exclu de la première livraison, et plus largement les fonctionnalités post-MVP décrites en [§3](#3-périmètre) : ces éléments sont des décisions de périmètre assumées, non des points ouverts.
+Les points listés dans cette annexe sont explicitement **non tranchés**, à l'exception de ceux marqués DÉCIDÉ : tranchés depuis leur inscription, ils sont conservés ici comme trace, avec un renvoi vers la décision. Les points non tranchés restent à instruire, notamment en entretiens utilisateurs, avant ou pendant la construction du MVP. Tous sont à distinguer des éléments que le périmètre a déjà **tranchés mais différés** — le contenu Should Have, Could Have et Won't Have du MoSCoW ([§6](#6-périmètre)), UC-13 exclu de la première livraison, et plus largement les fonctionnalités post-MVP décrites en [§6](#6-périmètre) : ces éléments sont des décisions de périmètre assumées, non des points ouverts.
 
 **Points non tranchés**
 
 **Divergence de conception à réconcilier** (signalée dans le corpus, non tranchée) :
 
-- Inventaire d'écran : la table des wireframes ([§9.2](#92-inventaire-des-écrans)) distingue un écran « Vue de l'espace personnel » propre, alors que l'inventaire des écrans du zoning (§S4), en version réduite, fond cette vue dans la « Vue campagne ». Ces deux lectures de l'inventaire d'écrans sont à aligner.
+- Inventaire d'écran : la table des wireframes ([§11.2](#112-inventaire-des-écrans)) distingue un écran « Vue de l'espace personnel » propre, alors que l'inventaire des écrans du zoning (§S4), en version réduite, fond cette vue dans la « Vue campagne ». Ces deux lectures de l'inventaire d'écrans sont à aligner.
 
 **Questions ouvertes — famille C** (entretiens utilisateurs, recensées au zoning d'interface §S9) :
 
-1. L'opportunité d'une notification active côté joueur lorsqu'une information lui est partagée — non décidée pour le MVP, qui retient à ce stade une apparition ambiante sans notification (AR-06, [§9.3](#93-arbitrages-dinterface-figés)).
+1. L'opportunité d'une notification active côté joueur lorsqu'une information lui est partagée — non décidée pour le MVP, qui retient à ce stade une apparition ambiante sans notification (AR-06, [§11.3](#113-arbitrages-dinterface-figés)).
 2. La persistance des notes personnelles d'un joueur invité d'une session à l'autre, en l'absence de compte.
 
 **Autres trous de conception** (recensés au zoning d'interface §S9, à spécifier) : la vue mobile du joueur, la spécification visuelle de l'éditeur de document (disposition des blocs, affordances de type, gestion des liens), l'écran de consultation des backlinks (hors MVP), et la vue « Non classés » — particulièrement centrale pour l'espace personnel, où elle constitue la seule vue de départ.
@@ -1169,7 +1140,7 @@ Les points listés dans cette annexe sont explicitement **non tranchés**, à l'
 
 **Fournisseurs d'identité — DÉCIDÉ 2026-07-15 (ADR-015).** MVP : Google et Discord. Règle de confiance par fournisseur : cf. ADR-015 (Sécurité authentification MVP).
 
-**Granularité du gate de migration — DÉCIDÉ 2026-07-09 ([raisonnement UX, § Décisions actées — alignement wireframes](../interface/raisonnement-ux.md#décisions-actées--alignement-wireframes), point 5).** Le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§5](#5-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration a été tranchée par décision produit du 2026-07-09 : **lot unique** — tous les espaces éligibles migrent en un seul passage, avec une confirmation unique et les espaces éligibles cochés par défaut, décochables individuellement. Cette granularité globale ne modifie pas le tout-ou-rien par espace ci-dessus, qui reste en place. Décision tracée dans [`docs/interface/raisonnement-ux.md`](../interface/raisonnement-ux.md#décisions-actées--alignement-wireframes) (§ Décisions actées — alignement wireframes, point 5).
+**Granularité du gate de migration — DÉCIDÉ 2026-07-09 ([raisonnement UX, § Décisions actées — alignement wireframes](../interface/raisonnement-ux.md#décisions-actées--alignement-wireframes), point 5).** Le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§7](#7-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration a été tranchée par décision produit du 2026-07-09 : **lot unique** — tous les espaces éligibles migrent en un seul passage, avec une confirmation unique et les espaces éligibles cochés par défaut, décochables individuellement. Cette granularité globale ne modifie pas le tout-ou-rien par espace ci-dessus, qui reste en place. Décision tracée dans [`docs/interface/raisonnement-ux.md`](../interface/raisonnement-ux.md#décisions-actées--alignement-wireframes) (§ Décisions actées — alignement wireframes, point 5).
 
 **Sémantique de comptage du quota du palier gratuit — DÉCIDÉ 2026-07-15 (date du commit 6ce3e66, seule trace de la décision ; règle : [RB-09-21, US-UC-09](../besoin/stories/US-UC-09-acces-session-joueur.md) ; [ADR-005](../decisions/ADR-005-modele-monetisation.md), « Compléments post-revue », A-09).** L'invariant limitant l'accès à une session à 4 joueurs distincts pour un espace dont le propriétaire est au palier gratuit (`docs/domaine/space-management/context.md`, invariant 11) est désormais tranché : la sémantique de comptage est portée par **RB-09-21 (UC-09), qui fait foi** — le comptage a lieu **au moment de l'octroi** de l'accès, de manière **agnostique au type d'accès** (identités-joueur distinctes comptées en capacité joueur, MJ non compté). L'invariant 11 de `space-management/context.md` a été réaligné en conséquence.
 
@@ -1209,7 +1180,7 @@ Le tableau suivant recense les décisions d'architecture actées pour le MVP, te
 
 ### Valeurs de référence chiffrées
 
-Les valeurs consolidées dans cette annexe sont **volatiles** : elles sont susceptibles d'être révisées avant l'entrée en construction ou avant un jalon ultérieur. Elles sont centralisées ici comme **point de référence unique et daté** pour l'ensemble du document, **arrêtées au 2026-07-02**. La **source de vérité reste le corpus de conception** cité en colonne « Source » ; en cas de révision d'une valeur, la mise à jour porte à la fois sur cette table et sur les occurrences du corps de ce document qui la citent ([§2.3](#23-hypothèses-de-validation-h1-à-h5), [§2.4](#24-modèle-de-monétisation), [§7.5](#75-contraintes-de-stockage)).
+Les valeurs consolidées dans cette annexe sont **volatiles** : elles sont susceptibles d'être révisées avant l'entrée en construction ou avant un jalon ultérieur. Elles sont centralisées ici comme **point de référence unique et daté** pour l'ensemble du document, **arrêtées au 2026-07-02**. La **source de vérité reste le corpus de conception** cité en colonne « Source » ; en cas de révision d'une valeur, la mise à jour porte à la fois sur cette table et sur les occurrences du corps de ce document qui la citent ([§4.3](#43-hypothèses-de-validation-h1-à-h5), [§4.4](#44-modèle-de-monétisation), [§9.5](#95-contraintes-de-stockage)).
 
 | Paramètre | Valeur (au 2026-07-02) | Source (corpus) |
 |---|---|---|
@@ -1228,21 +1199,21 @@ Les valeurs consolidées dans cette annexe sont **volatiles** : elles sont susce
 
 ---
 
-## 13. Traçabilité des sections
+## 15. Traçabilité des sections
 
 Le tableau suivant relie chaque section de ce cahier des charges à ses sources principales dans le corpus de conception, pour permettre de remonter de ce document vers ses sources, qui font foi (ADR-019, § 1).
 
 | Section | Sources |
 |---|---|
-| 1. Présentation et contexte | `docs/besoin/vision/vision.md` |
-| 2. Objectifs, enjeux et hypothèses | `docs/besoin/vision/vision.md` |
-| 3. Périmètre | `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/besoin/vision/vision.md` |
-| 4. Acteurs et besoins | `docs/besoin/vision/vision.md`, `docs/besoin/decouverte/personas/README.md`, `docs/besoin/parcours-utilisateur/bout-en-bout/README.md` |
-| 5. Spécifications fonctionnelles | `docs/besoin/cas-d-utilisation/` (UC-01 à UC-14), `docs/besoin/cas-d-utilisation/README.md`, `docs/besoin/stories/` (US-UC-01 à US-UC-14) |
-| 6. Exigences non fonctionnelles | `docs/besoin/nfr/README.md`, `docs/besoin/nfr/` (NFR-PERF, NFR-OFF, NFR-CONF, NFR-ACC, NFR-I18N) |
-| 7. Contraintes | `docs/architecture/transverse.md`, `docs/architecture/stack.md`, `docs/architecture/README.md`, `docs/architecture/fondations.md`, `docs/architecture/structure-projets.md`, `docs/decisions/` (ADR-001, 002, 003, 004, 007, 008, 012, 013, 014, 015, 016, 017) |
-| 8. Modèle de données et domaine | `docs/domaine/README.md`, `docs/domaine/core/kernel.md`, `docs/domaine/identity-access/context.md`, `docs/domaine/space-management/context.md`, `docs/domaine/content-library/context.md`, `docs/domaine/session-conduct/context.md`, `docs/decisions/ADR-018-espace-personnel-generalisation-space.md` |
-| 9. Conception d'interface | `docs/interface/zonage.md`, `docs/interface/ecrans/README.md` |
-| 10. Glossaire | `docs/glossaire.md` |
-| 11. Phasage | `docs/decisions/ADR-010-suppression-espace.md`, `docs/decisions/ADR-011-cascade-integrite-referentielle.md`, `docs/decisions/ADR-007-rgpd-autorisation-api.md` |
-| 12. Annexes | `docs/decisions/README.md`, `docs/interface/zonage.md`, `docs/interface/raisonnement-ux.md`, `docs/domaine/space-management/context.md`, `docs/besoin/vision/vision.md`, `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/decisions/ADR-005-modele-monetisation.md`, `docs/decisions/ADR-015-securite-authentification-mvp.md`, `docs/decisions/ADR-017-modele-indexeddb-local.md` |
+| 3. Présentation et contexte | `docs/besoin/vision/vision.md` |
+| 4. Objectifs, enjeux et hypothèses | `docs/besoin/vision/vision.md` |
+| 5. Acteurs et besoins | `docs/besoin/vision/vision.md`, `docs/besoin/decouverte/personas/README.md`, `docs/besoin/parcours-utilisateur/bout-en-bout/README.md` |
+| 6. Périmètre | `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/besoin/vision/vision.md` |
+| 7. Spécifications fonctionnelles | `docs/besoin/cas-d-utilisation/` (UC-01 à UC-14), `docs/besoin/cas-d-utilisation/README.md`, `docs/besoin/stories/` (US-UC-01 à US-UC-14) |
+| 8. Exigences non fonctionnelles | `docs/besoin/nfr/README.md`, `docs/besoin/nfr/` (NFR-PERF, NFR-OFF, NFR-CONF, NFR-ACC, NFR-I18N) |
+| 9. Contraintes | `docs/architecture/transverse.md`, `docs/architecture/stack.md`, `docs/architecture/README.md`, `docs/architecture/fondations.md`, `docs/architecture/structure-projets.md`, `docs/decisions/` (ADR-001, 002, 003, 004, 007, 008, 012, 013, 014, 015, 016, 017) |
+| 10. Modèle de données et domaine | `docs/domaine/README.md`, `docs/domaine/core/kernel.md`, `docs/domaine/identity-access/context.md`, `docs/domaine/space-management/context.md`, `docs/domaine/content-library/context.md`, `docs/domaine/session-conduct/context.md`, `docs/decisions/ADR-018-espace-personnel-generalisation-space.md` |
+| 11. Conception d'interface | `docs/interface/zonage.md`, `docs/interface/ecrans/README.md` |
+| 12. Phasage | `docs/decisions/ADR-010-suppression-espace.md`, `docs/decisions/ADR-011-cascade-integrite-referentielle.md`, `docs/decisions/ADR-007-rgpd-autorisation-api.md` |
+| 13. Glossaire | `docs/glossaire.md` |
+| 14. Annexes | `docs/decisions/README.md`, `docs/interface/zonage.md`, `docs/interface/raisonnement-ux.md`, `docs/domaine/space-management/context.md`, `docs/besoin/vision/vision.md`, `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/decisions/ADR-005-modele-monetisation.md`, `docs/decisions/ADR-015-securite-authentification-mvp.md`, `docs/decisions/ADR-017-modele-indexeddb-local.md` |

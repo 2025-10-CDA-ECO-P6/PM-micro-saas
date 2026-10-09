@@ -9,7 +9,7 @@
 | Validation | SOUS-SPÉCIFIÉ |
 | Périmètre | MVP — trajectoire technique actée pour UC-01 à UC-12, UC-14 ; post-MVP signalé où il apparaît |
 | Audiences | équipe de build, architecte, responsable produit (arbitrage des points non tranchés) |
-| Sources | `docs/decisions/**` (registre ADR), `docs/architecture/*.md` (fondations, structure, stack), `docs/architecture/specs/**` (spécifications pré-build), `docs/domaine/**` (modèle de domaine), `docs/reference/cahier-des-charges.md` §7/§8 |
+| Sources | `docs/decisions/**` (registre ADR), `docs/architecture/*.md` (fondations, structure, stack), `docs/architecture/specs/**` (spécifications pré-build), `docs/domaine/**` (modèle de domaine), `docs/reference/cahier-des-charges.md` §9/§10 |
 
 ### Historique des révisions
 
@@ -124,7 +124,7 @@ Le découpage retenu est celui d'un **monolithe modulaire**, autour de **quatre 
 | ADR-008 — Structure physique de la solution | pré-implémentation | Accepté | Clean Architecture, monolithe modulaire, 4 frontières logiques, multi-projets sur infrastructure/présentation |
 | `docs/architecture/fondations.md` | fondations (conception) | — | Justification DDD, langage ubiquitaire, frontières explicites, règles métier dans le domaine |
 | `docs/architecture/transverse.md` §1 | consolidation transverse | — | Renvoi vers le Dossier d'architecture pour la vue par bounded context |
-| CdC §7.1 | synthèse produit | — | Formulation d'origine des trois principes ci-dessus |
+| CdC §9.1 | synthèse produit | — | Formulation d'origine des trois principes ci-dessus |
 
 ---
 
@@ -166,7 +166,7 @@ L'algorithme de hachage des mots de passe retenu est **Argon2id**, avec un repli
 | ADR-015 — Sécurité authentification MVP | pré-implémentation | Accepté | Argon2id (repli bcrypt), signature asymétrique RS256/ES256, `alg: none` interdit |
 | `docs/architecture/stack.md` | sélection technologique | — | Vue d'ensemble de la stack, alternatives évaluées par couche |
 | `docs/architecture/structure-projets.md` | synthèse structurelle | — | Détail complet des 6 projets, granularité, nommage `SharedKernel` |
-| CdC §7.2 | synthèse produit | — | Formulation d'origine de la stack |
+| CdC §9.2 | synthèse produit | — | Formulation d'origine de la stack |
 
 ---
 
@@ -213,7 +213,7 @@ Le palier local persiste les données exclusivement dans le navigateur, sans lim
 | `docs/architecture/specs/config-securite-migration.md` | spec pré-build | à confirmer à l'entrée en build | Timeout d'expiration du claim `purge_claimed_at` : mécanisme tranché, valeur renvoyée à B1 — `[À TRANCHER — B1]` |
 | ADR-017 — Modèle IndexedDB local | mixte (dominante pré-implémentation) | Accepté | Absence de plafond de création en mode local, posture migration-only, absence de synchronisation continue |
 | ADR-005 — Modèle de monétisation | décision produit, fusionnée en vision | Accepté | Quotas de stockage par palier (Pro : stockage étendu) — renvoi seul, empreinte technique faible |
-| CdC §7.5 (+ renvoi annexe « Valeurs de référence chiffrées ») | synthèse produit | — | Quotas de stockage par palier, valeurs chiffrées en renvoi |
+| CdC §9.5 (+ renvoi annexe « Valeurs de référence chiffrées ») | synthèse produit | — | Quotas de stockage par palier, valeurs chiffrées en renvoi |
 
 ---
 
@@ -272,7 +272,7 @@ Les contextes bornés ne dépendent jamais directement les uns des autres : leur
 | ADR-011 — Cascade & intégrité référentielle | pré-implémentation | Accepté | Matrice des 38 FK, 17 FK cross-module recensées, deux sagas, deux cycles traités |
 | `docs/architecture/specs/mapping-ef-core.md` | spec pré-build | à confirmer à l'entrée en build | Converters d'IDs typés, owned types, `jsonb`, query filters, colonnes promues, FK `RESTRICT` |
 | `docs/domaine/core/kernel.md` | domaine (conception) | — | Contenu du noyau partagé, règles de gouvernance d'admission, exception RGPD `SoftDelete` |
-| CdC §8 | synthèse produit | — | Formulation d'origine du modèle de données et domaine |
+| CdC §10 | synthèse produit | — | Formulation d'origine du modèle de données et domaine |
 
 ---
 
@@ -321,7 +321,7 @@ Le seuil de `schemaVersion` minimale maintenue côté serveur et l'horizon de r�
 | `docs/architecture/specs/sanitisation-csp.md` §2 | spec pré-build | à confirmer à l'entrée en build | Ordre validation puis sanitisation à l'import JSON local |
 | `docs/architecture/specs/config-securite-migration.md` | spec pré-build | à confirmer à l'entrée en build | Seuil `schemaVersion` et rétention du lot de migration renvoyés P7 |
 | `docs/architecture/structure-projets.md` §7 | synthèse structurelle | — | Structure de solution mobilisée par le handler d'import |
-| CdC §7.2, §7.4 | synthèse produit | — | Formulation d'origine de la migration et de l'export |
+| CdC §9.2, §9.4 | synthèse produit | — | Formulation d'origine de la migration et de l'export |
 
 ---
 
@@ -392,7 +392,7 @@ Le stockage local IndexedDB n'est pas chiffré at-rest — aucun secret utilisat
 | `docs/architecture/specs/sanitisation-csp.md` | spec pré-build | à confirmer à l'entrée en build | Plancher de sanitisation liste blanche, posture CSP, ordre validation puis sanitisation |
 | `docs/besoin/nfr/NFR-CONF-01` à `04` | NFR produit | — | Séparation notes privées/vue joueurs, isolation mode local, suppression effective, transparence des risques — renvoi croisé §11 |
 | `docs/domaine/core/kernel.md` | domaine (conception) | — | Énumération `Visibility`, primitives de traçabilité mobilisées par l'invariant d'autorisation |
-| CdC §7.3 | synthèse produit | — | Formulation d'origine de la sécurité & authentification |
+| CdC §9.3 | synthèse produit | — | Formulation d'origine de la sécurité & authentification |
 
 ---
 
@@ -490,7 +490,7 @@ Chacun de ces cinq axes reste `[À VALIDER — JURISTE]` ; ce cahier ne les requ
 | ADR-018 — Généralisation de `Campaign` en `Space` | mixte (dominante pré-implémentation) | Accepté | Purge inconditionnelle du contenu de l'espace personnel à la suppression de compte ; périmètre du contrat de sous-traitance étendu à l'espace personnel |
 | `docs/architecture/specs/requete-effacement-non-partage.md` | spec pré-build, illustrative non normative | — | Critère opérationnel « document non partagé », instant de référence, trou nommé sur les références nullable entrantes |
 | `docs/assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md` | dossier juridique | à valider juriste | Les 5 axes de validation légale préalable au lancement EU, consolidés depuis ADR-012/013/018/015 |
-| CdC §7.4 | synthèse produit | — | Formulation d'origine de la conformité RGPD |
+| CdC §9.4 | synthèse produit | — | Formulation d'origine de la conformité RGPD |
 
 ---
 
@@ -527,7 +527,7 @@ Deux maillons ne sont, par nature, pas vérifiables par une validation continue 
 | ADR-006 — Périmètre MVP | décision produit, fusionnée en vision | Accepté | Origine de l'instrumentation compensatoire par pilier et de la capture email/analytics anonyme |
 | ADR-004 — Transport temps réel : SignalR | pré-implémentation | Accepté | Origine du seuil de coût par session concurrente et de la configuration sobre |
 | `docs/besoin/nfr/NFR-CONF-02` | NFR produit | — | Principe d'isolation des données en mode local, contrainte sur les mesures d'usage |
-| CdC §7.4 | synthèse produit | — | Formulation d'origine de l'instrumentation respectueuse |
+| CdC §9.4 | synthèse produit | — | Formulation d'origine de l'instrumentation respectueuse |
 
 ---
 
@@ -593,7 +593,7 @@ Les bornes suivantes sont des **décisions de périmètre assumées**, pas des t
 | `docs/besoin/nfr/NFR-CONF-01` à `04` | NFR produit | — | Confidentialité — corps technique en §7/§9 |
 | `docs/besoin/nfr/NFR-ACC-01` à `04` | NFR produit | — | Accessibilité, référentiel WCAG 2.1 AA |
 | `docs/besoin/nfr/NFR-I18N-01` à `03` | NFR produit | — | Internationalisation, périmètre français au MVP |
-| CdC §6 | synthèse produit | — | Reformulation des vingt exigences non fonctionnelles en expérience vécue |
+| CdC §8 | synthèse produit | — | Reformulation des vingt exigences non fonctionnelles en expérience vécue |
 
 ---
 
@@ -679,9 +679,9 @@ Cette matrice prouve que chaque spec pré-build, chaque section technique du cah
 
 | Source | Type | Section | Nature/Statut |
 |---|---|---|---|
-| CdC §6 — Exigences non fonctionnelles | §CdC | §11 | synthèse produit |
-| CdC §7 — Contraintes | §CdC | §2, §3, §4, §6, §7, §9, §10 | synthèse produit, section provisoire |
-| CdC §8 — Modèle de données et domaine | §CdC | §5 | synthèse produit |
+| CdC §8 — Exigences non fonctionnelles | §CdC | §11 | synthèse produit |
+| CdC §9 — Contraintes | §CdC | §2, §3, §4, §6, §7, §9, §10 | synthèse produit, section provisoire |
+| CdC §10 — Modèle de données et domaine | §CdC | §5 | synthèse produit |
 
 ### Décisions d'architecture (ADR-001 à ADR-018)
 
