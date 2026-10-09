@@ -105,12 +105,16 @@ sequenceDiagram
     participant CL as Content Library
     participant SC as Session Conduct
 
-    MJ->>App: Nouvelle note (content, visibility)
+    MJ->>App: Nouvelle note (content)
     App->>CL: Document.Create(spaceId, folderId=dossier de rôle NOTES (repli Non classés), typeId=LIVE_NOTE)
     CL-->>App: DocumentCreated (docId)
     App->>CL: Document.UpdateContent([DocumentBlock(type = TEXT, content)])
     App->>SC: Session.AttachNote(docId)
     SC-->>App: OK
+    opt Le MJ partage la note (UC-08 A2)
+        App->>CL: Document.Share()
+        CL-->>App: DocumentVisibilityChanged event
+    end
     App-->>MJ: Note enregistrée
     Note over App: La note est un Document — elle peut être liée<br/>à d'autres documents via linkedDocuments.
 ```
