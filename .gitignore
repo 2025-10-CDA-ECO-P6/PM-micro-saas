@@ -157,6 +157,9 @@ logs/
 __pycache__/
 *.py[cod]
 
+# ── Site de documentation (sortie de mkdocs build) ───
+site/
+
 # ── Docs locaux / audits (non versionnés) ────────────
 /docs/audit/
 /docs/BACKLOG.md

@@ -1,0 +1,101 @@
+# Site de documentation (MkDocs + Material) : le corpus de `docs/` publié sur
+# GitHub Pages. Construction stricte sur toute pull request qui touche le site ou
+# le corpus ; publication sur la seule branche `main`.
+#
+# Prérequis côté dépôt, à régler une fois à la main : Settings > Pages > Source =
+# « GitHub Actions ». Ce fichier ne l'active pas.
+#
+# `--strict` fait échouer la construction sur tout avertissement MkDocs (lien ou
+# ancre cassés, fichier hors navigation) : le journal de l'étape nomme le défaut.
+# Les versions des dépendances sont épinglées dans docs-site/requirements.txt, la
+# configuration vit dans mkdocs.yml et le hook dans docs-site/haversack_docs.py.
+name: Site de documentation
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "docs-site/**"
+      - ".github/workflows/docs-site.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "docs-site/**"
+      - ".github/workflows/docs-site.yml"
+
+# Une pull request plus récente rend la précédente caduque ; une publication en
+# cours n'est jamais interrompue (l'artefact Pages ne doit pas rester à moitié posé).
+concurrency:
+  group: docs-site-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  construire:
+    name: Construire le site (strict)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # contents: read — lire le corpus, rien d'autre : la construction n'écrit
+    #   rien sur GitHub.
+    permissions:
+      contents: read
+    env:
+      # Material affiche un bandeau d'avertissement sur MkDocs 2.0 ; il n'a aucun
+      # effet sur la construction et noie le journal.
+      NO_MKDOCS_2_WARNING: "true"
+    steps:
+      - name: Récupérer le dépôt
+        # Épinglée par empreinte de commit, même motif et même version que
+        # controles-corpus.yml.
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Installer Python
+        # Épinglée par empreinte de commit ; la version Python est celle sur
+        # laquelle les dépendances épinglées ont été mesurées.
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: docs-site/requirements.txt
+
+      - name: Installer les dépendances épinglées
+        run: pip install -r docs-site/requirements.txt
+
+      - name: Construire le site (tout avertissement fait échouer)
+        run: mkdocs build --strict
+
+      - name: Préparer l'artefact Pages
+        # Ni préparé ni publié sur une pull request : elle ne fait que vérifier.
+        if: github.event_name == 'push'
+        # Épinglée par empreinte de commit.
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Publier l'artefact
+        if: github.event_name == 'push'
+        # Épinglée par empreinte de commit.
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+
+  deployer:
+    name: Déployer sur GitHub Pages
+    # Une pull request ne publie jamais : le déclencheur `push` ne vise que `main`.
+    if: github.event_name == 'push'
+    needs: construire
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # pages: write, id-token: write — les deux droits que demande le déploiement
+    #   Pages ; aucun accès au contenu du dépôt.
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploiement.outputs.page_url }}
+    steps:
+      - name: Déployer
+        id: deploiement
+        # Épinglée par empreinte de commit.
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

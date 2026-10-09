@@ -8,7 +8,7 @@
 > aperçu non modifiable des paramètres, lien de session ponctuel en vue session, règle de densité AR-19,
 > export MVP, accès compte = composant de châssis sur toute surface MJ, sélection par espace au gate,
 > micro-copy espace personnel, liens/backlinks repliés, règle « Non classés » unifiée).
-> Navigation cliquable entre écrans : [`index.html`](index.html).
+> Navigation cliquable entre écrans : [`hub.html`](hub.html).
 
 ---
 
@@ -22,7 +22,7 @@ Les écrans sont **regroupés par surface** (codes SV du zoning S4) ; un dossier
     <slug>.md         fiche de spécification (source de vérité écran)
     <slug>.dc.html    wireframe HTML basse-fidélité (présent pour les 20 écrans)
 support.js            runtime partagé des exports (chaque HTML le référence en ../../support.js)
-index.html            hub de navigation cliquable entre écrans
+hub.html              hub de navigation cliquable entre écrans
 _quarantine/          exports corrompus conservés pour traçabilité (non exploitables)
 ```
 

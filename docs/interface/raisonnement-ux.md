@@ -249,7 +249,7 @@ La possibilité pour le MJ de prévisualiser ce que voit le joueur (aperçu lect
 
 ### Contexte
 
-Les 20 wireframes sont réorganisés et co-localisés selon la structure `<surface>/<slug>/`. Les 3 écrans qui restaient à produire — `vue-session-mj`, `creation-espace`, `panneau-creation-rapide` — le sont désormais. La vérité terrain mécanique est saine : identité par contenu, support.js, liens index.html et autonomie des planches vérifiés.
+Les 20 wireframes sont réorganisés et co-localisés selon la structure `<surface>/<slug>/`. Les 3 écrans qui restaient à produire — `vue-session-mj`, `creation-espace`, `panneau-creation-rapide` — le sont désormais. La vérité terrain mécanique est saine : identité par contenu, support.js, liens hub.html et autonomie des planches vérifiés.
 
 Le mode de défaut dominant n'est pas mécanique. C'est un **décalage corpus ↔ planche** : plusieurs arbitrages datés du 2026-06-25 (AR-18, AR-19, AR-20, AR-10 révisé) et décisions produit n'étaient pas redescendus dans le HTML des wireframes. Les 4 lentilles d'analyse (§1) s'appliquent ci-dessous à ce décalage.
 

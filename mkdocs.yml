@@ -1,0 +1,69 @@
+# Site de documentation Haversack : MkDocs + Material, publié sur GitHub Pages.
+# Construire : `mkdocs build --strict`.
+#
+# Versions épinglées dans docs-site/requirements.txt : une montée non relue change le rendu ou
+# casse le hook (le bandeau MkDocs 2.0 de Material est coupé dans le workflow). Le hook
+# docs-site/haversack_docs.py dépend de `markdown.extensions.toc.unique` : à revérifier à chaque
+# montée de Markdown ou de MkDocs.
+#
+# L'URL du dépôt n'est écrite qu'ici (repo_url, site_url) : le hook la lit dans repo_url, le
+# workflow n'en a pas besoin. Un changement d'organisation ou de nom se fait sur ces deux lignes.
+site_name: Haversack — documentation
+site_description: Corpus de conception de Haversack, outil d'assistance au Maître du Jeu
+site_url: https://2025-10-cda-eco-p6.github.io/PM-micro-saas/
+repo_url: https://github.com/2025-10-CDA-ECO-P6/PM-micro-saas
+docs_dir: docs
+site_dir: site
+
+# workstreams/ est local au poste (hors suivi).
+exclude_docs: |
+  workstreams/
+
+# Hook : ancres, listes et liens à la GitHub (voir l'en-tête du fichier).
+hooks:
+  - docs-site/haversack_docs.py
+
+theme:
+  name: material
+  language: fr
+  features:
+    - navigation.indexes     # README.md d'un dossier = page d'accueil de sa section
+    - navigation.sections    # dossiers de premier niveau en rubriques
+    - navigation.path        # fil d'Ariane
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  links:
+    not_found: warn
+    anchors: warn
+
+markdown_extensions:
+  - toc:
+      permalink: true
+      # Ancres GitHub : minuscules, accents conservés, ponctuation retirée, espaces -> tirets.
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - mdx_truly_sane_lists:     # sous-listes indentées de 2 espaces, comme GitHub
+      nested_indent: 2
+      truly_sane: true
+  - pymdownx.tasklist:        # - [ ] / - [x]
+      custom_checkbox: true
+  - pymdownx.tilde            # ~~barré~~
+  - pymdownx.superfences:     # blocs ```mermaid
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search:
+      lang: fr
