@@ -25,8 +25,9 @@
 ```
 Intention : l'utilisateur authentifié déclenche la suppression définitive de son compte
             en prenant connaissance des conséquences irréversibles avant toute confirmation ;
-            la procédure est bloquée si l'utilisateur est propriétaire de campagnes actives
-            avec des membres, et elle expose explicitement les raisons du blocage.
+            la procédure est bloquée si l'utilisateur est propriétaire d'espaces partagés
+            qui comptent encore d'autres membres actifs, et elle expose explicitement
+            les raisons du blocage.
 ```
 
 ---
@@ -40,9 +41,10 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
              suppression — suppression intégrale et inconditionnelle de l'espace
              personnel (documents, dossiers, blocs, sans aucune exception), suppression
              physique des documents privés de joueur créés par l'utilisateur (y compris
-             ceux rattachés aux personnages qu'il incarnait dans les campagnes vivantes),
-             conservation des campagnes et one-shots partagés sous identité anonymisée
-             (campagnes orphelines), et déconnexion du compte ;
+             ceux rattachés aux personnages qu'il incarnait dans les espaces vivants),
+             conservation, sous son identité anonymisée, des espaces partagés dont il
+             est propriétaire une fois le blocage levé (leurs autres membres exclus),
+             et déconnexion du compte ;
              cette zone est visible avant toute action de confirmation
   priorité : co-présent-jamais-masqué
   visibilité : utilisateur authentifié
@@ -51,8 +53,8 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
   type     : formulaire
   rôle     : recueille la confirmation explicite de l'utilisateur après qu'il a pris
              connaissance des conséquences ; accessible uniquement en état confirmable
-             (adresse de messagerie validée — RB-10-05 — et aucune campagne active
-             avec membres) ; la confirmation est une action distincte et délibérée,
+             (adresse de messagerie validée — RB-10-05 — et aucun espace partagé dont
+             il est propriétaire ne compte encore d'autres membres actifs) ; la confirmation est une action distincte et délibérée,
              non déclenchable par erreur
   priorité : principal
   visibilité : utilisateur authentifié
@@ -60,7 +62,8 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
 [ ZONE DE BLOCAGE ]
   type     : principal
   rôle     : remplace la zone de confirmation quand la suppression est impossible ;
-             indique les campagnes actives avec membres qui font obstacle, et guide
+             indique les espaces partagés qui comptent encore d'autres membres actifs et font
+             obstacle, et guide
              l'utilisateur vers les actions requises avant de pouvoir supprimer son
              compte (exclure les membres au MVP) ; visible uniquement en état bloqué
   priorité : principal
@@ -80,11 +83,12 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
   l'espace personnel est supprimé intégralement et inconditionnellement (documents,
   dossiers, blocs, sans exception) ; les documents privés de joueur créés par
   l'utilisateur, y compris ceux rattachés aux personnages qu'il incarnait, sont
-  supprimés physiquement (NFR-CONF-03) ; les campagnes et one-shots partagés sont
-  conservés sous identité anonymisée ; l'utilisateur est déconnecté et redirigé
+  supprimés physiquement (NFR-CONF-03) ; les espaces partagés dont il est
+  propriétaire sont conservés sous son identité anonymisée, le blocage ayant été
+  levé ; l'utilisateur est déconnecté et redirigé
   vers la page d'accueil ;
   action disponible uniquement si l'adresse de messagerie est validée (RB-10-05)
-  et si aucune campagne active avec membres ne fait obstacle (UC-10 E4)
+  et si aucun espace partagé comptant d'autres membres actifs ne fait obstacle (UC-10 E4)
 ```
 
 ---
@@ -93,20 +97,21 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
 
 ```
 état confirmable (suppression possible) :
-  l'utilisateur est propriétaire d'aucune campagne active avec membres,
+  l'utilisateur est propriétaire d'aucun espace partagé comptant d'autres membres actifs,
   et son adresse de messagerie est validée ;
   la zone de présentation des conséquences s'affiche avec la zone de confirmation ;
   l'utilisateur peut confirmer la suppression
 
-état bloqué (campagnes actives avec membres) :
-  l'utilisateur est propriétaire d'au moins une campagne avec des membres actifs ;
+état bloqué (espaces partagés avec d'autres membres actifs) :
+  l'utilisateur est propriétaire d'au moins un espace partagé avec d'autres membres actifs ;
   la zone de présentation des conséquences s'affiche ;
   la zone de confirmation est remplacée par la zone de blocage qui indique
-  les campagnes concernées ;
-  l'utilisateur ne peut pas déclencher la suppression avant d'avoir géré ces campagnes
+  les espaces concernés ;
+  l'utilisateur ne peut pas déclencher la suppression avant d'avoir géré ces espaces
   (UC-10 E4 ; UC-10 §Règles métier RGPD) ;
-  note : la suppression est bloquée uniquement par la présence de campagnes actives
-  avec membres — un espace personnel mono-membre ne bloque jamais la suppression
+  note : la suppression est bloquée uniquement par la présence d'espaces partagés
+  comptant d'autres membres actifs — un espace personnel mono-membre ne bloque
+  jamais la suppression
 
 [SOUS-SPÉCIFIÉ — S4 §Suppression de compte (RGPD)]
   wording exact des conséquences présentées à l'utilisateur : non tranché dans le corpus.
@@ -121,7 +126,7 @@ Les garanties transversales (focus clavier visible en permanence, ordre de navig
 ```
 annonce sans action :
   - passage de l'état confirmable à l'état bloqué (ou inversement si l'utilisateur
-    a géré une campagne depuis un autre onglet) : annoncé assistivement sans que
+    a géré un espace depuis un autre onglet) : annoncé assistivement sans que
     l'utilisateur déplace son focus — NFR-ACC-02
   - message d'erreur de précondition (adresse de messagerie non validée) :
     annoncé assistivement — NFR-ACC-02
@@ -157,7 +162,7 @@ Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :
-  [HORS-MVP — UC-10 A4 §Note MVP] transfert de propriété de campagne :
+  [HORS-MVP — UC-10 A4 §Note MVP] transfert de propriété d'espace :
     le déblocage de la suppression passe au MVP par l'exclusion des membres ;
     le transfert de propriété est hors MVP
 

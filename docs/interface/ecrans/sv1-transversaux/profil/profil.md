@@ -149,9 +149,11 @@ Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :
-  [HORS-MVP — UC-10 A4 §Note MVP] transfert de propriété de campagne avant suppression
-    de compte : hors MVP — la suppression est bloquée si l'utilisateur est propriétaire
-    de campagnes avec des membres actifs ; le transfert est un mécanisme post-MVP
+  [HORS-MVP — UC-10 A4 §Note MVP] transfert de propriété d'espace avant suppression
+    de compte : hors MVP — la suppression est bloquée tant que l'utilisateur est
+    propriétaire d'espaces partagés qui comptent d'autres membres actifs, puis ces
+    espaces sont conservés sous son identité anonymisée ; le transfert est un
+    mécanisme post-MVP
 
 Éléments différés (S8) ci-dessus — aucun élément sous-spécifié résiduel.
 ```

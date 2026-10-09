@@ -63,7 +63,7 @@ Avant de lire les fiches, lire les sources de vérité dans cet ordre :
 | [`inscription/inscription.md`](sv1-transversaux/inscription/inscription.md) | Inscription | Création de compte (email + nom d'affichage, ou fournisseur externe) | Transversal | UC-10, UC-01 A1 |
 | [`connexion/connexion.md`](sv1-transversaux/connexion/connexion.md) | Connexion | Authentification (email/mot de passe ou fournisseur externe) | Transversal | UC-10 |
 | [`profil/profil.md`](sv1-transversaux/profil/profil.md) | Profil utilisateur | Modification du nom d'affichage, du mot de passe ; affichage du niveau de compte | Transversal | UC-10 A2 |
-| [`suppression-compte-rgpd/suppression-compte-rgpd.md`](sv1-transversaux/suppression-compte-rgpd/suppression-compte-rgpd.md) | Suppression de compte (RGPD) | Confirmation de suppression avec présentation des conséquences ; bloquée si campagnes actives avec membres | Transversal | UC-10 A4 |
+| [`suppression-compte-rgpd/suppression-compte-rgpd.md`](sv1-transversaux/suppression-compte-rgpd/suppression-compte-rgpd.md) | Suppression de compte (RGPD) | Confirmation de suppression avec présentation des conséquences ; bloquée si espaces partagés avec d'autres membres actifs | Transversal | UC-10 A4 |
 | [`gate-migration/gate-migration.md`](sv1-transversaux/gate-migration/gate-migration.md) | Gate de migration local→cloud | Présentation des espaces locaux détectés ; confirmation explicite avant migration ; signale que la configuration de vue session devra être reconfigurée | Transversal | UC-10, UC-01 A1 |
 
 ### Surface MJ — Entrée espace (SV2)
