@@ -2,7 +2,7 @@
 
 | Champ | Valeur |
 |---|---|
-| Version | 1.2 |
+| Version | 1.3 |
 | Date | 2026-10-09 |
 | Statut | SOUS-SPÉCIFIÉ |
 | Porteur | SOUS-SPÉCIFIÉ |
@@ -15,20 +15,36 @@
 | 1.0 | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
 | 1.1 | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans changement de structure : marqueurs ramenés à la liste fermée, lignes de la vue de traçabilité complétées, diagramme de la vue composants, facturation (tier) alignée sur le domaine, éléments non sourcés retirés |
 | 1.2 | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans changement de structure : les deux flèches qu'aucune source n'établit (notifications temps réel vers API, monolithe vers hub SignalR) sont retirées des diagrammes et reportées en limites, `[À TRANCHER — architecture]` |
+| 1.3 | 2026-10-09 | Pierre-Marie Marchio | Restructuration sans changement de fond : encadré « Lire ce document », quatre parties, sections renumérotées de 1 à 9 (métadonnées et nature en § 1, légende en § 2, choix en § 3, les quatre vues en § 4 à 7, limites en § 8, traçabilité en § 9), diagramme placé avant le texte de chaque vue, paragraphe du déploiement scindé en puces, pied de page fusionné avec la clause d'autorité, renvois internes et entrants réparés |
+
+> **Lire ce document**
+>
+> - **À qui** : à l'architecte qui rejoint le projet, au relecteur technique, au nouvel arrivant qui a besoin de comprendre la forme du système avant d'en lire le détail par préoccupation ou par cas d'usage.
+> - **À quoi** : à donner, en un point d'entrée unique, la carte structurelle du système, c'est-à-dire son contexte, ses conteneurs, ses composants et son déploiement, avec les quatorze choix qui lui donnent sa forme, chacun renvoyé à la décision qui le justifie.
+> - **Comment le lire** : la partie 1 dit ce que vaut ce document et ce que signifient ses statuts ; la partie 2 dit quelle forme a le système et pourquoi ; la partie 3 dessine la carte, du plus large au plus fin ; la partie 4 dit ce que la carte ne montre pas, puis de quelles décisions vient chaque section. Pour une préoccupation transverse (sécurité, RGPD, persistance, temps réel, mode local), lire [transverse.md](../architecture/transverse.md).
+> - **Ce qui fait foi** : jamais ce document ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)). Il consolide et ne tranche rien : en cas de divergence, la décision citée fait foi. Sauf mention contraire, chaque choix cartographié est acté en conception et reste à confirmer à l'entrée en build (§ 2).
 
 **Sommaire**
 
-- [0. Métadonnées et nature du document](#0-métadonnées-et-nature-du-document)
-- [1. Légende des statuts](#1-légende-des-statuts)
-- [2. Choix et justification](#2-choix-et-justification)
-- [3. Contexte du système](#3-contexte-du-système)
-- [4. Conteneurs](#4-conteneurs)
-- [5. Composants](#5-composants)
-- [6. Déploiement](#6-déploiement)
-- [7. Vue de traçabilité, sections vers décisions](#7-vue-de-traçabilité-sections-vers-décisions)
-- [8. Limites cartographiques](#8-limites-cartographiques)
+- [Partie 1 — Que vaut ce document, et comment lire ses statuts ?](#partie-1--que-vaut-ce-document-et-comment-lire-ses-statuts-)
+  - [1. Métadonnées et nature du document](#1-métadonnées-et-nature-du-document)
+  - [2. Légende des statuts](#2-légende-des-statuts)
+- [Partie 2 — Quelle forme a le système, et pourquoi ?](#partie-2--quelle-forme-a-le-système-et-pourquoi-)
+  - [3. Choix et justification](#3-choix-et-justification)
+- [Partie 3 — À quoi ressemble le système, du plus large au plus fin ?](#partie-3--à-quoi-ressemble-le-système-du-plus-large-au-plus-fin-)
+  - [4. Contexte du système](#4-contexte-du-système)
+  - [5. Conteneurs](#5-conteneurs)
+  - [6. Composants](#6-composants)
+  - [7. Déploiement](#7-déploiement)
+- [Partie 4 — Que ne montre pas la carte, et d'où vient chaque section ?](#partie-4--que-ne-montre-pas-la-carte-et-doù-vient-chaque-section-)
+  - [8. Limites cartographiques](#8-limites-cartographiques)
+  - [9. Vue de traçabilité, sections vers décisions](#9-vue-de-traçabilité-sections-vers-décisions)
 
-## 0. Métadonnées et nature du document
+## Partie 1 — Que vaut ce document, et comment lire ses statuts ?
+
+Cette partie dit ce que vaut ce document, à qui il s'adresse, et ce que signifient les statuts de ses vues.
+
+## 1. Métadonnées et nature du document
 
 Consolidation : elle ne tranche rien. Elle est une carte du système dessinée à partir des décisions ; la décision citée fait foi.
 
@@ -44,7 +60,7 @@ Consolidation : elle ne tranche rien. Elle est une carte du système dessinée �
 
 ---
 
-## 1. Légende des statuts
+## 2. Légende des statuts
 
 | Statut | Signification |
 |---|---|
@@ -53,7 +69,11 @@ Consolidation : elle ne tranche rien. Elle est une carte du système dessinée �
 
 ---
 
-## 2. Choix et justification
+## Partie 2 — Quelle forme a le système, et pourquoi ?
+
+Cette partie dit quels choix d'architecture donnent sa forme au système, et quelle décision justifie chacun.
+
+## 3. Choix et justification
 
 Haversack est un monolithe modulaire organisé selon les principes de la Clean Architecture (inversion de dépendances, domaine au centre), structuré en quatre bounded contexts DDD — Identity & Access, Space Management, Content Library, Session Conduct — et opère une dualité d'exécution local/cloud : un mode local navigateur (persistance IndexedDB, sans compte) coexiste avec un mode cloud serveur-autoritaire, reliés exclusivement par une migration one-shot. Les quatorze choix structurants ci-dessous portent cette forme et renvoient chacun à l'ADR ou au document de structure qui les justifie en détail.
 
@@ -76,25 +96,13 @@ Haversack est un monolithe modulaire organisé selon les principes de la Clean A
 
 ---
 
-## 3. Contexte du système
+## Partie 3 — À quoi ressemble le système, du plus large au plus fin ?
+
+Cette partie dessine la carte du système en quatre vues, du plus large au plus fin : son contexte, ses conteneurs, les composants du monolithe et son déploiement.
+
+## 4. Contexte du système
 
 *Vue de contexte (C4 niveau 1).*
-
-Le système Haversack met en relation cinq natures d'acteurs et cinq systèmes externes autour de l'application. Aucun stockage objet externe n'est prévu au MVP — tout média associé à un document est stocké inline en base ([ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md)).
-
-**Acteurs** :
-- **MJ propriétaire** — `MemberRole.OWNER`, responsable billing et RGPD de ses espaces ([ADR-009](../decisions/ADR-009-fk-campaign-owner.md)).
-- **Co-MJ** — `MemberRole.GM`.
-- **Joueur authentifié** — `SpaceMembership` de rôle `PLAYER`.
-- **Joueur invité sans compte** — `GuestAccess`, scope `SPACE` ou `SESSION` ([ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §1).
-- **Utilisateur solo / mode local** — aucun `User` n'existe en mode local ([ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md) §1.1, [identity-access/context.md](../domaine/identity-access/context.md)) ; propriétaire de facto d'un espace `PERSONAL` local, sans `ownerId` assigné.
-
-**Systèmes externes** :
-- **Fournisseurs OAuth / IdP** — Google, Discord ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.2).
-- **Infrastructure d'envoi d'email** ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.1).
-- **Système de facturation** — notifie le changement de tier (`TierChanged`, PRO ↔ FREE) ; l'application le traduit en `User.ChangeTier`, qui publie l'événement domaine `AccountTierChanged` ([identity-access/flows.md](../domaine/identity-access/flows.md), Flux 5 ; [identity-access/context.md](../domaine/identity-access/context.md), règle métier 3).
-- **Secret manager / magasin de certificats** — clé de signature JWT, rotation ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.2).
-- **CDN** — sert la landing en SSG ([ADR-003](../decisions/ADR-003-stack-front.md)).
 
 ```mermaid
 graph TD
@@ -125,31 +133,27 @@ graph TD
     HAVERSACK --> CDN
 ```
 
+Le système Haversack met en relation cinq natures d'acteurs et cinq systèmes externes autour de l'application. Aucun stockage objet externe n'est prévu au MVP — tout média associé à un document est stocké inline en base ([ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md)).
+
+**Acteurs** :
+- **MJ propriétaire** — `MemberRole.OWNER`, responsable billing et RGPD de ses espaces ([ADR-009](../decisions/ADR-009-fk-campaign-owner.md)).
+- **Co-MJ** — `MemberRole.GM`.
+- **Joueur authentifié** — `SpaceMembership` de rôle `PLAYER`.
+- **Joueur invité sans compte** — `GuestAccess`, scope `SPACE` ou `SESSION` ([ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §1).
+- **Utilisateur solo / mode local** — aucun `User` n'existe en mode local ([ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md) §1.1, [identity-access/context.md](../domaine/identity-access/context.md)) ; propriétaire de facto d'un espace `PERSONAL` local, sans `ownerId` assigné.
+
+**Systèmes externes** :
+- **Fournisseurs OAuth / IdP** — Google, Discord ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.2).
+- **Infrastructure d'envoi d'email** ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.1).
+- **Système de facturation** — notifie le changement de tier (`TierChanged`, PRO ↔ FREE) ; l'application le traduit en `User.ChangeTier`, qui publie l'événement domaine `AccountTierChanged` ([identity-access/flows.md](../domaine/identity-access/flows.md), Flux 5 ; [identity-access/context.md](../domaine/identity-access/context.md), règle métier 3).
+- **Secret manager / magasin de certificats** — clé de signature JWT, rotation ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.2).
+- **CDN** — sert la landing en SSG ([ADR-003](../decisions/ADR-003-stack-front.md)).
+
 ---
 
-## 4. Conteneurs
+## 5. Conteneurs
 
 *Vue conteneurs (C4 niveau 2).*
-
-| Conteneur | Techno | Source ADR/fichier |
-|---|---|---|
-| Landing page | Angular SSR/prerender (SSG au MVP), CDN | [ADR-003](../decisions/ADR-003-stack-front.md), [stack.md](../architecture/stack.md), [structure-projets.md §7](../architecture/structure-projets.md) |
-| Application principale | Angular SPA (PWA-capable) | [ADR-003](../decisions/ADR-003-stack-front.md), [stack.md](../architecture/stack.md) |
-| Persistance locale | IndexedDB, store aggregate-rooté | [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-017 §1](../decisions/ADR-017-modele-indexeddb-local.md) |
-| API | ASP.NET Core (Kestrel), MediatR | [stack.md](../architecture/stack.md), [structure-projets.md §3](../architecture/structure-projets.md), [ADR-014 §3](../decisions/ADR-014-modele-autorisation-api.md) |
-| Persistance serveur | EF Core → PostgreSQL (FTS, JSONB, UUID) | [stack.md](../architecture/stack.md), [structure-projets.md §3](../architecture/structure-projets.md), [ADR-008](../decisions/ADR-008-structure-solution.md) |
-| Notifications temps réel | SignalR (`Haversack.Infrastructure.Notifications`) | [ADR-004](../decisions/ADR-004-transport-temps-reel.md), [structure-projets.md §3](../architecture/structure-projets.md) |
-| Denylist tokens | Store externe (Redis ou table SQL) | [ADR-015 §3.4](../decisions/ADR-015-securite-authentification-mvp.md) |
-
-**Frontières et protocoles** :
-- **SPA ↔ API** — REST/HTTP, JWT bearer, OpenAPI.
-- **SPA ↔ SignalR** — push MJ → joueurs, repli WebSocket → SSE → long-polling, token invité jamais transmis en query-string ([ADR-004](../decisions/ADR-004-transport-temps-reel.md)).
-- **Navigateur ↔ API** — migration one-shot exclusivement, payload JSON `schemaVersion`, aucune synchronisation continue ([ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)).
-- **API ↔ PostgreSQL** — EF Core, FK `ON DELETE RESTRICT`, query filters de soft-delete ([ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md), [ADR-014](../decisions/ADR-014-modele-autorisation-api.md)).
-- **API ↔ IdP** — OAuth2 ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md)).
-- **API ↔ secret manager** — clé de signature JWT ([ADR-015 §3.2](../decisions/ADR-015-securite-authentification-mvp.md)).
-- **API ↔ infrastructure email** — envoi des emails de validation et de bienvenue ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.1).
-- **Facturation → API** — le système de facturation notifie le changement de tier (`TierChanged`, PRO ↔ FREE) ; l'API le traduit en commande applicative `User.ChangeTier`, dont l'événement domaine `AccountTierChanged` est consommé par Space Management ([identity-access/flows.md](../domaine/identity-access/flows.md), Flux 5).
 
 ```mermaid
 graph TD
@@ -186,13 +190,31 @@ graph TD
     BILLING --> API
 ```
 
+| Conteneur | Techno | Source ADR/fichier |
+|---|---|---|
+| Landing page | Angular SSR/prerender (SSG au MVP), CDN | [ADR-003](../decisions/ADR-003-stack-front.md), [stack.md](../architecture/stack.md), [structure-projets.md §7](../architecture/structure-projets.md) |
+| Application principale | Angular SPA (PWA-capable) | [ADR-003](../decisions/ADR-003-stack-front.md), [stack.md](../architecture/stack.md) |
+| Persistance locale | IndexedDB, store aggregate-rooté | [ADR-001](../decisions/ADR-001-execution-domaine-mode-local.md), [ADR-017 §1](../decisions/ADR-017-modele-indexeddb-local.md) |
+| API | ASP.NET Core (Kestrel), MediatR | [stack.md](../architecture/stack.md), [structure-projets.md §3](../architecture/structure-projets.md), [ADR-014 §3](../decisions/ADR-014-modele-autorisation-api.md) |
+| Persistance serveur | EF Core → PostgreSQL (FTS, JSONB, UUID) | [stack.md](../architecture/stack.md), [structure-projets.md §3](../architecture/structure-projets.md), [ADR-008](../decisions/ADR-008-structure-solution.md) |
+| Notifications temps réel | SignalR (`Haversack.Infrastructure.Notifications`) | [ADR-004](../decisions/ADR-004-transport-temps-reel.md), [structure-projets.md §3](../architecture/structure-projets.md) |
+| Denylist tokens | Store externe (Redis ou table SQL) | [ADR-015 §3.4](../decisions/ADR-015-securite-authentification-mvp.md) |
+
+**Frontières et protocoles** :
+- **SPA ↔ API** — REST/HTTP, JWT bearer, OpenAPI.
+- **SPA ↔ SignalR** — push MJ → joueurs, repli WebSocket → SSE → long-polling, token invité jamais transmis en query-string ([ADR-004](../decisions/ADR-004-transport-temps-reel.md)).
+- **Navigateur ↔ API** — migration one-shot exclusivement, payload JSON `schemaVersion`, aucune synchronisation continue ([ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)).
+- **API ↔ PostgreSQL** — EF Core, FK `ON DELETE RESTRICT`, query filters de soft-delete ([ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md), [ADR-014](../decisions/ADR-014-modele-autorisation-api.md)).
+- **API ↔ IdP** — OAuth2 ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md)).
+- **API ↔ secret manager** — clé de signature JWT ([ADR-015 §3.2](../decisions/ADR-015-securite-authentification-mvp.md)).
+- **API ↔ infrastructure email** — envoi des emails de validation et de bienvenue ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.1).
+- **Facturation → API** — le système de facturation notifie le changement de tier (`TierChanged`, PRO ↔ FREE) ; l'API le traduit en commande applicative `User.ChangeTier`, dont l'événement domaine `AccountTierChanged` est consommé par Space Management ([identity-access/flows.md](../domaine/identity-access/flows.md), Flux 5).
+
 ---
 
-## 5. Composants
+## 6. Composants
 
 *Vue composants (C4 niveau 3).*
-
-Le diagramme montre les composants du monolithe modulaire : le noyau partagé et les quatre bounded contexts. Les contextes dépendent du noyau et ne dépendent pas les uns des autres ; leurs échanges passent par des identifiants, des événements domaine ou des contrats applicatifs ([domaine/README.md](../domaine/README.md#architecture-générale), [core/kernel.md](../domaine/core/kernel.md)). Les éléments de la couche Application, décrits dans la dernière sous-section, ne sont pas dessinés : le diagramme ne montre que ce que la carte des contextes pose.
 
 ```mermaid
 graph TD
@@ -209,6 +231,8 @@ graph TD
     CL --> CORE
     SC --> CORE
 ```
+
+Le diagramme montre les composants du monolithe modulaire : le noyau partagé et les quatre bounded contexts. Les contextes dépendent du noyau et ne dépendent pas les uns des autres ; leurs échanges passent par des identifiants, des événements domaine ou des contrats applicatifs ([domaine/README.md](../domaine/README.md#architecture-générale), [core/kernel.md](../domaine/core/kernel.md)). Les éléments de la couche Application, décrits dans la dernière sous-section, ne sont pas dessinés : le diagramme ne montre que ce que la carte des contextes pose.
 
 ### Core / SharedKernel
 
@@ -238,18 +262,9 @@ Consomme ce que Content Library prépare, sans posséder de contenu propre. Agr�
 
 ---
 
-## 6. Déploiement
+## 7. Déploiement
 
 *Vue déploiement (C4 niveau 4).*
-
-Deux lieux d'exécution structurent le déploiement :
-
-- **(a) Navigateur** — SPA + IndexedDB, mode local pleinement hors-ligne, `connect-src 'self'`, aucune donnée envoyée au serveur en mode local ([ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)).
-- **(b) Serveur** — monolithe ASP.NET Core, PostgreSQL, hub SignalR, denylist externe.
-
-La landing est servie en SSG depuis un CDN ([ADR-003](../decisions/ADR-003-stack-front.md)). Les connexions persistantes du canal temps réel imposent des **sticky sessions** côté hébergement, d'où une denylist externe et une signature JWT asymétrique ([ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.4 et Croisements) ; la clé de signature est gérée en secret manager ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.2). La frontière local↔cloud n'est traversée que par la migration one-shot, complétée d'un gate anti-appropriation ([ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)). Le déploiement du monolithe est **atomique** — aucun module ne se déploie seul ([stack.md](../architecture/stack.md)). **Aucun stockage objet n'est prévu au MVP.** L'extensibilité vers d'autres clients (PWA, Tauri, Capacitor, MAUI) se fait par des projets de présentation distincts consommant la même API, sans modification du domaine ([stack.md](../architecture/stack.md), [ADR-003](../decisions/ADR-003-stack-front.md)).
-
-**`[À TRANCHER — hébergement]` — hébergeur.** [`stack.md`](../architecture/stack.md) recense des options (Railway, Supabase, Render, auto-hébergé) sans arbitrer. Ce document cartographie la contrainte structurelle (sticky sessions imposées par le transport temps réel), pas une topologie d'hébergement : aucun choix de fournisseur n'est acté ici ni ailleurs dans le corpus actuel.
 
 ```mermaid
 graph TD
@@ -279,9 +294,44 @@ graph TD
     CDN --> Navigateur
 ```
 
+Deux lieux d'exécution structurent le déploiement :
+
+- **(a) Navigateur** — SPA + IndexedDB, mode local pleinement hors-ligne, `connect-src 'self'`, aucune donnée envoyée au serveur en mode local ([ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)).
+- **(b) Serveur** — monolithe ASP.NET Core, PostgreSQL, hub SignalR, denylist externe.
+
+**Autres éléments du déploiement** :
+- La landing est servie en SSG depuis un CDN ([ADR-003](../decisions/ADR-003-stack-front.md)).
+- Les connexions persistantes du canal temps réel imposent des **sticky sessions** côté hébergement, d'où une denylist externe et une signature JWT asymétrique ([ADR-004](../decisions/ADR-004-transport-temps-reel.md), [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.4 et Croisements).
+- La clé de signature est gérée en secret manager ([ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §3.2).
+- La frontière local↔cloud n'est traversée que par la migration one-shot, complétée d'un gate anti-appropriation ([ADR-016](../decisions/ADR-016-serialisation-locale-migration.md), [ADR-017](../decisions/ADR-017-modele-indexeddb-local.md)).
+- Le déploiement du monolithe est **atomique** — aucun module ne se déploie seul ([stack.md](../architecture/stack.md)).
+- **Aucun stockage objet n'est prévu au MVP.**
+- L'extensibilité vers d'autres clients (PWA, Tauri, Capacitor, MAUI) se fait par des projets de présentation distincts consommant la même API, sans modification du domaine ([stack.md](../architecture/stack.md), [ADR-003](../decisions/ADR-003-stack-front.md)).
+
+**`[À TRANCHER — hébergement]` — hébergeur.** [`stack.md`](../architecture/stack.md) recense des options (Railway, Supabase, Render, auto-hébergé) sans arbitrer. Ce document cartographie la contrainte structurelle (sticky sessions imposées par le transport temps réel), pas une topologie d'hébergement : aucun choix de fournisseur n'est acté ici ni ailleurs dans le corpus actuel.
+
 ---
 
-## 7. Vue de traçabilité, sections vers décisions
+## Partie 4 — Que ne montre pas la carte, et d'où vient chaque section ?
+
+Cette partie nomme ce que la carte ne montre pas, et pourquoi, pour qu'un élément manquant ne soit pas pris pour un élément absent, puis dit de quelles décisions vient chaque section.
+
+## 8. Limites cartographiques
+
+**Hébergeur non tranché.** [`stack.md`](../architecture/stack.md) liste des options d'hébergement (Railway, Supabase, Render, auto-hébergé) sans arbitrage. Ce document cartographie la contrainte imposée par le transport temps réel (sticky sessions) sans inventer de topologie.
+
+**Observabilité non consolidée.** Un document [`specs/telemetrie.md`](../architecture/specs/telemetrie.md) existe, mais son contenu relève du cahier de spécification technique — il n'est pas consolidé dans ce DAT. La vue déploiement (§7) reste muette sur ce point ; ce silence n'est pas comblé ici.
+
+**Statut pré-implémentation généralisé.** C'est le point le plus structurant de ce document : à l'exception des rares cas explicitement marqués autrement, chaque choix cartographié est une décision de conception à confirmer à l'entrée en build — voir la légende des statuts en §2.
+
+**Points ouverts, non tranchés dans ce document** :
+- `[À TRANCHER — architecture]` — le lien entre le hub SignalR et le reste du serveur : ni le lien entre les notifications temps réel et l'API (vue conteneurs), ni celui entre le monolithe et le hub (vue déploiement) ne sont établis par une décision ou un document du corpus, et les deux flèches ne sont pas dessinées. [ADR-004](../decisions/ADR-004-transport-temps-reel.md) isole SignalR dans `Haversack.Infrastructure.Notifications` et [ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §6 fait appeler `IResourceAccessPolicy.CanAccess` par le filtre de diffusion, sans dire par quel lien le hub et l'API communiquent.
+- [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[À TRANCHER — PRODUIT]`, statut que porte l'ADR à cet endroit.
+- [ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md) — deux validations juridiques ouvertes avant tout lancement EU, consolidées dans [`cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md) : la qualification au regard de l'Art. 17 du hard-delete inconditionnel du contenu personnel, et le périmètre du DPA (Art. 28) pour un contenu personnel décrivant des tiers identifiables. Ces deux points sont des items de conformité ouverts, non des décisions d'architecture ; ils ne sont pas tranchés ici.
+
+---
+
+## 9. Vue de traçabilité, sections vers décisions
 
 | Section | Décisions |
 |---|---|
@@ -291,30 +341,11 @@ graph TD
 | Contexte du système | ADR-001, ADR-003, ADR-009, ADR-011, ADR-014 §1, ADR-015 §2.1/§2.2/§3.2, ADR-017 §1.1, identity-access/context.md, identity-access/flows.md |
 | Conteneurs | ADR-001, ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, structure-projets.md, stack.md, identity-access/flows.md |
 | Composants — vue d'ensemble (diagramme) | domaine/README.md, core/kernel.md |
+| Composants — Core/SharedKernel | core/kernel.md |
 | Composants — Identity & Access | ADR-015 §1.2/§5, identity-access/context.md |
 | Composants — Space Management | ADR-018, space-management/context.md |
 | Composants — Content Library | ADR-002, ADR-014 §Frontière fondamentale/§4, content-library/context.md, fondations.md |
 | Composants — Session Conduct | session-conduct/context.md |
 | Composants — Transverse (couche Application) | ADR-011, ADR-014 §3/§6, ADR-016, space-management/context.md |
-| Composants — Core/SharedKernel | core/kernel.md |
 | Déploiement | ADR-003, ADR-004, ADR-015, ADR-016, ADR-017, stack.md |
 | Limites cartographiques | ADR-004, ADR-014 §6, ADR-015 §2.3, ADR-018, stack.md, specs/telemetrie.md, cadrage-validation-pre-lancement-eu.md |
-
----
-
-## 8. Limites cartographiques
-
-**Hébergeur non tranché.** [`stack.md`](../architecture/stack.md) liste des options d'hébergement (Railway, Supabase, Render, auto-hébergé) sans arbitrage. Ce document cartographie la contrainte imposée par le transport temps réel (sticky sessions) sans inventer de topologie.
-
-**Observabilité non consolidée.** Un document [`specs/telemetrie.md`](../architecture/specs/telemetrie.md) existe, mais son contenu relève du cahier de spécification technique — il n'est pas consolidé dans ce DAT. La vue déploiement (§6) reste muette sur ce point ; ce silence n'est pas comblé ici.
-
-**Statut pré-implémentation généralisé.** C'est le point le plus structurant de ce document : à l'exception des rares cas explicitement marqués autrement, chaque choix cartographié est une décision de conception à confirmer à l'entrée en build — voir la légende des statuts en §1.
-
-**Points ouverts, non tranchés dans ce document** :
-- `[À TRANCHER — architecture]` — le lien entre le hub SignalR et le reste du serveur : ni le lien entre les notifications temps réel et l'API (vue conteneurs), ni celui entre le monolithe et le hub (vue déploiement) ne sont établis par une décision ou un document du corpus, et les deux flèches ne sont pas dessinées. [ADR-004](../decisions/ADR-004-transport-temps-reel.md) isole SignalR dans `Haversack.Infrastructure.Notifications` et [ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §6 fait appeler `IResourceAccessPolicy.CanAccess` par le filtre de diffusion, sans dire par quel lien le hub et l'API communiquent.
-- [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[À TRANCHER — PRODUIT]`, statut que porte l'ADR à cet endroit.
-- [ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md) — deux validations juridiques ouvertes avant tout lancement EU, consolidées dans [`cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md) : la qualification au regard de l'Art. 17 du hard-delete inconditionnel du contenu personnel, et le périmètre du DPA (Art. 28) pour un contenu personnel décrivant des tiers identifiables. Ces deux points sont des items de conformité ouverts, non des décisions d'architecture ; ils ne sont pas tranchés ici.
-
----
-
-*Ce document est une consolidation ; en cas de divergence apparente avec un ADR cité, l'ADR fait autorité.*

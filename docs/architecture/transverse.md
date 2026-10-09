@@ -10,7 +10,7 @@
 
 ## 1 — Fondations & découpage
 
-La structure du système (Clean Architecture, découpage en bounded contexts DDD, architecture applicative front) est cartographiée par le [Dossier d'architecture](../reference/dossier-architecture.md) — voir [§2 Choix et justification](../reference/dossier-architecture.md) pour l'argumentaire de structure et [§5 Composants](../reference/dossier-architecture.md) pour la vue par bounded context. Les sections qui suivent s'appuient sur deux concepts de domaine que la carte structurelle nomme sans les développer ici : le pattern « tout est Document » ([ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md)) et la racine applicative généralisée `Space` ([ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md)).
+La structure du système (Clean Architecture, découpage en bounded contexts DDD, architecture applicative front) est cartographiée par le [Dossier d'architecture](../reference/dossier-architecture.md) — voir [§3 Choix et justification](../reference/dossier-architecture.md) pour l'argumentaire de structure et [§6 Composants](../reference/dossier-architecture.md) pour la vue par bounded context. Les sections qui suivent s'appuient sur deux concepts de domaine que la carte structurelle nomme sans les développer ici : le pattern « tout est Document » ([ADR-002](../decisions/ADR-002-tout-est-document-gouvernance.md)) et la racine applicative généralisée `Space` ([ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md)).
 
 ---
 
