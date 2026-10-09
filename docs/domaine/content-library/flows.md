@@ -139,7 +139,7 @@ sequenceDiagram
 
     MJ->>App: Voir les documents qui référencent ce PNJ (documentId)
     App->>CL: GetBacklinks(targetDocumentId)
-    Note over CL: Documents source dont un lien cible le document consulté ;<br/>seuls les documents source lisibles par l'appelant sont retournés
+    Note over CL: Documents source dont un lien cible le document consulté,<br/>seuls les documents source lisibles par l'appelant sont retournés
     CL-->>App: Liste des documents source
     App-->>MJ: "Ce PNJ est référencé par 3 scènes"
 ```

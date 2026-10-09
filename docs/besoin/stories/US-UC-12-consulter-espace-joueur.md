@@ -73,16 +73,16 @@ flowchart TD
 
     Acces --> PersonnageAssocie{Personnage associe\npar le MJ ?}
 
-    PersonnageAssocie -->|Non| SansPerso[Vue joueur sans fiche\nDocuments PUBLIC uniquement\nPas de notes PLAYER_PRIVATE\nliees a un personnage (notes : hors MVP)]
+    PersonnageAssocie -->|Non| SansPerso["Vue joueur sans fiche\nDocuments PUBLIC uniquement\nPas de notes PLAYER_PRIVATE\nliees a un personnage (notes : hors MVP)"]
 
-    PersonnageAssocie -->|Oui - un seul personnage| UnPerso[Vue joueur avec fiche\nDocuments PUBLIC\nNotes PLAYER_PRIVATE\ndu personnage associe (notes : hors MVP)]
+    PersonnageAssocie -->|Oui - un seul personnage| UnPerso["Vue joueur avec fiche\nDocuments PUBLIC\nNotes PLAYER_PRIVATE\ndu personnage associe (notes : hors MVP)"]
 
     PersonnageAssocie -->|Oui - plusieurs personnages| MultiPerso[US-12-02\nChoix du personnage actif]
 
     MultiPerso --> ChoixPerso[Joueur selectionne\nle personnage actif]
     ChoixPerso --> UnPerso
 
-    UnPerso --> VueJoueur[Vue joueur complete\nFiche du personnage\nDocuments PUBLIC\nNotes PLAYER_PRIVATE (hors MVP)]
+    UnPerso --> VueJoueur["Vue joueur complete\nFiche du personnage\nDocuments PUBLIC\nNotes PLAYER_PRIVATE (hors MVP)"]
 
     PersonnageAssocie -->|Acces SESSION uniquement| SessionSeul[Perimetre session\nDocuments epingles\nTous les documents PUBLIC\nPas d acces a l historique des sessions]
 ```

@@ -83,7 +83,7 @@ sequenceDiagram
         IA-->>App: UserDeleted event
         App->>IA: User.Anonymize()
         IA-->>App: UserAnonymized event
-        App->>SM: Réagir à UserDeleted — routage par type d'espace :<br/>PERSONAL → hard-delete (saga SpaceDeleted) ;<br/>CAMPAIGN/ONE_SHOT restants → anonymiser member data
+        App->>SM: Réagir à UserDeleted — routage par type d'espace :<br/>PERSONAL → hard-delete (saga SpaceDeleted),<br/>CAMPAIGN/ONE_SHOT restants → anonymiser member data
         App-->>Utilisateur: Compte supprimé, déconnecté
     end
 ```
