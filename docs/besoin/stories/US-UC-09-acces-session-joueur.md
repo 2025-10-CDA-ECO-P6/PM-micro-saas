@@ -58,8 +58,7 @@ flowchart TD
 
     B -->|Lien ponctuel| C[Identity and Access\nvalide le token GuestAccess]
     B -->|Lien permanent| D[Identity and Access\nvalide le token Member]
-    B -->|Lien invalide ou mal forme| E[Page d erreur sobre\nopacite espace partage]
-    B -->|Lien expire ou revoque| F[Message lien non utilisable\ncontacter le MJ]
+    B -->|Lien invalide, mal forme, expire ou revoque| E[Message unique : lien non utilisable\ncontacter le MJ\nopacite espace partage]
 
     C --> G{Joueur deja connecte ?}
     G -->|Non| H[Saisit un nom d affichage\npas d email ni mot de passe]

@@ -60,7 +60,7 @@ flowchart TD
 
     B -->|GM_ONLY| C[MJ clique Partager]
     B -->|PUBLIC| D[MJ clique Retirer le partage]
-    B -->|PUBLIC, depuis vue session| E[MJ clique Partager en session]
+    B -->|GM_ONLY, depuis vue session| E[MJ clique Partager en session]
 
     C --> F[Document.Share\nvisibility = GM_ONLY vers PUBLIC\nDocumentVisibilityChanged]
     D --> G[Document.Unshare\nvisibility = PUBLIC vers GM_ONLY\nDocumentVisibilityChanged]
@@ -69,7 +69,7 @@ flowchart TD
     F --> I[Document visible par les joueurs\ndurable entre les sessions]
     G --> J[Document redevient prive\njoueurs ne voient plus le document]
     H --> K[Document visible par les joueurs]
-    H --> L[Session Conduct\najoute le document aux documents epingles]
+    H -->|session LIVE| L[Session Conduct\najoute le document aux documents epingles]
 
     I --> M[Joueurs consultent le document\ndans leur espace ou vue session]
     K --> M

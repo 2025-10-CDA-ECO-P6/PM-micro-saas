@@ -67,7 +67,7 @@ flowchart TD
     F --> G{Joueur utilise le lien ?}
     G -->|Oui — avec compte| H[Member ACTIVE → vue UC-12]
     G -->|Oui — sans compte| I[GuestAccess actif\nUC-09]
-    G -->|Lien expire ou jamais utilise| J[Invitation REVOKED ou expiree\nCreer un nouveau lien]
+    G -->|Lien expire ou quota atteint| J[Invitation REVOKED ou expiree\nCreer un nouveau lien]
 
     A -->|Associer un joueur a un personnage| K[Selection membre + personnage\nUS-11-04]
     A -->|Revoquer une invitation| L[Invitation passe a REVOKED\nUS-11-02]
