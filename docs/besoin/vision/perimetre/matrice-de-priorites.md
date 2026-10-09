@@ -448,8 +448,8 @@ campagne, qui porte les personas principaux et l'hypothèse de monétisation ; l
 du catalogue de scénarios réutilisables, une capacité entière qui ne conditionne pas cette validation.
 Sonia (one-shots exclusivement, 15 scénarios en catalogue) reste structurellement non servie par la
 première livraison — c'est précisément ce que surveille la condition de retour : si les entretiens ou
-l'usage révèlent que le profil one-shot est une part significative des utilisateurs réels ou un levier
-d'adoption, UC-13 est réexaminé en priorité lors d'une version ultérieure. Trace complète dans la vision produit,
+l'usage révèlent que le profil one-shot exclusif (Sonia — conventions, groupes changeants, catalogue de
+scénarios) est une part significative des utilisateurs réels ou un levier d'adoption, UC-13 est réexaminé en priorité lors d'une version ultérieure. Trace complète dans la vision produit,
 section « Traces d'arbitrage vision ↔ périmètre MVP ».
 
 **Note ADR-018** : la bibliothèque de réutilisation inter-espaces (UC-13 scénario nominal) s'appuiera

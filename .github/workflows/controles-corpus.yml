@@ -1,6 +1,6 @@
-# Les quatre contrôles du corpus (ADR-019, § 8), lancés sur toute modification de
-# `docs/` ou de l'outillage qui les porte, plus les deux contrôles de tenue
-# (marqueurs, identifiants) de tools/VerifMarqueursIdentifiants.
+# Les cinq contrôles du corpus, lancés sur toute modification de `docs/` ou de
+# l'outillage qui les porte : les quatre de l'ADR-019, § 8, plus le contrôle de tenue
+# (marqueurs hors liste fermée, identifiants) de tools/VerifMarqueursIdentifiants.
 #
 # Chaque contrôle nomme son défaut dans sa propre sortie (lien cassé, ancre morte,
 # marqueur, identifiant, TROU nouveau) : le journal de l'étape en échec suffit à

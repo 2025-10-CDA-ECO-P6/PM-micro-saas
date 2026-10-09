@@ -2,7 +2,8 @@
 
 > **Nature du document.** Ce dossier rassemble le pilotage du projet : cadrage, planification,
 > organisation, risques et conventions de travail. Chaque document consolide et renvoie vers sa
-> source de conception ; en cas de divergence de détail, la source citée fait foi.
+> source de conception ; en cas d'écart, ces documents ne font jamais foi et c'est eux qu'on corrige
+> ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)).
 
 ---
 

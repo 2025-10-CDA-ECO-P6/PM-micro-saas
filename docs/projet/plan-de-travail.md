@@ -1567,4 +1567,4 @@ Les identifiants de lot de toute version antérieure de la §9 sont retirés à 
 - Spécifications citées : `docs/architecture/specs/document-properties-schemas.md`, `docs/architecture/specs/sanitisation-csp.md`, `docs/architecture/specs/telemetrie.md`, `docs/architecture/specs/mapping-ef-core.md`, `docs/architecture/specs/contrat-openapi.md`, `docs/architecture/specs/repli-temps-reel.md`, `docs/architecture/specs/config-securite-migration.md`, `docs/architecture/specs/requete-effacement-non-partage.md`.
 - [`docs/projet/registre-des-risques.md`](registre-des-risques.md) — entrée `J-12`.
 - [`docs/besoin/vision/vision.md`](../besoin/vision/vision.md) — hypothèse `H1`.
-- [`docs/architecture/deploiement/README.md`](../architecture/deploiement/README.md) — absence de document de déploiement, hébergeur non tranché.
+- [`docs/architecture/deploiement/README.md`](../architecture/deploiement/README.md) — absence de document de déploiement, hébergeur `[À TRANCHER — hébergement]`.

@@ -310,10 +310,10 @@ La condition de retour est énoncée dans deux artefacts :
 > des utilisateurs réels ou un levier d'adoption, UC-13 est réexaminé en priorité lors d'une
 > version ultérieure. »
 
-**Moscow.md §UC-13** (arbitrage du 2026-06-10) :
-> « Si les entretiens ou l'usage révèlent que le profil one-shot est une part significative des
-> utilisateurs réels ou un levier d'adoption, UC-13 est réexaminé en priorité lors d'une version
-> ultérieure. »
+**[Matrice de priorités, § UC-13](../../vision/perimetre/matrice-de-priorites.md)** (arbitrage du 2026-06-10) :
+> « Si les entretiens ou l'usage révèlent que le profil one-shot exclusif (Sonia — conventions,
+> groupes changeants, catalogue de scénarios) est une part significative des utilisateurs réels ou
+> un levier d'adoption, UC-13 est réexaminé en priorité lors d'une version ultérieure. »
 
 Les deux sources convergent. La condition de retour est un signal d'usage ou d'entretien,
 pas un événement calendaire — c'est une observation à faire sur la cohorte pilote réelle.

@@ -4,8 +4,9 @@
 > projet : chacun se lit seul, sans avoir à ouvrir le reste du corpus, et peut être remis à un
 > tiers (prestataire, investisseur, dossier de due diligence) indépendamment des autres. Ils
 > consolident et mettent en forme le travail détaillé porté par [`../architecture/`](../architecture/README.md),
-> [`../besoin/`](../besoin/README.md), [`../domaine/`](../domaine/README.md) et [`../interface/`](../interface/README.md), sans en devenir l'autorité : en cas de
-> divergence de détail, le corpus source cité fait foi.
+> [`../besoin/`](../besoin/README.md), [`../domaine/`](../domaine/README.md) et [`../interface/`](../interface/README.md), sans en devenir l'autorité : en cas
+> d'écart, ils ne font jamais foi et c'est eux qu'on corrige
+> ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)).
 
 ---
 

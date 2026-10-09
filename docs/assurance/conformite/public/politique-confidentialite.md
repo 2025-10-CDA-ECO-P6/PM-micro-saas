@@ -144,7 +144,7 @@ Les durées ci-dessous sont celles que la conception technique fixe explicitemen
 | Destinataire | Rôle | Statut |
 |---|---|---|
 | Fournisseurs d'authentification fédérée — Google, Discord | Authentification alternative (OAuth) si le MJ choisit de lier son compte | Retenus pour le MVP (ADR-015 §2.2) ; le partage de données avec ces fournisseurs se limite à la vérification d'identité au moment de la connexion |
-| Hébergeur de l'infrastructure cloud | Hébergement du serveur, de la base de données | `[non tranché]` — aucun hébergeur n'est arrêté à ce jour dans le corpus d'architecture (`docs/architecture/deploiement/README.md`, `docs/reference/dossier-architecture.md`) |
+| Hébergeur de l'infrastructure cloud | Hébergement du serveur, de la base de données | `[À TRANCHER — hébergement]` — aucun hébergeur n'est arrêté à ce jour dans le corpus d'architecture (`docs/architecture/deploiement/README.md`, `docs/reference/dossier-architecture.md`) |
 | Service de messagerie transactionnelle (email support, notifications) | Envoi d'emails (validation de compte, notifications de traitement de demandes) | Pressenti en conception à titre indicatif, non contractuel — `[À COMPLÉTER]` (squelette de DPA, §5) |
 | CDN (réseau de diffusion de contenu), le cas échéant | Diffusion des ressources statiques de l'application | Pressenti à titre indicatif, non contractuel — `[À COMPLÉTER]` |
 
@@ -243,4 +243,4 @@ Chaque affirmation technique de ce document est tirée d'une des sources suivant
 | `docs/assurance/conformite/cadres/procedure-droits-invites.md` | Procédure d'exercice des droits d'un invité |
 | `docs/assurance/conformite/cadres/dpa-skeleton.md` | Squelette de DPA, sous-traitants ultérieurs pressentis |
 | `docs/assurance/securite/dossier-securite.md` | Consolidation des actifs sensibles et contre-mesures RGPD |
-| `docs/architecture/deploiement/README.md`, `docs/reference/dossier-architecture.md` | Statut `[non tranché]` de l'hébergeur |
+| `docs/architecture/deploiement/README.md`, `docs/reference/dossier-architecture.md` | Statut `[À TRANCHER — hébergement]` de l'hébergeur |

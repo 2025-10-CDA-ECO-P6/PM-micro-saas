@@ -111,3 +111,5 @@ Deux contrôles automatiques restent à écrire :
 - la vérification des marqueurs hors liste fermée.
 
 La mise en CI des quatre contrôles est aussi à faire.
+
+*Ajustement du 2026-10-09 : la mise en CI est faite (`.github/workflows/controles-corpus.yml`). Elle lance cinq contrôles : les quatre du § 8 et `tools/VerifMarqueursIdentifiants` (marqueurs hors de la liste fermée du § 5, identifiants définis deux fois). Les deux contrôles automatiques annoncés ci-dessus sont écrits : `tools/VerifCorpus` couvre les renvois « § », `tools/VerifMarqueursIdentifiants` les marqueurs hors liste fermée. Le § 8 reste tel que décidé le 2026-10-07.*

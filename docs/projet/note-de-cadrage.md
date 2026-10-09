@@ -9,7 +9,7 @@
 | **Statut** | Conception — périmètre produit stabilisé, volet architecture technique à confirmer à l'entrée en build, plusieurs points de gouvernance et de données de gestion encore ouverts (voir [section 10](#10-éléments-à-compléter)) |
 | **Audience** | Lecteur externe (investisseur, comité, partenaire) et porteur du projet |
 
-Ce document ne tranche aucune décision nouvelle et n'introduit aucune donnée non présente dans le corpus. En cas de divergence de détail avec l'un des documents cités en [section 11](#11-documents-de-référence), la source citée fait foi.
+Ce document ne tranche aucune décision nouvelle et n'introduit aucune donnée non présente dans le corpus. En cas d'écart avec l'un des documents cités en [section 11](#11-documents-de-référence), cette note ne fait jamais foi : c'est elle qu'on corrige ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)).
 
 ---
 
@@ -212,4 +212,4 @@ Les éléments suivants sont absents du corpus de conception, de planification o
 **Business**
 - `../reference/note-business.md` — méthode de calcul du coût d'infrastructure, du dimensionnement de marché et de la stratégie go-to-market.
 
-Ces renvois pointent vers les sources du besoin (vision, matrice de priorités), qui font foi, et vers des documents de consolidation et de pilotage (cahier des charges, planning, note business), qui ne font jamais foi : en cas d'écart, ce sont eux qu'on corrige ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)) ; cette note n'en constitue qu'une consolidation de gouvernance, sans autorité de corpus propre en cas de divergence de détail.
+Ces renvois pointent vers les sources du besoin (vision, matrice de priorités), qui font foi, et vers des documents de consolidation et de pilotage (cahier des charges, planning, note business), qui ne font jamais foi : en cas d'écart, ce sont eux qu'on corrige ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)) ; cette note n'en constitue qu'une consolidation de gouvernance, sans autorité de corpus propre.

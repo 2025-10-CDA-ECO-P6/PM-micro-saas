@@ -82,7 +82,7 @@ Il ne crée aucun critère d'acceptation produit. Il ne réordonnance rien (`roa
 
 L'ordre suivant n'est jamais renversé par ce document :
 
-**personas → vision → use cases (source de vérité) → user stories / NFR → domaine → glossaire.**
+**personas → vision produit → use cases (source de vérité) → user journeys / user stories / NFR → domaine → glossaire** ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)).
 
 Toute référence ajoutée par ce document pointe vers le haut de cette hiérarchie : une ligne de recette cite l'UC et l'US qui la fondent, jamais l'inverse ; ce document ne devient à aucun moment une source que le corpus amont citerait en retour.
 
@@ -800,7 +800,7 @@ Les six invariants suivants sont déjà exercés par au moins un cas de recette 
 
 > **Tous les cas de cette section sont marqués « dérivé de RB-15-xx (pas de Gherkin) — post-MVP »**. UC-15 est l'amont source-de-vérité de ce comportement (le domaine `space-management/context.md` en est l'aval documenté) ; aucune user story ni scénario Gherkin ne porte ce use case.
 
-**Environnement(s)** : cloud ; déclencheur = événement de facturation `AccountTierChanged` ; jamais d'action MJ directe.
+**Environnement(s)** : cloud ; déclencheur = notification de facturation `TierChanged`, qui fait émettre l'événement de domaine `AccountTierChanged` par `User.ChangeTier` (Identity & Access) ; jamais d'action MJ directe.
 **Sources** : User stories (aucune pour UC-15 ; dérivé RB-15-01..06).
 
 | ID | Cas | Préconditions | Étapes | Résultat attendu | Source | Verdict |
