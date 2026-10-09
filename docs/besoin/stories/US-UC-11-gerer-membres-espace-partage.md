@@ -32,7 +32,7 @@ Permettre au MJ de contrôler qui accède à son espace : générer des liens d'
 ## Use cases couverts
 
 - **UC-11** — Gérer les membres d'un espace partagé (point de vue MJ)
-  - Nominal : générer un lien d'invitation (périmètre `SPACE` ou `SESSION`)
+  - Nominal : générer un lien d'invitation (périmètre `SPACE` ; le lien de session ponctuel se génère depuis la vue session, UC-09)
   - A1 : associer un joueur à un personnage après qu'il a rejoint
   - A2 : révoquer une invitation active avant qu'elle soit utilisée
   - A3 : retirer un membre de l'espace
@@ -57,17 +57,16 @@ flowchart TD
     MJ[MJ ouvre la section Membres] --> A{Action souhaitee}
 
     A -->|Inviter un joueur| B[Generer un lien d invitation]
-    B --> C{Perimetre}
-    C -->|SPACE| D[Invitation campagne durable\nMember apres acceptation]
-    C -->|SESSION| E[Invitation session temporaire\nGuestAccess]
+    B --> D[Invitation a portee SPACE\nMember apres acceptation]
+    A -.->|Inviter pour une seule session| E[Depuis la vue session\nlien SESSION — UC-09]
 
     D --> F[MJ copie le lien\nDiscord WhatsApp etc]
-    E --> F
 
     F --> G{Joueur utilise le lien ?}
     G -->|Oui — avec compte| H[Member ACTIVE → vue UC-12]
-    G -->|Oui — sans compte| I[GuestAccess actif\nUC-09]
-    G -->|Lien expire ou quota atteint| J[Invitation REVOKED ou expiree\nCreer un nouveau lien]
+    G -->|Oui — sans compte| I[Creation de compte UC-10\npuis Member ACTIVE]
+    I --> H
+    G -->|Lien expire ou quota atteint| J[Invitation EXPIRED\nCreer un nouveau lien]
 
     A -->|Associer un joueur a un personnage| K[Selection membre + personnage\nUS-11-04]
     A -->|Revoquer une invitation| L[Invitation passe a REVOKED\nUS-11-02]
@@ -112,11 +111,11 @@ flowchart LR
 ### US-11-01 — Générer un lien d'invitation
 
 **En tant que** : MJ,
-**je veux** : générer un lien d'invitation partageable pour mon espace ou une session spécifique,
+**je veux** : générer un lien d'invitation partageable pour mon espace,
 **afin de** : inviter mes joueurs sans passer par la plateforme — je partage le lien moi-même (Discord, WhatsApp, etc.).
 
 **Notes de conception** :
-- Le MJ choisit le périmètre de l'invitation : `SPACE` (accès durable, lié à un `Member`) ou `SESSION` (accès temporaire, lié à un `GuestAccess`).
+- Le lien généré depuis la section Membres est à portée `SPACE` (accès durable, lié à un `Member`). Le lien de session ponctuel (portée `SESSION`, lié à un `GuestAccess`) se génère depuis la vue session (UC-11, scénario nominal § 5 ; UC-09 ; scénario porté par US-09-01).
 - Le lien est généré par `Space Management` et le token est géré par `Identity & Access`.
 - L'accès est automatique sur lien valide — pas d'étape d'approbation MJ après que le joueur a cliqué.
 - La plateforme ne gère pas l'envoi du lien (pas d'email, pas de notification push). Le MJ copie et partage lui-même.
@@ -132,18 +131,17 @@ flowchart LR
 - RB-11-02 : Un lien d'invitation peut être limité en durée (date d'expiration) ou en nombre d'utilisations. Ces paramètres sont optionnels. Par défaut, si le nombre d'utilisations n'est pas renseigné, il est **illimité** (`maxUses` = `null`).
 - RB-11-03 : L'accès est accordé automatiquement à réception d'un lien d'invitation valide à portée `SPACE` généré par le MJ : ce lien vaut validation au sens de RB-09-16, aucune validation manuelle supplémentaire n'est requise. Un invité sans ce lien ne devient pas membre.
 - RB-11-04 : La plateforme ne gère pas l'envoi du lien. Le MJ le partage via le canal de son choix.
-- RB-11-05 : Un lien dont le nombre d'utilisations maximum est atteint ou dont la date d'expiration est dépassée passe à l'état `REVOKED` et ne crée plus d'accès.
+- RB-11-05 : Un lien dont le nombre d'utilisations maximum est atteint ou dont la date d'expiration est dépassée passe à l'état `EXPIRED` et ne crée plus d'accès. `REVOKED` est réservé à la révocation par le MJ (RB-11-08).
 - RB-11-06 : Si le joueur est déjà `Member` `ACTIVE`, aucun doublon n'est créé. Le MJ en est informé.
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut générer un lien d'invitation depuis la section "Membres" de l'espace.
-- [ ] Le MJ choisit le périmètre : `SPACE` ou `SESSION`.
-- [ ] Pour le périmètre `SESSION`, le MJ sélectionne la session concernée.
+- [ ] Le lien généré depuis la section Membres est à portée `SPACE` ; le lien de session ponctuel n'y est pas proposé (vue session, US-09-01).
 - [ ] Le lien est affiché avec un bouton "Copier" offrant un retour visuel immédiat.
 - [ ] Le MJ peut optionnellement configurer une date d'expiration.
 - [ ] Le MJ peut optionnellement configurer un nombre d'utilisations maximum.
 - [ ] Si le nombre d'utilisations n'est pas configuré, il est illimité par défaut (`maxUses` = `null`).
-- [ ] Le lien généré est visible dans la liste des invitations avec son statut (`PENDING`, `ACTIVE`, `REVOKED`).
+- [ ] Le lien généré est visible dans la liste des invitations avec son statut (`ACTIVE`, `REVOKED`, `EXPIRED`).
 - [ ] Si un nombre d'utilisations maximum est configuré, le compteur d'usages restants est affiché au MJ dans la liste des invitations.
 - [ ] Si le joueur est déjà `Member` `ACTIVE`, le système l'indique sans créer de doublon (E1).
 - [ ] Une invitation expirée ne peut pas être réactivée — le MJ doit créer un nouveau lien (E2).
@@ -156,13 +154,7 @@ Scénario : MJ génère un lien d'invitation campagne (nominal)
   Et qu'elle clique sur "Générer le lien"
   Alors un lien d'invitation est généré
   Et le bouton "Copier" est disponible avec retour visuel
-  Et l'invitation apparaît dans la liste avec le statut PENDING
-
-Scénario : MJ génère un lien d'invitation session
-  Étant donné que Thomas veut inviter un joueur pour la session "Session 04"
-  Quand il choisit le périmètre SESSION et sélectionne "Session 04"
-  Alors le lien est associé à cette session
-  Et le GuestAccess sera créé à utilisation du lien
+  Et l'invitation apparaît dans la liste avec le statut ACTIVE
 
 Scénario : Joueur déjà membre — doublon détecté (E1)
   Étant donné qu'un joueur est déjà Member ACTIVE de l'espace
@@ -173,7 +165,7 @@ Scénario : Joueur déjà membre — doublon détecté (E1)
 Scénario : Invitation expirée non réactivable (E2)
   Étant donné qu'une invitation a dépassé sa date d'expiration
   Quand le MJ consulte la liste des invitations
-  Alors l'invitation est marquée REVOKED
+  Alors l'invitation est marquée EXPIRED
   Et aucune option de réactivation n'est proposée
   Et le MJ peut créer un nouveau lien
 ```
@@ -210,7 +202,7 @@ Scénario : Invitation expirée non réactivable (E2)
 
 ```gherkin
 Scénario : MJ révoque une invitation active (A2)
-  Étant donné que Thomas a généré un lien d'invitation dont le statut est PENDING
+  Étant donné que Thomas a généré un lien d'invitation dont le statut est ACTIVE
   Quand il clique sur "Révoquer" dans la liste des invitations
   Alors le statut de l'invitation passe à REVOKED
   Et le token est invalide immédiatement
@@ -369,11 +361,11 @@ Scénario : Dissociation sans suppression
 
 | Cas | Story couvrant |
 |---|---|
-| Nominal — générer un lien d'invitation (SPACE ou SESSION) | US-11-01 |
+| Nominal — générer un lien d'invitation (SPACE) | US-11-01 |
 | A1 — associer un joueur à un personnage | US-11-04 |
 | A2 — révoquer une invitation active | US-11-02 |
 | A3 — retirer un membre de l'espace | US-11-03 |
-| A4 — lien invité sans compte (GuestAccess) | US-11-01 (perimetre SESSION) + UC-09 |
+| A4 — lien invité sans compte (GuestAccess) | US-09-01 (lien de session généré depuis la vue session) + UC-09 |
 | E1 — joueur déjà membre | US-11-01 |
 | E2 — invitation expirée, pas de réactivation | US-11-01 + US-11-02 |
 

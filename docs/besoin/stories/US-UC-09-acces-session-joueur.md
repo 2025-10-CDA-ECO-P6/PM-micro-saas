@@ -164,6 +164,12 @@ Scénario : Joueur rejoint via lien ponctuel sans compte (nominal)
   Et Lucas voit les documents PUBLIC et les documents épinglés de la session
   Et le nom "Lucas" est visible par le MJ dans la vue session
 
+Scénario : MJ génère un lien de session ponctuel depuis la vue session
+  Étant donné que Thomas anime la session "Session 04"
+  Quand il génère le lien de session depuis la vue session
+  Alors le lien est associé à cette session
+  Et le GuestAccess sera créé à utilisation du lien
+
 Scénario : Joueur déjà connecté à son compte (A1)
   Étant donné qu'un MJ a généré un lien de session ponctuel
   Et que Lucas est déjà connecté à son compte Haversack

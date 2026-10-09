@@ -23,12 +23,10 @@ journey
     section Emilie genere un lien en 30 secondes
         Ouvrir la section Membres de l espace: 5: Emilie
         Cliquer sur Inviter un joueur: 5: Emilie
-        Choisir le perimetre SPACE ou SESSION: 4: Emilie
         Cliquer sur Generer le lien: 5: Emilie
         Copier le lien et le coller dans Discord: 5: Emilie
     section Thomas configure une invitation avec options
         Ouvrir la section Membres: 5: Thomas
-        Choisir le perimetre et la session cible: 4: Thomas
         Configurer la date d expiration: 4: Thomas
         Configurer le nombre max d utilisations: 3: Thomas
         Generer et copier le lien: 5: Thomas
@@ -58,21 +56,19 @@ flowchart TD
     Start[MJ ouvre la section Membres] --> Action{Quelle action ?}
 
     Action -->|Inviter un joueur| Inv[US-11-01\nGenerer un lien d invitation]
-    Inv --> Perimetre{Perimetre du lien}
-    Perimetre -->|SPACE| LienCampagne[Lien perimetre SPACE - durable\nMember apres utilisation]
-    Perimetre -->|SESSION| LienSession[Lien session temporaire\nGuestAccess apres utilisation]
+    Inv --> LienCampagne[Lien perimetre SPACE - durable\nMember apres utilisation]
+    Action -.->|Inviter pour une seule session| LienSession[Depuis la vue session\nlien SESSION — UC-09]
 
     LienCampagne --> Options[Options : date d expiration\nnombre d utilisations - facultatif]
-    LienSession --> Options
 
     Options --> Generate[Space Management\ncree l Invitation\nIdentity and Access\ngenerele token]
     Generate --> Copy[Bouton Copier\nretour visuel toast\nMJ partage via Discord etc]
 
     Copy --> Wait{Joueur utilise le lien ?}
     Wait -->|Oui - avec compte| MemberActive[Member ACTIVE → vue UC-12]
-    Wait -->|Oui - sans compte| GuestOK[GuestAccess actif\nUC-09]
+    Wait -->|Oui - sans compte| GuestOK[Creation de compte UC-10\npuis Member ACTIVE]
     Wait -->|Joueur deja membre| E1[E1 - Doublon detecte\nMJ informe - pas de creation]
-    Wait -->|Lien expire ou quota atteint| AutoRevoke[Invitation REVOKED\nautomatiquement]
+    Wait -->|Lien expire ou quota atteint| AutoRevoke[Invitation EXPIRED\nautomatiquement]
 
     Action -->|Revoquer une invitation| Rev[US-11-02\nRevoquer invitation]
     Rev --> RevConfirm[Confirmation MJ]
@@ -116,7 +112,7 @@ flowchart TD
 
 - **Libellés orientés usage plutôt que techniques** : remplacer `SPACE` / `SESSION` par "Accès durable à l'espace" / "Accès pour une session" dans le formulaire, tout en conservant les codes internes dans les données.
 
-- **Indicateur d'état en temps réel dans le panneau membres** : chaque invitation affiche son état actuel (`PENDING`, `ACTIVE`, `REVOKED`) avec une mise à jour en temps réel quand un joueur l'utilise. Thomas sait immédiatement que son joueur a rejoint.
+- **Indicateur d'état en temps réel dans le panneau membres** : chaque invitation affiche son état actuel (`ACTIVE`, `REVOKED`, `EXPIRED`) avec une mise à jour en temps réel quand un joueur l'utilise. Thomas sait immédiatement que son joueur a rejoint.
 
 - **Copie du lien en un clic avec toast** : un bouton "Copier le lien" avec retour visuel discret (toast "Lien copié !") suffit. Pas de popup, pas de modale, pas de navigation.
 
