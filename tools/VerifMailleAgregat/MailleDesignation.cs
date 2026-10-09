@@ -9,30 +9,9 @@ namespace VerifMailleAgregat;
 /// </summary>
 internal static class MailleDesignation
 {
-    public static readonly HashSet<string> Transverses = new(StringComparer.Ordinal)
-    {
-        "SharedKernel", "Haversack.Infrastructure.Notifications",
-    };
-
-    // Modules de la couche cliente : les six préoccupations nommées par le corpus (§2, tableau).
-    public static readonly HashSet<string> Client = new(StringComparer.Ordinal)
-    {
-        "service d'accès au store", "châssis", "bandeaux transversaux",
-        "sanitisation", "politique de sécurité de contenu", "projection d'export",
-    };
-
-    // Les modules d'outillage ne figurent pas ici : ils se lisent dans le § 2 du plan
-    // (ModulesOutillage), jamais recopiés en dur.
-
-    // Namespaces de bounded context : n'apparaissent comme module que sur la seule tranche qui les
-    // crée — TB-003, nommée en toutes lettres par le § 2 lui-même. CreerIssues applique la même
-    // clause (MailleDuPlan.ExtraireNamespaces), lue dans le plan ; l'accord des deux outils est
-    // vérifié par tools/Tests/DivergencesEntreOutilsTests.cs::AccordD_VerrouDuNamespaceSurLaTrancheDeCreation.
-    public static readonly HashSet<string> NamespacesBc = new(StringComparer.Ordinal)
-    {
-        "IdentityAccess", "SpaceManagement", "ContentLibrary", "SessionConduct",
-    };
-    public const string TrancheCreationNamespaces = "TB-003";
+    // Les modules transverses nommés, ceux de la couche cliente, les modules d'outillage, les
+    // namespaces de bounded context et la tranche qui les crée ne figurent pas ici : ils se lisent
+    // dans le § 2 du plan (ModulesOutillage), jamais recopiés en dur.
 
     // Projet .NET désigné par son rôle tant que son nom n'est pas tranché (§2, convention de
     // désignation de structure-projets.md § Convention de désignation) : Domaine et Application
@@ -66,18 +45,16 @@ internal static class MailleDesignation
         IReadOnlyDictionary<string, string> agregats,
         IReadOnlySet<string> fiches,
         IReadOnlySet<string> stores,
-        IReadOnlySet<string> outillage)
+        ModulesDuPlan modules)
     {
         if (agregats.ContainsKey(item)) return "agrégat";
-        if (Transverses.Contains(item)) return "transverse nommé";
-        if (NamespacesBc.Contains(item))
+        if (modules.Transverses.Contains(item)) return "transverse nommé";
+        if (modules.Namespaces.Noms.Contains(item))
         {
-            return string.Equals(tacheId, TrancheCreationNamespaces, StringComparison.Ordinal)
-                ? "namespace de bounded context"
-                : null;
+            return modules.Namespaces.ResoutSur(item, tacheId) ? "namespace de bounded context" : null;
         }
-        if (Client.Contains(item)) return "module de la couche cliente";
-        if (outillage.Contains(item)) return "module d'outillage";
+        if (modules.Client.Contains(item)) return "module de la couche cliente";
+        if (modules.Outillage.Contains(item)) return "module d'outillage";
         if (ProjetRoleClos.Contains(item)) return "projet .NET (rôle, unicité tranchée)";
         if (MotifProjetRoleOuvert.IsMatch(item)) return OuvertJ0;
 

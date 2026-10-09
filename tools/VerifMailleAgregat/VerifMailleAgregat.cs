@@ -25,7 +25,9 @@
 #:include LectureDesTaches.cs
 #:include MailleDesignation.cs
 #:include ModeleDomaine.cs
+#:include ModulesDuPlan.cs
 #:include ModulesOutillage.cs
+#:include NamespacesDuPlan.cs
 #:include PanneExecutionException.cs
 #:include PlanDeTravail.cs
 #:include ReprPython.cs

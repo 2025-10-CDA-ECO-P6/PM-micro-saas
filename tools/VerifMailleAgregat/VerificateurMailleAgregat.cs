@@ -21,7 +21,7 @@ internal static class VerificateurMailleAgregat
         string textePlan = PlanDeTravail.LireTexte(racine, cheminPlanRelatif);
         var lecture = PlanDeTravail.ExtraireTaches(textePlan);
         var tb = lecture.Taches;
-        var outillage = ModulesOutillage.Lire(textePlan);
+        var modules = ModulesOutillage.LireTous(textePlan);
         var retires = PlanDeTravail.ExtraireIdentifiantsRetires(textePlan);
 
         var idsTries = tb.Keys.ToList();
@@ -43,7 +43,7 @@ internal static class VerificateurMailleAgregat
             var ouverts = new List<string>();
             foreach (var item in tache.Items)
             {
-                string? nature = MailleDesignation.Resout(item, id, ag, fi, st, outillage);
+                string? nature = MailleDesignation.Resout(item, id, ag, fi, st, modules);
                 if (nature is null) mauvais.Add(item);
                 else if (string.Equals(nature, MailleDesignation.OuvertJ0, StringComparison.Ordinal)) ouverts.Add(item);
             }

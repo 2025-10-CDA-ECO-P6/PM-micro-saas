@@ -16,7 +16,8 @@ namespace CaracterisationOutils;
 /// Fixtures et réponses partagées par les classes de ce fichier. Le socle
 /// « lecture du plan » de CreerProjet est plus petit que celui de CreerIssues :
 /// ni maille de désignation (§2), ni taxonomie de libellés (§3), ni
-/// wireframes — seuls `plan-de-travail.md` (tâches, dont leur champ « Épique »)
+/// wireframes — seuls `plan-de-travail.md` (tâches, dont leur champ « Épique », et la
+/// section « Vue des épiques »)
 /// et `methode-de-ticket.md §5` (le schéma des états) sont lus.
 /// </summary>
 internal static class FixturesCreerProjet
@@ -54,8 +55,13 @@ internal static class FixturesCreerProjet
     // sans marqueur TROU : StatutCalcule y rend systématiquement « Prêt »
     // (methode-de-ticket.md §2) — cible déterministe, jamais recalculée à la
     // main dans les tests eux-mêmes.
+    // La section « Vue des épiques » est indispensable à l'outil (une absence l'arrête) ; ici
+    // elle ne décrit aucune épique, donc « Fondations » garde sa clé seule comme libellé.
     public const string PlanMd =
         "# Plan de travail (fixture de test)\n\n" +
+        "## 4. Vue des épiques\n\n" +
+        "| Épique | But | Jalon | Dépend de | Tranches |\n|---|---|---|---|---|\n\n" +
+        "## 5. Tranches\n\n" +
         "##### TB-014 — Création d'un personnage joueur\n\n" +
         "| Champ | Valeur |\n|---|---|\n" +
         "| Périmètre d'écriture | Personnage |\n" +
@@ -695,5 +701,120 @@ public class RenommageEtCreationDesOptionsEpiqueSousAppliquer : IDisposable
         Assert.DoesNotContain(invocations, a => a.Stdin.Contains("updateProjectV2Field", StringComparison.Ordinal));
         Assert.DoesNotContain(invocations, a => a.Args.Contains("item-add") || a.Args.Contains("item-edit"));
         Assert.Equal(6, invocations.Count);
+    }
+}
+
+/// <summary>
+/// La section « Vue des épiques » se repère à son intitulé, quel que soit le niveau de
+/// son titre (avec ou sans numéro d'ordre), et s'arrête au prochain titre de niveau égal
+/// ou supérieur. Avant B8, l'outil cherchait la chaîne « ## 4. Vue des épiques » : à un
+/// autre niveau de titre il ne trouvait rien et posait des options nommées par la clé
+/// seule, sans rien dire. Lue en mode à blanc, la section se constate par le renommage
+/// annoncé de l'option « EP-02 ».
+/// </summary>
+public class VueDesEpiquesRepereeParSonIntitule : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+    private readonly string _cheminBin;
+    private readonly string _journal;
+
+    public VueDesEpiquesRepereeParSonIntitule()
+    {
+        _cheminBin = Helpers.RepertoireBinAvecFauxGh(_tmpBin.Chemin);
+        _journal = Path.Combine(_tmpBin.Chemin, "journal-gh.jsonl");
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    // Une ligne « EP-88 » placée APRÈS la section (sous un titre de même niveau) ne doit
+    // jamais être lue : EP-88, référencée par TB-200, garde sa clé seule comme libellé.
+    private static string Plan(string titreSection, string titreSousSection, string titreSuivant) =>
+        "# Plan de travail (fixture de test)\n\n" +
+        titreSection + "\n\n" +
+        titreSousSection + "\n\n" +
+        "| Épique | But | Jalon | Dépend de | Tranches |\n|---|---|---|---|---|\n" +
+        $"| {FixturesRenommageEpique.LibelleEp02} | {FixturesRenommageEpique.ButEp02} | J0 | — | TB-100 |\n\n" +
+        titreSuivant + "\n\n" +
+        "| Épique | But | Jalon | Dépend de | Tranches |\n|---|---|---|---|---|\n" +
+        "| EP-88 — Hors de la section | trop loin | J0 | — | TB-200 |\n\n" +
+        "##### TB-100 — Tâche de test pour le renommage\n\n" +
+        "| Champ | Valeur |\n|---|---|\n" +
+        "| Périmètre d'écriture | Test |\n| Dépend de | — |\n| En conflit avec | — |\n| Épique | EP-02 |\n\n" +
+        "##### TB-200 — Tâche de test pour la création\n\n" +
+        "| Champ | Valeur |\n|---|---|\n" +
+        "| Périmètre d'écriture | Test |\n| Dépend de | — |\n| En conflit avec | — |\n| Épique | EP-88 |\n";
+
+    private ResultatExecution LancerEnModeABlanc(string plan)
+    {
+        Helpers.InitialiserDepotGit(_tmpDepot.Chemin);
+        Helpers.Ecrire(Path.Combine(_tmpDepot.Chemin, "docs/projet/methode-de-ticket.md"), FixturesCreerProjet.MethodeMd);
+        Helpers.Ecrire(Path.Combine(_tmpDepot.Chemin, "docs/projet/plan-de-travail.md"), plan);
+        Helpers.CommiterTout(_tmpDepot.Chemin, "fixture vue des épiques CreerProjet");
+        Helpers.ConfigurerOrigineFictive(_tmpDepot.Chemin, FixturesCreerProjet.UrlOrigineFictive, pousser: false);
+
+        // Le champ « Épique » existe déjà, sous l'ancien nom « EP-02 » (clé seule) ; le champ « Statut » aussi.
+        string champs = JsonSerializer.Serialize(new
+        {
+            fields = new object[]
+            {
+                new { id = FixturesCreerProjet.IdChampStatut, name = "Statut", options = Array.Empty<object>() },
+                new { id = FixturesCreerProjet.IdChampEpique, name = "Épique", options = new[]
+                {
+                    new { id = FixturesRenommageEpique.IdOptionEp02, name = "EP-02" },
+                } },
+            },
+        });
+        string chemin = Path.Combine(_tmpBin.Chemin, "reponses.json");
+        Helpers.Ecrire(chemin, JsonSerializer.Serialize(new[]
+        {
+            FixturesCreerProjet.ReponseProjetExistant(),
+            champs,
+            "[]",
+            FixturesCreerProjet.ReponseItemListeVide(),
+        }));
+        var environnement = new Dictionary<string, string>
+        {
+            ["PATH"] = _cheminBin,
+            ["JOURNAL_GH"] = _journal,
+            ["FAUX_GH_REPONSES"] = chemin,
+        };
+        return Helpers.ExecuterOutilAvecEnvironnement("CreerProjet", [], _tmpDepot.Chemin, environnement);
+    }
+
+    [Theory]
+    [InlineData("## 4. Vue des épiques", "### J0", "## 5. Autre section")]
+    [InlineData("### 4. Vue des épiques", "#### J0", "### 5. Autre section")]
+    [InlineData("### Vue des épiques", "#### J0", "## 5. Autre section")]
+    [InlineData("#### Vue des épiques", "##### J0", "#### Autre section")]
+    public void DevraitLireLaMemeSectionQuelQueSoitLeNiveauDeSonTitre(string titreSection, string titreSousSection, string titreSuivant)
+    {
+        var resultat = LancerEnModeABlanc(Plan(titreSection, titreSousSection, titreSuivant));
+
+        Assert.Equal(0, resultat.CodeSortie);
+        Assert.Contains($"~ option « EP-02 » sera renommée en « {FixturesRenommageEpique.LibelleEp02} »", resultat.Stdout);
+        Assert.Contains("+ option « EP-88 » sera créée", resultat.Stdout);
+        Assert.DoesNotContain("Hors de la section", resultat.Stdout);
+    }
+
+    [Fact]
+    public void DevraitSArreterEnNommantLaSectionQuandLePlanNEnPorteAucune()
+    {
+        var resultat = LancerEnModeABlanc(
+            "# Plan de travail (fixture de test)\n\n## 4. Épiques\n\n" +
+            "| Épique | But | Jalon | Dépend de | Tranches |\n|---|---|---|---|---|\n" +
+            $"| {FixturesRenommageEpique.LibelleEp02} | {FixturesRenommageEpique.ButEp02} | J0 | — | TB-100 |\n\n" +
+            "##### TB-100 — Tâche de test pour le renommage\n\n" +
+            "| Champ | Valeur |\n|---|---|\n" +
+            "| Périmètre d'écriture | Test |\n| Dépend de | — |\n| En conflit avec | — |\n| Épique | EP-02 |\n");
+
+        Assert.Equal(1, resultat.CodeSortie);
+        Assert.Contains("Vue des épiques", resultat.Stderr);
+        Assert.DoesNotContain("option «", resultat.Stdout);
+        Assert.Empty(FixturesCreerProjet.LireJournal(_journal));
     }
 }

@@ -21,6 +21,11 @@
 //   C. La maille d'outillage se lit dans le § 2 du plan, sans liste en dur.
 //   D. Un namespace de bounded context ne se résout que sur la seule tranche
 //      qui les crée, dans les deux outils.
+//   E. Les modules transverses, les modules client et les namespaces se lisent
+//      dans le § 2, dans les deux outils : un module ajouté au § 2 est admis par
+//      les deux.
+//   F. La tranche qui crée les namespaces se lit dans le § 2, dans les deux
+//      outils : changer son identifiant dans le § 2 déplace le verrou.
 //
 // Historique : ces tests affirmaient auparavant le DÉSACCORD lui-même
 // (verts tant que les deux outils différaient, rouges au jour de
@@ -47,23 +52,40 @@ internal static class FixturesDivergences
     public const string LigneOutillageParDefaut =
         "- un **module d'outillage** : `la configuration de la solution`, `la configuration d'intégration continue`\n";
 
-    public static string PlanPreambule(string ligneOutillage = LigneOutillageParDefaut) =>
+    public const string ModulesClientParDefaut =
+        "| `service d'accès au store` | Accès IndexedDB |\n"
+        + "| `châssis` | Disposition générale |\n"
+        + "| `bandeaux transversaux` | Bandeaux d'état |\n"
+        + "| `sanitisation` | Nettoyage HTML |\n"
+        + "| `politique de sécurité de contenu` | CSP |\n"
+        + "| `projection d'export` | Rendu d'export |\n";
+
+    public const string TransversesParDefaut = "`SharedKernel`, `Haversack.Infrastructure.Notifications`";
+
+    public const string NamespacesParDefaut = "`IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct`";
+
+    /// <summary>
+    /// Le § 2 de la fixture. Chaque argument est un morceau du § 2 que les deux outils lisent :
+    /// la ligne des modules d'outillage, les lignes de la table de la couche cliente, les noms
+    /// de la ligne du module transverse nommé, les namespaces de contexte de cette même ligne,
+    /// et la tranche que le paragraphe « Aucun namespace… » désigne comme seule à les créer.
+    /// </summary>
+    public static string PlanPreambule(
+        string ligneOutillage = LigneOutillageParDefaut,
+        string modulesClient = ModulesClientParDefaut,
+        string transverses = TransversesParDefaut,
+        string namespaces = NamespacesParDefaut,
+        string trancheCreatrice = "TB-003") =>
         "# Plan de travail (fixture de test)\n\n" +
         "## §2 Maille de désignation\n\n" +
         "**Les six modules de la couche cliente et leur ancrage.**\n\n" +
-        "| `service d'accès au store` | Accès IndexedDB |\n" +
-        "| `châssis` | Disposition générale |\n" +
-        "| `bandeaux transversaux` | Bandeaux d'état |\n" +
-        "| `sanitisation` | Nettoyage HTML |\n" +
-        "| `politique de sécurité de contenu` | CSP |\n" +
-        "| `projection d'export` | Rendu d'export |\n\n" +
+        modulesClient + "\n" +
         "**L'agrégat couvre ses deux moitiés.**\n\n" +
         "Le domaine et son module d'accès forment la même unité d'écriture.\n\n" +
         ligneOutillage +
-        "- un **module transverse nommé** : `SharedKernel`, `Haversack.Infrastructure.Notifications`, ou — "
-        + "**sur la seule tranche qui les crée** — l'un des quatre namespaces de bounded context "
-        + "`IdentityAccess`, `SpaceManagement`, `ContentLibrary`, `SessionConduct`\n\n" +
-        "**Aucun namespace de bounded context n'apparaît comme module**, sauf sur la seule tranche qui les crée (TB-003) : "
+        $"- un **module transverse nommé** : {transverses}, ou — "
+        + $"**sur la seule tranche qui les crée** — l'un des quatre namespaces de bounded context {namespaces}\n\n" +
+        $"**Aucun namespace de bounded context n'apparaît comme module**, sauf sur la seule tranche qui les crée ({trancheCreatrice}) : "
         + "un namespace est un tiroir, pas une unité d'écriture.\n\n" +
         "### Tâches\n\n";
 
@@ -320,5 +342,111 @@ public class AccordD_VerrouDuNamespaceSurLaTrancheDeCreation : IDisposable
     {
         var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
         Assert.Matches(@"\+ TB-003 — [^\n]*libellés : \[[^\]\n]*'Socle'", resultatGenerateur.Stdout);
+    }
+}
+
+/// <summary>
+/// Accord E — les listes du § 2. Les modules transverses nommés, les modules de la
+/// couche cliente et les namespaces de contexte se lisent dans le § 2 du plan, dans
+/// les deux outils. Avant B8, le vérificateur gardait ces trois listes en dur : un
+/// module ajouté au § 2 était refusé par lui et admis par le générateur. Chaque
+/// outil garde son lecteur (un <c>#:include</c> entre les deux ne marche pas) : le
+/// second test vérifie qu'ils en tirent les mêmes listes, y compris sur un libellé
+/// de renvoi markdown dans la ligne du module transverse nommé.
+/// </summary>
+public class AccordE_ListesDuParagraphe2 : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void LesDeuxOutilsAdmettentUnModuleTransverseUnModuleClientEtUnNamespaceAjoutesAuParagraphe2()
+    {
+        string plan = FixturesDivergences.PlanPreambule(
+                modulesClient: FixturesDivergences.ModulesClientParDefaut + "| `journal de bord` | Trace locale |\n",
+                transverses: FixturesDivergences.TransversesParDefaut + ", `le noyau de journalisation`",
+                namespaces: FixturesDivergences.NamespacesParDefaut + ", `Reporting`")
+            + FixturesDivergences.Tache("TB-080", "le noyau de journalisation")
+            + FixturesDivergences.Tache("TB-081", "journal de bord")
+            + FixturesDivergences.Fiche("##### TB-003 — Création du namespace Reporting", "Reporting")
+            + FixturesDivergences.Tache("TB-082", "module absent du plan");
+        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
+
+        var refusesParLeVerificateur = FixturesDivergences.NonResolusDuVerificateur(
+            FixturesDivergences.ExecuterVerificateur(_tmpDepot.Chemin).Stdout);
+        var refusesParLeGenerateur = FixturesDivergences.SansNatureDuGenerateur(
+            FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin).Stdout);
+
+        Assert.Equal(["TB-082"], refusesParLeVerificateur);
+        Assert.Equal(refusesParLeVerificateur, refusesParLeGenerateur);
+    }
+
+    [Fact]
+    public void LesDeuxOutilsTirentLesMemesListesDuParagraphe2SansCompterUnLibelleDeRenvoi()
+    {
+        string plan = FixturesDivergences.PlanPreambule(
+                modulesClient: "| `premier module client` | A |\n| `second module client` | B |\n",
+                transverses: "[`libellé de renvoi`](autre.md), `premier transverse`, `second transverse`",
+                namespaces: "`PremierNamespace`")
+            + FixturesDivergences.Tache("TB-090", "premier module client")
+            + FixturesDivergences.Tache("TB-091", "second module client")
+            + FixturesDivergences.Tache("TB-092", "premier transverse")
+            + FixturesDivergences.Tache("TB-093", "second transverse")
+            + FixturesDivergences.Tache("TB-094", "libellé de renvoi")
+            + FixturesDivergences.Tache("TB-095", "SharedKernel")
+            + FixturesDivergences.Tache("TB-096", "châssis")
+            + FixturesDivergences.Tache("TB-097", "IdentityAccess");
+        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
+
+        var refusesParLeVerificateur = FixturesDivergences.NonResolusDuVerificateur(
+            FixturesDivergences.ExecuterVerificateur(_tmpDepot.Chemin).Stdout);
+        var refusesParLeGenerateur = FixturesDivergences.SansNatureDuGenerateur(
+            FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin).Stdout);
+
+        Assert.Equal(["TB-094", "TB-095", "TB-096", "TB-097"], refusesParLeVerificateur);
+        Assert.Equal(refusesParLeVerificateur, refusesParLeGenerateur);
+    }
+}
+
+/// <summary>
+/// Accord F — la tranche qui crée les namespaces. Quand le § 2 la désigne autrement
+/// que par l'identifiant d'hier, les deux outils résolvent les namespaces sur cette
+/// tranche et les refusent sur l'ancienne. Avant B8, le vérificateur gardait cet
+/// identifiant en dur et le générateur le lisait dans le plan.
+/// </summary>
+public class AccordF_TrancheQuiCreeLesNamespaces : IDisposable
+{
+    private readonly RepertoireTemporaire _tmpDepot = new();
+    private readonly RepertoireTemporaire _tmpBin = new();
+
+    public AccordF_TrancheQuiCreeLesNamespaces()
+    {
+        string plan = FixturesDivergences.PlanPreambule(trancheCreatrice: "TB-020")
+            + FixturesDivergences.Fiche("##### TB-003 — Tranche qui n'est plus celle des namespaces", "IdentityAccess")
+            + FixturesDivergences.Fiche("##### TB-020 — Création des namespaces", "SpaceManagement");
+        FixturesDivergences.ConstruireDepot(_tmpDepot.Chemin, plan);
+    }
+
+    public void Dispose()
+    {
+        _tmpDepot.Dispose();
+        _tmpBin.Dispose();
+    }
+
+    [Fact]
+    public void LesDeuxOutilsResolventLesNamespacesSurLaTrancheDuParagraphe2EtLesRefusentSurTb003()
+    {
+        var resultatVerificateur = FixturesDivergences.ExecuterVerificateur(_tmpDepot.Chemin);
+        Assert.Contains("périmètre entièrement résolu        : 1", resultatVerificateur.Stdout);
+        Assert.Equal(["TB-003"], FixturesDivergences.NonResolusDuVerificateur(resultatVerificateur.Stdout));
+
+        var resultatGenerateur = FixturesDivergences.ExecuterGenerateur(_tmpDepot.Chemin, _tmpBin.Chemin);
+        Assert.Equal(["TB-003"], FixturesDivergences.SansNatureDuGenerateur(resultatGenerateur.Stdout));
     }
 }
