@@ -40,11 +40,11 @@ Les décisions de ce groupe sont déclarées bloquantes avant l'ouverture de J0.
 
 **Registre propriétaire.** `structure-projets.md § 3` pour la couche .NET ; `structure-projets.md § 7` pour la couche TypeScript / Angular ; `plan-de-travail.md § 2` pour l'effet sur le plan de travail.
 
-#### 1.b — Nom du projet de test d'architecture, et plateforme d'intégration continue
+#### 1.b — Nom du projet de test d'architecture
 
 Un des `Critères de sortie factuels` de `roadmap-de-build.md § 3.1 — J0 — Socle` exige que « Le test d'archi CI existe, tourne en pipeline, et échoue si une référence traverse une frontière de bounded context non autorisée. ». Deux tâches du plan de travail (`TB-006`, `TB-009`) déclarent un recouvrement d'écriture « à confirmer à J0 » précisément parce que le projet de test d'architecture qu'elles écrivent toutes deux n'est nommé par aucun document du corpus.
 
-**Ce qu'il faut savoir pour répondre.** `docs/architecture/deploiement/README.md` déclare lui-même qu'aucun document de déploiement n'est produit à ce jour, et marque l'hébergeur `[À TRANCHER — hébergement]`. Aucun ADR ni spécification ne décrit la plateforme d'intégration continue, ses environnements ni son déclencheur.
+**Ce qu'il faut savoir pour répondre.** La plateforme d'intégration continue n'est plus ouverte : **DÉCIDÉ 2026-09-03** (décision d'entrée en build), c'est **GitHub Actions**, déclenchée à chaque commit — voir `conventions-dod.md § 6 § Non couvert par le corpus` et `docs/architecture/deploiement/README.md`. Cette décision ne porte que sur l'intégration continue. Reste ouvert, dans ce point : le nom du projet de test d'architecture, qu'aucun document ne fixe. Reste ouvert hors de ce point : l'hébergeur, que `docs/architecture/deploiement/README.md` marque `[À TRANCHER — hébergement]` et pour lequel il déclare qu'aucun document de déploiement n'est produit à ce jour.
 
 **Registre propriétaire.** `docs/architecture/deploiement/README.md` ; `roadmap-de-build.md § 3.1` pour le critère de sortie ; `plan-de-travail.md`, tâches `TB-006` et `TB-009`, pour le recouvrement en attente.
 
