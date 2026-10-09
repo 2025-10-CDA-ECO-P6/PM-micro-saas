@@ -2,7 +2,7 @@
 
 | Champ | Valeur |
 |---|---|
-| Version | 1.1 |
+| Version | 1.4 |
 | Date | 2026-10-09 |
 | Statut | Version de travail — périmètre produit stabilisé ; volet architecture technique à confirmer, cf. [§7](#7-contraintes) |
 | Porteur | Pierre-Marie Marchio |
@@ -16,6 +16,7 @@
 | 1.1 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond, sans restructuration — « ce qui fait foi » aligné sur l'ADR-019 § 1, résumé des différenciants aligné sur la vision, renvois morts réparés, points tranchés de l'annexe « Points à arbitrer » mis au marqueur DÉCIDÉ, suivi des questions ouvertes renvoyé à `decisions-en-attente.md`, traçabilité §13 complétée |
 | 1.2 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond — date du comptage des 4 joueurs inscrite (2026-07-15, date du commit 6ce3e66) |
 | 1.3 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond — phasage (§ 11) : la décision marché passe entre J2 et J3, suivant l'ajustement du 2026-10-09 de l'ADR-006 |
+| 1.4 | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans restructuration : titres des ADR-009, 010 et 014 de l'index des décisions alignés sur leurs fichiers (« espace » et non « campagne »), section « Architecture détaillée » renvoyée vers le dossier d'architecture et la conception détaillée au lieu de les dire différés, points non tranchés et points tranchés de l'annexe « Points à arbitrer » regroupés chacun sous son étiquette, version de l'en-tête alignée sur la dernière ligne de l'historique |
 
 ## Nature et portée du document
 
@@ -824,7 +825,7 @@ Cette sous-section consolide, au niveau synthèse, l'état des décisions d'arch
 
 **Ce qui est consolidé dès à présent** : la synthèse des choix structurants déjà actés — principes d'architecture, stack technique, sécurité & authentification, conformité RGPD, contraintes de stockage ([§7.1](#71-principes-darchitecture) à [§7.5](#75-contraintes-de-stockage)) — et leur mise en regard transverse dans `transverse.md`, qui organise différemment une matière déjà tranchée sans y ajouter de décision nouvelle.
 
-**Ce qui reste différé** : la conception détaillée « en avant » — vues composants, vues séquences, contrats de module au-delà de ce que couvrent les ADR — demeure un travail dédié, à mener en amont de l'entrée en construction. Ce report est cohérent avec l'encadré « section provisoire » en tête de [§7](#7-contraintes) : les ADR cadrent une trajectoire technique de nature pré-implémentation, non encore confrontée à la construction effective du MVP.
+**Où lire la conception détaillée** : les vues composants figurent dans le [dossier d'architecture](dossier-architecture.md), qui porte les vues C4, et les diagrammes de séquence dans la [conception détaillée](conception-detaillee.md).
 
 > Sources : docs/architecture/transverse.md, docs/architecture/stack.md, docs/architecture/README.md, docs/architecture/fondations.md, docs/architecture/structure-projets.md, docs/decisions/ADR-001-execution-domaine-mode-local.md, ADR-002-tout-est-document-gouvernance.md, ADR-003-stack-front.md, ADR-004-transport-temps-reel.md, ADR-007-rgpd-autorisation-api.md, ADR-008-structure-solution.md, ADR-012-rgpd-effacement-compte.md, ADR-013-rgpd-donnees-invites.md, ADR-014-modele-autorisation-api.md, ADR-015-securite-authentification-mvp.md, ADR-016-serialisation-locale-migration.md, ADR-017-modele-indexeddb-local.md
 
@@ -1149,6 +1150,8 @@ Le corpus de conception (`docs/besoin/`, `docs/domaine/`, `docs/interface/`, `do
 
 Les points listés dans cette annexe sont explicitement **non tranchés**, à l'exception de ceux marqués DÉCIDÉ : tranchés depuis leur inscription, ils sont conservés ici comme trace, avec un renvoi vers la décision. Les points non tranchés restent à instruire, notamment en entretiens utilisateurs, avant ou pendant la construction du MVP. Tous sont à distinguer des éléments que le périmètre a déjà **tranchés mais différés** — le contenu Should Have, Could Have et Won't Have du MoSCoW ([§3](#3-périmètre)), UC-13 exclu de la première livraison, et plus largement les fonctionnalités post-MVP décrites en [§3](#3-périmètre) : ces éléments sont des décisions de périmètre assumées, non des points ouverts.
 
+**Points non tranchés**
+
 **Divergence de conception à réconcilier** (signalée dans le corpus, non tranchée) :
 
 - Inventaire d'écran : la table des wireframes ([§9.2](#92-inventaire-des-écrans)) distingue un écran « Vue de l'espace personnel » propre, alors que l'inventaire des écrans du zoning (§S4), en version réduite, fond cette vue dans la « Vue campagne ». Ces deux lectures de l'inventaire d'écrans sont à aligner.
@@ -1158,6 +1161,10 @@ Les points listés dans cette annexe sont explicitement **non tranchés**, à l'
 1. L'opportunité d'une notification active côté joueur lorsqu'une information lui est partagée — non décidée pour le MVP, qui retient à ce stade une apparition ambiante sans notification (AR-06, [§9.3](#93-arbitrages-dinterface-figés)).
 2. La persistance des notes personnelles d'un joueur invité d'une session à l'autre, en l'absence de compte.
 
+**Autres trous de conception** (recensés au zoning d'interface §S9, à spécifier) : la vue mobile du joueur, la spécification visuelle de l'éditeur de document (disposition des blocs, affordances de type, gestion des liens), l'écran de consultation des backlinks (hors MVP), et la vue « Non classés » — particulièrement centrale pour l'espace personnel, où elle constitue la seule vue de départ.
+
+**Points tranchés, conservés comme trace**
+
 **Statuts d'un espace personnel — DÉCIDÉ 2026-07-09 ([zonage d'interface, § 9](../interface/zonage.md#9-trous-de-corpus-et-points-dinterview), invariant 15).** La sémantique des statuts d'un espace personnel a été tranchée par l'**invariant 15** de `docs/domaine/space-management/context.md` : un espace `PERSONAL` est toujours `ACTIVE` ; les opérations `Archive()` et `Freeze()` sont refusées pour `type = PERSONAL` car `FROZEN` n'a pas d'objet (espace hors quota) et `ARCHIVED` contredirait l'invariant 14 (un `PERSONAL` doit toujours exister et être actif pour un compte donné).
 
 **Fournisseurs d'identité — DÉCIDÉ 2026-07-15 (ADR-015).** MVP : Google et Discord. Règle de confiance par fournisseur : cf. ADR-015 (Sécurité authentification MVP).
@@ -1165,8 +1172,6 @@ Les points listés dans cette annexe sont explicitement **non tranchés**, à l'
 **Granularité du gate de migration — DÉCIDÉ 2026-07-09 ([raisonnement UX, § Décisions actées — alignement wireframes](../interface/raisonnement-ux.md#décisions-actées--alignement-wireframes), point 5).** Le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§5](#5-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration a été tranchée par décision produit du 2026-07-09 : **lot unique** — tous les espaces éligibles migrent en un seul passage, avec une confirmation unique et les espaces éligibles cochés par défaut, décochables individuellement. Cette granularité globale ne modifie pas le tout-ou-rien par espace ci-dessus, qui reste en place. Décision tracée dans [`docs/interface/raisonnement-ux.md`](../interface/raisonnement-ux.md#décisions-actées--alignement-wireframes) (§ Décisions actées — alignement wireframes, point 5).
 
 **Sémantique de comptage du quota du palier gratuit — DÉCIDÉ 2026-07-15 (date du commit 6ce3e66, seule trace de la décision ; règle : [RB-09-21, US-UC-09](../besoin/stories/US-UC-09-acces-session-joueur.md) ; [ADR-005](../decisions/ADR-005-modele-monetisation.md), « Compléments post-revue », A-09).** L'invariant limitant l'accès à une session à 4 joueurs distincts pour un espace dont le propriétaire est au palier gratuit (`docs/domaine/space-management/context.md`, invariant 11) est désormais tranché : la sémantique de comptage est portée par **RB-09-21 (UC-09), qui fait foi** — le comptage a lieu **au moment de l'octroi** de l'accès, de manière **agnostique au type d'accès** (identités-joueur distinctes comptées en capacité joueur, MJ non compté). L'invariant 11 de `space-management/context.md` a été réaligné en conséquence.
-
-**Autres trous de conception** (recensés au zoning d'interface §S9, à spécifier) : la vue mobile du joueur, la spécification visuelle de l'éditeur de document (disposition des blocs, affordances de type, gestion des liens), l'écran de consultation des backlinks (hors MVP), et la vue « Non classés » — particulièrement centrale pour l'espace personnel, où elle constitue la seule vue de départ.
 
 **Suivi des points de conception à trancher.** Le suivi des points de conception restant à trancher se fait dans [`decisions-en-attente.md`](../projet/decisions-en-attente.md), index unique des questions ouvertes ([ADR-019, § 7. Reste à faire](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#7-reste-à-faire)).
 
@@ -1189,12 +1194,12 @@ Le tableau suivant recense les décisions d'architecture actées pour le MVP, te
 | ADR-006 | Périmètre MVP | Accepté |
 | ADR-007 | Conformité RGPD et modèle d'autorisation API | Accepté |
 | ADR-008 | Structure physique de la solution | Accepté |
-| ADR-009 | FK CAMPAIGN.ownerId → USER | Accepté |
-| ADR-010 | Suppression de campagne (soft-delete + purge + saga) | Accepté |
+| ADR-009 | FK SPACES.ownerId → USER | Accepté |
+| ADR-010 | Suppression d'espace (soft-delete + purge + saga) | Accepté |
 | ADR-011 | Cascade & intégrité référentielle (sagas `SpaceDeleted` et `UserAnonymized`) | Accepté |
 | ADR-012 | RGPD : effacement de compte (Art. 17 — droit à l'oubli) | Accepté |
 | ADR-013 | RGPD : données des joueurs invités (GuestAccess, Art. 6/13) | Accepté |
-| ADR-014 | Modèle d'autorisation API (appartenance ressource↔campagne) | Accepté |
+| ADR-014 | Modèle d'autorisation API (appartenance ressource↔espace) | Accepté |
 | ADR-015 | Sécurité authentification MVP (politique mdp, tokens, OAuth, rate limiting) | Accepté |
 | ADR-016 | Sérialisation locale et contrat de migration local→cloud (format payload, frontière de confiance, parcours d'échec) | Accepté |
 | ADR-017 | Modèle IndexedDB local et sécurité du mode local (object stores, posture migration-only, persist(), F-09) | Accepté |
