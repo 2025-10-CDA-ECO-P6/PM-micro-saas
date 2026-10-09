@@ -471,7 +471,7 @@ sequenceDiagram
     else Compte préexistant, email NON vérifié
         Note over IA: liaison automatique refusée — anti-hijacking (CWE-287)
         IA-->>IA: rejet silencieux (pas de message révélant l'existence du compte)
-        Note over IA: [À TRANCHER — à ratifier produit] reclaim-in-place (ADR-015 §2.3) — non implémenté en l'état
+        Note over IA: [À TRANCHER — PRODUIT] reclaim-in-place (ADR-015 §2.3) — non implémenté en l'état
     end
 ```
 
@@ -479,7 +479,7 @@ sequenceDiagram
 
 **Règles de gestion consolidées.** `LinkFederatedIdentity()` (identity-access/context.md § Méthodes, invariant 7 : exige `emailVerified = true`) est le point d'ancrage domaine ; ADR-015 §2.2 le raffine par une règle de confiance généralisée par fournisseur (claim d'email vérifié jugé fiable + email canonique — condition satisfaite par Google et Discord au MVP, dette nommée pour un futur fournisseur à email de relais) et §2.3 pose la règle de liaison à un compte préexistant : autorisée seulement si l'email de ce compte est prouvé vérifié, matching par email canonique (RB-10-08), rejet silencieux sinon — cohérent avec le principe de non-révélation d'ADR-014 §Conséquences.
 
-**`[À TRANCHER — à ratifier produit]` reporté** : la résolution du cas « email OAuth face à un compte préexistant non vérifié » — *reclaim-in-place*, ADR-015 §2.3 (bascule `emailVerified`, neutralisation obligatoire du credential préexistant, liaison fédérée) — est une proposition documentée, **non ratifiée**. Le « nouveau compte » évoqué ailleurs dans le corpus (RB-10-08 (b)) est explicitement écarté comme non implémentable (violerait l'invariant 1, email unique) mais la résolution de repli n'est pas tranchée. Non comblé ici.
+**`[À TRANCHER — PRODUIT]` reporté** : la résolution du cas « email OAuth face à un compte préexistant non vérifié » — *reclaim-in-place*, ADR-015 §2.3 (bascule `emailVerified`, neutralisation obligatoire du credential préexistant, liaison fédérée) — est une proposition documentée, **non ratifiée**. Le « nouveau compte » évoqué ailleurs dans le corpus (RB-10-08 (b)) est explicitement écarté comme non implémentable (violerait l'invariant 1, email unique) mais la résolution de repli n'est pas tranchée. Non comblé ici.
 
 **Renvoi API** : `contrat-openapi.md` §6 — « Liaison OAuth rejetée silencieusement » : aucun code ou corps de réponse distinctif ne doit permettre à l'appelant de déduire la cause du rejet ; le code HTTP exact reste `[À TRANCHER — B1.10]` (contrat-openapi.md §6, § Récapitulatif).
 
@@ -488,7 +488,7 @@ sequenceDiagram
 | `LinkFederatedIdentity()`, invariant 7 | identity-access/context.md § Méthodes ; § Invariants métier | Ancrage domaine — la liaison exige `emailVerified` |
 | Règle de confiance par fournisseur (email vérifié + canonique) | ADR-015 §2.2 | Condition d'éligibilité d'un fournisseur à la liaison |
 | Règle de liaison à un compte préexistant + rejet silencieux | ADR-015 §2.3 ; UC-10 (RB-10-08) | Anti-hijacking CWE-287, cohérent non-révélation (ADR-014) |
-| *Reclaim-in-place* — proposition non ratifiée | ADR-015 §2.3 (Résolution proposée) ; UC-10 RB-10-08(b) | `[À TRANCHER — à ratifier produit]` |
+| *Reclaim-in-place* — proposition non ratifiée | ADR-015 §2.3 (Résolution proposée) ; UC-10 RB-10-08(b) | `[À TRANCHER — PRODUIT]` |
 | Code HTTP du rejet silencieux | contrat-openapi.md §6 | `[À TRANCHER — B1.10]` |
 
 ### 3.3 — UC-11 (facette Identity & Access) : création de compte à la conversion d'un invité
@@ -1063,7 +1063,7 @@ Cette section consolide, en un registre unique, les points non tranchés déjà 
 | Point | Axe | Source | Statut |
 |---|---|---|---|
 | Références nullable entrantes non couvertes par le critère §3(b) (`documents.character_id` d'un autre document, `guest_accesses.character_id`, `folders.default_template_document_id`) | RGPD — cascade de suppression | ADR-012 §4 ; `requete-effacement-non-partage.md` §5 | Non tranché (déjà en §2.1) |
-| Posture *reclaim-in-place* OAuth (email préexistant non vérifié face à une preuve IdP fraîche) | Sécurité — authentification | ADR-015 §2.3 | `[À TRANCHER — à ratifier produit]` (déjà en §3.d) |
+| Posture *reclaim-in-place* OAuth (email préexistant non vérifié face à une preuve IdP fraîche) | Sécurité — authentification | ADR-015 §2.3 | `[À TRANCHER — PRODUIT]` (déjà en §3.d) |
 | 403 vs 404 pour un appelant non-membre, cross-espace | Contrat API — non-révélation | `contrat-openapi.md` §4 ; ADR-014 §Conséquences | `[À TRANCHER — B1.10]` (déjà en §2.3) |
 | Sémantique de `Visibility` (`GM_ONLY`/`PLAYER_PRIVATE`) sur un espace `PERSONAL` mono-membre | Modélisation domaine | ADR-018 § Points à trancher | Non tranché |
 | Modélisation domaine du `propertiesSchema` pour six des huit types système seedés (`scene`, `npc`, `location`, `note`, `player_character`, `reveal`) | Modélisation domaine | `specs/document-properties-schemas.md` §5 | DÉCIDÉ 2026-09-03 — vide au MVP (déjà en §5.5) |

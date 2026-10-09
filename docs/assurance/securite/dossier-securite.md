@@ -191,7 +191,7 @@ Les quarante-cinq contre-mesures documentées dans le corpus sont regroupées ci
 | 13 | Confiance accordée par fournisseur, conditionnée à la déclaration de vérification d'email (`email_verified` Google, `verified` Discord) et à la correspondance canonique | S2 / Spoofing | ADR-015 §2.2 |
 | 14 | Preuve d'identité alternative (ré-authentification récente auprès du fournisseur d'identité) exigée pour la définition d'un premier mot de passe sur un compte fédéré uniquement | S2 / Elevation of Privilege | ADR-015 §1.4 ; `docs/domaine/identity-access/context.md` (règle métier n°6) |
 | 15 | Rejet silencieux d'une liaison déjà existante, sans révélation d'existence | S2 / Information disclosure | ADR-015 §2.3 ; `contrat-openapi.md` §6 |
-| 16 | Mécanisme de reprise en place (« reclaim-in-place ») : bascule de l'indicateur de vérification d'email et neutralisation obligatoire du mot de passe préexistant avant liaison fédérée — **statut `[À TRANCHER — à ratifier produit]`, non acquis** | S2 / Elevation of Privilege | ADR-015 §2.3 |
+| 16 | Mécanisme de reprise en place (« reclaim-in-place ») : bascule de l'indicateur de vérification d'email et neutralisation obligatoire du mot de passe préexistant avant liaison fédérée — **statut `[À TRANCHER — PRODUIT]`, non acquis** | S2 / Elevation of Privilege | ADR-015 §2.3 |
 
 ### 4.3 Autorisation API et anti-fuite par visibilité (surfaces S3, S4)
 
@@ -284,7 +284,7 @@ La topologie à connexions persistantes et sticky sessions actée par ADR-004 (�
 
 ### 5.2 Postures non ratifiées et arbitrages assumés
 
-- **Reprise en place (« reclaim-in-place »)** — mécanisme proposé pour résoudre le cas d'une liaison OAuth sur un compte préexistant non vérifié. **Statut : `[À TRANCHER — à ratifier produit]`. Ce mécanisme n'est pas une mesure acquise** tant qu'il n'a pas été ratifié. Ancre : ADR-015 §2.3.
+- **Reprise en place (« reclaim-in-place »)** — mécanisme proposé pour résoudre le cas d'une liaison OAuth sur un compte préexistant non vérifié. **Statut : `[À TRANCHER — PRODUIT]`. Ce mécanisme n'est pas une mesure acquise** tant qu'il n'a pas été ratifié. Ancre : ADR-015 §2.3.
 - **Résidu d'énumération d'email (CWE-204)** — le message d'erreur « adresse déjà associée » constitue un résidu d'énumération assumé. Il s'agit d'une décision produit tracée, **acceptée** et mitigée par la limitation de débit — ce n'est pas un point ouvert mais un arbitrage clos. Ancre : ADR-015 §Résidu CWE-204.
 
 ### 5.3 Contrôles non vérifiables en CI — validations juridiques préalables au lancement dans l'Union européenne

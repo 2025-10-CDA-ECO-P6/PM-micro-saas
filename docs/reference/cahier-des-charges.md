@@ -1223,7 +1223,7 @@ Les valeurs consolidées dans cette annexe sont **volatiles** : elles sont susce
 
 ## 13. Traçabilité des sections
 
-Le tableau suivant relie chaque section de ce cahier des charges à ses sources principales dans le corpus de conception, pour permettre de remonter du document officiel vers la conception détaillée qui fait foi.
+Le tableau suivant relie chaque section de ce cahier des charges à ses sources principales dans le corpus de conception, pour permettre de remonter de ce document vers ses sources, qui font foi (ADR-019, § 1).
 
 | Section | Sources |
 |---|---|
