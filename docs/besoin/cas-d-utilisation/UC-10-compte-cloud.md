@@ -130,7 +130,7 @@ Un joueur invité sans compte clique sur un lien d'invitation, crée un compte e
 
 1. L'utilisateur accède à la page profil et demande la suppression de son compte.
 2. Le système affiche les conséquences :
-   - les espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur est propriétaire (`ownerId`) restent à son nom tant qu'ils comptent d'autres membres actifs — au MVP, il doit d'abord exclure ces membres (note MVP ci-dessous), puis l'espace est conservé sous son identité anonymisée ; après le MVP, il pourra transférer la propriété ou dissoudre l'espace (ADR-013 § 6) ; son espace personnel (`PERSONAL`), mono-membre et propre à son compte, ne connaît pas cette situation — il est purgé avec le compte, sans transfert possible ;
+   - les espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur est propriétaire (`ownerId`) restent à son nom tant qu'ils sont vivants (hors corbeille) et comptent d'autres membres actifs — au MVP, il doit d'abord exclure tous ces membres ou supprimer l'espace (note MVP ci-dessous), puis l'espace vivant est conservé sous son identité anonymisée ; un espace déjà en corbeille ne bloque pas la suppression et n'est pas conservé (note MVP ci-dessous) ; après le MVP, il pourra transférer la propriété ou dissoudre l'espace (ADR-013 § 6) ; son espace personnel (`PERSONAL`), mono-membre et propre à son compte, ne connaît pas cette situation — il est purgé avec le compte, sans transfert possible ;
    - tout document dont la confidentialité est `PLAYER_PRIVATE` et qu'il a créé sera supprimé physiquement, quel qu'en soit le type — y compris les documents `PLAYER_PRIVATE` qu'il a créés et rattachés aux personnages qu'il incarnait dans les espaces vivants où il était membre ;
    - les autres données liées (participations, memberships) seront anonymisées.
 3. L'utilisateur confirme la suppression.
@@ -142,12 +142,12 @@ Un joueur invité sans compte clique sur un lien d'invitation, crée un compte e
       soit exposé à un futur joueur réassocié au personnage. La fiche du personnage elle-même survit et reste ré-associable
       à un autre joueur pour préserver la continuité d'espace.
    b. Anonymisation des données nominatives dans les autres tables (nom d'affichage remplacé par `[Compte supprimé]`).
-   c. Conservation des espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur est propriétaire sous son identité anonymisée (le contenu `PUBLIC`/`GM_ONLY` reste attaché à l'espace ; ADR-013 § 6), une fois le blocage de la note MVP levé. Après le MVP : transfert de propriété ou dissolution de l'espace (ADR-013 § 6).
+   c. Conservation des espaces `CAMPAIGN`/`ONE_SHOT` vivants dont l'utilisateur est propriétaire sous son identité anonymisée (le contenu `PUBLIC`/`GM_ONLY` reste attaché à l'espace ; ADR-013 § 6), une fois le blocage de la note MVP levé. Après le MVP : transfert de propriété ou dissolution de l'espace (ADR-013 § 6).
    d. Purge de l'espace personnel (`PERSONAL`) de l'utilisateur — mono-membre et propre à son compte, il est supprimé avec le compte, sans transfert ni conservation possible.
    e. Désactivation du compte (`status = DELETED`).
 5. L'utilisateur est déconnecté et redirigé vers la page d'accueil.
 
-**Note MVP** : si l'utilisateur est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs, le transfert de propriété est hors MVP. Dans le MVP, la suppression est bloquée tant que l'utilisateur a des espaces `CAMPAIGN`/`ONE_SHOT` avec d'autres membres — un message explicite lui demande de les gérer d'abord. Une fois le blocage levé, l'espace est conservé sous l'identité anonymisée de l'utilisateur (ADR-013 § 6) ; le transfert de propriété ou la dissolution de l'espace viendront après le MVP.
+**Note MVP** : si l'utilisateur est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` vivants avec des membres actifs, le transfert de propriété est hors MVP. Dans le MVP, la suppression est bloquée tant que l'utilisateur a des espaces `CAMPAIGN`/`ONE_SHOT` vivants avec d'autres membres — un message explicite lui demande de les gérer d'abord : exclure tous les membres, ou supprimer l'espace. Un espace `CAMPAIGN`/`ONE_SHOT` en corbeille (ADR-010 § 1 : statut `Deleted` ou `deleted_at` défini) ne bloque pas la suppression du compte : le blocage protège un espace vivant, que l'ADR-013 § 6 conserve pour que ses invités continuent d'y accéder, et un espace en corbeille ne l'est plus ; l'effacement de compte (`UserAnonymized`) s'abstient sur un espace en corbeille, dont la purge reste à la corbeille (ADR-011, matrice de préséance des deux sagas). Une fois le blocage levé, l'espace vivant est conservé sous l'identité anonymisée de l'utilisateur (ADR-013 § 6) ; le transfert de propriété ou la dissolution de l'espace viendront après le MVP.
 
 ## Exceptions
 
@@ -165,7 +165,7 @@ Le système informe l'utilisateur que le lien n'est plus valide et lui propose d
 
 ### E4 — Suppression bloquée (propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` actifs)
 
-L'utilisateur tente de supprimer son compte mais est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs. Le système bloque la suppression et indique les espaces concernés. L'utilisateur doit d'abord exclure tous les membres ou transférer la propriété (post-MVP) avant de pouvoir supprimer son compte.
+L'utilisateur tente de supprimer son compte mais est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` vivants (hors corbeille) avec des membres actifs. Le système bloque la suppression et indique les espaces concernés. L'utilisateur doit d'abord exclure tous les membres, supprimer l'espace (il passe alors en corbeille, ADR-010 § 1, et ne bloque plus) ou transférer la propriété (post-MVP) avant de pouvoir supprimer son compte. Un espace déjà en corbeille ne bloque pas la suppression.
 
 ### E5 — Échec ou interruption de la migration local→cloud
 
@@ -184,7 +184,7 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 - Les données nominatives sont anonymisées.
 - Tout document dont la confidentialité est `PLAYER_PRIVATE` créé par l'utilisateur supprimé est supprimé physiquement, quel qu'en soit le type, y compris les documents `PLAYER_PRIVATE` rattachés aux personnages qu'il incarnait dans les espaces vivants où il était membre.
 - Les fiches de personnages survivent et restent ré-associables à d'autres joueurs.
-- Les espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur était propriétaire sont conservés sous son identité anonymisée, le blocage de la note MVP ayant été levé (après le MVP : transfert de propriété ou dissolution de l'espace, ADR-013 § 6) ; son espace personnel (`PERSONAL`) est purgé avec le compte, sans transfert possible.
+- Les espaces `CAMPAIGN`/`ONE_SHOT` vivants dont l'utilisateur était propriétaire sont conservés sous son identité anonymisée, le blocage de la note MVP ayant été levé (après le MVP : transfert de propriété ou dissolution de l'espace, ADR-013 § 6) ; son espace personnel (`PERSONAL`) est purgé avec le compte, sans transfert possible.
 - L'utilisateur est déconnecté.
 
 ## Données manipulées
@@ -227,7 +227,7 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
     pour préserver la continuité d'espace.
   - Les autres contenus créés dans un espace `CAMPAIGN`/`ONE_SHOT` (documents, notes MJ, PNJ) restent attachés à l'espace sous identité anonymisée — ils appartiennent à l'espace, pas à l'individu. Le contenu de l'espace personnel (`PERSONAL`) de l'utilisateur suit un traitement distinct : mono-membre et propre à son compte, il est purgé avec le compte plutôt que conservé sous identité anonymisée.
   - La suppression est irréversible.
-  - Un utilisateur propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs ne peut pas supprimer son compte tant qu'il n'a pas géré ces espaces (MVP : exclusion des membres ; post-MVP : transfert de propriété).
+  - Un utilisateur propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` vivants (hors corbeille) avec des membres actifs ne peut pas supprimer son compte tant qu'il n'a pas géré ces espaces (MVP : exclusion de tous les membres ou suppression de l'espace ; post-MVP : transfert de propriété). Un espace en corbeille (ADR-010 § 1) ne bloque pas la suppression.
 
 ## Critères d'acceptation
 
@@ -244,7 +244,7 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 - Le gate de reconnaissance présente l'historique de session détecté par espace (sessions terminées, notes de session, documents épinglés, résumés) ; toute session en cours (LIVE) est signalée avec indication qu'elle doit être clôturée avant que l'espace puisse migrer.
 - Après migration réussie, l'historique de session des espaces migrés est retrouvé intact dans l'espace de travail cloud.
 - Un utilisateur peut demander la suppression de son compte depuis sa page profil.
-- La suppression est bloquée si l'utilisateur est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs.
+- La suppression est bloquée si l'utilisateur est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` vivants (hors corbeille) avec des membres actifs ; un espace en corbeille ne la bloque pas.
 - Après suppression : le compte est désactivé, les données nominatives sont anonymisées, tout document dont la confidentialité est `PLAYER_PRIVATE` créé par l'utilisateur est supprimé physiquement, quel qu'en soit le type.
 
 ## Questions à valider en interview

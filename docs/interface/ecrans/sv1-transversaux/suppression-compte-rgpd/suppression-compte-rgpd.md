@@ -26,8 +26,8 @@
 Intention : l'utilisateur authentifié déclenche la suppression définitive de son compte
             en prenant connaissance des conséquences irréversibles avant toute confirmation ;
             la procédure est bloquée si l'utilisateur est propriétaire d'espaces partagés
-            qui comptent encore d'autres membres actifs, et elle expose explicitement
-            les raisons du blocage.
+            vivants (hors corbeille) qui comptent encore d'autres membres actifs, et elle
+            expose explicitement les raisons du blocage ; un espace en corbeille ne bloque pas.
 ```
 
 ---
@@ -42,7 +42,7 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
              personnel (documents, dossiers, blocs, sans aucune exception), suppression
              physique des documents privés de joueur créés par l'utilisateur (y compris
              ceux rattachés aux personnages qu'il incarnait dans les espaces vivants),
-             conservation, sous son identité anonymisée, des espaces partagés dont il
+             conservation, sous son identité anonymisée, des espaces partagés vivants dont il
              est propriétaire une fois le blocage levé (leurs autres membres exclus),
              et déconnexion du compte ;
              cette zone est visible avant toute action de confirmation
@@ -53,8 +53,9 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
   type     : formulaire
   rôle     : recueille la confirmation explicite de l'utilisateur après qu'il a pris
              connaissance des conséquences ; accessible uniquement en état confirmable
-             (adresse de messagerie validée — RB-10-05 — et aucun espace partagé dont
-             il est propriétaire ne compte encore d'autres membres actifs) ; la confirmation est une action distincte et délibérée,
+             (adresse de messagerie validée — RB-10-05 — et aucun espace partagé vivant dont
+             il est propriétaire ne compte encore d'autres membres actifs ; un espace en
+             corbeille ne compte pas) ; la confirmation est une action distincte et délibérée,
              non déclenchable par erreur
   priorité : principal
   visibilité : utilisateur authentifié
@@ -62,10 +63,11 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
 [ ZONE DE BLOCAGE ]
   type     : principal
   rôle     : remplace la zone de confirmation quand la suppression est impossible ;
-             indique les espaces partagés qui comptent encore d'autres membres actifs et font
-             obstacle, et guide
+             indique les espaces partagés vivants qui comptent encore d'autres membres actifs
+             et font obstacle, et guide
              l'utilisateur vers les actions requises avant de pouvoir supprimer son
-             compte (exclure les membres au MVP) ; visible uniquement en état bloqué
+             compte (au MVP : exclure tous les membres, ou supprimer l'espace) ;
+             visible uniquement en état bloqué
   priorité : principal
   visibilité : utilisateur authentifié (état bloqué uniquement)
 ```
@@ -83,12 +85,12 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
   l'espace personnel est supprimé intégralement et inconditionnellement (documents,
   dossiers, blocs, sans exception) ; les documents privés de joueur créés par
   l'utilisateur, y compris ceux rattachés aux personnages qu'il incarnait, sont
-  supprimés physiquement (NFR-CONF-03) ; les espaces partagés dont il est
+  supprimés physiquement (NFR-CONF-03) ; les espaces partagés vivants dont il est
   propriétaire sont conservés sous son identité anonymisée, le blocage ayant été
   levé ; l'utilisateur est déconnecté et redirigé
   vers la page d'accueil ;
   action disponible uniquement si l'adresse de messagerie est validée (RB-10-05)
-  et si aucun espace partagé comptant d'autres membres actifs ne fait obstacle (UC-10 E4)
+  et si aucun espace partagé vivant comptant d'autres membres actifs ne fait obstacle (UC-10 E4)
 ```
 
 ---
@@ -97,21 +99,22 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
 
 ```
 état confirmable (suppression possible) :
-  l'utilisateur est propriétaire d'aucun espace partagé comptant d'autres membres actifs,
-  et son adresse de messagerie est validée ;
+  l'utilisateur est propriétaire d'aucun espace partagé vivant comptant d'autres membres actifs
+  (un espace en corbeille ne compte pas), et son adresse de messagerie est validée ;
   la zone de présentation des conséquences s'affiche avec la zone de confirmation ;
   l'utilisateur peut confirmer la suppression
 
-état bloqué (espaces partagés avec d'autres membres actifs) :
-  l'utilisateur est propriétaire d'au moins un espace partagé avec d'autres membres actifs ;
+état bloqué (espaces partagés vivants avec d'autres membres actifs) :
+  l'utilisateur est propriétaire d'au moins un espace partagé vivant (hors corbeille) avec
+  d'autres membres actifs ;
   la zone de présentation des conséquences s'affiche ;
   la zone de confirmation est remplacée par la zone de blocage qui indique
   les espaces concernés ;
-  l'utilisateur ne peut pas déclencher la suppression avant d'avoir géré ces espaces
-  (UC-10 E4 ; UC-10 §Règles métier RGPD) ;
+  l'utilisateur ne peut pas déclencher la suppression avant d'avoir géré ces espaces :
+  exclure tous leurs membres, ou supprimer l'espace (UC-10 E4 ; UC-10 §Règles métier RGPD) ;
   note : la suppression est bloquée uniquement par la présence d'espaces partagés
-  comptant d'autres membres actifs — un espace personnel mono-membre ne bloque
-  jamais la suppression
+  vivants comptant d'autres membres actifs — un espace en corbeille (ADR-010 § 1) ne
+  bloque pas, et un espace personnel mono-membre ne bloque jamais la suppression
 
 [SOUS-SPÉCIFIÉ — S4 §Suppression de compte (RGPD)]
   wording exact des conséquences présentées à l'utilisateur : non tranché dans le corpus.
@@ -163,7 +166,8 @@ Déclenché — éléments S8 et S9.
 ```
 Éléments différés (S8) :
   [HORS-MVP — UC-10 A4 §Note MVP] transfert de propriété d'espace :
-    le déblocage de la suppression passe au MVP par l'exclusion des membres ;
+    le déblocage de la suppression passe au MVP par l'exclusion de tous les membres
+    ou la suppression de l'espace ;
     le transfert de propriété est hors MVP
 
 Éléments sous-spécifiés (S9) :

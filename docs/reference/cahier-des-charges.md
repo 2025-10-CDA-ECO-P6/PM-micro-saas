@@ -2,7 +2,7 @@
 
 | Champ | Valeur |
 |---|---|
-| Version | 1.5 |
+| Version | 1.6 |
 | Date | 2026-10-09 |
 | Statut | Version de travail — périmètre produit stabilisé ; volet architecture technique à confirmer, cf. [§9](#9-contraintes) |
 | Porteur | Pierre-Marie Marchio |
@@ -18,6 +18,7 @@
 | 1.3 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond — phasage (§ 11) : la décision marché passe entre J2 et J3, suivant l'ajustement du 2026-10-09 de l'ADR-006 |
 | 1.4 | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans restructuration : titres des ADR-009, 010 et 014 de l'index des décisions alignés sur leurs fichiers (« espace » et non « campagne »), section « Architecture détaillée » renvoyée vers le dossier d'architecture et la conception détaillée au lieu de les dire différés, points non tranchés et points tranchés de l'annexe « Points à arbitrer » regroupés chacun sous son étiquette, version de l'en-tête alignée sur la dernière ligne de l'historique |
 | 1.5 | 2026-10-09 | Pierre-Marie Marchio | Restructuration sans changement de fond : encadré « Lire ce document », cinq parties, sections renumérotées de 1 à 15 (nature et résumé devenus § 1 et 2, anciens § 1 et 2 devenus § 3 et 4, acteurs remontés en § 5 avec « Le MJ comme utilisateur principal » en tête, ancien § 3 devenu § 6 avec « Hors périmètre fonctionnel MVP » avant « Dépendances clés », anciens § 5 et 6 devenus § 7 et 8, anciens § 7 à 9 devenus § 9 à 11, phasage remonté en § 12 avant le glossaire devenu § 13, anciens § 12 et 13 devenus § 14 et 15), sommaire limité aux parties et aux sections, lignes de la traçabilité renumérotées et réordonnées, renvois internes et renvois entrants réparés |
+| 1.6 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond, sans restructuration — blocage de la suppression de compte aligné sur UC-10 : seul un espace partagé vivant (hors corbeille) avec des membres actifs bloque, et les deux voies de déblocage sont nommées (exclure les membres, supprimer l'espace) |
 
 > **Lire ce document**
 >
@@ -569,13 +570,13 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 - La migration ne démarre qu'après confirmation explicite de l'utilisateur — c'est une exigence du système, quel que soit le moyen de déclenchement (RB-10-04).
 - Une session en cours doit être clôturée avant que son espace ne puisse migrer.
 - La validation de l'adresse de messagerie n'est pas bloquante à la connexion, mais devient requise avant toute opération sensible — changement d'email, de mot de passe, liaison fédérée, demande d'effacement (RB-10-05).
-- La suppression de compte, au titre du droit à l'effacement RGPD, supprime physiquement les notes personnelles de l'utilisateur, anonymise les données nominatives, et reste bloquée tant que l'utilisateur est propriétaire d'espaces avec des membres actifs (RB-10-17, RB-10-18).
+- La suppression de compte, au titre du droit à l'effacement RGPD, supprime physiquement les notes personnelles de l'utilisateur, anonymise les données nominatives, et reste bloquée tant que l'utilisateur est propriétaire d'espaces vivants (hors corbeille) avec des membres actifs — l'exclusion de tous les membres ou la suppression de l'espace lève le blocage, et un espace en corbeille ne bloque pas (RB-10-17, RB-10-18).
 
 **Critères d'acceptation** :
 - Un utilisateur peut créer un compte avec email et mot de passe, et se connecter avec ses identifiants.
 - Le gate de reconnaissance présente l'historique détecté par espace avant toute migration ; une session en cours est signalée comme bloquante.
 - Après migration réussie, l'historique de session des espaces migrés est retrouvé intact dans l'espace de travail cloud.
-- Un utilisateur peut demander la suppression de son compte ; celle-ci est bloquée s'il est propriétaire d'espaces avec des membres actifs.
+- Un utilisateur peut demander la suppression de son compte ; celle-ci est bloquée s'il est propriétaire d'espaces vivants (hors corbeille) avec des membres actifs.
 
 ### UC-11 — Gérer les membres d'un espace
 
@@ -855,7 +856,7 @@ flowchart TB
 
 **Invariants et règles structurantes** :
 - Une adresse email est unique dans l'ensemble du système ; un compte suspendu ou supprimé ne peut plus s'authentifier.
-- La suppression d'un compte est irréversible ; le blocage qu'elle peut subir dépend du **type** de l'espace possédé par le titulaire — une divergence que le corpus signalait entre UC-10 et le domaine (voir le dossier de conception détaillée, §5.2/§7.2.3/§11.1), désormais réconciliée par le domaine : un espace personnel (`PERSONAL`), mono-membre par construction, n'est **jamais** bloquant et subit un hard-delete inconditionnel à la suppression du compte ; un espace campagne ou one-shot (`CAMPAIGN`/`ONE_SHOT`) **bloque** la suppression tant qu'il comporte au moins un membre actif autre que le propriétaire, conformément à UC-10 — le titulaire doit d'abord exclure ces membres. Une fois la suppression exécutée pour les espaces éligibles, elle anonymise les données nominatives tout en conservant l'identifiant technique comme référence dans les autres contextes.
+- La suppression d'un compte est irréversible ; le blocage qu'elle peut subir dépend du **type** de l'espace possédé par le titulaire — une divergence que le corpus signalait entre UC-10 et le domaine (voir le dossier de conception détaillée, §5.2/§7.2.3/§11.1), désormais réconciliée par le domaine : un espace personnel (`PERSONAL`), mono-membre par construction, n'est **jamais** bloquant et subit un hard-delete inconditionnel à la suppression du compte ; un espace campagne ou one-shot (`CAMPAIGN`/`ONE_SHOT`) **bloque** la suppression tant qu'il est vivant (hors corbeille) et comporte au moins un membre actif autre que le propriétaire, conformément à UC-10 — le titulaire doit d'abord exclure tous ces membres ou supprimer l'espace ; un espace en corbeille ne bloque pas. Une fois la suppression exécutée pour les espaces éligibles, elle anonymise les données nominatives tout en conservant l'identifiant technique comme référence dans les autres contextes.
 - Les opérations sensibles sur le compte — changement d'adresse de messagerie, liaison d'une identité externe, demande d'effacement — exigent que l'adresse de messagerie ait été préalablement vérifiée.
 - À la suppression d'un compte, l'effacement physique au titre du droit à l'effacement (RGPD article 17) porte sur la confidentialité du document et non sur son type : tout `Document` dont la confidentialité (`visibility`) est `PLAYER_PRIVATE` et qui a été créé par l'utilisateur supprimé est effacé physiquement, quel qu'en soit le type — portée décidée en conception, ratifiée dans UC-10 et portée par la règle F-08 du domaine (identity-access/context.md § Règles métier). Les contenus partagés qu'il a produits dans un espace campagne ou one-shot restent, eux, rattachés à l'espace sous identité anonymisée, au titre de la continuité. Le contenu d'un espace personnel ne connaît pas cette continuité : l'espace entier, mono-membre, est supprimé physiquement et sans exception avec la suppression du compte.
 
@@ -953,7 +954,7 @@ Vingt écrans composent le périmètre d'interface du MVP, regroupés par surfac
 | Transversaux | Inscription | Création de compte, par email ou par fournisseur d'identité externe |
 | Transversaux | Connexion | Authentification à un compte existant |
 | Transversaux | Profil utilisateur | Consultation et modification du nom d'affichage, du mot de passe, du niveau de compte |
-| Transversaux | Suppression de compte (RGPD) | Confirmation de suppression avec présentation des conséquences, bloquée si des espaces actifs comportent des membres |
+| Transversaux | Suppression de compte (RGPD) | Confirmation de suppression avec présentation des conséquences, bloquée si des espaces vivants (hors corbeille) comportent des membres actifs |
 | Transversaux | Gate de migration local→cloud | Présentation des espaces locaux détectés et confirmation explicite avant leur migration vers le compte |
 | Entrée d'espace | Tableau de bord des espaces de jeu | Liste de l'ensemble des espaces du MJ, espace personnel inclus hors quota, avec repère de session en cours |
 | Entrée d'espace | Création d'un espace partagé | Formulaire de création d'un espace partagé (campagne ou one-shot) |

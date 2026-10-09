@@ -151,8 +151,9 @@ Déclenché — éléments S8 et S9.
 Éléments différés (S8) :
   [HORS-MVP — UC-10 A4 §Note MVP] transfert de propriété d'espace avant suppression
     de compte : hors MVP — la suppression est bloquée tant que l'utilisateur est
-    propriétaire d'espaces partagés qui comptent d'autres membres actifs, puis ces
-    espaces sont conservés sous son identité anonymisée ; le transfert est un
+    propriétaire d'espaces partagés vivants (hors corbeille) qui comptent d'autres
+    membres actifs (il les débloque en excluant tous les membres ou en supprimant
+    l'espace), puis ces espaces sont conservés sous son identité anonymisée ; le transfert est un
     mécanisme post-MVP
 
 Éléments différés (S8) ci-dessus — aucun élément sous-spécifié résiduel.

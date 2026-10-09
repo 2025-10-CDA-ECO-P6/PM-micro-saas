@@ -2,7 +2,7 @@
 
 | Champ | Valeur |
 |---|---|
-| Version | 1.2 |
+| Version | 1.3 |
 | Date | 2026-10-09 |
 | Statut | Version de travail — consolidation dérivée du corpus de conception ; ne tranche aucune décision. Points ouverts et limites de vérifiabilité recensés en §11, à traiter à l'entrée en build. |
 | Porteur | Pierre-Marie Marchio |
@@ -15,6 +15,7 @@
 | 1.0 | 2026-07-16 | Pierre-Marie Marchio | Rédaction initiale — consolidation relationnelle du corpus de conception (architecture, décisions, specs, domaine) |
 | 1.1 | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans restructuration — marqueur périmé retiré de la chaîne 2.2 (réconciliation UC-10 / invariant 3 acquise), renvois internes et renvois aux sources rétablis, citations littérales alignées sur leurs sources, ligne « Sommaire » retirée de la Traçabilité |
 | 1.2 | 2026-10-09 | Pierre-Marie Marchio | Restructuration sans changement de fond : encadré « Lire ce document », six parties, « Comment lire ce document » absorbé par l'encadré et le § 1, sections renumérotées de 1 à 13 (anciens § 1 et 2 devenus § 4 et 5, § 3 à 6 devenus § 7 à 10, § 7 devenu § 6, § 8 à 10 devenus § 11 à 13), sous-sections lettrées aplaties ou devenues 7.2.1 à 7.2.4, renvois internes et renvois entrants réparés ; les chaînes 2.1 à 2.4 citées en 1.1 sont devenues les § 5.1 à 5.4 |
+| 1.3 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond, sans restructuration — blocage de la suppression de compte aligné sur UC-10 et l'invariant 3 : un espace partagé en corbeille (ADR-010 § 1) ne bloque pas (§ 5.2, § 7.2.3, § 11.1) |
 
 > **Lire ce document**
 >
@@ -224,7 +225,7 @@ sequenceDiagram
 
 **Ancrage UC.** [UC-10](../besoin/cas-d-utilisation/UC-10-compte-cloud.md) §A4 — « Suppression du compte (droit à l'effacement RGPD) ».
 
-> **Réconciliation acquise — blocage conditionné par type d'espace.** UC-10 §A4/§E4 pose le principe : la suppression de compte est **bloquée** tant que le titulaire est propriétaire d'espaces partagés avec des membres actifs (« le système bloque la suppression », UC-10 §E4). `identity-access/context.md` § Invariants métier, invariant 3, réconcilie ce principe avec le routage par type d'espace : **bloquant** pour `CAMPAIGN`/`ONE_SHOT` tant que l'espace porte au moins un `SpaceMembership` actif autre que le propriétaire (conforme UC-10) ; **jamais bloquant** pour `PERSONAL`, mono-membre par construction et structurellement hors du champ « membres actifs » visé par UC-10. UC-10 reste la source du principe de blocage, le domaine en donne le routage exact par type — ce n'est plus une divergence non réconciliée mais l'articulation actée entre les deux sources.
+> **Réconciliation acquise — blocage conditionné par type d'espace.** UC-10 §A4/§E4 pose le principe : la suppression de compte est **bloquée** tant que le titulaire est propriétaire d'espaces partagés vivants (hors corbeille) avec des membres actifs (« le système bloque la suppression », UC-10 §E4). `identity-access/context.md` § Invariants métier, invariant 3, réconcilie ce principe avec le routage par type d'espace : **bloquant** pour `CAMPAIGN`/`ONE_SHOT` tant que l'espace porte au moins un `SpaceMembership` actif autre que le propriétaire et qu'il n'est pas en corbeille (conforme UC-10 ; un espace en corbeille ne bloque pas : `UserAnonymized` s'abstient sur lui, sa purge reste à la corbeille — ADR-011, matrice de préséance des deux sagas) ; **jamais bloquant** pour `PERSONAL`, mono-membre par construction et structurellement hors du champ « membres actifs » visé par UC-10. UC-10 reste la source du principe de blocage, le domaine en donne le routage exact par type — ce n'est plus une divergence non réconciliée mais l'articulation actée entre les deux sources.
 
 ```mermaid
 sequenceDiagram
@@ -530,7 +531,7 @@ sequenceDiagram
 
 **Ancrage UC.** [UC-10](../besoin/cas-d-utilisation/UC-10-compte-cloud.md) §A4 — « Suppression du compte (droit à l'effacement RGPD) ».
 
-`User.Delete()` (identity-access/context.md invariant 3) est le déclencheur côté Identity & Access de la cascade d'effacement RGPD, dont le routage complet par type d'espace — y compris la réconciliation entre UC-10 §A4/§E4 (principe de blocage) et l'invariant 3 (routage par type : bloquant pour `CAMPAIGN`/`ONE_SHOT` à membre actif, jamais pour `PERSONAL`) — est développé en **§5.2**. Ce dossier n'y revient pas ; l'articulation est consolidée à l'endroit où elle est déjà posée.
+`User.Delete()` (identity-access/context.md invariant 3) est le déclencheur côté Identity & Access de la cascade d'effacement RGPD, dont le routage complet par type d'espace — y compris la réconciliation entre UC-10 §A4/§E4 (principe de blocage) et l'invariant 3 (routage par type : bloquant pour `CAMPAIGN`/`ONE_SHOT` vivant à membre actif, jamais pour un espace en corbeille ni pour `PERSONAL`) — est développé en **§5.2**. Ce dossier n'y revient pas ; l'articulation est consolidée à l'endroit où elle est déjà posée.
 
 #### 7.2.4 — Liaison OAuth et *reclaim-in-place*
 
@@ -1076,7 +1077,7 @@ Cette section consolide, en un registre unique, les points non tranchés déjà 
 | Instanciation cross-espace `PERSONAL` → partagé : comportement du document source à la purge de l'espace `PERSONAL` d'origine | Modélisation domaine | ADR-018 § Points à trancher | Non tranché |
 | Activation de l'espace `PERSONAL` comme zone d'atterrissage par défaut en mode local (redéfinit H1) ; posture capture-first recommandée en MVP | Point de décision produit, arbitré explicitement | ADR-018 § Recommandations (Geste capture-first) ; § Points à trancher | DÉCIDÉ 2026-06-12 ([matrice de priorités, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md#espace-personnel--conteneur-par-défaut-et-capture-first-must-have--adr-018)) |
 
-**Réconciliation de cohérence corpus — désormais actée, plus une divergence.** [UC-10](../besoin/cas-d-utilisation/UC-10-compte-cloud.md) §A4/§E4 pose le principe : la suppression de compte est **bloquée** tant que le titulaire est propriétaire d'espaces partagés avec des membres actifs (« le système bloque la suppression »). `identity-access/context.md` § Invariants métier, invariant 3, réconcilie ce principe avec le routage par type d'espace : **bloquant** pour `CAMPAIGN`/`ONE_SHOT` à membre actif (conforme UC-10), **jamais bloquant** pour `PERSONAL` (mono-membre, hors champ). UC-10 reste la source du principe de blocage, le domaine en donne le routage exact — l'articulation, déjà développée en **§5.2**, n'est plus une divergence ouverte.
+**Réconciliation de cohérence corpus — désormais actée, plus une divergence.** [UC-10](../besoin/cas-d-utilisation/UC-10-compte-cloud.md) §A4/§E4 pose le principe : la suppression de compte est **bloquée** tant que le titulaire est propriétaire d'espaces partagés vivants (hors corbeille) avec des membres actifs (« le système bloque la suppression »). `identity-access/context.md` § Invariants métier, invariant 3, réconcilie ce principe avec le routage par type d'espace : **bloquant** pour `CAMPAIGN`/`ONE_SHOT` vivant à membre actif (conforme UC-10), **jamais bloquant** pour un espace en corbeille (ADR-010 § 1 ; `UserAnonymized` s'abstient, ADR-011) ni pour `PERSONAL` (mono-membre, hors champ). UC-10 reste la source du principe de blocage, le domaine en donne le routage exact — l'articulation, déjà développée en **§5.2**, n'est plus une divergence ouverte.
 
 ### 11.2 — Renvoi juridique
 
