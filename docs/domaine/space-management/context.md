@@ -64,6 +64,7 @@ Frontière de cohérence pour les membres et les invitations. Représente indiff
 | `status` | `SpaceStatus` | `ACTIVE` \| `ARCHIVED` \| `FROZEN` |
 | `memberships` | `SpaceMembership[]` | Entités enfants |
 | `invitations` | `Invitation[]` | Entités enfants — non applicables pour `PERSONAL` (voir invariant 13) |
+| `SoftDelete` | | `isDeleted`, `deletedAt` — posé par `Delete()` ; corbeille de 30 jours avant purge ([ADR-010](../../decisions/ADR-010-suppression-espace.md), [ADR-011](../../decisions/ADR-011-cascade-integrite-referentielle.md)) |
 | `createdAt` | `DateTime` | |
 | `updatedAt` | `DateTime` | |
 

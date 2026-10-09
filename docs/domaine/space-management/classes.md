@@ -19,6 +19,7 @@ classDiagram
         +SpaceStatus status
         +liste de SpaceMembership memberships
         +liste de Invitation invitations
+        +SoftDelete softDelete
         +horodatage createdAt
         +horodatage updatedAt
         +Create(ownerId, name, type, description, gameSystem)$

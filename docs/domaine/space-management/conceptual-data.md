@@ -15,6 +15,7 @@ erDiagram
         texte status "ACTIVE | ARCHIVED | FROZEN"
         horodatage created_at
         horodatage updated_at
+        horodatage deleted_at "nullable"
     }
 
     SPACE_MEMBERSHIP {
