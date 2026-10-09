@@ -315,6 +315,7 @@ Document (SCENE) "Entrée de la crypte"
 8. Un Document avec `isReusable = false` ne peut pas être instancié.
 9. Une instance (`sourceDocumentId` renseigné) est totalement indépendante de son source après création.
 10. La visibilité `PUBLIC` est permanente jusqu'à `Unshare()` explicite — un document partagé reste accessible aux joueurs entre les sessions.
+11. Un `DocumentLink` ne relie jamais deux espaces : `Document.LinkDocument()` rejette un lien dont la source et la cible n'appartiennent pas au même espace, si bien qu'aucun lien entre espaces n'existe ([ADR-014, § 4](../../decisions/ADR-014-modele-autorisation-api.md), ligne `document_links`). C'est la raison pour laquelle marquer un scénario comme réutilisable le **copie** dans l'espace personnel au lieu de le déplacer : un déplacement créerait une référence entre espaces ([US-UC-13, Questions ouvertes, point 1](../../besoin/stories/US-UC-13-scenario-reutilisable.md#questions-ouvertes)).
 
 ---
 
