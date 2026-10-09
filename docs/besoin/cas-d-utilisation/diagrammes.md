@@ -50,8 +50,8 @@ flowchart LR
         UC06(["Vue session"])
         UC07(["Creer a la volee"])
         UC08(["Partager une information"])
-        UC09(["Acces joueur via lien\nsession ou campagne"])
-        UC12(["Consulter sa campagne\nvue joueur"])
+        UC09(["Acces joueur via lien\nsession ou espace partage"])
+        UC12(["Consulter son espace\nvue joueur"])
     end
 
     MJ --> UC01
@@ -88,7 +88,7 @@ flowchart LR
     end
     subgraph ESPACES["Espaces de jeu"]
         UC02(["UC-02\nCampagne ou one-shot"])
-        UC13(["UC-13\nBibliotheque de scenarios\npost-MVP"])
+        UC13(["UC-13\nBibliotheque personnelle\npost-MVP"])
     end
     subgraph PILIER1["Pilier 1 — Preparation documentaire"]
         UC03(["UC-03\nStructurer scenario"])
@@ -104,7 +104,7 @@ flowchart LR
     end
     subgraph MEMBRES["Membres"]
         UC11(["UC-11\nGerer membres"])
-        UC12(["UC-12\nConsulter sa campagne\nvue joueur"])
+        UC12(["UC-12\nConsulter son espace\nvue joueur"])
     end
 
     MJ --> UC01
@@ -128,9 +128,8 @@ flowchart LR
     UC08 -.->|"extend"| UC06
     UC09 -.->|"extend"| UC06
     UC14 -.->|"extend"| UC06
-    UC14 -.->|"include"| UC05
     UC11 -.->|"include"| UC10
-    UC09 -.->|"extend"| UC10
+    UC10 -.->|"extend"| UC09
 ```
 
 ---
@@ -149,7 +148,7 @@ flowchart LR
     end
     subgraph ESPACES["Espaces de jeu"]
         UC02(["UC-02\nCampagne ou one-shot"])
-        UC13(["UC-13\nBibliotheque de scenarios\npost-MVP"])
+        UC13(["UC-13\nBibliotheque personnelle\npost-MVP"])
     end
     subgraph PILIER1["Pilier 1 — Preparation documentaire"]
         UC03(["UC-03\nStructurer scenario"])
@@ -184,7 +183,6 @@ flowchart LR
     UC07 -.->|"extend"| UC06
     UC08 -.->|"extend"| UC06
     UC14 -.->|"extend"| UC06
-    UC14 -.->|"include"| UC05
 ```
 
 ---
@@ -202,13 +200,13 @@ flowchart LR
     JInvite -- herite --> Joueur
 
     subgraph ACCES["Acces"]
-        UC09(["UC-09\nAcces joueur via lien\nsession ou campagne"])
+        UC09(["UC-09\nAcces joueur via lien\nsession ou espace partage"])
         UC10(["UC-10\nCreer un compte"])
     end
     subgraph CONTENU["Contenu accessible"]
         INFO(["Informations partagees\npar le MJ en temps reel"])
         HIST(["Historique des sessions\net documents partages"])
-        UC12(["UC-12\nConsulter sa campagne\nvue joueur"])
+        UC12(["UC-12\nConsulter son espace\nvue joueur"])
     end
 
     JInvite --> UC09
@@ -242,7 +240,6 @@ flowchart LR
     subgraph ONESHOT["One-shot express — post-MVP (parcours express conditionné à UC-13)"]
         O1(["Bibliotheque\nde scenarios\npost-MVP"])
         O2(["Lancer un one-shot\nen une action\npost-MVP"])
-        O3(["Lien de session\ntemporaire"])
     end
     subgraph COMMUN["Vue session — commun aux deux contextes"]
         S1(["UC-06 Vue session"])
@@ -256,8 +253,8 @@ flowchart LR
         S5 -.->|"extend"| S1
     end
     subgraph JOUEURS["Acces joueurs"]
-        UC09(["UC-09\nAcces joueur via lien\nsession ou campagne"])
-        UC12(["UC-12\nConsulter sa campagne\nvue joueur"])
+        UC09(["UC-09\nAcces joueur via lien\nsession ou espace partage"])
+        UC12(["UC-12\nConsulter son espace\nvue joueur"])
     end
 
     MJ --> C1
@@ -266,7 +263,6 @@ flowchart LR
     C2 --> S1
     MJ --> O1
     O1 --> O2
-    O3 -.->|"extend"| O2
     O2 --> S1
     S3 --> UC09
     S5 --> UC09
