@@ -42,7 +42,7 @@ Permettre à un utilisateur de créer un compte pour activer la synchronisation 
 
 Un MJ qui a commencé à utiliser l'application en mode local (UC-01) veut soit sauvegarder ses données dans le cloud, soit partager des informations avec ses joueurs (UC-08), soit accéder à ses campagnes depuis un autre appareil. Ces trois besoins déclenchent naturellement la création de compte.
 
-Un joueur invité sans compte (UC-09) peut créer un compte pour rejoindre une campagne de façon permanente et conserver ses notes entre sessions.
+Un joueur invité sans compte (UC-09) peut créer un compte pour conserver ses accès et, avec l'accord du MJ ou par un lien d'espace partagé, rejoindre l'espace de façon permanente (A3). La conservation de ses notes entre sessions suivra la prise de notes du joueur, hors MVP.
 
 La création de compte ne doit pas être imposée au démarrage — elle est proposée en réponse à un besoin concret.
 

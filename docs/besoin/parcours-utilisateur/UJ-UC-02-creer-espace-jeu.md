@@ -108,7 +108,7 @@ flowchart TD
 
 **Limite de synchronisation cloud atteinte (compte gratuit)**
 - Mode local : aucun plafond de nombre d'espaces — seule la capacité de stockage du navigateur peut interrompre la création (→ UJ-UC-01, E1).
-- Compte gratuit : blocage à la synchronisation du 4e espace (`CAMPAIGN` ou `ONE_SHOT`), avec CTA vers l'offre supérieure (RB-02-10).
+- Compte gratuit : blocage à la création d'un 4e espace `CAMPAIGN` ou `ONE_SHOT` actif, avec CTA vers l'offre supérieure (RB-02-10).
 - Pas de destruction silencieuse — la création est simplement refusée avec explication claire.
 
 **Nom vide à la validation**

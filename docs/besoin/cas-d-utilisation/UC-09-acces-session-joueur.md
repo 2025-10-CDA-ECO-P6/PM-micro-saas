@@ -89,7 +89,7 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
 **Chemin A — session ponctuelle (sans compte)**
 - Le joueur accède aux informations partagées sans avoir créé de compte.
 - Son nom d'affichage est visible dans la session pour le MJ.
-- Son accès expire à la fin de la session (pour les liens ponctuels).
+- Son accès expire 24 h après la fin de la session (pour les liens ponctuels, RB-09-01).
 
 **Chemin B — espace partagé permanent (avec compte)**
 - Le `SpaceMembership` est actif (créé `PENDING` puis activé via `Activate()` à l'utilisation du lien d'invitation généré par le MJ).
