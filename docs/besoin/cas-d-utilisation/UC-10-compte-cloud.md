@@ -130,7 +130,7 @@ Un joueur invité sans compte clique sur un lien d'invitation, crée un compte e
 
 1. L'utilisateur accède à la page profil et demande la suppression de son compte.
 2. Le système affiche les conséquences :
-   - les espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur est propriétaire (`ownerId`) seront orphelins — il doit d'abord transférer leur propriété ou accepter leur suppression en cascade ; son espace personnel (`PERSONAL`), mono-membre et propre à son compte, ne connaît pas cette situation — il est purgé avec le compte, sans transfert possible ;
+   - les espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur est propriétaire (`ownerId`) restent à son nom tant qu'ils comptent d'autres membres actifs — au MVP, il doit d'abord exclure ces membres (note MVP ci-dessous), puis l'espace est conservé sous son identité anonymisée ; après le MVP, il pourra transférer la propriété ou dissoudre l'espace (ADR-013 § 6) ; son espace personnel (`PERSONAL`), mono-membre et propre à son compte, ne connaît pas cette situation — il est purgé avec le compte, sans transfert possible ;
    - tout document dont la confidentialité est `PLAYER_PRIVATE` et qu'il a créé sera supprimé physiquement, quel qu'en soit le type — y compris les documents `PLAYER_PRIVATE` qu'il a créés et rattachés aux personnages qu'il incarnait dans les espaces vivants où il était membre ;
    - les autres données liées (participations, memberships) seront anonymisées.
 3. L'utilisateur confirme la suppression.
@@ -142,12 +142,12 @@ Un joueur invité sans compte clique sur un lien d'invitation, crée un compte e
       soit exposé à un futur joueur réassocié au personnage. La fiche du personnage elle-même survit et reste ré-associable
       à un autre joueur pour préserver la continuité d'espace.
    b. Anonymisation des données nominatives dans les autres tables (nom d'affichage remplacé par `[Compte supprimé]`).
-   c. Suppression ou transfert des espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur est propriétaire.
+   c. Conservation des espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur est propriétaire sous son identité anonymisée (le contenu `PUBLIC`/`GM_ONLY` reste attaché à l'espace ; ADR-013 § 6), une fois le blocage de la note MVP levé. Après le MVP : transfert de propriété ou dissolution de l'espace (ADR-013 § 6).
    d. Purge de l'espace personnel (`PERSONAL`) de l'utilisateur — mono-membre et propre à son compte, il est supprimé avec le compte, sans transfert ni conservation possible.
    e. Désactivation du compte (`status = DELETED`).
 5. L'utilisateur est déconnecté et redirigé vers la page d'accueil.
 
-**Note MVP** : si l'utilisateur est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs, le transfert de propriété est hors MVP. Dans le MVP, la suppression est bloquée tant que l'utilisateur a des espaces `CAMPAIGN`/`ONE_SHOT` avec d'autres membres — un message explicite lui demande de les gérer d'abord.
+**Note MVP** : si l'utilisateur est propriétaire d'espaces `CAMPAIGN`/`ONE_SHOT` avec des membres actifs, le transfert de propriété est hors MVP. Dans le MVP, la suppression est bloquée tant que l'utilisateur a des espaces `CAMPAIGN`/`ONE_SHOT` avec d'autres membres — un message explicite lui demande de les gérer d'abord. Une fois le blocage levé, l'espace est conservé sous l'identité anonymisée de l'utilisateur (ADR-013 § 6) ; le transfert de propriété ou la dissolution de l'espace viendront après le MVP.
 
 ## Exceptions
 
@@ -184,7 +184,7 @@ Si la migration des données locales vers le cloud échoue ou est interrompue (e
 - Les données nominatives sont anonymisées.
 - Tout document dont la confidentialité est `PLAYER_PRIVATE` créé par l'utilisateur supprimé est supprimé physiquement, quel qu'en soit le type, y compris les documents `PLAYER_PRIVATE` rattachés aux personnages qu'il incarnait dans les espaces vivants où il était membre.
 - Les fiches de personnages survivent et restent ré-associables à d'autres joueurs.
-- Les espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur était propriétaire sont transférés ou supprimés en cascade selon son choix ; son espace personnel (`PERSONAL`) est purgé avec le compte, sans transfert possible.
+- Les espaces `CAMPAIGN`/`ONE_SHOT` dont l'utilisateur était propriétaire sont conservés sous son identité anonymisée, le blocage de la note MVP ayant été levé (après le MVP : transfert de propriété ou dissolution de l'espace, ADR-013 § 6) ; son espace personnel (`PERSONAL`) est purgé avec le compte, sans transfert possible.
 - L'utilisateur est déconnecté.
 
 ## Données manipulées
