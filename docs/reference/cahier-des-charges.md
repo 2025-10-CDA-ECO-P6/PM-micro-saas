@@ -21,7 +21,7 @@
 
 > **Lire ce document**
 >
-> - **À qui** : à qui doit connaître le périmètre fonctionnel du MVP sans ouvrir le reste du corpus ; le document se lit seul et peut être remis à un tiers.
+> - **À qui** : à toute personne qui doit connaître le périmètre fonctionnel du MVP sans ouvrir le reste du corpus ; le document se lit seul et peut être remis à un tiers.
 > - **À quoi** : à porter le quoi fonctionnel du MVP — ce que le produit doit faire, pour qui et dans quel périmètre. Il consolide le corpus de conception et ne tranche rien.
 > - **Comment le lire** : cinq parties répondent chacune à une question du lecteur. Qui s'arrête à une page lit le résumé exécutif (§2), qui renvoie à la section développant chacun de ses points. Les chiffres volatils (quotas, tarif, seuils H1 à H5) sont regroupés dans l'annexe « Valeurs de référence chiffrées » ; la section 9 est provisoire, à re-confirmer à l'entrée en build. Les sources sont citées en fin de section et récapitulées en §15.
 > - **Ce qui fait foi** : jamais ce document ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)). En cas d'écart avec le corpus de conception, c'est lui qu'on corrige.
@@ -284,13 +284,13 @@ Exclusion assumée par choix stratégique, non par oubli.
 
 ### Hors périmètre fonctionnel MVP
 
-Les fonctionnalités explicitement exclues de cette version — table visuelle, moteur de règles, assistant IA, relations typées entre documents, application desktop avec synchronisation, notamment — sont recensées dans la catégorie Won't Have du périmètre ([§6](#6-périmètre)) et détaillées, avec leur trajectoire produit envisagée, dans [exclusions.md](../besoin/vision/perimetre/exclusions.md).
+Les fonctionnalités explicitement exclues de cette version — table visuelle, moteur de règles, assistant IA, relations typées entre documents, application desktop avec synchronisation, notamment — sont recensées dans la catégorie Won't Have ci-dessus et détaillées, avec leur trajectoire produit envisagée, dans [exclusions.md](../besoin/vision/perimetre/exclusions.md).
 
 ### Dépendances clés
 
 UC-01 constitue le point d'entrée du produit : l'espace personnel y est provisionné automatiquement, permettant à un document de naître sans qu'un espace de type campagne ou one-shot existe. UC-10 (création de compte) est Must Have exclusivement parce que UC-08 (partage) et UC-09 (accès joueur), tous deux Must Have, en dépendent structurellement — une exigence Must Have ne peut pas reposer sur une exigence Should Have sans rendre le périmètre incohérent. UC-05 base (dossiers libres) précède UC-05 riche (types élaborés), qui reste Should Have. UC-13, bien que hors première livraison, s'appuie sur l'espace personnel comme infrastructure déjà livrée en MVP.
 
-> Sources : docs/besoin/vision/perimetre/matrice-de-priorites.md, docs/besoin/vision/vision.md
+> Sources : docs/besoin/vision/perimetre/matrice-de-priorites.md, docs/besoin/vision/vision.md, docs/besoin/vision/perimetre/exclusions.md
 
 ---
 
@@ -1069,7 +1069,7 @@ Les décisions d'architecture ([annexe « Index des décisions »](#index-des-d�
 
 ADR-007, §Conséquences, mentionnait un « jalon J1 » associé à une nomenclature de jalon aujourd'hui retirée du corpus, sans que la relation entre la série de codes `P` (`P0.5`, `P6`, `P7`…) et cette ancienne nomenclature ne soit documentée par ailleurs. Cette incohérence apparente de repère, signalée ici, est résolue par la ratification de l'axe J0-J3 nommé par contenu ([`roadmap-de-build.md` §5.4](../projet/roadmap-de-build.md)) : ADR-007 est reformulé en conséquence (§Conséquences) pour lever l'ambiguïté de jalon.
 
-> Sources : docs/decisions/ADR-010-suppression-espace.md, ADR-011-cascade-integrite-referentielle.md, ADR-007-rgpd-autorisation-api.md
+> Sources : docs/decisions/ADR-010-suppression-espace.md, ADR-011-cascade-integrite-referentielle.md, ADR-007-rgpd-autorisation-api.md, ADR-006-perimetre-mvp.md (place de la décision de marché)
 
 ---
 
@@ -1175,6 +1175,8 @@ Le tableau suivant recense les décisions d'architecture actées pour le MVP, te
 | ADR-016 | Sérialisation locale et contrat de migration local→cloud (format payload, frontière de confiance, parcours d'échec) | Accepté |
 | ADR-017 | Modèle IndexedDB local et sécurité du mode local (object stores, posture migration-only, persist(), F-09) | Accepté |
 | ADR-018 | Contenu personnel de premier ordre : généralisation de `Campaign` en `Space` | Accepté |
+
+> Les ADR-019 à ADR-023, de nature « méthode », portent sur la tenue du corpus et non sur le produit : ils ne figurent pas dans cet index ([registre des décisions](../decisions/README.md)).
 
 > Note de traçabilité : l'index de `docs/decisions/README.md` a été complété pour inclure ADR-018, auparavant absent du tableau alors que le fichier existait déjà dans le dépôt.
 

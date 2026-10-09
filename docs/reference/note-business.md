@@ -21,7 +21,7 @@
 > - **À qui** : au responsable produit de Haversack, qui arbitre la trajectoire business (post-MVP, levée éventuelle, priorisation du plan d'étude marché) ; pas à un exécutant technique.
 > - **À quoi** : à savoir comment chiffrer le coût d'infrastructure, dimensionner le marché et aller au marché. La note pose la méthode et les hypothèses ; elle ne produit aucun chiffre de coût, de taille de marché ou d'ARPU, que le corpus diffère après le MVP (ADR-005, § Conséquences).
 > - **Comment le lire** : la partie 1 dit ce qu'est la note et donne, au § 3, les seules valeurs chiffrées connues ; la partie 2 pose volet par volet (§ 4 à 6) une méthode, des formules ou des hypothèses, et marque `À TRANCHER` chaque valeur absente ; la partie 3 récapitule ce qui reste à trancher (§ 7) et les sources de chaque section (§ 8).
-> - **Ce qui fait foi** : pas ce document. C'est une consolidation : en cas d'écart, c'est lui qu'on corrige (ADR-019, § 1). Font foi les sources que nomme le § 8, à leur rang dans l'ordre d'autorité ; les valeurs du § 3 sont reprises du cahier des charges, lui-même une consolidation, qui les qualifie de volatiles.
+> - **Ce qui fait foi** : jamais ce document ([ADR-019, § 1](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)). C'est une consolidation : en cas d'écart, c'est lui qu'on corrige. Font foi les sources que nomme le § 8, à leur rang dans l'ordre d'autorité ; les valeurs du § 3 sont reprises du cahier des charges, lui-même une consolidation, qui les qualifie de volatiles.
 
 **Sommaire**
 
