@@ -787,7 +787,7 @@ sequenceDiagram
         Note over CL: pas de dossiers « Personnages »/« Joueurs » — sans objet sur un espace mono-membre
     end
 
-    Note over CL: isSystem est informatif — renommable/supprimable par le MJ ; isVirtual garantit Document.folderId non-nullable pour tout type d'espace (invariant 4)
+    Note over CL: isSystem est informatif — renommable/supprimable par le MJ, isVirtual garantit Document.folderId non-nullable pour tout type d'espace (invariant 4)
 ```
 
 > Vue de consolidation. Diagramme de flux détaillé : [content-library/flows.md](../domaine/content-library/flows.md).
@@ -1026,7 +1026,7 @@ sequenceDiagram
 
     J->>Hub: négociation de connexion
     Hub-->>Hub: fallback natif — WebSocket → Server-Sent Events → long-polling
-    Note over Hub: configuration sobre — SSE forcé tant que le canal reste unidirectionnel MJ→joueurs ; connexion fermée en fin de session LIVE ; heartbeat allongé
+    Note over Hub: configuration sobre — SSE forcé tant que le canal reste unidirectionnel MJ→joueurs, connexion fermée en fin de session LIVE, heartbeat allongé
 
     Hub->>Acces: filtrage par visibilité avant diffusion (P1+P4, §2.3) — non redessiné ici
 
