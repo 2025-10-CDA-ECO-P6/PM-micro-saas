@@ -1,0 +1,7 @@
+# Renvois « § section » dont la section n'existe pas dans la cible, connus à la création du contrôle.
+# Une ligne par écart, sous la forme de la sortie de VerifCorpus sans le numéro de ligne :
+#   source -> cible § section|nombre d'occurrences acceptées
+# VerifCorpus compte ces écarts à part et n'échoue que sur un écart absent de cette liste.
+# Un renvoi de plus vers la même section depuis le même fichier dépasse le nombre et échoue.
+# Une ligne se retire quand le renvoi est corrigé ; elle ne s'ajoute jamais pour faire passer un nouvel écart.
+docs/besoin/stories/US-UC-10-compte-cloud.md -> ../../decisions/ADR-007-rgpd-autorisation-api.md § Compléments post-revue pour la neutralisation de credential|1

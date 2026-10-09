@@ -26,7 +26,7 @@ internal static class VerificateurCorpus
         throwOnInvalidBytes: true);
 
     private static readonly Regex MotifLien = new(
-        @"\[(?:[^\[\]]|\[[^\[\]]*\])*\]\(([^()\s]+(?:\([^()\s]*\)[^()\s]*)*)\)",
+        @"\[(?<texte>(?:[^\[\]]|\[[^\[\]]*\])*)\]\(([^()\s]+(?:\([^()\s]*\)[^()\s]*)*)\)",
         RegexOptions.CultureInvariant);
 
     private static readonly Regex MotifAtx = new(
@@ -53,6 +53,10 @@ internal static class VerificateurCorpus
         @"^(https?:|mailto:|tel:|data:|ftp:)",
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
+    // Écarts « § » connus du corpus, un par ligne, relative à la racine auditée : un
+    // écart absent de cette liste fait échouer, un écart inscrit est seulement compté.
+    private const string ListeEcartsSection = "tools/VerifCorpus/renvois-section-acceptes.txt";
+
     public static Verdict Executer(string racine, TextWriter sortie)
     {
         var fichiers = ListerFichiersMd(racine);
@@ -71,11 +75,18 @@ internal static class VerificateurCorpus
         var ancreKo = new List<(string Source, string Cible)>();
         // defaultdict(set) : une entrée n'existe que si au moins un lien y renvoie.
         var entrants = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
+        var renvoisSection = new Dictionary<string, List<RenvoiSection>>(StringComparer.Ordinal);
 
         foreach (var rel in fichiers)
         {
             string src = CheminsPosix.Dirname(rel);
             string texte = LireTexteIntegral(Path.Combine(racine, rel));
+            // Les renvois « § » ont besoin du numéro de ligne du fichier : les blocs de
+            // code y sont vidés en gardant leurs lignes, là où la suite les supprime.
+            renvoisSection[rel] = RenvoisSection.Reperer(
+                MotifBlocsCode.Replace(texte, bloc => new string('\n', bloc.Value.Count(c => c == '\n'))),
+                MotifLien,
+                MotifSchemeExterne);
             texte = MotifBlocsCode.Replace(texte, "");
 
             foreach (Match m in MotifLien.Matches(texte))
@@ -132,9 +143,108 @@ internal static class VerificateurCorpus
 
         var orphelins = fichiers.Where(f => !entrants.ContainsKey(f) && f != "README.md").ToList();
 
-        EcrireRapport(sortie, fichiers, nRel, nAnc, cibleKo, ancreKo, orphelins, desequilibres);
+        var sections = ControlerRenvoisSection(racine, fichiers, renvoisSection);
 
-        return new Verdict(cibleKo.Count, ancreKo.Count, orphelins.Count, desequilibres.Count);
+        EcrireRapport(sortie, fichiers, nRel, nAnc, cibleKo, ancreKo, orphelins, desequilibres, sections);
+
+        return new Verdict(
+            cibleKo.Count, ancreKo.Count, orphelins.Count, desequilibres.Count, sections.Inconnus.Count);
+    }
+
+    private sealed record EcartSection(string Source, int Ligne, string Cible, string Section)
+    {
+        public string Cle => $"{Source} -> {Cible} § {Section}";
+    }
+
+    private sealed record ResultatSections(int Controles, int Acceptes, List<EcartSection> Inconnus);
+
+    /// <summary>
+    /// Apparie chaque renvoi « § » à un fichier cible existant avec les sections de ce
+    /// fichier. Un renvoi dont le fichier cible n'existe pas ou n'est pas un .md n'est
+    /// pas contrôlé ici : il l'est déjà comme lien à cible inexistante.
+    /// </summary>
+    private static ResultatSections ControlerRenvoisSection(
+        string racine,
+        List<string> fichiers,
+        Dictionary<string, List<RenvoiSection>> renvoisParFichier)
+    {
+        var acceptes = LireListeEcartsSection(racine);
+        var indexSections = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+        int controles = 0, nAcceptes = 0;
+        var inconnus = new List<EcartSection>();
+        // Nombre d'occurrences déjà couvertes par la liste, par clé : le (n+1)-ième renvoi
+        // vers la même section absente depuis le même fichier n'est plus accepté.
+        var consommes = new Dictionary<string, int>(StringComparer.Ordinal);
+
+        foreach (var rel in fichiers)
+        {
+            string src = CheminsPosix.Dirname(rel);
+            foreach (var renvoi in renvoisParFichier[rel])
+            {
+                string tgt = renvoi.Cible.Length == 0
+                    ? rel
+                    : CheminsPosix.NormPath(CheminsPosix.Join(src, Uri.UnescapeDataString(renvoi.Cible)));
+                if (!tgt.EndsWith(".md", StringComparison.Ordinal)) continue;
+                string absTgt = CheminsPosix.Join(racine, tgt);
+                if (!File.Exists(absTgt)) continue;
+
+                if (!indexSections.TryGetValue(tgt, out var sections))
+                {
+                    string texteCible = MotifBlocsCode.Replace(LireTexteIntegral(absTgt), "");
+                    sections = RenvoisSection.Indexer(texteCible);
+                    indexSections[tgt] = sections;
+                }
+
+                controles++;
+                if (RenvoisSection.Existe(renvoi.Texte, sections)) continue;
+
+                var ecart = new EcartSection(
+                    rel, renvoi.Ligne, renvoi.Cible.Length == 0 ? rel : renvoi.Cible, renvoi.Section);
+                consommes.TryGetValue(ecart.Cle, out int dejaAcceptes);
+                if (acceptes.TryGetValue(ecart.Cle, out int permis) && dejaAcceptes < permis)
+                {
+                    consommes[ecart.Cle] = dejaAcceptes + 1;
+                    nAcceptes++;
+                }
+                else
+                {
+                    inconnus.Add(ecart);
+                }
+            }
+        }
+        return new ResultatSections(controles, nAcceptes, inconnus);
+    }
+
+    /// <summary>
+    /// Lit la liste de référence : une ligne <c>source -> cible § section|nombre</c>, le
+    /// nombre étant celui des renvois que la clé a le droit de porter (même forme que
+    /// la liste de VerifMarqueursIdentifiants).
+    /// </summary>
+    private static Dictionary<string, int> LireListeEcartsSection(string racine)
+    {
+        var acceptes = new Dictionary<string, int>(StringComparer.Ordinal);
+        string chemin = Path.Combine(racine, ListeEcartsSection);
+        if (!File.Exists(chemin)) return acceptes;
+
+        int numero = 0;
+        foreach (var brute in LireTexteIntegral(chemin).Split('\n'))
+        {
+            numero++;
+            string ligne = brute.Trim();
+            if (ligne.Length == 0 || ligne.StartsWith('#')) continue;
+
+            int separateur = ligne.LastIndexOf('|');
+            if (separateur <= 0
+                || !int.TryParse(ligne[(separateur + 1)..], System.Globalization.NumberStyles.None,
+                    System.Globalization.CultureInfo.InvariantCulture, out int nombre)
+                || nombre < 1)
+            {
+                throw new PanneExecutionException(
+                    $"{ListeEcartsSection}:{numero} : ligne attendue « source -> cible § section|nombre », lu « {ligne} »");
+            }
+            acceptes[ligne[..separateur]] = nombre;
+        }
+        return acceptes;
     }
 
     private static void EcrireRapport(
@@ -145,7 +255,8 @@ internal static class VerificateurCorpus
         List<(string Source, string Cible)> cibleKo,
         List<(string Source, string Cible)> ancreKo,
         List<string> orphelins,
-        List<string> desequilibres)
+        List<string> desequilibres,
+        ResultatSections sections)
     {
         int sousDocs = fichiers.Count(f => f.StartsWith("docs/", StringComparison.Ordinal));
         sortie.WriteLine($"fichiers markdown             : {fichiers.Count}  (sous docs/ : {sousDocs})");
@@ -155,6 +266,9 @@ internal static class VerificateurCorpus
         sortie.WriteLine($"liens à ancre inexistante     : {ancreKo.Count}");
         sortie.WriteLine($"fichiers orphelins            : {orphelins.Count}");
         sortie.WriteLine($"blocs de code déséquilibrés   : {desequilibres.Count}");
+        sortie.WriteLine($"renvois § contrôlés           : {sections.Controles}");
+        sortie.WriteLine($"renvois § à section inexistante : {sections.Inconnus.Count}");
+        sortie.WriteLine($"renvois § écarts acceptés       : {sections.Acceptes}");
 
         foreach (var (etiquette, items) in new[] { ("CIBLE", cibleKo), ("ANCRE", ancreKo) })
         {
@@ -170,6 +284,11 @@ internal static class VerificateurCorpus
         foreach (var u in desequilibres.Take(30))
         {
             sortie.WriteLine($"  [FENCE] {u}");
+        }
+        // Sans plafond de 30 : un écart nouveau ne doit jamais être masqué par d'autres.
+        foreach (var e in sections.Inconnus)
+        {
+            sortie.WriteLine($"  [SECTION INEXISTANTE] {e.Source}:{e.Ligne} -> {e.Cible} § {e.Section}");
         }
     }
 

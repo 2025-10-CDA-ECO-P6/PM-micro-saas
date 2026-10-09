@@ -9,16 +9,19 @@ internal sealed record Verdict(
     int LiensCibleInexistante,
     int LiensAncreInexistante,
     int FichiersOrphelins,
-    int BlocsDesequilibres)
+    int BlocsDesequilibres,
+    int RenvoisSectionInexistante)
 {
     /// <summary>
-    /// Vrai si au moins un des quatre compteurs arbitrés comme « défaut rapporté »
+    /// Vrai si au moins un des cinq compteurs arbitrés comme « défaut rapporté »
     /// est non nul — c'est cette propriété, et elle seule, qui distingue le code
-    /// de sortie 0 du code de sortie 1.
+    /// de sortie 0 du code de sortie 1. Les écarts « § » inscrits à la liste de
+    /// référence ne sont pas comptés dans le cinquième.
     /// </summary>
     public bool ADesDefauts =>
         LiensCibleInexistante > 0
         || LiensAncreInexistante > 0
         || FichiersOrphelins > 0
-        || BlocsDesequilibres > 0;
+        || BlocsDesequilibres > 0
+        || RenvoisSectionInexistante > 0;
 }

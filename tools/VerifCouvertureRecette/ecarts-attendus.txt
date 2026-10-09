@@ -1,0 +1,9 @@
+# Lignes [TROU] et [SOURCE RETIRÉE] que VerifCouvertureRecette sort et que le corpus assume
+# (référence de départ de la tâche controles-en-ci). L'outil sort en code 1 par conception tant
+# qu'il en reste ; le workflow .github/workflows/controles-corpus.yml compare ses lignes à celles-ci
+# et n'échoue que sur une ligne absente d'ici. Une ligne d'ici que l'outil ne sort plus est
+# imprimée « à retirer » sans faire échouer : on retire la ligne quand le trou est comblé.
+[TROU] CR-UC01-07 (US-UC-01, jalon J1) -> cité par aucune tranche du plan
+[TROU] CR-UC01-20 (US-UC-01, jalon J1) -> cité par aucune tranche du plan
+[SOURCE RETIRÉE] CR-UC01-04 -> US-01-01 §RB-01-03 (retirée)
+[SOURCE RETIRÉE] CR-UC02-11 -> US-01-01 §RB-01-03 (retirée)
