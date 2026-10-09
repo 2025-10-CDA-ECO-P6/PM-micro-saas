@@ -48,8 +48,8 @@ Intention : l'utilisateur disposant d'un compte s'authentifie avec son adresse d
              fournisseur, l'utilisateur y est connecté directement ; si aucun compte
              n'existe, un nouveau compte est créé automatiquement (tier gratuit)
              (UC-10 §scénario nominal Connexion via fournisseur externe)
-             fournisseurs exposés : Google et Discord (cahier des charges §Authentification —
-             DÉCIDÉ 2026-07-15 ; ADR-015 ; zonage.md §S9 « Fournisseurs d'identité »)
+             fournisseurs exposés : Google et Discord (ADR-015 §2.2 —
+             DÉCIDÉ 2026-07-15 ; zonage.md §S9 « Fournisseurs d'identité »)
              [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview] le wording exact
              des libellés de bouton par fournisseur n'est pas figé
   priorité : principal
@@ -161,5 +161,5 @@ Déclenché — éléments S9.
 Éléments sous-spécifiés (S9) :
   [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview] wording exact des libellés
     de bouton par fournisseur d'identité externe — les fournisseurs eux-mêmes (Google,
-    Discord) sont résolus (cahier des charges §Authentification ; ADR-015)
+    Discord) sont résolus (ADR-015 §2.2)
 ```

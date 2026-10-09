@@ -2,8 +2,8 @@
 
 | Champ | Valeur |
 |---|---|
-| Version | 1.0 |
-| Date | 2026-07-02 |
+| Version | 1.1 |
+| Date | 2026-10-09 |
 | Statut | Version de travail — périmètre produit stabilisé ; volet architecture technique à confirmer, cf. [§7](#7-contraintes) |
 | Porteur | Pierre-Marie Marchio |
 | Validation | Pierre-Marie Marchio — validé en conception ; volet architecture technique ([§7](#7-contraintes)) à re-confirmer à l'entrée en build |
@@ -13,10 +13,11 @@
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
 | 1.0 | 2026-07-02 | Pierre-Marie Marchio | Rédaction initiale — consolidation du corpus de conception |
+| 1.1 | 2026-10-09 | Pierre-Marie Marchio | Correction de fond, sans restructuration — « ce qui fait foi » aligné sur l'ADR-019 § 1, résumé des différenciants aligné sur la vision, renvois morts réparés, points tranchés de l'annexe « Points à arbitrer » mis au marqueur DÉCIDÉ, suivi des questions ouvertes renvoyé à `decisions-en-attente.md`, traçabilité §13 complétée |
 
 ## Nature et portée du document
 
-Ce cahier des charges est le document officiel de référence pour la construction du MVP de Haversack. Il consolide et met en forme, dans un registre de cahier des charges, le travail de conception mené par l'équipe. Le corpus de conception (`docs/besoin/`, `docs/domaine/`, `docs/interface/`) reste la source de vérité détaillée : en cas de divergence de détail entre ce document et le corpus, le corpus fait foi.
+Ce cahier des charges est le document officiel de référence pour la construction du MVP de Haversack. Il consolide et met en forme, dans un registre de cahier des charges, le travail de conception mené par l'équipe. Le corpus de conception (`docs/besoin/`, `docs/domaine/`, `docs/interface/`, `docs/architecture/`) reste la source de vérité détaillée : ce document ne fait jamais foi, et en cas d'écart avec le corpus c'est lui qu'on corrige ([ADR-019, § 1. Ordre d'autorité](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#1-ordre-dautorité)).
 
 **Sommaire**
 
@@ -110,7 +111,7 @@ Le MVP vise à valider cinq hypothèses chiffrées (H1 à H5), chacune assortie 
 
 Le modèle de monétisation suit une progression en trois paliers sans contrainte imposée en amont : un usage **local** gratuit et sans compte, un palier **gratuit** avec compte et synchronisation cloud, puis un palier **payant** sans limite de volume ni d'espaces — le passage d'un palier au suivant étant déclenché par un besoin concret (partage aux joueurs, dépassement de quota) plutôt que par une contrainte du produit ([§2.4](#24-modèle-de-monétisation)).
 
-Le positionnement de Haversack repose sur trois différenciants principaux : un outil dédié au MJ, **agnostique au système de jeu** pratiqué (D&D, Call of Cthulhu, Fate, systèmes maison…) ; une **friction d'entrée nulle**, sans compte requis pour commencer à préparer ou piloter une session ; et la **possession effective des données** par l'utilisateur, y compris la possibilité de les exporter dans un format ouvert, en mode local comme avec un compte ([§1.4](#14-positionnement-concurrentiel)).
+Le positionnement de Haversack repose sur six différenciants, tels que la vision les pose : une **friction d'entrée nulle**, sans compte requis pour commencer à préparer ou piloter une session, avec la **possession effective des données** par l'utilisateur, y compris la possibilité de les exporter dans un format ouvert, en mode local comme avec un compte ; une **vue de session** dédiée au pilotage en temps réel ; un outil **agnostique au système de jeu** pratiqué (D&D, Call of Cthulhu, Fate, systèmes maison…) ; un **partage** d'information contrôlé par le MJ, document par document ; un **accès joueur** sans création de compte ; et une **organisation du contenu** libre ([§1.4](#14-positionnement-concurrentiel)).
 
 ---
 
@@ -710,7 +711,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 
 ### Hors périmètre fonctionnel MVP
 
-Les fonctionnalités explicitement exclues de cette version — table visuelle, moteur de règles, assistant IA, relations typées entre documents, application desktop avec synchronisation, notamment — sont recensées dans la catégorie Won't Have du périmètre ([§3](#3-périmètre)) et détaillées, avec leur trajectoire produit envisagée, dans exclusions.md (voir [§9](#9-conception-dinterface) et [§12](#12-annexes)).
+Les fonctionnalités explicitement exclues de cette version — table visuelle, moteur de règles, assistant IA, relations typées entre documents, application desktop avec synchronisation, notamment — sont recensées dans la catégorie Won't Have du périmètre ([§3](#3-périmètre)) et détaillées, avec leur trajectoire produit envisagée, dans [exclusions.md](../besoin/vision/perimetre/exclusions.md).
 
 > Sources : docs/besoin/cas-d-utilisation/UC-01-mode-local-sans-compte.md à UC-14-recherche.md, docs/besoin/cas-d-utilisation/README.md, docs/besoin/stories/US-UC-01-mode-local-sans-compte.md à US-UC-14-recherche.md
 
@@ -1067,7 +1068,7 @@ Pour une entrée directe dans la conception d'interface, les écrans les plus re
 
 ## 10. Glossaire
 
-Ce glossaire reprend, en langage besoin, les termes structurants employés dans les sections précédentes. Il synthétise le langage ubiquitaire porté par les quatre contextes du domaine ([§8](#8-modèle-de-données-et-domaine)) sans s'y substituer : en cas de nuance technique plus fine sur un terme, le glossaire de conception (`docs/glossaire.md`) fait foi.
+Ce glossaire reprend, en langage besoin, les termes structurants employés dans les sections précédentes. Il synthétise le langage ubiquitaire porté par les quatre contextes du domaine ([§8](#8-modèle-de-données-et-domaine)) sans s'y substituer : le glossaire de conception (`docs/glossaire.md`) fait référence pour le nom des termes, jamais pour le sens d'une règle, que porte sa source ([conventions du corpus, § Autorité de forme et autorité de fond](../conventions.md#autorité-de-forme-et-autorité-de-fond)).
 
 | Terme | Définition |
 |---|---|
@@ -1144,28 +1145,28 @@ Le corpus de conception (`docs/besoin/`, `docs/domaine/`, `docs/interface/`, `do
 
 ### Points à arbitrer
 
-Les points listés dans cette annexe sont explicitement **non tranchés** : ils restent à instruire, notamment en entretiens utilisateurs, avant ou pendant la construction du MVP. Ils sont à distinguer des éléments que le périmètre a déjà **tranchés mais différés** — le contenu Should Have, Could Have et Won't Have du MoSCoW ([§3](#3-périmètre)), UC-13 exclu de la première livraison, et plus largement les fonctionnalités post-MVP décrites en [§3](#3-périmètre) : ces éléments sont des décisions de périmètre assumées, non des points ouverts.
+Les points listés dans cette annexe sont explicitement **non tranchés**, à l'exception de ceux marqués DÉCIDÉ : tranchés depuis leur inscription, ils sont conservés ici comme trace, avec un renvoi vers la décision. Les points non tranchés restent à instruire, notamment en entretiens utilisateurs, avant ou pendant la construction du MVP. Tous sont à distinguer des éléments que le périmètre a déjà **tranchés mais différés** — le contenu Should Have, Could Have et Won't Have du MoSCoW ([§3](#3-périmètre)), UC-13 exclu de la première livraison, et plus largement les fonctionnalités post-MVP décrites en [§3](#3-périmètre) : ces éléments sont des décisions de périmètre assumées, non des points ouverts.
 
 **Divergence de conception à réconcilier** (signalée dans le corpus, non tranchée) :
 
-- Inventaire d'écran : la table des wireframes ([§9.2](#92-inventaire-des-écrans)) distingue un écran « Vue de l'espace personnel » propre, alors que l'inventaire des écrans du zoning (§S5), en version réduite, fond cette vue dans la « Vue campagne ». Ces deux lectures de l'inventaire d'écrans sont à aligner.
+- Inventaire d'écran : la table des wireframes ([§9.2](#92-inventaire-des-écrans)) distingue un écran « Vue de l'espace personnel » propre, alors que l'inventaire des écrans du zoning (§S4), en version réduite, fond cette vue dans la « Vue campagne ». Ces deux lectures de l'inventaire d'écrans sont à aligner.
 
 **Questions ouvertes — famille C** (entretiens utilisateurs, recensées au zoning d'interface §S9) :
 
 1. L'opportunité d'une notification active côté joueur lorsqu'une information lui est partagée — non décidée pour le MVP, qui retient à ce stade une apparition ambiante sans notification (AR-06, [§9.3](#93-arbitrages-dinterface-figés)).
 2. La persistance des notes personnelles d'un joueur invité d'une session à l'autre, en l'absence de compte.
 
-**Statuts d'un espace personnel — DÉCIDÉ 2026-07-15 (invariant 15).** La sémantique des statuts d'un espace personnel a été tranchée par l'**invariant 15** de `docs/domaine/space-management/context.md` : un espace `PERSONAL` est toujours `ACTIVE` ; les opérations `Archive()` et `Freeze()` sont refusées pour `type = PERSONAL` car `FROZEN` n'a pas d'objet (espace hors quota) et `ARCHIVED` contredirait l'invariant 14 (un `PERSONAL` doit toujours exister et être actif pour un compte donné).
+**Statuts d'un espace personnel — DÉCIDÉ 2026-07-09 ([zonage d'interface, § 9](../interface/zonage.md#9-trous-de-corpus-et-points-dinterview), invariant 15).** La sémantique des statuts d'un espace personnel a été tranchée par l'**invariant 15** de `docs/domaine/space-management/context.md` : un espace `PERSONAL` est toujours `ACTIVE` ; les opérations `Archive()` et `Freeze()` sont refusées pour `type = PERSONAL` car `FROZEN` n'a pas d'objet (espace hors quota) et `ARCHIVED` contredirait l'invariant 14 (un `PERSONAL` doit toujours exister et être actif pour un compte donné).
 
 **Fournisseurs d'identité — DÉCIDÉ 2026-07-15 (ADR-015).** MVP : Google et Discord. Règle de confiance par fournisseur : cf. ADR-015 (Sécurité authentification MVP).
 
-**Granularité du gate de migration — résolu.** Le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§5](#5-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration a été tranchée par décision produit du 2026-07-09 : **lot unique** — tous les espaces éligibles migrent en un seul passage, avec une confirmation unique et les espaces éligibles cochés par défaut, décochables individuellement. Cette granularité globale ne modifie pas le tout-ou-rien par espace ci-dessus, qui reste en place. Décision tracée dans `docs/interface/raisonnement-ux.md` (§ Décisions produit actées, point 5).
+**Granularité du gate de migration — DÉCIDÉ 2026-07-09 ([raisonnement UX, § Décisions actées — alignement wireframes](../interface/raisonnement-ux.md#décisions-actées--alignement-wireframes), point 5).** Le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§5](#5-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration a été tranchée par décision produit du 2026-07-09 : **lot unique** — tous les espaces éligibles migrent en un seul passage, avec une confirmation unique et les espaces éligibles cochés par défaut, décochables individuellement. Cette granularité globale ne modifie pas le tout-ou-rien par espace ci-dessus, qui reste en place. Décision tracée dans [`docs/interface/raisonnement-ux.md`](../interface/raisonnement-ux.md#décisions-actées--alignement-wireframes) (§ Décisions actées — alignement wireframes, point 5).
 
-**Sémantique de comptage du quota du palier gratuit — résolu.** L'invariant limitant l'accès à une session à 4 joueurs distincts pour un espace dont le propriétaire est au palier gratuit (`docs/domaine/space-management/context.md`, invariant 11) est désormais tranché : la sémantique de comptage est portée par **RB-09-21 (UC-09), qui fait foi** — le comptage a lieu **au moment de l'octroi** de l'accès, de manière **agnostique au type d'accès** (identités-joueur distinctes comptées en capacité joueur, MJ non compté). L'invariant 11 de `space-management/context.md` a été réaligné en conséquence.
+**Sémantique de comptage du quota du palier gratuit — DÉCIDÉ, date non consignée dans les sources ([ADR-005](../decisions/ADR-005-modele-monetisation.md), « Compléments post-revue », A-09).** L'invariant limitant l'accès à une session à 4 joueurs distincts pour un espace dont le propriétaire est au palier gratuit (`docs/domaine/space-management/context.md`, invariant 11) est désormais tranché : la sémantique de comptage est portée par **RB-09-21 (UC-09), qui fait foi** — le comptage a lieu **au moment de l'octroi** de l'accès, de manière **agnostique au type d'accès** (identités-joueur distinctes comptées en capacité joueur, MJ non compté). L'invariant 11 de `space-management/context.md` a été réaligné en conséquence.
 
 **Autres trous de conception** (recensés au zoning d'interface §S9, à spécifier) : la vue mobile du joueur, la spécification visuelle de l'éditeur de document (disposition des blocs, affordances de type, gestion des liens), l'écran de consultation des backlinks (hors MVP), et la vue « Non classés » — particulièrement centrale pour l'espace personnel, où elle constitue la seule vue de départ.
 
-**Suivi des points de conception à trancher.** Le suivi des points de conception restant à trancher se fait via cette annexe ([annexe « Points à arbitrer »](#points-à-arbitrer)).
+**Suivi des points de conception à trancher.** Le suivi des points de conception restant à trancher se fait dans [`decisions-en-attente.md`](../projet/decisions-en-attente.md), index unique des questions ouvertes ([ADR-019, § 7. Reste à faire](../decisions/ADR-019-conventions-de-tenue-du-corpus.md#7-reste-à-faire)).
 
 ### Matrice de traçabilité
 
@@ -1207,7 +1208,7 @@ Les valeurs consolidées dans cette annexe sont **volatiles** : elles sont susce
 |---|---|---|
 | Quota d'espaces CAMPAIGN/ONE_SHOT (palier gratuit) | 3 espaces | `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/besoin/vision/vision.md §3` |
 | Espace personnel décompté du quota | Non | `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/besoin/vision/vision.md §3` |
-| Nombre de joueurs par session (palier gratuit) | 4 joueurs distincts, MJ non compté — sémantique résolue : comptage à l'octroi, agnostique au type d'accès (RB-09-21 fait foi) | `docs/besoin/vision/vision.md §3`, `docs/domaine/space-management/context.md` (invariant 11), `docs/besoin/cas-d-utilisation/UC-09` (RB-09-21) |
+| Nombre de joueurs par session (palier gratuit) | 4 joueurs distincts, MJ non compté — comptage à l'octroi, agnostique au type d'accès (RB-09-21 fait foi) | `docs/besoin/vision/vision.md §3`, `docs/domaine/space-management/context.md` (invariant 11), `docs/besoin/cas-d-utilisation/UC-09` (RB-09-21) |
 | Stockage — palier local | Aucun quota propre au produit ; limité par la seule capacité de l'appareil | `docs/decisions/ADR-017-modele-indexeddb-local.md` |
 | Stockage — palier gratuit | 500 Mo | `docs/besoin/vision/vision.md §3` |
 | Stockage — palier Pro | 5 Go et plus | `docs/besoin/vision/vision.md §3` |
@@ -1232,7 +1233,9 @@ Le tableau suivant relie chaque section de ce cahier des charges à ses sources 
 | 4. Acteurs et besoins | `docs/besoin/vision/vision.md`, `docs/besoin/decouverte/personas/README.md`, `docs/besoin/parcours-utilisateur/bout-en-bout/README.md` |
 | 5. Spécifications fonctionnelles | `docs/besoin/cas-d-utilisation/` (UC-01 à UC-14), `docs/besoin/cas-d-utilisation/README.md`, `docs/besoin/stories/` (US-UC-01 à US-UC-14) |
 | 6. Exigences non fonctionnelles | `docs/besoin/nfr/README.md`, `docs/besoin/nfr/` (NFR-PERF, NFR-OFF, NFR-CONF, NFR-ACC, NFR-I18N) |
-| 7. Contraintes | `docs/architecture/stack.md`, `docs/architecture/README.md`, `docs/architecture/fondations.md`, `docs/architecture/structure-projets.md`, `docs/decisions/` (ADR-001, 002, 003, 004, 007, 008, 012, 013, 014, 015, 016, 017) |
+| 7. Contraintes | `docs/architecture/transverse.md`, `docs/architecture/stack.md`, `docs/architecture/README.md`, `docs/architecture/fondations.md`, `docs/architecture/structure-projets.md`, `docs/decisions/` (ADR-001, 002, 003, 004, 007, 008, 012, 013, 014, 015, 016, 017) |
 | 8. Modèle de données et domaine | `docs/domaine/README.md`, `docs/domaine/core/kernel.md`, `docs/domaine/identity-access/context.md`, `docs/domaine/space-management/context.md`, `docs/domaine/content-library/context.md`, `docs/domaine/session-conduct/context.md`, `docs/decisions/ADR-018-espace-personnel-generalisation-space.md` |
 | 9. Conception d'interface | `docs/interface/zonage.md`, `docs/interface/ecrans/README.md` |
 | 10. Glossaire | `docs/glossaire.md` |
+| 11. Phasage | `docs/decisions/ADR-010-suppression-espace.md`, `docs/decisions/ADR-011-cascade-integrite-referentielle.md`, `docs/decisions/ADR-007-rgpd-autorisation-api.md` |
+| 12. Annexes | `docs/decisions/README.md`, `docs/interface/zonage.md`, `docs/interface/raisonnement-ux.md`, `docs/domaine/space-management/context.md`, `docs/besoin/vision/vision.md`, `docs/besoin/vision/perimetre/matrice-de-priorites.md`, `docs/decisions/ADR-005-modele-monetisation.md`, `docs/decisions/ADR-015-securite-authentification-mvp.md`, `docs/decisions/ADR-017-modele-indexeddb-local.md` |
