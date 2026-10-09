@@ -53,6 +53,7 @@ Un fichier unique n'hérite pas du `.csproj`. Chaque propriété qu'il portait s
 - Lancer : `dotnet run --file tools/<Outil>/<Outil>.cs -- <arguments>`. Toujours `--file` : si un `.csproj` se trouve dans le répertoire courant, `dotnet run <fichier>.cs` lance le projet à la place.
 - Compiler une fois : `dotnet build tools/<Outil>/<Outil>.cs -o <dossier>` produit un exécutable natif. Plusieurs lancements parallèles de `dotnet run` sur le même fichier se disputent les sorties de compilation ; compiler d'abord, puis lancer l'exécutable.
 - Le code de sortie de `dotnet run --file` est celui que renvoie le programme.
+- Le cache de compilation se fie à la date de modification des sources. Un fichier restauré avec son ancienne date (`cp -p`, extraction d'archive) peut laisser en place un binaire compilé depuis une autre version : faire un `touch` sur le fichier (ou lancer `dotnet run --no-cache --file …`) avant de conclure.
 
 ## Ce que la convention ne couvre pas
 

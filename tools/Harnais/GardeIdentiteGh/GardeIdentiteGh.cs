@@ -1,3 +1,4 @@
+#!/usr/bin/env dotnet
 // Cet outil n'est pas un vérificateur du corpus documentaire : c'est la
 // garde d'identité du harnais de test pour le portage Python → C# de
 // `tools/creer-issues.py` et `tools/creer-projet.py`. Il ne relève donc pas
@@ -6,6 +7,24 @@
 // corpus (guide-conventions-et-dod.md §2), n'applique que les clauses dont
 // l'objet nommé existe ici — le style et la version du SDK, jamais le
 // modèle de domaine.
+
+// Propriétés de l'ancien .csproj (tools/FICHIER-UNIQUE.md). Version en support à
+// long terme en cours à l'ouverture du build : règle et formulation posées par
+// guide-conventions-et-dod.md §2 — « ce guide énonce la règle, jamais un numéro —
+// un numéro vieillit, la règle non » — qui renvoie lui-même au §8 pour la pratique
+// de fond dont elle découle. Style porté uniquement par les analyzers livrés avec
+// le SDK — aucune dépendance d'analyse tierce.
+#:property TargetFramework=net10.0
+#:property ImplicitUsings=enable
+#:property Nullable=enable
+#:property EnforceCodeStyleInBuild=true
+#:property TreatWarningsAsErrors=true
+#:property PublishAot=false
+#:property RootNamespace=GardeIdentiteGh
+#:property AssemblyName=GardeIdentiteGh
+
+#:include IdentiteSentinelle.cs
+#:include VerificateurIdentite.cs
 
 using System.Globalization;
 using System.Text;

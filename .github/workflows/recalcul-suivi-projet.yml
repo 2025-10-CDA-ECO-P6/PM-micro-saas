@@ -148,7 +148,7 @@ jobs:
         # toutes des points d'API du DÉPÔT, jamais du tableau de projet.
         env:
           GH_TOKEN: ${{ github.token }}
-        run: dotnet run --project tools/CreerIssues -- --appliquer
+        run: dotnet run --file tools/CreerIssues/CreerIssues.cs -- --appliquer
 
       - name: Recalculer Statut et Épique du tableau de projet (CreerProjet)
         # Jeton personnel requis ici (voir l'étape de garde en tête de ce
@@ -158,4 +158,4 @@ jobs:
         # plus étroit.
         env:
           GH_TOKEN: ${{ secrets.PROJECTS_PAT }}
-        run: dotnet run --project tools/CreerProjet -- --appliquer
+        run: dotnet run --file tools/CreerProjet/CreerProjet.cs -- --appliquer

@@ -1,3 +1,4 @@
+#!/usr/bin/env dotnet
 // Cet outil n'est ni une tâche du plan de travail (`plan-de-travail.md §2`)
 // ni un vérificateur du corpus documentaire au sens de la clause de
 // `methode-de-ticket.md §7` (« l'outillage qui lit et vérifie le corpus
@@ -11,6 +12,53 @@
 // conventions de code C# du corpus (guide-conventions-et-dod.md §2),
 // n'applique que les clauses dont l'objet nommé existe ici — le style et la
 // version du SDK, jamais le modèle de domaine.
+
+// Propriétés de l'ancien .csproj (tools/FICHIER-UNIQUE.md). Version en support à
+// long terme en cours à l'ouverture du build : règle et formulation posées par
+// guide-conventions-et-dod.md §2 — « ce guide énonce la règle, jamais un numéro —
+// un numéro vieillit, la règle non » — qui renvoie lui-même au §8 pour la pratique
+// de fond dont elle découle. Style porté uniquement par les analyzers livrés avec
+// le SDK — aucune dépendance d'analyse tierce.
+#:property TargetFramework=net10.0
+#:property ImplicitUsings=enable
+#:property Nullable=enable
+#:property EnforceCodeStyleInBuild=true
+#:property TreatWarningsAsErrors=true
+#:property PublishAot=false
+#:property RootNamespace=CreerProjet
+#:property AssemblyName=CreerProjet
+
+// SOCLE « LECTURE DU PLAN » PARTAGÉ ENTRE tools/CreerIssues ET tools/CreerProjet —
+// NE JAMAIS DUPLIQUER. Les douze fichiers de tools/CreerIssues/ listés par
+// `#:include` ci-dessous sont les sources physiques que les deux outils
+// compilent, plutôt que de les recopier : ce dépôt n'a ni fichier de solution ni
+// référence de projet entre outils, donc rien d'autre qu'une directive
+// `#:include` ne peut porter ce partage — et ce couplage de chemin est INVISIBLE
+// depuis tools/CreerProjet/. Toute modification de l'un de ces fichiers doit être
+// revalidée dans LES DEUX outils (les tests compilent l'un et l'autre) : n'en
+// crée jamais de copie locale sous tools/CreerProjet/, quelle qu'en soit la
+// raison. Aucun de ces fichiers ne porte d'instructions de premier niveau :
+// `#:include` ne le permet pas.
+
+#:include Arguments.cs
+#:include ComparateurCodePoints.cs
+#:include EtatsCycleDeVie.cs
+#:include GhCli.cs
+#:include Graphql.cs
+#:include Orchestrateur.cs
+#:include RenduPythonDeJson.cs
+#:include ../CreerIssues/Chemins.cs
+#:include ../CreerIssues/Processus.cs
+#:include ../CreerIssues/PanneEnvironnementException.cs
+#:include ../CreerIssues/ErreurCorpusException.cs
+#:include ../CreerIssues/TexteUnicode.cs
+#:include ../CreerIssues/ReprPython.cs
+#:include ../CreerIssues/LecteurTexte.cs
+#:include ../CreerIssues/RacineDepot.cs
+#:include ../CreerIssues/OrigineGit.cs
+#:include ../CreerIssues/TableauMarkdown.cs
+#:include ../CreerIssues/BlancPython.cs
+#:include ../CreerIssues/PlanDeTravail.cs
 
 using System.Globalization;
 using System.Text;

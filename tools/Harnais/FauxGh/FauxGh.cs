@@ -1,3 +1,4 @@
+#!/usr/bin/env dotnet
 // Cet outil n'est pas un vérificateur du corpus documentaire : c'est un
 // harnais de test qui remplace `gh` pour capturer, sans jamais contacter
 // GitHub, ce que le portage Python → C# de `tools/creer-issues.py` et
@@ -8,6 +9,31 @@
 // (guide-conventions-et-dod.md §2), n'applique que les clauses dont l'objet
 // nommé existe ici — le style et la version du SDK, jamais le modèle de
 // domaine.
+
+// Propriétés de l'ancien .csproj (tools/FICHIER-UNIQUE.md). Version en support à
+// long terme en cours à l'ouverture du build : règle et formulation posées par
+// guide-conventions-et-dod.md §2 — « ce guide énonce la règle, jamais un numéro —
+// un numéro vieillit, la règle non » — qui renvoie lui-même au §8 pour la pratique
+// de fond dont elle découle. Style porté uniquement par les analyzers livrés avec
+// le SDK — aucune dépendance d'analyse tierce.
+// Le nom d'assemblage, pas le nom de fichier, est ce que le lanceur natif cherche
+// à résoudre : c'est lui qui doit valoir « gh » pour que ce binaire soit
+// invocable sous ce nom depuis le PATH.
+#:property TargetFramework=net10.0
+#:property ImplicitUsings=enable
+#:property Nullable=enable
+#:property EnforceCodeStyleInBuild=true
+#:property TreatWarningsAsErrors=true
+#:property PublishAot=false
+#:property RootNamespace=FauxGh
+#:property AssemblyName=gh
+
+#:include EntreeJournal.cs
+#:include IdentiteSentinelle.cs
+#:include JournalInvocations.cs
+#:include LecteurEntreeStandard.cs
+#:include RangAppel.cs
+#:include ReponseFauxGh.cs
 
 using System.Globalization;
 using System.Text;

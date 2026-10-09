@@ -1,3 +1,4 @@
+#!/usr/bin/env dotnet
 // Cet outil n'est pas un vérificateur du corpus documentaire : c'est un
 // harnais de test qui compare deux journaux d'invocations du faux gh
 // (`../FauxGh`), pour le portage Python → C# de `tools/creer-issues.py` et
@@ -7,6 +8,27 @@
 // (guide-conventions-et-dod.md §2), n'applique que les clauses dont l'objet
 // nommé existe ici — le style et la version du SDK, jamais le modèle de
 // domaine.
+
+// Propriétés de l'ancien .csproj (tools/FICHIER-UNIQUE.md). Version en support à
+// long terme en cours à l'ouverture du build : règle et formulation posées par
+// guide-conventions-et-dod.md §2 — « ce guide énonce la règle, jamais un numéro —
+// un numéro vieillit, la règle non » — qui renvoie lui-même au §8 pour la pratique
+// de fond dont elle découle. Style porté uniquement par les analyzers livrés avec
+// le SDK — aucune dépendance d'analyse tierce.
+#:property TargetFramework=net10.0
+#:property ImplicitUsings=enable
+#:property Nullable=enable
+#:property EnforceCodeStyleInBuild=true
+#:property TreatWarningsAsErrors=true
+#:property PublishAot=false
+#:property RootNamespace=ComparateurJournaux
+#:property AssemblyName=ComparateurJournaux
+
+#:include Comparateur.cs
+#:include EntreeJournal.cs
+#:include LecteurJournal.cs
+#:include PanneExecutionException.cs
+#:include Verdict.cs
 
 using System.Globalization;
 using System.Text;
