@@ -14,6 +14,7 @@ erDiagram
         booléen is_virtual
         identifiant default_document_type_id FK "nullable"
         identifiant default_template_document_id FK "nullable — ref documents.id"
+        entier order
         horodatage created_at
         horodatage updated_at
         identifiant created_by_id "ref users.id"
@@ -70,11 +71,11 @@ erDiagram
     }
 
     FOLDER ||--o{ DOCUMENT : "contient"
-    FOLDER ||--o{ FOLDER : "parent de"
-    DOCUMENT_TYPE ||--o{ DOCUMENT : "type de"
-    DOCUMENT_TYPE ||--o{ FOLDER : "type par défaut de"
+    FOLDER |o--o{ FOLDER : "parent de"
+    DOCUMENT_TYPE |o--o{ DOCUMENT : "type de"
+    DOCUMENT_TYPE |o--o{ FOLDER : "type par défaut de"
     DOCUMENT ||--o{ DOCUMENT_BLOCK : "composé de"
     DOCUMENT ||--o{ DOCUMENT_LINK : "référence"
     DOCUMENT ||--o{ DOCUMENT_TAG : "taggé par"
-    DOCUMENT ||--o{ DOCUMENT : "instancié depuis (source)"
+    DOCUMENT |o--o{ DOCUMENT : "instancié depuis (source)"
 ```

@@ -58,7 +58,7 @@ erDiagram
         horodatage created_at
     }
 
-    SPACE ||--o{ SPACE_MEMBERSHIP : "a des membres"
+    SPACE ||--|{ SPACE_MEMBERSHIP : "a des membres"
     SPACE ||--o{ INVITATION : "a des invitations"
     SPACE ||--o{ GUEST_ACCESS : "a des accès invités"
     SPACE_MEMBERSHIP ||--o{ MEMBERSHIP_CHARACTER : "associé à des personnages"
