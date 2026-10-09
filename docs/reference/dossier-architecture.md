@@ -2,7 +2,7 @@
 
 | Champ | Valeur |
 |---|---|
-| Version | SOUS-SPÉCIFIÉ |
+| Version | 1.2 |
 | Date | 2026-10-09 |
 | Statut | SOUS-SPÉCIFIÉ |
 | Porteur | SOUS-SPÉCIFIÉ |
@@ -12,8 +12,9 @@
 
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
-| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
-| SOUS-SPÉCIFIÉ | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans changement de structure : marqueurs ramenés à la liste fermée, lignes de la vue de traçabilité complétées, diagramme de la vue composants, facturation (tier) alignée sur le domaine, éléments non sourcés retirés |
+| 1.0 | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
+| 1.1 | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans changement de structure : marqueurs ramenés à la liste fermée, lignes de la vue de traçabilité complétées, diagramme de la vue composants, facturation (tier) alignée sur le domaine, éléments non sourcés retirés |
+| 1.2 | 2026-10-09 | Pierre-Marie Marchio | Correction du fond, sans changement de structure : les deux flèches qu'aucune source n'établit (notifications temps réel vers API, monolithe vers hub SignalR) sont retirées des diagrammes et reportées en limites, `[À TRANCHER — architecture]` |
 
 **Sommaire**
 
@@ -178,7 +179,6 @@ graph TD
 
     SPA -->|"REST/HTTP, JWT bearer"| API
     SPA -->|"push, repli WS→SSE→long-polling"| SIGNALR
-    SIGNALR --> API
     SPA -.->|"migration one-shot uniquement"| API
     API --> IDP
     API --> SECRETS
@@ -267,7 +267,6 @@ graph TD
         HUB["Hub SignalR<br/>(sticky sessions requises)"]
         DENY[("Denylist externe")]
         MONO <--> PG
-        MONO <--> HUB
         MONO <--> DENY
     end
 
@@ -299,7 +298,7 @@ graph TD
 | Composants — Transverse (couche Application) | ADR-011, ADR-014 §3/§6, ADR-016, space-management/context.md |
 | Composants — Core/SharedKernel | core/kernel.md |
 | Déploiement | ADR-003, ADR-004, ADR-015, ADR-016, ADR-017, stack.md |
-| Limites cartographiques | ADR-015 §2.3, ADR-018, stack.md, specs/telemetrie.md, cadrage-validation-pre-lancement-eu.md |
+| Limites cartographiques | ADR-004, ADR-014 §6, ADR-015 §2.3, ADR-018, stack.md, specs/telemetrie.md, cadrage-validation-pre-lancement-eu.md |
 
 ---
 
@@ -312,6 +311,7 @@ graph TD
 **Statut pré-implémentation généralisé.** C'est le point le plus structurant de ce document : à l'exception des rares cas explicitement marqués autrement, chaque choix cartographié est une décision de conception à confirmer à l'entrée en build — voir la légende des statuts en §1.
 
 **Points ouverts, non tranchés dans ce document** :
+- `[À TRANCHER — architecture]` — le lien entre le hub SignalR et le reste du serveur : ni le lien entre les notifications temps réel et l'API (vue conteneurs), ni celui entre le monolithe et le hub (vue déploiement) ne sont établis par une décision ou un document du corpus, et les deux flèches ne sont pas dessinées. [ADR-004](../decisions/ADR-004-transport-temps-reel.md) isole SignalR dans `Haversack.Infrastructure.Notifications` et [ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §6 fait appeler `IResourceAccessPolicy.CanAccess` par le filtre de diffusion, sans dire par quel lien le hub et l'API communiquent.
 - [ADR-015](../decisions/ADR-015-securite-authentification-mvp.md) §2.3 — résolution *reclaim-in-place* pour le cas d'un email OAuth correspondant à un compte préexistant non vérifié : `[À TRANCHER — PRODUIT]`, statut que porte l'ADR à cet endroit.
 - [ADR-018](../decisions/ADR-018-espace-personnel-generalisation-space.md) — deux validations juridiques ouvertes avant tout lancement EU, consolidées dans [`cadrage-validation-pre-lancement-eu.md`](../assurance/conformite/cadres/cadrage-validation-pre-lancement-eu.md) : la qualification au regard de l'Art. 17 du hard-delete inconditionnel du contenu personnel, et le périmètre du DPA (Art. 28) pour un contenu personnel décrivant des tiers identifiables. Ces deux points sont des items de conformité ouverts, non des décisions d'architecture ; ils ne sont pas tranchés ici.
 
