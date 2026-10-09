@@ -46,9 +46,10 @@ flowchart TD
     A[MJ identifie un document a partager] --> B{Point d entree}
 
     B -->|Depuis la bibliotheque de contenu| C[Ouvre le document\nClique Partager]
-    B -->|Depuis la vue session LIVE| D[Clique Partager\ndepuis le panneau de session]
+    B -->|Depuis la vue session| D[Clique Partager\ndepuis le panneau de session]
 
-    C --> E[Document.Share\nGM_ONLY vers PUBLIC\nDocumentVisibilityChanged]
+    C --> CONF[Confirme le partage\nUC-08 etape 4]
+    CONF --> E[Document.Share\nGM_ONLY vers PUBLIC\nDocumentVisibilityChanged]
     D --> E
 
     E --> F{Partage depuis session LIVE ?}
