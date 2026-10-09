@@ -75,7 +75,7 @@ flowchart LR
     end
 
     UC01 --> UC02
-    UC02 --> UC04
+    UC01 --> UC04
     UC02 --> UC05
     UC04 --> UC03
     UC05 --> UC06
