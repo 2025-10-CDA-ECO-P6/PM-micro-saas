@@ -175,7 +175,7 @@ numérique qu'il rejette. Son groupe ne sort pas les téléphones à table — d
 de suivre un lien de session, saisir un nom d'affichage, accéder à une vue joueur numérique,
 c'est un changement de pratique de table qu'il n'a pas signalé vouloir.
 
-La moscow.md le formule sans détour : « Rémi — résistant au numérique par philosophie — ne
+La matrice-de-priorites.md le formule sans détour : « Rémi — résistant au numérique par philosophie — ne
 considère Haversack que si le partage est simple » (UC-08 §Pourquoi Must Have). Le partage est
 simple dans le produit — mais il nécessite un compte, ce qui constitue la barrière.
 
@@ -188,7 +188,7 @@ simple dans le produit — mais il nécessite un compte, ce qui constitue la bar
 **Rémi est hors cible MVP.** La fiche persona conclut sans ambiguïté : « Rémi n'est probablement
 pas la cible de Haversack. C'est un choix à assumer clairement. »
 
-La moscow.md §UC-01 nomme Rémi parmi les profils que le mode local vise (« Rémi ne créera pas
+La matrice-de-priorites.md §UC-01 nomme Rémi parmi les profils que le mode local vise (« Rémi ne créera pas
 de compte sans raison concrète ») — ce qui positionne le mode local sans compte comme fenêtre
 d'évaluation, pas comme périmètre d'usage suffisant. La vision produit §2.2 le cite également
 comme profil bénéficiant de la réduction de friction d'onboarding : « pour les profils les plus
@@ -219,4 +219,4 @@ Sonia (§5bis vision produit, libellé exact cité dans le parcours Sonia).
 | C2 | Mode local → création de campagne | Étape 1 → étape 2 | Continue | UC-02 : précondition identique en mode local et mode cloud. Aucune restriction. |
 | C3 | Campagne locale → vue session MJ | Étape 2 → étape 3 | Continue | UC-06 précondition : campagne existante + MJ authentifié ou en mode local. Explicitement couvert. |
 | C4 | Vue session MJ → partage du résumé aux joueurs | Étape 3 → partage | Limite assumée | UC-01 règles métier + UJ-UC-01 flux fonctionnel : partage joueurs désactivé en mode local. Bouton visible, non actionnable sans compte. C'est le seul usage envisagé par Rémi — c'est la frontière du périmètre. |
-| C5 | Création de compte → accès au partage | Hors parcours nominal Rémi | Limite assumée | Rémi n'a pas de parcours post-création de compte spécifique documenté. Si Rémi crée malgré tout un compte, il suit le parcours GÉNÉRIQUE de migration locale→cloud (UC-10, déjà instancié de bout en bout par le parcours Thomas). Aucun besoin Rémi-spécifique n'est requis au-delà de ce chemin partagé. Le scénario nominal de Rémi reste le départ sans compte (UJ-UC-01 : « Quitter sans créer de compte » 3/5). **Justification** : Rémi est explicitement hors cible MVP (persona et moscow.md sans ambiguïté). La limite assumée nomme : si Rémi crée un compte, le comportement est défini (UC-10 générique) ; aucun parcours spécialisé Rémi n'est requis, par conception produit, pas par trou de spécification. |
+| C5 | Création de compte → accès au partage | Hors parcours nominal Rémi | Limite assumée | Rémi n'a pas de parcours post-création de compte spécifique documenté. Si Rémi crée malgré tout un compte, il suit le parcours GÉNÉRIQUE de migration locale→cloud (UC-10, déjà instancié de bout en bout par le parcours Thomas). Aucun besoin Rémi-spécifique n'est requis au-delà de ce chemin partagé. Le scénario nominal de Rémi reste le départ sans compte (UJ-UC-01 : « Quitter sans créer de compte » 3/5). **Justification** : Rémi est explicitement hors cible MVP (persona et matrice-de-priorites.md sans ambiguïté). La limite assumée nomme : si Rémi crée un compte, le comportement est défini (UC-10 générique) ; aucun parcours spécialisé Rémi n'est requis, par conception produit, pas par trou de spécification. |

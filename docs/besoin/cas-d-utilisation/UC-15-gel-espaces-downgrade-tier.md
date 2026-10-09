@@ -1,8 +1,8 @@
 # UC-15 — Gel d'espaces au downgrade de tier
 
-> **Classement MoSCoW : Post-MVP (spécifiés)** — [`moscow.md`](../vision/perimetre/matrice-de-priorites.md) fait autorité sur ce classement. Ce cas d'utilisation couvre le gel automatique des espaces excédentaires lors d'un downgrade de tier, ainsi que le dégel réversible au ré-upgrade. En MVP, le gel n'est pas déclenché (le downgrade suppose un tier payant, hors périmètre première livraison).
+> **Classement MoSCoW : Post-MVP (spécifiés)** — [`matrice-de-priorites.md`](../vision/perimetre/matrice-de-priorites.md) fait autorité sur ce classement. Ce cas d'utilisation couvre le gel automatique des espaces excédentaires lors d'un downgrade de tier, ainsi que le dégel réversible au ré-upgrade. En MVP, le gel n'est pas déclenché (le downgrade suppose un tier payant, hors périmètre première livraison).
 
-> **Note de positionnement d'autorité** — Ce use case est l'**amont source-de-vérité** du comportement de gel/dégel ; le domaine ([`space-management.md`](../../domaine/space-management/context.md) — règles 6 et 11, méthodes `Freeze()`/`Unfreeze()`) en est l'aval documenté, conformément à l'ordre d'autorité du corpus (use case → domaine). Il ratifie et détaille ce comportement plutôt que de le réinventer. Ce UC est issu de la question ouverte posée dans [UC-HORS-MVP §Gel de campagnes au downgrade de tier](../vision/perimetre/exclusions.md).
+> **Note de positionnement d'autorité** — Ce use case est l'**amont source-de-vérité** du comportement de gel/dégel ; le domaine ([`space-management/context.md`](../../domaine/space-management/context.md) — règles 6 et 11, méthodes `Freeze()`/`Unfreeze()`) en est l'aval documenté, conformément à l'ordre d'autorité du corpus (use case → domaine). Il ratifie et détaille ce comportement plutôt que de le réinventer. Ce UC est issu de la question ouverte posée dans [exclusions.md §Gel de campagnes au downgrade de tier](../vision/perimetre/exclusions.md).
 
 ## Acteur principal
 
@@ -18,7 +18,7 @@ Définir ce qu'il advient des espaces d'un MJ lorsqu'il repasse au tier gratuit 
 
 ## Contexte
 
-Un MJ perd son tier premium — fin d'abonnement ou non-renouvellement — et se retrouve au-delà de la limite d'espaces `CAMPAIGN`/`ONE_SHOT` du tier gratuit (quota consolidé, valeur volatile — voir `vision-produit.md §3` / `cahier-des-charges.md annexe « Valeurs de référence chiffrées »`), qui n'est pas figée par ce use case.
+Un MJ perd son tier premium — fin d'abonnement ou non-renouvellement — et se retrouve au-delà de la limite d'espaces `CAMPAIGN`/`ONE_SHOT` du tier gratuit (quota consolidé, valeur volatile — voir `vision.md §3` / `cahier-des-charges.md annexe « Valeurs de référence chiffrées »`), qui n'est pas figée par ce use case.
 
 Ce scénario existe car le modèle de monétisation (voir [ADR-005](../../decisions/ADR-005-modele-monetisation.md), trace historique fusionnée dans la vision) autorise un MJ à créer des espaces au-delà du quota gratuit tant qu'il reste sur un tier payant ; le retour au tier gratuit peut donc laisser un MJ dans un état où son nombre d'espaces actifs dépasse ce que le tier gratuit autorise.
 
@@ -36,18 +36,18 @@ L'événement `AccountTierChanged`, émis par Identity & Access et reçu par Spa
 
 ## Scénario nominal — Gel au downgrade
 
-*(ratifie la règle 6 de `space-management.md`)*
+*(ratifie la règle 6 de `space-management/context.md`)*
 
 1. Le système reçoit `AccountTierChanged` pour le compte du MJ, dans le sens downgrade (tier premium → gratuit).
-2. Il compte les espaces `CAMPAIGN`/`ONE_SHOT` à l'état `ACTIVE` dont le MJ est propriétaire. L'espace `PERSONAL` du MJ n'est **jamais compté** dans ce total : il est structurellement hors quota (invariant 15 de `space-management.md` — un espace `PERSONAL` est toujours `ACTIVE`, jamais gelé).
+2. Il compte les espaces `CAMPAIGN`/`ONE_SHOT` à l'état `ACTIVE` dont le MJ est propriétaire. L'espace `PERSONAL` du MJ n'est **jamais compté** dans ce total : il est structurellement hors quota (invariant 15 de `space-management/context.md` — un espace `PERSONAL` est toujours `ACTIVE`, jamais gelé).
 3. Si ce compte dépasse le quota du tier gratuit, le système identifie les espaces **excédentaires** — ceux qui dépassent le quota — dans l'ordre de création, **les plus récents en premier**.
 4. Le système gèle chacun de ces espaces excédentaires via `Space.Freeze()`, qui produit l'événement `SpaceFrozen`, jusqu'à ce que le nombre d'espaces `ACTIVE` du propriétaire revienne dans la limite du quota.
-5. Un espace passé à l'état `FROZEN` devient en **lecture seule** (invariant 7 de `space-management.md`) : son contenu reste consultable normalement, mais aucune écriture n'y est plus possible. Aucune donnée n'est supprimée à cette étape.
+5. Un espace passé à l'état `FROZEN` devient en **lecture seule** (invariant 7 de `space-management/context.md`) : son contenu reste consultable normalement, mais aucune écriture n'y est plus possible. Aucune donnée n'est supprimée à cette étape.
 6. Le MJ est notifié du gel (l'Application consomme `SpaceFrozen` pour émettre la notification).
 
 ## Scénario de réversibilité — Dégel au ré-upgrade
 
-*(comble la lacune laissée ouverte dans UC-HORS-MVP, ratifie la nouvelle règle 11 de `space-management.md`)*
+*(comble la lacune laissée ouverte dans exclusions.md, ratifie la nouvelle règle 11 de `space-management/context.md`)*
 
 1. Le système reçoit `AccountTierChanged` pour le compte du MJ, dans un sens de montée de tier.
 2. Il identifie les espaces à l'état `FROZEN` dont le MJ est propriétaire.
@@ -63,8 +63,8 @@ SOUS-SPÉCIFIÉ
 ## Règles métier
 
 - **RB-15-01** — Lors d'un downgrade laissant le propriétaire au-delà du quota du tier gratuit, les espaces excédentaires `CAMPAIGN`/`ONE_SHOT` sont gelés dans l'ordre de création, les plus récents en premier, jusqu'à ce que le nombre d'espaces `ACTIVE` revienne dans le quota.
-- **RB-15-02** — L'espace `PERSONAL` du propriétaire n'est jamais compté dans le quota et n'est jamais gelé, quel que soit l'état du tier (invariant 15 de `space-management.md`).
-- **RB-15-03** — Un espace `FROZEN` est en lecture seule : son contenu reste consultable, aucune écriture n'y est possible, et aucune donnée n'y est supprimée du seul fait du gel (invariant 7 de `space-management.md`).
+- **RB-15-02** — L'espace `PERSONAL` du propriétaire n'est jamais compté dans le quota et n'est jamais gelé, quel que soit l'état du tier (invariant 15 de `space-management/context.md`).
+- **RB-15-03** — Un espace `FROZEN` est en lecture seule : son contenu reste consultable, aucune écriture n'y est possible, et aucune donnée n'y est supprimée du seul fait du gel (invariant 7 de `space-management/context.md`).
 - **RB-15-04** — Lors d'une montée de tier, les espaces `FROZEN` du propriétaire sont dégelés automatiquement, dans la limite du quota du tier cible — la garde est relative au quota cible, pas inconditionnelle, pour rester correcte si un tier intermédiaire apparaît.
 - **RB-15-05** — Le dégel ne perd aucune donnée : le gel et le dégel sont un cycle réversible sans suppression, dans les deux sens.
 - **RB-15-06** — Le propriétaire est notifié à chaque gel (`SpaceFrozen`) et à chaque dégel (`SpaceUnfrozen`) le concernant.
@@ -79,8 +79,8 @@ SOUS-SPÉCIFIÉ
 
 ## Renvois
 
-- [`space-management.md`](../../domaine/space-management/context.md) — `SpaceStatus.FROZEN`, méthodes `Freeze()`/`Unfreeze()`, invariants 7 et 15, règles métier 6 et 11.
+- [`space-management/context.md`](../../domaine/space-management/context.md) — `SpaceStatus.FROZEN`, méthodes `Freeze()`/`Unfreeze()`, invariants 7 et 15, règles métier 6 et 11.
 - [Glossaire — `SpaceStatus`](../../glossaire.md) — définition de la valeur `FROZEN`.
 - [ADR-005 — Modèle de monétisation](../../decisions/ADR-005-modele-monetisation.md) — trace historique du modèle de tiers (substance fusionnée dans la vision).
-- [UC-HORS-MVP — Gel de campagnes au downgrade de tier](../vision/perimetre/exclusions.md) — question ouverte dont ce UC est issu.
-- `vision-produit.md §3` / `cahier-des-charges.md annexe « Valeurs de référence chiffrées »` — valeurs chiffrées du quota et des tiers (volatiles, non figées par ce use case).
+- [exclusions.md — Gel de campagnes au downgrade de tier](../vision/perimetre/exclusions.md) — question ouverte dont ce UC est issu.
+- `vision.md §3` / `cahier-des-charges.md annexe « Valeurs de référence chiffrées »` — valeurs chiffrées du quota et des tiers (volatiles, non figées par ce use case).

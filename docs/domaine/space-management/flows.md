@@ -50,7 +50,7 @@ sequenceDiagram
 
     Joueur->>App: Clic sur lien d'invitation (token)
     App->>SM: Valider invitation (token)
-    alt Invitation invalide / expirée
+    alt Invitation invalide / expirée / espace archivé
         SM-->>App: Erreur
         App-->>Joueur: "Ce lien n'est pas utilisable"
     else Invitation valide
@@ -71,7 +71,7 @@ sequenceDiagram
 
     Joueur->>App: Clic sur lien d'invitation (token)
     App->>SM: Valider invitation (token)
-    alt Invitation invalide / expirée
+    alt Invitation invalide / expirée / espace archivé
         App-->>Joueur: "Ce lien n'est pas utilisable"
     else Invitation valide
         App-->>Joueur: Page de saisie du nom d'affichage

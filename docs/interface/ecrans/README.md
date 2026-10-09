@@ -14,7 +14,7 @@
 
 ## Organisation du répertoire
 
-Les écrans sont **regroupés par surface** (codes SV du zoning S4) ; un dossier par écran (slug canonique kebab-case, aligné sur `conventions-wireframe.md`) :
+Les écrans sont **regroupés par surface** (codes SV du zoning S4) ; un dossier par écran (slug canonique kebab-case, aligné sur `interface/conventions.md`) :
 
 ```
 <surface>/                ex. sv1-transversaux, sv2-entree-espace, sv3-preparation,
@@ -138,7 +138,7 @@ Les éléments suivants sont inventoriés dans le zoning (S8) mais hors périmè
 ## Renvois
 
 - Arbitrages figés appliqués : `docs/interface/zonage.md §S6`
-- Châssis applicatif (indicateurs, bandeaux, accessibilité transversale) : `zoning.md §S7`
-- Exclusions nommées (éléments hors périmètre wireframe MVP) : `zoning.md §S8`
-- Trous de corpus (points d'interview, éléments sous-spécifiés) : `zoning.md §S9`
-- Termes de région d'interface (Registre 2) : `conventions-wireframe.md §C2`
+- Châssis applicatif (indicateurs, bandeaux, accessibilité transversale) : `zonage.md §S7`
+- Exclusions nommées (éléments hors périmètre wireframe MVP) : `zonage.md §S8`
+- Trous de corpus (points d'interview, éléments sous-spécifiés) : `zonage.md §S9`
+- Termes de région d'interface (Registre 2) : `interface/conventions.md §C2`

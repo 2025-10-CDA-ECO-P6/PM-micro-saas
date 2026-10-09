@@ -13,16 +13,16 @@
 ## Nature et portée du document
 
 Ce document **décompose** un ordonnancement déjà arrêté. Il ne redéfinit :
-- **ni le périmètre MoSCoW** ([`vision/moscow.md`](../besoin/vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour attribuer une priorité Must/Should/Could/Won't) ;
-- **ni le phasage J0-J3** ([`roadmap-entree-build.md §1-2`](roadmap-de-build.md)) ;
-- **ni les critères de sortie de jalon** ([`roadmap-entree-build.md §3`](roadmap-de-build.md), [`cahier-strategie-test-et-recette.md §9`](../assurance/strategie-de-test.md)) ;
+- **ni le périmètre MoSCoW** ([`vision/perimetre/matrice-de-priorites.md`](../besoin/vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour attribuer une priorité Must/Should/Could/Won't) ;
+- **ni le phasage J0-J3** ([`roadmap-de-build.md §1-2`](roadmap-de-build.md)) ;
+- **ni les critères de sortie de jalon** ([`roadmap-de-build.md §3`](roadmap-de-build.md), [`strategie-de-test.md §9`](../assurance/strategie-de-test.md)) ;
 - **ni l'ordre des user stories à l'intérieur d'une epic** (section « Ordre de livraison recommandé » de chaque fichier `US-UC-NN-*.md`).
 
 **En cas de conflit entre ce document et une source citée** (roadmap, ADR, use case, user story, spécification), **la source citée fait foi**. Ce document est un artefact de décomposition, pas une nouvelle autorité de corpus.
 
 Ce que ce document **fait** : il prend la séquence de jalons J0-J3 et, pour J0 et J1, la décompose jusqu'à la tranche — but observable, dépendances techniques, périmètre d'écriture, conflits calculés, taille, critères d'acceptation par renvoi. Pour J2 et J3, il s'arrête au niveau de l'épique (raison en §7). Il regroupe les tranches ouvrables simultanément en lots parallélisables, calculés depuis les périmètres d'écriture déclarés — jamais affirmés.
 
-**Périmètre engagé, non redéfini.** Ce plan engage les user stories que ses tranches citent — ni plus, ni moins ; ce périmètre se lit sur les tranches elles-mêmes, pas sur un décompte figé dans ce bandeau. Une user story du corpus J1 qu'aucune tranche ne cite reste hors périmètre engagé ; son statut se lit au grain du use case dont elle dérive — au paragraphe `Critère de sortie` du use case concerné dans [`moscow.md`](../besoin/vision/perimetre/matrice-de-priorites.md), seule autorité du corpus pour cette priorité, et aux critères de sortie factuels du jalon « Local-only » ([`roadmap-entree-build.md §3.2`](roadmap-de-build.md)) — et à la plage `CR-` que ce use case couvre dans [`cahier-strategie-test-et-recette.md §9`](../assurance/strategie-de-test.md), jamais à une valeur MoSCoW ou à un critère de sortie recopiés dans ce document. Le critère fonde l'appartenance au périmètre local ; la plage `CR-` l'énumère et porte déjà ses colonnes de verdict — c'est à qui clôture J1 (`TB-094`) de trancher, cas par cas, si une plage relève du périmètre local.
+**Périmètre engagé, non redéfini.** Ce plan engage les user stories que ses tranches citent — ni plus, ni moins ; ce périmètre se lit sur les tranches elles-mêmes, pas sur un décompte figé dans ce bandeau. Une user story du corpus J1 qu'aucune tranche ne cite reste hors périmètre engagé ; son statut se lit au grain du use case dont elle dérive — au paragraphe `Critère de sortie` du use case concerné dans [`matrice-de-priorites.md`](../besoin/vision/perimetre/matrice-de-priorites.md), seule autorité du corpus pour cette priorité, et aux critères de sortie factuels du jalon « Local-only » ([`roadmap-de-build.md §3.2`](roadmap-de-build.md)) — et à la plage `CR-` que ce use case couvre dans [`strategie-de-test.md §9`](../assurance/strategie-de-test.md), jamais à une valeur MoSCoW ou à un critère de sortie recopiés dans ce document. Le critère fonde l'appartenance au périmètre local ; la plage `CR-` l'énumère et porte déjà ses colonnes de verdict — c'est à qui clôture J1 (`TB-094`) de trancher, cas par cas, si une plage relève du périmètre local.
 
 **Hors périmètre** : durée, effectif, affectation nominative — aucun de ces éléments n'est un fait dérivable du corpus de conception, qui ne porte ni charge ni ordonnancement temporel propre.
 
@@ -88,11 +88,11 @@ Le champ `Périmètre d'écriture` de chaque tranche est une liste de **modules*
 
 | Module | Où le corpus le nomme |
 |---|---|
-| `service d'accès au store` | [`roadmap-entree-build.md Annexe A`](roadmap-de-build.md), ligne J1, code `P6` — « Services Angular IndexedDB (wrappers) » |
-| `châssis` | [`zoning.md §S7 — Châssis`](../interface/zonage.md) |
-| `bandeaux transversaux` | [`roadmap-entree-build.md Annexe A`](roadmap-de-build.md), code `P6` — « bandeaux durabilité/confidentialité » |
-| `sanitisation` | [`roadmap-entree-build.md Annexe A`](roadmap-de-build.md), code `P6` — « `DomSanitizer` » ; [`specs/sanitisation-csp.md`](../architecture/specs/sanitisation-csp.md) |
-| `politique de sécurité de contenu` | [`roadmap-entree-build.md Annexe A`](roadmap-de-build.md), code `P6` — « CSP complète » ; [`specs/sanitisation-csp.md`](../architecture/specs/sanitisation-csp.md) |
+| `service d'accès au store` | [`roadmap-de-build.md Annexe A`](roadmap-de-build.md), ligne J1, code `P6` — « Services Angular IndexedDB (wrappers) » |
+| `châssis` | [`zonage.md §S7 — Châssis`](../interface/zonage.md) |
+| `bandeaux transversaux` | [`roadmap-de-build.md Annexe A`](roadmap-de-build.md), code `P6` — « bandeaux durabilité/confidentialité » |
+| `sanitisation` | [`roadmap-de-build.md Annexe A`](roadmap-de-build.md), code `P6` — « `DomSanitizer` » ; [`specs/sanitisation-csp.md`](../architecture/specs/sanitisation-csp.md) |
+| `politique de sécurité de contenu` | [`roadmap-de-build.md Annexe A`](roadmap-de-build.md), code `P6` — « CSP complète » ; [`specs/sanitisation-csp.md`](../architecture/specs/sanitisation-csp.md) |
 | `projection d'export` | [`ADR-017 § Conséquences`](../decisions/ADR-017-modele-indexeddb-local.md) — « Couture de projection filtrée, sans reformatage structurel » |
 
 *Le bandeau de durabilité et le bandeau de confidentialité partagent un seul module, comme le corpus les nomme d'un seul trait. Ils sont donc déclarés en conflit et sérialisés ; leur épique n'étant pas portée par un use case, le premier point du dispositif de départage (§1) ne s'y applique pas, et c'est son second point qui s'applique : l'ordre est laissé à qui les prend.*
@@ -239,7 +239,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | HORS MAILLE — nature : acte de confirmation documentaire sur les ADR eux-mêmes — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | M — 0 modules, 3 renvois |
-| Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 1 ; `cahier-strategie-test-et-recette.md §9`, ligne « Socle », puce 1 ; la liste des ADR concernés se lit sur `decisions/README.md § Index`, colonne « Nature » (valeurs « pré-implémentation » et « mixte ») — non recopiée ici, pour ne pas dupliquer un décompte que ce registre possède et fait évoluer |
+| Critères d'acceptation | `roadmap-de-build.md §3.1 § Critères de sortie factuels`, puce 1 ; `strategie-de-test.md §9`, ligne « Socle », puce 1 ; la liste des ADR concernés se lit sur `decisions/README.md § Index`, colonne « Nature » (valeurs « pré-implémentation » et « mixte ») — non recopiée ici, pour ne pas dupliquer un décompte que ce registre possède et fait évoluer |
 | Code de renvoi | — |
 
 ### EP-02 — Échafaudage de la solution .NET
@@ -255,7 +255,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | le projet Domaine unique ; le projet Application unique ; Haversack.Infrastructure.Notifications ; les autres projets d'Infrastructure et de Présentation, dont le nombre et les noms relèvent de J0 |
 | En conflit avec | TB-010 — module partagé : le projet Application unique ; TB-080 — module partagé : le projet Application unique ; TB-092 — module partagé : le projet Application unique |
 | Taille | L — les projets sont échafaudés en un seul geste solidaire (une solution .NET unique) ; les scinder romprait l'unité de la structure décrite par `structure-projets.md`. Cette tâche demeure le **premier livrable de structure** (`ADR-008 §Compléments post-revue`, non amendé) |
-| Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 2 |
+| Critères d'acceptation | `roadmap-de-build.md §3.1 § Critères de sortie factuels`, puce 2 |
 | Code de renvoi | — |
 
 ##### TB-003 — Poser les namespaces du Domaine
@@ -269,7 +269,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | IdentityAccess ; SpaceManagement ; ContentLibrary ; SessionConduct ; SharedKernel |
 | En conflit avec | TB-004 — module partagé : SharedKernel ; TB-005 — module partagé : SharedKernel |
 | Taille | L — les namespaces sont posés en un seul geste de structuration du Domaine ; leur contenu interne reste `[À TRANCHER — J0]`, ce qui interdit de scinder cette tâche plus finement aujourd'hui |
-| Critères d'acceptation | `structure-projets.md § Domaine et Application : projets uniques` ; `guide-conventions-et-dod.md §2 § Organisation par namespaces par bounded context` |
+| Critères d'acceptation | `structure-projets.md § Domaine et Application : projets uniques` ; `conventions-dod.md §2 § Organisation par namespaces par bounded context` |
 | Code de renvoi | — |
 | Borne du critère | le critère se limite à l'existence des cinq répertoires, et c'est une borne assumée, non un manque : `structure-projets.md` marque les cinq lignes `[À TRANCHER — J0]` et écrit que « le contenu de chacun des cinq namespaces — fichiers, classes, sous-dossiers — n'est fixé ni par ADR-008 ni par aucune autre section du présent document ». Cette tranche se clôt sur l'existence des répertoires. |
 | Note de maille | cette tâche est la seule du plan à déclarer des **namespaces** et non des agrégats : elle crée les tiroirs, pas leur contenu. Les agrégats qu'ils accueilleront sont déclarés par les tranches de J1 (§2). |
@@ -285,7 +285,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | SharedKernel |
 | En conflit avec | TB-003 — module partagé : SharedKernel ; TB-005 — module partagé : SharedKernel |
 | Taille | M — un module, 5 renvois |
-| Critères d'acceptation | `structure-projets.md §4 — Nommage du noyau partagé` ; `domaine/core/kernel.md § Abstractions DDD` ; `domaine/core/kernel.md § Value objects primitifs` ; `domaine/core/kernel.md § Primitives de traçabilité` ; `guide-conventions-et-dod.md §2` |
+| Critères d'acceptation | `structure-projets.md §4 — Nommage du noyau partagé` ; `domaine/core/kernel.md § Abstractions DDD` ; `domaine/core/kernel.md § Value objects primitifs` ; `domaine/core/kernel.md § Primitives de traçabilité` ; `conventions-dod.md §2` |
 | Code de renvoi | — |
 
 ##### TB-005 — Implémenter les IDs typés du Core
@@ -299,7 +299,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | SharedKernel |
 | En conflit avec | TB-003 — module partagé : SharedKernel ; TB-004 — module partagé : SharedKernel |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `domaine/core/kernel.md § IDs typés` ; `guide-conventions-et-dod.md §2` ; `architecture/specs/mapping-ef-core.md §1` |
+| Critères d'acceptation | `domaine/core/kernel.md § IDs typés` ; `conventions-dod.md §2` ; `architecture/specs/mapping-ef-core.md §1` |
 | Code de renvoi | — |
 
 ### EP-03 — Contrôle d'architecture en intégration continue
@@ -315,7 +315,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | le projet de test d'architecture |
 | En conflit avec | TB-009 — module partagé : le projet de test d'architecture ; recouvrement à confirmer à J0 — TB-009 écrit dans le même projet de test d'architecture, non nommé par le corpus, donc non déclarable comme module au sens de la maille (§2). Recouvrement à confirmer à J0. |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Dérivable du corpus`, règle 2 — « chaque contexte respecte les frontières logiques définies par les namespaces » ; `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Règle 2 — NetArchTest » — le contrôle porte sur le graphe des types de l'assemblage compilé, non sur le texte source ; `cahier-strategie-test-et-recette.md §3.4 — Test d'architecture (CI)` |
+| Critères d'acceptation | `conventions-dod.md §6 § Dérivable du corpus`, règle 2 — « chaque contexte respecte les frontières logiques définies par les namespaces » ; `conventions-dod.md §6 § Non couvert par le corpus`, puce « Règle 2 — NetArchTest » — le contrôle porte sur le graphe des types de l'assemblage compilé, non sur le texte source ; `strategie-de-test.md §3.4 — Test d'architecture (CI)` |
 | Code de renvoi | — |
 
 ##### TB-007 — Retenir les outils du contrôle d'architecture
@@ -329,7 +329,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | HORS MAILLE — nature : acte de décision — retenir un outil et tracer le choix ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | M — 0 modules, 3 renvois |
-| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — la règle 2 relève de NetArchTest, les règles 1 et 3 d'un contrôle du graphe des références de projet ; `structure-projets.md §6`, mention « Outillage tranché » — chaque règle est rattachée au mécanisme qui la vérifie, avec la raison de ce rattachement ; `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, paragraphe « Ce que chacun ne fait pas » — les limites de chaque mécanisme sont écrites, et le rattachement n'est réputé tracé que si elles le sont |
+| Critères d'acceptation | `conventions-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — la règle 2 relève de NetArchTest, les règles 1 et 3 d'un contrôle du graphe des références de projet ; `structure-projets.md §6`, mention « Outillage tranché » — chaque règle est rattachée au mécanisme qui la vérifie, avec la raison de ce rattachement ; `conventions-dod.md §6 § Non couvert par le corpus`, paragraphe « Ce que chacun ne fait pas » — les limites de chaque mécanisme sont écrites, et le rattachement n'est réputé tracé que si elles le sont |
 | Code de renvoi | — |
 
 ##### TB-008 — Câbler les deux contrôles d'architecture dans le pipeline d'intégration continue
@@ -343,7 +343,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | la configuration d'intégration continue |
 | En conflit avec | TB-095 — module partagé : la configuration d'intégration continue |
 | Taille | S |
-| Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 3 — « Le test d'archi CI existe, **tourne en pipeline** » ; `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — les contrôles s'exécutent sur GitHub Actions, déclenchés à chaque commit — l'hébergement de l'application reste hors de cette décision |
+| Critères d'acceptation | `roadmap-de-build.md §3.1 § Critères de sortie factuels`, puce 3 — « Le test d'archi CI existe, **tourne en pipeline** » ; `conventions-dod.md §6 § Non couvert par le corpus`, puce « Tranché » — les contrôles s'exécutent sur GitHub Actions, déclenchés à chaque commit — l'hébergement de l'application reste hors de cette décision |
 | Code de renvoi | — |
 
 ##### TB-009 — Définition exhaustive du test d'architecture (`B3.2`)
@@ -357,7 +357,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | le projet de test d'architecture |
 | En conflit avec | TB-006 — module partagé : le projet de test d'architecture ; recouvrement à confirmer à J0 — TB-006 écrit dans le même projet de test d'architecture, non nommé par le corpus. Recouvrement à confirmer à J0. |
 | Taille | M — un module, 4 renvois |
-| Critères d'acceptation | `guide-conventions-et-dod.md §6` : « `[À TRANCHER — B3.2]` : la définition exhaustive du test d'architecture […] est une dette déjà nommée par le corpus sous ce code de renvoi. Elle n'est pas résolue ici. » ; `ADR-014-modele-autorisation-api.md § Points à trancher` ; `ADR-015-securite-authentification-mvp.md § Points à trancher` ; `roadmap-entree-build.md Annexe A` |
+| Critères d'acceptation | `conventions-dod.md §6` : « `[À TRANCHER — B3.2]` : la définition exhaustive du test d'architecture […] est une dette déjà nommée par le corpus sous ce code de renvoi. Elle n'est pas résolue ici. » ; `ADR-014-modele-autorisation-api.md § Points à trancher` ; `ADR-015-securite-authentification-mvp.md § Points à trancher` ; `roadmap-de-build.md Annexe A` |
 | Code de renvoi | B3.2 |
 
 ##### TB-095 — Contrôler le graphe des références de projet (règles 1 et 3)
@@ -371,7 +371,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | la configuration d'intégration continue |
 | En conflit avec | TB-008 — module partagé : la configuration d'intégration continue |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `guide-conventions-et-dod.md §6 § Dérivable du corpus`, règles 1 et 3 — le Domaine n'importe aucune assembly d'Infrastructure ni de Présentation, l'Application et l'Infrastructure ne dépendent que du Domaine ; `guide-conventions-et-dod.md §6 § Non couvert par le corpus`, puce « Règles 1 et 3 » — le contrôle porte sur le graphe des fichiers de projet, lisible sans ambiguïté de syntaxe et exécutable avant la compilation ; `structure-projets.md §2` — sens des dépendances de la Clean Architecture |
+| Critères d'acceptation | `conventions-dod.md §6 § Dérivable du corpus`, règles 1 et 3 — le Domaine n'importe aucune assembly d'Infrastructure ni de Présentation, l'Application et l'Infrastructure ne dépendent que du Domaine ; `conventions-dod.md §6 § Non couvert par le corpus`, puce « Règles 1 et 3 » — le contrôle porte sur le graphe des fichiers de projet, lisible sans ambiguïté de syntaxe et exécutable avant la compilation ; `structure-projets.md §2` — sens des dépendances de la Clean Architecture |
 | Code de renvoi | — |
 | Pourquoi une tranche distincte de TB-006 | les deux contrôles n'ont ni le même but observable, ni le même module d'écriture, ni le même moment d'exécution — celui-ci échoue avant la compilation, celui de TB-006 après. Les réunir produirait une tranche que l'on ne peut pas clore sur un seul critère. |
 
@@ -388,7 +388,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | le projet Application unique |
 | En conflit avec | TB-002 — module partagé : le projet Application unique ; TB-080 — module partagé : le projet Application unique ; TB-092 — module partagé : le projet Application unique |
 | Taille | M — un module, 4 renvois |
-| Critères d'acceptation | `roadmap-entree-build.md §3.1 § Critères de sortie factuels`, puce 4 ; `cahier-strategie-test-et-recette.md §9`, ligne « Socle », puce 4 ; `ADR-007-rgpd-autorisation-api.md § Conséquences` ; `ADR-014-modele-autorisation-api.md § Décision` |
+| Critères d'acceptation | `roadmap-de-build.md §3.1 § Critères de sortie factuels`, puce 4 ; `strategie-de-test.md §9`, ligne « Socle », puce 4 ; `ADR-007-rgpd-autorisation-api.md § Conséquences` ; `ADR-014-modele-autorisation-api.md § Décision` |
 | Code de renvoi | — |
 
 ### EP-05 — Conventions outillées et socle d'ingénierie
@@ -404,9 +404,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | la configuration de la solution |
 | En conflit avec | — |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `guide-conventions-et-dod.md §2 § Non couvert par le corpus`, puce « Tranché » — `.editorconfig` à la racine de la solution et analyzers Roslyn du SDK, appliqués par le build ; `guide-conventions-et-dod.md §3 § Non couvert par le corpus`, puce « Tranché » — ESLint avec le préréglage `angular-eslint` et Prettier, appliqués par le build ; `guide-conventions-et-dod.md §2` et `§3`, puces « Version » — la version en support à long terme en cours à l'ouverture du build, règle et non numéro |
+| Critères d'acceptation | `conventions-dod.md §2 § Non couvert par le corpus`, puce « Tranché » — `.editorconfig` à la racine de la solution et analyzers Roslyn du SDK, appliqués par le build ; `conventions-dod.md §3 § Non couvert par le corpus`, puce « Tranché » — ESLint avec le préréglage `angular-eslint` et Prettier, appliqués par le build ; `conventions-dod.md §2` et `§3`, puces « Version » — la version en support à long terme en cours à l'ouverture du build, règle et non numéro |
 | Code de renvoi | — |
-| Borne du critère | cette tranche se clôt sur la **moitié C#** de ses critères — `.editorconfig` et analyzers Roslyn, réellement appliqués par le build : `roadmap-entree-build.md §3.1 § Critères de sortie factuels` n'exige, pour clore J0, ni lint ni build TypeScript parmi ses quatre critères. La moitié TypeScript/Angular — ESLint `angular-eslint` et Prettier réellement **appliqués par le build** — relève de `TB-104`, où le projet Angular est construit (`roadmap-entree-build.md §3.2 § Contenu`) : cette tranche ne peut pas appliquer un lint à un projet qui n'existe qu'en J1. C'est une borne assumée, pas un manque. La règle de version LTS (`guide-conventions-et-dod.md §2` et `§3`, puces « Version ») reste en revanche une politique déclarable dès J0, indépendante de l'existence du projet — elle n'est pas amputée par cette borne. |
+| Borne du critère | cette tranche se clôt sur la **moitié C#** de ses critères — `.editorconfig` et analyzers Roslyn, réellement appliqués par le build : `roadmap-de-build.md §3.1 § Critères de sortie factuels` n'exige, pour clore J0, ni lint ni build TypeScript parmi ses quatre critères. La moitié TypeScript/Angular — ESLint `angular-eslint` et Prettier réellement **appliqués par le build** — relève de `TB-104`, où le projet Angular est construit (`roadmap-de-build.md §3.2 § Contenu`) : cette tranche ne peut pas appliquer un lint à un projet qui n'existe qu'en J1. C'est une borne assumée, pas un manque. La règle de version LTS (`conventions-dod.md §2` et `§3`, puces « Version ») reste en revanche une politique déclarable dès J0, indépendante de l'existence du projet — elle n'est pas amputée par cette borne. |
 
 ##### TB-012 — Arrêter la convention de commit et de branche
 
@@ -419,16 +419,18 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | HORS MAILLE — nature : acte de décision — arrêter une convention ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | S |
-| Critères d'acceptation | `guide-conventions-et-dod.md §5`, règle de message — Conventional Commits ratifié, forme `type(portée): sujet` ; `guide-conventions-et-dod.md §5`, règle de branche — `<type>/<TB-nnn>-<slug>`, l'identifiant de tranche rendant le lien branche ↔ tranche ↔ ticket retrouvable sans qu'aucun numéro ne soit recopié dans ce plan |
+| Critères d'acceptation | `conventions-dod.md §5`, règle de message — Conventional Commits ratifié, forme `type(portée): sujet` ; `conventions-dod.md §5`, règle de branche — `<type>/<TB-nnn>-<slug>`, l'identifiant de tranche rendant le lien branche ↔ tranche ↔ ticket retrouvable sans qu'aucun numéro ne soit recopié dans ce plan |
 | Code de renvoi | — |
 
 ---
 
 ## 6. J1 — épiques et tranches
 
-**Préalables bloquants d'entrée en J1**, nommés par [`roadmap-entree-build.md §3.2 § Préalable bloquant rattaché`](roadmap-de-build.md) (renvoi seul) : J0 stabilisé ; `navigator.storage.persist()` (G-08) levé ; invariant d'autorisation API intégré aux contrats Application.
+**Préalables bloquants d'entrée en J1**, nommés par [`roadmap-de-build.md §3.2 § Préalable bloquant rattaché`](roadmap-de-build.md) (renvoi seul) : J0 stabilisé ; `navigator.storage.persist()` (G-08) levé ; invariant d'autorisation API intégré aux contrats Application.
 
-### EP-04 — Contrat d'autorisation en couche Application
+### Suite de EP-04 — Contrat d'autorisation en couche Application (tranche J1)
+
+EP-04 est définie dans la [section 5](#5-j0--épiques-et-tranches), avec sa tranche J0 : l'épique court de J0 à J1 et n'a qu'une définition. Cette section porte sa tranche J1.
 
 ##### TB-080 — Câbler l'invariant d'autorisation dans les contrats Application
 
@@ -441,9 +443,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | le projet Application unique |
 | En conflit avec | TB-002 — module partagé : le projet Application unique ; TB-010 — module partagé : le projet Application unique ; TB-092 — module partagé : le projet Application unique |
 | Taille | S |
-| Critères d'acceptation | `roadmap-entree-build.md §3.2` — « Le contrat `IResourceAccessPolicy` défini en J0 doit être intégré aux contrats Application "avant le début du jalon J1" » (`ADR-007-rgpd-autorisation-api.md § Conséquences`) ; `roadmap-entree-build.md §5.2` |
+| Critères d'acceptation | `roadmap-de-build.md §3.2` — « Le contrat `IResourceAccessPolicy` défini en J0 doit être intégré aux contrats Application "avant le début du jalon J1" » (`ADR-007-rgpd-autorisation-api.md § Conséquences`) ; `roadmap-de-build.md §5.2` |
 | Code de renvoi | — |
-| Préalable bloquant | cette tâche est un **préalable bloquant à l'ouverture de J1** nommé par `roadmap-entree-build.md §3.2 § Préalable bloquant rattaché`. |
+| Préalable bloquant | cette tâche est un **préalable bloquant à l'ouverture de J1** nommé par `roadmap-de-build.md §3.2 § Préalable bloquant rattaché`. |
 
 ### EP-29 — Couture cliente et socle du store local
 
@@ -458,7 +460,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | TROU — l'échafaudage du projet Angular ne correspond à aucune des cinq natures de module de `§2` (ni agrégat, ni fiche d'écran, ni projet .NET, ni préoccupation de couche cliente déjà nommée, ni rôle d'outillage de l'énumération fermée) ; son emplacement est marqué `[À TRANCHER — J0]` par `structure-projets.md §7`, qui ne le rattache à aucune de ses sections |
 | En conflit avec | recouvrement à confirmer à J0 — le périmètre `TROU` ne nomme aucun module (§2) : aucun recouvrement avec une autre tranche n'est décidable, ni affirmable ni infirmable, tant que `structure-projets.md §7` n'aura pas nommé l'emplacement de la couche cliente. Recouvrement à confirmer à J0. |
 | Taille | M — 0 modules, 4 renvois |
-| Critères d'acceptation | `roadmap-entree-build.md §3.2 § Contenu` — « Domaine/Application (C#), projection TS/IndexedDB et Angular minimal » ; `structure-projets.md §7 § Frontend : Angular SPA + Angular SSR/prerender` — « un seul écosystème, partagé par deux surfaces » (SPA interactive, landing SSR/prerender) ; `guide-conventions-et-dod.md §3 § Dérivable du corpus` — « Écosystème Angular unique, partagé landing + application » ; `guide-conventions-et-dod.md §3 § Non couvert par le corpus`, puce « Tranché » — ESLint avec le préréglage `angular-eslint` et Prettier, réellement appliqués par le build de ce projet (borne renvoyée par `TB-011`) |
+| Critères d'acceptation | `roadmap-de-build.md §3.2 § Contenu` — « Domaine/Application (C#), projection TS/IndexedDB et Angular minimal » ; `structure-projets.md §7 § Frontend : Angular SPA + Angular SSR/prerender` — « un seul écosystème, partagé par deux surfaces » (SPA interactive, landing SSR/prerender) ; `conventions-dod.md §3 § Dérivable du corpus` — « Écosystème Angular unique, partagé landing + application » ; `conventions-dod.md §3 § Non couvert par le corpus`, puce « Tranché » — ESLint avec le préréglage `angular-eslint` et Prettier, réellement appliqués par le build de ce projet (borne renvoyée par `TB-011`) |
 | Code de renvoi | — |
 | Trou balisé | l'emplacement des répertoires (couche Angular du mode local et des deux surfaces frontend) est marqué `[À TRANCHER — J0]` par `structure-projets.md §7`, dernier paragraphe — ce document ne tranche pas cette arborescence. Suivi : `decisions-en-attente.md § Groupe 1.a`. |
 
@@ -473,7 +475,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | service d'accès au store |
 | En conflit avec | TB-082 — module partagé : service d'accès au store |
 | Taille | M — un module, 4 renvois |
-| Critères d'acceptation | `ADR-001 § Compléments post-revue (2026-09-03)`, puce « Ordre C#-first » — C#-first désigne l'autorité du contrat, non l'ordre de construction de la couche cliente ; `roadmap-entree-build.md Annexe A`, ligne J1 — « Services Angular IndexedDB (wrappers, `DomSanitizer`, bandeaux durabilité/confidentialité, CSP complète) », code `P6` ; `structure-projets.md §7 § Accès au store : un service par agrégat` — un service d'accès par agrégat persisté, aucun service de façade partagé ; `guide-conventions-et-dod.md §3`, puce « Une règle de style opposable » — aucun composant n'importe directement l'API du store hors de ces services |
+| Critères d'acceptation | `ADR-001 § Compléments post-revue (2026-09-03)`, puce « Ordre C#-first » — C#-first désigne l'autorité du contrat, non l'ordre de construction de la couche cliente ; `roadmap-de-build.md Annexe A`, ligne J1 — « Services Angular IndexedDB (wrappers, `DomSanitizer`, bandeaux durabilité/confidentialité, CSP complète) », code `P6` ; `structure-projets.md §7 § Accès au store : un service par agrégat` — un service d'accès par agrégat persisté, aucun service de façade partagé ; `conventions-dod.md §3`, puce « Une règle de style opposable » — aucun composant n'importe directement l'API du store hors de ces services |
 | Code de renvoi | P6 |
 | Ce que la doublure ne peut pas porter | aucune règle métier. `ADR-001 § Alternatives considérées` écarte la réimplémentation du domaine en TypeScript, et cette révision ne la rouvre pas : une doublure rend des jeux de données, les seules validations autorisées côté client sont celles que `structure-projets.md §7` énumère (TB-094). |
 
@@ -488,7 +490,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | Space ; Folder ; Document ; DocumentType ; Session ; SessionViewConfig |
 | En conflit avec | TB-059 — module partagé : Space ; TB-063 — module partagé : Folder ; TB-065 — module partagé : Document ; TB-066 — module partagé : Document, DocumentType ; TB-067 — module partagé : Document ; TB-069 — module partagé : Document ; TB-071 — module partagé : Session ; TB-072 — module partagé : SessionViewConfig ; TB-073 — module partagé : Document, Session ; TB-076 — module partagé : Document, Session ; TB-081 — module partagé : Document |
 | Taille | L — l'ouverture de la base porte sur tous les agrégats persistés à la fois — `onupgradeneeded` s'applique à la base entière, pas store par store ; la scinder produirait des tâches qui se réécriraient l'une l'autre |
-| Critères d'acceptation | `ADR-017-modele-indexeddb-local.md §1.1 § Object stores` (le tableau nomme les stores et leurs clés) ; `ADR-017-modele-indexeddb-local.md §1.3 § Indexes locaux` ; `ADR-017-modele-indexeddb-local.md §1.4 § Versionnement du store et stratégie d'upgrade` ; `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 1 ; NFR-PERF-04 ; NFR-OFF-03 |
+| Critères d'acceptation | `ADR-017-modele-indexeddb-local.md §1.1 § Object stores` (le tableau nomme les stores et leurs clés) ; `ADR-017-modele-indexeddb-local.md §1.3 § Indexes locaux` ; `ADR-017-modele-indexeddb-local.md §1.4 § Versionnement du store et stratégie d'upgrade` ; `roadmap-de-build.md §3.2 § Critères de sortie factuels`, puce 1 ; NFR-PERF-04 ; NFR-OFF-03 |
 | Code de renvoi | M1, L1 |
 | Point d'attention | RB-01-15 — « aucun élément donnant accès à des données protégées (jeton d'accès, secret, identifiant de connexion à un compte) n'est conservé dans le navigateur » — s'applique aux agrégats déclarés ici. |
 
@@ -505,7 +507,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | châssis |
 | En conflit avec | TB-078 — module partagé : châssis ; TB-093 — module partagé : châssis ; TB-097 — module partagé : châssis ; TB-103 — module partagé : châssis |
 | Taille | L — surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) |
-| Critères d'acceptation | `zoning.md §S7 — Châssis` ; `zoning.md §S6 AR-19` (règle de densité) ; NFR-ACC-01 → NFR-ACC-04 ; `cahier-strategie-test-et-recette.md §3.6 — Axe transverse Accessibilité` |
+| Critères d'acceptation | `zonage.md §S7 — Châssis` ; `zonage.md §S6 AR-19` (règle de densité) ; NFR-ACC-01 → NFR-ACC-04 ; `strategie-de-test.md §3.6 — Axe transverse Accessibilité` |
 | Code de renvoi | — |
 | Effet de la révision du 2026-09-03 | le châssis ne dépend plus de l'implémentation du domaine ni du store réel — seulement du contrat (TB-056). C'est ce qui rend les surfaces ouvrables tôt. |
 
@@ -567,7 +569,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | châssis |
 | En conflit avec | TB-058 — module partagé : châssis ; TB-093 — module partagé : châssis ; TB-078 — module partagé : châssis ; TB-097 — module partagé : châssis |
 | Taille | M — un module, 6 renvois |
-| Critères d'acceptation | RB-01-06 → RB-01-08 ; `zoning.md §S7 § Châssis mode local` ; `zoning.md § AR-13` ; `user-stories/US-UC-01-mode-local-sans-compte.md § US-01-04 § Notes de conception` |
+| Critères d'acceptation | RB-01-06 → RB-01-08 ; `zonage.md §S7 § Châssis mode local` ; `zonage.md § AR-13` ; `user-stories/US-UC-01-mode-local-sans-compte.md § US-01-04 § Notes de conception` |
 | Code de renvoi | — |
 | Note de portée | `US-01-05` (création de compte avec migration) relève de J2 par sa dépendance à `UC-10` : cette tranche construit l'invite de conversion, pas ce vers quoi elle mène — hors périmètre de cette tranche. |
 | Ordre de sérialisation | cette tranche dépend de `TB-058`, ce qui départage leur couple. Avec `TB-093`, `TB-078` et `TB-097`, aucune dépendance ne les départage, et aucune des épiques en présence (`US-UC-01`, `EP-11`, `US-UC-14`) ne porte à la fois cette tranche et l'une des trois autres dans un `Ordre de livraison recommandé` commun — le premier point du dispositif (§1, règle (b bis)) ne s'applique à aucun de ces trois couples. C'est le second point qui s'applique aux trois : l'ordre est laissé à qui les prend. |
@@ -599,7 +601,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | fiche `tableau-de-bord` |
 | En conflit avec | TB-102 — module partagé : fiche `tableau-de-bord` |
 | Taille | M — un module, 6 renvois |
-| Critères d'acceptation | `wireframes/sv2-entree-espace/tableau-de-bord/tableau-de-bord.md § Zones et hiérarchie` ; `zoning.md §S6 AR-17`, `AR-05`, `AR-22` ; US-02-00, ses scénarios nommés ; CR-UC02-01 → CR-UC02-03 (dérivés de la colonne `Source` du cahier) |
+| Critères d'acceptation | `wireframes/sv2-entree-espace/tableau-de-bord/tableau-de-bord.md § Zones et hiérarchie` ; `zonage.md §S6 AR-17`, `AR-05`, `AR-22` ; US-02-00, ses scénarios nommés ; CR-UC02-01 → CR-UC02-03 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
 
 ##### TB-061 — Écran de création d'espace
@@ -629,7 +631,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | fiche `vue-campagne` ; fiche `vue-espace-personnel` |
 | En conflit avec | — |
 | Taille | L — deux fiches d'écran et plus de deux renvois ; la déclinaison `PERSONAL` de la surface Préparation n'étant « pas une surface-UC distincte » (`wireframes/README.md § Organisation du répertoire`), les deux fiches sont livrées ensemble |
-| Critères d'acceptation | `wireframes/sv3-preparation/vue-campagne/vue-campagne.md` ; `wireframes/sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md` (« sans vue session, sans partage, sans gestion de membres ») ; `zoning.md §S6 AR-14`, `AR-15` ; US-01-09, ses scénarios nommés ; CR-UC01-17 → CR-UC01-19 (dérivés de la colonne `Source` du cahier) |
+| Critères d'acceptation | `wireframes/sv3-preparation/vue-campagne/vue-campagne.md` ; `wireframes/sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md` (« sans vue session, sans partage, sans gestion de membres ») ; `zonage.md §S6 AR-14`, `AR-15` ; US-01-09, ses scénarios nommés ; CR-UC01-17 → CR-UC01-19 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
 
 ### US-UC-05 — Organiser par dossiers
@@ -638,14 +640,14 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 
 | Champ | Valeur |
 |---|---|
-| But | chaque espace naît avec son gabarit de dossiers ; « Non classés » est présent et protégé ; les dossiers système sont renommables et supprimables |
+| But | chaque espace naît avec son gabarit de dossiers ; « Non classés » est présent, renommable et non supprimable ; les dossiers système sont renommables et supprimables |
 | Épique | US-UC-05 |
 | Jalon | J1 |
 | Dépend de | TB-059 |
 | Périmètre d'écriture | Folder |
 | En conflit avec | TB-057 — module partagé : Folder |
 | Taille | L — un seul agrégat, mais la plage RB-05-01 → RB-05-13 engage treize preuves distinctes, indivisibles de l'agrégat `Folder` |
-| Critères d'acceptation | RB-05-01 → RB-05-13 ; `cahier-strategie-test-et-recette.md §3.1` — « `isSystem` est informatif : les dossiers système sont renommables et supprimables » |
+| Critères d'acceptation | RB-05-01 → RB-05-13 ; `strategie-de-test.md §3.1` — « `isSystem` est informatif : les dossiers système sont renommables et supprimables » |
 | Code de renvoi | — |
 
 ##### TB-064 — Navigation par dossiers
@@ -659,9 +661,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | fiche `navigation-dossiers` |
 | En conflit avec | — |
 | Taille | L — un seul module, mais neuf cas de recette et quatre stories rattachés : la surface de vérification dépasse le plafond `M` |
-| Critères d'acceptation | `wireframes/sv3-preparation/navigation-dossiers/navigation-dossiers.md` ; `zoning.md §S6 AR-11`, `AR-16`, `AR-20` ; US-05-01, US-05-02, US-05-04 et US-05-05, leurs scénarios nommés ; CR-UC05-01 → CR-UC05-04 et CR-UC05-08 → CR-UC05-12 (dérivés de la colonne `Source` du cahier) |
+| Critères d'acceptation | `wireframes/sv3-preparation/navigation-dossiers/navigation-dossiers.md` ; `zonage.md §S6 AR-11`, `AR-16`, `AR-20` ; US-05-01, US-05-02, US-05-04 et US-05-05, leurs scénarios nommés ; CR-UC05-01 → CR-UC05-04 et CR-UC05-08 → CR-UC05-12 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
-| Note de portée | `US-05-03` (associer un template par défaut à un dossier) relève de la couche riche de dossiers, distincte de la base que porte cette tranche — [`moscow.md § UC-05 riche — Dossiers et types de document élaborés (Should Have)`](../besoin/vision/perimetre/matrice-de-priorites.md), `§ Critère de sortie` : « Le MJ peut associer un type (PNJ, Lieu, Objet…) à un dossier ou un document pour enrichir ses entrées sans contraindre la structure. » Leur verdict (`CR-UC05-05 → CR-UC05-07`) n'est pas engagé par cette tranche. |
+| Note de portée | `US-05-03` (associer un template par défaut à un dossier) relève de la couche riche de dossiers, distincte de la base que porte cette tranche — [`matrice-de-priorites.md § UC-05 riche — Dossiers et types de document élaborés (Should Have)`](../besoin/vision/perimetre/matrice-de-priorites.md), `§ Critère de sortie` : « Le MJ peut associer un type (PNJ, Lieu, Objet…) à un dossier ou un document pour enrichir ses entrées sans contraindre la structure. » Leur verdict (`CR-UC05-05 → CR-UC05-07`) n'est pas engagé par cette tranche. |
 
 ### US-UC-04 — Gérer les documents d'un espace
 
@@ -690,7 +692,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | DocumentType ; Document |
 | En conflit avec | TB-057 — module partagé : Document, DocumentType ; TB-065 — module partagé : Document ; TB-067 — module partagé : Document ; TB-069 — module partagé : Document ; TB-073 — module partagé : Document ; TB-076 — module partagé : Document ; TB-081 — module partagé : Document |
 | Taille | L — deux agrégats — le catalogue de types s'écrit indépendamment de toute instance de document — et plus de deux renvois |
-| Critères d'acceptation | RB-04-04, RB-04-05 ; `architecture/specs/document-properties-schemas.md §1 § Contrat du value object DocumentProperties` (décision reportée d'ADR-002) ; `cahier-strategie-test-et-recette.md §3.1` ; `document-properties-schemas.md §1` — `SetProperties()` est refusé sur un document sans type : `properties` n'existe pas sans schéma contre quoi valider ; `document-properties-schemas.md § scene, npc, location, note, player_character, reveal` — `propertiesSchema` vide au MVP pour ces six types système, absence actée sur le précédent de `live_note` |
+| Critères d'acceptation | RB-04-04, RB-04-05 ; `architecture/specs/document-properties-schemas.md §1 § Contrat du value object DocumentProperties` (décision reportée d'ADR-002) ; `strategie-de-test.md §3.1` ; `document-properties-schemas.md §1` — `SetProperties()` est refusé sur un document sans type : `properties` n'existe pas sans schéma contre quoi valider ; `document-properties-schemas.md § scene, npc, location, note, player_character, reveal` — `propertiesSchema` vide au MVP pour ces six types système, absence actée sur le précédent de `live_note` |
 | Code de renvoi | — |
 
 ##### TB-067 — Invariant de visibilité `Document.CanBeReadBy`
@@ -704,7 +706,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | Document |
 | En conflit avec | TB-057 — module partagé : Document ; TB-065 — module partagé : Document ; TB-066 — module partagé : Document ; TB-069 — module partagé : Document ; TB-073 — module partagé : Document ; TB-076 — module partagé : Document ; TB-081 — module partagé : Document |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | RB-04-01, RB-06-11, RB-06-25, RB-06-26 ; `cahier-strategie-test-et-recette.md §2 § Invariant transverse : privé par défaut` ; `cahier-strategie-test-et-recette.md §3.1`, puces 2-3 |
+| Critères d'acceptation | RB-04-01, RB-06-11, RB-06-25, RB-06-26 ; `strategie-de-test.md §2 § Invariant transverse : privé par défaut` ; `strategie-de-test.md §3.1`, puces 2-3 |
 | Code de renvoi | — |
 
 ##### TB-068 — Éditeur de document
@@ -718,7 +720,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | fiche `editeur-document` |
 | En conflit avec | — |
 | Taille | L — un seul module, mais dix-neuf cas de recette et sept stories rattachés (US-03-05 n'y apporte qu'un seul scénario, les backlinks, hors MVP) : la surface de vérification dépasse le plafond `M` |
-| Critères d'acceptation | `wireframes/sv3-preparation/editeur-document/editeur-document.md` ; `zoning.md §S6 AR-11` (placement des backlinks figé, hors MVP) ; US-04-01, US-04-02, US-04-03, US-04-04 et US-04-05, leurs scénarios nommés ; US-04-06 (hors MVP, texte conservé : non exigée à la recette du MVP) ; CR-UC04-01 → CR-UC04-18 (dérivés de la colonne `Source` du cahier ; CR-UC04-18 est hors MVP) ; US-03-05 §"Voir les backlinks depuis la fiche d'un PNJ" (hors MVP, texte conservé) ; CR-UC03-16 (dérivé de la colonne `Source` du cahier ; hors MVP) |
+| Critères d'acceptation | `wireframes/sv3-preparation/editeur-document/editeur-document.md` ; `zonage.md §S6 AR-11` (placement des backlinks figé, hors MVP) ; US-04-01, US-04-02, US-04-03, US-04-04 et US-04-05, leurs scénarios nommés ; US-04-06 (hors MVP, texte conservé : non exigée à la recette du MVP) ; CR-UC04-01 → CR-UC04-18 (dérivés de la colonne `Source` du cahier ; CR-UC04-18 est hors MVP) ; US-03-05 §"Voir les backlinks depuis la fiche d'un PNJ" (hors MVP, texte conservé) ; CR-UC03-16 (dérivé de la colonne `Source` du cahier ; hors MVP) |
 | Code de renvoi | — |
 | Cas dérivés | `CR-UC04-19`, `CR-UC04-20` et `CR-UC04-21` ne portent pas de user story en source (exceptions de fiche de use case et `NFR-CONF-01`) : leur rattachement à cette tranche est une lecture de leur source, non un calcul. |
 
@@ -752,7 +754,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Taille | L — un seul module, mais treize cas de recette et cinq stories rattachés : la surface de vérification dépasse le plafond `M` |
 | Critères d'acceptation | `wireframes/sv3-preparation/editeur-scenario/editeur-scenario.md` ; US-03-01, US-03-02, US-03-03, US-03-04 et US-03-07, leurs scénarios nommés ; CR-UC03-01 → CR-UC03-12 et CR-UC03-20 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
-| Trou balisé | `cahier-strategie-test-et-recette.md §12 PO-09` — exception E2 de la fiche UC-03 (perte de connexion / erreur de sauvegarde) non dérivable d'un Gherkin ni d'une RB ferme, non recettée. |
+| Trou balisé | `strategie-de-test.md §12 PO-09` — exception E2 de la fiche UC-03 (perte de connexion / erreur de sauvegarde) non dérivable d'un Gherkin ni d'une RB ferme, non recettée. |
 | Cas dérivé | `CR-UC03-21` ne porte pas de user story en source (« UC-03 fiche §Exceptions E1, dérivé, pas de Gherkin ») : son geste (formulaire de création de scénario, titre manquant refusé) est situé sur cette fiche ; son rattachement est une lecture de sa source, non un calcul. |
 
 ##### TB-099 — Lier des documents existants à un scénario ou une scène
@@ -797,7 +799,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | Session |
 | En conflit avec | TB-057 — module partagé : Session ; TB-073 — module partagé : Session ; TB-076 — module partagé : Session |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | RB-06-18, RB-06-20, RB-06-21 ; `cahier-strategie-test-et-recette.md §3.1`, puce 1 ; `domaine/session-conduct/context.md § Machine d'états de Session`, `§ Invariants métier` |
+| Critères d'acceptation | RB-06-18, RB-06-20, RB-06-21 ; `strategie-de-test.md §3.1`, puce 1 ; `domaine/session-conduct/context.md § Machine d'états de Session`, `§ Invariants métier` |
 | Code de renvoi | — |
 
 ##### TB-072 — `SessionViewConfig` et dossiers mis en avant
@@ -811,7 +813,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | SessionViewConfig |
 | En conflit avec | TB-057 — module partagé : SessionViewConfig |
 | Taille | S |
-| Critères d'acceptation | `domaine/session-conduct/context.md § SessionViewConfig (agrégat)` ; `zoning.md §S6 AR-18` |
+| Critères d'acceptation | `domaine/session-conduct/context.md § SessionViewConfig (agrégat)` ; `zonage.md §S6 AR-18` |
 | Code de renvoi | — |
 | Point d'attention | `ADR-016-serialisation-locale-migration.md §1.2 § Exclusions explicites` exclut `session_view_configs` et `session_view_folders` du périmètre migré (« préférence d'affichage, recréée à l'import comme à la création d'espace ») — la persistance locale visée ici et l'exclusion du payload de migration ne se contredisent pas. |
 
@@ -826,7 +828,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | Session ; Document |
 | En conflit avec | TB-057 — module partagé : Document, Session ; TB-065 — module partagé : Document ; TB-066 — module partagé : Document ; TB-067 — module partagé : Document ; TB-069 — module partagé : Document ; TB-071 — module partagé : Session ; TB-076 — module partagé : Document, Session ; TB-081 — module partagé : Document |
 | Taille | L — deux agrégats — le type `LIVE_NOTE` étant un `Document` né dans une `Session` — et plus de deux renvois ; le geste métier est indivisible entre les deux |
-| Critères d'acceptation | RB-06-11, RB-06-25, RB-06-26, RB-08-08b, RB-08-08c ; `cahier-strategie-test-et-recette.md Annexe A § Visibilité vs épinglage` ; `zoning.md §S6 AR-12` |
+| Critères d'acceptation | RB-06-11, RB-06-25, RB-06-26, RB-08-08b, RB-08-08c ; `strategie-de-test.md Annexe A § Visibilité vs épinglage` ; `zonage.md §S6 AR-12` |
 | Code de renvoi | — |
 
 ##### TB-074 — Vue session MJ, trois modes
@@ -840,9 +842,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | fiche `vue-session-mj` |
 | En conflit avec | TB-098 — module partagé : fiche `vue-session-mj` |
 | Taille | L — un seul module déclaré, mais huit stories et vingt-et-un cas de recette s'y rattachent : la surface de vérification dépasse manifestement le plafond `M`. Cette tranche reste candidate à un redécoupage par mode au moment où l'équipe de build affine le grain — ce document ne tranche pas cette coupe |
-| Critères d'acceptation | `wireframes/sv-session/vue-session-mj/vue-session-mj.md` (modes configuration / LIVE / consultation CLOSED) ; `zoning.md §S6 AR-02`, `AR-04`, `AR-09` ; US-06-01, US-06-02, US-06-03, US-06-04, US-06-05, US-06-06, US-06-09 et US-06-10, leurs scénarios nommés ; NFR-PERF-01, NFR-PERF-02, NFR-PERF-03 ; CR-UC06-01 → CR-UC06-18 et CR-UC06-25 → CR-UC06-27 (dérivés de la colonne `Source` du cahier) |
+| Critères d'acceptation | `wireframes/sv-session/vue-session-mj/vue-session-mj.md` (modes configuration / LIVE / consultation CLOSED) ; `zonage.md §S6 AR-02`, `AR-04`, `AR-09` ; US-06-01, US-06-02, US-06-03, US-06-04, US-06-05, US-06-06, US-06-09 et US-06-10, leurs scénarios nommés ; NFR-PERF-01, NFR-PERF-02, NFR-PERF-03 ; CR-UC06-01 → CR-UC06-18 et CR-UC06-25 → CR-UC06-27 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
-| Note de portée | la vue joueur de la session (US-06-07, US-06-08) relève de J3 — hors périmètre de cette tranche : `moscow.md § UC-06 § Critère de sortie` borne ce jalon au mode local, « sans partage joueurs » ; leur verdict (CR-UC06-19 → CR-UC06-24) est porté par EP-28. |
+| Note de portée | la vue joueur de la session (US-06-07, US-06-08) relève de J3 — hors périmètre de cette tranche : `matrice-de-priorites.md § UC-06 § Critère de sortie` borne ce jalon au mode local, « sans partage joueurs » ; leur verdict (CR-UC06-19 → CR-UC06-24) est porté par EP-28. |
 | Cas dérivés | `CR-UC06-28` et `CR-UC06-29` ne portent pas de user story en source : leur rattachement est une lecture de leur source, non un calcul. |
 
 ##### TB-075 — Paramètres de campagne
@@ -856,7 +858,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | fiche `parametres-campagne` |
 | En conflit avec | TB-091 — module partagé : fiche `parametres-campagne` |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `wireframes/sv3-preparation/parametres-campagne/parametres-campagne.md` ; `zoning.md §S6 AR-18` (configuration logée en surface session, paramètres = renvoi), `AR-22` (désarchivage) ; RB-02-22, RB-02-23 ; CR-UC01-06 (dérivé de la colonne `Source` du cahier) ; US-01-04, ses scénarios nommés |
+| Critères d'acceptation | `wireframes/sv3-preparation/parametres-campagne/parametres-campagne.md` ; `zonage.md §S6 AR-18` (configuration logée en surface session, paramètres = renvoi), `AR-22` (désarchivage) ; RB-02-22, RB-02-23 ; CR-UC01-06 (dérivé de la colonne `Source` du cahier) ; US-01-04, ses scénarios nommés |
 | Code de renvoi | — |
 | Note de portée | la génération de lien d'invitation également logée sur cette fiche relève de J3 (US-UC-11, US-UC-08) — hors périmètre de cette tranche. |
 | Note de portée | `US-01-05` (création de compte avec migration, `CR-UC01-08 → CR-UC01-11`) relève de J2 par sa dépendance à `UC-10` — hors périmètre de cette tranche. `CR-UC01-09` y situe littéralement son geste : « Il accède aux paramètres et choisit de créer un compte ». |
@@ -904,7 +906,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Dépend de | TB-057, TB-064 |
 | Périmètre d'écriture | fiche `recherche-preparation` ; châssis |
 | En conflit avec | TB-058 — module partagé : châssis ; TB-093 — module partagé : châssis ; TB-096 — module partagé : fiche `recherche-preparation` ; TB-097 — module partagé : châssis ; TB-103 — module partagé : châssis |
-| Taille | L — deux modules (fiche `recherche-preparation` et `châssis`) et une surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) ; la recherche est un composant de châssis dont le rendu est défini au niveau du wireframe de chaque surface (`zoning.md §S7`) — les deux moitiés ne se scindent pas |
+| Taille | L — deux modules (fiche `recherche-preparation` et `châssis`) et une surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) ; la recherche est un composant de châssis dont le rendu est défini au niveau du wireframe de chaque surface (`zonage.md §S7`) — les deux moitiés ne se scindent pas |
 | Critères d'acceptation | `wireframes/sv3-preparation/recherche-preparation/recherche-preparation.md` (« titre seul au MVP ») ; US-14-01, ses scénarios nommés ; NFR-PERF-04 ; CR-UC14-01 → CR-UC14-05 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
 | Ordre de sérialisation | cette tranche partage `châssis` avec `TB-058` et `TB-093` sans dépendre de l'une ni de l'autre (`Dépend de` : `TB-057`, `TB-064` — aucun des deux ne s'y trouve). Ni `EP-10` (épique de `TB-058`) ni `EP-11` (épique de `TB-093`) n'est porté par un use case : le premier point du dispositif de départage (§1, règle (b bis)) ne s'applique à aucun des deux couples — `US-UC-14-recherche.md § Ordre de livraison recommandé` ordonne les stories de cette épique, pas une tranche étrangère, et ne départage donc pas davantage. C'est le second point qui s'applique aux deux couples : l'ordre est laissé à qui les prend. |
@@ -919,7 +921,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Jalon | J1 |
 | Dépend de | TB-078, TB-066 |
 | Périmètre d'écriture | fiche `recherche-preparation` |
-| En conflit avec | TB-078 — module partagé : fiche `recherche-preparation` ; recouvrement à confirmer à J0 — la maille ne tranche pas si le filtre par type relève du composant de châssis (`zoning.md §S7`) ou du seul rendu de surface `recherche-preparation` ; aucune section ne le dit. Recouvrement à confirmer à J0. |
+| En conflit avec | TB-078 — module partagé : fiche `recherche-preparation` ; recouvrement à confirmer à J0 — la maille ne tranche pas si le filtre par type relève du composant de châssis (`zonage.md §S7`) ou du seul rendu de surface `recherche-preparation` ; aucune section ne le dit. Recouvrement à confirmer à J0. |
 | Taille | M — un module, 6 renvois |
 | Critères d'acceptation | `wireframes/sv3-preparation/recherche-preparation/recherche-preparation.md` ; `usecases/UC-14-recherche.md § A2 — Résultats nombreux` ; US-14-02, ses scénarios nommés ; CR-UC14-06 → CR-UC14-08 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
@@ -935,7 +937,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | châssis |
 | En conflit avec | TB-058 — module partagé : châssis ; TB-093 — module partagé : châssis ; TB-078 — module partagé : châssis ; TB-103 — module partagé : châssis |
 | Taille | M — un module, 6 renvois |
-| Critères d'acceptation | RB-14-07 → RB-14-10 ; `zoning.md §S7 § Recherche — composant de châssis omniprésent` ; `zoning.md § AR-11` |
+| Critères d'acceptation | RB-14-07 → RB-14-10 ; `zonage.md §S7 § Recherche — composant de châssis omniprésent` ; `zonage.md § AR-11` |
 | Code de renvoi | — |
 | Ordre de sérialisation | cette tranche dépend de `TB-078`, ce qui départage leur couple. Avec `TB-058` et `TB-093`, en revanche, aucune dépendance ne les départage : ni `EP-10` (épique de `TB-058`) ni `EP-11` (épique de `TB-093`) n'est porté par un use case, et `US-UC-14-recherche.md § Ordre de livraison recommandé` ne nomme ni l'une ni l'autre tranche — le premier point du dispositif de départage (§1, règle (b bis)) ne s'applique à aucun des deux couples. C'est le second point qui s'applique : l'ordre est laissé à qui les prend. |
 
@@ -950,7 +952,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | fiche `vue-session-mj` |
 | En conflit avec | TB-074 — module partagé : fiche `vue-session-mj` |
 | Taille | L — la coupe comportement/surface est déjà faite (`TB-097`) ; ce qui reste ici est indivisible : l'ouverture, le rendu et la fermeture du panneau latéral appartiennent à la même fiche d'écran, et la plage de renvois dépasse le plafond `M` (§3) |
-| Critères d'acceptation | `wireframes/sv-session/vue-session-mj/vue-session-mj.md` (zones « BARRE DE RECHERCHE », « PANNEAU LATÉRAL DE RÉSULTATS DE RECHERCHE ») ; `zoning.md § AR-11` ; US-14-03, ses scénarios nommés ; CR-UC14-09 → CR-UC14-12 (dérivés de la colonne `Source` du cahier) |
+| Critères d'acceptation | `wireframes/sv-session/vue-session-mj/vue-session-mj.md` (zones « BARRE DE RECHERCHE », « PANNEAU LATÉRAL DE RÉSULTATS DE RECHERCHE ») ; `zonage.md § AR-11` ; US-14-03, ses scénarios nommés ; CR-UC14-09 → CR-UC14-12 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
 
 ### EP-30 — Validations minimales du mode local
@@ -984,7 +986,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | service d'accès au store |
 | En conflit avec | TB-056 — module partagé : service d'accès au store |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 2 ; `ADR-017-modele-indexeddb-local.md §3` ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only », puce 2 |
+| Critères d'acceptation | `roadmap-de-build.md §3.2 § Critères de sortie factuels`, puce 2 ; `ADR-017-modele-indexeddb-local.md §3` ; `strategie-de-test.md §9`, ligne « Local-only », puce 2 |
 | Code de renvoi | — |
 | Préalable bloquant | `G-08` est un **préalable bloquant à lever avant J1** (`ADR-001 § Compléments post-revue (2026-06-09)`, puce « G-08 »). |
 
@@ -999,7 +1001,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | bandeaux transversaux |
 | En conflit avec | TB-084 — module partagé : bandeaux transversaux |
 | Taille | M — un module, 5 renvois |
-| Critères d'acceptation | RB-01-04 (révisée) ; `usecases/UC-01-mode-local-sans-compte.md § Mode local (sans compte)` — « Bandeau de durabilité » ; `user-stories/US-UC-01-mode-local-sans-compte.md § US-01-03 § Révision apportée` ; NFR-OFF-02, NFR-OFF-03 ; `zoning.md §S7` |
+| Critères d'acceptation | RB-01-04 (révisée) ; `usecases/UC-01-mode-local-sans-compte.md § Mode local (sans compte)` — « Bandeau de durabilité » ; `user-stories/US-UC-01-mode-local-sans-compte.md § US-01-03 § Révision apportée` ; NFR-OFF-02, NFR-OFF-03 ; `zonage.md §S7` |
 | Code de renvoi | — |
 
 ##### TB-084 — Bandeau de confidentialité
@@ -1027,7 +1029,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | sanitisation ; politique de sécurité de contenu |
 | En conflit avec | TB-086 — module partagé : politique de sécurité de contenu ; recouvrement à confirmer à J0 — TB-086 porte sur la même configuration de politique de sécurité de contenu, non nommable dans la maille. Recouvrement à confirmer à J0. |
 | Taille | L — surface de vérification dépassant le plafond `M` par le décompte de renvois (§3) |
-| Critères d'acceptation | `guide-conventions-et-dod.md §7 § Conventions de sécurité de code` — critères d'acceptation non négociables énumérés (liste blanche positive identique serveur/client, `<script>` et attributs `on*` interdits sans exception, ordre valider-puis-sanitiser avant toute écriture, posture `default-src 'self'` / `script-src 'self'` / `connect-src 'self'`) ; `specs/sanitisation-csp.md §1`, `§2`, `§4` ; `usecases/UC-01-mode-local-sans-compte.md § Critères d'acceptation` — « Aucun contenu, importé ou saisi, ne peut déclencher l'exécution de code lors de son affichage » ; `guide-conventions-et-dod.md §7`, puce « bibliothèque de sanitisation » — `DomSanitizer` d'Angular, complété de DOMPurify sur le chemin d'import JSON ; `guide-conventions-et-dod.md §7`, puce « directives » — `default-src`, `script-src` et `connect-src` en `'self'`, plus `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'none'`, sans nonce ; `domaine/content-library/context.md § DocumentBlock`, mention « Format de `content` — tranché » — le contenu d'un bloc est un arbre de nœuds typés, jamais une chaîne de balisage — la liste blanche positive porte donc sur l'énumération fermée des types de nœuds |
+| Critères d'acceptation | `conventions-dod.md §7 § Conventions de sécurité de code` — critères d'acceptation non négociables énumérés (liste blanche positive identique serveur/client, `<script>` et attributs `on*` interdits sans exception, ordre valider-puis-sanitiser avant toute écriture, posture `default-src 'self'` / `script-src 'self'` / `connect-src 'self'`) ; `specs/sanitisation-csp.md §1`, `§2`, `§4` ; `usecases/UC-01-mode-local-sans-compte.md § Critères d'acceptation` — « Aucun contenu, importé ou saisi, ne peut déclencher l'exécution de code lors de son affichage » ; `conventions-dod.md §7`, puce « bibliothèque de sanitisation » — `DomSanitizer` d'Angular, complété de DOMPurify sur le chemin d'import JSON ; `conventions-dod.md §7`, puce « directives » — `default-src`, `script-src` et `connect-src` en `'self'`, plus `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'none'`, sans nonce ; `domaine/content-library/context.md § DocumentBlock`, mention « Format de `content` — tranché » — le contenu d'un bloc est un arbre de nœuds typés, jamais une chaîne de balisage — la liste blanche positive porte donc sur l'énumération fermée des types de nœuds |
 | Code de renvoi | B1.2, P6 |
 
 ##### TB-086 — Vérifier l'absence d'appel réseau dans le périmètre mode local
@@ -1041,7 +1043,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | politique de sécurité de contenu |
 | En conflit avec | TB-085 — module partagé : politique de sécurité de contenu ; recouvrement à confirmer à J0 — TB-085 porte sur la même configuration, non nommable dans la maille. Recouvrement à confirmer à J0. |
 | Taille | M — un module, 3 renvois |
-| Critères d'acceptation | `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 4 — « Aucun appel réseau vers l'API Haversack n'existe dans le périmètre mode local livré (observable via la CSP `connect-src 'self'`) » ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only », puce 4 ; NFR-CONF-02 |
+| Critères d'acceptation | `roadmap-de-build.md §3.2 § Critères de sortie factuels`, puce 4 — « Aucun appel réseau vers l'API Haversack n'existe dans le périmètre mode local livré (observable via la CSP `connect-src 'self'`) » ; `strategie-de-test.md §9`, ligne « Local-only », puce 4 ; NFR-CONF-02 |
 | Code de renvoi | — |
 
 ### EP-09 — Export d'espace, version minimale
@@ -1057,7 +1059,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | projection d'export |
 | En conflit avec | TB-088 — module partagé : projection d'export ; TB-089 — module partagé : projection d'export |
 | Taille | S |
-| Critères d'acceptation | `ADR-016-serialisation-locale-migration.md §1.1 § Enveloppe du payload` (structure littérale) ; `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 3 |
+| Critères d'acceptation | `ADR-016-serialisation-locale-migration.md §1.1 § Enveloppe du payload` (structure littérale) ; `roadmap-de-build.md §3.2 § Critères de sortie factuels`, puce 3 |
 | Code de renvoi | — |
 
 ##### TB-088 — Fonction de projection `store local → payload`
@@ -1085,7 +1087,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | projection d'export |
 | En conflit avec | TB-087 — module partagé : projection d'export ; TB-088 — module partagé : projection d'export |
 | Taille | S |
-| Critères d'acceptation | `roadmap-entree-build.md §3.2 § Critères de sortie factuels`, puce 3 — « […] est structurellement rejouable (dry-run de validation possible côté contrat, sans nécessiter de serveur cloud actif pour cette vérification structurelle) » ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only », puce 3 |
+| Critères d'acceptation | `roadmap-de-build.md §3.2 § Critères de sortie factuels`, puce 3 — « […] est structurellement rejouable (dry-run de validation possible côté contrat, sans nécessiter de serveur cloud actif pour cette vérification structurelle) » ; `strategie-de-test.md §9`, ligne « Local-only », puce 3 |
 | Code de renvoi | — |
 
 ##### TB-090 — Test de bout en bout multi-versions du store local (`P7`, part J1)
@@ -1099,7 +1101,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | le projet de test de bout en bout |
 | En conflit avec | — |
 | Taille | S |
-| Critères d'acceptation | `roadmap-entree-build.md Annexe A`, ligne J1 — « e2e multi-versions IndexedDB (fonction de projection store→payload) », code `P7` ; `cahier-strategie-test-et-recette.md §11`, ligne UC-01, colonne « Tests nommés » |
+| Critères d'acceptation | `roadmap-de-build.md Annexe A`, ligne J1 — « e2e multi-versions IndexedDB (fonction de projection store→payload) », code `P7` ; `strategie-de-test.md §11`, ligne UC-01, colonne « Tests nommés » |
 | Code de renvoi | P7 |
 
 ##### TB-091 — Déclencher l'export depuis les paramètres
@@ -1113,9 +1115,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | fiche `parametres-campagne` |
 | En conflit avec | TB-075 — module partagé : fiche `parametres-campagne` |
 | Taille | M — un module, 5 renvois |
-| Critères d'acceptation | US-01-07, ses scénarios nommés ; `usecases/UC-01-mode-local-sans-compte.md § A4a` et `§ Critères d'acceptation` (« Must Have / version minimale […] promu ») ; `vision/moscow.md § Export d'espace § Critère de sortie` ; CR-UC01-15 → CR-UC01-16 (dérivés de la colonne `Source` du cahier) |
+| Critères d'acceptation | US-01-07, ses scénarios nommés ; `usecases/UC-01-mode-local-sans-compte.md § A4a` et `§ Critères d'acceptation` (« Must Have / version minimale […] promu ») ; `vision/perimetre/matrice-de-priorites.md § Export d'espace § Critère de sortie` ; CR-UC01-15 → CR-UC01-16 (dérivés de la colonne `Source` du cahier) |
 | Code de renvoi | — |
-| Point d'attention | appliquer la priorité définie par `vision/moscow.md § Export d'espace`, seule autorité MoSCoW du corpus : Must Have. |
+| Point d'attention | appliquer la priorité définie par `vision/perimetre/matrice-de-priorites.md § Export d'espace`, seule autorité MoSCoW du corpus : Must Have. |
 | Ordre de sérialisation | cette tranche et TB-075 écrivent la même fiche `parametres-campagne` ; TB-091 dépend de TB-075, l'ordre est donc fixé par la dépendance. |
 
 ### EP-11 — Instrumentation de validation du MVP
@@ -1131,9 +1133,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | le projet Application unique |
 | En conflit avec | TB-002 — module partagé : le projet Application unique ; TB-010 — module partagé : le projet Application unique ; TB-080 — module partagé : le projet Application unique |
 | Taille | M — un module, 4 renvois |
-| Critères d'acceptation | `vision/moscow.md § Instrumentation de validation du MVP`, pilier 1 — activation préparation : un espace créé et au moins trois documents, ou un geste structurant (un dossier créé, ou un document déplacé hors de « Non classés ») ; `vision/moscow.md § Instrumentation de validation du MVP`, pilier 2 — activation vue session : au moins une action du MJ pendant la session ; `vision/moscow.md § Instrumentation de validation du MVP`, mention « Comment cette mesure sort du navigateur » — compteurs écrits dans le store local, transmis à la création de compte, aucun appel sortant en mode local ; `vision/vision-produit.md §2.3`, encadré « Limite structurelle de l'instrument » — le biais en faveur des convertis est nommé et doit être rappelé à toute lecture des résultats |
+| Critères d'acceptation | `vision/perimetre/matrice-de-priorites.md § Instrumentation de validation du MVP`, pilier 1 — activation préparation : un espace créé et au moins trois documents, ou un geste structurant (un dossier créé, ou un document déplacé hors de « Non classés ») ; `vision/perimetre/matrice-de-priorites.md § Instrumentation de validation du MVP`, pilier 2 — activation vue session : au moins une action du MJ pendant la session ; `vision/perimetre/matrice-de-priorites.md § Instrumentation de validation du MVP`, mention « Comment cette mesure sort du navigateur » — compteurs écrits dans le store local, transmis à la création de compte, aucun appel sortant en mode local ; `vision/vision.md §2.3`, encadré « Limite structurelle de l'instrument » — le biais en faveur des convertis est nommé et doit être rappelé à toute lecture des résultats |
 | Code de renvoi | — |
-| Préalable, non dette | le pilier « activation partage » que `moscow.md § Instrumentation de validation du MVP` nomme suppose un partage aux joueurs, livré en J3 — deux jalons après le point de décision. Ce pilier est donc retiré du critère de la décision de marché, qui ne mesure que ce que J1 livre, et mesuré après elle (DÉCIDÉ 2026-10-07, entrée de backlog 0090, `docs/project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md @ 51a7cdc`). |
+| Préalable, non dette | le pilier « activation partage » que `matrice-de-priorites.md § Instrumentation de validation du MVP` nomme suppose un partage aux joueurs, livré en J3 — deux jalons après le point de décision. Ce pilier est donc retiré du critère de la décision de marché, qui ne mesure que ce que J1 livre, et mesuré après elle (DÉCIDÉ 2026-10-07, entrée de backlog 0090, `docs/project/backlog/0090-retirer-l-activation-du-partage-du-critere-de-la-decision-de.md @ 51a7cdc`). |
 
 ##### TB-093 — Capture de contact non bloquante en mode local
 
@@ -1146,7 +1148,7 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | châssis |
 | En conflit avec | TB-058 — module partagé : châssis ; TB-078 — module partagé : châssis ; TB-097 — module partagé : châssis ; TB-103 — module partagé : châssis |
 | Taille | S |
-| Critères d'acceptation | `vision/moscow.md § Instrumentation de validation du MVP`, mention « Mécanisme — tranché » — sollicitation unique, affichée après que le MJ a atteint l'activation préparation, un refus ou une absence de réponse valant refus définitif — la proposition ne revient jamais ; `vision/moscow.md § Instrumentation de validation du MVP § Capture de contact non bloquante` — la proposition reste refusable sans conséquence sur l'accès ni le fonctionnement |
+| Critères d'acceptation | `vision/perimetre/matrice-de-priorites.md § Instrumentation de validation du MVP`, mention « Mécanisme — tranché » — sollicitation unique, affichée après que le MJ a atteint l'activation préparation, un refus ou une absence de réponse valant refus définitif — la proposition ne revient jamais ; `vision/perimetre/matrice-de-priorites.md § Instrumentation de validation du MVP § Capture de contact non bloquante` — la proposition reste refusable sans conséquence sur l'accès ni le fonctionnement |
 | Code de renvoi | — |
 
 ### EP-12 — Recette et clôture du jalon J1
@@ -1162,9 +1164,9 @@ Colonne `Dépend de` : épiques précédentes dont au moins une tranche de l'ép
 | Périmètre d'écriture | HORS MAILLE — nature : renseignement de la colonne Verdict d'un document de recette — ne vise aucun module de code |
 | En conflit avec | — |
 | Taille | M — 0 modules, 3 renvois |
-| Critères d'acceptation | `cahier-strategie-test-et-recette.md §8. Critères globaux & DoD de test` ; `cahier-strategie-test-et-recette.md §9`, ligne « Local-only » (4 critères) ; `roadmap-entree-build.md §3.2 § Critères de sortie factuels` (4 critères) |
+| Critères d'acceptation | `strategie-de-test.md §8. Critères globaux & DoD de test` ; `strategie-de-test.md §9`, ligne « Local-only » (4 critères) ; `roadmap-de-build.md §3.2 § Critères de sortie factuels` (4 critères) |
 | Code de renvoi | — |
-| Point d'attention | `cahier-strategie-test-et-recette.md §13 § Contrôle d'intégrité des citations` impose, à chaque jalon, de vérifier que chaque ligne `CR-` cite un scénario Gherkin ou une RB réel et à jour dans le corpus source. |
+| Point d'attention | `strategie-de-test.md §13 § Contrôle d'intégrité des citations` impose, à chaque jalon, de vérifier que chaque ligne `CR-` cite un scénario Gherkin ou une RB réel et à jour dans le corpus source. |
 
 
 ### Rédaction du corpus — tranches reportées du chantier conformite-corpus
@@ -1228,12 +1230,12 @@ Ces tranches ne se rattachent à aucune épique ni à aucun jalon du plan : leur
 
 ## 7. J2 — épiques seulement
 
-La décomposition en tâches de J2 n'est pas produite ici. Deux raisons cumulatives : le contenu réel des tâches J2 dépend de ce que J0 aura tranché sur les arborescences internes des projets .NET et namespaces (marqueurs `[À TRANCHER — J0]`, §2) — un plan qui découperait aujourd'hui des tâches à l'intérieur de ces arborescences trancherait à la place du build ; et l'entrée même en J2 est conditionnée par `[DÉCISION MARCHÉ]` (`roadmap-entree-build.md §3.3`), un point de décision `NON-VERIFIABLE-IN-BUILD` non acquis à ce jour. Descendre à la tâche pour un jalon dont l'entrée n'est pas encore actée serait du travail à refaire. Le détail des épiques J2 figure en §4 ; leur contenu, non recopié ici, est renvoyé à `roadmap-entree-build.md §3.4` et `Annexe A`.
+La décomposition en tâches de J2 n'est pas produite ici. Deux raisons cumulatives : le contenu réel des tâches J2 dépend de ce que J0 aura tranché sur les arborescences internes des projets .NET et namespaces (marqueurs `[À TRANCHER — J0]`, §2) — un plan qui découperait aujourd'hui des tâches à l'intérieur de ces arborescences trancherait à la place du build ; et l'entrée même en J2 est conditionnée par `[DÉCISION MARCHÉ]` (`roadmap-de-build.md §3.3`), un point de décision `NON-VERIFIABLE-IN-BUILD` non acquis à ce jour. Descendre à la tâche pour un jalon dont l'entrée n'est pas encore actée serait du travail à refaire. Le détail des épiques J2 figure en §4 ; leur contenu, non recopié ici, est renvoyé à `roadmap-de-build.md §3.4` et `Annexe A`.
 
 
 ## 8. J3 — épiques seulement
 
-Même raisonnement qu'en §7 : J3 dépend structurellement de J2 (`roadmap-entree-build.md §3.6` — « le canal SignalR filtre par le même `IResourceAccessPolicy` que REST »), lui-même non ouvert. Le détail des épiques J3 figure en §4 ; leur contenu est renvoyé à `roadmap-entree-build.md §3.6` et `Annexe A`.
+Même raisonnement qu'en §7 : J3 dépend structurellement de J2 (`roadmap-de-build.md §3.6` — « le canal SignalR filtre par le même `IResourceAccessPolicy` que REST »), lui-même non ouvert. Le détail des épiques J3 figure en §4 ; leur contenu est renvoyé à `roadmap-de-build.md §3.6` et `Annexe A`.
 
 
 ---
@@ -1432,16 +1434,16 @@ Le champ `En conflit avec` de chaque tranche (§5-6) dit ce qui **ne peut pas** 
 
 ## 10. Ce que ce plan n'ordonne pas
 
-**Les deux points de décision non vérifiables en intégration continue.** `[DÉCISION MARCHÉ]` (renvoi seul : `roadmap-entree-build.md §3.3`) et `[VALIDATION JURIDIQUE EU]` (renvoi seul : `roadmap-entree-build.md §3.5`) ne sont pas des jalons de build : aucun test, aucun linter ne peut les trancher. Ce plan ne les décompose pas en tâches — il en hérite seulement les effets déjà tracés dans `roadmap-entree-build.md §3.4 § Dépendance d'entrée` (entrée en J2 conditionnée, cumulativement, par J1 stable et `[DÉCISION MARCHÉ] = go`) et `§3.5` (le lancement EU, pas le build de J3, est bloqué par `[VALIDATION JURIDIQUE EU]`).
+**Les deux points de décision non vérifiables en intégration continue.** `[DÉCISION MARCHÉ]` (renvoi seul : `roadmap-de-build.md §3.3`) et `[VALIDATION JURIDIQUE EU]` (renvoi seul : `roadmap-de-build.md §3.5`) ne sont pas des jalons de build : aucun test, aucun linter ne peut les trancher. Ce plan ne les décompose pas en tâches — il en hérite seulement les effets déjà tracés dans `roadmap-de-build.md §3.4 § Dépendance d'entrée` (entrée en J2 conditionnée, cumulativement, par J1 stable et `[DÉCISION MARCHÉ] = go`) et `§3.5` (le lancement EU, pas le build de J3, est bloqué par `[VALIDATION JURIDIQUE EU]`).
 
-**Les points `[À TRANCHER]`.** Ce document en signale un sous-ensemble, un par un, au fil des tâches où ils mordent directement (sur les fiches des tranches qui les closent, §5-6) — il n'en tient pas un registre séparé ni n'en recopie le décompte : le corpus les porte déjà (`guide-conventions-et-dod.md § Convention de balisage`, `structure-projets.md §3`, `architecture/specs/*.md`).
+**Les points `[À TRANCHER]`.** Ce document en signale un sous-ensemble, un par un, au fil des tâches où ils mordent directement (sur les fiches des tranches qui les closent, §5-6) — il n'en tient pas un registre séparé ni n'en recopie le décompte : le corpus les porte déjà (`conventions-dod.md § Convention de balisage`, `structure-projets.md §3`, `architecture/specs/*.md`).
 
-**Le post-MVP.** `UC-13` (scénario réutilisable) et `UC-15` (gel d'espaces au downgrade de tier) sont classés hors MoSCoW du MVP par `vision/moscow.md § UC-13` (paragraphe « hors première livraison ») et `§ UC-15 — Classement arbitré`, seule autorité du corpus pour cette classification. Ce plan ne leur ouvre aucune tâche ni épique décomposée, cohérent avec `moscow.md § Dépendances § Convention actée`, qui les exclut par construction de son propre diagramme.
+**Le post-MVP.** `UC-13` (scénario réutilisable) et `UC-15` (gel d'espaces au downgrade de tier) sont classés hors MoSCoW du MVP par `vision/perimetre/matrice-de-priorites.md § UC-13` (paragraphe « hors première livraison ») et `§ UC-15 — Classement arbitré`, seule autorité du corpus pour cette classification. Ce plan ne leur ouvre aucune tâche ni épique décomposée, cohérent avec `matrice-de-priorites.md § Dépendances § Convention actée`, qui les exclut par construction de son propre diagramme.
 
 **Deux points qui doivent rester ouverts, chacun sur un axe distinct — ce plan ne prend position sur aucune de leurs issues.**
 
-- **Identité graphique, et le design system codé qui en dépend** (axe conception d'interface) — `roadmap-entree-build.md § Annexe B` fait de l'identité graphique un préalable hors jalon, porté par `docs/interface/**`, non modifié par ce document. Tant que ce préalable n'est pas produit, aucune tranche de ce plan ne porte le design system **codé** (composants Angular, Storybook, CSS vars) : une tranche qui le viserait échouerait les quatrième et cinquième conditions d'entrée de [`methode-de-ticket.md §2`](methode-de-ticket.md) — ni critère d'acceptation tranchant, ni module nommable dans la maille (§2). Suivi de ce préalable : [`decisions-en-attente.md § Groupe 6`](decisions-en-attente.md).
-- **L'entrée `J-12` du registre des risques** (axe juridique) — `registre-risques.md §3.3`, méthode de vérification d'identité des invités non retenue ; le registre signale lui-même que la frontière entre « lacune réelle » et « posture existante » n'est pas tranchée par ce registre et attend un statut en comité des risques.
+- **Identité graphique, et le design system codé qui en dépend** (axe conception d'interface) — `roadmap-de-build.md § Annexe B` fait de l'identité graphique un préalable hors jalon, porté par `docs/interface/**`, non modifié par ce document. Tant que ce préalable n'est pas produit, aucune tranche de ce plan ne porte le design system **codé** (composants Angular, Storybook, CSS vars) : une tranche qui le viserait échouerait les quatrième et cinquième conditions d'entrée de [`methode-de-ticket.md §2`](methode-de-ticket.md) — ni critère d'acceptation tranchant, ni module nommable dans la maille (§2). Suivi de ce préalable : [`decisions-en-attente.md § Groupe 6`](decisions-en-attente.md).
+- **L'entrée `J-12` du registre des risques** (axe juridique) — `registre-des-risques.md §3.3`, méthode de vérification d'identité des invités non retenue ; le registre signale lui-même que la frontière entre « lacune réelle » et « posture existante » n'est pas tranchée par ce registre et attend un statut en comité des risques.
 
 
 ---
@@ -1465,7 +1467,7 @@ Cette trace vit dans un tableau et **non dans une fiche de tranche** : une fiche
 | TB-021 | TB-073 |
 | TB-022 | TB-076 |
 | TB-023 | TB-080 |
-| TB-024 | — dissoute : chaque tranche traverse la couche Application pour son propre geste ; l'invariant qu'elle portait est une clause de Definition of Done (`guide-conventions-et-dod.md §1 § Architecture`), non un lot de travail |
+| TB-024 | — dissoute : chaque tranche traverse la couche Application pour son propre geste ; l'invariant qu'elle portait est une clause de Definition of Done (`conventions-dod.md §1 § Architecture`), non un lot de travail |
 | TB-025 | TB-057 |
 | TB-026 | TB-057 |
 | TB-027 | TB-057 |

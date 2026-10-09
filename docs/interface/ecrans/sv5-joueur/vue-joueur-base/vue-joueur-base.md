@@ -119,7 +119,7 @@ Intention : le joueur, une fois son accès actif, consulte les documents PUBLIC 
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la vue joueur post-accès.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la vue joueur post-accès.
 
 ```
 annonce sans action :
@@ -152,7 +152,7 @@ Sources : UC-12 scénario nominal ; UC-12 A1 ; UC-12 A2 ; UC-12 A3 ; UC-12 E1 ;
           AR-03 ; AR-06 ; AR-07 ;
           NFR-ACC-02 ; NFR-ACC-04 ;
           NFR-CONF-01 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -198,7 +198,7 @@ Déclenché — éléments S8 et S9.
   [HORS-MVP — UC-12 A1 ; AR-10] interface de sélection du personnage actif pour
     un joueur associé à plusieurs personnages dans la même campagne — différé avec
     l'enrichissement UC-12 complet
-  [HORS-MVP — moscow.md §Could Have] notes personnelles joueur persistantes
+  [HORS-MVP — matrice-de-priorites.md §Could Have] notes personnelles joueur persistantes
     inter-sessions sans compte (RB-09-19 : les notes PLAYER_PRIVATE d'un invité
     non converti sont supprimées à la fin de l'accès)
 

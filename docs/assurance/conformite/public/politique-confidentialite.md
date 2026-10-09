@@ -41,10 +41,10 @@ Un MJ qui crée un compte pour synchroniser ses données et partager du contenu 
 |---|---|---|
 | Adresse de messagerie | Identifiant de connexion, canal de communication (validation, notifications) | ADR-015 §2.1 |
 | Mot de passe | Jamais stocké en clair : haché par un algorithme Argon2id (ou repli bcrypt), jamais transmis ni conservé lisible | ADR-015 §1.2 |
-| Nom d'affichage (`display_name`) | Affiché aux autres membres d'un espace partagé | `identity-access.md` |
+| Nom d'affichage (`display_name`) | Affiché aux autres membres d'un espace partagé | `identity-access/context.md` |
 | Jetons d'authentification (accès, rafraîchissement) | Permettent de rester connecté sans ressaisir le mot de passe ; durées bornées (accès ≤ 15 min, rafraîchissement ≤ 7 jours, sans prolongation glissante) | ADR-015 §3.1 |
 | Identifiant de fournisseur fédéré (Google, Discord), si liaison OAuth | Utilisé pour authentifier le compte via un fournisseur tiers | ADR-015 §2.2 |
-| Contenus créés (documents, notes, dossiers, scénarios) | Rattachés à l'espace personnel du MJ ou aux espaces partagés qu'il possède ou rejoint | `content-library.md` |
+| Contenus créés (documents, notes, dossiers, scénarios) | Rattachés à l'espace personnel du MJ ou aux espaces partagés qu'il possède ou rejoint | `content-library/context.md` |
 
 ### 2.2 Le Maître du Jeu en mode local (sans compte)
 
@@ -62,7 +62,7 @@ Un joueur qui rejoint une partie par un lien d'invitation, sans créer de compte
 |---|---|---|---|
 | Nom d'affichage (`display_name`) | Saisi librement au moment de rejoindre la session ; sert à l'identifier pendant la partie et dans les contenus partagés | La ligne d'accès est purgée 90 jours après l'expiration de l'accès ; les occurrences du nom dans les contenus de l'espace suivent le cycle de vie de cet espace | ADR-013 §1, §3 |
 | Personnage associé (`character_id`), le cas échéant | Rattache l'invité à un personnage joué | Suit le sort de l'accès invité | ADR-013 |
-| Notes créées en session (`PLAYER_PRIVATE`) | Notes strictement personnelles créées par l'invité pendant la partie | Suit le sort de l'accès invité et de l'espace | `space-management.md` |
+| Notes créées en session (`PLAYER_PRIVATE`) | Notes strictement personnelles créées par l'invité pendant la partie | Suit le sort de l'accès invité et de l'espace | `space-management/context.md` |
 | Adresse IP, horodatages, journaux techniques | Finalité sécurité et débogage | 30 jours maximum après la fin de l'accès | ADR-013 §1 |
 
 L'information relative à ce traitement est affichée **au moment même de la saisie du nom d'affichage**, avant l'entrée en session, avec un lien vers la présente politique (ADR-013 §2) — l'invité ne créant pas de compte, cette information ne peut pas être différée à une page de paramètres.

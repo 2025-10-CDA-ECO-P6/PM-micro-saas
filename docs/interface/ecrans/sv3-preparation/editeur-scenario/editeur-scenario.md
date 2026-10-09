@@ -149,7 +149,7 @@ Héritage des décisions de conception (résolutions UX) : la disposition en flu
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'éditeur de scénario.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'éditeur de scénario.
 
 ```
 annonce sans action :
@@ -176,7 +176,7 @@ hiérarchie de lecture à distance :
 Sources : UC-03 ;
           AR-11 (backlinks — hérité de editeur-document.md, hors MVP) ;
           NFR-ACC-02 ; NFR-OFF-05 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -186,7 +186,7 @@ Sources : UC-03 ;
 ### Mode local (déclenché — surface MJ)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne
     bénéficient pas d'une garantie de conservation permanente ;
     propose la création d'un compte
@@ -194,7 +194,7 @@ Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode lo
     par identifiants ; propose la création d'un compte
 
 Fonctions cloud désactivées sur l'éditeur de scénario en mode local :
-  Châssis standard — voir zoning.md §S7 §Châssis mode local.
+  Châssis standard — voir zonage.md §S7 §Châssis mode local.
   La création et la modification d'un scénario et de ses scènes sont disponibles
   sans compte. Le partage du scénario avec des joueurs (visibilité visible par
   les joueurs) nécessite un compte (AR-13 ; UC-01 §Règles métier).

@@ -2,12 +2,3 @@
 # Une ligne par identifiant : identifiant|nombre de définitions acceptées.
 # Un identifiant absent de cette liste, ou défini plus souvent qu'ici, fait échouer le contrôle.
 # Une entrée que le corpus ne justifie plus est signalée « DISPARU » : la retirer.
-EP-04|2
-RB-12-01|2
-RB-12-04|2
-RB-12-05|2
-RB-12-06|2
-RB-12-07|2
-RB-12-08|2
-RB-12-09|2
-RB-12-10|2

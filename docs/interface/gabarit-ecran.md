@@ -2,7 +2,7 @@
 
 > Couche réflexive de la sous-couche interface.
 > Ce gabarit définit la structure de toute fiche de description d'écran basse-fidélité.
-> La notation utilise les familles de marqueurs de `conventions-wireframe.md` — à lire avant d'utiliser ce gabarit.
+> La notation utilise les familles de marqueurs de `interface/conventions.md` — à lire avant d'utiliser ce gabarit.
 > L'exemple-pilote (§ Exemple) instancie le gabarit sur la vue session MJ.
 
 ---
@@ -24,7 +24,7 @@ Les **intitulés de section** de ce gabarit sont en langage de besoin (« Ce que
 ```
 # Fiche d'écran — [Nom de l'écran]
 
-> **Nature** : Fiche de description d'écran basse-fidélité. Aligné sur l'inventaire S4 de zoning.md.
+> **Nature** : Fiche de description d'écran basse-fidélité. Aligné sur l'inventaire S4 de zonage.md.
 > **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
 > **Notation et nommage** : `docs/interface/conventions.md`.
 > **Arbitrages figés** : <sections et arbitrages du zonage que la fiche fige, par exemple `docs/interface/zonage.md §S6`, AR-xx>.
@@ -39,7 +39,7 @@ Les **intitulés de section** de ce gabarit sont en langage de besoin (« Ce que
 - **Traçabilité** : <UC / US / NFR couverts, à la maille écran — source : colonne « UC / US / UJ couverts » de S4>
 ```
 
-**Règle** : les cinq axes reproduisent exactement les colonnes de S4 (`zoning.md §S4`). Ils ne créent pas de système parallèle. Si un axe est absent du tableau S4, il est noté `non spécifié en S4`.
+**Règle** : les cinq axes reproduisent exactement les colonnes de S4 (`zonage.md §S4`). Ils ne créent pas de système parallèle. Si un axe est absent du tableau S4, il est noté `non spécifié en S4`.
 
 ---
 
@@ -59,7 +59,7 @@ Critère de complétude : la phrase nomme l'utilisateur (MJ / joueur / utilisate
 
 #### Zones et hiérarchie
 
-> *Inventaire des zones de l'écran, avec leur rôle, leur type et leur priorité de présence. Utilise la Famille 1 et la Famille 2 de `conventions-wireframe.md`. Les types sont ceux de la [Famille 1](conventions.md#famille-1--zone), y compris « règle de zoning », « action » et « lien ».*
+> *Inventaire des zones de l'écran, avec leur rôle, leur type et leur priorité de présence. Utilise la Famille 1 et la Famille 2 de `interface/conventions.md`. Les types sont ceux de la [Famille 1](conventions.md#famille-1--zone), y compris « règle de zoning », « action » et « lien ».*
 
 ```
 [ NOM DE ZONE ]
@@ -75,7 +75,7 @@ Critère de complétude : toutes les zones de l'écran sont listées. Chaque zon
 
 #### Ce que l'utilisateur peut faire
 
-> *Liste des affordances de l'écran. Utilise la Famille 5 de `conventions-wireframe.md` — verbe de besoin + source AR/UC + résultat observable.*
+> *Liste des affordances de l'écran. Utilise la Famille 5 de `interface/conventions.md` — verbe de besoin + source AR/UC + résultat observable.*
 
 ```
 - [SOURCE] <verbe de besoin + conditions> → <résultat observable>
@@ -103,7 +103,7 @@ Critère de complétude : seuls les états pertinents pour cet écran sont décr
 
 > *Deux réponses obligatoires. Ne re-liste pas les garanties transversales du châssis S7 (focus visible, ordre clavier — acquises). Décrit uniquement ce qui est spécifique à cet écran.*
 
-Les garanties transversales (focus clavier visible, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section ne les répète pas.
+Les garanties transversales (focus clavier visible, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section ne les répète pas.
 
 ```
 annonce sans action :
@@ -133,7 +133,7 @@ Critère de complétude : au minimum, les UC porteurs de l'écran (colonne S4) e
 
 ### Sections conditionnelles
 
-Les sections ci-dessous n'apparaissent que si leur déclencheur est avéré. **L'absence d'une section conditionnelle signifie que la fonction est absente par nature** (voir AR-14 et `conventions-wireframe.md §C3 Famille 7`). Ne jamais noter « S.O. » — si la section n'est pas déclenchée, elle n'apparaît pas.
+Les sections ci-dessous n'apparaissent que si leur déclencheur est avéré. **L'absence d'une section conditionnelle signifie que la fonction est absente par nature** (voir AR-14 et `interface/conventions.md §C3 Famille 7`). Ne jamais noter « S.O. » — si la section n'est pas déclenchée, elle n'apparaît pas.
 
 ---
 
@@ -218,7 +218,7 @@ Conditionnel.
 
 ### Traçabilité
 
-La traçabilité est à la **maille écran** par défaut (conforme à S4 et S5 de `zoning.md`).
+La traçabilité est à la **maille écran** par défaut (conforme à S4 et S5 de `zonage.md`).
 
 La traçabilité descend à la maille **zone** uniquement lorsqu'une zone matérialise un arbitrage nommé, c'est-à-dire quand le fait de porter cet arbitrage à ce niveau est la raison d'existence de la zone. Exemples légitimes :
 
@@ -393,7 +393,7 @@ Intention : le MJ pilote la session depuis un tableau de bord configurable qui l
 
 #### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible, ordre de navigation cohérent) sont portées par le châssis (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la vue session MJ.
+Les garanties transversales (focus clavier visible, ordre de navigation cohérent) sont portées par le châssis (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la vue session MJ.
 
 ```
 annonce sans action :
@@ -421,7 +421,7 @@ Sources : UC-06 ; UC-07 ; UC-08 ; UC-14 ;
           US-06-01 à US-06-10 ; UJ-UC-06 ;
           AR-04 ; AR-09 ; AR-11 ; AR-12 ;
           NFR-ACC-02 ; NFR-ACC-04 ; NFR-PERF-01 ; NFR-PERF-04 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -523,7 +523,7 @@ Placement de l'affordance de génération de lien d'invitation :
     elle n'est donc rangée dans aucune de ces trois listes.
 
 Éléments différés (S8) :
-  [HORS-MVP — moscow.md §Won't Have] clôture formelle de session (procédure de clôture guidée)
+  [HORS-MVP — matrice-de-priorites.md §Won't Have] clôture formelle de session (procédure de clôture guidée)
 ```
 
 ---
@@ -557,7 +557,7 @@ Affordances de partage et d'épinglage :
 ### Mode local (déclenché — surface MJ)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne bénéficient pas
     d'une garantie de conservation permanente ; propose la création d'un compte
   - bandeau de confidentialité : non bloquant ; signale l'absence de protection par identifiants ;
@@ -586,8 +586,8 @@ Déclenché — éléments S8 et S9.
 Éléments différés (S8) :
   [HORS-MVP — UC-11 scénario nominal] écran Membres complet (révocations, associations joueur-personnage)
   [HORS-MVP — UC-08 §Règles métier ; vision §5bis] partage sélectif par joueur ou personnage
-  [HORS-MVP — moscow.md §Won't Have] clôture formelle de session
-  [HORS-MVP — moscow.md §Won't Have] table visuelle
+  [HORS-MVP — matrice-de-priorites.md §Won't Have] clôture formelle de session
+  [HORS-MVP — matrice-de-priorites.md §Won't Have] table visuelle
 
 Éléments sous-spécifiés (S9) :
   [SOUS-SPÉCIFIÉ — S9 §Notification active côté joueur] la notification active (signalement

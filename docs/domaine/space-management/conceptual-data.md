@@ -64,4 +64,4 @@ erDiagram
     SPACE_MEMBERSHIP ||--o{ MEMBERSHIP_CHARACTER : "associé à des personnages"
 ```
 
-> **Pas d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry`** : la réutilisabilité est portée par `Document.isReusable` (Content Library) ; la bibliothèque personnelle du MJ est une vue filtrée de son espace `PERSONAL` (`type = PERSONAL` ∧ `isReusable = true`) — voir space-management.md § Scénario réutilisable (invariant 12, retiré) et ADR-018.
+> **Pas d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry`** : la réutilisabilité est portée par `Document.isReusable` (Content Library) ; la bibliothèque personnelle du MJ est une vue filtrée de son espace `PERSONAL` (`type = PERSONAL` ∧ `isReusable = true`) — voir space-management/context.md § Scénario réutilisable (invariant 12, retiré) et ADR-018.

@@ -226,7 +226,7 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 | Archivage | Manuel par le MJ — refusé si session `LIVE` (invariant 16) | Manuel par le MJ — refusé si session `LIVE` (invariant 16) | Interdit — garde d'agrégat (invariant 15) |
 | Invitations | Oui | Oui | Non (voir invariant 13) |
 
-**MVP** : Au MVP, aucune différence comportementale n'existe entre `CAMPAIGN` et `ONE_SHOT` — création, structure des dossiers, cycle de session et vue session sont identiques pour les deux types. Le parcours de création express est une caractéristique cible post-MVP (arbitrage UC-13, vision-produit §5bis). L'espace `PERSONAL` est créé automatiquement à la création du compte.
+**MVP** : Au MVP, aucune différence comportementale n'existe entre `CAMPAIGN` et `ONE_SHOT` — création, structure des dossiers, cycle de session et vue session sont identiques pour les deux types. Le parcours de création express est une caractéristique cible post-MVP (arbitrage UC-13, vision.md §5bis). L'espace `PERSONAL` est créé automatiquement à la création du compte.
 
 ---
 
@@ -259,12 +259,12 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 
 1. Seul l'OWNER peut inviter ou retirer des GMs. **Hors MVP** : le rôle `GM` n'est pas attribuable (UC-F08, voir [exclusions](../../besoin/vision/perimetre/exclusions.md#uc-f08--rôle-gm-co-mj)). Une invitation ne porte aucun rôle ; l'adhésion par invitation ajoute toujours un `PLAYER` (flux 3 de [flows.md](flows.md)).
 2. Un GM peut inviter ou retirer des PLAYER. **Hors MVP** : le rôle `GM` n'est pas attribuable (UC-F08, voir [exclusions](../../besoin/vision/perimetre/exclusions.md#uc-f08--rôle-gm-co-mj)) ; au MVP, seul l'OWNER invite et retire des PLAYER.
-3. Retirer un membre ne supprime pas ses données dans l'espace (personnages, notes partagées restent).
+3. Retirer un membre ne supprime pas ses données dans l'espace. Au MVP, seul le personnage reste : le joueur n'écrit aucune note. Les notes du joueur *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../../besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* suivront la même règle (décision de l'opérateur, 2026-10-09).
 4. Un membre retiré peut être réinvité. La réinvitation réutilise sa ligne d'adhésion : le `SpaceMembership` repasse de `REMOVED` à `PENDING`, puis `ACTIVE`, sans nouvelle ligne — la clé `(space_id, user_id)` du [MCD](conceptual-data.md) et du [MLD](logical-data.md) reste unique (US-11-03).
 5. Un `GuestAccess SESSION` expire à la fermeture de la session + 24h de grâce.
 6. Quand `AccountTierChanged` (PRO → FREE) et que le MJ propriétaire a > 3 espaces `CAMPAIGN` ou `ONE_SHOT` à l'état `ACTIVE` (l'espace `PERSONAL` n'est pas compté) : les espaces excédentaires sont gelés dans l'ordre de création (les plus récents en premier). (le use case dédié **UC-15** ratifie et détaille ce comportement de gel/dégel)
    > **NOTE — Valeur de référence du quota** : la limite `3` d'espaces actifs pour un utilisateur FREE est consolidée en CdC annexe « Valeurs de référence chiffrées » ; cette valeur volatile doit être maintenue en source unique pour la cohérence métier/produit.
-7. L'archivage est manuel et réversible : le MJ peut désarchiver l'espace (`Unarchive()`) pour le repasser `ACTIVE`. Tant qu'il reste `ARCHIVED`, l'espace est en lecture seule.
+7. L'archivage est manuel et réversible : le MJ peut désarchiver l'espace (`Unarchive()`) pour le repasser `ACTIVE`. Tant qu'il reste `ARCHIVED`, l'espace est en lecture seule : ses membres joueurs le consultent sans y écrire, et ses liens d'invitation sont inutilisables (message « Ce lien n'est pas utilisable », UC-09 A3) (décision de l'opérateur, 2026-10-09).
 8. Un one-shot peut avoir simultanément des `SpaceMembership` (joueurs avec compte) et des `GuestAccess` (joueurs sans compte).
 9. Lors de la fin définitive d'un `GuestAccess` (expiration après grâce ou révocation sans réactivation), les données personnelles qu'il porte (`displayName`, élément d'accès) cessent immédiatement d'être utilisées et affichées — plus aucune finalité produit. Leur effacement effectif intervient au plus tard 90 jours après la fin d'accès, fenêtre bornée dont la seule finalité est l'exercice des droits de l'invité et le traitement des contestations (RGPD Art. 5(1)(e) — limitation de la conservation). Si l'invité a été converti en compte, ses données suivent les règles du compte.
 10. À la fin définitive d'un `GuestAccess` non converti, les notes `PLAYER_PRIVATE` créées par cet invité sont supprimées physiquement — uniquement les siennes, jamais celles d'autres participants. Cette suppression répond à la même obligation légale que l'effacement des notes à la suppression d'un compte (RGPD Art. 17 ; cohérence avec le domaine Identity & Access).
@@ -283,7 +283,7 @@ personnelle du MJ est une **vue filtrée** de son espace `PERSONAL` (`type = PER
 | `MemberRemoved` | `Space.RemoveMember()` | Session Conduct (retirer l'accès actif si session en cours) |
 | `InvitationCreated` | `Space.CreateInvitation()` | Application (fourniture du lien au MJ) |
 | `InvitationRevoked` | `Space.RevokeInvitation()` | Aucun contexte externe — l'invalidation du lien d'invitation reste interne à Space Management |
-| `CharacterAssociated` | `Space.AssociateCharacter()` | Session Conduct (accès aux notes PLAYER_PRIVATE du personnage) |
+| `CharacterAssociated` | `Space.AssociateCharacter()` | Application (résout les personnages associés au joueur pour l'exception de RB-12-01 — règle 2 de Content Library ; `PLAYER_PRIVATE` reste lisible par son seul auteur) |
 | `SpaceFrozen` | `Space.Freeze()` | Application (notification au MJ) |
 | `SpaceUnfrozen` | `Space.Unfreeze()` | Application (notification au MJ) |
 | `SpaceArchived` | `Space.Archive()` | Content Library, Session Conduct |

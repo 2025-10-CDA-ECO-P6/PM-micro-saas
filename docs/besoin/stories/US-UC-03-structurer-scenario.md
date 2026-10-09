@@ -33,7 +33,7 @@ Permettre au MJ de préparer un scénario utilisable en session : création, str
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-03 — Structurer un scénario](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`matrice-de-priorites.md`, § UC-03 — Structurer un scénario](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `matrice-de-priorites.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -392,7 +392,7 @@ Scénario: Créer un document à la volée depuis l'éditeur de scénario
 | Réordonnancement par drag-and-drop des scènes | UX définie en wireframe (`editeur-scenario.md`). Mécanique retenue : **déplacement explicite** (annoncé assistivement, NFR-ACC-02 ; hérite du réordonnancement de blocs, NFR-ACC-01). L'ordre fonctionnel est porté par `DocumentLink.order`. |
 | Partage temporaire d'un contenu pendant une session | Couvert par UC-08 (révélation en session), hors périmètre UC-03. |
 | Duplication d'un scénario | Non défini dans UC-03, à envisager dans une version ultérieure. |
-| Backlinks depuis la fiche d'un PNJ ou d'une scène (scénario et critère de US-03-05) | Hors MVP — réponse de l'opérateur (onboarding du 2026-10-07), comme US-04-06 : les backlinks arrivent avec les relations structurées (UC-F06, voir [UC-HORS-MVP](../vision/perimetre/exclusions.md)). Le texte est conservé ci-dessous. |
+| Backlinks depuis la fiche d'un PNJ ou d'une scène (scénario et critère de US-03-05) | Hors MVP — réponse de l'opérateur (onboarding du 2026-10-07), comme US-04-06 : les backlinks arrivent avec les relations structurées (UC-F06, voir [exclusions.md](../vision/perimetre/exclusions.md)). Le texte est conservé ci-dessous. |
 
 **US-03-05 — Backlinks depuis la fiche d'un document lié** *(hors MVP — texte conservé pour la reprise)*
 

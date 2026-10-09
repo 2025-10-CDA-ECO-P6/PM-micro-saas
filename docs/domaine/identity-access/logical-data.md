@@ -41,7 +41,7 @@ Partage le même `id` (UUID) que la table `users`.
 
 ## Note — FK inter-modules (entrantes)
 
-Contrairement aux trois autres MLD (`content-library.md`, `space-management.md`, `session-conduct.md`), `users` ne porte **aucune FK cross-module sortante** — I&A ne référence aucune autre table de bounded context. Il est en revanche la **cible** de FK cross-module entrantes, portées par les tables d'autres modules :
+Contrairement aux trois autres MLD (`content-library/context.md`, `space-management/context.md`, `session-conduct/context.md`), `users` ne porte **aucune FK cross-module sortante** — I&A ne référence aucune autre table de bounded context. Il est en revanche la **cible** de FK cross-module entrantes, portées par les tables d'autres modules :
 
 - `spaces.owner_id → users.id` (Space Management)
 - `space_memberships.user_id → users.id` (Space Management)

@@ -53,7 +53,7 @@ Intention : l'utilisateur crée un compte pour accéder à la synchronisation cl
              (UC-10 §scénario nominal Connexion via fournisseur externe) ;
              mis en avant comme chemin de moindre coût à l'instant de bascule (AR-13) ;
              fournisseurs exposés : Google et Discord (cahier des charges §Authentification —
-             RÉSOLU ; ADR-015 ; zoning.md §S9 « Fournisseurs d'identité — RÉSOLU »)
+             DÉCIDÉ 2026-07-15 ; ADR-015 ; zonage.md §S9 « Fournisseurs d'identité »)
              [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview] le wording exact
              des libellés de bouton par fournisseur n'est pas figé
   priorité : principal
@@ -114,7 +114,7 @@ Intention : l'utilisateur crée un compte pour accéder à la synchronisation cl
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran d'inscription.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran d'inscription.
 
 ```
 annonce sans action :
@@ -146,7 +146,7 @@ Sources : UC-10 (scénario nominal Inscription sans données locales,
           AR-13 (fournisseur externe mis en avant, moindre coût à l'instant de bascule) ;
           NFR-ACC-02 ;
           ADR-016 §4 (gate de reconnaissance avant migration) ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---

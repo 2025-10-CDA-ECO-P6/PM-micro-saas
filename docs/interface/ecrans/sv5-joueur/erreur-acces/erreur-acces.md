@@ -78,7 +78,7 @@ Intention : le joueur dont l'accès ne peut pas être accordé (lien expiré, r�
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à cet écran.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à cet écran.
 
 ```
 annonce sans action :
@@ -103,7 +103,7 @@ Sources : UC-09 A3 ; UC-09 E1 ; UC-09 E2 ;
           RB-09-21 ;
           AR-03 ;
           NFR-ACC-02 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---

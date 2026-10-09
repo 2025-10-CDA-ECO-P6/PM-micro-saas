@@ -59,7 +59,7 @@ Le MJ invalide un lien avant qu'il ne soit utilisé.
 
 ### A3 — Retirer un membre
 
-Le MJ retire un joueur de l'espace. Le joueur perd l'accès mais ses données (personnage, notes partagées) restent dans l'espace.
+Le MJ retire un joueur de l'espace. Le joueur perd l'accès mais son personnage reste dans l'espace. Au MVP, seul le personnage reste : le joueur n'écrit aucune note ; les notes du joueur *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* suivront la même règle (décision de l'opérateur, 2026-10-09).
 
 ### A4 — Accès invité sans compte
 
@@ -76,6 +76,10 @@ Le système informe le MJ que le joueur est déjà membre de l'espace (détecté
 ### E2 — Invitation expirée
 
 Le système ne permet pas de réactiver une invitation expirée — il faut en créer une nouvelle.
+
+### E3 — Espace archivé
+
+Les liens d'invitation d'un espace archivé sont inutilisables tant que l'espace est archivé : le joueur qui ouvre un tel lien voit le message « Ce lien n'est pas utilisable » (UC-09 A3). Les membres joueurs de cet espace le consultent en lecture seule (UC-02, règles métier ; règle métier 7 de *space-management*) (décision de l'opérateur, 2026-10-09).
 
 ## Postconditions
 
@@ -110,6 +114,7 @@ UC-11 est le **propriétaire unique** des données `Invitation` et `Membre d'esp
 - L'octroi d'un accès durable (`SpaceMembership`) à un joueur est soumis à la limite du tier gratuit : sur un compte FREE, tout octroi d'accès supplémentaire — quelle qu'en soit la forme (membre permanent ou accès invité) — est refusé si la limite est déjà atteinte. Règle définie dans UC-09 (RB-09-21) ; UC-11 ne la redéfinit pas.
 - Un lien d'invitation peut être limité en durée ou en nombre d'utilisations.
 - La révocation d'une invitation passe son statut à `REVOKED`. Elle ne peut plus créer de nouvel accès.
+- Une invitation d'un espace archivé ne peut pas créer d'accès tant que l'espace est archivé (E3).
 - Retirer un membre ne supprime pas ses données dans l'espace.
 - Un membre retiré peut être réinvité.
 - Le personnage associé à un membre retiré est un `Document` de type `player_character` ; il appartient à l'espace, persiste après le retrait et peut être réassocié à un autre joueur.

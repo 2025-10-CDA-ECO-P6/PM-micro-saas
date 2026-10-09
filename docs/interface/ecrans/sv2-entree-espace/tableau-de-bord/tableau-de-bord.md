@@ -82,7 +82,7 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
              ce compteur ne porte QUE sur les espaces partagés ACTIFS — l'espace
              personnel n'entre jamais dans ce décompte (AR-17), et un espace archivé
              n'y entre pas davantage : le quota et sa garde ne portent que sur les
-             espaces actifs de type campagne ou one-shot (`space-management.md`
+             espaces actifs de type campagne ou one-shot (`space-management/context.md`
              invariant 6 ; règle métier 12 — même décompte pour la création et pour
              le désarchivage)
   priorité : principal
@@ -107,7 +107,7 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
              (§Grille de cartes-espaces) — il ne se confond ni avec un espace actif
              ni avec l'espace personnel, et n'entre pas dans le compteur d'espaces
              partagés (§Compteur d'espaces partagés) ; l'espace personnel n'y figure
-             jamais — il n'est pas archivable (invariant 15 de `space-management.md` ;
+             jamais — il n'est pas archivable (invariant 15 de `space-management/context.md` ;
              AR-14)
   priorité : secondaire-configurable (registre replié — action rare — AR-19)
   visibilité : MJ seul
@@ -117,8 +117,8 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
   rôle     : révélée depuis l'accès aux espaces archivés ; présente chaque espace
              archivé du MJ (nom, type) ; un clic sur une entrée ouvre l'espace archivé
              en lecture seule, dans l'état où il était au moment de l'archivage
-             (`space-management.md` règle métier 7 — lecture seule tant qu'`ARCHIVED` ;
-             `content-library.md` — `SpaceArchived` passe les documents en lecture
+             (`space-management/context.md` règle métier 7 — lecture seule tant qu'`ARCHIVED` ;
+             `content-library/context.md` — `SpaceArchived` passe les documents en lecture
              seule) ; le MJ y retrouve ses paramètres de campagne, où vit le geste de
              désarchivage (AR-22 ; `parametres-campagne.md` §Modes §Mode : espace
              archivé)
@@ -195,7 +195,7 @@ Intention : le MJ retrouve l'ensemble de ses espaces de jeu en un seul endroit e
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique au tableau de bord.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique au tableau de bord.
 
 ```
 annonce sans action :
@@ -225,9 +225,9 @@ hiérarchie de lecture à distance :
 Sources : UC-02 §Postconditions ; UC-06 A5 ; UC-01 ; RB-02-10 ;
           UC-02 §Règles métier RB-02-22, RB-02-23 ;
           AR-01 ; AR-05 ; AR-09 ; AR-15 ; AR-17 ; AR-20 ; AR-22 ;
-          domaine `space-management.md` (règle métier 7, invariant 6, règle métier 12) ;
+          domaine `space-management/context.md` (règle métier 7, invariant 6, règle métier 12) ;
           NFR-ACC-02 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -237,7 +237,7 @@ Sources : UC-02 §Postconditions ; UC-06 A5 ; UC-01 ; RB-02-10 ;
 ### Mode local (déclenché — surface MJ)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne
     bénéficient pas d'une garantie de conservation permanente ;
     propose la création d'un compte

@@ -26,7 +26,7 @@ Consolidation : elle ne tranche rien. Elle est une carte du système dessinée �
 
 **Clause d'autorité** : ce document est une consolidation ; en cas de divergence apparente avec un ADR cité, l'ADR fait autorité.
 
-**Note d'autorité de la carte** : la carte structurelle du système (vues de contexte, conteneurs, composants, déploiement) vit dans ce DAT. Le document [`architecture-detaillee.md`](../architecture/transverse.md) l'indexe par préoccupation technique transverse (sécurité, RGPD, persistance, temps réel, mode local) sans ré-énoncer la structure présentée ici — il renvoie aux mêmes ADR sous un angle différent (thématique plutôt que structurel), sans redondance d'autorité.
+**Note d'autorité de la carte** : la carte structurelle du système (vues de contexte, conteneurs, composants, déploiement) vit dans ce DAT. Le document [`transverse.md`](../architecture/transverse.md) l'indexe par préoccupation technique transverse (sécurité, RGPD, persistance, temps réel, mode local) sans ré-énoncer la structure présentée ici — il renvoie aux mêmes ADR sous un angle différent (thématique plutôt que structurel), sans redondance d'autorité.
 
 ---
 
@@ -182,7 +182,7 @@ graph TD
 
 ### Core / SharedKernel
 
-Noyau partagé, pas un bounded context. Porte les abstractions communes : `AggregateRoot` / `Entity` / `ValueObject` / `DomainEvent` ; les identifiants typés (`UserId`, `SpaceId`, `GuestAccessId`, `SessionId`, `DocumentId`, `FolderId`) ; les value objects `Email` / `Slug` / `Tag` ; les primitives de traçabilité `AuditInfo` et `SoftDelete` ; l'enum partagée `Visibility`. Source : [core.md](../domaine/core/kernel.md).
+Noyau partagé, pas un bounded context. Porte les abstractions communes : `AggregateRoot` / `Entity` / `ValueObject` / `DomainEvent` ; les identifiants typés (`UserId`, `SpaceId`, `GuestAccessId`, `SessionId`, `DocumentId`, `FolderId`) ; les value objects `Email` / `Slug` / `Tag` ; les primitives de traçabilité `AuditInfo` et `SoftDelete` ; l'enum partagée `Visibility`. Source : [core/kernel.md](../domaine/core/kernel.md).
 
 ### Identity & Access
 
@@ -204,7 +204,7 @@ Consomme ce que Content Library prépare, sans posséder de contenu propre. Agr�
 
 - `IResourceAccessPolicy.CanAccess(principal, resourceRef)` — service de décision unique composant le prédicat d'appartenance (P1) et le prédicat de visibilité domaine (P4), consommé aux deux points d'application : pipeline behavior MediatR côté REST et filtre de diffusion côté SignalR ([ADR-014](../decisions/ADR-014-modele-autorisation-api.md) §3/§6).
 - Sagas applicatives `SpaceDeleted` et `UserAnonymized` — Hosted Service idempotent ([ADR-011](../decisions/ADR-011-cascade-integrite-referentielle.md)).
-- Orchestration de la migration locale → cloud et de la conversion `GuestAccess` → `SpaceMembership` ([ADR-016](../decisions/ADR-016-serialisation-locale-migration.md) pour la migration ; [space-management.md](../domaine/space-management/context.md) pour la conversion).
+- Orchestration de la migration locale → cloud et de la conversion `GuestAccess` → `SpaceMembership` ([ADR-016](../decisions/ADR-016-serialisation-locale-migration.md) pour la migration ; [space-management/context.md](../domaine/space-management/context.md) pour la conversion).
 
 ---
 
@@ -259,12 +259,12 @@ graph TD
 | Choix et justification | ADR-001, ADR-002, ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, ADR-018, stack.md |
 | Contexte du système | ADR-001, ADR-003, ADR-009, ADR-011, ADR-014 §1, ADR-015 §2.1/§2.2/§3.2, ADR-017 §1.1 |
 | Conteneurs | ADR-003, ADR-004, ADR-008, ADR-011, ADR-014, ADR-015, ADR-016, ADR-017, structure-projets.md, stack.md |
-| Composants — Identity & Access | ADR-015 §5, identity-access.md |
-| Composants — Space Management | ADR-018, space-management.md |
-| Composants — Content Library | ADR-002, ADR-014 §Frontière fondamentale, content-library.md |
-| Composants — Session Conduct | session-conduct.md |
+| Composants — Identity & Access | ADR-015 §5, identity-access/context.md |
+| Composants — Space Management | ADR-018, space-management/context.md |
+| Composants — Content Library | ADR-002, ADR-014 §Frontière fondamentale, content-library/context.md |
+| Composants — Session Conduct | session-conduct/context.md |
 | Composants — Transverse (couche Application) | ADR-011, ADR-014 §3/§6 |
-| Composants — Core/SharedKernel | core.md |
+| Composants — Core/SharedKernel | core/kernel.md |
 | Déploiement | ADR-003, ADR-004, ADR-015, ADR-016, ADR-017, stack.md |
 
 ---

@@ -3,8 +3,8 @@
 > Document de référence pour le positionnement produit, les choix assumés
 > et la définition des utilisateurs cibles.
 >
-> Use cases détaillés → [usecases/README.md](../cas-d-utilisation/README.md)
-> Priorisation MoSCoW → [moscow.md](perimetre/matrice-de-priorites.md)
+> Use cases détaillés → [cas-d-utilisation/README.md](../cas-d-utilisation/README.md)
+> Priorisation MoSCoW → [matrice-de-priorites.md](perimetre/matrice-de-priorites.md)
 
 ---
 
@@ -142,7 +142,7 @@ de document par défaut, ou repartir d'une ardoise vide.
 L'espace devient un réseau d'informations navigable. Les backlinks (documents pointant vers un
 document donné) et les relations typées entre documents (ce PNJ appartient à cette faction, cet
 objet est porté par ce personnage) sont une évolution post-MVP qui s'appuie sur les types de
-document — voir [UC-HORS-MVP](perimetre/exclusions.md).
+document — voir [exclusions.md](perimetre/exclusions.md).
 
 ### 2.3 Ce que le MVP doit démontrer
 
@@ -150,11 +150,11 @@ Pour valider le concept et justifier une suite, le MVP doit démontrer cinq hypo
 
 **Important** : un seuil non atteint impose un constat explicite (réussite partielle, échec du pilier, ou hypothèse invalidée) — jamais une réinterprétation. Chaque hypothèse reste falsifiable : si le seuil n'est pas atteint dans le délai, l'hypothèse n'est pas démontrée.
 
-**Les instruments de constat** sont exclusivement ceux déjà inscrits au périmètre Must Have (section « Instrumentation de validation du MVP » de `moscow.md`) : activation préparation, activation vue session, activation partage, mesure d'usage anonyme en mode local, et entretiens utilisateurs.
+**Les instruments de constat** sont exclusivement ceux déjà inscrits au périmètre Must Have (section « Instrumentation de validation du MVP » de `matrice-de-priorites.md`) : activation préparation, activation vue session, activation partage, mesure d'usage anonyme en mode local, et entretiens utilisateurs.
 
 | # | Hypothèse | Seuil chiffré | Délai | Instrument de constat |
 |---|---|---|---|---|
-| **H1** | Un MJ peut créer un espace structuré et y retrouver ses informations sans friction d'onboarding (pas de compte obligatoire au démarrage). | ≥ 60 % des MJ de la cohorte pilote qui ouvrent l'application atteignent **activation préparation** (espace actif — campagne ou espace personnel — avec premiers documents créés). *(instrument précisé — décision produit du 2026-07-09, qui raffine la position ADR-018 du 2026-06-12 : le contenu de l'espace personnel sans campagne ne compte pour H1 que **partiellement**, lorsqu'il traduit un **geste structurant** — au-delà d'une capture triviale (organisation, structuration, franchissement d'un seuil) — et non de façon équivalente à une campagne créée. Seuil/critère exact du geste structurant, tranché (décision produit du 2026-09-03) : **un dossier créé, ou un document déplacé hors de « Non classés »** — deux gestes observables sans lire aucun contenu. Le seuil de documents de l'activation préparation est fixé à **trois**. Voir `moscow.md § Instrumentation de validation du MVP`.)* | 14 jours après le premier usage. | Activation préparation (mesure d'usage anonyme). |
+| **H1** | Un MJ peut créer un espace structuré et y retrouver ses informations sans friction d'onboarding (pas de compte obligatoire au démarrage). | ≥ 60 % des MJ de la cohorte pilote qui ouvrent l'application atteignent **activation préparation** (espace actif — campagne ou espace personnel — avec premiers documents créés). *(instrument précisé — décision produit du 2026-07-09, qui raffine la position ADR-018 du 2026-06-12 : le contenu de l'espace personnel sans campagne ne compte pour H1 que **partiellement**, lorsqu'il traduit un **geste structurant** — au-delà d'une capture triviale (organisation, structuration, franchissement d'un seuil) — et non de façon équivalente à une campagne créée. Seuil/critère exact du geste structurant, tranché (décision produit du 2026-09-03) : **un dossier créé, ou un document déplacé hors de « Non classés »** — deux gestes observables sans lire aucun contenu. Le seuil de documents de l'activation préparation est fixé à **trois**. Voir `matrice-de-priorites.md § Instrumentation de validation du MVP`.)* | 14 jours après le premier usage. | Activation préparation (mesure d'usage anonyme). |
 | **H2** | La vue session apporte une valeur réelle pendant une partie — réduction du temps de recherche, accès au contenu préparé, création à la volée. | ≥ 50 % des MJ ayant atteint activation préparation atteignent **activation vue session** (session ouverte ET réellement utilisée en partie). Signal de valeur confirmé : ≥ 50 % d'entre eux l'utilisent sur 2 sessions ou plus. | 30 jours pour la première activation vue session. 60 jours pour le signal de répétabilité (2 sessions+). | Activation vue session (mesure d'usage anonyme) + entretiens pour raison de non-adoption. |
 | **H3** | Le partage d'informations aux joueurs est plus fluide que les solutions actuelles (Discord, Google Docs, papier). | ≥ 40 % des MJ ayant animé une session avec joueurs atteignent **activation partage** (document partagé + au moins un joueur l'a consulté). La perception « plus fluide » est confirmée en entretien : ≥ 3 MJ sur 5 interrogés rapportent une fluidité supérieure aux solutions actuelles. | 60 jours pour activation partage. Entretiens parallèles ou récapitulatifs. | Activation partage (mesure d'usage anonyme). Entretiens utilisateurs (guide existant). |
 | **H4** | L'accès joueur sans compte n'est pas un frein à l'adoption du groupe entier. | Sur les sessions où un partage a eu lieu, ≥ 70 % comptent au moins un joueur ayant effectivement consulté le contenu partagé. Les abandons à l'entrée (joueurs ne consultant pas) se vérifient en entretien — moins de 2 joueurs sur 10 rapportent avoir renoncé à l'étape d'entrée. | 60 jours. | Activation partage (mesure d'usage anonyme : taux de consultation côté joueur). Entretiens pour identifier les motifs d'abandon. |
@@ -165,7 +165,7 @@ Pour valider le concept et justifier une suite, le MVP doit démontrer cinq hypo
 > **Limite structurelle de l'instrument — à rappeler à toute lecture des résultats** (décision produit du 2026-09-03)
 >
 > Les compteurs d'usage sont écrits dans le store local et **ne quittent le navigateur qu'à la création d'un compte**
-> (`moscow.md § Instrumentation de validation du MVP`). Ce choix préserve la garantie observable « aucune donnée envoyée
+> (`matrice-de-priorites.md § Instrumentation de validation du MVP`). Ce choix préserve la garantie observable « aucune donnée envoyée
 > au serveur en mode local », mais il a une conséquence qu'aucune lecture des résultats ne doit ignorer :
 >
 > **les MJ qui ne créent jamais de compte ne transmettent jamais leurs compteurs.** Or H1 porte précisément sur un usage
@@ -348,7 +348,7 @@ Typique pour les one-shots, les conventions, les groupes changeants.
 
 ### Possession des données — arbitrage du 2026-06-10, révisé le 2026-06-25
 
-**Décision** : l'export d'espace est **Must Have / version minimale** — le MJ peut exporter l'ensemble de son espace dans un format ouvert et le consulter hors de l'application. Promu de Should Have (arbitrage initial du 2026-06-10) à Must Have par décision produit du 2026-06-25 — voir `moscow.md` §« Export d'espace (Must Have — version minimale) ».
+**Décision** : l'export d'espace est **Must Have / version minimale** — le MJ peut exporter l'ensemble de son espace dans un format ouvert et le consulter hors de l'application. Promu de Should Have (arbitrage initial du 2026-06-10) à Must Have par décision produit du 2026-06-25 — voir `matrice-de-priorites.md` §« Export d'espace (Must Have — version minimale) ».
 
 **Raison d'être produit** : le différenciant n°1 de la vision est la possession des données. Cette possession ne peut être qu'une affirmation sans une capacité concrète et actionnable. L'export matérialise la promesse de possession et répond aux douleurs de confiance (Thomas, Rémi) et au besoin de filet de sécurité du mode local. La promotion du 2026-06-25 précise que la portabilité est un critère de confiance pour le segment MJ-organisé (Thomas), pas un simple confort.
 
@@ -402,4 +402,4 @@ Long terme — Règles légères sur les propriétés
 Le schéma de données `Document` prévoit `documentTypeId` et `properties` (structure de données structurée)
 dès le MVP pour ne pas nécessiter de migration majeure lors de l'activation des relations.
 
-Détail → [UC-HORS-MVP — UC-F06](perimetre/exclusions.md)
+Détail → [exclusions.md — UC-F06](perimetre/exclusions.md)

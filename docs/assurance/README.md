@@ -6,7 +6,7 @@
 
 ## Document du dossier
 
-- [cahier-strategie-test-et-recette.md](strategie-de-test.md) — stratégie de test (niveaux de test retenus) et cahier de recette par use case (cas de recette transposés des scénarios Gherkin des user stories, avec verdict à cocher).
+- [strategie-de-test.md](strategie-de-test.md) — stratégie de test (niveaux de test retenus) et cahier de recette par use case (cas de recette transposés des scénarios Gherkin des user stories, avec verdict à cocher).
 
 ## Contenu à venir
 

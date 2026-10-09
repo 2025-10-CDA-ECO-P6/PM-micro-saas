@@ -68,9 +68,9 @@ Le MJ partage un lien d'accès à une session (lien ponctuel) ou à son espace p
 4. Ses accès existants sont migrés vers son compte : accès immédiat, sans attendre la validation de l'adresse de messagerie (cf. Règles métier).
 5. Il peut ensuite rejoindre l'espace partagé via un lien d'espace partagé (scénario nominal B) ; son admission comme `Member` reste soumise au consentement du MJ (RB-09-16), indépendamment de la validation de son email.
 
-### A3 — Lien inutilisable (expiré, révoqué, invalide ou mal formé)
+### A3 — Lien inutilisable (expiré, révoqué, invalide, mal formé ou d'un espace archivé)
 
-1. Le joueur clique sur un lien expiré, révoqué, invalide ou mal formé.
+1. Le joueur clique sur un lien expiré, révoqué, invalide ou mal formé, ou sur le lien d'un espace archivé (un espace archivé n'admet aucun nouvel accès — UC-02, règles métier).
 2. L'application affiche, dans tous ces cas, le même message sobre : "Ce lien n'est pas utilisable." Rien dans l'affichage ne distingue ces cas ni ne révèle si le lien a existé ou si l'espace partagé existe (RB-09-08).
 3. Elle invite le joueur à contacter le MJ pour un nouveau lien.
 
@@ -116,7 +116,7 @@ Sur un compte `FREE`, une session est limitée à 4 joueurs distincts disposant 
 - Le joueur voit en temps réel les informations que le MJ partage pendant la session.
 - Le lien expire correctement après la session.
 - Le joueur peut créer un compte depuis la page invité sans perdre ses données de session.
-- Un lien expiré, révoqué, invalide ou mal formé affiche le même message, sans révéler d'information sur l'espace partagé ni si le lien a existé.
+- Un lien expiré, révoqué, invalide, mal formé ou d'un espace archivé affiche le même message, sans révéler d'information sur l'espace partagé ni si le lien a existé.
 
 **Chemin B — espace partagé permanent (avec compte)**
 - Un joueur authentifié suivant un lien d'espace partagé obtient un `SpaceMembership` actif dans l'espace partagé (cycle `PENDING → Activate()` respecté ; l'invitation du MJ tient lieu de validation).

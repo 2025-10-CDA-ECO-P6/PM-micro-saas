@@ -36,7 +36,7 @@ Permettre au MJ de structurer librement le contenu de son espace en dossiers nom
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans `moscow.md`, qui distingue explicitement [§ UC-05 base — Organiser le contenu en dossiers (Must Have)](../vision/perimetre/matrice-de-priorites.md) et [§ UC-05 riche — Dossiers et types de document élaborés (Should Have)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour attribuer cette priorité (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story, et ne décide pas non plus quelle story relève de la base et laquelle relève de la couche riche : ce rattachement est une inférence que seule l'autorité de priorisation peut trancher — une fiche dérivée qui l'opérait recopierait une décision qu'elle n'a pas l'autorité de prendre, et qu'une révision ultérieure de `moscow.md` laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans `matrice-de-priorites.md`, qui distingue explicitement [§ UC-05 base — Organiser le contenu en dossiers (Must Have)](../vision/perimetre/matrice-de-priorites.md) et [§ UC-05 riche — Dossiers et types de document élaborés (Should Have)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour attribuer cette priorité (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story, et ne décide pas non plus quelle story relève de la base et laquelle relève de la couche riche : ce rattachement est une inférence que seule l'autorité de priorisation peut trancher — une fiche dérivée qui l'opérait recopierait une décision qu'elle n'a pas l'autorité de prendre, et qu'une révision ultérieure de `matrice-de-priorites.md` laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -157,19 +157,19 @@ Scénario : Le MJ tente de créer un dossier avec un nom vide
 **Notes de conception** :
 - renommage du dossier.
 - `isSystem = true` est informatif — il ne bloque ni le renommage ni la suppression. C'est une décision de conception actée.
-- Le dossier virtuel "Non classés" (`isVirtual = true`) est non renommable — il est un mécanisme interne, affiché en navigation dès qu'il n'est pas vide (UC-05 A4).
+- Le dossier virtuel "Non classés" (`isVirtual = true`) est renommable comme tout dossier, mais ne peut pas disparaître (décision de l'opérateur, 2026-10-09 ; AR-20 du zonage prévaut) — il est un mécanisme interne, affiché en navigation dès qu'il n'est pas vide (UC-05 A4).
 - Cas d'usage clé : Thomas renomme "Personnages" en "Factions" pour Blades in the Dark.
 
 **Règles métier** :
 - RB-05-13 : Le nom est obligatoire et non vide.
 - RB-05-04 : Tous les dossiers visibles sont renommables, y compris les dossiers système.
-- RB-05-05 : Le dossier virtuel "Non classés" n'est pas renommable.
+- RB-05-05 : Le dossier virtuel "Non classés" est renommable comme tout dossier ; son renommage ne change ni son rôle de réceptacle ni son caractère non supprimable (RB-05-11). DÉCIDÉ 2026-10-09 (décision de l'opérateur ; AR-20 du zonage prévaut sur la règle antérieure).
 
 **Critères d'acceptation** :
 - [ ] Le MJ peut renommer un dossier créé manuellement.
 - [ ] Le MJ peut renommer un dossier système (isSystem = true).
 - [ ] Le renommage est refusé si le nouveau nom est vide (E1).
-- [ ] Le dossier virtuel "Non classés" n'expose pas d'action de renommage.
+- [ ] Le dossier virtuel "Non classés" expose l'action de renommage comme tout autre dossier, et reste le réceptacle des documents sans dossier explicite une fois renommé.
 
 ```gherkin
 Scénario : Le MJ renomme un dossier système

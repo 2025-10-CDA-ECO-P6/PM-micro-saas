@@ -5,7 +5,7 @@
 |---|---|---|---|
 | AccountSuspended | User.Suspend() (identity-access) | Application (toutes les sessions actives de l'utilisateur sont immédiatement révoquées — ADR-015) | - |
 | AccountTierChanged | User.ChangeTier() (identity-access) | Space Management (quotas espaces/joueurs), Application (notification) | UC-15 |
-| CharacterAssociated | Space.AssociateCharacter() (space-management) | Session Conduct (accès aux notes PLAYER_PRIVATE du personnage) | - |
+| CharacterAssociated | Space.AssociateCharacter() (space-management) | Application (résout les personnages associés au joueur pour l'exception de RB-12-01 — règle 2 de Content Library ; PLAYER_PRIVATE reste lisible par son seul auteur) | - |
 | DisplayNameUpdated | User.UpdateDisplayName() (identity-access) | Space Management, Session Conduct (affichage du nom dans les vues joueur et membre) | - |
 | DocumentCreated | Document.Create() (content-library) | Session Conduct (si créé à la volée en session) | - |
 | DocumentDeleted | Document.Delete() (content-library) | Session Conduct (retirer des documents épinglés si actif en session) | - |

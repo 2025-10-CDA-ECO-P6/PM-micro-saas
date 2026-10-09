@@ -93,7 +93,7 @@ Intention : le MJ crée un espace de jeu partagé (campagne ou one-shot) en sais
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran de création.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran de création.
 
 ```
 annonce sans action :
@@ -121,7 +121,7 @@ Sources : UC-02 §Scénario nominal ; UC-02 §Postconditions ; UC-02 §Règles m
           UC-02 §Exceptions E1, E2 ; UC-02 §Données manipulées ;
           AR-01 ; AR-16 (dossiers système réservés à CAMPAIGN et ONE_SHOT) ;
           NFR-ACC-02 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -131,7 +131,7 @@ Sources : UC-02 §Scénario nominal ; UC-02 §Postconditions ; UC-02 §Règles m
 ### Mode local (déclenché — surface MJ)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne
     bénéficient pas d'une garantie de conservation permanente ;
     propose la création d'un compte

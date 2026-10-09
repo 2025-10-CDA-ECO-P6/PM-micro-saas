@@ -148,7 +148,7 @@ Intention : au moment de la création de compte depuis le mode local, l'utilisat
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique au gate de migration local→cloud.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique au gate de migration local→cloud.
 
 ```
 annonce sans action :
@@ -182,7 +182,7 @@ Sources : UC-01 A1 ; UC-10 §Scénario nominal (inscription depuis le mode local
           S4 §Gate de migration local→cloud ;
           S3 (nœud « Gate de migration local→cloud » du graphe de navigation) ;
           NFR-ACC-02 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---

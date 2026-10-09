@@ -158,8 +158,9 @@ et conserve les données saisies.
   il est pré-rempli.
 - Les dossiers système sont créés automatiquement à la création d'un espace `CAMPAIGN` ou
   `ONE_SHOT`. Ils sont renommables et supprimables (`isSystem` est informatif, non restrictif).
-  Seul le dossier virtuel « Non classés » (`isVirtual = true`) est non-renommable et
-  non-supprimable.
+  Seul le dossier virtuel « Non classés » (`isVirtual = true`) est non-supprimable : il est
+  renommable comme les autres, mais ne peut pas disparaître (décision de l'opérateur,
+  2026-10-09 ; AR-20 du zonage prévaut).
 - Le renommage et la suppression des dossiers système interviennent après la création de
   l'espace, dans l'espace lui-même (les dossiers naissent sur `SpaceCreated`, en même temps
   que l'espace). Le formulaire de création reste minimal et ne comporte aucune
@@ -180,6 +181,12 @@ et conserve les données saisies.
   séance en cours. Le MJ doit d'abord clôturer cette session pour que l'archivage devienne
   possible — même exigence que celle posée pour la migration en UC-01 (« une session en cours
   doit être clôturée avant migration »). (RB-02-21)
+- Tant qu'un espace partagé est archivé, il reste en lecture seule pour ses membres joueurs : ils
+  continuent de consulter les documents qui leur sont visibles, sans rien y écrire (règle métier 7
+  de *space-management*). Ses liens d'invitation sont inutilisables tant qu'il est archivé : un
+  joueur qui ouvre un tel lien voit le message « Ce lien n'est pas utilisable » (UC-09 A3,
+  RB-09-08). Le lien redevient utilisable au désarchivage, s'il n'est ni expiré ni révoqué
+  (décision de l'opérateur, 2026-10-09).
 
 ## Critères d'acceptation
 
@@ -196,6 +203,8 @@ et conserve les données saisies.
   d'abord clôturer cette session.
 - Un MJ peut désarchiver un espace archivé ; l'espace redevient actif et son contenu, inchangé
   depuis l'archivage, redevient modifiable.
+- Un joueur membre d'un espace archivé le consulte en lecture seule ; un joueur qui ouvre le lien
+  d'invitation d'un espace archivé voit le message « Ce lien n'est pas utilisable ».
 - Un MJ au palier gratuit déjà à sa limite d'espaces actifs de type campagne ou one-shot ne peut
   pas désarchiver un espace supplémentaire ; le système bloque le geste et l'invite à passer au
   palier supérieur.

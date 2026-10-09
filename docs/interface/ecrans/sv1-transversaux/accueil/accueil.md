@@ -100,7 +100,7 @@ Intention : l'utilisateur non authentifié découvre les deux chemins d'entrée 
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran d'accueil.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran d'accueil.
 
 ```
 annonce sans action :
@@ -130,7 +130,7 @@ Sources : UC-01 (scénario nominal, A1, A2, RB-01-01) ;
           AR-13 (invite contextuelle sans-compte → compte) ;
           AR-15 (onboarding capture-first) ;
           NFR-ACC-02 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---

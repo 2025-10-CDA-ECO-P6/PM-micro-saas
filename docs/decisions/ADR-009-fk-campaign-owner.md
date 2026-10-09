@@ -11,7 +11,7 @@
 
 ## Contexte
 
-Cette décision avait été validée lors d'une itération précédente de la conception, sous les références internes « CRIT-04 » et « ADR-12 ». Elle est référencée dans deux fichiers de conception actuels (`space-management.md`, `identity-access.md`) mais le fichier ADR d'origine a été supprimé lors des remises à zéro successives. Ce fichier reformalise fidèlement la décision pour rétablir la traçabilité.
+Cette décision avait été validée lors d'une itération précédente de la conception, sous les références internes « CRIT-04 » et « ADR-12 ». Elle est référencée dans deux fichiers de conception actuels (`space-management/context.md`, `identity-access/context.md`) mais le fichier ADR d'origine a été supprimé lors des remises à zéro successives. Ce fichier reformalise fidèlement la décision pour rétablir la traçabilité.
 
 **Le problème de fond.** Le champ `Space.ownerId` référence un `UserId` défini dans le bounded context Identity & Access. Cette référence traverse deux bounded contexts. Dans un monolithe modulaire strict, les contextes ne partagent pas de tables — chaque contexte est isolé et communique par événements. Une FK physique entre les tables de deux contextes est une entorse apparente à cette isolation.
 
@@ -43,7 +43,7 @@ Rejetée. Le Core ne contient jamais d'entités — introduire une entité de li
 
 - À la date de cette décision, cette FK était la seule FK cross-module identifiée et formalisée. La revue de cadrage P1 (2026-06-09) recense **17 FK cross-module** ; voir la matrice exhaustive dans [ADR-011](ADR-011-cascade-integrite-referentielle.md). Toute nouvelle FK cross-module doit être traitée comme une décision architecturale explicite.
 - **Contrainte sur l'effacement RGPD (ADR-007).** Un `USER` ne peut pas être hard-deleted tant qu'un espace référence son `id` via la FK — qu'il s'agisse d'un espace `CAMPAIGN`, `ONE_SHOT` ou `PERSONAL`. L'anonymisation par réécriture (`email`/`display_name` remplacés par `[Compte supprimé]`, `id` conservé) est la seule option conforme à la fois à l'intégrité référentielle et au droit à l'effacement RGPD.
-- Les deux références « (ADR-12) » dans `space-management.md` et `identity-access.md` sont à remplacer par des références à « ADR-009 » avec un lien vers ce fichier.
+- Les deux références « (ADR-12) » dans `space-management/context.md` et `identity-access/context.md` sont à remplacer par des références à « ADR-009 » avec un lien vers ce fichier.
 
 ---
 

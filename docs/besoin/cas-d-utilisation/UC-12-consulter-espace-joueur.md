@@ -66,16 +66,8 @@ L'accès n'est plus actif. La vue post-accès ne s'affiche pas. Le joueur est re
 
 ## Règles métier
 
-- **RB-12-01** : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` lui sont invisibles. Les notes `PLAYER_PRIVATE` sont invisibles à quiconque n'en est pas l'auteur. **Exception** : la fiche d'un personnage associé au joueur est lisible par ce joueur, qu'elle soit `GM_ONLY` ou `PUBLIC` — associer un personnage à un joueur lui en donne la lecture. Une fiche `PLAYER_PRIVATE` reste lisible par son seul auteur, sans exception.
-- **RB-12-02** *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, rattachées au personnage pour l'affichage. Elles persistent entre les sessions pour le **même auteur** (compte stable). Un joueur accédant à un personnage déjà joué par quelqu'un d'autre ne récupère jamais les notes de son prédécesseur (RB-09-19).
-- **RB-12-03** *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
-- **RB-12-04** : Un accès périmètre `SESSION` ne donne pas accès à l'historique des sessions. Il donne accès aux documents épinglés de la session et à tous les documents `PUBLIC` de l'espace.
-- **RB-12-05** : Un accès périmètre `SPACE` (`SpaceMembership`) donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions passées.
-- **RB-12-06** : Un joueur associé à plusieurs personnages doit choisir un personnage actif pour les actions dépendant d'une fiche précise (affichage de fiche ; les notes `PLAYER_PRIVATE` sont hors MVP).
-- **RB-12-07** : Le choix du personnage actif est propre à la session en cours. Il ne modifie pas les associations définies par le MJ.
-- **RB-12-08** : Un joueur avec un seul personnage associé n'a pas à effectuer de sélection — son personnage est actif par défaut.
-- **RB-12-09** : Le joueur peut changer de personnage actif à tout moment pendant la session.
-- **RB-12-10** : La fiche affichée correspond toujours au personnage actif sélectionné ; les notes `PLAYER_PRIVATE`, hors MVP, suivront le même principe.
+- RB-12-01 à RB-12-05 : définies dans [US-12-01](../stories/US-UC-12-consulter-espace-joueur.md#us-12-01--accéder-à-sa-fiche-de-personnage-et-aux-informations-partagées).
+- RB-12-06 à RB-12-10 : définies dans [US-12-02](../stories/US-UC-12-consulter-espace-joueur.md#us-12-02--choisir-son-personnage-actif-quand-associé-à-plusieurs-personnages).
 
 ## Critères d'acceptation
 

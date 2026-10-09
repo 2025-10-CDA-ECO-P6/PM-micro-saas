@@ -2,7 +2,7 @@
 
 - **Statut** : Spec pré-build — à confirmer à l'entrée en build.
 - **Sources** : [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (l.24, 26, 46, 60, 62).
-- **Companion domaine (lecture seule)** : [content-library.md](../../domaine/content-library/context.md), [diagrams/mld/content-library.md](../../domaine/content-library/logical-data.md).
+- **Companion domaine (lecture seule)** : [content-library/context.md](../../domaine/content-library/context.md), [content-library/logical-data.md](../../domaine/content-library/logical-data.md).
 - **Périmètre** : le contrat du value object `DocumentProperties`, le régime de validation par catégorie de type, et l'énumération des 8 types système seedés. Pour les champs concrets de chaque `propertiesSchema`, cette note dérive fidèlement ce que le domaine modélise déjà et acte vide au MVP, sans l'inventer, ce qu'il ne modélise pas (DÉCIDÉ 2026-09-03, § 5). **ADR-002 ne fixe pas les champs — ils ne sont pas inventés ici.**
 
 ---
@@ -16,8 +16,8 @@
 Conséquences directes du contrat, reportées fidèlement :
 
 - `DocumentProperties` est le point de passage **obligatoire** de toute écriture dans `documents.properties`. Il n'existe pas de chemin d'écriture alternatif (pas de setter direct sur la colonne, pas de patch JSON brut).
-- La validation se fait **contre le `propertiesSchema` du type de document concerné** — c'est-à-dire le `propertiesSchema` porté par l'entité `DocumentType` associée au `documentTypeId` du `Document` (content-library.md:181, diagrams/mld/content-library.md:31 : `document_types.properties_schema jsonb, nullable`).
-- Un `Document` sans `documentTypeId` (le champ est optionnel, content-library.md:67) n'a pas de `propertiesSchema` à valider contre. **Tranché** (décision d'entrée en build du 2026-09-03) : **`properties` n'existe pas sans type** — `SetProperties()` sur un document sans `documentTypeId` est refusé. Un `properties` accepté sans schéma serait un chemin d'écriture non gouverné, ce que le caractère obligatoire du point de passage interdit. Le contenu libre du document n'est pas concerné : il vit dans ses blocs.
+- La validation se fait **contre le `propertiesSchema` du type de document concerné** — c'est-à-dire le `propertiesSchema` porté par l'entité `DocumentType` associée au `documentTypeId` du `Document` (content-library/context.md:181, content-library/logical-data.md:31 : `document_types.properties_schema jsonb, nullable`).
+- Un `Document` sans `documentTypeId` (le champ est optionnel, content-library/context.md:67) n'a pas de `propertiesSchema` à valider contre. **Tranché** (décision d'entrée en build du 2026-09-03) : **`properties` n'existe pas sans type** — `SetProperties()` sur un document sans `documentTypeId` est refusé. Un `properties` accepté sans schéma serait un chemin d'écriture non gouverné, ce que le caractère obligatoire du point de passage interdit. Le contenu libre du document n'est pas concerné : il vit dans ses blocs.
 
 ---
 
@@ -44,7 +44,7 @@ Ces deux régimes sont des décisions distinctes et déjà tranchées — il n'y
 
 ## 4. Énumération des 8 types système seedés
 
-**Modélisation domaine trouvée** (content-library.md:179, 185 ; diagrams/mld/content-library.md:40) — les deux sources convergent sur la même liste de 8 types système, seedés en base à `is_system = true`, `space_id = NULL` :
+**Modélisation domaine trouvée** (content-library/context.md:179, 185 ; content-library/logical-data.md:40) — les deux sources convergent sur la même liste de 8 types système, seedés en base à `is_system = true`, `space_id = NULL` :
 
 | # | Slug | Nom (source) |
 |---|---|---|
@@ -57,7 +57,7 @@ Ces deux régimes sont des décisions distinctes et déjà tranchées — il n'y
 | 7 | `live_note` | NOTE LIVE |
 | 8 | `reveal` | RÉVÉLATION |
 
-Contraintes d'unicité du `slug` pour ces types système : `UNIQUE (slug) WHERE space_id IS NULL` (diagrams/mld/content-library.md:37).
+Contraintes d'unicité du `slug` pour ces types système : `UNIQUE (slug) WHERE space_id IS NULL` (content-library/logical-data.md:37).
 
 ---
 
@@ -65,17 +65,17 @@ Contraintes d'unicité du `slug` pour ces types système : `UNIQUE (slug) WHERE 
 
 ### `scenario` — dérivé du domaine
 
-Le domaine modélise explicitement le champ structuré de ce type (content-library.md:198-210) :
+Le domaine modélise explicitement le champ structuré de ce type (content-library/context.md:198-210) :
 
 | Propriété structurée | Type | Valeurs | Description |
 |---|---|---|---|
 | `scenarioStatus` | `enum` | `DRAFT` \| `READY` \| `PLAYED` \| `ARCHIVED` | État éditorial du scénario, géré par le MJ. Valeur par défaut à la création : `DRAFT`. Distinct du `status` d'espace (Space Management) et du `status` de session (Session Conduct). |
 
-Ce champ est porté par `Document.properties` et n'est accessible qu'en présence de `documentTypeId = SCENARIO` (content-library.md:208-209).
+Ce champ est porté par `Document.properties` et n'est accessible qu'en présence de `documentTypeId = SCENARIO` (content-library/context.md:208-209).
 
 ### `live_note` — dérivé du domaine (absence explicite)
 
-Le domaine précise explicitement (content-library.md:190-194) :
+Le domaine précise explicitement (content-library/context.md:190-194) :
 
 > Les champs domaine `characterId` et `guestAccessId` du Document sont promus au niveau des champs de premier niveau (ADR-002) — ils ne font plus partie des propriétés structurées. Aucune propriété structurée supplémentaire spécifique au type `live_note` n'est définie pour le MVP.
 
@@ -83,7 +83,7 @@ Le domaine précise explicitement (content-library.md:190-194) :
 
 ### `scene`, `npc`, `location`, `note`, `player_character`, `reveal` — aucun champ structuré au MVP
 
-Ces 6 types système ne font l'objet d'aucune section « Propriétés structurées du type `X` » dans `content-library.md`, contrairement à `scenario` et `live_note`.
+Ces 6 types système ne font l'objet d'aucune section « Propriétés structurées du type `X` » dans `content-library/context.md`, contrairement à `scenario` et `live_note`.
 
 **Tranché** (décision d'entrée en build du 2026-09-03) : `propertiesSchema` de ces 6 types est **vide au MVP** — aucun champ structuré. C'est une **absence actée, non un trou**, sur le précédent que `live_note` porte déjà dans cette même spécification. Leur contenu vit dans les blocs du document, ce que le principe « tout est document » rend possible sans propriété structurée.
 

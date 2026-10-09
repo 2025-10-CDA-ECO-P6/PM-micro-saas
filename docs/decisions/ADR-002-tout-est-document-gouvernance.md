@@ -50,7 +50,7 @@ Le pattern central « tout contenu éditorial est un `Document` composé de `Doc
 
 Suite à une revue critique postérieure à cette décision, celle-ci est complétée comme suit, sans changer sa direction.
 
-- **Changement de signature d'agrégat.** La suppression de `CharacterId` n'est pas un nettoyage cosmétique : elle modifie la signature de `SpaceMembership.characterIds`, de `GuestAccess.characterId`, de la méthode `AssociateCharacter`, des événements associés et de l'invariant RB-11-18. Les diagrammes `classes/core.md`, `classes/space-management.md` et la prose `space-management.md` sont également affectés — environ 6 emplacements distincts, pas 3.
+- **Changement de signature d'agrégat.** La suppression de `CharacterId` n'est pas un nettoyage cosmétique : elle modifie la signature de `SpaceMembership.characterIds`, de `GuestAccess.characterId`, de la méthode `AssociateCharacter`, des événements associés et de l'invariant RB-11-18. Les diagrammes `core/classes.md`, `space-management/classes.md` et la prose `space-management/context.md` sont également affectés — environ 6 emplacements distincts, pas 3.
 
 - **Validation runtime ajoutée.** Puisque le type fort disparaît, une validation runtime est requise : le `DocumentId` associé comme personnage doit référencer un `Document` de type `player_character`. Cette vérification est à intégrer dans l'invariant de domaine de `SpaceMembership`.
 

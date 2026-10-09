@@ -66,7 +66,7 @@ Un utilisateur dont le compte a été supprimé ne peut plus accéder à ses don
 
 | Artefact | Nature du lien |
 |---|---|
-| [domain/identity-access.md](../../domaine/identity-access/context.md) | Règle F-08 : suppression physique des documents privés à la suppression de compte (RGPD Art. 17) ; invariant de l'agrégat utilisateur : la suppression est irréversible, les données identifiantes sont remplacées par des valeurs neutres. |
+| [domaine/identity-access/context.md](../../domaine/identity-access/context.md) | Règle F-08 : suppression physique des documents privés à la suppression de compte (RGPD Art. 17) ; invariant de l'agrégat utilisateur : la suppression est irréversible, les données identifiantes sont remplacées par des valeurs neutres. |
 | [UC-10 — Compte cloud](../cas-d-utilisation/UC-10-compte-cloud.md) | Précondition : la demande d'effacement nécessite une adresse de messagerie vérifiée (opération sensible). |
 | [US-UC-10 — Compte cloud](../stories/US-UC-10-compte-cloud.md) | RB-10-05 : la validation de l'adresse de messagerie est requise avant les opérations sensibles, dont la demande d'effacement des données personnelles. |
 | [UC-09 — Accès session joueur](../cas-d-utilisation/UC-09-acces-session-joueur.md) | RB-09-18, RB-09-19 : règles d'effacement distinctes pour les accès invités sans compte (durée de vie bornée de l'accès, suppression des notes privées à la fin définitive de l'accès). Ces règles sont complémentaires à NFR-CONF-03, non redondantes. |

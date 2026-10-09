@@ -18,7 +18,7 @@
 
 Cadre de méthode : il fixe comment chiffrer le coût, dimensionner le marché et aller au marché, et ne tranche rien. Une valeur pas encore fournie est marquée à compléter.
 
-> **CADRE MÉTHODOLOGIQUE** — les valeurs chiffrées de coût et de marché sont différées (post-MVP / étude marché) ; ce document pose la méthode et les hypothèses, pas des chiffres définitifs.
+> Les valeurs chiffrées de coût et de marché sont différées (post-MVP / étude marché) ; ce document, cadre méthodologique, pose la méthode et les hypothèses, pas des chiffres définitifs.
 
 ---
 
@@ -128,7 +128,7 @@ ADR-005 (§ Conséquences) diffère post-MVP le dimensionnement du marché (TAM/
 
 **Définition méthodologique** : population totale des Maîtres du Jeu de jeu de rôle sur table (JDR), tous supports et toutes géographies confondus — c'est la borne haute théorique, indépendante de la capacité réelle de Haversack à l'atteindre.
 
-**Ce que le corpus fournit** : le positionnement produit (vision-produit.md §1) situe Haversack face à des outils génériques (Notion, Obsidian, Google Docs) et des tables virtuelles (Roll20, Foundry) — un marché de MJ qui utilisent déjà, ou pourraient utiliser, un outil numérique pour préparer et piloter leurs parties. Le corpus ne fournit aucune estimation de population.
+**Ce que le corpus fournit** : le positionnement produit (vision.md §1) situe Haversack face à des outils génériques (Notion, Obsidian, Google Docs) et des tables virtuelles (Roll20, Foundry) — un marché de MJ qui utilisent déjà, ou pourraient utiliser, un outil numérique pour préparer et piloter leurs parties. Le corpus ne fournit aucune estimation de population.
 
 **Donnée manquante** : taille de la population MJ (par géographie, par système de jeu, par fréquence de jeu) — `[À TRANCHER — étude marché]`.
 
@@ -136,13 +136,13 @@ ADR-005 (§ Conséquences) diffère post-MVP le dimensionnement du marché (TAM/
 
 **Définition méthodologique** : sous-ensemble du TAM que Haversack peut réalistement adresser compte tenu de son positionnement (agnostique au système de jeu, MJ comme utilisateur principal, sans moteur de règles) et de ses contraintes de lancement (langue, canaux de distribution).
 
-**Segments dérivables du corpus** (vision-produit.md §4.1, personas de référence) :
+**Segments dérivables du corpus** (vision.md §4.1, personas de référence) :
 
 | Segment | Caractérisation | Source |
 |---|---|---|
-| MJ numériquement outillé, campagne longue | Personas Thomas (Obsidian, 400 notes, exigeant sur la portabilité), Émilie (systèmes narratifs, création à la volée) | vision-produit.md §4.1 |
-| MJ one-shot / convention | Persona Sonia (one-shots exclusivement, 15 scénarios en catalogue) — segment non servi en première livraison (UC-13 hors MVP) | vision-produit.md §4.1, moscow.md UC-13 |
-| MJ résistant au numérique | Persona Rémi — n'adopte que si la friction est nulle et la valeur immédiate | vision-produit.md §4.1 |
+| MJ numériquement outillé, campagne longue | Personas Thomas (Obsidian, 400 notes, exigeant sur la portabilité), Émilie (systèmes narratifs, création à la volée) | vision.md §4.1 |
+| MJ one-shot / convention | Persona Sonia (one-shots exclusivement, 15 scénarios en catalogue) — segment non servi en première livraison (UC-13 hors MVP) | vision.md §4.1, matrice-de-priorites.md UC-13 |
+| MJ résistant au numérique | Persona Rémi — n'adopte que si la friction est nulle et la valeur immédiate | vision.md §4.1 |
 
 **Hypothèse de primo-ciblage géographique** : le corpus ne tranche pas explicitement un périmètre géographique de lancement. Une hypothèse plausible — francophone puis élargissement UE — s'aligne avec une première version dont l'interface utilisateur n'est pas multi-langue, mais reste une hypothèse, pas une décision du corpus — `[À TRANCHER — étude marché / décision de lancement]`.
 
@@ -169,12 +169,12 @@ ARPU = (N_Pro × Tarif_Pro) / (N_Pro + N_gratuits)
 Le corpus inscrit un mécanisme d'adoption explicite, indépendant de toute donnée de marché :
 
 - **Le partage est inclus au palier gratuit.** ADR-005 (Décision) maintient explicitement cette accroche : *« L'accroche "le partage est gratuit" est maintenue, mais l'échelle de l'usage et du partage est ce qui est monétisé »*. Vision-produit.md §3 formule la même règle : *« Haversack intègre le partage joueurs dans le tier gratuit, ce qui aligne l'adoption MJ et joueurs »*.
-- **Mécanique virale attendue** `[À TRANCHER — validation post-lancement]` : chaque MJ au palier gratuit qui partage une session (UC-08) expose l'outil à ses joueurs sans qu'ils créent de compte (UC-09) — un joueur qui devient à son tour MJ d'une table est un canal d'acquisition organique, non payant. Ce mécanisme est cohérent avec la référence explicite du corpus à Obsidian (*« modèle proche d'Obsidian (local gratuit, sync payant) »*, vision-produit.md §3) où le partage, lui, est la variable différenciante ajoutée par Haversack.
+- **Mécanique virale attendue** `[À TRANCHER — validation post-lancement]` : chaque MJ au palier gratuit qui partage une session (UC-08) expose l'outil à ses joueurs sans qu'ils créent de compte (UC-09) — un joueur qui devient à son tour MJ d'une table est un canal d'acquisition organique, non payant. Ce mécanisme est cohérent avec la référence explicite du corpus à Obsidian (*« modèle proche d'Obsidian (local gratuit, sync payant) »*, vision.md §3) où le partage, lui, est la variable différenciante ajoutée par Haversack.
 - **Ce que le corpus ne monétise pas** : la vision est explicite — le partage lui-même n'est jamais le levier payant (ADR-005, alternative *« Pro = le partage complet »* explicitement écartée : *« sacrifie le différenciateur […] réduit le vecteur d'adoption virale »*). La monétisation porte sur l'**échelle** (nombre d'espaces, stockage), pas sur l'acte de partager.
 
 ### 3.2 Friction d'entrée nulle (dérivable du corpus)
 
-- **Aucun compte requis pour commencer** (UC-01, vision-produit.md §2.2) : un MJ crée un espace et prépare du contenu sans inscription, en mode local.
+- **Aucun compte requis pour commencer** (UC-01, vision.md §2.2) : un MJ crée un espace et prépare du contenu sans inscription, en mode local.
 - **Aucun compte requis pour le joueur invité** (UC-09) : un lien, un nom d'affichage, un accès immédiat.
 - Conséquence GTM directe : le tunnel d'acquisition n'a pas de barrière d'inscription à l'entrée — la friction n'apparaît qu'au moment où la valeur (partage, sauvegarde cloud) est déjà perçue, ce qui est la logique déclencheur documentée en CdC §2.4 (*« Le passage du palier local au palier gratuit est déclenché naturellement lorsque le MJ souhaite partager une information avec ses joueurs, ou lorsqu'il souhaite sécuriser ses données locales »*).
 
@@ -193,7 +193,7 @@ Le corpus ne fixe pas de plan de canaux — finding **E-05** (ADR-005) est expli
 | Bouche-à-oreille joueur→MJ | Mécanique virale du Volet 3.1 — un joueur invité sans compte peut devenir MJ d'une future table | `[À TRANCHER — plan GTM post-MVP]` |
 | Créateurs de contenu JDR (streaming, chaînes dédiées) | Non dérivable directement des personas actuels du corpus | `[À TRANCHER — plan GTM post-MVP]` |
 
-**Point de vigilance GTM** : le segment Sonia (one-shot/convention) n'est structurellement pas servi par la première livraison (moscow.md, UC-13 *« hors première livraison »*). Un canal GTM construit autour des conventions arriverait donc en avance sur le produit livrable, sauf si la condition de retour de UC-13 (*« si les entretiens ou l'usage révèlent que le profil one-shot est une part significative […], UC-13 est réexaminé »*, vision-produit.md §5bis) est déclenchée.
+**Point de vigilance GTM** : le segment Sonia (one-shot/convention) n'est structurellement pas servi par la première livraison (matrice-de-priorites.md, UC-13 *« hors première livraison »*). Un canal GTM construit autour des conventions arriverait donc en avance sur le produit livrable, sauf si la condition de retour de UC-13 (*« si les entretiens ou l'usage révèlent que le profil one-shot est une part significative […], UC-13 est réexaminé »*, vision.md §5bis) est déclenchée.
 
 ---
 
@@ -218,6 +218,6 @@ Aucune de ces données n'est estimée dans ce document : le corpus de conception
 | 1. Nature et portée du document | SOUS-SPÉCIFIÉ |
 | 2. Lecteur et usage | ADR-005 ; cahier des charges annexe « Valeurs de référence chiffrées », §2.4 ; vision produit ; MoSCoW |
 | 3. Volet 1 — Coût d'infrastructure & break-even | ADR-005 (Décision, § Conséquences, finding E-02) ; cahier des charges §2.4, annexe « Valeurs de référence chiffrées » |
-| 4. Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU) | ADR-005 (§ Conséquences, findings E-04 et E-05) ; vision-produit.md §1, §4.1 ; cahier des charges annexe « Valeurs de référence chiffrées » |
-| 5. Volet 3 — Stratégie go-to-market | ADR-005 (Décision, § Compléments post-revue, finding E-05) ; vision-produit.md §2.2, §3, §5bis ; cahier des charges §2.4 ; moscow.md |
+| 4. Volet 2 — Dimensionnement de marché (TAM/SAM/ARPU) | ADR-005 (§ Conséquences, findings E-04 et E-05) ; vision.md §1, §4.1 ; cahier des charges annexe « Valeurs de référence chiffrées » |
+| 5. Volet 3 — Stratégie go-to-market | ADR-005 (Décision, § Compléments post-revue, finding E-05) ; vision.md §2.2, §3, §5bis ; cahier des charges §2.4 ; matrice-de-priorites.md |
 | 6. Ce qui reste à trancher | ADR-005 (findings E-02, E-04, E-05) ; cahier des charges annexe « Valeurs de référence chiffrées » |

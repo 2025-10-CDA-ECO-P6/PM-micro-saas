@@ -45,7 +45,7 @@ La campagne est *une façon d'organiser et d'utiliser une partie du contenu* —
 
 L'agrégat `Campaign` du domaine Campaign Management porte aujourd'hui `type: CampaignType ∈ {CAMPAIGN, ONE_SHOT}` (campaign-management.md l.46). Le type `ONE_SHOT` est déjà une spécialisation comportementale d'une `Campaign` dont les différences sont portées par `type`, pas par la structure (campaign-management.md — section « One-shot — spécificités »). Ce précédent est le point de départ de la généralisation.
 
-Tous les Documents du domaine Content Library portent un `campaignId: CampaignId` non-nullable (content-library.md l.64). La règle métier 5 d'Identity & Access affirme : « les contenus créés (documents, notes) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu » (identity-access.md l.100). Trois tensions caractérisent l'état actuel face au besoin identifié :
+Tous les Documents du domaine Content Library portent un `campaignId: CampaignId` non-nullable (content-library/context.md l.64). La règle métier 5 d'Identity & Access affirme : « les contenus créés (documents, notes) restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu » (identity-access/context.md l.100). Trois tensions caractérisent l'état actuel face au besoin identifié :
 
 1. Tout document exige une campagne existante à sa création — il n'existe pas de zone d'atterrissage naturelle pour le contenu pré-campagne.
 2. L'agrégat `ScenarioLibrary` (bibliothèque personnelle, campaign-management.md l.154-183, statut post-MVP) tente de répondre partiellement au besoin de réutilisation inter-campagnes mais introduit une entité de pont (`ScenarioLibraryEntry`) et ne couvre que les scénarios, pas l'ensemble des types de documents.
@@ -78,11 +78,11 @@ Cette voie aurait rendu le champ `Document.campaignId` nullable et fait de `Docu
 
 **Rejetée pour flaw STRUCTURAL — trois motifs indépendants, chacun suffisant :**
 
-**(a) Violation de la frontière de contexte Identity & Access.** La règle métier 5 d'Identity & Access affirme explicitement : « les contenus créés restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu » (identity-access.md l.100). Ce n'est pas seulement une règle métier : c'est la définition de la frontière entre Identity & Access et Content Library. I&A déclare elle-même : « Ce contexte ne sait pas ce qu'est une campagne, un MJ, un joueur ou une session. » (identity-access.md l.6-7). Faire porter à `Document` une propriété `ownerId: UserId` de premier ordre crée un couplage entre Content Library et Identity & Access — précisément le couplage que la frontière de contexte interdit.
+**(a) Violation de la frontière de contexte Identity & Access.** La règle métier 5 d'Identity & Access affirme explicitement : « les contenus créés restent attachés à la campagne sous identité anonymisée — ils appartiennent à la campagne, pas à l'individu » (identity-access/context.md l.100). Ce n'est pas seulement une règle métier : c'est la définition de la frontière entre Identity & Access et Content Library. I&A déclare elle-même : « Ce contexte ne sait pas ce qu'est une campagne, un MJ, un joueur ou une session. » (identity-access/context.md l.6-7). Faire porter à `Document` une propriété `ownerId: UserId` de premier ordre crée un couplage entre Content Library et Identity & Access — précisément le couplage que la frontière de contexte interdit.
 
 **(b) Résidu post-effacement RGPD — manquement dur.** Un document avec `campaignId = NULL` n'est atteint par **aucune** des deux sagas définies dans ADR-011. La saga `CampaignDeleted` filtre sur `campaign_id` (ADR-011 — passe 1 et passe 2, toutes les opérations portent le filtre `WHERE campaign_id = C`). La saga `UserAnonymized` ne touche que les documents `PLAYER_PRIVATE` liés à un `membership_characters` sur des campagnes vivantes (ADR-011 — saga `UserAnonymized`, §3 ADR-012). Un document `campaignId = NULL` survivrait aux deux sagas : résidu post-Art. 17 caractérisé. Cette voie exigerait une troisième saga entièrement nouvelle, racine `owner_id`, doublant la surface de test de la machinerie RGPD.
 
-**(c) Incompatibilité avec le mode local.** ADR-017 §1.1 acte explicitement : les object stores `users`, `campaign_memberships`, `membership_characters` sont **exclus** du store IndexedDB local — « ces exclusions ne sont pas des omissions de simplification — elles délimitent ce que le mode local UC-01 contient » (ADR-017 §1.1). En mode local, un `User` n'existe pas (identity-access.md l.77 : « le mode local n'est pas un tier — il n'y a pas de `User` en mode local »). Un `Document.ownerId: UserId` de premier ordre n'a pas de valeur assignable en mode local : la propriété naît à la création de compte, pas avant. Le mode local deviendrait une exception structurelle nécessitant un traitement spécial au lieu de s'inscrire naturellement dans le modèle.
+**(c) Incompatibilité avec le mode local.** ADR-017 §1.1 acte explicitement : les object stores `users`, `campaign_memberships`, `membership_characters` sont **exclus** du store IndexedDB local — « ces exclusions ne sont pas des omissions de simplification — elles délimitent ce que le mode local UC-01 contient » (ADR-017 §1.1). En mode local, un `User` n'existe pas (identity-access/context.md l.77 : « le mode local n'est pas un tier — il n'y a pas de `User` en mode local »). Un `Document.ownerId: UserId` de premier ordre n'a pas de valeur assignable en mode local : la propriété naît à la création de compte, pas avant. Le mode local deviendrait une exception structurelle nécessitant un traitement spécial au lieu de s'inscrire naturellement dans le modèle.
 
 **Format vision §5bis** :
 - *Décision* : racine sur l'utilisateur — rejetée.
@@ -140,7 +140,7 @@ La règle est à reformuler ainsi dans le domaine I&A : « les contenus appartie
 
 #### Quotas — stockage
 
-Les quotas actuels sont définis en Mo par tier (identity-access.md — `AccountTier`). Cette définition est par stockage, non par nombre de campagnes. L'introduction d'un espace personnel s'intègre naturellement dans cette logique : le stockage de l'espace personnel compte dans le quota Mo du compte, sans qu'une règle additionnelle soit nécessaire.
+Les quotas actuels sont définis en Mo par tier (identity-access/context.md — `AccountTier`). Cette définition est par stockage, non par nombre de campagnes. L'introduction d'un espace personnel s'intègre naturellement dans cette logique : le stockage de l'espace personnel compte dans le quota Mo du compte, sans qu'une règle additionnelle soit nécessaire.
 
 #### Cascade RGPD — ADR-011
 
@@ -184,7 +184,7 @@ La relation à UC-13 (Sonia — « unité = scénario », bibliothèque niveau c
 
 ### Propriété / schéma — ACTÉ MAINTENANT (Must Have schéma anticipé)
 
-L'ontologie `Space + SpaceType.PERSONAL + espace personnel par défaut` est actée comme schéma anticipé, au même titre que `documentTypeId`, la valeur `EMAIL` de `InvitationType`, `FROZEN` dans `CampaignStatus`, ou la `ScenarioLibrary` modélisée en post-MVP (moscow.md — doctrine du schéma anticipé).
+L'ontologie `Space + SpaceType.PERSONAL + espace personnel par défaut` est actée comme schéma anticipé, au même titre que `documentTypeId`, la valeur `EMAIL` de `InvitationType`, `FROZEN` dans `CampaignStatus`, ou la `ScenarioLibrary` modélisée en post-MVP (matrice-de-priorites.md — doctrine du schéma anticipé).
 
 **Motif** : la migration inverse — re-router la propriété sur la table `Document` après que `Document.campaignId` serait devenu une convention établie, réconcilier les `slug` uniques par `(spaceId, documentTypeId)` — est la plus coûteuse des migrations futures possibles. L'acte de nommage précoce (`Space` plutôt que `Campaign`) évite cette migration.
 
@@ -192,11 +192,11 @@ L'ontologie `Space + SpaceType.PERSONAL + espace personnel par défaut` est act�
 
 **Recommandation** : rendre l'espace personnel opérationnel en MVP — notamment comme zone d'atterrissage par défaut pour les documents créés sans espace explicite, y compris depuis le mode local.
 
-**Caveat — DÉCISION PRODUIT à valider explicitement** : cette recommandation redéfinit H1 (vision-produit.md §2.3 — « activation préparation » doit-elle compter le contenu de l'espace personnel ?). Elle change également l'onboarding UC-01/UC-02 : le MJ en mode local peut créer du contenu sans créer de campagne. Ce changement de posture est substantiel et doit être validé explicitement avant d'être inscrit dans les user stories.
+**Caveat — DÉCISION PRODUIT à valider explicitement** : cette recommandation redéfinit H1 (vision.md §2.3 — « activation préparation » doit-elle compter le contenu de l'espace personnel ?). Elle change également l'onboarding UC-01/UC-02 : le MJ en mode local peut créer du contenu sans créer de campagne. Ce changement de posture est substantiel et doit être validé explicitement avant d'être inscrit dans les user stories.
 
 ### Bibliothèque de réutilisation inter-espaces — POST-MVP
 
-La fonctionnalité de promotion, catalogue, et instanciation inter-espaces reste post-MVP, alignée sur UC-13 et déclenchée par la condition de retour existante (vision-produit.md §5bis — condition de retour « one-shot »). L'espace personnel fournit l'infrastructure nécessaire ; l'interface de bibliothèque (navigation, recherche, instanciation en un geste) est un investissement d'UX post-MVP.
+La fonctionnalité de promotion, catalogue, et instanciation inter-espaces reste post-MVP, alignée sur UC-13 et déclenchée par la condition de retour existante (vision.md §5bis — condition de retour « one-shot »). L'espace personnel fournit l'infrastructure nécessaire ; l'interface de bibliothèque (navigation, recherche, instanciation en un geste) est un investissement d'UX post-MVP.
 
 ---
 

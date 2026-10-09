@@ -38,7 +38,7 @@ d'espace : le type est une aide optionnelle, la structure reste libre en blocs.
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-04 — Gérer les documents d'un espace](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`matrice-de-priorites.md`, § UC-04 — Gérer les documents d'un espace](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `matrice-de-priorites.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -336,7 +336,7 @@ Scénario : Un document peut être lié à plusieurs autres documents
 | Workflow des notes de session | Couvert par UC-06/07. UC-04 garde le modèle général des documents d'espace. |
 | Suppression physique définitive d'un document | Hors périmètre MVP. Le besoin métier décrit surtout le retrait de la bibliothèque active. |
 | Déplacement d'un document entre dossiers | DÉCIDÉ : le déplacement de dossier est possible. Couvert par US-04-01 (RB-04-03). |
-| US-04-06 — Consulter les backlinks d'un document | Hors MVP — réponse de l'opérateur (onboarding du 2026-10-07) : les backlinks arrivent avec les relations structurées (UC-F06, voir [UC-HORS-MVP](../vision/perimetre/exclusions.md)). L'identifiant reste pris ; le texte de la story est conservé ci-dessous. |
+| US-04-06 — Consulter les backlinks d'un document | Hors MVP — réponse de l'opérateur (onboarding du 2026-10-07) : les backlinks arrivent avec les relations structurées (UC-F06, voir [exclusions.md](../vision/perimetre/exclusions.md)). L'identifiant reste pris ; le texte de la story est conservé ci-dessous. |
 | Graphe de relations visuel | UX non définie. Les backlinks (US-04-06, hors MVP) poseraient le socle technique, la visualisation est une étape ultérieure. |
 | Visibilité par bloc | Hors périmètre MVP. La visibilité est au niveau document ; un contenu joueur doit être un document lié. |
 

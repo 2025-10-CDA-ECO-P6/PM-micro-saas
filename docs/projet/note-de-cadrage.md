@@ -114,7 +114,7 @@ Deux points de décision s'intercalent dans la séquence technique — détaill�
 
 ### 5.4 Point résolu — double référent du symbole « J1 »
 
-Le corpus portait une incohérence apparente : le symbole « J1 » avait deux référents distincts selon la source. La décision d'architecture actant le périmètre du MVP nomme J1 le jalon **local-only** (le jalon décrit en 5.1 ci-dessus). Une autre décision d'architecture, portant sur la conformité RGPD et le modèle d'autorisation, mentionnait dans sa rédaction d'origine un « jalon J1 » assorti d'un repère de jalon numéroté distinct (nomenclature aujourd'hui retirée du corpus), associé à une préoccupation **cloud**. **Ratifié en décision produit le 2026-09-01** ([`roadmap-entree-build.md` §5](roadmap-de-build.md)) : J1 = local-only, conformément à l'usage le plus densément documenté dans le corpus ; l'ADR source a été clarifié en conséquence (son invariant est intégré aux contrats Application avant J1, son application effective relevant de J2).
+Le corpus portait une incohérence apparente : le symbole « J1 » avait deux référents distincts selon la source. La décision d'architecture actant le périmètre du MVP nomme J1 le jalon **local-only** (le jalon décrit en 5.1 ci-dessus). Une autre décision d'architecture, portant sur la conformité RGPD et le modèle d'autorisation, mentionnait dans sa rédaction d'origine un « jalon J1 » assorti d'un repère de jalon numéroté distinct (nomenclature aujourd'hui retirée du corpus), associé à une préoccupation **cloud**. **Ratifié en décision produit le 2026-09-01** ([`roadmap-de-build.md` §5](roadmap-de-build.md)) : J1 = local-only, conformément à l'usage le plus densément documenté dans le corpus ; l'ADR source a été clarifié en conséquence (son invariant est intégré aux contrats Application avant J1, son application effective relevant de J2).
 
 ### 5.5 Absence de dates calendaires
 
@@ -134,7 +134,7 @@ Le corpus qualifie explicitement ce phasage d'**indicatif et non figé** : ni l'
 
 **Dispositif qualité.** Le contexte d'équipe solo ou restreinte est pris en compte explicitement : un test d'architecture en intégration continue est érigé en garde-fou structurel, remplaçant la discipline de revue de code jugée insuffisante dans ce contexte.
 
-**Mécanisme de gouvernance des points ouverts.** Les points non tranchés du corpus sont portés par des marqueurs explicites (`[À TRANCHER]`, `[À RATIFIER — produit]`) plutôt que résolus par défaut ou masqués.
+**Mécanisme de gouvernance des points ouverts.** Les points non tranchés du corpus sont portés par des marqueurs explicites (`[À TRANCHER — <axe>]`, par exemple `[À TRANCHER — PRODUIT]`) plutôt que résolus par défaut ou masqués.
 
 **Règle d'autorité documentaire.** Le corpus de conception fait foi sur tout document dérivé (dont le cahier des charges) ; les artefacts de planification (roadmaps) ordonnancent un périmètre déjà arrêté, sans détenir d'autorité de corpus propre. En cas de conflit de lecture, la source citée prime.
 
@@ -198,18 +198,18 @@ Les éléments suivants sont absents du corpus de conception, de planification o
 ## 11. Documents de référence
 
 **Vision**
-- `../conception/besoin/vision/vision-produit.md` — positionnement produit, hypothèses de validation, modèle de monétisation.
-- `../conception/besoin/vision/moscow.md` — priorisation détaillée du périmètre (Must/Should/Could/Won't Have).
+- `../besoin/vision/vision.md` — positionnement produit, hypothèses de validation, modèle de monétisation.
+- `../besoin/vision/perimetre/matrice-de-priorites.md` — priorisation détaillée du périmètre (Must/Should/Could/Won't Have).
 
 **Cahier des charges**
 - `../context/cahier-des-charges.md` — document officiel de référence pour la construction du MVP, consolidant le corpus de conception.
 
 **Planning**
-- `roadmap-entree-build.md` — séquence technique d'entrée en build (jalons J0-J3, points de décision, préalables bloquants).
+- `roadmap-de-build.md` — séquence technique d'entrée en build (jalons J0-J3, points de décision, préalables bloquants).
 - `roadmap-produit.md` — trajectoire de valeur produit (paliers, jalon de validation, extensions par signal).
-- `registre-risques.md` — registre de risques consolidé (quatre axes technique/produit/juridique/délai-coût, matrice de criticité, vue par hypothèse H1-H5, vue par point de décision).
+- `registre-des-risques.md` — registre de risques consolidé (quatre axes technique/produit/juridique/délai-coût, matrice de criticité, vue par hypothèse H1-H5, vue par point de décision).
 
 **Business**
-- `../context/note-business-gtm.md` — méthode de calcul du coût d'infrastructure, du dimensionnement de marché et de la stratégie go-to-market.
+- `../reference/note-business.md` — méthode de calcul du coût d'infrastructure, du dimensionnement de marché et de la stratégie go-to-market.
 
 Ces renvois pointent vers les sources de conception, de planification et de business qui font foi ; cette note n'en constitue qu'une consolidation de gouvernance, sans autorité de corpus propre en cas de divergence de détail.

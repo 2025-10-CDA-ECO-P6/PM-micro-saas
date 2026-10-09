@@ -16,7 +16,7 @@ Ce document **consolide et évalue** des risques déjà identifiés dans le corp
 
 Ce document **ne se substitue pas** à un futur dossier RGPD consolidé ni à une éventuelle analyse d'impact relative à la protection des données. Ces derniers, s'ils sont produits, examineront chaque traitement de données en détail ; ce registre garde délibérément la **vue risque** — probabilité, impact, traitement, criticité, statut — transverse aux quatre axes (technique, produit, juridique, délai-coût), sans prétendre à l'exhaustivité d'une analyse d'impact dédiée.
 
-Ce document ne tranche aucun seuil non fixé par le corpus source. Les valeurs différées à l'implémentation par le corpus source sont reprises telles que documentées (le cas échéant encore `[À TRANCHER]` dans leur décision d'origine, voir par exemple T-03), mais ce registre leur applique systématiquement une **cotation typée** (probabilité/impact pour une entrée `risque`, classe de conséquence pour les autres types) et le **statut de validation** « brouillon expert — à valider en comité des risques » (§1.5) — aucune entrée de ce registre ne reste au marqueur `[À AFFINER]` d'une version antérieure. Il ne redéfinit ni le périmètre de priorisation fonctionnelle ni le phasage macro du projet, tous deux renvoyés à leurs artefacts de référence respectifs (roadmap d'entrée en build et cahier des charges — voir Annexe A).
+Ce document ne tranche aucun seuil non fixé par le corpus source. Les valeurs différées à l'implémentation par le corpus source sont reprises telles que documentées (le cas échéant encore `[À TRANCHER]` dans leur décision d'origine, voir par exemple T-03), mais ce registre leur applique systématiquement une **cotation typée** (probabilité/impact pour une entrée `risque`, classe de conséquence pour les autres types) et le **statut de validation** « brouillon expert — à valider en comité des risques » (§1.5) — aucune entrée de ce registre ne reste au marqueur « À AFFINER » d'une version antérieure. Il ne redéfinit ni le périmètre de priorisation fonctionnelle ni le phasage macro du projet, tous deux renvoyés à leurs artefacts de référence respectifs (roadmap d'entrée en build et cahier des charges — voir Annexe A).
 
 **En cas de conflit entre ce registre et une source citée, la source citée fait foi.**
 
@@ -208,7 +208,7 @@ Chaque entrée porte un identifiant propre à ce registre (`T-`, `P-`, `J-`, `D-
 - **Confiance** : sous réserve — à confirmer par le coût d'hébergement réel et le comportement du fournisseur d'infrastructure. `[NON-VÉRIFIABLE-EN-BUILD]`
 - **Source** : spécification du repli temps réel ; décision d'architecture sur le transport temps réel ; roadmap d'entrée en build.
 
-**T-04 — Reclaim-in-place non ratifié (identité fédérée reprenant une coquille de compte non vérifiée)** `[À RATIFIER PRODUIT]`
+**T-04 — Reclaim-in-place non ratifié (identité fédérée reprenant une coquille de compte non vérifiée)** `[À TRANCHER — PRODUIT]`
 *Type : risque.*
 - **Description** : lorsqu'un utilisateur s'authentifie via un fournisseur d'identité externe avec un email correspondant à un compte préexistant non vérifié, une opération de reprise de cette coquille est proposée mais non encore ratifiée. Une résolution mal bornée serait apparentée à une prise de contrôle de compte anticipée.
 - **Probabilité** : Modérée — la résolution proposée n'est pas encore ratifiée.
@@ -904,7 +904,7 @@ Toutes les questions ouvertes de cet axe (J-02 à J-18) portent la mention « à
 
 **D-01 — Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel)**
 *Type : risque.*
-- **Description** : le corpus portait deux usages distincts d'un même symbole de jalon selon la décision d'architecture consultée — l'une l'assimilait au jalon local, l'autre à une préoccupation cloud. **Ce point est résolu** : l'axe canonique J0-J3, nommé par contenu, est ratifié (décision produit, 2026-09-01, `roadmap-entree-build.md` §5) et la décision d'architecture source a été clarifiée en conséquence. Le point résiduel, distinct et non couvert par cette ratification : certains rattachements entre codes de renvoi d'ADR et jalons de build restent des **ancrages inférés plutôt que documentés littéralement** — notamment le rapprochement du lot `P0.5` avec la phase de conception (CdC §11), qui n'établit qu'une antériorité déduite, pas un ancrage littéral, et reste à confirmer explicitement dans l'artefact de planification dédié.
+- **Description** : le corpus portait deux usages distincts d'un même symbole de jalon selon la décision d'architecture consultée — l'une l'assimilait au jalon local, l'autre à une préoccupation cloud. **Ce point est résolu** : l'axe canonique J0-J3, nommé par contenu, est ratifié (décision produit, 2026-09-01, `roadmap-de-build.md` §5) et la décision d'architecture source a été clarifiée en conséquence. Le point résiduel, distinct et non couvert par cette ratification : certains rattachements entre codes de renvoi d'ADR et jalons de build restent des **ancrages inférés plutôt que documentés littéralement** — notamment le rapprochement du lot `P0.5` avec la phase de conception (CdC §11), qui n'établit qu'une antériorité déduite, pas un ancrage littéral, et reste à confirmer explicitement dans l'artefact de planification dédié.
 - **Probabilité** : Quasi-certaine — incohérence de nomenclature déjà présente dans le corpus *(cotation portée à la prochaine revue du comité des risques : le facteur dominant — le double référent — est désormais résolu ; seul l'ancrage inféré résiduel subsiste)*.
 - **Impact** : Modéré — dimension dominante : coût & délai (erreur d'ordonnancement si l'ancrage inféré est traité comme confirmé sans vérification).
 - **Criticité inhérente** : Élevée.
@@ -1047,7 +1047,7 @@ Table exhaustive : les 12 entrées de type `risque` dont la criticité inhérent
 | 3 | P-14 | Dépendance à la cohorte pilote non traitée | Valeur produit | Élevée | Moyenne |
 | 3 | D-03 | Dépendance cumulative socle local stable et décision marché favorable | Coût & délai | Élevée | Moyenne |
 | 9 | D-01 | Double référent de nomenclature de jalon (résolu) et ancrages non littéraux (résiduel) | Coût & délai | Élevée | Moyenne |
-| 10 | T-04 | Reclaim-in-place non ratifié `[À RATIFIER PRODUIT]` | Sécurité & données personnelles | Élevée | Moyenne |
+| 10 | T-04 | Reclaim-in-place non ratifié `[À TRANCHER — PRODUIT]` | Sécurité & données personnelles | Élevée | Moyenne |
 | 10 | T-10 | Valeurs de seuils de limitation de débit non fixées | Sécurité & données personnelles | Élevée | Moyenne |
 | 10 | P-08 | Instrumentation d'activation : schéma d'événements non formalisé | Valeur produit | Élevée | Moyenne |
 
@@ -1094,7 +1094,7 @@ Ces trois questions ouvertes juridiques se distinguent des quatorze autres de l'
 
 ## 4. Gouvernance du registre
 
-**Rôle du comité des risques** : instance de revue périodique chargée de valider ou d'amender chaque cotation portée par ce registre, de statuer sur les points marqués `[À RATIFIER PRODUIT]`, et de suivre l'évolution de la criticité résiduelle entre deux revues.
+**Rôle du comité des risques** : instance de revue périodique chargée de valider ou d'amender chaque cotation portée par ce registre, de statuer sur les points marqués `[À TRANCHER — PRODUIT]`, et de suivre l'évolution de la criticité résiduelle entre deux revues.
 
 **Fréquence de revue proposée** : une revue complète à chaque franchissement de point de décision (décision marché, validation juridique EU) et à l'entrée de chaque jalon de build ; une revue allégée (statut des entrées "Élevée" et "Très élevée" uniquement) à cadence mensuelle entre deux jalons.
 

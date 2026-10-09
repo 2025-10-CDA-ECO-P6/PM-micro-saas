@@ -4,7 +4,7 @@
 - **Date** : 2026-06-09
 - **Nature** : produit — fusionné
 
-> **Nature : décision produit — fusionnée** — la substance de cette décision a été fusionnée dans la couche vision (`docs/besoin/vision/perimetre/matrice-de-priorites.md` et `vision-produit.md`) le 2026-06-10. Ce document est une trace historique ; le raisonnement et les alternatives écartées restent lisibles ici.
+> **Nature : décision produit — fusionnée** — la substance de cette décision a été fusionnée dans la couche vision (`docs/besoin/vision/perimetre/matrice-de-priorites.md` et `vision.md`) le 2026-06-10. Ce document est une trace historique ; le raisonnement et les alternatives écartées restent lisibles ici.
 
 ---
 
@@ -50,6 +50,6 @@ Suite à une revue critique postérieure à cette décision, celle-ci est compl�
 
 - **Levier Pro révisé (arbitrage produit).** Le tier Pro donne accès à : campagnes illimitées + multi-device + stockage étendu. Le levier « table plus large » est retiré : aucune persona ne demande davantage de joueurs, les tables sont fixes entre 3 et 6 participants — ce levier était mort.
 
-- **A-09 à trancher avant l'entrée en construction.** Décider si la limite « 4 joueurs/session » pour le tier FREE existe. Si oui, l'inscrire dans la table de monétisation de la vision produit. Si non, la retirer des invariants de domaine. Ce point ne peut pas rester non tranché au démarrage du build. *[A-09 résolu : la limite « 4 joueurs/session » FREE existe et est inscrite (vision §3, CdC annexe « Valeurs de référence chiffrées », invariant 11 de `space-management.md` réaligné, RB-09-21 fait foi pour la sémantique de comptage).]*
+- **A-09 à trancher avant l'entrée en construction.** Décider si la limite « 4 joueurs/session » pour le tier FREE existe. Si oui, l'inscrire dans la table de monétisation de la vision produit. Si non, la retirer des invariants de domaine. Ce point ne peut pas rester non tranché au démarrage du build. *[A-09 résolu : la limite « 4 joueurs/session » FREE existe et est inscrite (vision §3, CdC annexe « Valeurs de référence chiffrées », invariant 11 de `space-management/context.md` réaligné, RB-09-21 fait foi pour la sémantique de comptage).]*
 
 - **Périmètre de conversion testé par le MVP.** La conversion testée par le MVP est local→gratuit (hypothèse 5a). La conversion payante (hypothèse 5b) n'est pas testée par le MVP : le seul déclencheur Pro atteignable est le passage au-delà d'une campagne cloud. *[Valeur consolidée postérieure : le seuil correspond au-delà de **3 espaces** `CAMPAIGN`/`ONE_SHOT` — voir vision §3 / CdC annexe « Valeurs de référence chiffrées ». Cette ligne reflète l'état historique du 2026-06-10.]*

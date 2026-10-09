@@ -80,4 +80,4 @@ Patterns récurrents identifiés à travers l'ensemble des journeys :
 
 - User stories associées : [`../user-stories/`](../stories/)
 - Use cases source : [`../usecases/`](../cas-d-utilisation/)
-- Vision produit : [`../vision/vision-produit.md`](../vision/vision.md)
+- Vision produit : [`../vision/vision.md`](../vision/vision.md)

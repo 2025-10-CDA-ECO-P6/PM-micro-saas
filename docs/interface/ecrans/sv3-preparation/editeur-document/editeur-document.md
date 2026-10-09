@@ -195,7 +195,7 @@ Intention : le MJ crée ou modifie un document dans son espace — en lui donnan
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'éditeur de document.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'éditeur de document.
 
 ```
 annonce sans action :
@@ -224,7 +224,7 @@ hiérarchie de lecture à distance :
 Sources : UC-04 ; UC-07 (création à la volée depuis la vue session) ;
           AR-11 (backlinks — hors MVP, placement conservé) ;
           NFR-ACC-02 ; NFR-OFF-05 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -269,7 +269,7 @@ Affordances de partage et d'épinglage :
 ### Mode local (déclenché — surface MJ)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne
     bénéficient pas d'une garantie de conservation permanente ;
     propose la création d'un compte
@@ -277,7 +277,7 @@ Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode lo
     par identifiants ; propose la création d'un compte
 
 Fonctions cloud désactivées sur l'éditeur de document en mode local :
-  Châssis standard — voir zoning.md §S7 §Châssis mode local.
+  Châssis standard — voir zonage.md §S7 §Châssis mode local.
   L'éditeur en lui-même (titre, type, blocs, liens, dossier) est disponible sans compte.
   La visibilité « visible par les joueurs » est configurable localement mais le partage
   effectif avec des joueurs nécessite un compte (AR-13 ; UC-01 §Règles métier).
@@ -291,7 +291,7 @@ Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :
-  [HORS-MVP — moscow.md §Could Have] types de document personnalisés
+  [HORS-MVP — matrice-de-priorites.md §Could Have] types de document personnalisés
   [HORS-MVP — UC-13 en-tête] instanciation d'un scénario depuis la bibliothèque
     « Mes scénarios » (post-MVP — AR-08 révisé)
 

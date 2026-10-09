@@ -31,7 +31,7 @@ Ce cahier consolide, en un registre technique unique, le corpus déjà écrit �
 
 ### Ce que ce document ne fait pas
 
-Il ne crée aucune décision technique neuve. Il n'invente aucun seuil chiffré absent du corpus. Il ne recopie pas le contenu intégral des spécifications sources — il synthétise et renvoie. Il ne reproduit pas la vue transverse par préoccupation de `docs/architecture/transverse.md`, ni la conception détaillée en avant (le « comment ») portée par le dossier de conception détaillée. `architecture-detaillee.md` organise le même corpus ADR par préoccupation technique ; ce cahier le met en miroir du cahier des charges. Aucun des deux ne cite l'autre comme autorité — en cas de divergence, l'ADR source fait foi — et toute évolution d'un ADR se répercute dans les deux. Il ne tranche aucun point ouvert du corpus : un point non tranché est reporté tel quel et consolidé au registre des points ouverts (§11).
+Il ne crée aucune décision technique neuve. Il n'invente aucun seuil chiffré absent du corpus. Il ne recopie pas le contenu intégral des spécifications sources — il synthétise et renvoie. Il ne reproduit pas la vue transverse par préoccupation de `docs/architecture/transverse.md`, ni la conception détaillée en avant (le « comment ») portée par le dossier de conception détaillée. `transverse.md` organise le même corpus ADR par préoccupation technique ; ce cahier le met en miroir du cahier des charges. Aucun des deux ne cite l'autre comme autorité — en cas de divergence, l'ADR source fait foi — et toute évolution d'un ADR se répercute dans les deux. Il ne tranche aucun point ouvert du corpus : un point non tranché est reporté tel quel et consolidé au registre des points ouverts (§11).
 
 ### Clause d'autorité
 

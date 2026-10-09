@@ -116,7 +116,7 @@ Intention : l'utilisateur authentifié déclenche la suppression définitive de 
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran Suppression de compte.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran Suppression de compte.
 
 ```
 annonce sans action :
@@ -144,7 +144,7 @@ hiérarchie de lecture à distance :
 Sources : UC-10 A4 ; UC-10 E4 ; UC-10 §Règles métier (RGPD, RB-10-05) ;
           NFR-CONF-03 (suppression effective des données personnelles) ;
           NFR-ACC-02 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---

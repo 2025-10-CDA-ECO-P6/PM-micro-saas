@@ -27,7 +27,7 @@ Donner au joueur, après qu'il a rejoint via un lien (couvert par UC-09 et UC-11
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-12 — Consulter son espace en tant que joueur (vue post-accès)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`matrice-de-priorites.md`, § UC-12 — Consulter son espace en tant que joueur (vue post-accès)](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `matrice-de-priorites.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -120,11 +120,11 @@ flowchart LR
 - Un accès périmètre `SPACE` (`Member`) donne accès à l'ensemble des documents `PUBLIC` de l'espace et à l'historique des sessions.
 
 **Règles métier** :
-- RB-12-01 : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` lui sont invisibles. Les notes `PLAYER_PRIVATE` sont invisibles à quiconque n'en est pas l'auteur. Exception : la fiche d'un personnage associé au joueur est lisible par ce joueur, qu'elle soit `GM_ONLY` ou `PUBLIC`. Une fiche `PLAYER_PRIVATE` reste lisible par son seul auteur, sans exception.
+- RB-12-01 : Le joueur ne voit que les documents dont la visibilité est `PUBLIC`. Les documents `GM_ONLY` lui sont invisibles. Les notes `PLAYER_PRIVATE` sont invisibles à quiconque n'en est pas l'auteur. Exception : la fiche d'un personnage associé au joueur est lisible par ce joueur, qu'elle soit `GM_ONLY` ou `PUBLIC` — associer un personnage à un joueur lui en donne la lecture. Une fiche `PLAYER_PRIVATE` reste lisible par son seul auteur, sans exception.
 - RB-12-02 *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Les notes `PLAYER_PRIVATE` sont liées à leur **auteur**, **rattachées au personnage pour l'affichage** ; elles persistent entre les sessions pour le **même auteur** (compte stable). Elles ne sont pas propriété du personnage — un joueur (invité ou membre) qui accède à un personnage déjà joué par quelqu'un d'autre ne récupère jamais les notes de son prédécesseur (RB-09-19).
 - RB-12-03 *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* : Un joueur sans personnage associé peut consulter les documents `PUBLIC` mais ne peut pas créer de notes `PLAYER_PRIVATE` liées à un personnage.
 - RB-12-04 : Un accès périmètre `SESSION` ne donne pas accès à l'historique des sessions. Il donne accès aux documents épinglés de la session et à tous les documents `PUBLIC` de l'espace.
-- RB-12-05 : Un accès périmètre `SPACE` (`Member`) donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions passées.
+- RB-12-05 : Un accès périmètre `SPACE` (`SpaceMembership`) donne accès à l'ensemble des documents `PUBLIC` et à l'historique des sessions passées.
 
 **Critères d'acceptation** :
 - [ ] Le joueur avec un personnage associé voit la fiche du personnage dès l'accès à la session.

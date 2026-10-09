@@ -85,7 +85,7 @@ Les indexes sont créés uniquement pour les chemins de lecture qu'UC-01 exige r
 
 > **Note `by_document`** : le champ indexé diffère selon l'object store. `document_links` utilise `source_id` (sa clé primaire est la composite `[source_id, target_id]` — cf. §1.1) ; `document_blocks` et `document_tags` utilisent `document_id`.
 
-La recherche full-text sur le contenu des blocs (`document_block.content`) est post-MVP — non indexée ici, cohérent avec la même décision côté serveur (content-library.md note GIN tsvector).
+La recherche full-text sur le contenu des blocs (`document_block.content`) est post-MVP — non indexée ici, cohérent avec la même décision côté serveur (content-library/context.md note GIN tsvector).
 
 #### 1.4 Versionnement du store et stratégie d'upgrade
 

@@ -267,12 +267,12 @@ Ce qu'elle ne peut pas faire :
    est hors première livraison.
 
 2. **Réutiliser un scénario de son catalogue sans ressaisie.** UC-13 (Utiliser un scénario
-   réutilisable) est explicitement hors première livraison (moscow.md §UC-13 §Arbitrage du
+   réutilisable) est explicitement hors première livraison (matrice-de-priorites.md §UC-13 §Arbitrage du
    2026-06-10). Sans instanciation, Sonia duplique manuellement.
 
 3. **Créer un scénario directement dans une bibliothèque sans passer par une campagne.**
    La création dans l'espace personnel est au MVP ; seule l'interface de bibliothèque
-   dédiée (UC-F07 résiduel) est Could Have non MVP (UC-HORS-MVP §UC-F07).
+   dédiée (UC-F07 résiduel) est Could Have non MVP (exclusions.md §UC-F07).
 
 ---
 
@@ -280,7 +280,7 @@ Ce qu'elle ne peut pas faire :
 
 ### Limite tracée
 
-**Sonia est structurellement non servie par la première livraison.** La moscow.md §UC-13
+**Sonia est structurellement non servie par la première livraison.** La matrice-de-priorites.md §UC-13
 l'énonce sans ambiguïté : « Sonia (one-shots exclusivement, 15 scénarios en catalogue) reste
 structurellement non servie par la première livraison. »
 
@@ -317,6 +317,6 @@ pas un événement calendaire — c'est une observation à faire sur la cohorte 
 | C3 | Scénario préparé → lancement de session | Étape 2 → étape 3 | Continue | UC-06 précondition : campagne existante + MJ authentifié ou en mode local. Explicitement couvert. |
 | C4 | Session locale → partage avec les joueurs | Étape 3 → étape 4 | Continue (documentée) | UC-01 règles métier : partage désactivé en mode local. UC-10 s'intercale. La transition est documentée dans UJ-UC-01 (flux fonctionnel, point de conversion « tentative de partage »). |
 | C5 | Compte actif → partage et accès joueur sans compte | Étape 4 → étape 5 | Continue | UC-08 + UC-09 préconditions satisfaites dès qu'un compte `FREE` existe. Le `GuestAccess` de portée `SESSION` couvre les joueurs changeants sans liste de membres. |
-| C6 | One-shot suivant → réutilisation du scénario | Post-étape 5 | Limite assumée | UC-13 hors première livraison (moscow.md §UC-13, vision §5bis). Sonia doit recréer ou dupliquer manuellement. C'est le noyau de sa non-servitude structurelle. Condition de retour tracée dans la vision §5bis et la moscow.md. |
-| C7 | Création d'un scénario directement sans campagne | Création dans l'espace personnel au MVP | Limite assumée (interface dédiée) | La création dans l'espace personnel est au MVP ; seule l'interface de bibliothèque dédiée (UC-F07 résiduel) est Could Have non MVP (UC-HORS-MVP §UC-F07). Contournement documenté dans UC-HORS-MVP : « campagne "Atelier scénarios" comme conteneur de travail en attendant ». |
+| C6 | One-shot suivant → réutilisation du scénario | Post-étape 5 | Limite assumée | UC-13 hors première livraison (matrice-de-priorites.md §UC-13, vision §5bis). Sonia doit recréer ou dupliquer manuellement. C'est le noyau de sa non-servitude structurelle. Condition de retour tracée dans la vision §5bis et la matrice-de-priorites.md. |
+| C7 | Création d'un scénario directement sans campagne | Création dans l'espace personnel au MVP | Limite assumée (interface dédiée) | La création dans l'espace personnel est au MVP ; seule l'interface de bibliothèque dédiée (UC-F07 résiduel) est Could Have non MVP (exclusions.md §UC-F07). Contournement documenté dans exclusions.md : « campagne "Atelier scénarios" comme conteneur de travail en attendant ». |
 | C8 | Table de convention > 4 joueurs | Étape 5 | Couture documentée | La limite `FREE` à 4 joueurs par session est tracée (glossaire §2 `AccountTier`). Le parcours de Sonia face à cette limite est documenté : [UC-09](../../cas-d-utilisation/UC-09-acces-session-joueur.md) E2 et RB-09-21 (accès du 5e joueur refusé à l'octroi, invitation faite au MJ à passer `PRO`). |

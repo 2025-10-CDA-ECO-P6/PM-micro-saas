@@ -20,7 +20,7 @@ Deux axes du corpus possèdent déjà une partie de cette information et **sont 
 - **Les user stories, leurs scénarios Gherkin et leurs règles métier** vivent dans la section « User stories » du fichier `US-UC-NN-*.md` correspondant. Ce guide n'en recopie aucun identifiant `RB-` ni aucun titre de scénario.
 - **Les exigences non fonctionnelles et les cas de recette** sont déjà rattachés par use case dans [le cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — intitulé, statut MVP, user stories couvertes, plage de cas de recette, NFR et tests nommés y vivent en une seule ligne par use case. Ce guide y renvoie plutôt que de reproduire un décompte qui dériverait à chaque cas ajouté ou retiré.
 - **Le rattachement écran** vit dans [wireframes/README.md, § Table de couverture UC → fiche(s)](../interface/ecrans/README.md). Ce guide n'énumère aucune fiche individuellement — ajouter un écran à une fonctionnalité existante ne doit jamais obliger à rouvrir ce guide.
-- **Le statut dans le périmètre** (Must / Should / Could / Post-MVP) n'est jamais réénoncé en clair : chaque entrée renvoie à sa sous-section de `moscow.md`, seule autorité du corpus pour cet axe.
+- **Le statut dans le périmètre** (Must / Should / Could / Post-MVP) n'est jamais réénoncé en clair : chaque entrée renvoie à sa sous-section de `matrice-de-priorites.md`, seule autorité du corpus pour cet axe.
 
 Un seul axe n'est délégué à aucune table existante et **c'est ce que ce guide produit en propre** : le rattachement d'une fonctionnalité à la décision d'architecture (ADR) qui la contraint et à la spécification technique qui la détaille. Aucun document du corpus ne portait ce lien avant ce guide ; il nomme la décision et la spécification, sans rien redire de ce qu'elles décident.
 
@@ -30,7 +30,7 @@ Un seul axe n'est délégué à aucune table existante et **c'est ce que ce guid
 
 ## Périmètre couvert
 
-La liste des fonctionnalités ci-dessous suit [`moscow.md`, § Vue d'ensemble](../besoin/vision/perimetre/matrice-de-priorites.md), seule autorité du corpus pour la priorisation produit. **Cette liste n'est pas la source du périmètre** — elle en est une entrée de lecture ; un désaccord entre cette liste et `moscow.md` se résout toujours en faveur de `moscow.md`.
+La liste des fonctionnalités ci-dessous suit [`matrice-de-priorites.md`, § Vue d'ensemble](../besoin/vision/perimetre/matrice-de-priorites.md), seule autorité du corpus pour la priorisation produit. **Cette liste n'est pas la source du périmètre** — elle en est une entrée de lecture ; un désaccord entre cette liste et `matrice-de-priorites.md` se résout toujours en faveur de `matrice-de-priorites.md`.
 
 Le périmètre couvert est celui que le corpus spécifie dans son intégralité — Must Have, Should Have et post-MVP spécifié compris. Une fonctionnalité classée Should Have hors première livraison ou Post-MVP (spécifiés) a, comme toute autre, sa fiche de use case, ses règles métier et ses cas de recette : elle a donc son entrée dans ce guide, au même titre que les fonctionnalités du MVP.
 
@@ -52,13 +52,13 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-001 — Exécution du domaine en mode local, § Décision](../decisions/ADR-001-execution-domaine-mode-local.md) ; [ADR-016 — Sérialisation locale et contrat de migration local→cloud, § Décision](../decisions/ADR-016-serialisation-locale-migration.md) ; [ADR-017 — Modèle IndexedDB local et sécurité du mode local, § Décision](../decisions/ADR-017-modele-indexeddb-local.md) ; [ADR-018 — Contenu personnel de premier ordre, § Décision](../decisions/ADR-018-espace-personnel-generalisation-space.md) |
 | La spécification technique | [Politique de sanitisation HTML et CSP](../architecture/specs/sanitisation-csp.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-01 |
-| Le statut dans le périmètre | [moscow.md, § UC-01 — Mode local sans compte](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-01 — Mode local sans compte](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Espace personnel — provisionnement, capture-first, hors quota
 
 | Axe de lecture | Où lire |
 |---|---|
-| Le besoin | [moscow.md, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le besoin | [matrice-de-priorites.md, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md) |
 | Les récits et les règles métier | [US-UC-01 — Epic mode local sans compte, § User stories](../besoin/stories/US-UC-01-mode-local-sans-compte.md) ; [US-UC-02 — Epic créer un espace de jeu, § User stories](../besoin/stories/US-UC-02-creer-espace-jeu.md) |
 | Le parcours d'usage | [UJ-UC-01 — Mode local sans compte](../besoin/parcours-utilisateur/UJ-UC-01-mode-local-sans-compte.md) ; [UJ-UC-02 — Créer un espace de jeu](../besoin/parcours-utilisateur/UJ-UC-02-creer-espace-jeu.md) |
 | La maquette | [wireframes/README.md, § Table de couverture UC → fiche(s)](../interface/ecrans/README.md) — logée dans la ligne UC-01 (vue de l'espace personnel) |
@@ -66,13 +66,13 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-018 — Contenu personnel de premier ordre : généralisation de `Campaign` en `Space`, § Décision](../decisions/ADR-018-espace-personnel-generalisation-space.md) |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | aucune plage dédiée ; les cas pertinents sont dispersés dans [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — lignes UC-01 et UC-02 |
-| Le statut dans le périmètre | [moscow.md, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § Espace personnel — conteneur par défaut et capture-first](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Export d'espace
 
 | Axe de lecture | Où lire |
 |---|---|
-| Le besoin | [moscow.md, § Export d'espace](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le besoin | [matrice-de-priorites.md, § Export d'espace](../besoin/vision/perimetre/matrice-de-priorites.md) |
 | Les récits et les règles métier | [US-UC-01 — Epic mode local sans compte, § User stories](../besoin/stories/US-UC-01-mode-local-sans-compte.md) |
 | Le parcours d'usage | [UJ-UC-01 — Mode local sans compte, § Scénarios alternatifs et d'erreur](../besoin/parcours-utilisateur/UJ-UC-01-mode-local-sans-compte.md) |
 | La maquette | aucune fiche dédiée nommée ; [wireframes/README.md, § Table de couverture UC → fiche(s)](../interface/ecrans/README.md) rattache l'ensemble d'UC-01 sans isoler l'affordance d'export |
@@ -80,7 +80,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-016 — Sérialisation locale et contrat de migration local→cloud, § Enveloppe du payload](../decisions/ADR-016-serialisation-locale-migration.md) |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | aucune plage dédiée ; dispersée dans [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-01 |
-| Le statut dans le périmètre | [moscow.md, § Export d'espace](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § Export d'espace](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Conversion du mode local vers un compte et migration
 
@@ -94,7 +94,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-016 — Sérialisation locale et contrat de migration local→cloud, § Décision](../decisions/ADR-016-serialisation-locale-migration.md) ; [ADR-017 — Modèle IndexedDB local et sécurité du mode local, § Décision](../decisions/ADR-017-modele-indexeddb-local.md) |
 | La spécification technique | [Registre des seuils et valeurs de configuration — sécurité & migration](../architecture/specs/config-securite-migration.md) |
 | Les cas de recette | aucune plage dédiée ; dispersée dans [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — lignes UC-01 et UC-10 |
-| Le statut dans le périmètre | [moscow.md, § UC-01 — Mode local sans compte](../besoin/vision/perimetre/matrice-de-priorites.md) ; [moscow.md, § UC-10 — Créer un compte et synchroniser dans le cloud](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-01 — Mode local sans compte](../besoin/vision/perimetre/matrice-de-priorites.md) ; [matrice-de-priorites.md, § UC-10 — Créer un compte et synchroniser dans le cloud](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Création d'un espace partagé et quota FREE
 
@@ -108,7 +108,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-005 — Modèle de monétisation, § Décision](../decisions/ADR-005-modele-monetisation.md) ; [ADR-018 — Contenu personnel de premier ordre, § Décision](../decisions/ADR-018-espace-personnel-generalisation-space.md) ; [ADR-010 — Suppression d'espace, § Décision](../decisions/ADR-010-suppression-espace.md) |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-02 |
-| Le statut dans le périmètre | [moscow.md, § UC-02 — Créer et configurer un espace (campagne ou one-shot)](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-02 — Créer et configurer un espace (campagne ou one-shot)](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### One-shot express et one-shot depuis bibliothèque
 
@@ -122,7 +122,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | aucune — aucun ADR ne nomme spécifiquement cette variante ; elle hérite des décisions citées à l'entrée « Création d'un espace partagé et quota FREE » |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | aucune plage dédiée ; dispersée dans [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-02 |
-| Le statut dans le périmètre | [moscow.md, § Variante one-shot express (UC-02 §A1) — Post-MVP (spécifiés)](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § Variante one-shot express (UC-02 §A1) — Post-MVP (spécifiés)](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Organisation en dossiers — base
 
@@ -133,10 +133,10 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Le parcours d'usage | [UJ-UC-05 — Organiser le contenu en dossiers](../besoin/parcours-utilisateur/UJ-UC-05-organiser-contenu-dossiers.md) |
 | La maquette | [wireframes/README.md, § Table de couverture UC → fiche(s)](../interface/ecrans/README.md) — ligne UC-05 |
 | Les exigences non fonctionnelles | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-05 |
-| Les décisions qui la contraignent | aucune — aucun ADR ne nomme cette unité ; les invariants vivent dans le modèle de domaine ([content-library.md](../domaine/content-library/context.md)) et dans [zoning.md, § Arbitrages tracés](../interface/zonage.md) |
+| Les décisions qui la contraignent | aucune — aucun ADR ne nomme cette unité ; les invariants vivent dans le modèle de domaine ([content-library/context.md](../domaine/content-library/context.md)) et dans [zonage.md, § Arbitrages tracés](../interface/zonage.md) |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-05 |
-| Le statut dans le périmètre | [moscow.md, § UC-05 base — Organiser le contenu en dossiers (Must Have)](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-05 base — Organiser le contenu en dossiers (Must Have)](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Types de document built-in — riche
 
@@ -147,10 +147,10 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Le parcours d'usage | [UJ-UC-05 — Organiser le contenu en dossiers](../besoin/parcours-utilisateur/UJ-UC-05-organiser-contenu-dossiers.md) |
 | La maquette | [wireframes/README.md, § Table de couverture UC → fiche(s)](../interface/ecrans/README.md) — ligne UC-05 |
 | Les exigences non fonctionnelles | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-05 |
-| Les décisions qui la contraignent | aucune — aucun ADR ne nomme cette unité ; les invariants vivent dans le modèle de domaine ([content-library.md](../domaine/content-library/context.md)) |
+| Les décisions qui la contraignent | aucune — aucun ADR ne nomme cette unité ; les invariants vivent dans le modèle de domaine ([content-library/context.md](../domaine/content-library/context.md)) |
 | La spécification technique | [VO `DocumentProperties` & `propertiesSchema` par type système](../architecture/specs/document-properties-schemas.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-05 |
-| Le statut dans le périmètre | [moscow.md, § UC-05 riche — Dossiers et types de document élaborés (Should Have)](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-05 riche — Dossiers et types de document élaborés (Should Have)](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Gestion des documents d'un espace
 
@@ -164,7 +164,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-002 — « Tout est Document » strict et gouvernance des identifiants et de `properties`, § Décision](../decisions/ADR-002-tout-est-document-gouvernance.md) ; [ADR-018 — Contenu personnel de premier ordre, § Décision](../decisions/ADR-018-espace-personnel-generalisation-space.md) |
 | La spécification technique | [VO `DocumentProperties` & `propertiesSchema` par type système](../architecture/specs/document-properties-schemas.md) ; [Politique de sanitisation HTML et CSP](../architecture/specs/sanitisation-csp.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-04 |
-| Le statut dans le périmètre | [moscow.md, § UC-04 — Gérer les documents d'un espace](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-04 — Gérer les documents d'un espace](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Structuration d'un scénario
 
@@ -178,7 +178,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-002 — « Tout est Document » strict et gouvernance des identifiants et de `properties`, § Décision](../decisions/ADR-002-tout-est-document-gouvernance.md) |
 | La spécification technique | [VO `DocumentProperties` & `propertiesSchema` par type système](../architecture/specs/document-properties-schemas.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-03 |
-| Le statut dans le périmètre | [moscow.md, § UC-03 — Structurer un scénario](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-03 — Structurer un scénario](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Vue session MJ
 
@@ -192,7 +192,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-004 — Transport temps réel : SignalR, § Décision](../decisions/ADR-004-transport-temps-reel.md) ; [ADR-014 — Modèle d'autorisation API, § Décision](../decisions/ADR-014-modele-autorisation-api.md) ; [ADR-016 — Sérialisation locale et contrat de migration local→cloud, § Périmètre sérialisé](../decisions/ADR-016-serialisation-locale-migration.md) ; [ADR-017 — Modèle IndexedDB local et sécurité du mode local, § Object stores](../decisions/ADR-017-modele-indexeddb-local.md) |
 | La spécification technique | [Seuil de coût session concurrente → repli SSE → polling adaptatif](../architecture/specs/repli-temps-reel.md) ; [Spec — Instrumentation par pilier, § Pilier Vue session](../architecture/specs/telemetrie.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-06 |
-| Le statut dans le périmètre | [moscow.md, § UC-06 — Utiliser la vue session](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-06 — Utiliser la vue session](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Création à la volée en session
 
@@ -206,7 +206,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-002 — « Tout est Document » strict et gouvernance des identifiants et de `properties`, § Décision](../decisions/ADR-002-tout-est-document-gouvernance.md) |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-07 |
-| Le statut dans le périmètre | [moscow.md, § UC-07 — Créer un élément à la volée en session](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-07 — Créer un élément à la volée en session](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Partage d'information aux joueurs
 
@@ -220,7 +220,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-004 — Transport temps réel : SignalR, § Décision](../decisions/ADR-004-transport-temps-reel.md) ; [ADR-014 — Modèle d'autorisation API, § Décision](../decisions/ADR-014-modele-autorisation-api.md) |
 | La spécification technique | [Seuil de coût session concurrente → repli SSE → polling adaptatif](../architecture/specs/repli-temps-reel.md) ; [Spec — Instrumentation par pilier, § Pilier Partage](../architecture/specs/telemetrie.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-08 |
-| Le statut dans le périmètre | [moscow.md, § UC-08 — Partager une information aux joueurs](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-08 — Partager une information aux joueurs](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Accès joueur sans compte
 
@@ -234,7 +234,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-013 — RGPD : données des joueurs invités, § Décision](../decisions/ADR-013-rgpd-donnees-invites.md) ; [ADR-004 — Transport temps réel : SignalR, § Décision](../decisions/ADR-004-transport-temps-reel.md) ; [ADR-014 — Modèle d'autorisation API, § Décision](../decisions/ADR-014-modele-autorisation-api.md) |
 | La spécification technique | [Contrat API — codes de statut, non-révélation d'existence, annotations sécurité, § Principe transversal : non-révélation d'existence](../architecture/specs/contrat-openapi.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-09 |
-| Le statut dans le périmètre | [moscow.md, § UC-09 — Accès joueur sans compte](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-09 — Accès joueur sans compte](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Compte cloud
 
@@ -248,7 +248,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-015 — Sécurité authentification MVP, § Décision](../decisions/ADR-015-securite-authentification-mvp.md) ; [ADR-007 — Conformité RGPD et modèle d'autorisation API, § Décision](../decisions/ADR-007-rgpd-autorisation-api.md) ; [ADR-014 — Modèle d'autorisation API, § Décision](../decisions/ADR-014-modele-autorisation-api.md) ; [ADR-012 — RGPD : effacement de compte, § Décision](../decisions/ADR-012-rgpd-effacement-compte.md) ; [ADR-011 — Cascade & intégrité référentielle, § Décision](../decisions/ADR-011-cascade-integrite-referentielle.md) ; [ADR-009 — FK SPACES.ownerId → USER, § Décision](../decisions/ADR-009-fk-campaign-owner.md) ; [ADR-016 — Sérialisation locale et contrat de migration local→cloud, § Décision](../decisions/ADR-016-serialisation-locale-migration.md) |
 | La spécification technique | [Registre des seuils et valeurs de configuration — sécurité & migration](../architecture/specs/config-securite-migration.md) ; [Contrat API — codes de statut, non-révélation d'existence, annotations sécurité](../architecture/specs/contrat-openapi.md) ; [Requête « document non partagé »](../architecture/specs/requete-effacement-non-partage.md) ; [Note de mapping EF Core](../architecture/specs/mapping-ef-core.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-10 |
-| Le statut dans le périmètre | [moscow.md, § UC-10 — Créer un compte et synchroniser dans le cloud](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-10 — Créer un compte et synchroniser dans le cloud](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Gestion des membres et invitations
 
@@ -262,7 +262,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-014 — Modèle d'autorisation API, § Décision](../decisions/ADR-014-modele-autorisation-api.md) ; [ADR-013 — RGPD : données des joueurs invités, § Décision](../decisions/ADR-013-rgpd-donnees-invites.md) ; [ADR-011 — Cascade & intégrité référentielle, § Décision](../decisions/ADR-011-cascade-integrite-referentielle.md) |
 | La spécification technique | [Contrat API — codes de statut, non-révélation d'existence, annotations sécurité](../architecture/specs/contrat-openapi.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-11 |
-| Le statut dans le périmètre | [moscow.md, § UC-11 — Gérer les membres d'un espace](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-11 — Gérer les membres d'un espace](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Vue joueur post-accès
 
@@ -276,7 +276,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-014 — Modèle d'autorisation API, § Décision](../decisions/ADR-014-modele-autorisation-api.md) ; [ADR-013 — RGPD : données des joueurs invités, § Décision](../decisions/ADR-013-rgpd-donnees-invites.md) |
 | La spécification technique | [Contrat API — codes de statut, non-révélation d'existence, annotations sécurité](../architecture/specs/contrat-openapi.md) |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-12 |
-| Le statut dans le périmètre | [moscow.md, § UC-12 — Consulter son espace en tant que joueur (vue post-accès)](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-12 — Consulter son espace en tant que joueur (vue post-accès)](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Recherche et filtrage
 
@@ -290,21 +290,21 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-017 — Modèle IndexedDB local et sécurité du mode local, § Indexes locaux](../decisions/ADR-017-modele-indexeddb-local.md) |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-14 |
-| Le statut dans le périmètre | [moscow.md, § UC-14 — Rechercher et filtrer l'information](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-14 — Rechercher et filtrer l'information](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Instrumentation de validation du MVP
 
 | Axe de lecture | Où lire |
 |---|---|
-| Le besoin | [moscow.md, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md) |
-| Les récits et les règles métier | aucune — aucune user story ni scénario Gherkin ; [moscow.md, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md) décrit le comportement attendu sans nommer de porteur aval |
+| Le besoin | [matrice-de-priorites.md, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Les récits et les règles métier | aucune — aucune user story ni scénario Gherkin ; [matrice-de-priorites.md, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md) décrit le comportement attendu sans nommer de porteur aval |
 | Le parcours d'usage | aucun — aucun parcours utilisateur nommé ; [Index des parcours utilisateur, § Tableau de correspondance](../besoin/parcours-utilisateur/README.md) s'arrête à UC-14 |
 | La maquette | aucune — cette unité n'a aucun UC porteur et ne figure dans aucune ligne de [wireframes/README.md, § Table de couverture UC → fiche(s)](../interface/ecrans/README.md) |
 | Les exigences non fonctionnelles | aucune — aucune exigence non fonctionnelle n'est nommée pour cette unité dans le besoin |
 | Les décisions qui la contraignent | [ADR-006 — Périmètre MVP, § Compléments post-revue](../decisions/ADR-006-perimetre-mvp.md) |
 | La spécification technique | [Spec — Instrumentation par pilier, capture email, analytics RGPD](../architecture/specs/telemetrie.md) — cinq de ses six points bloquants sont tranchés (2026-09-03) ; seul le schéma d'événements formalisé reste ouvert (voir son en-tête) |
 | Les cas de recette | aucun — [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) est structurée par use case et cette unité n'en a aucun |
-| Le statut dans le périmètre | [moscow.md, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § Instrumentation de validation du MVP](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Scénario réutilisable / bibliothèque
 
@@ -318,7 +318,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-018 — Contenu personnel de premier ordre, § Décision](../decisions/ADR-018-espace-personnel-generalisation-space.md) |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-13, recette produite par anticipation et non exigible à la livraison MVP |
-| Le statut dans le périmètre | [moscow.md, § UC-13 — Utiliser un scénario réutilisable](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-13 — Utiliser un scénario réutilisable](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### Gel d'espaces au downgrade de tier
 
@@ -332,7 +332,7 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 | Les décisions qui la contraignent | [ADR-005 — Modèle de monétisation, § Décision](../decisions/ADR-005-modele-monetisation.md) ; [ADR-018 — Contenu personnel de premier ordre, § Décision](../decisions/ADR-018-espace-personnel-generalisation-space.md) |
 | La spécification technique | aucune spécification dédiée |
 | Les cas de recette | [cahier de stratégie de test et de recette, § Matrice de traçabilité](../assurance/strategie-de-test.md) — ligne UC-15, intégralement dérivée des règles métier en l'absence d'US |
-| Le statut dans le périmètre | [moscow.md, § UC-15 — Classement arbitré : Post-MVP (spécifiés)](../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Le statut dans le périmètre | [matrice-de-priorites.md, § UC-15 — Classement arbitré : Post-MVP (spécifiés)](../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ---
 
@@ -344,16 +344,16 @@ Une fonctionnalité n'est pas toujours un use case : trois éléments Must Have 
 
 Deux points restent ouverts et le demeurent à l'issue de ce guide — aucune opinion n'est exprimée ici sur leur issue :
 
-- **L'identité graphique** (logo, charte graphique, ressources visuelles), axe de conception d'interface — [`roadmap-entree-build.md`, § Annexe B — Prérequis hors jalon](roadmap-de-build.md).
-- **L'entrée J-12 du registre des risques** (méthode de vérification d'identité des invités), axe juridique — [`registre-risques.md`, § Axe juridique](registre-des-risques.md).
+- **L'identité graphique** (logo, charte graphique, ressources visuelles), axe de conception d'interface — [`roadmap-de-build.md`, § Annexe B — Prérequis hors jalon](roadmap-de-build.md).
+- **L'entrée J-12 du registre des risques** (méthode de vérification d'identité des invités), axe juridique — [`registre-des-risques.md`, § Axe juridique](registre-des-risques.md).
 
 ---
 
 ## Renvois
 
-- Bandeau d'autorité et conventions de renvoi du corpus documentaire : [`guide-conventions-et-dod.md`, § Conventions de maintenance du corpus documentaire](conventions-dod.md)
+- Bandeau d'autorité et conventions de renvoi du corpus documentaire : [`conventions-dod.md`, § Conventions de maintenance du corpus documentaire](conventions-dod.md)
 - Ordre d'autorité du corpus de conception : [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../reference/ordre-d-autorite.md)
-- Priorisation produit, seule autorité MoSCoW : [`moscow.md`](../besoin/vision/perimetre/matrice-de-priorites.md)
-- Matrice de traçabilité par use case : [`cahier-strategie-test-et-recette.md`, § Matrice de traçabilité](../assurance/strategie-de-test.md)
+- Priorisation produit, seule autorité MoSCoW : [`matrice-de-priorites.md`](../besoin/vision/perimetre/matrice-de-priorites.md)
+- Matrice de traçabilité par use case : [`strategie-de-test.md`, § Matrice de traçabilité](../assurance/strategie-de-test.md)
 - Rattachement écran par use case : [`wireframes/README.md`, § Table de couverture UC → fiche(s)](../interface/ecrans/README.md)
 - Index des décisions d'architecture : [`docs/decisions/README.md`](../decisions/README.md)

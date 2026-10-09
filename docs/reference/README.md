@@ -20,7 +20,7 @@ métadonnées ou son objet :
 | [cahier-des-charges.md](cahier-des-charges.md) | Le **quoi fonctionnel** — document officiel de référence du périmètre produit du MVP |
 | [cahier-specifications-techniques.md](cahier-specifications-techniques.md) | Le **quoi technique** — registre normatif d'exigences (contraintes, contrats, structures de données), consolidé en miroir du cahier des charges |
 | [dossier-architecture.md](dossier-architecture.md) | La **carte du système** — vues C4 (contexte, conteneurs, composants, déploiement) et choix de structure macro |
-| [dossier-conception-detaillee.md](conception-detaillee.md) | Le **comment** — relations et dépendances entre décisions, séquences, règles consolidées |
+| [conception-detaillee.md](conception-detaillee.md) | Le **comment** — relations et dépendances entre décisions, séquences, règles consolidées |
 
 Ces quatre documents sont des consolidations : aucun ne tranche de décision propre, chacun
 renvoie à sa source d'origine (ADR, spécification, modèle de domaine) qui fait foi en cas de
@@ -28,7 +28,7 @@ divergence.
 
 ## Autre document du dossier
 
-- [note-business-gtm.md](note-business.md) — cadrage du coût d'infrastructure, du dimensionnement de marché et de la stratégie go-to-market, à destination du responsable produit.
+- [note-business.md](note-business.md) — cadrage du coût d'infrastructure, du dimensionnement de marché et de la stratégie go-to-market, à destination du responsable produit.
 
 ---
 

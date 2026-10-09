@@ -75,7 +75,7 @@ typées** entre documents (ce PNJ appartient à cette faction, cet objet est por
 
 Ces relations ouvrent ensuite la voie à un moteur de règles léger : si un personnage porte un objet
 avec une propriété "dégâts", une règle peut calculer un effet. C'est l'émulation de système de jeu
-sans en être un moteur complet — voir [UC-HORS-MVP](../vision/perimetre/exclusions.md).
+sans en être un moteur complet — voir [exclusions.md](../vision/perimetre/exclusions.md).
 
 ## Besoin utilisateur
 

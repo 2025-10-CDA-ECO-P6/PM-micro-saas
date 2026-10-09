@@ -1,7 +1,7 @@
 # Note de mapping EF Core — cluster données & persistance
 
 - **Statut** : Spec pré-build — à confirmer à l'entrée en build (même statut que les ADR sources).
-- **Sources** : [ADR-008](../../decisions/ADR-008-structure-solution.md) (§Conséquences) ; [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (l.22, 24, 46, 58) ; [ADR-011](../../decisions/ADR-011-cascade-integrite-referentielle.md) (§1 Mécanisme de cascade, l.132-133, 158) ; [ADR-014](../../decisions/ADR-014-modele-autorisation-api.md) (l.98-99) ; [content-library.md](../../domaine/content-library/context.md) ; [diagrams/classes/content-library.md](../../domaine/content-library/classes.md) ; [diagrams/mld/content-library.md](../../domaine/content-library/logical-data.md).
+- **Sources** : [ADR-008](../../decisions/ADR-008-structure-solution.md) (§Conséquences) ; [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (l.22, 24, 46, 58) ; [ADR-011](../../decisions/ADR-011-cascade-integrite-referentielle.md) (§1 Mécanisme de cascade, l.132-133, 158) ; [ADR-014](../../decisions/ADR-014-modele-autorisation-api.md) (l.98-99) ; [content-library/context.md](../../domaine/content-library/context.md) ; [content-library/classes.md](../../domaine/content-library/classes.md) ; [content-library/logical-data.md](../../domaine/content-library/logical-data.md).
 - **Périmètre** : les 5 éléments listés par ADR-008:48 comme livrable de mapping EF Core, complétés fidèlement par les décisions de gouvernance ADR-002 et les invariants de cascade/lecture ADR-011/ADR-014 qui portent directement sur le mapping physique.
 
 Cette note ne tranche rien qui ne soit pas déjà fixé par un ADR. Ce qui n'est pas fixé est marqué `[À TRANCHER — ticket]`.
@@ -26,15 +26,15 @@ Des **alias sémantiques de type** (ex. `CharacterRef = DocumentId`) sont autori
 
 Contrat détaillé (VO + schémas par type) : voir `document-properties-schemas.md` (companion de cette note pour ce même champ).
 
-`DocumentLink` est également un value object dans l'agrégat `Document` (diagrams/classes/content-library.md:41-45) — owned type porté par la table `document_links`, pas par une colonne jsonb.
+`DocumentLink` est également un value object dans l'agrégat `Document` (content-library/classes.md:41-45) — owned type porté par la table `document_links`, pas par une colonne jsonb.
 
-`[À TRANCHER — ticket]` : mapping owned-type in-table (colonne unique) vs owned-collection (table séparée) pour `DocumentLink` — le MLD (diagrams/mld/content-library.md:96-112) documente déjà `document_links` comme table séparée avec PK composite `(source_document_id, target_document_id)`, ce qui fixe de fait un owned-collection en table séparée ; aucun ADR ne le nomme explicitement comme choix EF Core.
+`[À TRANCHER — ticket]` : mapping owned-type in-table (colonne unique) vs owned-collection (table séparée) pour `DocumentLink` — le MLD (content-library/logical-data.md:96-112) documente déjà `document_links` comme table séparée avec PK composite `(source_document_id, target_document_id)`, ce qui fixe de fait un owned-collection en table séparée ; aucun ADR ne le nomme explicitement comme choix EF Core.
 
 ---
 
 ## 3. `jsonb` sur `documents.properties`
 
-**Décision reportée** (ADR-002, ADR-008:48) : `HasColumnType("jsonb")` sur `documents.properties`. Le MLD confirme le type physique : `properties jsonb, nullable` (diagrams/mld/content-library.md:53).
+**Décision reportée** (ADR-002, ADR-008:48) : `HasColumnType("jsonb")` sur `documents.properties`. Le MLD confirme le type physique : `properties jsonb, nullable` (content-library/logical-data.md:53).
 
 Cette colonne est exclusivement écrite via `Document.SetProperties()` (ADR-002:22) — aucune écriture JSON directe. Voir `document-properties-schemas.md` pour le contrat de validation complet.
 
@@ -42,9 +42,9 @@ Cette colonne est exclusivement écrite via `Document.SetProperties()` (ADR-002:
 
 ## 4. Discriminant de bloc
 
-**Modélisation domaine trouvée** (companion `content-library.md` + `diagrams/classes/content-library.md`) : le discriminant de bloc est porté par l'énumération `BlockType`, avec quatre valeurs modélisées : `TEXT`, `TABLE`, `IMAGE`, `DIVIDER` (content-library.md:104 ; diagrams/classes/content-library.md:72-78).
+**Modélisation domaine trouvée** (companion `content-library/context.md` + `content-library/classes.md`) : le discriminant de bloc est porté par l'énumération `BlockType`, avec quatre valeurs modélisées : `TEXT`, `TABLE`, `IMAGE`, `DIVIDER` (content-library/context.md:104 ; content-library/classes.md:72-78).
 
-Le MLD confirme la colonne physique : `document_blocks.type varchar(20) NOT NULL`, valeurs `TEXT` / `TABLE` / `IMAGE` / `DIVIDER` (diagrams/mld/content-library.md:88). La colonne `document_blocks.content` est `jsonb NOT NULL` — « contenu sérialisé selon le type » (diagrams/mld/content-library.md:89).
+Le MLD confirme la colonne physique : `document_blocks.type varchar(20) NOT NULL`, valeurs `TEXT` / `TABLE` / `IMAGE` / `DIVIDER` (content-library/logical-data.md:88). La colonne `document_blocks.content` est `jsonb NOT NULL` — « contenu sérialisé selon le type » (content-library/logical-data.md:89).
 
 **Conséquence de mapping** : `document_blocks.type` est mappé comme colonne discriminante simple (`varchar` + converter d'énumération `BlockType`), pas comme discriminant TPH EF Core au sens strict — `DocumentBlock` reste une entité unique dont le champ `content` est un `jsonb` non typé fortement, sans hiérarchie de classes C# par valeur de `BlockType`.
 
@@ -73,7 +73,7 @@ Ces deux prédicats sont « structurels et indépendants de l'appelant » et por
 
 **Décision reportée** (ADR-002:56) : les champs `characterId` et `guestAccessId` des `LIVE_NOTE`, initialement envisagés dans `documents.properties` (jsonb), sont **promus en colonnes nullable indexées de premier niveau** sur `documents`. Ce changement débloque l'invariant d'autorisation d'ADR-007.
 
-**Confirmation MLD** (diagrams/mld/content-library.md:63-64, 74-75) :
+**Confirmation MLD** (content-library/logical-data.md:63-64, 74-75) :
 - `documents.character_id uuid, nullable` — FK physique réelle intra-module vers `documents.id` (type `player_character`).
 - `documents.guest_access_id uuid, nullable` — FK physique réelle cross-module vers `guest_accesses.id` (Space Management).
 - Index B-tree partiel `(character_id) WHERE character_id IS NOT NULL` — qualifié « préalable authz OBLIGATOIRE » pour la résolution transitive des documents `PLAYER_PRIVATE`.

@@ -244,7 +244,7 @@ Le tier FREE inclut un quota de **3 espaces de type `CAMPAIGN` ou `ONE_SHOT`**. 
 personnel (`SpaceType.PERSONAL`) n'est **pas décompté** dans ce quota — il est provisionné
 inconditionnellement à la création du compte, indépendamment du tier.
 
-Cette règle est cohérente avec la vision produit (`vision-produit.md`) et UC-02 : l'espace
+Cette règle est cohérente avec la vision produit (`vision.md`) et UC-02 : l'espace
 personnel est une propriété permanente du compte, non une fonctionnalité soumise à limite.
 
 ---
@@ -293,7 +293,7 @@ reste une déclaration sans preuve.
    le pilier 1 (organisation et préparation) a engagé l'utilisateur au-delà de la création d'un
    conteneur. Les deux signaux sont observables par le seul modèle, sans lire aucun contenu.
    *Trois plutôt qu'un : un document est un essai, trois sont un usage — un seuil qui ne distingue
-   pas prive H1 de la possibilité d'être invalidée, que `vision-produit.md §2.3` exige.*
+   pas prive H1 de la possibilité d'être invalidée, que `vision.md §2.3` exige.*
 
 2. **Activation vue session** : une session a été ouverte ET **au moins une action du MJ y a eu lieu** — une note de session créée, un document épinglé, ou une scène naviguée (décision produit du 2026-09-03). Ce constat mesure si le pilier 2 (pilotage en direct) crée une valeur immédiate.
    *Une action plutôt qu'une durée : une session ouverte puis oubliée mesurerait la présence, non l'usage, alors que H2 porte sur la valeur apportée pendant la partie.*
@@ -306,7 +306,7 @@ reste une déclaration sans preuve.
 
 **Comment cette mesure sort du navigateur — tranché** (décision produit du 2026-09-03). Les compteurs sont **écrits dans le store local et ne quittent le navigateur qu'à la création d'un compte**, avec la migration. Aucun appel sortant n'a lieu en mode local : la directive `connect-src 'self'` reste intacte, et avec elle la garantie observable « aucune donnée envoyée au serveur en mode local ».
 
-**Limite de l'instrument, à ne pas taire.** Ce choix implique que les MJ qui ne créent jamais de compte ne transmettent jamais leurs compteurs. L'activation préparation, qui porte précisément sur un usage **sans compte**, n'est donc observée que chez ceux qui convertissent — un biais en faveur des convertis, qui affecte H1 et rend H5 partiellement circulaire. Cette limite est portée par `vision-produit.md §2.3` et doit être rappelée à toute lecture des résultats.
+**Limite de l'instrument, à ne pas taire.** Ce choix implique que les MJ qui ne créent jamais de compte ne transmettent jamais leurs compteurs. L'activation préparation, qui porte précisément sur un usage **sans compte**, n'est donc observée que chez ceux qui convertissent — un biais en faveur des convertis, qui affecte H1 et rend H5 partiellement circulaire. Cette limite est portée par `vision.md §2.3` et doit être rappelée à toute lecture des résultats.
 
 **Capture de contact non bloquante en mode local** : l'application peut proposer au MJ en mode local de laisser une adresse de contact (pour un suivi de validation produit ultérieur). Cette proposition est toujours refusable sans conséquence — elle ne bloque ni l'accès ni le fonctionnement.
 
@@ -419,10 +419,10 @@ depuis la vue session en moins de cinq secondes.
 
 **Décision (2026-09-01)** : `UC-15` (gel de campagnes/espaces au downgrade de tier) est classé
 « Post-MVP (spécifiés) » — hors catégorisation MoSCoW du MVP, catégorie déjà utilisée par
-l'index des use cases (`usecases/README.md:44`).
+l'index des use cases (`cas-d-utilisation/README.md:44`).
 
 **Motif** : ce classement aligne ce document — seule autorité du corpus pour attribuer une
-priorité MoSCoW — sur `usecases/README.md`, qui range déjà `UC-15` dans « Post-MVP (spécifiés) ».
+priorité MoSCoW — sur `cas-d-utilisation/README.md`, qui range déjà `UC-15` dans « Post-MVP (spécifiés) ».
 Il évite aussi d'attribuer à `UC-15` un vocabulaire MoSCoW (« Should Have ») réservé aux use cases
 effectivement priorisés pour une livraison : le mécanisme de gel suppose un tier payant et un
 downgrade, hors périmètre de la première livraison par construction, et non par arbitrage de

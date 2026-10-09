@@ -107,7 +107,7 @@ Intention : le joueur, à l'ouverture du lien reçu du MJ, voit de quel espace o
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à cet écran.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à cet écran.
 
 ```
 annonce sans action :
@@ -133,7 +133,7 @@ Sources : UC-09 scénario A §4 ; UC-09 scénario A §5 ; UC-09 A2 ; UC-09 A3 ;
           RB-12-01 ;
           AR-03 ; AR-06 ; AR-07 ;
           NFR-ACC-02 ; NFR-ACC-04 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -169,10 +169,10 @@ Déclenché — éléments S8 et S9.
 
 ```
 Éléments différés (S8) :
-  [HORS-MVP — moscow.md §Could Have] notes personnelles joueur persistantes
+  [HORS-MVP — matrice-de-priorites.md §Could Have] notes personnelles joueur persistantes
     inter-sessions sans compte — à ce stade, les notes PLAYER_PRIVATE d'un invité
     non converti sont supprimées à la fin de l'accès (RB-09-19)
-  [HORS-MVP — UC-09 A2 ; moscow.md §Could Have] récupération automatique de notes
+  [HORS-MVP — UC-09 A2 ; matrice-de-priorites.md §Could Have] récupération automatique de notes
     invité via un second lien sans création de compte
 
 Éléments sous-spécifiés (S9) :

@@ -1,7 +1,7 @@
 # Raisonnement UX
 
 > Document de rationale de conception d'interface.
-> Couche : interface (en aval de zoning.md, en aval des fiches wireframe).
+> Couche : interface (en aval de zonage.md, en aval des fiches wireframe).
 > Méthode : 4 lentilles d'analyse appliquées aux 20 écrans du MVP.
 > Les résolutions sont portées dans le zoning et les fiches concernées — ce document en est le rationale, pas la source des arbitrages.
 > Hiérarchie d'autorité respectée : personas > vision produit > use cases > parcours / user stories / NFR > interface ([zonage.md](zonage.md)) > [fiches d'écran](ecrans/README.md).
@@ -10,7 +10,7 @@
 
 ## 1. Statut
 
-Ce document restitue et structure une réflexion UI/UX globale menée sur l'ensemble des 20 écrans du MVP Haversack. Son rôle est d'exposer le raisonnement qui a conduit aux décisions d'interface consignées dans `zoning.md` et dans les fiches wireframe — pas de poser des règles nouvelles.
+Ce document restitue et structure une réflexion UI/UX globale menée sur l'ensemble des 20 écrans du MVP Haversack. Son rôle est d'exposer le raisonnement qui a conduit aux décisions d'interface consignées dans `zonage.md` et dans les fiches wireframe — pas de poser des règles nouvelles.
 
 ### Les 4 lentilles appliquées
 
@@ -19,7 +19,7 @@ La réflexion a été conduite en 4 lentilles successives, appliquées à chaque
 1. **Architecture de l'information & navigation** — cohérence de l'ossature, des transitions, des retours ; détection des tensions entre surfaces.
 2. **Questions de design** — questions ouvertes non résolues par le corpus, points de présentation (pas de structure) à trancher avant de wireframer.
 3. **Charge informationnelle** — densité réelle de chaque écran ; risques de surcharge ; identification des zones qui s'accumulent parce qu'on les a, pas parce qu'elles servent.
-4. **Résolution des zones sous-spécifiées & adéquation personas** — inventaire des points sous-spécifiés (marqueurs `[SOUS-SPÉCIFIÉ]`, Famille 8 de `conventions-wireframe.md`), répartition par famille, priorisation, adéquation de l'ensemble aux 7 personas.
+4. **Résolution des zones sous-spécifiées & adéquation personas** — inventaire des points sous-spécifiés (marqueurs `[SOUS-SPÉCIFIÉ]`, Famille 8 de `interface/conventions.md`), répartition par famille, priorisation, adéquation de l'ensemble aux 7 personas.
 
 ### Grille de lecture appliquée partout
 
@@ -27,9 +27,9 @@ Pour chaque zone de chaque écran : *est-ce utile ? pertinent au moment ? rempli
 
 ### Ce que ce document est et n'est pas
 
-Ce document est un **rationale** : il explique pourquoi les décisions ont été prises. Les résolutions elles-mêmes (arbitrages transversaux, modifications de fiches, nouvelles règles de châssis) sont portées dans `zoning.md` et dans les fiches concernées. Les renvois précis sont en §8.
+Ce document est un **rationale** : il explique pourquoi les décisions ont été prises. Les résolutions elles-mêmes (arbitrages transversaux, modifications de fiches, nouvelles règles de châssis) sont portées dans `zonage.md` et dans les fiches concernées. Les renvois précis sont en §8.
 
-Il ne contredit pas le corpus amont. Toute décision mentionnée ici qui touche la structure est déjà tracée en tant qu'arbitrage AR dans `zoning.md` ou signalée comme devant y être portée.
+Il ne contredit pas le corpus amont. Toute décision mentionnée ici qui touche la structure est déjà tracée en tant qu'arbitrage AR dans `zonage.md` ou signalée comme devant y être portée.
 
 ---
 
@@ -39,7 +39,7 @@ Il ne contredit pas le corpus amont. Toute décision mentionnée ici qui touche 
 
 La frontière fonctionnelle de l'espace personnel n'est pas une question ouverte : elle est déjà résolue par le corpus. L'espace personnel est de type `PERSONAL`, hors quota, mono-membre, mène uniquement à Préparation (pas de vue session), et constitue le conteneur par défaut de tout contenu créé hors d'un espace partagé explicite. Ces contraintes sont posées par AR-14, AR-16, AR-17 et confirmées par UC-02 §Contexte.
 
-La question ouverte n'est donc pas structurelle — c'est une question de **présentation** : comment l'espace personnel se présente-t-il à l'utilisateur ? Ce point était ouvert dans `zoning.md §S9` ; il y est désormais résolu ([zonage.md §9](zonage.md#9-trous-de-corpus-et-points-dinterview)). Ne reste ouverte que la perception (naturelle ou à expliquer), question d'interview d'UC-02.
+La question ouverte n'est donc pas structurelle — c'est une question de **présentation** : comment l'espace personnel se présente-t-il à l'utilisateur ? Ce point était ouvert dans `zonage.md §S9` ; il y est désormais résolu ([zonage.md §9](zonage.md#9-trous-de-corpus-et-points-dinterview)). Ne reste ouverte que la perception (naturelle ou à expliquer), question d'interview d'UC-02.
 
 ### Décision retenue : le mix
 
@@ -99,7 +99,7 @@ Le corpus documente 6 surfaces (espace personnel, campagne, vue session, surface
 
 **Faiblesse 1 — Configuration de la vue session logée à deux endroits**
 
-La configuration de la vue session est accessible depuis deux surfaces : `parametres-campagne` (comme section) et `vue-session-mj` en mode configuration. Cette duplication est en tension avec US-06-02 (*« Pas de panneau paramètres séparé »*). La résolution retenue : `parametres-campagne` pointe vers le mode configuration ; la configuration effective s'effectue dans la surface session. Portée dans `zoning.md` avec un nouvel arbitrage AR.
+La configuration de la vue session est accessible depuis deux surfaces : `parametres-campagne` (comme section) et `vue-session-mj` en mode configuration. Cette duplication est en tension avec US-06-02 (*« Pas de panneau paramètres séparé »*). La résolution retenue : `parametres-campagne` pointe vers le mode configuration ; la configuration effective s'effectue dans la surface session. Portée dans `zonage.md` avec un nouvel arbitrage AR.
 
 **Faiblesse 2 — Retours de navigation non spécifiés**
 
@@ -108,11 +108,11 @@ Les règles de retour entre écrans ne sont pas spécifiées dans le corpus. Le 
 - *Retour contextuel* : tout écran de détail retourne à sa surface appelante en préservant l'état.
 - *Recherche = composant de châssis* : la recherche est un overlay omniprésent, jamais un écran à part entière. Ouvrir un document depuis la recherche ne change pas la surface courante.
 
-Ces règles sont portées dans `zoning.md §S7`.
+Ces règles sont portées dans `zonage.md §S7`.
 
 **Faiblesse 3 — Accès au profil dépendant du seul tableau de bord**
 
-L'accès au profil utilisateur passe actuellement uniquement par le tableau de bord. Or le MJ en mode capture-first (AR-15) peut ne jamais passer par le tableau de bord en début de session. La résolution retenue : promouvoir l'accès compte au rang de composant de châssis, au même titre que la recherche — présent en permanence, quelle que soit la surface active. Porté dans `zoning.md §S7`.
+L'accès au profil utilisateur passe actuellement uniquement par le tableau de bord. Or le MJ en mode capture-first (AR-15) peut ne jamais passer par le tableau de bord en début de session. La résolution retenue : promouvoir l'accès compte au rang de composant de châssis, au même titre que la recherche — présent en permanence, quelle que soit la surface active. Porté dans `zonage.md §S7`.
 
 ---
 
@@ -150,7 +150,7 @@ Les 68 marqueurs identifiés dans les fiches wireframe se répartissent en trois
 
 **Famille A — À trancher en wireframe (résoluble)** — Points de détail de présentation qui peuvent être résolus par le designer de l'écran, sans arbitrage transversal ni information corpus manquante. Ils ne bloquent pas la production de la fiche.
 
-**Famille B — Arbitrage transversal unique** — Points qui affectent plusieurs fiches simultanément. Les résoudre une fois pour l'ensemble (dans `zoning.md`) élimine d'un coup plusieurs marqueurs dupliqués. Ces arbitrages doivent précéder la production des fiches concernées.
+**Famille B — Arbitrage transversal unique** — Points qui affectent plusieurs fiches simultanément. Les résoudre une fois pour l'ensemble (dans `zonage.md`) élimine d'un coup plusieurs marqueurs dupliqués. Ces arbitrages doivent précéder la production des fiches concernées.
 
 **Famille C — Trou de corpus ou point d'interview (à ne pas forcer)** — Points qui nécessitent soit une information absente du corpus (à compléter hors wireframe), soit un retour utilisateur (interview). Forcer une décision à ce stade créerait un arbitrage non fondé. Ces marqueurs sont nommés, pas résolus.
 
@@ -162,7 +162,7 @@ Les marqueurs portant sur les types de blocs, la hiérarchie des blocs et les li
 
 **Résolution 2 — Configuration de la vue session** (Famille B, support H2)
 
-Les marqueurs de configuration de la vue session sont dispersés sur plusieurs fiches (vue session MJ, paramètres de campagne, surface joueur). Un arbitrage transversal unique dans `zoning.md` (cf. §3, faiblesse 1) les résout en bloc. Priorité maximale — support direct de l'hypothèse H2.
+Les marqueurs de configuration de la vue session sont dispersés sur plusieurs fiches (vue session MJ, paramètres de campagne, surface joueur). Un arbitrage transversal unique dans `zonage.md` (cf. §3, faiblesse 1) les résout en bloc. Priorité maximale — support direct de l'hypothèse H2.
 
 **Résolution 3 — Lien d'invitation** (AR-10, Famille B, 5+ marqueurs dupliqués sur 3 fiches)
 
@@ -171,7 +171,7 @@ Le lien d'invitation (AR-10) génère des marqueurs dupliqués sur trois fiches 
 - **Lien ponctuel** (valable pour une session donnée) → présent dans la surface `vue-session-mj`.
 - **Lien permanent** (valable pour toute la campagne) → présent dans `parametres-campagne` et dans la section membres.
 
-Cet arbitrage est porté dans `zoning.md`.
+Cet arbitrage est porté dans `zonage.md`.
 
 ### Famille C — Nommée, non forcée
 
@@ -225,7 +225,7 @@ Un garde-fou est garanti par construction : un réceptacle pour le contenu non c
 
 ### Décision 3 — Export d'espace : entre au MVP en version minimale
 
-L'export d'un espace passe de Should Have (hors-MVP) à **Must Have, inclus dans la première livraison**, en version minimale. Cette décision est motivée par le critère de confiance et de portabilité du persona Thomas : un outil qui ne permet pas d'extraire ses données ne recueille pas la confiance d'un utilisateur qui y investit du temps. La version minimale de l'export (format JSON ouvert avec `schemaVersion` per ADR-016 ; périmètre : documents, notes, structure (dossiers), historique session hors LIVE, espace personnel inclus, disponible local et compte, per moscow.md §Export d'espace ; réalisant ADR-001 « un seul format, deux usages ») suffit à répondre à ce besoin sans alourdir le scope de manière disproportionnée. Cette décision impacte : le MoSCoW, la fiche `parametres-campagne`, et UC-01 scénario alternatif A4a.
+L'export d'un espace passe de Should Have (hors-MVP) à **Must Have, inclus dans la première livraison**, en version minimale. Cette décision est motivée par le critère de confiance et de portabilité du persona Thomas : un outil qui ne permet pas d'extraire ses données ne recueille pas la confiance d'un utilisateur qui y investit du temps. La version minimale de l'export (format JSON ouvert avec `schemaVersion` per ADR-016 ; périmètre : documents, notes, structure (dossiers), historique session hors LIVE, espace personnel inclus, disponible local et compte, per matrice-de-priorites.md §Export d'espace ; réalisant ADR-001 « un seul format, deux usages ») suffit à répondre à ce besoin sans alourdir le scope de manière disproportionnée. Cette décision impacte : le MoSCoW, la fiche `parametres-campagne`, et UC-01 scénario alternatif A4a.
 
 ### Décision 4 — Aperçu « vue joueur » côté MJ : post-MVP
 
@@ -333,9 +333,9 @@ La planche appliquait à la création la restriction du partage en citant UC-08 
 
 Ce document est le rationale. Les résolutions effectives sont consignées dans les documents suivants.
 
-### Arbitrages transversaux → `zoning.md`
+### Arbitrages transversaux → `zonage.md`
 
-Les résolutions ci-dessous sont portées (ou à porter) dans `zoning.md` comme arbitrages AR :
+Les résolutions ci-dessous sont portées (ou à porter) dans `zonage.md` comme arbitrages AR :
 
 | Question | Portée par |
 |---|---|
@@ -366,6 +366,6 @@ Les résolutions ci-dessous sont portées (ou à porter) dans `zoning.md` comme 
 
 | Sujet | Document cible |
 |---|---|
-| Export d'espace : passage de Should Have à Must Have | `vision/moscow.md` |
+| Export d'espace : passage de Should Have à Must Have | `vision/perimetre/matrice-de-priorites.md` |
 
 Les résolutions de l'analyse initiale (§2 à §7) ont été appliquées au corpus. Les résolutions complémentaires (§9) sont appliquées aux wireframes et aux fiches concernées.

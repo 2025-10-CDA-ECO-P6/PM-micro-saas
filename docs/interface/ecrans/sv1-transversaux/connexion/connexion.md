@@ -49,7 +49,7 @@ Intention : l'utilisateur disposant d'un compte s'authentifie avec son adresse d
              n'existe, un nouveau compte est créé automatiquement (tier gratuit)
              (UC-10 §scénario nominal Connexion via fournisseur externe)
              fournisseurs exposés : Google et Discord (cahier des charges §Authentification —
-             RÉSOLU ; ADR-015 ; zoning.md §S9 « Fournisseurs d'identité — RÉSOLU »)
+             DÉCIDÉ 2026-07-15 ; ADR-015 ; zonage.md §S9 « Fournisseurs d'identité »)
              [SOUS-SPÉCIFIÉ — UC-10 §Questions à valider en interview] le wording exact
              des libellés de bouton par fournisseur n'est pas figé
   priorité : principal
@@ -114,7 +114,7 @@ Intention : l'utilisateur disposant d'un compte s'authentifie avec son adresse d
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran de connexion.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'écran de connexion.
 
 ```
 annonce sans action :
@@ -146,7 +146,7 @@ Sources : UC-10 (scénario nominal Connexion,
                   E2 — Identifiants invalides,
                   E3 — Lien de réinitialisation expiré) ;
           NFR-ACC-02 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---

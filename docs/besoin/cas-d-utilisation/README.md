@@ -1,7 +1,7 @@
 # Use Cases — Index
 
-> Contexte produit et positionnement → [vision-produit.md](../vision/vision.md)
-> Priorisation détaillée → [moscow.md](../vision/perimetre/matrice-de-priorites.md)
+> Contexte produit et positionnement → [vision.md](../vision/vision.md)
+> Priorisation détaillée → [matrice-de-priorites.md](../vision/perimetre/matrice-de-priorites.md)
 
 ---
 

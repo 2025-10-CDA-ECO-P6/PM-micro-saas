@@ -104,15 +104,15 @@ Intention : le MJ accède à la configuration de la vue session (depuis un renvo
              sans invite compte, même condition de blocage.
   ancrage  : UC-02 §Règles métier RB-02-21 (blocage de l'archivage tant qu'une session est en
              cours) ; UC-02 §Règles métier RB-02-22 (réversibilité de l'archivage) ; domaine
-             `space-management.md` invariant 16 (garde d'agrégat sur `Archive()` si l'espace
-             porte une session en cours) ; domaine `space-management.md` §Méthodes (`Archive()`
+             `space-management/context.md` invariant 16 (garde d'agrégat sur `Archive()` si l'espace
+             porte une session en cours) ; domaine `space-management/context.md` §Méthodes (`Archive()`
              réversible, `Unarchive()`) ; AR-13 (mode local) ; S4 §Paramètres de campagne
   type     : formulaire (flux à deux temps : conséquences → confirmation)
   priorité : secondaire-configurable (replié — divulgation progressive, action rare — AR-19)
   visibilité : MJ seul
   note sémantique : DÉCIDÉ 2026-07-09 (zonage §9, invariant 15) : un espace PERSONAL est toujours
-             ACTIVE et ne peut être archivé (`space-management.md` invariant 15 ; zonage.md
-             §S9 « Sémantique `ARCHIVED PERSONAL` — RÉSOLUE ») — cet écran est réservé
+             ACTIVE et ne peut être archivé (`space-management/context.md` invariant 15 ; zonage.md
+             §S9 « Sémantique `ARCHIVED PERSONAL` ») — cet écran est réservé
              aux espaces partagés, ce point ne le concerne pas directement
 
 [ ZONE D'EXPORT DE L'ESPACE ]
@@ -149,7 +149,7 @@ Intention : le MJ accède à la configuration de la vue session (depuis un renvo
   l'espace, voir §Zones et hiérarchie §ZONE D'ARCHIVAGE DE L'ESPACE) → confirmation
   explicite ;
   l'affordance est bloquée tant que l'espace porte une session en cours — le MJ doit
-  d'abord clôturer cette session (RB-02-21 ; domaine `space-management.md` invariant 16,
+  d'abord clôturer cette session (RB-02-21 ; domaine `space-management/context.md` invariant 16,
   voir §Zones et hiérarchie §ZONE D'ARCHIVAGE DE L'ESPACE) ;
   l'espace passe en lecture seule après archivage, jusqu'à un désarchivage ultérieur —
   le geste de désarchivage vit sur cette même fiche, en mode « espace archivé »
@@ -195,7 +195,7 @@ Intention : le MJ accède à la configuration de la vue session (depuis un renvo
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique aux paramètres de campagne.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique aux paramètres de campagne.
 
 ```
 annonce sans action :
@@ -226,7 +226,7 @@ hiérarchie de lecture à distance (AR-19 — divulgation progressive) :
 ```
 Sources : UC-06 Phase 2 (accès à la configuration de la vue session via renvoi — AR-18) ;
           UC-02 §Règles métier (archivage, désarchivage — RB-02-21, RB-02-22, RB-02-23) ;
-          domaine `space-management.md` (`Archive()`, `Unarchive()`, règle métier 7,
+          domaine `space-management/context.md` (`Archive()`, `Unarchive()`, règle métier 7,
                    invariants 15 et 16, règle métier 12) ;
           UC-01 A4a (export — MVP version minimale) ;
           UC-11 §Scénario nominal (lien d'invitation de campagne — MVP) ; UC-11 A4 ;
@@ -240,7 +240,7 @@ Sources : UC-06 Phase 2 (accès à la configuration de la vue session via renvoi
           AR-19 (densité : premier plan / replié / registre secondaire) ;
           AR-22 (accès aux espaces archivés au tableau de bord, désarchivage ici) ;
           NFR-ACC-02 ;
-          châssis S7 §Notification d'état de synchronisation (zoning.md §S7)
+          châssis S7 §Notification d'état de synchronisation (zonage.md §S7)
 ```
 
 ---
@@ -256,7 +256,7 @@ Déclenché — AR-22 : l'écran a désormais deux modes selon le statut de l'es
 #### Mode : espace actif
 
 ```
-Déclencheur : l'espace est au statut ACTIVE (`space-management.md` — SpaceStatus) — c'est
+Déclencheur : l'espace est au statut ACTIVE (`space-management/context.md` — SpaceStatus) — c'est
               l'état par défaut de cette fiche, entièrement décrit ci-dessus dans le
               Noyau obligatoire.
 
@@ -273,33 +273,33 @@ Affordances spécifiques : voir §Ce que l'utilisateur peut faire (Noyau obligat
 #### Mode : espace archivé
 
 ```
-Déclencheur : l'espace est au statut ARCHIVED (`space-management.md` — SpaceStatus ;
+Déclencheur : l'espace est au statut ARCHIVED (`space-management/context.md` — SpaceStatus ;
               UC-02 §Règles métier RB-02-22)
 
 Zones actives :
   - zone d'archivage de l'espace — remplacée par l'affordance symétrique de
     désarchivage (voir Affordances spécifiques ci-dessous)
   - renvoi vers la configuration de la vue session — reste visible, en lecture seule :
-    l'espace archivé est en lecture seule (`space-management.md` règle métier 7 ;
-    `content-library.md` — `SpaceArchived` passe tous les documents en lecture seule,
+    l'espace archivé est en lecture seule (`space-management/context.md` règle métier 7 ;
+    `content-library/context.md` — `SpaceArchived` passe tous les documents en lecture seule,
     soft-lock) ; le MJ consulte la disposition enregistrée, il ne la modifie pas
   - zone d'export de l'espace — reste disponible ; exporter un espace archivé n'écrit
     rien sur l'espace (UC-01 A4a)
   - bandeau d'état d'archivage — signale que l'espace est archivé, en lecture seule ;
     non bloquant, cohérent avec le registre des bandeaux non bloquants du châssis
-    (zoning.md §S7) ; porte l'affordance de désarchivage
+    (zonage.md §S7) ; porte l'affordance de désarchivage
 
 Zones désactivées :
   [DÉSACTIVÉ] lien d'invitation de campagne — condition de réactivation : désarchivage
     de l'espace ; un espace en lecture seule ne peut pas admettre de nouveaux membres
-    tant qu'il reste ARCHIVED (`space-management.md` règle métier 7)
+    tant qu'il reste ARCHIVED (`space-management/context.md` règle métier 7)
 
 Affordances spécifiques :
   - [AR-22 ; UC-02 §Règles métier RB-02-22 ; domaine `Unarchive()`] désarchiver
     l'espace → le MJ retrouve son espace dans l'état où il était au moment de
     l'archivage (même contenu, mêmes dossiers) ; l'espace repasse ACTIVE ; le mode
     « espace archivé » cède la place au mode « espace actif »
-  - [AR-22 ; UC-02 §Règles métier RB-02-23 ; domaine `space-management.md`
+  - [AR-22 ; UC-02 §Règles métier RB-02-23 ; domaine `space-management/context.md`
     règle métier 12] refus du désarchivage au quota → si le MJ est au palier gratuit
     et que le désarchivage porterait son nombre d'espaces actifs de type campagne ou
     one-shot au-delà de la limite de son palier, le geste est bloqué ; l'invite
@@ -341,13 +341,13 @@ Affordances qui touchent la frontière joueur :
     d'expiration et nombre d'utilisations maximum optionnels (UC-11 étape 6) ; il est
     distinct du lien de session ponctuel (vue session) ; l'invitation par email est
     hors MVP
-  - [UC-02 §Règles métier RB-02-21 ; domaine `space-management.md` règle métier 7 ;
+  - [UC-02 §Règles métier RB-02-21 ; domaine `space-management/context.md` règle métier 7 ;
     domaine `SpaceArchived`] archiver l'espace →
-    l'espace passe en lecture seule (aucune écriture : documents en soft-lock) ; ce que
-    voit alors un joueur déjà membre n'est pas décrit : [SOUS-SPÉCIFIÉ — S9] ni UC-12,
-    ni UC-09, ni UC-11, ni le domaine ne disent si les documents PUBLIC restent
-    consultables par les joueurs d'un espace ARCHIVED, ni si le lien d'invitation en
-    cours de validité reste utilisable
+    l'espace passe en lecture seule (aucune écriture : documents en soft-lock) ; les
+    joueurs déjà membres continuent de le consulter en lecture seule, et le lien
+    d'invitation est inutilisable tant que l'espace est ARCHIVED : un joueur qui
+    l'ouvre voit « Ce lien n'est pas utilisable » [DÉCIDÉ 2026-10-09 (décision de
+    l'opérateur ; UC-02 §Règles métier ; UC-09 A3)]
 ```
 
 ---
@@ -355,7 +355,7 @@ Affordances qui touchent la frontière joueur :
 ### Mode local (déclenché — surface MJ)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne
     bénéficient pas d'une garantie de conservation permanente ;
     propose la création d'un compte
@@ -399,12 +399,10 @@ Déclenché — éléments S8 et S9.
   [HORS-MVP — UC-11 scénario nominal] invitation par email — hors MVP ;
     seul le lien partageable est disponible au MVP
 
-Éléments sous-spécifiés (S9) :
-  [SOUS-SPÉCIFIÉ — S9] effet de l'archivage sur ce que voient les joueurs déjà membres
-    de l'espace et sur la validité du lien d'invitation en cours — voir §Partage et
-    visibilité
-
 Points précédemment sous-spécifiés, maintenant résolus :
+  - effet de l'archivage sur les joueurs déjà membres et sur le lien d'invitation en
+    cours : lecture seule pour les membres, lien inutilisable tant que l'espace est
+    ARCHIVED — DÉCIDÉ 2026-10-09 (décision de l'opérateur ; voir §Partage et visibilité)
   - l'affordance de désarchivage vit désormais sur cette fiche (mode « espace archivé »,
     §Modes) ; le point d'entrée vers la liste des espaces archivés vit au tableau de bord
     (AR-22 ; `tableau-de-bord.md` §Zones et hiérarchie §Accès aux espaces archivés)

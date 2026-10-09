@@ -288,7 +288,7 @@ Cinq axes de validation juridique conditionnent le lancement dans l'Union europ�
 | Axe 4 | Article 17 RGPD — suppression physique inconditionnelle du contenu de l'espace personnel, instant de référence de la demande d'effacement, déplacements de contenu | `cadrage-validation-pre-lancement-eu.md` (axe 4) ; ADR-012 §7 ; ADR-018 |
 | Axe 5 | Facette RGPD du mécanisme de reprise en place | `cadrage-validation-pre-lancement-eu.md` (axe 5) ; ADR-015 §2.3 |
 
-Un point de validation supplémentaire est signalé hors des cinq axes : le canal de notification prévu à l'article 12§3 pour un compte anonymisé, les critères de l'extension de délai de deux mois, et la méthode de vérification d'identité d'un invité exerçant ses droits — **signalement juridique explicite (FLAG JURISTE)**. Ancres : ADR-012 §8 ; `procedure-droits-invites.md` §2 / §4 / §5.
+Un point de validation supplémentaire est signalé hors des cinq axes : le canal de notification prévu à l'article 12§3 pour un compte anonymisé, les critères de l'extension de délai de deux mois, et la méthode de vérification d'identité d'un invité exerçant ses droits — **signalement juridique explicite (`[À VALIDER — JURISTE]`)**. Ancres : ADR-012 §8 ; `procedure-droits-invites.md` §2 / §4 / §5.
 
 ### 5.4 Maillons non vérifiables en intégration continue
 
@@ -320,7 +320,7 @@ Trois tensions ont été explicitement tranchées dans le corpus de conception. 
 |---|---|---|---|
 | Unicité de l'email (invariant du modèle de compte) contre protection anti-préemption (CWE-287) | Résolue par le mécanisme de reprise en place ; l'option d'un « nouveau compte à côté » a été déclarée non implémentable | Résolution retenue, **mise en œuvre non ratifiée** (cf. 5.2) | ADR-015 §2.3 |
 | Ergonomie du message d'erreur (résidu d'énumération CWE-204) contre non-révélation stricte | Arbitrée en faveur de l'ergonomie ; le résidu est accepté et mitigé par la limitation de débit | Arbitrage clos | ADR-015 §Résidu CWE-204 |
-| Conservation au titre de l'intérêt légitime (§3(c)) contre suppression physique inconditionnelle du contenu de l'espace personnel sur document déplacé | Fermée techniquement par l'étape de relocation obligatoire | Fermée techniquement ; suffisance juridique en attente (FLAG JURISTE, cf. 5.3) | ADR-012 §7 |
+| Conservation au titre de l'intérêt légitime (§3(c)) contre suppression physique inconditionnelle du contenu de l'espace personnel sur document déplacé | Fermée techniquement par l'étape de relocation obligatoire | Fermée techniquement ; suffisance juridique en attente (`[À VALIDER — JURISTE]`, cf. 5.3) | ADR-012 §7 |
 
 ---
 

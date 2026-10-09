@@ -456,16 +456,16 @@ valeur, pas vers l'outillage de conception.
 | Accès joueur sans compte | UC-09 | Must Have |
 | Compte et synchronisation cloud | UC-10 | Must Have |
 | Espace personnel — propriété et capture sans friction | Décision ADR-018 (propriété/capture uniquement — hors interface de bibliothèque) | Must Have |
-| Quota du palier gratuit sur les espaces de type campagne/one-shot (espace personnel non décompté) | moscow.md — section « Quota FREE » (règle de monétisation) | Must Have |
-| Export d'espace, version minimale | moscow.md — section « Export d'espace » | Must Have (promu de Should Have le 2026-06-25) |
-| Instrumentation de validation (mesure anonyme, sans contenu narratif) | moscow.md — section « Instrumentation de validation du MVP » | Must Have |
+| Quota du palier gratuit sur les espaces de type campagne/one-shot (espace personnel non décompté) | matrice-de-priorites.md — section « Quota FREE » (règle de monétisation) | Must Have |
+| Export d'espace, version minimale | matrice-de-priorites.md — section « Export d'espace » | Must Have (promu de Should Have le 2026-06-25) |
+| Instrumentation de validation (mesure anonyme, sans contenu narratif) | matrice-de-priorites.md — section « Instrumentation de validation du MVP » | Must Have |
 
 ### Le jalon de validation
 
 | Élément (roadmap) | Référence conception | Nature |
 |---|---|---|
-| Cinq hypothèses de validation (H1 à H5) | vision-produit.md §2.3 | Point de décision go/no-go, non un use case |
-| Progression local → compte gratuit → palier payant | vision-produit.md §3 | Modèle économique, valeurs volatiles |
+| Cinq hypothèses de validation (H1 à H5) | vision.md §2.3 | Point de décision go/no-go, non un use case |
+| Progression local → compte gratuit → palier payant | vision.md §3 | Modèle économique, valeurs volatiles |
 
 ### Approfondissement du cœur
 
@@ -480,11 +480,11 @@ valeur, pas vers l'outillage de conception.
 
 | Capacité (roadmap) | Référence conception | Catégorie / condition de retour |
 |---|---|---|
-| Contexte one-shot complet (scénario réutilisable, parcours express) | UC-13 ; UC-02 §A1 (parcours express) | UC-13 : Should Have, explicitement hors première livraison — arbitrage du 2026-06-10 ; UC-02 §A1 : Post-MVP (spécifiés), hors catégorisation MoSCoW du MVP (voir `moscow.md` § Variante one-shot express) |
-| Granularité de partage par joueur ou personnage | vision-produit.md §5bis — arbitrage « Granularité du partage » | Horizon vision, condition de retour du 2026-06-10 |
-| Portabilité entrante (réimport de fichier de sauvegarde) | moscow.md — section « Réimport de fichier de sauvegarde » | Could Have |
-| Types de document personnalisés | moscow.md — section « Types de document personnalisés » | Could Have |
-| Notes personnelles joueur | moscow.md — section « Notes personnelles joueur » | Could Have |
+| Contexte one-shot complet (scénario réutilisable, parcours express) | UC-13 ; UC-02 §A1 (parcours express) | UC-13 : Should Have, explicitement hors première livraison — arbitrage du 2026-06-10 ; UC-02 §A1 : Post-MVP (spécifiés), hors catégorisation MoSCoW du MVP (voir `matrice-de-priorites.md` § Variante one-shot express) |
+| Granularité de partage par joueur ou personnage | vision.md §5bis — arbitrage « Granularité du partage » | Horizon vision, condition de retour du 2026-06-10 |
+| Portabilité entrante (réimport de fichier de sauvegarde) | matrice-de-priorites.md — section « Réimport de fichier de sauvegarde » | Could Have |
+| Types de document personnalisés | matrice-de-priorites.md — section « Types de document personnalisés » | Could Have |
+| Notes personnelles joueur | matrice-de-priorites.md — section « Notes personnelles joueur » | Could Have |
 
 ### Vision long terme
 
@@ -493,13 +493,13 @@ valeur, pas vers l'outillage de conception.
 | Préparation adaptée au système de jeu (templates de système) | UC-F01 | Vision long terme |
 | Relations typées entre documents (couche 1) | UC-F06 — couche 1 | Won't Have en MVP, vision long terme |
 | Règles légères sur les propriétés (couche 2) | UC-F06 — couche 2 | Won't Have en MVP, vision long terme |
-| Prérequis technique gravé dès le socle (`documentTypeId` / propriétés structurées) | vision-produit.md §6, moscow.md — Won't Have « Relations entre documents typés » | Choix d'architecture MVP |
+| Prérequis technique gravé dès le socle (`documentTypeId` / propriétés structurées) | vision.md §6, matrice-de-priorites.md — Won't Have « Relations entre documents typés » | Choix d'architecture MVP |
 | Bibliothèque de réutilisation inter-espaces (catalogue, promotion, instanciation) | UC-F07 (largement subsumé par ADR-018) — interface de bibliothèque | Could Have résiduel, post-MVP |
 | Assistant IA pour le MJ | UC-F02 | Won't Have en MVP, vision long terme |
 | Ouverture communautaire (templates communautaires) | UC-F05 | Won't Have en MVP, vision long terme |
 | Table visuelle légère — écarté du cœur | UC-F03 | Won't Have |
 | Application desktop avec synchronisation complète hors ligne — écarté du cœur | UC-F04 | Won't Have |
-| Gel et dégel réversible des espaces au changement de palier | UC-15 | Post-MVP (spécifiés) — hors catégorisation MoSCoW du MVP, classement arbitré (voir `moscow.md` §UC-15) |
+| Gel et dégel réversible des espaces au changement de palier | UC-15 | Post-MVP (spécifiés) — hors catégorisation MoSCoW du MVP, classement arbitré (voir `matrice-de-priorites.md` §UC-15) |
 
 ---
 

@@ -1,6 +1,6 @@
 # Fiche d'écran — Espace personnel
 
-> **Nature** : Déclinaison PERSONAL de la surface Préparation — pas un écran-UC autonome (mix assumé, zoning §S9 RÉSOLU). Fiche de description d'écran basse-fidélité — espace personnel. Démontre la règle d'absence au niveau section : les sections conditionnelles « Modes » et « Partage et visibilité » ne se déclenchent pas pour un espace PERSONAL — elles n'apparaissent pas dans cette fiche (AR-14 ; Famille 7 de conventions-wireframe.md).
+> **Nature** : Déclinaison PERSONAL de la surface Préparation — pas un écran-UC autonome (mix assumé, zoning §S9, DÉCIDÉ 2026-06-25 (AR-15, AR-17)). Fiche de description d'écran basse-fidélité — espace personnel. Démontre la règle d'absence au niveau section : les sections conditionnelles « Modes » et « Partage et visibilité » ne se déclenchent pas pour un espace PERSONAL — elles n'apparaissent pas dans cette fiche (AR-14 ; Famille 7 de conventions-wireframe.md).
 > **Gabarit** : Instancie le gabarit `docs/interface/gabarit-ecran.md`.
 > **Notation et nommage** : `docs/interface/conventions.md`.
 > **Arbitrages figés** : `docs/interface/zonage.md §S6`.
@@ -159,7 +159,7 @@ Intention : le propriétaire accède à son espace de notes et contenus hors cam
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'espace personnel.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à l'espace personnel.
 
 ```
 annonce sans action :
@@ -188,10 +188,10 @@ hiérarchie de lecture à distance :
 Sources : UC-01 ; UC-04 ; UC-05 ;
           AR-11 ; AR-14 ; AR-15 ; AR-16 ; AR-17 ; AR-20 ;
           NFR-ACC-02 ; NFR-OFF-05 ;
-          domaine space-management.md (invariant 13 : mono-membre, pas d'AddMember,
+          domaine space-management/context.md (invariant 13 : mono-membre, pas d'AddMember,
             pas de CreateInvitation) ;
-          domaine session-conduct.md (pas de SessionViewConfig pour PERSONAL) ;
-          châssis S7 (zoning.md §S7)
+          domaine session-conduct/context.md (pas de SessionViewConfig pour PERSONAL) ;
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -201,7 +201,7 @@ Sources : UC-01 ; UC-04 ; UC-05 ;
 ### Mode local (déclenché — surface MJ ; AR-15 : l'espace personnel est le conteneur par défaut en mode local)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne
     bénéficient pas d'une garantie de conservation permanente ;
     propose la création d'un compte
@@ -235,8 +235,8 @@ Déclenché — éléments S8 et S9.
 Points précédemment sous-spécifiés, maintenant résolus :
   - sémantique ARCHIVED / FROZEN d'un espace PERSONAL : tranché — un espace PERSONAL
     est toujours ACTIVE ; `Archive()` et `Freeze()` lui sont refusées (garde d'agrégat),
-    `Unarchive()` est sans objet (`space-management.md` invariant 15 ; zonage.md §S9
-    « Sémantique `ARCHIVED PERSONAL` — RÉSOLUE ») ; cohérent avec l'absence d'UI
+    `Unarchive()` est sans objet (`space-management/context.md` invariant 15 ; zonage.md §S9
+    « Sémantique `ARCHIVED PERSONAL` ») ; cohérent avec l'absence d'UI
     d'archivage de l'espace personnel (AR-14)
   - présence et libellé de l'espace personnel au tableau de bord : tranché —
     carte en tête de grille, badge hors quota, micro-copy neutre

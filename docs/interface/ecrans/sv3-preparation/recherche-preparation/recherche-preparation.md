@@ -99,7 +99,7 @@ Intention : le MJ retrouve rapidement un document dans son espace par son titre,
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la recherche en préparation.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la recherche en préparation.
 
 ```
 annonce sans action :
@@ -127,7 +127,7 @@ hiérarchie de lecture à distance :
 Sources : UC-14 scénario nominal, A1, A2 ; US-UC-14 ;
           AR-11 ;
           NFR-ACC-02 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -137,7 +137,7 @@ Sources : UC-14 scénario nominal, A1, A2 ; US-UC-14 ;
 ### Mode local (déclenché — surface MJ)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne
     bénéficient pas d'une garantie de conservation permanente ;
     propose la création d'un compte

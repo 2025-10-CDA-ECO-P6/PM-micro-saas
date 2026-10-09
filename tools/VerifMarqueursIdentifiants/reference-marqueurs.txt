@@ -5,20 +5,4 @@
 # Cette liste ne se grossit pas pour faire passer un contrôle : elle se réduit quand
 # la tâche de suivi convertit les formes (RÉSOLU, FERMÉE, Clos, TRANCHÉ) ou déclare
 # les marqueurs hors liste dans le registre de docs/conventions.md.
-docs/assurance/strategie-de-test.md|RÉSOLU|2
-docs/besoin/stories/US-UC-01-mode-local-sans-compte.md|TRANCHÉ|1
-docs/besoin/stories/US-UC-09-acces-session-joueur.md|Clos|1
-docs/besoin/stories/US-UC-09-acces-session-joueur.md|RÉSOLU|4
-docs/besoin/stories/US-UC-10-compte-cloud.md|Clos|2
-docs/besoin/stories/US-UC-11-gerer-membres-espace-partage.md|RÉSOLU|5
-docs/besoin/stories/US-UC-14-recherche.md|FERMÉE|3
 docs/conventions.md|RÉSOLU|1
-docs/decisions/ADR-012-rgpd-effacement-compte.md|FLAG JURISTE|2
-docs/interface/ecrans/sv4-espace-personnel/vue-espace-personnel/vue-espace-personnel.md|RÉSOLU|1
-docs/interface/zonage.md|RÉSOLU|7
-docs/projet/decisions-en-attente.md|RÉSOLU|2
-docs/projet/note-de-cadrage.md|À RATIFIER|1
-docs/projet/registre-des-risques.md|À AFFINER|1
-docs/projet/registre-des-risques.md|À RATIFIER PRODUIT|3
-docs/reference/cahier-des-charges.md|RÉSOLU|2
-docs/reference/note-business.md|CADRE MÉTHODOLOGIQUE|1

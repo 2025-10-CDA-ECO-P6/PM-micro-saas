@@ -81,7 +81,7 @@ Note de session (LIVE_NOTE) :
   durables qui sont épinglables.
 
 Invocation depuis la vue session :
-  - en mode LIVE : [UC-07 ; zoning.md §S3] le panneau est accessible depuis
+  - en mode LIVE : [UC-07 ; zonage.md §S3] le panneau est accessible depuis
     la vue session en mode LIVE (graphe de navigation S3)
   - en mode consultation CLOSED : [UC-07 A5] la création à la volée rétroactive
     est disponible depuis la vue session en mode consultation CLOSED
@@ -119,7 +119,7 @@ Invocation depuis la vue session :
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à ce panneau.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à ce panneau.
 
 ```
 annonce sans action :
@@ -143,7 +143,7 @@ hiérarchie de lecture à distance :
 ```
 Sources : UC-07 ; S4 §Vue session MJ ; S4 §Panneau de création rapide
           à la volée ; RB-07-04 ; RB-06-14 ; NFR-ACC-02 ; NFR-ACC-04 ; NFR-OFF-04 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---

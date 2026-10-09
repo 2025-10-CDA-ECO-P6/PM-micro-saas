@@ -99,7 +99,7 @@ Conteneur de jeu ou de contenu personnel appartenant à un propriétaire (`OWNER
 
 Type de l'espace : `CAMPAIGN` (campagne longue, plusieurs sessions attendues), `ONE_SHOT` (session unique attendue, membres permanents optionnels) ou `PERSONAL` (espace personnel du propriétaire — voir `Espace personnel`).
 
-Les différences entre `CAMPAIGN` et `ONE_SHOT` sont comportementales, pas structurelles — `ONE_SHOT` est un `Space` avec `type = ONE_SHOT`. En première livraison (MVP), aucune différence de comportement n'est implémentée entre ces deux valeurs : création, structure des dossiers, cycle de session et vue session sont identiques. Les différences comportementales cibles — parcours de création simplifié, point d'entrée distinct — sont des caractéristiques post-MVP couvertes par l'arbitrage UC-13 (vision-produit §5bis).
+Les différences entre `CAMPAIGN` et `ONE_SHOT` sont comportementales, pas structurelles — `ONE_SHOT` est un `Space` avec `type = ONE_SHOT`. En première livraison (MVP), aucune différence de comportement n'est implémentée entre ces deux valeurs : création, structure des dossiers, cycle de session et vue session sont identiques. Les différences comportementales cibles — parcours de création simplifié, point d'entrée distinct — sont des caractéristiques post-MVP couvertes par l'arbitrage UC-13 (vision.md §5bis).
 
 `PERSONAL` désigne l'espace personnel du propriétaire : conteneur de premier ordre, créé par défaut à la création du compte, mono-membre. Il reçoit tout contenu créé sans espace de jeu explicite. Voir entrée dédiée `Espace personnel`.
 
@@ -204,7 +204,7 @@ La `ScenarioLibrary` (bibliothèque personnelle inter-espaces) est largement sub
 
 ### Bibliothèque personnelle (anciennement `ScenarioLibrary`)
 
-Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, cross-espace. Subsumée sous ADR-018 : il n'existe pas d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry`. La réutilisabilité est portée par `Document.isReusable` (Content Library) ; la bibliothèque personnelle **est** une vue filtrée de l'espace `PERSONAL` du MJ (`type = PERSONAL` ∧ `isReusable = true`), pas un agrégat distinct. Couvert par **UC-13** — priorité définie dans `vision/moscow.md` §UC-13 — Utiliser un scénario réutilisable.
+Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, cross-espace. Subsumée sous ADR-018 : il n'existe pas d'agrégat de pont `ScenarioLibrary`/`ScenarioLibraryEntry`. La réutilisabilité est portée par `Document.isReusable` (Content Library) ; la bibliothèque personnelle **est** une vue filtrée de l'espace `PERSONAL` du MJ (`type = PERSONAL` ∧ `isReusable = true`), pas un agrégat distinct. Couvert par **UC-13** — priorité définie dans `vision/perimetre/matrice-de-priorites.md` §UC-13 — Utiliser un scénario réutilisable.
 
 ---
 
@@ -214,13 +214,13 @@ Bibliothèque personnelle de scénarios réutilisables au niveau du compte MJ, c
 
 Conteneur organisationnel. Structure l'arborescence du contenu dans un espace. Un `Folder` appartient toujours à exactement un `Espace`. Les dossiers système (`isSystem = true`) sont créés automatiquement à la création d'un espace ; ils sont renommables et supprimables librement — `isSystem` est informatif, pas restrictif.
 
-Le dossier virtuel « Non classés » (`isVirtual = true`) est non supprimable. Il est affiché dans la navigation dès qu'il n'est pas vide et masqué tant qu'il est vide ; dans un espace `PERSONAL` sans autre dossier, il est toujours affiché (invariant 4 de [Content Library](domaine/content-library/context.md#invariants-métier)). Il reçoit automatiquement tout document dont le dossier explicite a été supprimé. Il en existe exactement un par espace.
+Le dossier virtuel « Non classés » (`isVirtual = true`) est renommable comme tout dossier mais non supprimable (AR-20 du [zonage](interface/zonage.md) ; décision de l'opérateur, 2026-10-09). Il est affiché dans la navigation dès qu'il n'est pas vide et masqué tant qu'il est vide ; dans un espace `PERSONAL` sans autre dossier, il est toujours affiché (invariant 4 de [Content Library](domaine/content-library/context.md#invariants-métier)). Il reçoit automatiquement tout document dont le dossier explicite a été supprimé. Il en existe exactement un par espace.
 
 ---
 
 ### `DocumentType`
 
-Spécialisation optionnelle d'un `Document`. Les types système built-in sont : `SCENARIO`, `SCENE`, `NPC`, `LOCATION`, `NOTE`, `PLAYER_CHARACTER`, `LIVE_NOTE`, `REVEAL`. Les types personnalisés (MJ-définis) sont post-MVP — priorité définie dans `vision/moscow.md` §« Types de document personnalisés ». Le type est indicatif — il n'impose pas la structure des blocs.
+Spécialisation optionnelle d'un `Document`. Les types système built-in sont : `SCENARIO`, `SCENE`, `NPC`, `LOCATION`, `NOTE`, `PLAYER_CHARACTER`, `LIVE_NOTE`, `REVEAL`. Les types personnalisés (MJ-définis) sont post-MVP — priorité définie dans `vision/perimetre/matrice-de-priorites.md` §« Types de document personnalisés ». Le type est indicatif — il n'impose pas la structure des blocs.
 
 ---
 
@@ -297,10 +297,10 @@ Dossiers créés automatiquement à `SpaceCreated`, selon le type d'espace :
 Capacité permettant au MJ d'exporter l'ensemble d'un espace — documents, notes, structure de dossiers — dans un format ouvert, lisible et réutilisable hors de l'application. Couvre tout type d'espace : campagne, one-shot ou personnel. Disponible en mode local comme avec un compte. Matérialise la promesse de possession des données : la possession n'est actionnable que si elle est exportable.
 
 - Priorité : **Must Have** (version minimale — promu de Should Have par décision produit du
-  2026-06-25 — voir `vision/moscow.md` §« Export d'espace (Must Have — version minimale) » et
-  `vision/vision-produit.md` §5bis « Possession des données »).
+  2026-06-25 — voir `vision/perimetre/matrice-de-priorites.md` §« Export d'espace (Must Have — version minimale) » et
+  `vision/vision.md` §5bis « Possession des données »).
 - Distinct de la migration locale→cloud (qui importe des données vers un compte) : l'export produit un fichier autonome indépendant du compte.
-- Défini dans : **vision-produit.md** §5 et §5bis, **moscow.md** §« Export d'espace (Must Have — version minimale) », **UC-01 A4**, **ADR-018**.
+- Défini dans : **vision.md** §5 et §5bis, **matrice-de-priorites.md** §« Export d'espace (Must Have — version minimale) », **UC-01 A4**, **ADR-018**.
 
 ---
 
@@ -410,16 +410,16 @@ Suppression logique : `isDeleted: bool`, `deletedAt: DateTime?`. Un document sof
 
 | Terme écarté | Terme retenu | Raison ou source |
 |---|---|---|
-| `propriétés structurées.guestAccessId` | `guestAccessId` (champ de premier niveau) | Promu depuis les propriétés structurées vers un champ de premier niveau du `Document` (ADR-002) — `domain/content-library.md` §DocumentType (entité de référence) et `domain/session-conduct.md` §Notes de session — Documents de type LIVE_NOTE. Dérive résorbée : l'ancien chemin `propriétés structurées.guestAccessId` n'est plus observable dans `UC-06-vue-session.md`. |
+| `propriétés structurées.guestAccessId` | `guestAccessId` (champ de premier niveau) | Promu depuis les propriétés structurées vers un champ de premier niveau du `Document` (ADR-002) — `domaine/content-library/context.md` §DocumentType (entité de référence) et `domaine/session-conduct/context.md` §Notes de session — Documents de type LIVE_NOTE. Dérive résorbée : l'ancien chemin `propriétés structurées.guestAccessId` n'est plus observable dans `UC-06-vue-session.md`. |
 | « note privée MJ » | « privé MJ » / `GM_ONLY` | Forme longue non normalisée. Le terme retenu dans la prose de besoin est « privé MJ » ; le terme domaine est `GM_ONLY`. Les deux formes coexistaient dans les UC et US (observable dans `UC-06-vue-session.md` et `US-UC-06-vue-session.md`). Cartographie explicite dans `US-UC-06-vue-session.md` §Mapping de visibilité. |
-| « note privée » (sans qualificatif) | « note de session privé MJ » ou « note de session personnelle joueur » | Terme ambigu : désignait tantôt `GM_ONLY` (privé MJ), tantôt `PLAYER_PRIVATE` (Privé (joueur)). Les deux niveaux sont distincts et non interchangeables. Observable dans `UC-06-vue-session.md` §Règles métier (« notes de session privé MJ ») et dans la règle F-08 de `domain/identity-access.md` et de `domain/session-conduct.md` (« note privée résiduelle »). |
+| « note privée » (sans qualificatif) | « note de session privé MJ » ou « note de session personnelle joueur » | Terme ambigu : désignait tantôt `GM_ONLY` (privé MJ), tantôt `PLAYER_PRIVATE` (Privé (joueur)). Les deux niveaux sont distincts et non interchangeables. Observable dans `UC-06-vue-session.md` §Règles métier (« notes de session privé MJ ») et dans la règle F-08 de `domaine/identity-access/context.md` et de `domaine/session-conduct/context.md` (« note privée résiduelle »). |
 | « note personnelle » | « note de session personnelle joueur » | Raccourci non qualifié ambiguisant avec les notes du MJ. Le terme complet est requis dans les artefacts de besoin. Observable dans `US-UC-06-vue-session.md` titre de l'US-06-08. |
 | « visible par les joueurs » | `PUBLIC` | Terme de langage besoin ; l'équivalent domaine est `visibility = PUBLIC`. Les deux formes sont légitimes dans leurs couches respectives. La dérive consistait à employer « visible par les joueurs » dans des artefacts de domaine au lieu de `PUBLIC` — observable dans `UC-06-vue-session.md` §« note de session (documents créés pendant la session) » et §Règles métier. Cartographie dans `US-UC-06-vue-session.md` §Mapping. |
 | `personnelle joueur` (seul) | `PLAYER_PRIVATE` (domaine) / « Privé (joueur) » (affichage du niveau) | Forme contractée non qualifiée. Employée comme valeur de visibilité dans `UC-06-vue-session.md` §« note de session (documents créés pendant la session) » (« Visibilité : visible par les joueurs, privé MJ ou personnelle joueur »). Le terme domaine est `PLAYER_PRIVATE` ; le niveau s'affiche « Privé (joueur) » ; « note de session personnelle joueur » désigne le type de note, non le niveau. |
 | « accès invité » (sans `Guest`) | `GuestAccess` | Traduction française partielle de l'identifiant de domaine. Les UC emploient parfois « accès invité » ou « joueur invité sans compte » ; l'identifiant canonique du domaine reste `GuestAccess`. La coexistence est observable dans `UC-09` et `UC-06`. |
-| « membres permanents » | `SpaceMembership` actifs / Membres | Terme employé dans `domain/space-management.md` §One-shot — spécificités pour distinguer les joueurs avec compte des invités. Remplacé par la formulation explicite (`SpaceMembership` vs `GuestAccess`). |
+| « membres permanents » | `SpaceMembership` actifs / Membres | Terme employé dans `domaine/space-management/context.md` §One-shot — spécificités pour distinguer les joueurs avec compte des invités. Remplacé par la formulation explicite (`SpaceMembership` vs `GuestAccess`). |
 | `ScenarioLibrary` | « Bibliothèque personnelle » | Agrégat de pont (`ScenarioLibrary`/`ScenarioLibraryEntry`) jamais implémenté, subsumé sous ADR-018 : la réutilisabilité est portée par `Document.isReusable`, la bibliothèque personnelle étant une vue filtrée de l'espace `PERSONAL` — pas un agrégat distinct. Voir glossaire §Bibliothèque personnelle. |
-| `CAMPAIGN` (comme valeur de `InvitationScope`/`GuestAccessScope`) | `SPACE` | Collision de nommage avec la valeur `CAMPAIGN` de `SpaceType` (un type d'espace) : la portée d'accès `CAMPAIGN` ne désignait pas ce type mais un régime d'accès durable, applicable aussi bien à un espace `CAMPAIGN` qu'à un espace `ONE_SHOT`. Renommée `SPACE` pour lever l'ambiguïté — voir glossaire §`Invitation`, `domain/space-management.md` §Enums. |
+| `CAMPAIGN` (comme valeur de `InvitationScope`/`GuestAccessScope`) | `SPACE` | Collision de nommage avec la valeur `CAMPAIGN` de `SpaceType` (un type d'espace) : la portée d'accès `CAMPAIGN` ne désignait pas ce type mais un régime d'accès durable, applicable aussi bien à un espace `CAMPAIGN` qu'à un espace `ONE_SHOT`. Renommée `SPACE` pour lever l'ambiguïté — voir glossaire §`Invitation`, `domaine/space-management/context.md` §Enums. |
 
 ---
 
@@ -429,7 +429,7 @@ Suppression logique : `isDeleted: bool`, `deletedAt: DateTime?`. Un document sof
 
 - **`PascalCase`** pour les agrégats, entités et value objects : `Document`, `GuestAccess`, `SessionViewConfig`, `SpaceMembership`, `DocumentLink`.
 - **`SCREAMING_SNAKE_CASE`** pour les valeurs d'enum : `GM_ONLY`, `PLAYER_PRIVATE`, `PUBLIC`, `ONE_SHOT`, `ACTIVE`, `FROZEN`.
-- **`snake_case` minuscule** pour les **slugs de `DocumentType`** (identifiant technique, autorité `domain/content-library.md` champ `slug`) : `scenario`, `scene`, `npc`, `location`, `note`, `player_character`, `live_note`, `reveal`. La désignation conceptuelle du même type en prose peut apparaître en capitales (`PLAYER_CHARACTER`, `LIVE_NOTE`) — ce n'est pas une valeur d'enum.
+- **`snake_case` minuscule** pour les **slugs de `DocumentType`** (identifiant technique, autorité `domaine/content-library/context.md` champ `slug`) : `scenario`, `scene`, `npc`, `location`, `note`, `player_character`, `live_note`, `reveal`. La désignation conceptuelle du même type en prose peut apparaître en capitales (`PLAYER_CHARACTER`, `LIVE_NOTE`) — ce n'est pas une valeur d'enum.
 - Les identifiants de domaine sont légitimes dans les artefacts de besoin quand ils désignent un concept précis du modèle. Ils ne sont pas de la technologie.
 
 ### Français vs anglais

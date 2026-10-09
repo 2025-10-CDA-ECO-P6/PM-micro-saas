@@ -70,7 +70,7 @@ Intention : le MJ pilote sa session depuis un tableau de bord configurable qui l
   priorité : secondaire-configurable (accessible uniquement en mode consultation CLOSED)
   visibilité : MJ seul
   ancrage  : UC-06 E3 (« le MJ peut encore ajouter des notes de session rétroactives
-             et modifier le résumé ») ; domaine session-conduct.md (`Session.summary` ;
+             et modifier le résumé ») ; domaine session-conduct/context.md (`Session.summary` ;
              `UpdateSummary(text)`, autorisé uniquement en état CLOSED)
 
 [ PANNEAUX DE DOSSIERS ]
@@ -230,7 +230,7 @@ Intention : le MJ pilote sa session depuis un tableau de bord configurable qui l
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la vue session MJ.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la vue session MJ.
 
 ```
 annonce sans action :
@@ -269,8 +269,8 @@ Sources : UC-06 ; UC-06 E3 (résumé et notes rétroactives en CLOSED) ; UC-07 ;
           AR-04 ; AR-06 ; AR-07 ; AR-09 ; AR-10 ; AR-11 ; AR-12 ; AR-18 ; AR-19 ;
           NFR-ACC-02 ; NFR-ACC-04 ; NFR-OFF-04 ; NFR-PERF-04 ;
           RB-06-14 ; RB-06-21 ;
-          domaine session-conduct.md (`Session.summary` ; `UpdateSummary(text)`) ;
-          châssis S7 (zoning.md §S7)
+          domaine session-conduct/context.md (`Session.summary` ; `UpdateSummary(text)`) ;
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -305,7 +305,7 @@ Zones absentes par nature :
   [ABSENT PAR NATURE] affordance « Terminer la session » — il n'y a pas de session
     en cours à terminer
   [ABSENT PAR NATURE] zone de résumé de session — `Session.summary` n'est modifiable
-    qu'en état CLOSED (`UpdateSummary(text)`, domaine session-conduct.md)
+    qu'en état CLOSED (`UpdateSummary(text)`, domaine session-conduct/context.md)
 
 Affordances spécifiques :
   - [AR-09 ; UC-06 §Déclencheur] lancer la session → basculement en mode LIVE
@@ -328,7 +328,7 @@ Zones actives : toutes les zones listées dans « Zones et hiérarchie »
 
 Zones absentes par nature :
   [ABSENT PAR NATURE] zone de résumé de session — `Session.summary` n'est modifiable
-    qu'en état CLOSED (`UpdateSummary(text)`, domaine session-conduct.md)
+    qu'en état CLOSED (`UpdateSummary(text)`, domaine session-conduct/context.md)
 
 Affordances spécifiques :
   - [AR-12 ; UC-08] partager un document → visible par les joueurs (PUBLIC) +
@@ -389,14 +389,14 @@ Affordances spécifiques :
   - [UC-08 A3 ; AR-12] partager un document rétroactivement → le document devient
     visible par les joueurs (PUBLIC) SANS auto-épinglage (l'auto-épinglage est
     réservé au mode LIVE — UC-08 A3)
-  - [UC-06 E3 ; domaine session-conduct.md] modifier le résumé de la session →
+  - [UC-06 E3 ; domaine session-conduct/context.md] modifier le résumé de la session →
     le MJ rédige ou modifie le résumé narratif libre de la séance (`Session.summary`,
     via `UpdateSummary(text)`) ; distinct des notes de session rétroactives
   - [UC-06 ; glossaire §Session] archiver la session → la session passe au statut
     archivée, lecture seule complète (aucune modification possible)
 
 Éléments différés (S8) :
-  [HORS-MVP — moscow.md §Won't Have] clôture formelle de session (procédure guidée)
+  [HORS-MVP — matrice-de-priorites.md §Won't Have] clôture formelle de session (procédure guidée)
 ```
 
 ---
@@ -436,7 +436,7 @@ Affordances de partage et d'épinglage :
 ### Mode local (déclenché — surface MJ)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne
     bénéficient pas d'une garantie de conservation permanente ;
     propose la création d'un compte
@@ -467,8 +467,8 @@ Déclenché — éléments S8 et S9.
     (révocations, associations joueur-personnage)
   [HORS-MVP — UC-08 §Règles métier ; vision §5bis] partage sélectif par joueur
     ou personnage
-  [HORS-MVP — moscow.md §Won't Have] clôture formelle de session
-  [HORS-MVP — moscow.md §Won't Have] table visuelle
+  [HORS-MVP — matrice-de-priorites.md §Won't Have] clôture formelle de session
+  [HORS-MVP — matrice-de-priorites.md §Won't Have] table visuelle
 
 Éléments sous-spécifiés (S9) :
   [SOUS-SPÉCIFIÉ — S9 §Notification active côté joueur] la notification active

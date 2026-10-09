@@ -150,7 +150,7 @@ Intention : le MJ accède depuis un point d'entrée unique à l'ensemble des res
 
 ### Accessibilité (delta)
 
-Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zoning.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la vue campagne.
+Les garanties transversales (focus clavier visible en permanence, ordre de navigation cohérent) sont portées par le châssis applicatif (`zonage.md §S7 §Accessibilité transversale`). Cette section couvre uniquement ce qui est spécifique à la vue campagne.
 
 ```
 annonce sans action :
@@ -180,7 +180,7 @@ hiérarchie de lecture à distance :
 Sources : UC-02 ; UC-04 ; UC-05 ; UC-06 ; UC-08 ; UC-11 ;
           AR-01 ; AR-09 ; AR-10 ; AR-11 ; AR-13 ; AR-14 ;
           NFR-ACC-02 ; NFR-OFF-04 ;
-          châssis S7 (zoning.md §S7)
+          châssis S7 (zonage.md §S7)
 ```
 
 ---
@@ -190,7 +190,7 @@ Sources : UC-02 ; UC-04 ; UC-05 ; UC-06 ; UC-08 ; UC-11 ;
 ### Mode local (déclenché — surface MJ)
 
 ```
-Bandeaux présents (châssis standard — voir zoning.md §S7 §Châssis mode local) :
+Bandeaux présents (châssis standard — voir zonage.md §S7 §Châssis mode local) :
   - bandeau de durabilité : non bloquant ; signale que les données locales ne
     bénéficient pas d'une garantie de conservation permanente ;
     propose la création d'un compte
@@ -235,7 +235,7 @@ Points précédemment sous-spécifiés, maintenant résolus :
   - interface de l'espace personnel : tranché — la déclinaison réduite de cette surface
     pour l'espace personnel (sans vue session, sans invitation de joueurs, sans dossiers
     système nommés) est décrite par `vue-espace-personnel.md` (AR-14 ; AR-15 ; AR-17 ;
-    zonage.md §S9 « Interface de l'espace personnel — RÉSOLU ») ; ne restent en
+    zonage.md §S9 « Interface de l'espace personnel ») ; ne restent en
     interview que la perception de l'espace personnel et son libellé de surface,
     qui ne bloquent pas la fiche
 ```

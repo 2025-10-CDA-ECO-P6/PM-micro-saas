@@ -30,7 +30,7 @@ Permettre à un joueur de rejoindre une session Haversack en cliquant sur un lie
 
 ## Priorité MoSCoW
 
-La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`moscow.md`, § UC-09 — Accès joueur sans compte](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `moscow.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
+La priorité MoSCoW se lit exclusivement dans la matrice de priorités, quel qu'en soit le grain : ici dans [`matrice-de-priorites.md`, § UC-09 — Accès joueur sans compte](../vision/perimetre/matrice-de-priorites.md) — seule autorité du corpus pour l'attribuer (voir [`docs/reference/ordre-d-autorite.md`, § Ordre d'autorité entre artefacts](../../reference/ordre-d-autorite.md), point 1 : les use cases sont la source de vérité du besoin, les user stories en dérivent et s'y conforment). Cette fiche ne répartit donc pas de priorité propre par story : une répartition au grain story recopierait une valeur que seul `matrice-de-priorites.md` a l'autorité d'accorder, et qu'une révision ultérieure de ce document laisserait alors périmée ici sans le savoir.
 
 **Source de la priorité** : Matrice de priorités
 
@@ -180,13 +180,14 @@ Scénario : Accès expire après 24h de grâce
 **Règles métier** :
 - RB-09-06 : Un `GuestAccess` révoqué par le MJ est immédiatement invalidé.
 - RB-09-07 : Un `GuestAccess` expiré (délai de grâce dépassé) est invalide.
-- RB-09-08 : Un lien expiré, révoqué, invalide ou mal formé est traité avec un seul et même affichage — aucune information sur l'existence de l'espace partagé, ni sur l'existence passée du lien, n'est révélée.
+- RB-09-08 : Un lien expiré, révoqué, invalide, mal formé ou d'un espace archivé est traité avec un seul et même affichage — aucune information sur l'existence de l'espace partagé, ni sur l'existence passée du lien, n'est révélée.
 - RB-09-09 : Le message affiché est sobre et invite le joueur à contacter le MJ.
 
 **Critères d'acceptation** :
 - [ ] Un lien de session expiré affiche un message "Ce lien n'est pas utilisable" et invite à contacter le MJ.
 - [ ] Un lien révoqué affiche le même message qu'un lien expiré.
 - [ ] Un lien mal formé affiche le même message — aucune information sur l'espace partagé n'est révélée.
+- [ ] Le lien d'un espace archivé affiche le même message tant que l'espace est archivé.
 - [ ] La page d'erreur est sobre et ne révèle pas l'existence de l'espace partagé.
 
 ```gherkin
@@ -314,7 +315,7 @@ Scénario : MJ peut promouvoir le joueur migré en Member
 | Partage sélectif de documents par joueur | Hors MVP — RB-08-04 définit que le partage s'applique à tous les membres et GuestAccess actifs. |
 | Notification joueur (email, push) à l'expiration du lien | Hors périmètre UC-09. Traité dans les fonctionnalités de notification. |
 | Récapitulatif post-session envoyé par email au joueur sans compte | Hors MVP (priorité : [matrice de priorités](../vision/perimetre/matrice-de-priorites.md#récapitulatif-post-session-par-email-à-linvité-uc-09), § Récapitulatif post-session par email à l'invité (UC-09)) — nécessite une adresse email, hors scope MVP pour les invités. |
-| Identifiant ou pseudo dédié pour désambiguïser les homonymes (nom d'affichage en collision) | **Clos (Q#1)** — le nom d'affichage seul suffit ; l'identité technique est le `GuestAccessId`. La désambiguïsation d'homonymes est un traitement de présentation (suffixe dérivé du `GuestAccessId`), pas un identifiant de modèle. |
+| Identifiant ou pseudo dédié pour désambiguïser les homonymes (nom d'affichage en collision) | **DÉCIDÉ 2026-07-15 ([Questions ouvertes](#questions-ouvertes), point 1)** — le nom d'affichage seul suffit ; l'identité technique est le `GuestAccessId`. La désambiguïsation d'homonymes est un traitement de présentation (suffixe dérivé du `GuestAccessId`), pas un identifiant de modèle. |
 
 ---
 
@@ -342,7 +343,7 @@ Scénario : MJ peut promouvoir le joueur migré en Member
 
 ## Questions ouvertes
 
-1. **RÉSOLU** — Le nom d'affichage seul suffit ; aucun identifiant léger (pseudo, code court) n'est requis à la saisie. L'identité technique du joueur invité est le `GuestAccessId` (généré à l'octroi de l'accès, jamais saisi) — le nom d'affichage est un label sans garantie d'unicité. La désambiguïsation en cas d'homonymie (deux « Marc ») est traitée en **présentation** (suffixe court dérivé du `GuestAccessId`, affiché dans la vue session du MJ), pas par une contrainte de modèle : imposer un pseudo ou un code obligatoire sur-modéliserait un besoin de confort d'affichage.
-2. **RÉSOLU** — La durée de grâce est ratifiée à **24 h ferme** après la fin de session, alignée avec RB-09-01 et la règle 5 du domaine Space Management (`GuestAccess SESSION` expire à la fermeture de la session + 24h de grâce). Pas de variation par offre ni d'interview complémentaire requise.
-3. **RÉSOLU** — Le joueur invité reçoit une mise à jour **ambiante et temps réel** du partage de documents sans notification active au MVP (voir zoning **AR-06**). L'annonce assistive est couverte orthogonalement par **NFR-ACC-02**.
-4. **RÉSOLU** — L'accès est **immédiat** après migration invité→compte ; la validation de l'adresse de messagerie n'est **pas bloquante** (RB-10-05, ADR-015 §2.1 — cf. UC-10). L'accès `Member` permanent de l'espace partagé reste gouverné par le consentement explicite du MJ (RB-09-16), jamais par l'état `emailVerified` du compte — ces deux gates sont indépendants. *(Cette question re-litigeait une règle déjà tranchée par UC-10/RB-10-05 ; clôture par renvoi vers la source.)*
+1. **DÉCIDÉ 2026-07-15 ([kernel du domaine](../../domaine/core/kernel.md), `GuestAccessId`)** — Le nom d'affichage seul suffit ; aucun identifiant léger (pseudo, code court) n'est requis à la saisie. L'identité technique du joueur invité est le `GuestAccessId` (généré à l'octroi de l'accès, jamais saisi) — le nom d'affichage est un label sans garantie d'unicité. La désambiguïsation en cas d'homonymie (deux « Marc ») est traitée en **présentation** (suffixe court dérivé du `GuestAccessId`, affiché dans la vue session du MJ), pas par une contrainte de modèle : imposer un pseudo ou un code obligatoire sur-modéliserait un besoin de confort d'affichage.
+2. **DÉCIDÉ 2026-07-15 (RB-09-01, [Space Management](../../domaine/space-management/context.md), règle 5)** — La durée de grâce est ratifiée à **24 h ferme** après la fin de session, alignée avec RB-09-01 et la règle 5 du domaine Space Management (`GuestAccess SESSION` expire à la fermeture de la session + 24h de grâce). Pas de variation par offre ni d'interview complémentaire requise.
+3. **DÉCIDÉ 2026-07-15 ([AR-06](../../interface/zonage.md), NFR-ACC-02)** — Le joueur invité reçoit une mise à jour **ambiante et temps réel** du partage de documents sans notification active au MVP (voir zoning **AR-06**). L'annonce assistive est couverte orthogonalement par **NFR-ACC-02**.
+4. **DÉCIDÉ 2026-07-15 (RB-10-05, [ADR-015](../../decisions/ADR-015-securite-authentification-mvp.md) §2.1)** — L'accès est **immédiat** après migration invité→compte ; la validation de l'adresse de messagerie n'est **pas bloquante** (RB-10-05, ADR-015 §2.1 — cf. UC-10). L'accès `Member` permanent de l'espace partagé reste gouverné par le consentement explicite du MJ (RB-09-16), jamais par l'état `emailVerified` du compte — ces deux gates sont indépendants. *(Cette question re-litigeait une règle déjà tranchée par UC-10/RB-10-05 ; clôture par renvoi vers la source.)*

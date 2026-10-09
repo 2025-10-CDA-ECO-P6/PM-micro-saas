@@ -13,7 +13,7 @@ Antoine mène trois campagnes simultanées avec trois groupes différents. Chaqu
 
 Si Haversack lui dit qu'il est agnostique au système, il va tester ça immédiatement. La question directe qu'il pose à l'outil : les dossiers par défaut peuvent-ils être supprimés ou renommés ? Peut-on vraiment adapter la structure par campagne ?
 
-Ce parcours couvre trois temps : la mise en place initiale de trois espaces distincts avec des structures adaptées à chaque système, la conduite de sessions multi-campagnes, et l'invitation de ses joueurs réguliers. Il ne couvre pas les scénarios réutilisables — UC-13 est explicitement hors première livraison (vision-produit §5bis, arbitrage du 2026-06-10) et ne fait pas partie du périmètre MVP.
+Ce parcours couvre trois temps : la mise en place initiale de trois espaces distincts avec des structures adaptées à chaque système, la conduite de sessions multi-campagnes, et l'invitation de ses joueurs réguliers. Il ne couvre pas les scénarios réutilisables — UC-13 est explicitement hors première livraison (vision.md §5bis, arbitrage du 2026-06-10) et ne fait pas partie du périmètre MVP.
 
 Le parcours suppose qu'Antoine crée directement un compte dès le départ — il n'est pas dans un profil d'évaluation méfiant. Il a trois groupes de joueurs, un compte cloud est le prérequis naturel.
 
@@ -278,7 +278,7 @@ Ces points sont fondés sur le corpus (fiche persona, UJ-UC-05, UJ-UC-07) — au
 
 1. **Dashboard multi-campagnes** : la fiche persona pose directement la question « Y a-t-il un dashboard multi-campagnes ou faut-il naviguer campagne par campagne ? » Le comportement du tableau de bord multi-campagnes n'est pas spécifié au niveau de détail d'un UC dédié. UC-02 couvre la création de l'espace et la redirection vers son tableau de bord, mais la navigation entre plusieurs campagnes simultanées relève de l'interface générale — zone peu documentée dans les UC existants.
 
-2. **Types personnalisés absents du MVP** : Antoine veut créer un type « Faction » avec les propriétés propres à Blades in the Dark. Les types personnalisés sont Could Have post-MVP (moscow.md §Could Have). En première livraison, il modélise ses factions comme des documents libres — valeur réelle, mais moins différenciante.
+2. **Types personnalisés absents du MVP** : Antoine veut créer un type « Faction » avec les propriétés propres à Blades in the Dark. Les types personnalisés sont Could Have post-MVP (matrice-de-priorites.md §Could Have). En première livraison, il modélise ses factions comme des documents libres — valeur réelle, mais moins différenciante.
 
 3. **Dossiers par défaut imposés au premier regard** : la fiche persona indique qu'Antoine va tester l'agnosticisme système immédiatement. Si les dossiers système sont renommables et supprimables (ce qu'ils sont — UC-05 règle métier), la friction disparaît. Si ce n'était pas le cas, Antoine abandonnerait.
 
@@ -286,7 +286,7 @@ Ces points sont fondés sur le corpus (fiche persona, UJ-UC-05, UJ-UC-07) — au
 
 5. **Limite de 4 joueurs par session (FREE)** : Antoine a potentiellement plus de 4 joueurs dans un groupe. La limite FREE est atteinte pour ses groupes les plus larges — déclencheur naturel de l'upgrade vers PRO.
 
-6. **Réutilisation cross-campagne via l'espace personnel, sans instanciation dans le MVP** : la fiche persona demande explicitement un espace personnel où stocker ses contenus réutilisables — templates de PNJ, factions génériques, fragments de lore — pour les instancier ensuite dans la campagne qui en a besoin, sans les dupliquer (persona-05-antoine.md §Ce qu'il utiliserait, §Ce qu'il demande à l'app). L'espace personnel d'Antoine existe dès l'étape 1 (créé automatiquement à la création du compte) et peut porter ce contenu réutilisable (`Document.isReusable = true`, glossaire §`Bibliothèque personnelle`). Mais l'instanciation indépendante d'un document de l'espace personnel vers une campagne cible relève d'UC-13, explicitement hors première livraison (vision-produit §5bis). Dans le MVP, Antoine ne peut que dupliquer manuellement le contenu de son espace personnel vers chacune de ses trois campagnes — même limite que celle déjà documentée pour les templates de dossier (point 4).
+6. **Réutilisation cross-campagne via l'espace personnel, sans instanciation dans le MVP** : la fiche persona demande explicitement un espace personnel où stocker ses contenus réutilisables — templates de PNJ, factions génériques, fragments de lore — pour les instancier ensuite dans la campagne qui en a besoin, sans les dupliquer (persona-05-antoine.md §Ce qu'il utiliserait, §Ce qu'il demande à l'app). L'espace personnel d'Antoine existe dès l'étape 1 (créé automatiquement à la création du compte) et peut porter ce contenu réutilisable (`Document.isReusable = true`, glossaire §`Bibliothèque personnelle`). Mais l'instanciation indépendante d'un document de l'espace personnel vers une campagne cible relève d'UC-13, explicitement hors première livraison (vision.md §5bis). Dans le MVP, Antoine ne peut que dupliquer manuellement le contenu de son espace personnel vers chacune de ses trois campagnes — même limite que celle déjà documentée pour les templates de dossier (point 4).
 
 ---
 

@@ -42,7 +42,7 @@ bounded context du Domaine, le noyau partagé (§ 4), l'isolation du module de n
 Clean Architecture (§ 2). Relèvent de l'ouverture de J0 : la séparation en projets à l'intérieur de chaque couche
 — combien, et lesquels —, les noms de projet, et le contenu de chacun — dossiers, fichiers, classes, sous-dossiers
 (`[À TRANCHER — J0]`, convention de balisage reprise de
-[guide-conventions-et-dod.md, § Convention de balisage](../projet/conventions-dod.md)).
+[conventions-dod.md, § Convention de balisage](../projet/conventions-dod.md)).
 
 **Convention de désignation.** Un projet dont le nom n'est pas tranché se désigne par son rôle — « le projet
 Domaine unique », « le projet Application unique » ; un namespace se désigne par son nom, tranché. Tout document
@@ -158,7 +158,7 @@ Ce test remplace la « discipline de revue de code » (insuffisante en contexte 
 
 Ce test est un **livrable de J0** (avant la première livraison à production).
 
-**Outillage tranché** (décision d'entrée en build du 2026-09-03) : **les deux mécanismes, chacun sur les règles qu'il vérifie honnêtement**. La règle 2 — les frontières entre namespaces d'un même projet — relève de **NetArchTest**, qui parcourt le graphe des types de l'assemblage compilé ; un contrôle sur le texte source raterait en silence les noms pleinement qualifiés, les `global using`, les alias et les dépendances portées par une signature. Les règles 1 et 3 — les références entre projets — relèvent d'un **contrôle du graphe des fichiers de projet**, sans ambiguïté de syntaxe et exécutable avant la compilation. *Détail et limites de chacun : [`guide-conventions-et-dod.md §6`](../projet/conventions-dod.md).*
+**Outillage tranché** (décision d'entrée en build du 2026-09-03) : **les deux mécanismes, chacun sur les règles qu'il vérifie honnêtement**. La règle 2 — les frontières entre namespaces d'un même projet — relève de **NetArchTest**, qui parcourt le graphe des types de l'assemblage compilé ; un contrôle sur le texte source raterait en silence les noms pleinement qualifiés, les `global using`, les alias et les dépendances portées par une signature. Les règles 1 et 3 — les références entre projets — relèvent d'un **contrôle du graphe des fichiers de projet**, sans ambiguïté de syntaxe et exécutable avant la compilation. *Détail et limites de chacun : [`conventions-dod.md §6`](../projet/conventions-dod.md).*
 
 *Source : [ADR-008, § Compléments post-revue](../decisions/ADR-008-structure-solution.md)*
 
@@ -185,7 +185,7 @@ Le domaine C#/.NET côté serveur reste la **source de vérité unique**.
 
 **Deux conséquences, et la seconde est structurelle.** D'abord, la couche cliente se construit contre ce contrat sans attendre l'implémentation du domaine ([ADR-001, § Compléments post-revue (2026-09-03)](../decisions/ADR-001-execution-domaine-mode-local.md)) : une doublure qui rend des jeux de données le satisfait. Ensuite, **deux travaux portant sur deux agrégats distincts n'écrivent jamais le même fichier d'accès au store** — il n'existe pas de service de façade partagé.
 
-**Contrôle opposable** : une règle de style interdit tout import direct de l'API du store hors de ces services ([`guide-conventions-et-dod.md §3`](../projet/conventions-dod.md)).
+**Contrôle opposable** : une règle de style interdit tout import direct de l'API du store hors de ces services ([`conventions-dod.md §3`](../projet/conventions-dod.md)).
 
 ### Projection dérivée du serveur
 

@@ -236,7 +236,7 @@ Signale un élément présent dans le corpus mais explicitement hors périmètre
 Exemples :
 ```
 [HORS-MVP — UC-11 scénario nominal] invitation par email
-[HORS-MVP — moscow.md §Could Have] notes personnelles joueur persistantes inter-sessions sans compte
+[HORS-MVP — matrice-de-priorites.md §Could Have] notes personnelles joueur persistantes inter-sessions sans compte
 ```
 
 ---

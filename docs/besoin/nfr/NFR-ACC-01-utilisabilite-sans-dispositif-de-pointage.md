@@ -70,7 +70,7 @@ Il oriente l'implémentation sans se substituer au besoin formulé ici.
   ouverture d'un export dans un lecteur externe).
 - La configuration matérielle de l'appareil de l'utilisateur (disposition du clavier, pilotes,
   paramètres d'accessibilité du système d'exploitation).
-- Les parcours explicitement hors MVP (UC-HORS-MVP).
+- Les parcours explicitement hors MVP (exclusions.md).
 
 ---
 

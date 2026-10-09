@@ -1,6 +1,6 @@
 # Spec — Instrumentation par pilier, capture email, analytics RGPD
 
-- **Statut** : cinq des six points qui bloquaient le passage en développement sont tranchés (2026-09-03) ; seul le schéma d'événements reste ouvert. Cette spec, fidèle à sa nature de report, **ne les tranche pas ici** — elle renvoie vers les documents qui font autorité : [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) pour les seuils, le transport et la capture de contact, [`vision-produit.md §2.3`](../../besoin/vision/vision.md) pour la limite de l'instrument. Le schéma d'événements formalisé, seul point ouvert, se dérive des décisions ci-dessus au moment de l'implémentation.
+- **Statut** : cinq des six points qui bloquaient le passage en développement sont tranchés (2026-09-03) ; seul le schéma d'événements reste ouvert. Cette spec, fidèle à sa nature de report, **ne les tranche pas ici** — elle renvoie vers les documents qui font autorité : [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) pour les seuils, le transport et la capture de contact, [`vision.md §2.3`](../../besoin/vision/vision.md) pour la limite de l'instrument. Le schéma d'événements formalisé, seul point ouvert, se dérive des décisions ci-dessus au moment de l'implémentation.
 - **Sources** : [ADR-006 — Périmètre MVP](../../decisions/ADR-006-perimetre-mvp.md), section « Compléments post-revue » (lignes 55-61). Contrainte RGPD de cohérence : [`cahier-des-charges.md` §7.4](../../reference/cahier-des-charges.md#74-conformité-rgpd--protection-des-données) (ligne 808) et [NFR-CONF-02](../../besoin/nfr/NFR-CONF-02-isolation-donnees-mode-local.md).
 - **Périmètre** : [SOUS-SPÉCIFIÉ — périmètre couvert et exclu non écrit dans le document]
 - **Nature** : spec pré-build (approche de report fidèle au corpus). Ce document reporte fidèlement ce qui est acté dans le corpus de décisions et nomme, sans les combler, les points laissés ouverts. Aucune valeur numérique, aucun nom d'outil, aucun mécanisme non explicitement acté dans le corpus n'est introduit ici.
@@ -44,14 +44,14 @@ Le tableau ci-dessous décompose chaque pilier en événements discrets. Les col
 |---|---|---|---|
 | Campagne créée | Point de sortie de la création de campagne (couche Application) | `[À TRANCHER — ticket]` | `space_id` (probable, non acté) — reste à confirmer |
 | N documents créés | Point de sortie de la création de document, cumulé par campagne | `[À TRANCHER — ticket]` | `space_id`, compteur de documents — reste à confirmer |
-| Seuil N | — | — | **Tranché (2026-09-03)** : N = **3 documents**. Geste structurant de l'espace personnel : un dossier créé, ou un document déplacé hors de « Non classés ». Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Seuil N | — | — | **Tranché (2026-09-03)** : N = **3 documents**. Geste structurant de l'espace personnel : un dossier créé, ou un document déplacé hors de « Non classés ». Renvoi seul — [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### 3.2 Pilier Vue session
 
 | Étape du critère | Point de capture | Événement (nom technique) | Propriétés |
 |---|---|---|---|
 | Session ouverte | Point d'entrée en session (couche Application ou Presentation) | `[À TRANCHER — ticket]` | `session_id`, `space_id` — reste à confirmer |
-| Usage réel constaté | — | point d'action en session | **Tranché (2026-09-03)** : au moins une action du MJ pendant la session — une note de session créée, un document épinglé, ou une scène naviguée. Une durée est explicitement écartée. Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
+| Usage réel constaté | — | point d'action en session | **Tranché (2026-09-03)** : au moins une action du MJ pendant la session — une note de session créée, un document épinglé, ou une scène naviguée. Une durée est explicitement écartée. Renvoi seul — [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
 
 ### 3.3 Pilier Partage
 
@@ -62,8 +62,8 @@ Le tableau ci-dessous décompose chaque pilier en événements discrets. Les col
 
 ### 3.4 Ce que la spec ne fixe pas
 
-- **Le transport de la mesure est tranché (2026-09-03)** et rend la question de l'outil externe sans objet en mode local : les compteurs sont écrits dans le store local et **ne quittent le navigateur qu'à la création d'un compte**. Aucun appel sortant n'a lieu en mode local, ce qui préserve la directive `connect-src 'self'` et la garantie observable qu'elle porte. Renvoi seul — [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md).
-- **La limite de ce choix est nommée** : les MJ qui ne créent jamais de compte ne transmettent jamais leurs compteurs, ce qui biaise H1 et rend H5 partiellement circulaire. Renvoi seul — [`vision-produit.md §2.3`](../../besoin/vision/vision.md).
+- **Le transport de la mesure est tranché (2026-09-03)** et rend la question de l'outil externe sans objet en mode local : les compteurs sont écrits dans le store local et **ne quittent le navigateur qu'à la création d'un compte**. Aucun appel sortant n'a lieu en mode local, ce qui préserve la directive `connect-src 'self'` et la garantie observable qu'elle porte. Renvoi seul — [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md).
+- **La limite de ce choix est nommée** : les MJ qui ne créent jamais de compte ne transmettent jamais leurs compteurs, ce qui biaise H1 et rend H5 partiellement circulaire. Renvoi seul — [`vision.md §2.3`](../../besoin/vision/vision.md).
 - **La liste concrète des événements/propriétés** au sens d'un schéma formalisé (noms exacts, typage) reste à écrire — elle **se dérive** des trois critères d'activation ci-dessus et du transport tranché, sans nouvelle décision produit. `[À TRANCHER — ticket]`
 
 ---
@@ -85,8 +85,8 @@ L'ADR-006 ne fixe que le champ d'application et la qualification (« non bloquan
 
 ### 4.2 Ce qui est décidé depuis
 
-- **Mécanisme de capture email non bloquante** — DÉCIDÉ 2026-09-03 ([`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md)) : sollicitation unique, affichée **après** que le MJ a atteint l'activation préparation ; un refus ou une absence de réponse vaut refus définitif ; l'adresse part avec les compteurs à la création de compte et reste effaçable sur demande. Renvoi seul.
-- **Traitement des données** — DÉCIDÉ 2026-09-03 ([`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md)) par le transport : rien ne sort du navigateur avant la création d'un compte, moment où la donnée entre dans le périmètre de traitement du compte. Renvoi seul.
+- **Mécanisme de capture email non bloquante** — DÉCIDÉ 2026-09-03 ([`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md)) : sollicitation unique, affichée **après** que le MJ a atteint l'activation préparation ; un refus ou une absence de réponse vaut refus définitif ; l'adresse part avec les compteurs à la création de compte et reste effaçable sur demande. Renvoi seul.
+- **Traitement des données** — DÉCIDÉ 2026-09-03 ([`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md)) par le transport : rien ne sort du navigateur avant la création d'un compte, moment où la donnée entre dans le périmètre de traitement du compte. Renvoi seul.
 
 ---
 
@@ -108,14 +108,14 @@ Ce principe **contraint** la résolution des trous du §3 et du §4 — en parti
 
 | # | Point | État | Référence |
 |---|---|---|---|
-| 1 | Valeur de N (pilier préparation) | **tranché** — N = 3 documents ; geste structurant nommé | ADR-006:57 ; [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
-| 2 | Opérationnalisation de « usage réel constaté » | **tranché** — au moins une action du MJ en session | ADR-006:58 ; [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
-| 3 | Outil analytics | **sans objet en mode local** — le transport tranché n'émet aucun appel sortant avant la création de compte | ADR-006:61 ; [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
+| 1 | Valeur de N (pilier préparation) | **tranché** — N = 3 documents ; geste structurant nommé | ADR-006:57 ; [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
+| 2 | Opérationnalisation de « usage réel constaté » | **tranché** — au moins une action du MJ en session | ADR-006:58 ; [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
+| 3 | Outil analytics | **sans objet en mode local** — le transport tranché n'émet aucun appel sortant avant la création de compte | ADR-006:61 ; [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
 | 4 | Liste concrète des événements/propriétés (schéma formalisé) | ouvert — **se dérive** des cinq autres, sans décision produit supplémentaire | ADR-006:55-61 (absent) |
-| 5 | Technique de traitement des données | **tranché** — rien ne quitte le navigateur avant la création de compte | ADR-006:61 ; [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
-| 6 | Mécanisme de capture de contact | **tranché** — sollicitation unique après activation, refus définitif | ADR-006:61 ; [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
+| 5 | Technique de traitement des données | **tranché** — rien ne quitte le navigateur avant la création de compte | ADR-006:61 ; [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
+| 6 | Mécanisme de capture de contact | **tranché** — sollicitation unique après activation, refus définitif | ADR-006:61 ; [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) |
 
-Cinq de ces six points sont tranchés le 2026-09-03 — seuils, opérationnalisation de l'usage réel, transport de la mesure en lieu et place d'un outil externe, technique de traitement, et mécanisme de capture de contact. **Aucun n'est tranché *dans* ce document**, fidèlement à sa nature de report : ils le sont dans [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) et [`vision-produit.md §2.3`](../../besoin/vision/vision.md), vers lesquels les sections ci-dessus renvoient. Le sixième — le schéma d'événements formalisé — se dérive des cinq autres au moment de l'implémentation et ne demande aucune décision produit supplémentaire.
+Cinq de ces six points sont tranchés le 2026-09-03 — seuils, opérationnalisation de l'usage réel, transport de la mesure en lieu et place d'un outil externe, technique de traitement, et mécanisme de capture de contact. **Aucun n'est tranché *dans* ce document**, fidèlement à sa nature de report : ils le sont dans [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) et [`vision.md §2.3`](../../besoin/vision/vision.md), vers lesquels les sections ci-dessus renvoient. Le sixième — le schéma d'événements formalisé — se dérive des cinq autres au moment de l'implémentation et ne demande aucune décision produit supplémentaire.
 
 ---
 

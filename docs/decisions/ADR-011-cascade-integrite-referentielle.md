@@ -74,9 +74,9 @@ Un document peut être instancié depuis un document source appartenant à un au
 
 **FK ajoutées (3) — net-nouvelles, portent le total de 35 à 38 :**
 
-- `documents.document_type_id` → `document_types.id` (nullable, intra-module CL→CL) — content-library.md
-- `folders.default_document_type_id` → `document_types.id` (nullable, intra-module CL→CL) — content-library.md
-- `membership_characters.(space_id, user_id)` → `space_memberships.(space_id, user_id)` (composite NOT NULL, intra-module SM→SM) — space-management.md
+- `documents.document_type_id` → `document_types.id` (nullable, intra-module CL→CL) — content-library/context.md
+- `folders.default_document_type_id` → `document_types.id` (nullable, intra-module CL→CL) — content-library/context.md
+- `membership_characters.(space_id, user_id)` → `space_memberships.(space_id, user_id)` (composite NOT NULL, intra-module SM→SM) — space-management/context.md
 
 Ces trois FK sont intra-module : leur ajout est sans effet sur le décompte cross-module. Elles sont la seule source de la variation du total du graphe de cascade (35 → **38 FK**).
 

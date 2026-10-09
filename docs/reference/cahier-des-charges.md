@@ -171,7 +171,7 @@ Le MVP doit démontrer cinq hypothèses auprès d'une cohorte pilote d'utilisate
 
 | # | Hypothèse | Seuil chiffré | Délai | Instrument de constat |
 |---|---|---|---|---|
-| H1 | Un MJ peut créer un espace structuré et y retrouver ses informations sans friction d'onboarding (pas de compte obligatoire au démarrage). | ≥ 60 % des MJ de la cohorte pilote qui ouvrent l'application atteignent l'activation préparation (espace actif — campagne avec premiers documents créés, ou espace personnel dont le contenu traduit un geste structurant — définition consolidée en `vision-produit.md §2.3`). | 14 jours après le premier usage. | Activation préparation (mesure d'usage anonyme). |
+| H1 | Un MJ peut créer un espace structuré et y retrouver ses informations sans friction d'onboarding (pas de compte obligatoire au démarrage). | ≥ 60 % des MJ de la cohorte pilote qui ouvrent l'application atteignent l'activation préparation (espace actif — campagne avec premiers documents créés, ou espace personnel dont le contenu traduit un geste structurant — définition consolidée en `vision.md §2.3`). | 14 jours après le premier usage. | Activation préparation (mesure d'usage anonyme). |
 | H2 (centrale) | La vue de session apporte une valeur réelle pendant une partie (réduction du temps de recherche, accès au contenu préparé, création à la volée). | ≥ 50 % des MJ ayant atteint l'activation préparation atteignent l'activation vue session (session ouverte et réellement utilisée en partie) ; signal de répétabilité confirmé si ≥ 50 % d'entre eux l'utilisent sur deux sessions ou plus. | 30 jours pour la première activation ; 60 jours pour le signal de répétabilité. | Activation vue session (mesure d'usage anonyme) + entretiens sur les motifs de non-adoption. |
 | H3 | Le partage d'informations aux joueurs est perçu comme plus fluide que les solutions actuelles (Discord, Google Docs, papier). | ≥ 40 % des MJ ayant animé une session avec joueurs atteignent l'activation partage (document partagé et consulté par au moins un joueur) ; perception de fluidité supérieure confirmée par au moins 3 MJ interrogés sur 5. | 60 jours pour l'activation partage ; entretiens en parallèle ou en fin de période. | Activation partage (mesure d'usage anonyme) + entretiens utilisateurs. |
 | H4 | L'accès joueur sans compte n'est pas un frein à l'adoption du groupe entier. | Sur les sessions où un partage a eu lieu, ≥ 70 % comptent au moins un joueur ayant effectivement consulté le contenu partagé ; moins de 2 joueurs sur 10 interrogés rapportent avoir renoncé à l'étape d'entrée. | 60 jours. | Activation partage (taux de consultation côté joueur) + entretiens sur les motifs d'abandon. |
@@ -457,7 +457,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 **Règles de gestion** :
 - Le nom du dossier est obligatoire et non vide ; un dossier appartient à un seul espace (RB-05-01, RB-05-02).
 - Les sous-dossiers imbriqués sont hors périmètre MVP (RB-05-03).
-- Tous les dossiers, y compris les dossiers système, sont renommables ; seul le dossier virtuel « Non classés » ne l'est pas (RB-05-04, RB-05-05).
+- Tous les dossiers, y compris les dossiers système, sont renommables, y compris le dossier virtuel « Non classés », qui ne peut en revanche pas être supprimé (RB-05-04, RB-05-05, RB-05-11 ; décision de l'opérateur, 2026-10-09).
 - Un dossier peut avoir zéro ou un template par défaut ; en changer n'affecte jamais les documents déjà créés (RB-05-06, RB-05-07).
 - La suppression d'un dossier non vide impose de traiter son contenu — déplacer ou laisser non classé ; les dossiers système sont supprimables comme les autres (RB-05-09, RB-05-10).
 - À la création d'un espace campagne ou one-shot, quatre dossiers système sont créés (Personnages, Joueurs, Scénarios, Notes) ; un espace personnel ne reçoit que le dossier virtuel « Non classés ».
@@ -625,7 +625,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 - Seul le MJ propriétaire peut générer et révoquer une invitation, ou retirer un membre (RB-11-01, RB-11-07, RB-11-11).
 - L'accès est accordé automatiquement à l'utilisation d'un lien d'invitation valide à portée espace généré par le MJ : ce lien vaut validation (RB-09-16), aucune validation manuelle supplémentaire n'est requise ; un invité sans ce lien ne devient pas membre (RB-11-03).
 - Un lien dont la limite d'utilisation ou d'expiration est atteinte passe à l'état révoqué et ne crée plus d'accès (RB-11-05).
-- Retirer un membre ne supprime pas ses données dans la campagne — personnage, notes partagées ; un membre retiré peut être réinvité (RB-11-12, RB-11-13, RB-11-14).
+- Retirer un membre ne supprime pas ses données dans la campagne — au MVP, seul le personnage reste ; les notes du joueur *(hors MVP — notes de session du joueur, Could Have ; voir la [matrice de priorités](../besoin/vision/perimetre/matrice-de-priorites.md#notes-personnelles-joueur))* suivront ; un membre retiré peut être réinvité (RB-11-12, RB-11-13, RB-11-14).
 - L'octroi d'un accès durable reste soumis à la limite du palier gratuit définie par UC-09 (RB-09-21).
 
 **Critères d'acceptation** :
@@ -710,7 +710,7 @@ Cette section détaille les 14 use cases du périmètre MVP sous forme de fiches
 
 ### Hors périmètre fonctionnel MVP
 
-Les fonctionnalités explicitement exclues de cette version — table visuelle, moteur de règles, assistant IA, relations typées entre documents, application desktop avec synchronisation, notamment — sont recensées dans la catégorie Won't Have du périmètre ([§3](#3-périmètre)) et détaillées, avec leur trajectoire produit envisagée, dans UC-HORS-MVP (voir [§9](#9-conception-dinterface) et [§12](#12-annexes)).
+Les fonctionnalités explicitement exclues de cette version — table visuelle, moteur de règles, assistant IA, relations typées entre documents, application desktop avec synchronisation, notamment — sont recensées dans la catégorie Won't Have du périmètre ([§3](#3-périmètre)) et détaillées, avec leur trajectoire produit envisagée, dans exclusions.md (voir [§9](#9-conception-dinterface) et [§12](#12-annexes)).
 
 > Sources : docs/besoin/cas-d-utilisation/UC-01-mode-local-sans-compte.md à UC-14-recherche.md, docs/besoin/cas-d-utilisation/README.md, docs/besoin/stories/US-UC-01-mode-local-sans-compte.md à US-UC-14-recherche.md
 
@@ -819,7 +819,7 @@ Le palier local persiste les données exclusivement dans le navigateur de l'appa
 
 Cette sous-section consolide, au niveau synthèse, l'état des décisions d'architecture actées pour le MVP — sans en reproduire le détail, dans le prolongement de la logique du reste de [§7](#7-contraintes). La vue transverse par préoccupation, qui recense les décisions actées du registre ADR ([annexe « Index des décisions »](#index-des-décisions)) sous un angle organisé par sujet plutôt que décision par décision, est consolidée dans **`docs/architecture/transverse.md`**.
 
-**Ce qui est consolidé dès à présent** : la synthèse des choix structurants déjà actés — principes d'architecture, stack technique, sécurité & authentification, conformité RGPD, contraintes de stockage ([§7.1](#71-principes-darchitecture) à [§7.5](#75-contraintes-de-stockage)) — et leur mise en regard transverse dans `architecture-detaillee.md`, qui organise différemment une matière déjà tranchée sans y ajouter de décision nouvelle.
+**Ce qui est consolidé dès à présent** : la synthèse des choix structurants déjà actés — principes d'architecture, stack technique, sécurité & authentification, conformité RGPD, contraintes de stockage ([§7.1](#71-principes-darchitecture) à [§7.5](#75-contraintes-de-stockage)) — et leur mise en regard transverse dans `transverse.md`, qui organise différemment une matière déjà tranchée sans y ajouter de décision nouvelle.
 
 **Ce qui reste différé** : la conception détaillée « en avant » — vues composants, vues séquences, contrats de module au-delà de ce que couvrent les ADR — demeure un travail dédié, à mener en amont de l'entrée en construction. Ce report est cohérent avec l'encadré « section provisoire » en tête de [§7](#7-contraintes) : les ADR cadrent une trajectoire technique de nature pré-implémentation, non encore confrontée à la construction effective du MVP.
 
@@ -886,7 +886,7 @@ flowchart TB
 - Une adresse email est unique dans l'ensemble du système ; un compte suspendu ou supprimé ne peut plus s'authentifier.
 - La suppression d'un compte est irréversible ; le blocage qu'elle peut subir dépend du **type** de l'espace possédé par le titulaire — une divergence que le corpus signalait entre UC-10 et le domaine (voir le dossier de conception détaillée, §2.2/§3.c/§8.1), désormais réconciliée par le domaine : un espace personnel (`PERSONAL`), mono-membre par construction, n'est **jamais** bloquant et subit un hard-delete inconditionnel à la suppression du compte ; un espace campagne ou one-shot (`CAMPAIGN`/`ONE_SHOT`) **bloque** la suppression tant qu'il comporte au moins un membre actif autre que le propriétaire, conformément à UC-10 — le titulaire doit d'abord exclure ces membres. Une fois la suppression exécutée pour les espaces éligibles, elle anonymise les données nominatives tout en conservant l'identifiant technique comme référence dans les autres contextes.
 - Les opérations sensibles sur le compte — changement d'adresse de messagerie, liaison d'une identité externe, demande d'effacement — exigent que l'adresse de messagerie ait été préalablement vérifiée.
-- À la suppression d'un compte, l'effacement physique au titre du droit à l'effacement (RGPD article 17) porte sur la confidentialité du document et non sur son type : tout `Document` dont la confidentialité (`visibility`) est `PLAYER_PRIVATE` et qui a été créé par l'utilisateur supprimé est effacé physiquement, quel qu'en soit le type — portée décidée en conception, ratifiée dans UC-10 et portée par la règle F-08 du domaine (identity-access.md § Règles métier). Les contenus partagés qu'il a produits dans un espace campagne ou one-shot restent, eux, rattachés à l'espace sous identité anonymisée, au titre de la continuité. Le contenu d'un espace personnel ne connaît pas cette continuité : l'espace entier, mono-membre, est supprimé physiquement et sans exception avec la suppression du compte.
+- À la suppression d'un compte, l'effacement physique au titre du droit à l'effacement (RGPD article 17) porte sur la confidentialité du document et non sur son type : tout `Document` dont la confidentialité (`visibility`) est `PLAYER_PRIVATE` et qui a été créé par l'utilisateur supprimé est effacé physiquement, quel qu'en soit le type — portée décidée en conception, ratifiée dans UC-10 et portée par la règle F-08 du domaine (identity-access/context.md § Règles métier). Les contenus partagés qu'il a produits dans un espace campagne ou one-shot restent, eux, rattachés à l'espace sous identité anonymisée, au titre de la continuité. Le contenu d'un espace personnel ne connaît pas cette continuité : l'espace entier, mono-membre, est supprimé physiquement et sans exception avec la suppression du compte.
 
 ### Space Management
 
@@ -1001,7 +1001,7 @@ Vingt écrans composent le périmètre d'interface du MVP, regroupés par surfac
 
 ### 9.3 Arbitrages d'interface figés
 
-Les arbitrages de conception d'interface tranchés et figés au cours de la phase de zoning font foi dans [`docs/interface/zonage.md` §S6 — Arbitrages tracés](../interface/zonage.md), qui en porte la liste et les motifs. Les tables ci-dessous en regroupent par thème ceux qui étaient figés à la date de la présente version ; s'y référer pour l'orientation, à `zoning.md §S6` pour la liste faisant foi.
+Les arbitrages de conception d'interface tranchés et figés au cours de la phase de zoning font foi dans [`docs/interface/zonage.md` §S6 — Arbitrages tracés](../interface/zonage.md), qui en porte la liste et les motifs. Les tables ci-dessous en regroupent par thème ceux qui étaient figés à la date de la présente version ; s'y référer pour l'orientation, à `zonage.md §S6` pour la liste faisant foi.
 
 **Ossature et surfaces**
 
@@ -1114,7 +1114,7 @@ Le corpus retient un axe **J0 → J1 → J2 → J3** comme repère macro de séq
 - **J2** — cloud + migration.
 - **J3** — partage + temps réel.
 
-Une décision marché s'intercale avant l'engagement du build lourd cloud (entre J1 et J2) ; une validation juridique conditionne le lancement EU, hors séquence technique. Cet axe est ratifié pour l'ensemble du corpus (2026-09-01) — détail et justification dans l'artefact de planification dédié ([`roadmap-entree-build.md` §5](../projet/roadmap-de-build.md)).
+Une décision marché s'intercale avant l'engagement du build lourd cloud (entre J1 et J2) ; une validation juridique conditionne le lancement EU, hors séquence technique. Cet axe est ratifié pour l'ensemble du corpus (2026-09-01) — détail et justification dans l'artefact de planification dédié ([`roadmap-de-build.md` §5](../projet/roadmap-de-build.md)).
 
 Ce macro-ordonnancement reste indicatif : le contenu précis affecté à chaque jalon, ses dates et ses critères d'entrée/sortie relèvent de l'artefact de planification dédié mentionné ci-dessus, non de la présente section.
 
@@ -1132,7 +1132,7 @@ Les décisions d'architecture ([annexe « Index des décisions »](#index-des-d�
 
 ### Incohérence historique résolue
 
-ADR-007, §Conséquences, mentionnait un « jalon J1 » associé à une nomenclature de jalon aujourd'hui retirée du corpus, sans que la relation entre la série de codes `P` (`P0.5`, `P6`, `P7`…) et cette ancienne nomenclature ne soit documentée par ailleurs. Cette incohérence apparente de repère, signalée ici, est résolue par la ratification de l'axe J0-J3 nommé par contenu ([`roadmap-entree-build.md` §5.4](../projet/roadmap-de-build.md)) : ADR-007 est reformulé en conséquence (§Conséquences) pour lever l'ambiguïté de jalon.
+ADR-007, §Conséquences, mentionnait un « jalon J1 » associé à une nomenclature de jalon aujourd'hui retirée du corpus, sans que la relation entre la série de codes `P` (`P0.5`, `P6`, `P7`…) et cette ancienne nomenclature ne soit documentée par ailleurs. Cette incohérence apparente de repère, signalée ici, est résolue par la ratification de l'axe J0-J3 nommé par contenu ([`roadmap-de-build.md` §5.4](../projet/roadmap-de-build.md)) : ADR-007 est reformulé en conséquence (§Conséquences) pour lever l'ambiguïté de jalon.
 
 > Sources : docs/decisions/ADR-010-suppression-espace.md, ADR-011-cascade-integrite-referentielle.md, ADR-007-rgpd-autorisation-api.md
 
@@ -1155,13 +1155,13 @@ Les points listés dans cette annexe sont explicitement **non tranchés** : ils 
 1. L'opportunité d'une notification active côté joueur lorsqu'une information lui est partagée — non décidée pour le MVP, qui retient à ce stade une apparition ambiante sans notification (AR-06, [§9.3](#93-arbitrages-dinterface-figés)).
 2. La persistance des notes personnelles d'un joueur invité d'une session à l'autre, en l'absence de compte.
 
-**Statuts d'un espace personnel — RÉSOLU.** La sémantique des statuts d'un espace personnel a été tranchée par l'**invariant 15** de `docs/domaine/space-management/context.md` : un espace `PERSONAL` est toujours `ACTIVE` ; les opérations `Archive()` et `Freeze()` sont refusées pour `type = PERSONAL` car `FROZEN` n'a pas d'objet (espace hors quota) et `ARCHIVED` contredirait l'invariant 14 (un `PERSONAL` doit toujours exister et être actif pour un compte donné).
+**Statuts d'un espace personnel — DÉCIDÉ 2026-07-15 (invariant 15).** La sémantique des statuts d'un espace personnel a été tranchée par l'**invariant 15** de `docs/domaine/space-management/context.md` : un espace `PERSONAL` est toujours `ACTIVE` ; les opérations `Archive()` et `Freeze()` sont refusées pour `type = PERSONAL` car `FROZEN` n'a pas d'objet (espace hors quota) et `ARCHIVED` contredirait l'invariant 14 (un `PERSONAL` doit toujours exister et être actif pour un compte donné).
 
-**Fournisseurs d'identité — RÉSOLU.** MVP : Google et Discord. Règle de confiance par fournisseur : cf. ADR-015 (Sécurité authentification MVP).
+**Fournisseurs d'identité — DÉCIDÉ 2026-07-15 (ADR-015).** MVP : Google et Discord. Règle de confiance par fournisseur : cf. ADR-015 (Sécurité authentification MVP).
 
 **Granularité du gate de migration — résolu.** Le principe du traitement tout-ou-rien est tranché à l'échelle d'un espace (RB-01-09, RB-10-04, [§5](#5-spécifications-fonctionnelles) UC-01 et UC-10). La granularité *globale* du lot de migration a été tranchée par décision produit du 2026-07-09 : **lot unique** — tous les espaces éligibles migrent en un seul passage, avec une confirmation unique et les espaces éligibles cochés par défaut, décochables individuellement. Cette granularité globale ne modifie pas le tout-ou-rien par espace ci-dessus, qui reste en place. Décision tracée dans `docs/interface/raisonnement-ux.md` (§ Décisions produit actées, point 5).
 
-**Sémantique de comptage du quota du palier gratuit — résolu.** L'invariant limitant l'accès à une session à 4 joueurs distincts pour un espace dont le propriétaire est au palier gratuit (`docs/domaine/space-management/context.md`, invariant 11) est désormais tranché : la sémantique de comptage est portée par **RB-09-21 (UC-09), qui fait foi** — le comptage a lieu **au moment de l'octroi** de l'accès, de manière **agnostique au type d'accès** (identités-joueur distinctes comptées en capacité joueur, MJ non compté). L'invariant 11 de `space-management.md` a été réaligné en conséquence.
+**Sémantique de comptage du quota du palier gratuit — résolu.** L'invariant limitant l'accès à une session à 4 joueurs distincts pour un espace dont le propriétaire est au palier gratuit (`docs/domaine/space-management/context.md`, invariant 11) est désormais tranché : la sémantique de comptage est portée par **RB-09-21 (UC-09), qui fait foi** — le comptage a lieu **au moment de l'octroi** de l'accès, de manière **agnostique au type d'accès** (identités-joueur distinctes comptées en capacité joueur, MJ non compté). L'invariant 11 de `space-management/context.md` a été réaligné en conséquence.
 
 **Autres trous de conception** (recensés au zoning d'interface §S9, à spécifier) : la vue mobile du joueur, la spécification visuelle de l'éditeur de document (disposition des blocs, affordances de type, gestion des liens), l'écran de consultation des backlinks (hors MVP), et la vue « Non classés » — particulièrement centrale pour l'espace personnel, où elle constitue la seule vue de départ.
 

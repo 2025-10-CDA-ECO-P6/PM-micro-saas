@@ -17,22 +17,22 @@
 
 Ce document **juge** un découpage déjà écrit et **propose** son remplacement. Il ne modifie rien : le plan de travail
 reste, à la date de cette revue, inchangé et seul opposable. Il ne redéfinit ni le périmètre MoSCoW
-([`vision/moscow.md`](../../besoin/vision/perimetre/matrice-de-priorites.md), seule autorité de priorisation), ni le phasage J0-J3
-([`roadmap-entree-build.md §1-2`](../roadmap-de-build.md)), ni les critères de sortie de jalon, ni l'ordre des
+([`vision/perimetre/matrice-de-priorites.md`](../../besoin/vision/perimetre/matrice-de-priorites.md), seule autorité de priorisation), ni le phasage J0-J3
+([`roadmap-de-build.md §1-2`](../roadmap-de-build.md)), ni les critères de sortie de jalon, ni l'ordre des
 user stories à l'intérieur d'une epic.
 
 **En cas de conflit entre cette revue et une source citée, la source citée fait foi.**
 
 **Statut particulier des nombres portés par ce document.** Le corpus s'interdit d'écrire un décompte dont la donnée
 est possédée ailleurs, parce qu'un nombre recopié dérive dès que sa source bouge
-([`guide-conventions-et-dod.md §8`](../conventions-dod.md)). Cette revue porte pourtant des nombres, et
+([`conventions-dod.md §8`](../conventions-dod.md)). Cette revue porte pourtant des nombres, et
 l'exception est assumée : ce ne sont pas des données recopiées d'une source, ce sont des **mesures prises sur le plan
 à une date**, chacune accompagnée de la commande littérale qui l'établit. Elles ne sont pas à maintenir — elles sont
 à **remesurer** en relançant la commande. C'est aussi pourquoi ce document est daté et périssable : passé l'arbitrage,
 ses mesures décrivent un état qui n'existe plus.
 
 **Ce que cette revue n'est pas** : un troisième artefact d'ordonnancement. Le dossier en porte déjà deux à des grains
-distincts — [`roadmap-entree-build.md`](../roadmap-de-build.md) ordonnance les jalons,
+distincts — [`roadmap-de-build.md`](../roadmap-de-build.md) ordonnance les jalons,
 [`plan-de-travail.md`](../plan-de-travail.md) décompose à l'intérieur — plus deux documents nommés « roadmap »
 ([README du dossier](../README.md) les désambiguïse). Cette revue n'ordonnance rien et ne décompose rien : elle mesure,
 conclut et recommande.
@@ -415,7 +415,7 @@ taches livrant une surface visible : 12 sur 55
 
 **Conclusion.** Dix-sept maillons de chaîne se succèdent avant qu'un utilisateur puisse voir quoi que ce soit. Or ce
 que ce produit cherche à prouver est écrit, et c'est de l'observable : les cinq hypothèses de
-[`vision-produit.md §2.3`](../../besoin/vision/vision.md) portent sur des comportements d'utilisateurs
+[`vision.md §2.3`](../../besoin/vision/vision.md) portent sur des comportements d'utilisateurs
 réels, mesurés par activation. La tâche d'instrumentation qui alimente ces mesures, TB-053, est au maillon 19 ; le hub
 de conduite de session, sujet direct de l'hypothèse H2, est au maillon 18.
 
@@ -559,7 +559,7 @@ qu'une future tâche à périmètre nommable et à critère non tranché soit at
 **Recommandation.** Renforcer la condition 4 d'une clause : un renvoi dont la cible porte, pour le point en cause, un
 marqueur de décision non prise ne satisfait pas la condition. C'est vérifiable par une commande, puisque le corpus
 balise ces points par une convention nommée
-([`guide-conventions-et-dod.md § Convention de balisage`](../conventions-dod.md)) — il suffit de constater
+([`conventions-dod.md § Convention de balisage`](../conventions-dod.md)) — il suffit de constater
 qu'aucun marqueur ne se trouve dans la section citée.
 
 ---
@@ -849,7 +849,7 @@ IndexedDB**, et pour partie **EP-02 — Échafaudage de la solution .NET**.
 
 - **EP-06 se dissout.** « Chaque geste métier passe par un cas d'usage Application unique » est un invariant
   d'architecture, pas un lot de travail : c'est une clause de Definition of Done, et
-  [`guide-conventions-et-dod.md §1 § Architecture`](../conventions-dod.md) la porte déjà. Chaque tranche
+  [`conventions-dod.md §1 § Architecture`](../conventions-dod.md) la porte déjà. Chaque tranche
   traverse la couche Application pour son propre geste ; aucune épique n'a besoin de les regrouper. TB-023, qui câble
   l'invariant d'autorisation et est un **préalable bloquant d'entrée en J1** nommé par la roadmap, rejoint EP-04 dont
   il est la suite directe.
@@ -863,7 +863,7 @@ IndexedDB**, et pour partie **EP-02 — Échafaudage de la solution .NET**.
 - **EP-08 à EP-12 restent.** Durabilité et sécurité du mode local, export, châssis, instrumentation, recette : cinq
   regroupements que le corpus reconnaît comme des unités fonctionnelles sans use case — trois d'entre elles sont
   d'ailleurs les trois Must Have sans use case identifiés par
-  [`moscow.md § Vue d'ensemble`](../../besoin/vision/perimetre/matrice-de-priorites.md).
+  [`matrice-de-priorites.md § Vue d'ensemble`](../../besoin/vision/perimetre/matrice-de-priorites.md).
 - **Les épiques adossées à un use case accueillent tout le reste**, et suffisent : les tranches étant adossées aux
   user stories, et chaque user story vivant dans un fichier `US-UC-NN-*.md`, le rattachement est immédiat et sans
   ambiguïté. C'est un gain propre du redécoupage : le rattachement d'une tranche à son épique cesse d'être un
@@ -940,7 +940,7 @@ TB-044 (écran de création, profondeur 19), TB-045 (vue campagne et vue espace 
 | Périmètre d'écriture | fiche `vue-campagne` ; fiche `vue-espace-personnel` |
 | En conflit avec | — |
 | Taille | L — deux fiches et 4 renvois ; la déclinaison `PERSONAL` n'étant « pas une surface-UC distincte », les deux fiches sont livrées ensemble |
-| Critères d'acceptation | les deux fiches de wireframe ; `zoning.md §S6 AR-14`, `AR-15` ; US-01-09, son scénario nommé |
+| Critères d'acceptation | les deux fiches de wireframe ; `zonage.md §S6 AR-14`, `AR-15` ; US-01-09, son scénario nommé |
 
 **Ce que l'exemple montre.** La profondeur de la première surface visible de cette épique passe de **18 à 6**. La
 tâche `L` non clôturable TB-013 disparaît au profit de deux tranches dont les critères sont atteignables et d'une
@@ -966,7 +966,7 @@ surface et des tranches de comportement.
 | Périmètre d'écriture | `Folder` ; store local `folders` |
 | En conflit avec | TB-060 — module partagé : `Folder` |
 | Taille | L — deux modules et 6 renvois ; l'arborescence par défaut naît avec l'espace, elle ne se scinde pas de l'agrégat qui la porte |
-| Critères d'acceptation | US-05-01 et US-05-02, leurs scénarios nommés ; CR-UC05-01 → CR-UC05-04 (dérivés de la colonne `Source`) ; `cahier-strategie-test-et-recette.md §3.1`, sur le caractère informatif de `isSystem` |
+| Critères d'acceptation | US-05-01 et US-05-02, leurs scénarios nommés ; CR-UC05-01 → CR-UC05-04 (dérivés de la colonne `Source`) ; `strategie-de-test.md §3.1`, sur le caractère informatif de `isSystem` |
 
 **TB-060 — Déplacer et supprimer un dossier sans perdre son contenu**
 
@@ -992,7 +992,7 @@ surface et des tranches de comportement.
 | Périmètre d'écriture | fiche `navigation-dossiers` |
 | En conflit avec | — |
 | Taille | S — un module, 2 renvois |
-| Critères d'acceptation | la fiche de wireframe ; `zoning.md §S6 AR-11`, `AR-16`, `AR-20` |
+| Critères d'acceptation | la fiche de wireframe ; `zonage.md §S6 AR-11`, `AR-16`, `AR-20` |
 
 **Ce que l'exemple montre.** La plage `CR-UC05-01 → CR-UC05-12` n'est plus citée deux fois : elle est **partitionnée**
 entre TB-059 et TB-060, chacune ne portant que les cas que son comportement produit. Le double comptage disparaît sans que
@@ -1012,7 +1012,7 @@ trois données ici.
 | **TB-062** | une session se lance depuis un espace, refusée sans titre ; une seule session `LIVE` par espace | `Session` ; store local `sessions` | US-06-01 ; CR-UC06-01 → CR-UC06-03 |
 | **TB-063** | le MJ configure ses panneaux hors session et les modifie en direct ; la configuration persiste | `SessionViewConfig` ; store local `session_view_configs` ; store local `session_view_folders` | US-06-02 ; CR-UC06-04 → CR-UC06-06 |
 | **TB-064** | une note de session MJ naît `GM_ONLY`, une note joueur `PLAYER_PRIVATE` et reste hors d'atteinte du MJ | `Session` ; `Document` ; store local `session_live_notes` | US-06-04 ; CR-UC06-09 → CR-UC06-11 |
-| **TB-065** | *(surface détachée)* le hub de conduite de session, ses trois modes | fiche `vue-session-mj` | la fiche ; `zoning.md §S6 AR-02`, `AR-04`, `AR-09` ; NFR-PERF-01 → NFR-PERF-03 |
+| **TB-065** | *(surface détachée)* le hub de conduite de session, ses trois modes | fiche `vue-session-mj` | la fiche ; `zonage.md §S6 AR-02`, `AR-04`, `AR-09` ; NFR-PERF-01 → NFR-PERF-03 |
 
 **Ce que l'exemple montre.** La coupe que TB-051 réclamait « par mode » se révèle mieux servie **par user story** :
 le corpus porte déjà la partition des vingt-neuf cas de recette par story, alors qu'aucune source ne partitionne par
@@ -1215,14 +1215,14 @@ trois termes alternatifs. Les zéros tiennent.
 
 **La chaîne, établie en lisant la roadmap.** Elle se compose en quatre maillons, et chacun est écrit dans le corpus :
 
-1. [`moscow.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) classe l'instrumentation
+1. [`matrice-de-priorites.md § Instrumentation de validation du MVP`](../../besoin/vision/perimetre/matrice-de-priorites.md) classe l'instrumentation
    **Must Have** et nomme trois piliers à constater : activation préparation, activation vue session, **activation
    partage** — cette dernière définie comme « un document a été partagé aux joueurs ET au moins un joueur l'a consulté ».
-2. Les cinq hypothèses de [`vision-produit.md §2.3`](../../besoin/vision/vision.md) désignent la mesure
+2. Les cinq hypothèses de [`vision.md §2.3`](../../besoin/vision/vision.md) désignent la mesure
    d'usage anonyme comme leur instrument de constat — pour les cinq, sans exception.
-3. [`roadmap-entree-build.md §3.3`](../roadmap-de-build.md) fait de cette mesure le **critère de la décision marché**,
+3. [`roadmap-de-build.md §3.3`](../roadmap-de-build.md) fait de cette mesure le **critère de la décision marché**,
    croisée avec les hypothèses H1 à H4.
-4. [`roadmap-entree-build.md §3.4 § Dépendance d'entrée`](../roadmap-de-build.md) conditionne l'entrée en J2,
+4. [`roadmap-de-build.md §3.4 § Dépendance d'entrée`](../roadmap-de-build.md) conditionne l'entrée en J2,
    cumulativement, à J1 stable **et** à cette décision marché.
 
 L'instrumentation est donc **le seul intrant** du point de décision qui ouvre le jalon suivant. Or elle n'a aucun
@@ -1451,15 +1451,15 @@ choix de la faire ne l'est pas.
 - Décomposition en tâches, maille de désignation, échelle de taille, lots parallélisables :
   [`plan-de-travail.md`](../plan-de-travail.md)
 - Condition d'entrée, taxonomie de libellés, cycle de vie d'un ticket : [`methode-de-ticket.md`](../methode-de-ticket.md)
-- Entrée par fonctionnalité produit : [`guide-lecture-par-fonctionnalite.md`](../guide-de-lecture.md)
-- Séquence de jalons, points de décision, critères de sortie : [`roadmap-entree-build.md`](../roadmap-de-build.md)
+- Entrée par fonctionnalité produit : [`guide-de-lecture.md`](../guide-de-lecture.md)
+- Séquence de jalons, points de décision, critères de sortie : [`roadmap-de-build.md`](../roadmap-de-build.md)
 - Conventions de code, Definition of Done, conventions de maintenance du corpus :
-  [`guide-conventions-et-dod.md`](../conventions-dod.md)
-- Hypothèses de validation et seuils : [`vision-produit.md`](../../besoin/vision/vision.md)
-- Priorisation MoSCoW, Must Have sans use case : [`moscow.md`](../../besoin/vision/perimetre/matrice-de-priorites.md)
+  [`conventions-dod.md`](../conventions-dod.md)
+- Hypothèses de validation et seuils : [`vision.md`](../../besoin/vision/vision.md)
+- Priorisation MoSCoW, Must Have sans use case : [`matrice-de-priorites.md`](../../besoin/vision/perimetre/matrice-de-priorites.md)
 - Agrégats, entités et value objects par bounded context : [`domain/README.md`](../../domaine/README.md)
 - Granularité des projets, périmètre du mode local, points à trancher à J0 :
   [`structure-projets.md`](../../architecture/structure-projets.md)
-- Cas de recette, colonne `Source`, niveaux de test : [`cahier-strategie-test-et-recette.md`](../../assurance/strategie-de-test.md)
+- Cas de recette, colonne `Source`, niveaux de test : [`strategie-de-test.md`](../../assurance/strategie-de-test.md)
 - Table de couverture UC → fiche(s) : [`wireframes/README.md`](../../interface/ecrans/README.md)
 - Spécification de télémétrie et ses points non tranchés : [`specs/telemetrie.md`](../../architecture/specs/telemetrie.md)

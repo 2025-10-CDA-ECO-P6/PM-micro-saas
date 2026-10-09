@@ -105,7 +105,7 @@ flowchart TD
 | SOUS-SPÉCIFIÉ | Émilie | **Génération du lien hors de la vue session** : Émilie veut souvent inviter ses joueurs juste avant de démarrer la session. Si le point d'entrée est uniquement dans la section "Membres" de l'espace, elle doit naviguer hors de la vue session en cours. Un raccourci depuis la vue session (UC-06) éviterait cette rupture. | SOUS-SPÉCIFIÉ |
 | SOUS-SPÉCIFIÉ | Thomas | **Absence de confirmation visuelle que le joueur a rejoint** : Thomas génère un lien et attend. Sans indication dans l'interface que le lien a été utilisé, il ne sait pas si son joueur a bien rejoint. L'état de l'invitation (`PENDING` → `ACTIVE`) doit être visible en temps réel dans le panneau membres. | SOUS-SPÉCIFIÉ |
 | SOUS-SPÉCIFIÉ | Thomas | **Association joueur-personnage silencieuse** : Thomas associe un joueur à son personnage mais ne sait pas si le joueur l'a vu. Si l'association a lieu alors que le joueur est déjà connecté, une notification in-app côté joueur éviterait les demandes répétées ("tu as ma fiche ?"). | SOUS-SPÉCIFIÉ |
-| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | **Retrait d'un membre — confirmation anxiogène** : le MJ craint de supprimer des données. Un message de confirmation explicite ("les données du joueur — personnage, notes — sont conservées dans l'espace") réduit l'hésitation. | SOUS-SPÉCIFIÉ |
+| SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ | **Retrait d'un membre — confirmation anxiogène** : le MJ craint de supprimer des données. Un message de confirmation explicite ("le personnage du joueur est conservé dans l'espace") réduit l'hésitation. | SOUS-SPÉCIFIÉ |
 | SOUS-SPÉCIFIÉ | Thomas | **Quota d'usages — valeur par défaut ambiguë** : si Thomas ne renseigne pas de nombre maximum d'utilisations, le comportement par défaut (illimité ou 1 ?) n'est pas évident. La valeur par défaut doit être visible et documentée dans le formulaire. | SOUS-SPÉCIFIÉ |
 
 ---
@@ -120,7 +120,7 @@ flowchart TD
 
 - **Copie du lien en un clic avec toast** : un bouton "Copier le lien" avec retour visuel discret (toast "Lien copié !") suffit. Pas de popup, pas de modale, pas de navigation.
 
-- **Message de confirmation rassurant au retrait** : lors du retrait d'un membre, un message explicite ("Le personnage et les notes de ce joueur restent dans l'espace. Seul l'accès est retiré.") réduit l'anxiété de suppression.
+- **Message de confirmation rassurant au retrait** : lors du retrait d'un membre, un message explicite ("Le personnage de ce joueur reste dans l'espace. Seul l'accès est retiré.") réduit l'anxiété de suppression.
 
 - **Réinvitation depuis la fiche membre REMOVED** : depuis la fiche d'un membre `REMOVED`, un bouton "Réinviter" déclenche directement la génération d'un nouveau lien (US-11-01) pré-configuré pour ce membre, sans navigation supplémentaire.
 

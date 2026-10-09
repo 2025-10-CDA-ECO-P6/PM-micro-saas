@@ -121,14 +121,14 @@ La liaison est rejetée silencieusement si la condition n'est pas satisfaite (pa
 
 #### Résolution — email OAuth face à un compte préexistant NON vérifié (reclaim-in-place)
 
-Le rejet silencieux ci-dessus répond à « la liaison automatique est-elle autorisée ? » — non. Il laisse ouverte la question suivante : que devient alors la tentative de connexion OAuth ? Le traitement envisagé ailleurs dans le corpus pour ce cas — créer un nouveau compte à côté de la coquille non vérifiée (US-UC-10, RB-10-08 (b), point actuellement ouvert dans cette user story) — n'est **pas implémentable** : il ferait coexister deux comptes sur la même adresse email, en violation de l'invariant 1 (`email` unique dans le système, `identity-access.md`).
+Le rejet silencieux ci-dessus répond à « la liaison automatique est-elle autorisée ? » — non. Il laisse ouverte la question suivante : que devient alors la tentative de connexion OAuth ? Le traitement envisagé ailleurs dans le corpus pour ce cas — créer un nouveau compte à côté de la coquille non vérifiée (US-UC-10, RB-10-08 (b), point actuellement ouvert dans cette user story) — n'est **pas implémentable** : il ferait coexister deux comptes sur la même adresse email, en violation de l'invariant 1 (`email` unique dans le système, `identity-access/context.md`).
 
 **Constat.** Deux exigences tirent en sens contraire sur la même adresse : ne pas lier automatiquement une identité fédérée à une coquille non vérifiée (anti-hijacking, CWE-287, règle ci-dessus), et ne pas dupliquer un email (invariant 1). Le « nouveau compte » évoqué par ailleurs satisfait la première exigence mais viole la seconde — il est écarté ici comme **non implémentable**, pas comme option concurrente à arbitrer.
 
 **Résolution proposée — Option A, *reclaim-in-place*.** La preuve de possession apportée par le fournisseur OAuth (email réputé vérifié par l'IdP, §2.2) reprend la coquille non vérifiée existante plutôt que de créer un compte concurrent :
 
 - `emailVerified` de la coquille passe à `true` ;
-- l'identité fédérée est liée à ce compte (`LinkFederatedIdentity()`, invariant 7 de `identity-access.md`) ;
+- l'identité fédérée est liée à ce compte (`LinkFederatedIdentity()`, invariant 7 de `identity-access/context.md`) ;
 - le credential mot de passe préexistant de la coquille est **neutralisé de façon obligatoire** — hash de mot de passe et `security_stamp` réécrits — selon le précédent déjà acté pour l'anonymisation dans **ADR-007 §Compléments** (« la neutralisation de `asp_net_users` … est obligatoire, pas optionnelle »). Sans cette neutralisation, un mot de passe antérieur resterait valide sur un compte dont la preuve de possession vient de changer de main.
 
 **Justification.** Une coquille non vérifiée n'a, par construction, aucun propriétaire prouvé — elle n'a jamais franchi la validation d'email (§2.1). L'anti-hijacking ci-dessus protège un compte **vérifié**, c'est-à-dire des données dont la possession est prouvée ; il ne protège pas une coquille dont personne n'a établi la possession. Reprendre une coquille non prouvée au bénéfice d'une preuve IdP fraîche n'ouvre donc pas de vecteur de prise de contrôle : le résultat observable (compte à email vérifié, lié au fournisseur, mot de passe antérieur neutralisé) est **identique à celui d'une création OAuth normale (§2.2)** sur la même adresse. Aucune information supplémentaire n'est révélée à l'appelant OAuth par rapport au cas « aucun compte existant » — le canal d'énumération CWE-204 (§Résidu CWE-204) n'est pas rouvert par cette résolution.
@@ -204,7 +204,7 @@ Paramètres de configuration minimaux : fréquence d'exécution (ex. toutes les 
 
 #### 3.6 Raccordement aux événements domaine
 
-La denylist JTI doit être alimentée sur **deux événements domaine** (cf. `identity-access.md` §Événements domaine) :
+La denylist JTI doit être alimentée sur **deux événements domaine** (cf. `identity-access/context.md` §Événements domaine) :
 
 **`AccountSuspended`** : un compte suspendu ne doit plus avoir de tokens actifs. Sans révocation, la suspension effective est différée jusqu'à l'expiration naturelle des tokens existants (au plus 15 min pour l'access token, au plus 7 jours pour le refresh token). Le handler de `AccountSuspended` appelle `ITokenDenylist.RevokeFamilyAsync(...)` sur toutes les familles actives de l'utilisateur.
 
