@@ -1254,9 +1254,9 @@ trois termes alternatifs. Les zéros tiennent.
    partage** — cette dernière définie comme « un document a été partagé aux joueurs ET au moins un joueur l'a consulté ».
 2. Les cinq hypothèses de [`vision.md §2.3`](../../besoin/vision/vision.md) désignent la mesure
    d'usage anonyme comme leur instrument de constat — pour les cinq, sans exception.
-3. [`roadmap-de-build.md §3.3`](../roadmap-de-build.md) fait de cette mesure le **critère de la décision marché**,
+3. [`roadmap-de-build.md §3.4`](../roadmap-de-build.md) fait de cette mesure le **critère de la décision marché**,
    croisée avec les hypothèses H1 à H4.
-4. [`roadmap-de-build.md §3.4 § Dépendance d'entrée`](../roadmap-de-build.md) conditionne l'entrée en J2,
+4. [`roadmap-de-build.md §3.3 § Dépendance d'entrée`](../roadmap-de-build.md) conditionne l'entrée en J2,
    cumulativement, à J1 stable **et** à cette décision marché.
 
 L'instrumentation est donc **le seul intrant** du point de décision qui ouvre le jalon suivant. Or elle n'a aucun

@@ -346,11 +346,11 @@ Critères de sortie : [roadmap de build § 3.2 — J1 — Local-only](../projet/
 
 ### Jalon « Cloud + migration »
 
-Critères de sortie : [roadmap de build § 3.4 — J2 — Cloud + migration](../projet/roadmap-de-build.md#34-j2--cloud--migration), qui fait foi.
+Critères de sortie : [roadmap de build § 3.3 — J2 — Cloud + migration](../projet/roadmap-de-build.md#33-j2--cloud--migration), qui fait foi.
 
 ### [DÉCISION MARCHÉ] — hors-CI, ne pas convertir en dette de test
 
-Critère de décision : [roadmap de build § 3.3 — [DÉCISION MARCHÉ] — go/no-go avant le build lourd de partage + temps réel](../projet/roadmap-de-build.md#33-décision-marché--gono-go-avant-le-build-lourd-de-partage--temps-réel), qui fait foi. Propre à cette stratégie de test : **critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
+Critère de décision : [roadmap de build § 3.4 — [DÉCISION MARCHÉ] — go/no-go avant le build lourd de partage + temps réel](../projet/roadmap-de-build.md#34-décision-marché--gono-go-avant-le-build-lourd-de-partage--temps-réel), qui fait foi. Propre à cette stratégie de test : **critère de sortie = décision produit tracée.** Aucun test automatisé, aucun linter, aucune build ne peut trancher ce point de décision.
 
 ### [VALIDATION JURIDIQUE EU] — hors-CI, ne pas convertir en dette de test
 
@@ -879,7 +879,7 @@ Matrice des 15 use cases.
 | PO-08 | Réimport de fichier de sauvegarde (UC-01, US-01-08) | Post-MVP, recette différée | US-01-08 | Responsable produit (roadmap produit) | Aucun cas de recette MVP ; règles de validation tracées pour reprise ultérieure |
 | PO-09 | UC-03 exception E2 — perte de connexion ou erreur de sauvegarde | Non dérivable d'un Gherkin ni d'une RB ferme | UC-03 fiche §Exceptions E2 | Équipe de build (spécification à affiner) | Non recetté ; couvert au mieux par le principe général de résilience réseau (NFR-OFF) |
 | PO-10 | UC-06 exception E3 — MJ consulte une session CLOSED en lecture seule | Nuance non spécifiable au-delà de l'existant | UC-06 fiche §Exceptions E3 | Équipe de build | Substantiellement déjà couvert par CR-UC06-15/16/18/26/27 ; la nuance additionnelle n'est pas dupliquée en case redondante |
-| PO-11 | Deux points de décision non vérifiables en CI (`[DÉCISION MARCHÉ]`, `[VALIDATION JURIDIQUE EU]`) | Rappel structurel | `roadmap-de-build.md §3.3/3.5` | Responsable produit | Hors-CI par nature — ne jamais convertir en dette de test (§9) |
+| PO-11 | Deux points de décision non vérifiables en CI (`[DÉCISION MARCHÉ]`, `[VALIDATION JURIDIQUE EU]`) | Rappel structurel | `roadmap-de-build.md §3.4/3.5` | Responsable produit | Hors-CI par nature — ne jamais convertir en dette de test (§9) |
 | PO-12 | Seuil de tentatives (N) du rate limiting brute-force | Seuil chiffré non dérivable | ADR-015 (rate limiting hybride par-IP/par-compte, valeur non fixée) | Équipe de build | CR-UC10-21 ne chiffre pas N ; aucune valeur inventée dans ce document |
 | PO-13 | Sous-points B1.10 non tranchés (403 vs 404 sur ressource non autorisée, schéma exact du code 429) | Détail de contrat à trancher | roadmap Annexe A, B1.10 | Équipe de build | Le contrat OpenAPI des endpoints d'authentification reste à compléter sur ces deux points avant clôture du jalon Cloud + migration |
 
@@ -919,4 +919,4 @@ Les métriques ci-dessous sont définies **qualitativement** — tout seuil chif
 
 - **v1.0** — consolidation initiale (192 lignes) : stratégie de test synthétique et cahier de recette agrégé par UC (une ligne par UC, critères d'acceptation groupés).
 - **v2.0** (ce document) — version de référence : structure professionnelle complète (contrôle documentaire, 10 sections de stratégie, cahier de recette pas à pas), cas de recette dérivés un par un des scénarios Gherkin des User Stories avec traçabilité explicite, matrice de traçabilité des 15 UC, registre des points ouverts consolidé, métriques qualitatives et annexes.
-- **2026-10-09** — la décision de marché passe entre J2 et J3 dans la roadmap de build (§ 3.3) : la section du § 9 qui la porte suit le jalon « Cloud + migration » et cite le nouveau titre de ce paragraphe.
+- **2026-10-09** — la décision de marché passe entre J2 et J3 dans la roadmap de build (§ 3.4) : la section du § 9 qui la porte suit le jalon « Cloud + migration » et cite le nouveau titre de ce paragraphe.

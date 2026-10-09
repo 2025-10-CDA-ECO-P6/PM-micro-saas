@@ -27,20 +27,20 @@ figurent pas ici comme livraisons.
 - **Porte franchie** : les critères de sortie de [J1](roadmap-de-build.md#32-j1--local-only), propriété de la
   roadmap de build ; la mesure qui en résulte ne quitte le navigateur qu'à la création d'un compte, possible à partir
   de J2 ; elle sert ensuite `[DÉCISION MARCHÉ]`, qui « ne mesure que ce que J1 et J2 livrent »
-  ([§ 3.3](roadmap-de-build.md#33-décision-marché--gono-go-avant-le-build-lourd-de-partage--temps-réel)).
+  ([§ 3.4](roadmap-de-build.md#34-décision-marché--gono-go-avant-le-build-lourd-de-partage--temps-réel)).
 - **Condition de retrait** : [SOUS-SPÉCIFIÉ — aucune source ne parle de retrait]
 
 ### Le socle
 
 - **Contenu** : les jalons de la roadmap de build, [J0](roadmap-de-build.md#31-j0--socle),
-  [J1](roadmap-de-build.md#32-j1--local-only), [J2](roadmap-de-build.md#34-j2--cloud--migration) et
+  [J1](roadmap-de-build.md#32-j1--local-only), [J2](roadmap-de-build.md#33-j2--cloud--migration) et
   [J3](roadmap-de-build.md#36-j3--partage--temps-réel) ; le palier [Le socle](roadmap-produit.md#2-le-socle)
   de la roadmap produit ; les épiques et tâches du [plan de travail](plan-de-travail.md#4-vue-des-épiques).
 - **Public visé** : les maîtres du jeu et les joueurs, dont les joueurs invités, que la
   [vision](../besoin/vision/vision.md#4-acteurs) nomme ; la roadmap produit désigne « MJ et joueur » comme
   bénéficiaires du palier.
 - **Porte franchie** : `[DÉCISION MARCHÉ]` puis `[VALIDATION JURIDIQUE EU]`, les deux points go/no-go de la
-  roadmap de build. [§ 3.3](roadmap-de-build.md#33-décision-marché--gono-go-avant-le-build-lourd-de-partage--temps-réel)
+  roadmap de build. [§ 3.4](roadmap-de-build.md#34-décision-marché--gono-go-avant-le-build-lourd-de-partage--temps-réel)
   conditionne l'entrée en J3 ; la décision est le fait du responsable produit, qui interprète la mesure d'usage
   des comptes et les entretiens ([§ 1](roadmap-de-build.md#1-séquence-macro-typée)), et son état est porté par
   [decisions-en-attente.md](decisions-en-attente.md#autres-décisions-produit).
