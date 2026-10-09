@@ -1,7 +1,7 @@
 # VO `DocumentProperties` & `propertiesSchema` par type système — cluster données & persistance
 
 - **Statut** : Spec pré-build — à confirmer à l'entrée en build.
-- **Sources** : [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (l.24, 26, 46, 60, 62).
+- **Sources** : [ADR-002](../../decisions/ADR-002-tout-est-document-gouvernance.md) (§ Décision, puces « Un value object `DocumentProperties` valide `properties` à l'écriture » et « Pour le MVP, les types de document système ont un schéma figé seedé en base » ; § Compléments post-revue, puces « `DocumentBlock.content` : libre par décision » et « `propertiesSchema` figé »).
 - **Companion domaine (lecture seule)** : [content-library/context.md](../../domaine/content-library/context.md), [content-library/logical-data.md](../../domaine/content-library/logical-data.md).
 - **Périmètre** : le contrat du value object `DocumentProperties`, le régime de validation par catégorie de type, et l'énumération des 8 types système seedés. Pour les champs concrets de chaque `propertiesSchema`, cette note dérive fidèlement ce que le domaine modélise déjà et acte vide au MVP, sans l'inventer, ce qu'il ne modélise pas (DÉCIDÉ 2026-09-03, § 5). **ADR-002 ne fixe pas les champs — ils ne sont pas inventés ici.**
 
@@ -9,7 +9,7 @@
 
 ## 1. Contrat du value object `DocumentProperties`
 
-**Décision reportée** (ADR-002:22) :
+**Décision reportée** (ADR-002, § Décision, « Un value object `DocumentProperties` valide `properties` à l'écriture ») :
 
 > `Document.SetProperties()` accepte uniquement un `DocumentProperties` validé contre le `propertiesSchema` du type de document concerné. Les écritures directes dans le JSON sans passer par ce VO sont interdites.
 
@@ -23,10 +23,10 @@ Conséquences directes du contrat, reportées fidèlement :
 
 ## 2. Deux régimes de validation
 
-**Décision reportée** (ADR-002:24, 62) :
+**Décision reportée** (ADR-002, § Décision, « Pour le MVP, les types de document système ont un schéma figé seedé en base » ; § Compléments post-revue, « `propertiesSchema` figé ») :
 
 - **Types système** (MVP) : « schéma figé seedé en base ». Pas de `properties` libre non validé au démarrage — chaque type système dispose d'un schéma déclaré qui contraint les valeurs acceptables. Le schéma figé s'applique **aux types système non modifiés**.
-- **Types custom ou modifiés** : « la validation est permissive par défaut — choix délibéré pour ne pas bloquer l'extensibilité » (ADR-002:60).
+- **Types custom ou modifiés** : « la validation est permissive par défaut — choix délibéré pour ne pas bloquer l'extensibilité » (ADR-002, § Compléments post-revue, « `propertiesSchema` figé »).
 
 Ces deux régimes sont des décisions distinctes et déjà tranchées — il n'y a pas de point ouvert sur *le principe* de la distinction. Le contenu exact de la validation « permissive par défaut » (ex. accepte tout JSON valide sans contrainte de forme, ou applique un schéma minimal générique) n'est pas détaillé par ADR-002 : `[À TRANCHER — modélisation domaine]`.
 
@@ -34,7 +34,7 @@ Ces deux régimes sont des décisions distinctes et déjà tranchées — il n'y
 
 ## 3. `DocumentBlock.content` : hors périmètre du VO
 
-**Décision reportée** (ADR-002:58) :
+**Décision reportée** (ADR-002, § Compléments post-revue, « `DocumentBlock.content` : libre par décision ») :
 
 > `DocumentBlock.content` est du contenu éditeur, sans enjeu d'intégrité référentielle. Ce choix est explicite et distinct de `properties` (gouverné par `DocumentProperties`).
 
@@ -110,10 +110,10 @@ Points tranchés :
 
 Points ouverts additionnels :
 
-- Contenu exact de la validation « permissive par défaut » pour les types custom/modifiés — le principe est acté (ADR-002:60), sa forme précise ne l'est pas.
+- Contenu exact de la validation « permissive par défaut » pour les types custom/modifiés — le principe est acté (ADR-002, § Compléments post-revue, « `propertiesSchema` figé »), sa forme précise ne l'est pas.
 
 ---
 
 ## Traçabilité
 
-Les sources sont citées au fil du document, à chaque règle (mention « Décision reportée » suivie de l'ADR et de ses lignes).
+Les sources sont citées au fil du document, à chaque règle (mention « Décision reportée » suivie de l'ADR et de sa section).
