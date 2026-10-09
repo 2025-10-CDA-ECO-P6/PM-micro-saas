@@ -2,7 +2,7 @@
 
 | Champ | Valeur |
 |---|---|
-| Version | 1.1 |
+| Version | 1.2 |
 | Date | 2026-10-09 |
 | Statut | Version de référence — consolidation du corpus |
 | Porteur | SOUS-SPÉCIFIÉ |
@@ -19,6 +19,7 @@
 |---|---|---|---|
 | 1.0 | 2026-07-16 | SOUS-SPÉCIFIÉ | SOUS-SPÉCIFIÉ |
 | 1.1 | 2026-10-09 | SOUS-SPÉCIFIÉ | Correction du fond, sans restructuration : renvois, ordre d'autorité, marqueurs et sources des points ouverts, points déjà décidés retirés de la § 11, tableaux de renvoi, statuts des specs et § 12 alignés sur leurs sources |
+| 1.2 | 2026-10-09 | SOUS-SPÉCIFIÉ | Correction du fond, sans restructuration : « miroir du cahier des charges » reformulé en correspondance avec ses sections techniques, sans en suivre l'ordre ; renvoi de NFR-PERF-04 vers une section qui ne parle pas de recherche ramené à UC-14 ; contenu de la conception détaillée aligné sur ce qu'elle porte (séquences, règles de gestion consolidées, machines d'états) |
 
 **Sommaire**
 
@@ -127,11 +128,11 @@
 
 ### Ce que ce document fait
 
-Ce cahier consolide, en un registre technique unique, le corpus déjà écrit — décisions d'architecture (ADR), spécifications pré-build, fiches d'exigences non-fonctionnelles, modèle de domaine — en sections miroir du cahier des charges fonctionnel. Il rend le **QUOI technique** (bornes, invariants, contrats, structures de données) vérifiable en un seul endroit, sans en déplacer l'autorité.
+Ce cahier consolide, en un registre technique unique, le corpus déjà écrit — décisions d'architecture (ADR), spécifications pré-build, fiches d'exigences non-fonctionnelles, modèle de domaine — en sections qui reprennent chacune, quand il en existe une, la section technique correspondante du cahier des charges fonctionnel — le tableau de renvoi de la section la nomme —, sans en suivre l'ordre. Il rend le **QUOI technique** (bornes, invariants, contrats, structures de données) vérifiable en un seul endroit, sans en déplacer l'autorité.
 
 ### Ce que ce document ne fait pas
 
-Il ne crée aucune décision technique neuve. Il n'invente aucun seuil chiffré absent du corpus. Il ne recopie pas le contenu intégral des spécifications sources — il synthétise et renvoie. Il ne reproduit pas la vue transverse par préoccupation de `docs/architecture/transverse.md`, ni la conception détaillée en avant (le « comment ») portée par le dossier de conception détaillée. `transverse.md` organise le même corpus ADR par préoccupation technique ; ce cahier le met en miroir du cahier des charges. Aucun des deux ne cite l'autre comme autorité — en cas de divergence, l'ADR source fait foi — et toute évolution d'un ADR se répercute dans les deux. Il ne tranche aucun point ouvert du corpus : un point non tranché est reporté tel quel et consolidé au registre des points ouverts (§11).
+Il ne crée aucune décision technique neuve. Il n'invente aucun seuil chiffré absent du corpus. Il ne recopie pas le contenu intégral des spécifications sources — il synthétise et renvoie. Il ne reproduit pas la vue transverse par préoccupation de `docs/architecture/transverse.md`, ni la conception détaillée en avant (le « comment ») portée par le dossier de conception détaillée. `transverse.md` organise le même corpus ADR par préoccupation technique ; ce cahier le met en correspondance avec les sections techniques du cahier des charges. Aucun des deux ne cite l'autre comme autorité — en cas de divergence, l'ADR source fait foi — et toute évolution d'un ADR se répercute dans les deux. Il ne tranche aucun point ouvert du corpus : un point non tranché est reporté tel quel et consolidé au registre des points ouverts (§11).
 
 ### Clause d'autorité
 
@@ -147,7 +148,7 @@ Toute référence ajoutée par ce document pointe vers le haut de cette hiérarc
 
 ### Frontière avec le SDD (règle opérationnelle)
 
-Ce cahier énonce **ce qui doit être vrai** — bornes, invariants, contrats, planchers, structure de données, périmètres. Le dossier de conception détaillée (SDD, `docs/reference/conception-detaillee.md`) énonce **comment le flux se déroule** — séquences, algorithmes, règles ordonnées, machines d'états déroulées pas à pas.
+Ce cahier énonce **ce qui doit être vrai** — bornes, invariants, contrats, planchers, structure de données, périmètres. Le dossier de conception détaillée (SDD, `docs/reference/conception-detaillee.md`) énonce **comment le flux se déroule** — séquences, règles de gestion consolidées, machines d'états.
 
 Cas-test à citer pour distinguer les deux registres : « toutes les FK sont `RESTRICT` et la suppression est pilotée par une saga » relève de ce cahier (QUOI) ; « la saga NULL-e les cycles en passe 1 puis DELETE les feuilles en passe 2 » relève du SDD (COMMENT). Ce cahier ne franchit jamais cette frontière — il cite la source du COMMENT en renvoi, il ne l'héberge pas.
 
@@ -594,7 +595,7 @@ Les vingt fiches NFR du corpus de conception (`docs/besoin/nfr/`) portent les id
 | NFR-PERF-01 | Fluidité de la navigation en session | `[À TRANCHER — seuil de performance non chiffré dans le corpus]` |
 | NFR-PERF-02 | Réactivité à la première interaction | `[À TRANCHER — seuil de performance non chiffré dans le corpus]` |
 | NFR-PERF-03 | Continuité sans interruption lors des actions en session | `[À TRANCHER — seuil de performance non chiffré dans le corpus]` |
-| NFR-PERF-04 | Résultats de recherche immédiats — recherche titre-only au MVP (renvoi §4, UC-14) | `[À TRANCHER — seuil de performance non chiffré dans le corpus]` |
+| NFR-PERF-04 | Résultats de recherche immédiats — recherche titre-only au MVP (renvoi UC-14) | `[À TRANCHER — seuil de performance non chiffré dans le corpus]` |
 
 Les quatre seuils chiffrés sont ouverts par conception — le corpus ne fixe aucune métrique de latence ou de délai ([stratégie de test, § 12](../assurance/strategie-de-test.md#12-registre-des-points-ouverts), PO-01).
 

@@ -19,7 +19,7 @@ métadonnées ou son objet :
 | Document | Angle |
 |---|---|
 | [cahier-des-charges.md](cahier-des-charges.md) | Le **quoi fonctionnel** — document officiel de référence du périmètre produit du MVP |
-| [cahier-specifications-techniques.md](cahier-specifications-techniques.md) | Le **quoi technique** — registre normatif d'exigences (contraintes, contrats, structures de données), consolidé en miroir du cahier des charges |
+| [cahier-specifications-techniques.md](cahier-specifications-techniques.md) | Le **quoi technique** — registre normatif d'exigences (contraintes, contrats, structures de données), consolidé en correspondance avec les sections techniques du cahier des charges |
 | [dossier-architecture.md](dossier-architecture.md) | La **carte du système** — vues C4 (contexte, conteneurs, composants, déploiement) et choix de structure macro |
 | [conception-detaillee.md](conception-detaillee.md) | Le **comment** — relations et dépendances entre décisions, séquences, règles consolidées |
 
