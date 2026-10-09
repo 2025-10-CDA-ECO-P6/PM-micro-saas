@@ -324,7 +324,7 @@ Les douze conventions retenues le 2026-10-07 sont tranchées par [ADR-019 — Co
 | Identifiants | Une table unique des familles. Le numéro suivant est le plus grand de la famille + 1. Un identifiant n'est jamais réutilisé. |
 | Gabarits | Un gabarit déclaré par type de document. Dans une US, le Gherkin est l'unique porteur des critères d'acceptation. |
 | Renvois | Un lien relatif (chemin, plus ancre ou « § »), jamais un nom de fichier nu. Un renvoi dont la cible n'existe pas est mort. |
-| Marqueurs | Liste fermée. Ouvert : `À TRANCHER`, `SOUS-SPÉCIFIÉ`. Clos : `DÉCIDÉ` (date + renvoi). Fin de vie : `Retiré`, `Remplacé par <id>`. |
+| Marqueurs | Liste fermée. Ouvert : `À TRANCHER`, `SOUS-SPÉCIFIÉ`. Clos : `DÉCIDÉ` (date + renvoi). Fin de vie : `Retiré`, `Remplacé par <id>`. Qualification juridique : `[À VALIDER — JURISTE]`. Dette reportée : `dette nommée, <jalon> (<renvoi>)`. |
 | Registre | Les ADR sont le registre unique. Un ajustement se fait dans une section datée ; un changement de sens fait l'objet d'une nouvelle ADR. |
 | Reste à faire | Le plan de travail pour les tâches, `decisions-en-attente.md` pour les questions ouvertes. Les constats de l'onboarding, tous appliqués, ont été retirés le 2026-10-09 (`docs/project/backlog/README.md @ 51a7cdc`). |
 | Vérification | Les cinq contrôles de la section suivante, lancés en CI sur toute modification de `docs/`. |

@@ -47,6 +47,8 @@ La liste des marqueurs est fermée :
 
 La légende des statuts d'ADR est inchangée. Les formes `RÉSOLU`, `FERMÉE`, `Clos` et `TRANCHÉ` sont converties, et un point tranché ne garde pas `À TRANCHER`.
 
+*Ajustement du 2026-10-09 : la liste compte deux formes de plus, que le corpus emploie sans que cette section les prévoie. Qualification juridique : `[À VALIDER — JURISTE]` (102 emplois), close par un juriste ; ce n'est pas un point ouvert, qu'un juriste seul peut clore, et la convertir en `À TRANCHER` lui ferait perdre ce sens. Dette reportée à un jalon nommé : `dette nommée, <jalon> (<renvoi vers la décision>)`, par exemple « dette nommée, post-MVP (ADR-016, § 1.4) » ; c'est la tournure des 18 emplois de « dette nommée » du corpus (ADR-015, ADR-016, cahier des spécifications techniques, registre des risques, roadmap de build), et une dette reportée n'est pas non plus un point ouvert. La forme `REPORTÉ` du registre généré de `docs/conventions.md` n'est pas retenue : le corpus ne l'emploie nulle part. En cas d'écart avec ce registre, le présent § 5 fait foi.*
+
 ### 6. Registre des décisions
 
 Les ADR sont le registre unique des décisions. La vision (§ 5bis), les arbitrages AR-NN du zoning et `decisions-en-attente.md` y renvoient. Un ajustement se fait sur place, dans une section datée. Un changement de sens fait l'objet d'une nouvelle ADR, qui remplace l'ancienne.

@@ -128,7 +128,7 @@ Une seule table recense toutes les familles d'identifiants. Le numéro suivant e
 
 ## Registre des marqueurs
 
-La liste des marqueurs est fermée ([ADR-019, § 5. Marqueurs](decisions/ADR-019-conventions-de-tenue-du-corpus.md#5-marqueurs)). La légende des statuts d'ADR est inchangée. Les formes `RÉSOLU`, `FERMÉE`, `Clos` et `TRANCHÉ` sont converties, et un point tranché ne garde pas `À TRANCHER`.
+La liste des marqueurs est fermée ([ADR-019, § 5. Marqueurs](decisions/ADR-019-conventions-de-tenue-du-corpus.md#5-marqueurs)). La légende des statuts d'ADR est inchangée. Les formes `RÉSOLU`, `FERMÉE`, `Clos` et `TRANCHÉ` sont converties, et un point tranché ne garde pas `À TRANCHER`. L'ADR-019 § 5 fait foi : en cas d'écart avec le registre ci-dessous, c'est lui qu'on suit.
 
 <!-- corpus:generated:marker-registry:begin -->
 | Marqueur | Sens | Clos par |
