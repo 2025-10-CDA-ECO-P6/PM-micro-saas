@@ -242,7 +242,6 @@ classDiagram
     Invitation --> InvitationStatus
     GuestAccess --> GuestAccessStatus
     GuestAccess --> GuestAccessScope
-    GuestAccess --> SpaceId
 
     Space ..> SpaceCreated : produces
     Space ..> MemberJoined : produces
