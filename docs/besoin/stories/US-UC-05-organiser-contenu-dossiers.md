@@ -78,7 +78,7 @@ flowchart TD
     K -->|Non| M[Choisir : déplacer les docs\nou laisser dans Non classés]
     M --> L
 
-    C -->|Réordonner| N[Déplace les dossiers\ndrag-and-drop ou ordre numérique]
+    C -->|Réordonner| N[Déplace les dossiers\nordre numérique — drag-and-drop post-MVP]
     N --> O[mécanisme de classement des dossiers\nper siste l'ordre]
 
     C -->|Déplacer des documents| P[Sélectionne un ou plusieurs docs\nchoisit le dossier cible]
@@ -308,7 +308,7 @@ Scénario : Le MJ supprime un dossier système
 
 **Notes de conception** :
 - Le mécanisme de classement conserve l'ordre des dossiers.
-- Question UX ouverte : drag-and-drop ou interface d'ordre numérique ? Voir questions ouvertes.
+- Au MVP, l'ordre se règle par une interface d'ordre numérique ; le drag-and-drop est post-MVP ([Questions ouvertes](#questions-ouvertes), point 2).
 - L'ordre est propre à l'espace — pas partagé entre espaces.
 
 **Règles métier** :
